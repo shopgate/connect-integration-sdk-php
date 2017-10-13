@@ -19,9 +19,34 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\Route;
+namespace Shopgate\CloudIntegrationSdk\ValueObject\Base;
 
-class V2 implements RouteInterface
+abstract class String
 {
+    /** @var string */
+    private $value;
 
+    /**
+     * @param string $value
+     */
+    public function __construct($value)
+    {
+        $this->value = (string) $value;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->value;
+    }
+
+    /**
+     * @return string
+     */
+    public function getValue()
+    {
+        return (string) $this->value;
+    }
 }

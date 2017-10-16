@@ -23,7 +23,7 @@ namespace Shopgate\CloudIntegrationSdk\Repository;
 
 use Shopgate\CloudIntegrationSdk\ValueObject\TokenType\AbstractTokenType;
 use Shopgate\CloudIntegrationSdk\ValueObject\TokenId;
-use \Shopgate\CloudIntegrationSdk\ValueObject\Token;
+use Shopgate\CloudIntegrationSdk\ValueObject\Token;
 
 abstract class AbstractToken implements RepositoryInterface
 {

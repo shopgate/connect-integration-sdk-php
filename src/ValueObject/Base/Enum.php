@@ -19,8 +19,37 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\Route;
+namespace Shopgate\CloudIntegrationSdk\ValueObject\Base;
 
-interface RouteInterface {
+abstract class Enum
+{
+    /** @var mixed */
+    private $value;
 
+    /**
+     * @param mixed $value
+     */
+    public function __construct($value)
+    {
+        if (!in_array($value, $this->getEnumValues(), true)) {
+            throw new \InvalidArgumentException(
+                'Expecting one of [' . implode(',', $this->getEnumValues()) . '], got ' . var_export($value, true) . '.'
+            );
+        }
+
+        $this->value = $value;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->value;
+    }
+
+    /**
+     * @return string[]
+     */
+    public abstract function getEnumValues();
 }

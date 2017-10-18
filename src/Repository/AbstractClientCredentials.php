@@ -19,8 +19,17 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk;
+namespace Shopgate\CloudIntegrationSdk\Repository;
 
-class Router {
+abstract class AbstractClientCredentials implements RepositoryInterface
+{
+    /**
+     * @return string
+     */
+    public abstract function getClientId();
 
+    /**
+     * @return string
+     */
+    public abstract function getClientSecret();
 }

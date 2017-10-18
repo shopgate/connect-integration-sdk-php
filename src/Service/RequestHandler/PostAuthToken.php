@@ -19,35 +19,43 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\Service\Authenticator;
+namespace Shopgate\CloudIntegrationSdk\Service\RequestHandler;
 
+use Shopgate\CloudIntegrationSdk\Service\Authenticator;
 use Shopgate\CloudIntegrationSdk\Repository;
+
 use Shopgate\CloudIntegrationSdk\ValueObject\Request;
+use Shopgate\CloudIntegrationSdk\ValueObject\Response;
 
-class Resource implements AuthenticatorInterface
+class PostAuthToken implements RequestHandlerInterface
 {
-    /** @var Repository\AbstractToken */
-    private $tokenRepository;
-
-    /** @var Client */
-    private $clientAuthenticator;
+    /** @var Authenticator\AuthenticatorInterface */
+    private $authenticator;
 
     /**
-     * Token constructor.
+     * PostAuthToken constructor.
      *
      * @param Repository\AbstractClientCredentials $clientCredentialsRepository
      * @param Repository\AbstractToken             $tokenRepository
+     * @param Repository\AbstractUser              $userRepository
      */
     public function __construct(
         Repository\AbstractClientCredentials $clientCredentialsRepository,
-        Repository\AbstractToken $tokenRepository
+        Repository\AbstractToken $tokenRepository,
+        Repository\AbstractUser $userRepository
     ) {
-        $this->tokenRepository = $tokenRepository;
-        $this->clientAuthenticator = new Client($clientCredentialsRepository);
+        $this->authenticator = new Authenticator\Token(
+            $clientCredentialsRepository, $tokenRepository, $userRepository
+        );
     }
 
-    public function authenticate(Request $request)
+    public function getAuthenticator()
     {
-        return true && $this->clientAuthenticator->authenticate($request); // TODO: Finish implementation
+        return $this->authenticator;
+    }
+
+    public function handle(Request $request)
+    {
+        return new Response(); // TODO: Implement handle() method.
     }
 }

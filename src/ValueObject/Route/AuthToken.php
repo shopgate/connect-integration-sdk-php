@@ -19,27 +19,9 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\ValueObject;
+namespace Shopgate\CloudIntegrationSdk\ValueObject\Route;
 
-class Request
+class AuthToken extends AbstractRoute
 {
-    // TODO: Implement methods and add PHPDoc
 
-    public function getUri()
-    {
-        // TODO: Implementation
-        return "";
-    }
-
-    public function getHeaders()
-    {
-        // TODO: Implementation
-        return [];
-    }
-
-    public function getMethod()
-    {
-        // TODO: Implementation
-        return "";
-    }
 }

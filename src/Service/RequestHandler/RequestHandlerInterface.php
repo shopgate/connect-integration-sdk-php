@@ -19,9 +19,23 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\Service;
+namespace Shopgate\CloudIntegrationSdk\Service\RequestHandler;
+
+use Shopgate\CloudIntegrationSdk\Service\Authenticator\AuthenticatorInterface;
+use Shopgate\CloudIntegrationSdk\ValueObject\Request;
+use Shopgate\CloudIntegrationSdk\ValueObject\Response;
 
 interface RequestHandlerInterface
 {
+    /**
+     * @return AuthenticatorInterface
+     */
+    public function getAuthenticator();
 
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function handle(Request $request);
 }

@@ -19,16 +19,36 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\Service\Authenticator;
+namespace Shopgate\CloudIntegrationSdk\Service\RequestHandler;
+
+use Shopgate\CloudIntegrationSdk\Service\Authenticator;
+use Shopgate\CloudIntegrationSdk\Repository;
 
 use Shopgate\CloudIntegrationSdk\ValueObject\Request;
+use Shopgate\CloudIntegrationSdk\ValueObject\Response;
 
-interface AuthenticatorInterface
+class GetV2 implements RequestHandlerInterface
 {
+    /** @var Authenticator\AuthenticatorInterface */
+    private $authenticator;
+
     /**
-     * @param Request $request
+     * GetV2 constructor.
      *
-     * @return bool
+     * @param Repository\AbstractClientCredentials $clientCredentialsRepository
      */
-    public function authenticate(Request $request);
+    public function __construct(Repository\AbstractClientCredentials $clientCredentialsRepository)
+    {
+        $this->authenticator = new Authenticator\Client($clientCredentialsRepository);
+    }
+
+    public function getAuthenticator()
+    {
+        return $this->authenticator;
+    }
+
+    public function handle(Request $request)
+    {
+        return new Response(); // TODO: Implement handle() method.
+    }
 }

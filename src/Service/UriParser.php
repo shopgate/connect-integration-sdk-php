@@ -21,7 +21,61 @@
 
 namespace Shopgate\CloudIntegrationSdk\Service;
 
+use Shopgate\CloudIntegrationSdk\ValueObject;
+
 class UriParser
 {
+    /** @var ValueObject\Route\AbstractRoute */
+    private $routes;
 
+    /**
+     * @param ValueObject\Route\AbstractRoute $route
+     */
+    public function addRoute(ValueObject\Route\AbstractRoute $route) {
+        // TODO: Finish implementation
+        $routes[$route->getIdentifier()] = $route;
+    }
+
+    /**
+     * @param string $uriString
+     *
+     * @return ValueObject\Route\AbstractRoute | null
+     */
+    public function getRoute($uriString)
+    {
+        /** @var ValueObject\Route\AbstractRoute $route */
+        $route = null;
+        foreach ($this->routes as $route) {
+            if ($this->matchRouteUri($route->getPattern(), $uriString)) {
+                return $route;
+            }
+        }
+
+        // no route found in register
+        return null;
+    }
+
+    /**
+     * @param string $pattern
+     * @param string $uriString
+     *
+     * @return bool
+     */
+    private function matchRouteUri($pattern, $uriString)
+    {
+        if (empty($pattern)) {
+            throw new \InvalidArgumentException("Invalid argument: \$pattern.");
+        }
+
+        if (empty($uriString)) {
+            throw new \InvalidArgumentException("Invalid argument: \$uriString.");
+        }
+
+        $matchResult = preg_match($pattern, $uriString);
+        if (false === $matchResult) {
+            throw new \RuntimeException("Unexpected failure while parsing a given uri string.");
+        }
+
+        return $matchResult === 1;
+    }
 }

@@ -21,7 +21,75 @@
 
 namespace Shopgate\CloudIntegrationSdk\Service;
 
+use Shopgate\CloudIntegrationSdk\Repository;
+use Shopgate\CloudIntegrationSdk\ValueObject;
+use Shopgate\CloudIntegrationSdk\ValueObject\Route;
+use Shopgate\CloudIntegrationSdk\ValueObject\RequestMethod;
+
 class Router
 {
+    /** @var RequestHandler\RequestHandlerInterface[][] */
+    private $requestHandlers;
 
+    /** @var UriParser */
+    private $uriParser;
+
+    /**
+     * Router constructor.
+     *
+     * @param Repository\AbstractClientCredentials $clientCredentialsRepository
+     * @param Repository\AbstractToken             $tokenRepository
+     * @param Repository\AbstractUser              $userRepository
+     */
+    public function __construct(
+        Repository\AbstractClientCredentials $clientCredentialsRepository,
+        Repository\AbstractToken $tokenRepository,
+        Repository\AbstractUser $userRepository
+    ) {
+        $this->uriParser = new UriParser();
+
+        // add predefined routes
+        $this->subscribe(new Route\AuthToken(), new RequestMethod\Get(),
+            new RequestHandler\PostAuthToken(
+                $clientCredentialsRepository, $tokenRepository, $userRepository
+            )
+        );
+        $this->subscribe(new Route\V2(), new RequestMethod\Get(),
+            new RequestHandler\GetV2($clientCredentialsRepository)
+        );
+    }
+
+    /**
+     * @param Route\AbstractRoute $route
+     * @param RequestMethod\AbstractRequestMethod $method
+     * @param RequestHandler\RequestHandlerInterface $handler
+     */
+    public function subscribe(
+        Route\AbstractRoute $route,
+        RequestMethod\AbstractRequestMethod $method,
+        RequestHandler\RequestHandlerInterface $handler
+    ) {
+        $this->uriParser->addRoute($route);
+        $this->requestHandlers[$route->getIdentifier()][(string) $method] = $handler;
+    }
+
+    /**
+     * @param ValueObject\Request $request
+     *
+     * @return ValueObject\Response
+     */
+    public function dispatch(ValueObject\Request $request)
+    {
+        $route = $this->uriParser->getRoute($request->getUri());
+        $requestHandler = $this->requestHandlers[$route->getIdentifier()][(string) $request->getMethod()];
+
+        // TODO: Respond with error if no request handler found
+
+        $auth = $requestHandler->getAuthenticator();
+        if (!$auth->authenticate($request)) {
+            return new ValueObject\Response();
+        }
+
+        return $requestHandler->handle($request);
+    }
 }

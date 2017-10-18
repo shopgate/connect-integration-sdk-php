@@ -19,27 +19,28 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\ValueObject;
+namespace Shopgate\CloudIntegrationSdk\Service\Authenticator;
 
-class Request
+use Shopgate\CloudIntegrationSdk\Repository;
+use Shopgate\CloudIntegrationSdk\ValueObject\Request;
+
+class Client implements AuthenticatorInterface
 {
-    // TODO: Implement methods and add PHPDoc
+    /** @var Repository\AbstractClientCredentials */
+    private $repository;
 
-    public function getUri()
+    /**
+     * Client constructor.
+     *
+     * @param Repository\AbstractClientCredentials $clientCredentialsRepository
+     */
+    public function __construct(Repository\AbstractClientCredentials $clientCredentialsRepository)
     {
-        // TODO: Implementation
-        return "";
+        $this->repository = $clientCredentialsRepository;
     }
 
-    public function getHeaders()
+    public function authenticate(Request $request)
     {
-        // TODO: Implementation
-        return [];
-    }
-
-    public function getMethod()
-    {
-        // TODO: Implementation
-        return "";
+        return true; // TODO: Implementation
     }
 }

@@ -64,8 +64,8 @@ class Router
     }
 
     /**
-     * @param Route\AbstractRoute $route
-     * @param RequestMethod\AbstractRequestMethod $method
+     * @param Route\AbstractRoute                    $route
+     * @param RequestMethod\AbstractRequestMethod    $method
      * @param RequestHandler\RequestHandlerInterface $handler
      */
     public function subscribe(
@@ -97,6 +97,7 @@ class Router
      * @param Request $request
      *
      * @return Response
+     *
      * @throws Authenticator\Exception\Unauthorized
      * @throws Exception\UnregisteredRoute
      * @throws Exception\UnregisteredRouteMethod

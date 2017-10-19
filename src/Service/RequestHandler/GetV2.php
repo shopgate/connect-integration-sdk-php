@@ -32,14 +32,31 @@ class GetV2 implements RequestHandlerInterface
     /** @var Authenticator\AuthenticatorInterface */
     private $authenticator;
 
+    /** @var Repository\AbstractPathInfo */
+    private $repository;
+
     /**
      * GetV2 constructor.
      *
      * @param Repository\AbstractClientCredentials $clientCredentialsRepository
+     * @param Repository\AbstractPathInfo          $pathInfoRepository
+     *
+     * @throws \InvalidArgumentException
      */
-    public function __construct(Repository\AbstractClientCredentials $clientCredentialsRepository)
-    {
+    public function __construct(
+        Repository\AbstractClientCredentials $clientCredentialsRepository,
+        Repository\AbstractPathInfo $pathInfoRepository
+    ) {
+        if (empty($clientCredentialsRepository)) {
+            throw new \InvalidArgumentException("Argument '\$clientCredentialsRepository' is invalid!");
+        }
+
+        if (empty($pathInfoRepository)) {
+            throw new \InvalidArgumentException("Argument '\$pathInfoRepository' is invalid!");
+        }
+
         $this->authenticator = new Authenticator\BasicAuth($clientCredentialsRepository);
+        $this->repository = $pathInfoRepository;
     }
 
     public function getAuthenticator()
@@ -47,8 +64,29 @@ class GetV2 implements RequestHandlerInterface
         return $this->authenticator;
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     *
+     * @throws \RuntimeException
+     */
     public function handle(Request $request)
     {
-        return new Response(200, [], ""); // TODO: Implement handle() method.
+        // check if there is a file available to be shown
+        $specificationPath = $this->repository->getSpecificationPath();
+        if (!file_exists($specificationPath)) {
+            throw new \RuntimeException("Specification file '{$specificationPath}' does not exist or can't be read.");
+        }
+
+        // load file contents to be returned as a response for display
+        $specification = file_get_contents($specificationPath);
+        $responseHeaders = [
+            "Content-Type"     => "text/json; charset=utf-8",
+            "Cache-Control"    => "max-age=3600",
+            "Content-Language" => "en",
+            "Content-Length"   => (string) strlen($specification)
+        ];
+        return new Response(200, $responseHeaders, $specification);
     }
 }

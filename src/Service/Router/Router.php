@@ -44,11 +44,13 @@ class Router
      * @param Repository\AbstractClientCredentials $clientCredentialsRepository
      * @param Repository\AbstractToken             $tokenRepository
      * @param Repository\AbstractUser              $userRepository
+     * @param Repository\AbstractPathInfo          $pathInfoRepository
      */
     public function __construct(
         Repository\AbstractClientCredentials $clientCredentialsRepository,
         Repository\AbstractToken $tokenRepository,
-        Repository\AbstractUser $userRepository
+        Repository\AbstractUser $userRepository,
+        Repository\AbstractPathInfo $pathInfoRepository
     ) {
         $this->uriParser = new UriParser\UriParser();
 
@@ -59,7 +61,7 @@ class Router
             )
         );
         $this->subscribe(new Route\V2(), new RequestMethod\Get(),
-            new RequestHandler\GetV2($clientCredentialsRepository)
+            new RequestHandler\GetV2($clientCredentialsRepository, $pathInfoRepository)
         );
     }
 

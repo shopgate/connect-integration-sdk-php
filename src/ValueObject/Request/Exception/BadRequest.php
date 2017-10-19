@@ -19,7 +19,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\Service\Authenticator\Exception;
+namespace Shopgate\CloudIntegrationSdk\ValueObject\Request\Exception;
 
 use Throwable;
 
@@ -34,7 +34,7 @@ class BadRequest extends \Exception
     public function __construct($message = "", Throwable $previous = null)
     {
         if ($message === "") {
-            $message = 'Invalid request or missing parameters.';
+            $message = 'Invalid request or missing parameter(s).';
         }
         $message = "Bad Request: {$message}";
         parent::__construct(

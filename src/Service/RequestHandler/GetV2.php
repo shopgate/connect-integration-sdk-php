@@ -47,7 +47,7 @@ class GetV2 implements RequestHandlerInterface
         return $this->authenticator;
     }
 
-    public function handle(Request $request)
+    public function handle(Request\Request $request)
     {
         return new Response(200, [], ""); // TODO: Implement handle() method.
     }

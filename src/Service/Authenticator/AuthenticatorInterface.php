@@ -26,7 +26,7 @@ use Shopgate\CloudIntegrationSdk\ValueObject\Request;
 interface AuthenticatorInterface
 {
     /**
-     * @param Request $request
+     * @param Request\Request $request
      */
-    public function authenticate(Request $request);
+    public function authenticate(Request\Request $request);
 }

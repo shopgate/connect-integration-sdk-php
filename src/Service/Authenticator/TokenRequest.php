@@ -75,35 +75,10 @@ class TokenRequest implements AuthenticatorInterface
                 // no additional authentication required
                 break;
             case $passwordKey:
-                $username = $this->parseParam($request, $usernameKey);
-                $password = $this->parseParam($request, $passwordKey);
-
-                // check if given credentials are valid or not
-                if (empty($username) || empty($password) || is_null($this->userRepository->getUserIdByCredentials(
-                    new Username($username),
-                    new Password($password)))
-                ) {
-                    throw new Exception\Unauthorized('Invalid user credentials provided.');
-                }
-
+                $this->authenticateGrantTypePassword($request, $usernameKey, $passwordKey);
                 break;
             case $refreshTokenKey:
-                // get refresh token from params and try to load the refresh token
-                $refreshToken = $this->parseParam($request, $refreshTokenKey);
-                $token = $this->tokenRepository->loadToken(
-                    new TokenId($refreshToken),
-                    new TokenType\RefreshToken()
-                );
-
-                // check if a refresh token was found
-                if (empty($refreshTokenParam) || is_null($token)) {
-                    throw new Exception\Unauthorized('Invalid refresh_token provided.');
-                }
-
-                // check if the refresh_token is still valid and is not expired
-                if ($token->getExpires() !== null && strtotime($token->getExpires() < time())) {
-                    throw new Exception\Unauthorized('The refresh_token provided is expired.');
-                }
+                $this->authenticateGrantTypeRefreshToken($request, $refreshTokenKey);
 
                 break;
             default:
@@ -111,6 +86,50 @@ class TokenRequest implements AuthenticatorInterface
         }
     }
 
+    /**
+     * @param Request $request
+     * @param string  $usernameKey
+     * @param string  $passwordKey
+     *
+     * @throws Exception\Unauthorized
+     */
+    private function authenticateGrantTypePassword(Request $request, $usernameKey, $passwordKey) {
+        $username = $this->parseParam($request, $usernameKey);
+        $password = $this->parseParam($request, $passwordKey);
+
+        // check if given credentials are valid or not
+        if (empty($username) || empty($password) || is_null($this->userRepository->getUserIdByCredentials(
+            new Username($username),
+            new Password($password)))
+        ) {
+            throw new Exception\Unauthorized('Invalid user credentials provided.');
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @param string  $refreshTokenKey
+     *
+     * @throws Exception\Unauthorized
+     */
+    private function authenticateGrantTypeRefreshToken(Request $request, $refreshTokenKey) {
+        // get refresh token from params and try to load the refresh token
+        $refreshToken = $this->parseParam($request, $refreshTokenKey);
+        $token = $this->tokenRepository->loadToken(
+            new TokenId($refreshToken),
+            new TokenType\RefreshToken()
+        );
+
+        // check if a refresh token was found
+        if (empty($refreshTokenParam) || is_null($token)) {
+            throw new Exception\Unauthorized('Invalid refresh_token provided.');
+        }
+
+        // check if the refresh_token is still valid and is not expired
+        if ($token->getExpires() !== null && strtotime($token->getExpires() < time())) {
+            throw new Exception\Unauthorized('The refresh_token provided is expired.');
+        }
+    }
 
     /**
      * @param Request $request
@@ -159,7 +178,14 @@ class TokenRequest implements AuthenticatorInterface
         return null;
     }
 
+    /**
+     * @param string $contentType
+     *
+     * @return string
+     */
     private function parseContentType($contentType) {
-
+        // the content type is always the first part of to possible ones, delimited by semicolon
+        $parts = explode(";", trim($contentType));
+        return trim($parts[0]);
     }
 }

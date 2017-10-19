@@ -57,12 +57,12 @@ class TokenRequest implements AuthenticatorInterface
     }
 
     /**
-     * @param Request $request
+     * @param Request\Request $request
      *
      * @throws Exception\Unauthorized
-     * @throws Exception\BadRequest
+     * @throws Request\Exception\BadRequest
      */
-    public function authenticate(Request $request) {
+    public function authenticate(Request\Request $request) {
         // check basic authorization, before trying to validate any tokens
         $this->basicAuthAuthenticator->authenticate($request);
 
@@ -70,7 +70,7 @@ class TokenRequest implements AuthenticatorInterface
         $usernameKey = 'username';
         $passwordKey = 'password';
         $refreshTokenKey = 'refresh_token';
-        switch ($this->parseParam($request, 'grant_type')) {
+        switch ($request->parseParam('grant_type')) {
             case 'client_credentials':
                 // no additional authentication required
                 break;
@@ -82,20 +82,20 @@ class TokenRequest implements AuthenticatorInterface
 
                 break;
             default:
-                throw new Exception\BadRequest('Unsupported or no grant_type provided.');
+                throw new Request\Exception\BadRequest('Unsupported or no grant_type provided.');
         }
     }
 
     /**
-     * @param Request $request
+     * @param Request\Request $request
      * @param string  $usernameKey
      * @param string  $passwordKey
      *
      * @throws Exception\Unauthorized
      */
-    private function authenticateGrantTypePassword(Request $request, $usernameKey, $passwordKey) {
-        $username = $this->parseParam($request, $usernameKey);
-        $password = $this->parseParam($request, $passwordKey);
+    private function authenticateGrantTypePassword(Request\Request $request, $usernameKey, $passwordKey) {
+        $username = $request->parseParam($usernameKey);
+        $password = $request->parseParam($passwordKey);
 
         // check if given credentials are valid or not
         if (empty($username) || empty($password) || is_null($this->userRepository->getUserIdByCredentials(
@@ -107,14 +107,14 @@ class TokenRequest implements AuthenticatorInterface
     }
 
     /**
-     * @param Request $request
+     * @param Request\Request $request
      * @param string  $refreshTokenKey
      *
      * @throws Exception\Unauthorized
      */
-    private function authenticateGrantTypeRefreshToken(Request $request, $refreshTokenKey) {
+    private function authenticateGrantTypeRefreshToken(Request\Request $request, $refreshTokenKey) {
         // get refresh token from params and try to load the refresh token
-        $refreshToken = $this->parseParam($request, $refreshTokenKey);
+        $refreshToken = $request->parseParam($refreshTokenKey);
         $token = $this->tokenRepository->loadToken(
             new TokenId($refreshToken),
             new TokenType\RefreshToken()
@@ -129,63 +129,5 @@ class TokenRequest implements AuthenticatorInterface
         if ($token->getExpires() !== null && strtotime($token->getExpires() < time())) {
             throw new Exception\Unauthorized('The refresh_token provided is expired.');
         }
-    }
-
-    /**
-     * @param Request $request
-     * @param string  $paramName
-     *
-     * @return string | null
-     *
-     * @throws Exception\BadRequest
-     */
-    private function parseParam(Request $request, $paramName)
-    {
-        $data = [];
-        parse_str(parse_url($request->getUri(), PHP_URL_QUERY), $data);
-
-        // parse either from request query or from request body
-        if (!empty($data[$paramName])) {
-            return $data[$paramName];
-        } else {
-            $contentTypeKey = 'Content-Type';
-            $requestHeaders = $request->getHeaders();
-
-            // check if there is a content type header provided
-            if (empty($requestHeaders[$contentTypeKey])) {
-                throw new Exception\BadRequest('Invalid request body.');
-            }
-
-            // check if the provided content type is supported
-            switch($this->parseContentType($requestHeaders[$contentTypeKey])) {
-                case 'application/json':
-                    $data = json_decode($request->getBody(), true);
-                    if (!empty($data[$paramName])) {
-                        return $data[$paramName];
-                    }
-                    break;
-                case 'application/x-www-form-urlencoded':
-                    parse_str($request->getBody(), $data);
-                    if (!empty($data[$paramName])) {
-                        return $data[$paramName];
-                    }
-                    break;
-                default:
-                    throw new Exception\BadRequest('Unsupported Content-Type provided.');
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * @param string $contentType
-     *
-     * @return string
-     */
-    private function parseContentType($contentType) {
-        // the content type is always the first part of to possible ones, delimited by semicolon
-        $parts = explode(";", trim($contentType));
-        return trim($parts[0]);
     }
 }

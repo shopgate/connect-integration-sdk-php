@@ -40,11 +40,11 @@ class BasicAuth implements AuthenticatorInterface
     }
 
     /**
-     * @param Request $request
+     * @param Request\Request $request
      *
      * @throws Exception\Unauthorized
      */
-    public function authenticate(Request $request)
+    public function authenticate(Request\Request $request)
     {
         $authKey = 'Authorization';
         $authHash = base64_encode($this->repository->getClientId() . ':' . $this->repository->getClientSecret());

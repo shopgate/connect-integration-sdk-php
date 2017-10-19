@@ -31,14 +31,14 @@ abstract class AbstractToken implements RepositoryInterface
      * @param TokenId           $token
      * @param AbstractTokenType $type
      *
-     * @return Token
+     * @return Token | null
      */
     public abstract function loadToken(TokenId $token, AbstractTokenType $type);
 
     /**
      * @param string $userId
      *
-     * @return Token
+     * @return Token | null
      */
     public abstract function loadTokenByUserId($userId);
 

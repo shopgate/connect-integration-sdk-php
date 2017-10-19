@@ -42,4 +42,12 @@ class Request
         // TODO: Implementation
         return "";
     }
+
+    /**
+     * @return bool|string
+     */
+    public function getBody()
+    {
+        return file_get_contents('php://input');
+    }
 }

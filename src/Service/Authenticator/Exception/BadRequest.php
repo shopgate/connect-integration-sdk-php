@@ -19,19 +19,28 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\ValueObject;
+namespace Shopgate\CloudIntegrationSdk\Service\Authenticator\Exception;
 
-class Token
+use Throwable;
+
+class BadRequest extends \Exception
 {
-    /** @var  string | null */
-    private $expires;
-
     /**
-     * Returns a datestring or null if the the token does not expire.
+     * Unauthorized constructor.
      *
-     * @return string | null
+     * @param string         $message
+     * @param Throwable|null $previous
      */
-    public function getExpires() {
-        return $this->expires;
+    public function __construct($message = "", Throwable $previous = null)
+    {
+        if ($message === "") {
+            $message = 'Invalid request or missing parameters.';
+        }
+        $message = "Bad Request: {$message}";
+        parent::__construct(
+            $message,
+            400,
+            $previous
+        );
     }
 }

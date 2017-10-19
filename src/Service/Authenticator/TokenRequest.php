@@ -23,6 +23,10 @@ namespace Shopgate\CloudIntegrationSdk\Service\Authenticator;
 
 use Shopgate\CloudIntegrationSdk\Repository;
 use Shopgate\CloudIntegrationSdk\ValueObject\Request;
+use Shopgate\CloudIntegrationSdk\ValueObject\Username;
+use Shopgate\CloudIntegrationSdk\ValueObject\Password;
+use Shopgate\CloudIntegrationSdk\ValueObject\TokenId;
+use Shopgate\CloudIntegrationSdk\ValueObject\TokenType;
 
 class TokenRequest implements AuthenticatorInterface
 {
@@ -56,12 +60,106 @@ class TokenRequest implements AuthenticatorInterface
      * @param Request $request
      *
      * @throws Exception\Unauthorized
+     * @throws Exception\BadRequest
      */
-    public function authenticate(Request $request)
-    {
+    public function authenticate(Request $request) {
         // check basic authorization, before trying to validate any tokens
         $this->basicAuthAuthenticator->authenticate($request);
 
-        // TODO: check grant type and authenticate with user credentials or with a refresh_token (client_credentials has been authenticated already)
+        // check authentication based on grant type
+        $usernameKey = 'username';
+        $passwordKey = 'password';
+        $refreshTokenKey = 'refresh_token';
+        switch ($this->parseParam($request, 'grant_type')) {
+            case 'client_credentials':
+                // no additional authentication required
+                break;
+            case $passwordKey:
+                $username = $this->parseParam($request, $usernameKey);
+                $password = $this->parseParam($request, $passwordKey);
+
+                // check if given credentials are valid or not
+                if (empty($username) || empty($password) || is_null($this->userRepository->getUserIdByCredentials(
+                    new Username($username),
+                    new Password($password)))
+                ) {
+                    throw new Exception\Unauthorized('Invalid user credentials provided.');
+                }
+
+                break;
+            case $refreshTokenKey:
+                // get refresh token from params and try to load the refresh token
+                $refreshToken = $this->parseParam($request, $refreshTokenKey);
+                $token = $this->tokenRepository->loadToken(
+                    new TokenId($refreshToken),
+                    new TokenType\RefreshToken()
+                );
+
+                // check if a refresh token was found
+                if (empty($refreshTokenParam) || is_null($token)) {
+                    throw new Exception\Unauthorized('Invalid refresh_token provided.');
+                }
+
+                // check if the refresh_token is still valid and is not expired
+                if ($token->getExpires() !== null && strtotime($token->getExpires() < time())) {
+                    throw new Exception\Unauthorized('The refresh_token provided is expired.');
+                }
+
+                break;
+            default:
+                throw new Exception\BadRequest('Unsupported or no grant_type provided.');
+        }
+    }
+
+
+    /**
+     * @param Request $request
+     * @param string  $paramName
+     *
+     * @return string | null
+     *
+     * @throws Exception\BadRequest
+     */
+    private function parseParam(Request $request, $paramName)
+    {
+        $data = [];
+        parse_str(parse_url($request->getUri(), PHP_URL_QUERY), $data);
+
+        // parse either from request query or from request body
+        if (!empty($data[$paramName])) {
+            return $data[$paramName];
+        } else {
+            $contentTypeKey = 'Content-Type';
+            $requestHeaders = $request->getHeaders();
+
+            // check if there is a content type header provided
+            if (empty($requestHeaders[$contentTypeKey])) {
+                throw new Exception\BadRequest('Invalid request body.');
+            }
+
+            // check if the provided content type is supported
+            switch($this->parseContentType($requestHeaders[$contentTypeKey])) {
+                case 'application/json':
+                    $data = json_decode($request->getBody(), true);
+                    if (!empty($data[$paramName])) {
+                        return $data[$paramName];
+                    }
+                    break;
+                case 'application/x-www-form-urlencoded':
+                    parse_str($request->getBody(), $data);
+                    if (!empty($data[$paramName])) {
+                        return $data[$paramName];
+                    }
+                    break;
+                default:
+                    throw new Exception\BadRequest('Unsupported Content-Type provided.');
+            }
+        }
+
+        return null;
+    }
+
+    private function parseContentType($contentType) {
+
     }
 }

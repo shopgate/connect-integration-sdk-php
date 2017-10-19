@@ -19,7 +19,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\Service\Exception;
+namespace Shopgate\CloudIntegrationSdk\Service\Router\Exception;
 
 use Throwable;
 

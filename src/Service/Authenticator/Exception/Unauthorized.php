@@ -19,24 +19,22 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\Service\Exception;
+namespace Shopgate\CloudIntegrationSdk\Service\Authenticator\Exception;
 
 use Throwable;
 
-class UnregisteredRoute extends \Exception
+class Unauthorized extends \Exception
 {
     /**
-     * UnregisteredRouteMethod constructor.
+     * Unauthorized constructor.
      *
-     * @param string         $route
      * @param Throwable|null $previous
      */
-    public function __construct($route, Throwable $previous = null)
+    public function __construct(Throwable $previous = null)
     {
-        $routeString = trim('/', $route);
         parent::__construct(
-            "Route '$routeString' is not registered",
-            1001,
+            "Unauthorized: Invalid or missing authorization.",
+            401,
             $previous
         );
     }

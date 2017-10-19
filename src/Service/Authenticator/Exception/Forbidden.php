@@ -19,22 +19,22 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\Service\Exception;
+namespace Shopgate\CloudIntegrationSdk\Service\Authenticator\Exception;
 
 use Throwable;
 
-class InvalidAuthenticator extends \Exception
+class Forbidden extends \Exception
 {
     /**
-     * UnregisteredRouteMethod constructor.
+     * Forbidden constructor.
      *
      * @param Throwable|null $previous
      */
     public function __construct(Throwable $previous = null)
     {
         parent::__construct(
-            "Invalid authenticator object.",
-            1012,
+            "Forbidden: Client does not have permissions to access the requested resource.",
+            403,
             $previous
         );
     }

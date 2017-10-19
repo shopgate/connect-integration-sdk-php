@@ -19,16 +19,23 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\Service\Authenticator;
+namespace Shopgate\CloudIntegrationSdk\Service\Authenticator\Exception;
 
-use Shopgate\CloudIntegrationSdk\ValueObject\Request;
+use Throwable;
 
-interface AuthenticatorInterface
+class InvalidAuthenticator extends \Exception
 {
     /**
-     * @param Request $request
+     * UnregisteredRouteMethod constructor.
      *
-     * @throws \Exception
+     * @param Throwable|null $previous
      */
-    public function authenticate(Request $request);
+    public function __construct(Throwable $previous = null)
+    {
+        parent::__construct(
+            "Invalid authenticator object.",
+            1012,
+            $previous
+        );
+    }
 }

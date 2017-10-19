@@ -32,6 +32,6 @@ class Response
      */
     public function __construct($httpCode, $httpHeaders, $responseBody)
     {
-
+        // TODO: Implementation
     }
 }

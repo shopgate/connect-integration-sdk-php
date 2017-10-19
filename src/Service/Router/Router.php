@@ -19,12 +19,14 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\Service;
+namespace Shopgate\CloudIntegrationSdk\Service\Router;
 
 use Shopgate\CloudIntegrationSdk\Repository;
-use Shopgate\CloudIntegrationSdk\Service\Authenticator\AuthenticatorInterface;
-use Shopgate\CloudIntegrationSdk\Service\RequestHandler\RequestHandlerInterface;
-use Shopgate\CloudIntegrationSdk\ValueObject;
+use Shopgate\CloudIntegrationSdk\Service\Authenticator;
+use Shopgate\CloudIntegrationSdk\Service\RequestHandler;
+use Shopgate\CloudIntegrationSdk\Service\UriParser;
+use Shopgate\CloudIntegrationSdk\ValueObject\Request;
+use Shopgate\CloudIntegrationSdk\ValueObject\Response;
 use Shopgate\CloudIntegrationSdk\ValueObject\Route;
 use Shopgate\CloudIntegrationSdk\ValueObject\RequestMethod;
 
@@ -33,7 +35,7 @@ class Router
     /** @var RequestHandler\RequestHandlerInterface[][] */
     private $requestHandlers;
 
-    /** @var UriParser */
+    /** @var UriParser\UriParser */
     private $uriParser;
 
     /**
@@ -48,7 +50,7 @@ class Router
         Repository\AbstractToken $tokenRepository,
         Repository\AbstractUser $userRepository
     ) {
-        $this->uriParser = new UriParser();
+        $this->uriParser = new UriParser\UriParser();
 
         // add predefined routes
         $this->subscribe(new Route\AuthToken(), new RequestMethod\Get(),
@@ -77,7 +79,7 @@ class Router
         if (empty($method) || !($method instanceof RequestMethod\AbstractRequestMethod)) {
             throw new \InvalidArgumentException("Argument '\$method' is invalid!");
         }
-        if (empty($handler) || !($handler instanceof RequestHandlerInterface)) {
+        if (empty($handler) || !($handler instanceof RequestHandler\RequestHandlerInterface)) {
             throw new \InvalidArgumentException("Argument '\$handler' is invalid!");
         }
 
@@ -92,21 +94,21 @@ class Router
     }
 
     /**
-     * @param ValueObject\Request $request
+     * @param Request $request
      *
-     * @return ValueObject\Response
-     * @throws Exception\InvalidAuthenticator
-     * @throws Exception\InvalidRequestHandler
-     * @throws Exception\InvalidRoute
+     * @return Response
+     * @throws Authenticator\Exception\Unauthorized
      * @throws Exception\UnregisteredRoute
      * @throws Exception\UnregisteredRouteMethod
+     * @throws RequestHandler\Exception\InvalidRequestHandler
+     * @throws UriParser\Exception\InvalidRoute
      */
-    public function dispatch(ValueObject\Request $request)
+    public function dispatch(Request $request)
     {
         // get the route from the uri parser by passing the uri string
         $route = $this->uriParser->getRoute($request->getUri());
         if (empty($route)) {
-            throw new Exception\InvalidRoute();
+            throw new UriParser\Exception\InvalidRoute();
         }
 
         // check if the route and method was subscribed before
@@ -120,13 +122,13 @@ class Router
         // get request handler that a route -method combination subscribed
         $requestHandler = $this->requestHandlers[$route->getIdentifier()][(string) $request->getMethod()];
         if (empty($requestHandler)) {
-            throw new Exception\InvalidRequestHandler();
+            throw new RequestHandler\Exception\InvalidRequestHandler();
         }
 
         // check if a valid authenticator was provided and authenticate the request
         $auth = $requestHandler->getAuthenticator();
-        if (empty($auth) || !($auth instanceof AuthenticatorInterface)) {
-            throw new Exception\InvalidAuthenticator();
+        if (empty($auth) || !($auth instanceof Authenticator\AuthenticatorInterface)) {
+            throw new Authenticator\Exception\Unauthorized();
         }
         $auth->authenticate($request);
 

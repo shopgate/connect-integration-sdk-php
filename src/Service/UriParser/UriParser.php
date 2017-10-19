@@ -19,31 +19,40 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\Service;
+namespace Shopgate\CloudIntegrationSdk\Service\UriParser;
 
-use Shopgate\CloudIntegrationSdk\ValueObject;
+use Shopgate\CloudIntegrationSdk\ValueObject\Route;
 
 class UriParser
 {
-    /** @var ValueObject\Route\AbstractRoute */
+    /** @var Route\AbstractRoute */
     private $routes;
 
+    public function __construct() {
+        $this->routes = [];
+    }
+
     /**
-     * @param ValueObject\Route\AbstractRoute $route
+     * @param Route\AbstractRoute $route
+     *
+     * @throws Exception\InvalidRoute
      */
-    public function addRoute(ValueObject\Route\AbstractRoute $route) {
+    public function addRoute(Route\AbstractRoute $route) {
         // TODO: Finish implementation
+        if (empty($route) || !($route instanceof Route\AbstractRoute)) {
+            throw new Exception\InvalidRoute();
+        }
         $routes[$route->getIdentifier()] = $route;
     }
 
     /**
      * @param string $uriString
      *
-     * @return ValueObject\Route\AbstractRoute | null
+     * @return Route\AbstractRoute | null
      */
     public function getRoute($uriString)
     {
-        /** @var ValueObject\Route\AbstractRoute $route */
+        /** @var Route\AbstractRoute $route */
         $route = null;
         foreach ($this->routes as $route) {
             if ($this->matchRouteUri($route->getPattern(), $uriString)) {
@@ -51,7 +60,7 @@ class UriParser
             }
         }
 
-        // no route found in register
+        // no matching route found in list
         return null;
     }
 
@@ -64,11 +73,11 @@ class UriParser
     private function matchRouteUri($pattern, $uriString)
     {
         if (empty($pattern)) {
-            throw new \InvalidArgumentException("Invalid argument: \$pattern.");
+            throw new \InvalidArgumentException("Invalid argument '\$pattern' .");
         }
 
         if (empty($uriString)) {
-            throw new \InvalidArgumentException("Invalid argument: \$uriString.");
+            throw new \InvalidArgumentException("Invalid argument '\$uriString'.");
         }
 
         $matchResult = preg_match($pattern, $uriString);
@@ -76,6 +85,6 @@ class UriParser
             throw new \RuntimeException("Unexpected failure while parsing a given uri string.");
         }
 
-        return $matchResult === 1;
+        return !!$matchResult;
     }
 }

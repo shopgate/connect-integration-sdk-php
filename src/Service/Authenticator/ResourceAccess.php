@@ -24,30 +24,23 @@ namespace Shopgate\CloudIntegrationSdk\Service\Authenticator;
 use Shopgate\CloudIntegrationSdk\Repository;
 use Shopgate\CloudIntegrationSdk\ValueObject\Request;
 
-class Resource implements AuthenticatorInterface
+class ResourceAccess implements AuthenticatorInterface
 {
     /** @var Repository\AbstractToken */
-    private $tokenRepository;
-
-    /** @var Client */
-    private $clientAuthenticator;
+    private $repository;
 
     /**
-     * Token constructor.
+     * ResourceAccess constructor.
      *
-     * @param Repository\AbstractClientCredentials $clientCredentialsRepository
-     * @param Repository\AbstractToken             $tokenRepository
+     * @param Repository\AbstractToken $tokenRepository
      */
-    public function __construct(
-        Repository\AbstractClientCredentials $clientCredentialsRepository,
-        Repository\AbstractToken $tokenRepository
-    ) {
-        $this->tokenRepository = $tokenRepository;
-        $this->clientAuthenticator = new Client($clientCredentialsRepository);
+    public function __construct(Repository\AbstractToken $tokenRepository) {
+        $this->repository = $tokenRepository;
     }
 
     public function authenticate(Request $request)
     {
-        return true && $this->clientAuthenticator->authenticate($request); // TODO: Finish implementation
+        // TODO: Implementation
+        throw new Exception\Unauthorized();
     }
 }

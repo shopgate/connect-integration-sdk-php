@@ -28,12 +28,17 @@ class Forbidden extends \Exception
     /**
      * Forbidden constructor.
      *
+     * @param string         $message
      * @param Throwable|null $previous
      */
-    public function __construct(Throwable $previous = null)
+    public function __construct($message = "", Throwable $previous = null)
     {
+        if ($message === "") {
+            $message = 'BasicAuth does not have permissions to access the requested resource.';
+        }
+        $message = "Forbidden: {$message}";
         parent::__construct(
-            "Forbidden: Client does not have permissions to access the requested resource.",
+            $message,
             403,
             $previous
         );

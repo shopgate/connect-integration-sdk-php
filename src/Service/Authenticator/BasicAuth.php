@@ -24,13 +24,13 @@ namespace Shopgate\CloudIntegrationSdk\Service\Authenticator;
 use Shopgate\CloudIntegrationSdk\Repository;
 use Shopgate\CloudIntegrationSdk\ValueObject\Request;
 
-class Client implements AuthenticatorInterface
+class BasicAuth implements AuthenticatorInterface
 {
     /** @var Repository\AbstractClientCredentials */
     private $repository;
 
     /**
-     * Client constructor.
+     * BasicAuth constructor.
      *
      * @param Repository\AbstractClientCredentials $clientCredentialsRepository
      */
@@ -39,8 +39,20 @@ class Client implements AuthenticatorInterface
         $this->repository = $clientCredentialsRepository;
     }
 
+    /**
+     * @param Request $request
+     *
+     * @throws Exception\Unauthorized
+     */
     public function authenticate(Request $request)
     {
-        return true; // TODO: Implementation
+        $authKey = 'Authorization';
+        $authHash = base64_encode($this->repository->getClientId() . ':' . $this->repository->getClientSecret());
+        $basicAuth = "Basic {$authHash}";
+
+        $requestHeaders = $request->getHeaders();
+        if (empty($requestHeaders[$authKey]) || $requestHeaders[$authKey] !== $basicAuth) {
+            throw new Exception\Unauthorized();
+        }
     }
 }

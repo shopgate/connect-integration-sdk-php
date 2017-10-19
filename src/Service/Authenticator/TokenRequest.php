@@ -24,7 +24,7 @@ namespace Shopgate\CloudIntegrationSdk\Service\Authenticator;
 use Shopgate\CloudIntegrationSdk\Repository;
 use Shopgate\CloudIntegrationSdk\ValueObject\Request;
 
-class Token implements AuthenticatorInterface
+class TokenRequest implements AuthenticatorInterface
 {
     /** @var Repository\AbstractToken */
     private $tokenRepository;
@@ -32,11 +32,11 @@ class Token implements AuthenticatorInterface
     /** @var Repository\AbstractUser */
     private $userRepository;
 
-    /** @var Client */
-    private $clientAuthenticator;
+    /** @var BasicAuth */
+    private $basicAuthAuthenticator;
 
     /**
-     * Token constructor.
+     * TokenRequest constructor.
      *
      * @param Repository\AbstractClientCredentials $clientCredentialsRepository
      * @param Repository\AbstractToken             $tokenRepository
@@ -49,11 +49,19 @@ class Token implements AuthenticatorInterface
     ) {
         $this->tokenRepository = $tokenRepository;
         $this->userRepository = $userRepository;
-        $this->clientAuthenticator = new Client($clientCredentialsRepository);
+        $this->basicAuthAuthenticator = new BasicAuth($clientCredentialsRepository);
     }
 
+    /**
+     * @param Request $request
+     *
+     * @throws Exception\Unauthorized
+     */
     public function authenticate(Request $request)
     {
-        return true && $this->clientAuthenticator->authenticate($request); // TODO: Finish implementation
+        // check basic authorization, before trying to validate any tokens
+        $this->basicAuthAuthenticator->authenticate($request);
+
+        // TODO: check grant type and authenticate with user credentials or with a refresh_token (client_credentials has been authenticated already)
     }
 }

@@ -28,12 +28,17 @@ class Unauthorized extends \Exception
     /**
      * Unauthorized constructor.
      *
+     * @param string         $message
      * @param Throwable|null $previous
      */
-    public function __construct(Throwable $previous = null)
+    public function __construct($message = "", Throwable $previous = null)
     {
+        if ($message === "") {
+            $message = 'Invalid or missing authorization.';
+        }
+        $message = "Unauthorized: {$message}";
         parent::__construct(
-            "Unauthorized: Invalid or missing authorization.",
+            $message,
             401,
             $previous
         );

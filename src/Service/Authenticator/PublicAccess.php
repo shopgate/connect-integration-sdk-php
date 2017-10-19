@@ -28,6 +28,5 @@ class PublicAccess implements AuthenticatorInterface
     public function authenticate(Request $request)
     {
         // no authentication required
-        return true;
     }
 }

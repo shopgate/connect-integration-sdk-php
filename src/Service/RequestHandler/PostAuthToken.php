@@ -21,8 +21,8 @@
 
 namespace Shopgate\CloudIntegrationSdk\Service\RequestHandler;
 
-use Shopgate\CloudIntegrationSdk\Service\Authenticator;
 use Shopgate\CloudIntegrationSdk\Repository;
+use Shopgate\CloudIntegrationSdk\Service\Authenticator;
 
 use Shopgate\CloudIntegrationSdk\ValueObject\Request;
 use Shopgate\CloudIntegrationSdk\ValueObject\Response;
@@ -44,7 +44,7 @@ class PostAuthToken implements RequestHandlerInterface
         Repository\AbstractToken $tokenRepository,
         Repository\AbstractUser $userRepository
     ) {
-        $this->authenticator = new Authenticator\Token(
+        $this->authenticator = new Authenticator\TokenRequest(
             $clientCredentialsRepository, $tokenRepository, $userRepository
         );
     }
@@ -56,6 +56,6 @@ class PostAuthToken implements RequestHandlerInterface
 
     public function handle(Request $request)
     {
-        return new Response(); // TODO: Implement handle() method.
+        return new Response(200, [], ""); // TODO: Implement handle() method.
     }
 }

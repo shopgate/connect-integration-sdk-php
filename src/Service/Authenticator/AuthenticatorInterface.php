@@ -27,8 +27,6 @@ interface AuthenticatorInterface
 {
     /**
      * @param Request $request
-     *
-     * @throws \Exception
      */
     public function authenticate(Request $request);
 }

@@ -39,7 +39,7 @@ class GetV2 implements RequestHandlerInterface
      */
     public function __construct(Repository\AbstractClientCredentials $clientCredentialsRepository)
     {
-        $this->authenticator = new Authenticator\Client($clientCredentialsRepository);
+        $this->authenticator = new Authenticator\BasicAuth($clientCredentialsRepository);
     }
 
     public function getAuthenticator()
@@ -49,6 +49,6 @@ class GetV2 implements RequestHandlerInterface
 
     public function handle(Request $request)
     {
-        return new Response(); // TODO: Implement handle() method.
+        return new Response(200, [], ""); // TODO: Implement handle() method.
     }
 }

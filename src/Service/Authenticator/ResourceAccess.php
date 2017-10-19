@@ -38,7 +38,7 @@ class ResourceAccess implements AuthenticatorInterface
         $this->repository = $tokenRepository;
     }
 
-    public function authenticate(Request $request)
+    public function authenticate(Request\Request $request)
     {
         // TODO: Implementation
         throw new Exception\Unauthorized();

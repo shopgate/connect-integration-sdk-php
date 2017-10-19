@@ -94,7 +94,7 @@ class Router
     }
 
     /**
-     * @param Request $request
+     * @param Request\Request $request
      *
      * @return Response
      *
@@ -104,7 +104,7 @@ class Router
      * @throws RequestHandler\Exception\InvalidRequestHandler
      * @throws UriParser\Exception\InvalidRoute
      */
-    public function dispatch(Request $request)
+    public function dispatch(Request\Request $request)
     {
         // get the route from the uri parser by passing the uri string
         $route = $this->uriParser->getRoute($request->getUri());

@@ -33,9 +33,9 @@ interface RequestHandlerInterface
     public function getAuthenticator();
 
     /**
-     * @param Request $request
+     * @param Request\Request $request
      *
      * @return Response
      */
-    public function handle(Request $request);
+    public function handle(Request\Request $request);
 }

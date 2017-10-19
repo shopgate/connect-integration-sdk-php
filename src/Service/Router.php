@@ -22,6 +22,8 @@
 namespace Shopgate\CloudIntegrationSdk\Service;
 
 use Shopgate\CloudIntegrationSdk\Repository;
+use Shopgate\CloudIntegrationSdk\Service\Authenticator\AuthenticatorInterface;
+use Shopgate\CloudIntegrationSdk\Service\RequestHandler\RequestHandlerInterface;
 use Shopgate\CloudIntegrationSdk\ValueObject;
 use Shopgate\CloudIntegrationSdk\ValueObject\Route;
 use Shopgate\CloudIntegrationSdk\ValueObject\RequestMethod;
@@ -69,7 +71,23 @@ class Router
         RequestMethod\AbstractRequestMethod $method,
         RequestHandler\RequestHandlerInterface $handler
     ) {
+        if (empty($route) || !($route instanceof Route\AbstractRoute)) {
+            throw new \InvalidArgumentException("Argument '\$route' is invalid!");
+        }
+        if (empty($method) || !($method instanceof RequestMethod\AbstractRequestMethod)) {
+            throw new \InvalidArgumentException("Argument '\$method' is invalid!");
+        }
+        if (empty($handler) || !($handler instanceof RequestHandlerInterface)) {
+            throw new \InvalidArgumentException("Argument '\$handler' is invalid!");
+        }
+
+        // the parser needs all subscribed routes to be able to parse the requested uri strings
         $this->uriParser->addRoute($route);
+
+        // do the actual subscription by assigning a request handler to the given route and method
+        if (!array_key_exists($route->getIdentifier(), $this->requestHandlers)) {
+            $this->requestHandlers[$route->getIdentifier()] = [];
+        }
         $this->requestHandlers[$route->getIdentifier()][(string) $method] = $handler;
     }
 
@@ -77,19 +95,42 @@ class Router
      * @param ValueObject\Request $request
      *
      * @return ValueObject\Response
+     * @throws Exception\InvalidAuthenticator
+     * @throws Exception\InvalidRequestHandler
+     * @throws Exception\InvalidRoute
+     * @throws Exception\UnregisteredRoute
+     * @throws Exception\UnregisteredRouteMethod
      */
     public function dispatch(ValueObject\Request $request)
     {
+        // get the route from the uri parser by passing the uri string
         $route = $this->uriParser->getRoute($request->getUri());
-        $requestHandler = $this->requestHandlers[$route->getIdentifier()][(string) $request->getMethod()];
-
-        // TODO: Respond with error if no request handler found
-
-        $auth = $requestHandler->getAuthenticator();
-        if (!$auth->authenticate($request)) {
-            return new ValueObject\Response();
+        if (empty($route)) {
+            throw new Exception\InvalidRoute();
         }
 
+        // check if the route and method was subscribed before
+        if (!array_key_exists($route->getIdentifier(), $this->requestHandlers)) {
+            throw new Exception\UnregisteredRoute($route->getIdentifier());
+        }
+        if (empty($this->requestHandlers[$route->getIdentifier()][(string) $request->getMethod()])) {
+            throw new Exception\UnregisteredRouteMethod((string) $request->getMethod(), $route->getIdentifier());
+        }
+
+        // get request handler that a route -method combination subscribed
+        $requestHandler = $this->requestHandlers[$route->getIdentifier()][(string) $request->getMethod()];
+        if (empty($requestHandler)) {
+            throw new Exception\InvalidRequestHandler();
+        }
+
+        // check if a valid authenticator was provided and authenticate the request
+        $auth = $requestHandler->getAuthenticator();
+        if (empty($auth) || !($auth instanceof AuthenticatorInterface)) {
+            throw new Exception\InvalidAuthenticator();
+        }
+        $auth->authenticate($request);
+
+        // finally handle the request using the request handler, subscribed by the rout+method combination
         return $requestHandler->handle($request);
     }
 }

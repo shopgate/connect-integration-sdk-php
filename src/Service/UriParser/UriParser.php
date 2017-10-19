@@ -39,7 +39,7 @@ class UriParser
      */
     public function addRoute(Route\AbstractRoute $route) {
         // TODO: Finish implementation
-        if (empty($route) || !($route instanceof Route\AbstractRoute)) {
+        if (empty($route)) {
             throw new Exception\InvalidRoute();
         }
         $routes[$route->getIdentifier()] = $route;

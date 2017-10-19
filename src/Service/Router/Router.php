@@ -73,13 +73,13 @@ class Router
         RequestMethod\AbstractRequestMethod $method,
         RequestHandler\RequestHandlerInterface $handler
     ) {
-        if (empty($route) || !($route instanceof Route\AbstractRoute)) {
+        if (empty($route)) {
             throw new \InvalidArgumentException("Argument '\$route' is invalid!");
         }
-        if (empty($method) || !($method instanceof RequestMethod\AbstractRequestMethod)) {
+        if (empty($method)) {
             throw new \InvalidArgumentException("Argument '\$method' is invalid!");
         }
-        if (empty($handler) || !($handler instanceof RequestHandler\RequestHandlerInterface)) {
+        if (empty($handler)) {
             throw new \InvalidArgumentException("Argument '\$handler' is invalid!");
         }
 

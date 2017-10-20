@@ -87,6 +87,7 @@ class GetV2 implements RequestHandlerInterface
             "Content-Language" => "en",
             "Content-Length"   => (string) strlen($specification)
         ];
+
         return new Response(200, $responseHeaders, $specification);
     }
 }

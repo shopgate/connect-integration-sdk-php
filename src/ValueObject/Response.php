@@ -79,9 +79,9 @@ class Response
     }
 
     /**
-     * @param string $body
+     * @return string
      */
-    public function setBody($body) {
-        $this->body = $body;
+    public function getBody() {
+        return $this->body;
     }
 }

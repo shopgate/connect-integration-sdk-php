@@ -23,17 +23,74 @@ namespace Shopgate\CloudIntegrationSdk\ValueObject;
 
 class Token
 {
+    /** @var  TokenId */
+    private $tokenId;
+
+    /** @var  ClientId */
+    private $clientId;
+
     /** @var  UserId | null */
     private $userId;
 
-    /** @var  string | null */
+    /** @var  TokenType\AbstractTokenType */
+    private $type;
+
+    /** @var  Base\String | null */
     private $expires;
+
+    /**
+     * Token constructor.
+     *
+     * @param TokenId                     $tokenId
+     * @param ClientId                    $clientId
+     * @param TokenType\AbstractTokenType $type
+     * @param UserId|null                 $userId
+     * @param Base\String|null            $expires
+     */
+    public function __construct(
+        TokenId $tokenId,
+        ClientId $clientId,
+        TokenType\AbstractTokenType $type,
+        UserId $userId = null,
+        Base\String $expires = null
+    ) {
+        if (is_null($tokenId) || is_null($clientId) || is_null($type)) {
+            throw new \InvalidArgumentException('Token id, client id and token type must be valid.');
+        }
+
+        $this->tokenId;
+    }
+
+    /**
+     * @return TokenId
+     */
+    public function getTokenId()
+    {
+        return $this->tokenId;
+    }
+
+    /**
+     * @return ClientId
+     */
+    public function getClientId()
+    {
+        return $this->clientId;
+    }
 
     /**
      * @return UserId | null
      */
-    public function getUserId() {
+    public function getUserId()
+    {
         return $this->userId;
+    }
+
+    /**
+     * @return TokenType\AbstractTokenType
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 
     /**
@@ -41,7 +98,8 @@ class Token
      *
      * @return string | null
      */
-    public function getExpires() {
+    public function getExpires()
+    {
         return $this->expires;
     }
 }

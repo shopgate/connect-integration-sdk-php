@@ -21,7 +21,7 @@
 
 namespace Shopgate\CloudIntegrationSdk\ValueObject\Base;
 
-abstract class Integer
+class Integer
 {
     /** @var int */
     private $value;

@@ -23,6 +23,9 @@ namespace Shopgate\CloudIntegrationSdk\ValueObject;
 
 class Token
 {
+    /** @var  TokenType\AbstractTokenType */
+    private $type;
+
     /** @var  TokenId */
     private $tokenId;
 
@@ -32,33 +35,48 @@ class Token
     /** @var  UserId | null */
     private $userId;
 
-    /** @var  TokenType\AbstractTokenType */
-    private $type;
-
     /** @var  Base\String | null */
     private $expires;
+
+    /** @var  Base\String | null */
+    private $scope;
 
     /**
      * Token constructor.
      *
+     * @param TokenType\AbstractTokenType $type
      * @param TokenId                     $tokenId
      * @param ClientId                    $clientId
-     * @param TokenType\AbstractTokenType $type
      * @param UserId|null                 $userId
      * @param Base\String|null            $expires
+     * @param Base\String|null            $scope
      */
     public function __construct(
+        TokenType\AbstractTokenType $type,
         TokenId $tokenId,
         ClientId $clientId,
-        TokenType\AbstractTokenType $type,
         UserId $userId = null,
-        Base\String $expires = null
+        Base\String $expires = null,
+        Base\String $scope = null
     ) {
-        if (is_null($tokenId) || is_null($clientId) || is_null($type)) {
-            throw new \InvalidArgumentException('Token id, client id and token type must be valid.');
+        if (is_null($type) || is_null($tokenId) || is_null($clientId)) {
+            throw new \InvalidArgumentException("Token parameters 'tokenId', 'clientId' and 'type must' be valid.");
         }
 
-        $this->tokenId;
+        $this->type = $type;
+        $this->tokenId = $tokenId;
+        $this->clientId = $clientId;
+        $this->userId = $userId;
+        $this->expires = $expires;
+        $this->scope = $scope;
+    }
+
+    /**
+     * @return TokenType\AbstractTokenType
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 
     /**
@@ -86,20 +104,20 @@ class Token
     }
 
     /**
-     * @return TokenType\AbstractTokenType
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
      * Returns a datestring or null if the the token does not expire.
      *
-     * @return string | null
+     * @return Base\String | null
      */
     public function getExpires()
     {
         return $this->expires;
+    }
+
+    /**
+     * @return Base\String | null
+     */
+    public function getScope()
+    {
+        return $this->scope;
     }
 }

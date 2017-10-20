@@ -70,7 +70,7 @@ class TokenRequest implements AuthenticatorInterface
         $usernameKey = 'username';
         $passwordKey = 'password';
         $refreshTokenKey = 'refresh_token';
-        switch ($request->parseParam('grant_type')) {
+        switch ($request->getParam('grant_type')) {
             case 'client_credentials':
                 // no additional authentication required
                 break;
@@ -94,8 +94,8 @@ class TokenRequest implements AuthenticatorInterface
      * @throws Exception\Unauthorized
      */
     private function authenticateGrantTypePassword(Request\Request $request, $usernameKey, $passwordKey) {
-        $username = $request->parseParam($usernameKey);
-        $password = $request->parseParam($passwordKey);
+        $username = $request->getParam($usernameKey);
+        $password = $request->getParam($passwordKey);
 
         // check if given credentials are valid or not
         if (empty($username) || empty($password) || is_null($this->userRepository->getUserIdByCredentials(
@@ -114,7 +114,7 @@ class TokenRequest implements AuthenticatorInterface
      */
     private function authenticateGrantTypeRefreshToken(Request\Request $request, $refreshTokenKey) {
         // get refresh token from params and try to load the refresh token
-        $refreshToken = $request->parseParam($refreshTokenKey);
+        $refreshToken = $request->getParam($refreshTokenKey);
         $token = $this->tokenRepository->loadToken(
             new TokenId($refreshToken),
             new TokenType\RefreshToken()

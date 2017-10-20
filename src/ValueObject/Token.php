@@ -23,8 +23,18 @@ namespace Shopgate\CloudIntegrationSdk\ValueObject;
 
 class Token
 {
+    /** @var  UserId | null */
+    private $userId;
+
     /** @var  string | null */
     private $expires;
+
+    /**
+     * @return UserId | null
+     */
+    public function getUserId() {
+        return $this->userId;
+    }
 
     /**
      * Returns a datestring or null if the the token does not expire.

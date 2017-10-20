@@ -21,7 +21,7 @@
 
 namespace Shopgate\CloudIntegrationSdk\ValueObject\Base;
 
-abstract class Integer
+class Integer
 {
     /** @var int */
     private $value;
@@ -31,6 +31,10 @@ abstract class Integer
      */
     public function __construct($value)
     {
+        if (is_null($value)) {
+            throw new \InvalidArgumentException("Integer value must not be 'null'.");
+        }
+
         $this->value = (int) $value;
     }
 

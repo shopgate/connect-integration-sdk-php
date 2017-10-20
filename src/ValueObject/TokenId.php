@@ -21,6 +21,6 @@
 
 namespace Shopgate\CloudIntegrationSdk\ValueObject;
 
-class TokenId extends Base\String
+class TokenId extends Base\NonEmptyString
 {
 }

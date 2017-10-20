@@ -46,12 +46,13 @@ class BasicAuth implements AuthenticatorInterface
      */
     public function authenticate(Request\Request $request)
     {
-        $authKey = 'Authorization';
+        // build basic auth string for comparison with the given one
         $authHash = base64_encode($this->repository->getClientId() . ':' . $this->repository->getClientSecret());
         $basicAuth = "Basic {$authHash}";
 
-        $requestHeaders = $request->getHeaders();
-        if (empty($requestHeaders[$authKey]) || $requestHeaders[$authKey] !== $basicAuth) {
+        // check if the auth header is set and matches the auth string build before
+        $authString = $request->getHeader('Authorization');
+        if (empty($authString) || $authString !== $basicAuth) {
             throw new Exception\Unauthorized();
         }
     }

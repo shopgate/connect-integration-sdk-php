@@ -23,24 +23,78 @@ namespace Shopgate\CloudIntegrationSdk\ValueObject\Request;
 
 class Request
 {
-    // TODO: Implement methods and add PHPDoc
+    /** @var string */
+    private $uri;
 
+    /** @var string */
+    private $method;
+
+    /** @var string[] */
+    private $headers;
+
+    /** @var string */
+    private $body;
+
+    /**
+     * Request constructor.
+     *
+     * @param string        $uri
+     * @param string        $method
+     * @param string[]      $headers
+     * @param string | null $body
+     */
+    public function __construct($uri, $method, $headers = array(), $body = null)
+    {
+        $this->uri = (string) $uri;
+        $this->method = (string) $method;
+
+        $this->headers = [];
+        foreach ($headers as $key => $header) {
+            $this->headers[(string) $key] = (string) $header;
+        }
+
+        // read body from php input stream, if no body was set
+        $this->body = (string) $body;
+        if (empty($body)) {
+            $this->body = file_get_contents('php://input');
+        }
+    }
+
+    /**
+     * @return string
+     */
     public function getUri()
     {
-        // TODO: Implementation
-        return "";
+        return $this->uri;
     }
 
+    /**
+     * @return \string[]
+     */
     public function getHeaders()
     {
-        // TODO: Implementation
-        return [];
+        return $this->headers;
     }
 
+    /**
+     * @return string
+     */
     public function getMethod()
     {
-        // TODO: Implementation
-        return "";
+        return $this->method;
+    }
+
+    /**
+     * @param string $headerKey
+     *
+     * @return string | null
+     */
+    public function getHeader($headerKey)
+    {
+        return (empty($this->headers[$headerKey])
+            ? null
+            : ((string) $this->headers[$headerKey])
+        );
     }
 
     /**
@@ -48,7 +102,7 @@ class Request
      */
     public function getBody()
     {
-        return file_get_contents('php://input');
+        return $this->body;
     }
 
     /**
@@ -59,7 +113,7 @@ class Request
      *
      * @throws Exception\BadRequest
      */
-    public function parseParam($paramName)
+    public function getParam($paramName)
     {
         $data = [];
         parse_str(parse_url($this->getUri(), PHP_URL_QUERY), $data);

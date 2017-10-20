@@ -23,24 +23,65 @@ namespace Shopgate\CloudIntegrationSdk\Service\Authenticator;
 
 use Shopgate\CloudIntegrationSdk\Repository;
 use Shopgate\CloudIntegrationSdk\ValueObject\Request;
+use Shopgate\CloudIntegrationSdk\ValueObject\TokenId;
+use Shopgate\CloudIntegrationSdk\ValueObject\TokenType;
+use Shopgate\CloudIntegrationSdk\ValueObject\UserId;
 
 class ResourceAccess implements AuthenticatorInterface
 {
     /** @var Repository\AbstractToken */
     private $repository;
 
+    /** @var UserId  */
+    private $resourceOwnerId;
+
     /**
-     * ResourceAccess constructor.
+     * ResourceAdminAccess constructor.
      *
-     * @param Repository\AbstractToken $tokenRepository
+     * @param Repository\AbstractToken $accessTokenRepository
+     * @param UserId |null             $resourceOwnerId
      */
-    public function __construct(Repository\AbstractToken $tokenRepository) {
-        $this->repository = $tokenRepository;
+    public function __construct(Repository\AbstractToken $accessTokenRepository, UserId $resourceOwnerId = null) {
+        $this->repository = $accessTokenRepository;
+        $this->resourceOwnerId = $resourceOwnerId;
     }
 
+    /**
+     * @param Request\Request $request
+     *
+     * @throws Exception\Unauthorized
+     * @throws Request\Exception\BadRequest
+     */
     public function authenticate(Request\Request $request)
     {
-        // TODO: Implementation
-        throw new Exception\Unauthorized();
+        // read access_token parameter from header
+        $authHeader = $request->getHeader('Authorization');
+        if (empty($authHeader)) {
+            throw new Request\Exception\BadRequest('Authorization header missing.');
+        }
+
+        // check if a token is provided and marked as "bearer"
+        $authorization = explode(' ', $authHeader);
+        if (empty($authorization[0]) || strtolower($authorization[0]) !== 'bearer') {
+            throw new Exception\Unauthorized(
+                "Wrong authorization data provided: '$authorization'. Required: 'Bearer'."
+            );
+        }
+        if (empty($authorization[1])) {
+            throw new Exception\Unauthorized(
+                'Missing Bearer token.'
+            );
+        }
+
+        // check if the given access_token is valid and not expired
+        $accessToken = $this->repository->loadToken(new TokenId($authorization[1]), new TokenType\AccessToken());
+        if ($accessToken->getExpires() !== null && strtotime($accessToken->getExpires() < time())) {
+            throw new Exception\Unauthorized('The bearer token provided is expired.');
+        }
+
+        // check if an owner was provided for the requested uri and if it's the same as the access_token holder
+        if ($this->resourceOwnerId !== null && (string) $this->resourceOwnerId !== (string) $accessToken->getUserId()) {
+            throw new Exception\Unauthorized('Requested resource is owned by another user.');
+        }
     }
 }

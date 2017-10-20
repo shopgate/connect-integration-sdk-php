@@ -24,10 +24,10 @@ namespace Shopgate\CloudIntegrationSdk\ValueObject\Route;
 abstract class AbstractRoute
 {
     /** @var string */
-    private $pattern;
+    protected $pattern;
 
     /** @var string */
-    private $identifier;
+    protected $identifier;
 
     /**
      * @return string

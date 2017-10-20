@@ -38,11 +38,11 @@ class UriParser
      * @throws Exception\InvalidRoute
      */
     public function addRoute(Route\AbstractRoute $route) {
-        // TODO: Finish implementation
         if (empty($route)) {
             throw new Exception\InvalidRoute();
         }
-        $routes[$route->getIdentifier()] = $route;
+
+        $this->routes[$route->getIdentifier()] = $route;
     }
 
     /**
@@ -55,7 +55,9 @@ class UriParser
         /** @var Route\AbstractRoute $route */
         $route = null;
         foreach ($this->routes as $route) {
-            if ($this->matchRouteUri($route->getPattern(), $uriString)) {
+            // simplify pattern matching by only using the actual path string (squash left slashes for easier patterns)
+            $queryString = '/' . ltrim(parse_url($uriString, PHP_URL_PATH), '/');
+            if ($this->matchRouteUri($route->getPattern(), $queryString)) {
                 return $route;
             }
         }

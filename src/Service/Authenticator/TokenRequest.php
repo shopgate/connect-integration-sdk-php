@@ -40,8 +40,6 @@ class TokenRequest implements AuthenticatorInterface
     private $basicAuthAuthenticator;
 
     /**
-     * TokenRequest constructor.
-     *
      * @param Repository\AbstractClientCredentials $clientCredentialsRepository
      * @param Repository\AbstractToken             $tokenRepository
      * @param Repository\AbstractUser              $userRepository
@@ -79,7 +77,6 @@ class TokenRequest implements AuthenticatorInterface
                 break;
             case $refreshTokenKey:
                 $this->authenticateGrantTypeRefreshToken($request, $refreshTokenKey);
-
                 break;
             default:
                 throw new Request\Exception\BadRequest('Unsupported or no grant_type provided.');
@@ -92,6 +89,7 @@ class TokenRequest implements AuthenticatorInterface
      * @param string  $passwordKey
      *
      * @throws Exception\Unauthorized
+     * @throws Request\Exception\BadRequest
      */
     private function authenticateGrantTypePassword(Request\Request $request, $usernameKey, $passwordKey) {
         $username = $request->getParam($usernameKey);
@@ -111,6 +109,7 @@ class TokenRequest implements AuthenticatorInterface
      * @param string  $refreshTokenKey
      *
      * @throws Exception\Unauthorized
+     * @throws Request\Exception\BadRequest
      */
     private function authenticateGrantTypeRefreshToken(Request\Request $request, $refreshTokenKey) {
         // get refresh token from params and try to load the refresh token
@@ -121,12 +120,12 @@ class TokenRequest implements AuthenticatorInterface
         );
 
         // check if a refresh token was found
-        if (empty($refreshTokenParam) || is_null($token)) {
+        if (null === $token) {
             throw new Exception\Unauthorized('Invalid refresh_token provided.');
         }
 
         // check if the refresh_token is still valid and is not expired
-        if ($token->getExpires() !== null && strtotime($token->getExpires() < time())) {
+        if ($token->getExpires() !== null && strtotime($token->getExpires()) < time()) {
             throw new Exception\Unauthorized('The refresh_token provided is expired.');
         }
     }

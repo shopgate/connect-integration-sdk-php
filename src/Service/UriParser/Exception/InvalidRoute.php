@@ -26,14 +26,12 @@ use Throwable;
 class InvalidRoute extends \Exception
 {
     /**
-     * UnregisteredRouteMethod constructor.
-     *
      * @param Throwable|null $previous
      */
     public function __construct(Throwable $previous = null)
     {
         parent::__construct(
-            "Invalid route object.",
+            'Invalid route object.',
             1010,
             $previous
         );

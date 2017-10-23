@@ -26,14 +26,12 @@ use Throwable;
 class InvalidRequestHandler extends \Exception
 {
     /**
-     * UnregisteredRouteMethod constructor.
-     *
      * @param Throwable|null $previous
      */
     public function __construct(Throwable $previous = null)
     {
         parent::__construct(
-            "Invalid request handler object.",
+            'Invalid request handler object.',
             1011,
             $previous
         );

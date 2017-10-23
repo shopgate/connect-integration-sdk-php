@@ -39,12 +39,13 @@ class Router
     private $uriParser;
 
     /**
-     * Router constructor.
-     *
      * @param Repository\AbstractClientCredentials $clientCredentialsRepository
      * @param Repository\AbstractToken             $tokenRepository
      * @param Repository\AbstractUser              $userRepository
      * @param Repository\AbstractPathInfo          $pathInfoRepository
+     *
+     * @throws \InvalidArgumentException
+     * @throws UriParser\Exception\InvalidRoute
      */
     public function __construct(
         Repository\AbstractClientCredentials $clientCredentialsRepository,
@@ -75,13 +76,13 @@ class Router
         RequestMethod\AbstractRequestMethod $method,
         RequestHandler\RequestHandlerInterface $handler
     ) {
-        if (empty($route)) {
+        if (null === $route) {
             throw new \InvalidArgumentException("Argument '\$route' is invalid!");
         }
-        if (empty($method)) {
+        if (null === $method) {
             throw new \InvalidArgumentException("Argument '\$method' is invalid!");
         }
-        if (empty($handler)) {
+        if (null === $handler) {
             throw new \InvalidArgumentException("Argument '\$handler' is invalid!");
         }
 
@@ -90,7 +91,7 @@ class Router
 
         // do the actual subscription by assigning a request handler to the given route and method
         if (!array_key_exists($route->getIdentifier(), $this->requestHandlers)) {
-            $this->requestHandlers[$route->getIdentifier()] = [];
+            $this->requestHandlers[$route->getIdentifier()] = array();
         }
         $this->requestHandlers[$route->getIdentifier()][(string) $method] = $handler;
     }
@@ -130,7 +131,7 @@ class Router
 
         // check if a valid authenticator was provided and authenticate the request
         $auth = $requestHandler->getAuthenticator();
-        if (empty($auth) || !($auth instanceof Authenticator\AuthenticatorInterface)) {
+        if (!($auth instanceof Authenticator\AuthenticatorInterface)) {
             throw new Authenticator\Exception\Unauthorized();
         }
         $auth->authenticate($request);

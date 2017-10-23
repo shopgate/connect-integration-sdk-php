@@ -26,11 +26,9 @@ use Throwable;
 class UnregisteredRouteMethod extends \Exception
 {
     /**
-     * UnregisteredRouteMethod constructor.
-     *
-     * @param string         $method
-     * @param string         $route
-     * @param Throwable|null $previous
+     * @param string           $method
+     * @param string           $route
+     * @param Throwable | null $previous
      */
     public function __construct($method, $route, Throwable $previous = null)
     {

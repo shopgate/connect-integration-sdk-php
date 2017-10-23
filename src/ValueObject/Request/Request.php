@@ -36,19 +36,17 @@ class Request
     private $body;
 
     /**
-     * Request constructor.
-     *
      * @param string        $uri
      * @param string        $method
      * @param string[]      $headers
      * @param string | null $body
      */
-    public function __construct($uri, $method, $headers = array(), $body = null)
+    public function __construct($uri, $method, array $headers = array(), $body = null)
     {
         $this->uri = (string) $uri;
         $this->method = (string) $method;
 
-        $this->headers = [];
+        $this->headers = array();
         foreach ($headers as $key => $header) {
             $this->headers[(string) $key] = (string) $header;
         }
@@ -69,7 +67,7 @@ class Request
     }
 
     /**
-     * @return \string[]
+     * @return string[]
      */
     public function getHeaders()
     {
@@ -98,7 +96,7 @@ class Request
     }
 
     /**
-     * @return bool|string
+     * @return string
      */
     public function getBody()
     {
@@ -106,7 +104,6 @@ class Request
     }
 
     /**
-     * @param Request $request
      * @param string  $paramName
      *
      * @return string | null
@@ -115,13 +112,11 @@ class Request
      */
     public function getParam($paramName)
     {
-        $data = [];
+        $data = array();
         parse_str(parse_url($this->getUri(), PHP_URL_QUERY), $data);
 
         // parse either from request query or from request body
-        if (!empty($data[$paramName])) {
-            return $data[$paramName];
-        } else {
+        if (empty($data[$paramName])) {
             $contentTypeKey = 'Content-Type';
             $requestHeaders = $this->getHeaders();
 
@@ -134,22 +129,16 @@ class Request
             switch($this->parseContentType($requestHeaders[$contentTypeKey])) {
                 case 'application/json':
                     $data = json_decode($this->getBody(), true);
-                    if (!empty($data[$paramName])) {
-                        return $data[$paramName];
-                    }
                     break;
                 case 'application/x-www-form-urlencoded':
                     parse_str($this->getBody(), $data);
-                    if (!empty($data[$paramName])) {
-                        return $data[$paramName];
-                    }
                     break;
                 default:
                     throw new Exception\BadRequest('Unsupported Content-Type provided.');
             }
         }
 
-        return null;
+        return !empty($data[$paramName]) ? $data[$paramName] : null;
     }
 
     /**
@@ -159,7 +148,7 @@ class Request
      */
     private function parseContentType($contentType) {
         // the content type is always the first part of to possible ones, delimited by semicolon
-        $parts = explode(";", trim($contentType));
+        $parts = explode(';', trim($contentType));
         return trim($parts[0]);
     }
 }

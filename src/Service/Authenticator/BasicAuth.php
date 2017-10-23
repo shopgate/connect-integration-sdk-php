@@ -30,8 +30,6 @@ class BasicAuth implements AuthenticatorInterface
     private $repository;
 
     /**
-     * BasicAuth constructor.
-     *
      * @param Repository\AbstractClientCredentials $clientCredentialsRepository
      */
     public function __construct(Repository\AbstractClientCredentials $clientCredentialsRepository)
@@ -52,7 +50,7 @@ class BasicAuth implements AuthenticatorInterface
 
         // check if the auth header is set and matches the auth string build before
         $authString = $request->getHeader('Authorization');
-        if (empty($authString) || $authString !== $basicAuth) {
+        if ($authString !== $basicAuth) {
             throw new Exception\Unauthorized();
         }
     }

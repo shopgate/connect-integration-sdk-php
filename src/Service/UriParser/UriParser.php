@@ -25,11 +25,11 @@ use Shopgate\CloudIntegrationSdk\ValueObject\Route;
 
 class UriParser
 {
-    /** @var Route\AbstractRoute */
+    /** @var Route\AbstractRoute[] */
     private $routes;
 
     public function __construct() {
-        $this->routes = [];
+        $this->routes = array();
     }
 
     /**
@@ -69,6 +69,9 @@ class UriParser
      * @param string $uriString
      *
      * @return bool
+     *
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
      */
     private function matchRouteUri($pattern, $uriString)
     {
@@ -85,6 +88,6 @@ class UriParser
             throw new \RuntimeException("Unexpected failure while parsing a given uri string.");
         }
 
-        return !!$matchResult;
+        return (bool) $matchResult;
     }
 }

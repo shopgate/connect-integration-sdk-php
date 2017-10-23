@@ -42,14 +42,14 @@ class Token
     private $scope;
 
     /**
-     * Token constructor.
-     *
      * @param TokenType\AbstractTokenType $type
      * @param TokenId                     $tokenId
      * @param ClientId                    $clientId
      * @param UserId|null                 $userId
      * @param Base\String|null            $expires
      * @param Base\String|null            $scope
+     *
+     * @throws \InvalidArgumentException
      */
     public function __construct(
         TokenType\AbstractTokenType $type,
@@ -63,12 +63,12 @@ class Token
             throw new \InvalidArgumentException("Token parameters 'tokenId', 'clientId' and 'type must' be valid.");
         }
 
-        $this->type = $type;
-        $this->tokenId = $tokenId;
+        $this->type     = $type;
+        $this->tokenId  = $tokenId;
         $this->clientId = $clientId;
-        $this->userId = $userId;
-        $this->expires = $expires;
-        $this->scope = $scope;
+        $this->userId   = $userId;
+        $this->expires  = $expires;
+        $this->scope    = $scope;
     }
 
     /**

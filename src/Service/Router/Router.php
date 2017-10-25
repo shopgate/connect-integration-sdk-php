@@ -70,6 +70,9 @@ class Router
      * @param Route\AbstractRoute                    $route
      * @param RequestMethod\AbstractRequestMethod    $method
      * @param RequestHandler\RequestHandlerInterface $handler
+     *
+     * @throws \InvalidArgumentException
+     * @throws UriParser\Exception\InvalidRoute
      */
     public function subscribe(
         Route\AbstractRoute $route,
@@ -106,6 +109,8 @@ class Router
      * @throws Exception\UnregisteredRouteMethod
      * @throws RequestHandler\Exception\InvalidRequestHandler
      * @throws UriParser\Exception\InvalidRoute
+     * @throws \RuntimeException
+     * @throws \InvalidArgumentException
      */
     public function dispatch(Request\Request $request)
     {

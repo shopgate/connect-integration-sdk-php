@@ -49,11 +49,12 @@ class UriParser
      * @param string $uriString
      *
      * @return Route\AbstractRoute | null
+     *
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
      */
     public function getRoute($uriString)
     {
-        /** @var Route\AbstractRoute $route */
-        $route = null;
         foreach ($this->routes as $route) {
             if ($this->matchRouteUri($route->getPattern(), $uriString)) {
                 return $route;
@@ -85,7 +86,7 @@ class UriParser
 
         $matchResult = preg_match($pattern, $uriString);
         if (false === $matchResult) {
-            throw new \RuntimeException("Unexpected failure while parsing a given uri string.");
+            throw new \RuntimeException('Unexpected failure while parsing a given uri string.');
         }
 
         return (bool) $matchResult;

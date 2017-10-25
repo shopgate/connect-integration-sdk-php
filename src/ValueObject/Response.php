@@ -23,5 +23,63 @@ namespace Shopgate\CloudIntegrationSdk\ValueObject;
 
 class Response
 {
+    /** @var int */
+    private $code;
 
+    /** @var string[] */
+    private $headers;
+
+    /** @var string */
+    private $body;
+
+    /**
+     * @param int      $httpCode
+     * @param string[] $headers
+     * @param string   $body
+     */
+    public function __construct($httpCode, array $headers, $body)
+    {
+        $this->code = (int) $httpCode;
+
+        $this->headers = array();
+        foreach ($headers as $key => $header) {
+            $this->headers[(string) $key] = (string) $header;
+        }
+
+        $this->body = (string) $body;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCode() {
+        return $this->code;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getHeaders() {
+        return $this->headers;
+    }
+
+    /**
+     * @param string $headerKey
+     *
+     * @return string | null
+     */
+    public function getHeader($headerKey)
+    {
+        return (empty($this->headers[$headerKey])
+            ? null
+            : ((string) $this->headers[$headerKey])
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function getBody() {
+        return $this->body;
+    }
 }

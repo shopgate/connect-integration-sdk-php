@@ -19,9 +19,21 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\Service;
+namespace Shopgate\CloudIntegrationSdk\Service\UriParser\Exception;
 
-class Router
+use Throwable;
+
+class InvalidRoute extends \Exception
 {
-
+    /**
+     * @param Throwable|null $previous
+     */
+    public function __construct(Throwable $previous = null)
+    {
+        parent::__construct(
+            'Invalid route object.',
+            1010,
+            $previous
+        );
+    }
 }

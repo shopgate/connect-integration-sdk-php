@@ -19,9 +19,24 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\Service\Authenticator;
+namespace Shopgate\CloudIntegrationSdk\Service\Router\Exception;
 
-class Token implements AuthenticatorInterface
+use Throwable;
+
+class UnregisteredRouteMethod extends \Exception
 {
-
+    /**
+     * @param string           $method
+     * @param string           $route
+     * @param Throwable | null $previous
+     */
+    public function __construct($method, $route, Throwable $previous = null)
+    {
+        $routeString = trim('/', $route);
+        parent::__construct(
+            "Method '$method' is not registered for route '$routeString'",
+            1002,
+            $previous
+        );
+    }
 }

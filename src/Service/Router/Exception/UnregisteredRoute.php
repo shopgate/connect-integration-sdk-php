@@ -19,34 +19,23 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\ValueObject\Base;
+namespace Shopgate\CloudIntegrationSdk\Service\Router\Exception;
 
-class String
+use Throwable;
+
+class UnregisteredRoute extends \Exception
 {
-    /** @var string */
-    private $value;
-
     /**
-     * @param string $value
+     * @param string           $route
+     * @param Throwable | null $previous
      */
-    public function __construct($value)
+    public function __construct($route, Throwable $previous = null)
     {
-        $this->value = (string) $value;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->value;
-    }
-
-    /**
-     * @return string
-     */
-    public function getValue()
-    {
-        return (string) $this->value;
+        $routeString = trim('/', $route);
+        parent::__construct(
+            "Route '$routeString' is not registered",
+            1001,
+            $previous
+        );
     }
 }

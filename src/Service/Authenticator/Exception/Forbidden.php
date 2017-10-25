@@ -19,9 +19,26 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\ValueObject;
+namespace Shopgate\CloudIntegrationSdk\Service\Authenticator\Exception;
 
-class Request
+use Throwable;
+
+class Forbidden extends \Exception
 {
-
+    /**
+     * @param string         $message
+     * @param Throwable|null $previous
+     */
+    public function __construct($message = '', Throwable $previous = null)
+    {
+        if ($message === '') {
+            $message = 'BasicAuth does not have permissions to access the requested resource.';
+        }
+        $message = "Forbidden: {$message}";
+        parent::__construct(
+            $message,
+            403,
+            $previous
+        );
+    }
 }

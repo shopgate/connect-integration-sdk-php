@@ -31,7 +31,7 @@ abstract class AbstractUser implements RepositoryInterface
      * @param Username $login
      * @param Password $password
      *
-     * @return UserId
+     * @return UserId | null
      */
     public abstract function getUserIdByCredentials(Username $login, Password $password);
 }

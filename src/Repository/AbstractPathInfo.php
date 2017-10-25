@@ -19,9 +19,12 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\Service;
+namespace Shopgate\CloudIntegrationSdk\Repository;
 
-interface RequestHandlerInterface
+abstract class AbstractPathInfo implements RepositoryInterface
 {
-
+    /**
+     * @return string
+     */
+    public abstract function getSpecificationPath();
 }

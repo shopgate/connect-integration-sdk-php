@@ -21,32 +21,19 @@
 
 namespace Shopgate\CloudIntegrationSdk\ValueObject\Base;
 
-class String
+class NonEmptyString extends String
 {
-    /** @var string */
-    private $value;
-
     /**
      * @param string $value
+     *
+     * @throws \InvalidArgumentException
      */
     public function __construct($value)
     {
-        $this->value = (string) $value;
-    }
+        if (empty($value)) {
+            throw new \InvalidArgumentException('String content must not be empty.');
+        }
 
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->value;
-    }
-
-    /**
-     * @return string
-     */
-    public function getValue()
-    {
-        return (string) $this->value;
+        parent::__construct($value);
     }
 }

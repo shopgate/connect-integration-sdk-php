@@ -21,7 +21,12 @@
 
 namespace Shopgate\CloudIntegrationSdk\Service\Authenticator;
 
+use Shopgate\CloudIntegrationSdk\ValueObject\Request;
+
 interface AuthenticatorInterface
 {
-
+    /**
+     * @param Request\Request $request
+     */
+    public function authenticate(Request\Request $request);
 }

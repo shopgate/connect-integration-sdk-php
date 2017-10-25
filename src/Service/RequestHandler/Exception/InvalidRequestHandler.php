@@ -19,9 +19,21 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\Service\Authenticator;
+namespace Shopgate\CloudIntegrationSdk\Service\RequestHandler\Exception;
 
-class Resource implements AuthenticatorInterface
+use Throwable;
+
+class InvalidRequestHandler extends \Exception
 {
-
+    /**
+     * @param Throwable|null $previous
+     */
+    public function __construct(Throwable $previous = null)
+    {
+        parent::__construct(
+            'Invalid request handler object.',
+            1011,
+            $previous
+        );
+    }
 }

@@ -19,34 +19,21 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\ValueObject\Base;
+namespace Shopgate\CloudIntegrationSdk\Service\Authenticator\Exception;
 
-class String
+use Throwable;
+
+class InvalidAuthenticator extends \Exception
 {
-    /** @var string */
-    private $value;
-
     /**
-     * @param string $value
+     * @param Throwable|null $previous
      */
-    public function __construct($value)
+    public function __construct(Throwable $previous = null)
     {
-        $this->value = (string) $value;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->value;
-    }
-
-    /**
-     * @return string
-     */
-    public function getValue()
-    {
-        return (string) $this->value;
+        parent::__construct(
+            'Invalid authenticator object.',
+            1012,
+            $previous
+        );
     }
 }

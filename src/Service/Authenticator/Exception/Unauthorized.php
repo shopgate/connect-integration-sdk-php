@@ -19,34 +19,26 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\ValueObject\Base;
+namespace Shopgate\CloudIntegrationSdk\Service\Authenticator\Exception;
 
-class String
+use Throwable;
+
+class Unauthorized extends \Exception
 {
-    /** @var string */
-    private $value;
-
     /**
-     * @param string $value
+     * @param string         $message
+     * @param Throwable|null $previous
      */
-    public function __construct($value)
+    public function __construct($message = '', Throwable $previous = null)
     {
-        $this->value = (string) $value;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->value;
-    }
-
-    /**
-     * @return string
-     */
-    public function getValue()
-    {
-        return (string) $this->value;
+        if ($message === '') {
+            $message = 'Invalid or missing authorization.';
+        }
+        $message = "Unauthorized: {$message}";
+        parent::__construct(
+            $message,
+            401,
+            $previous
+        );
     }
 }

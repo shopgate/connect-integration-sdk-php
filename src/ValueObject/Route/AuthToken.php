@@ -19,34 +19,9 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\ValueObject\Base;
+namespace Shopgate\CloudIntegrationSdk\ValueObject\Route;
 
-class String
+class AuthToken extends AbstractRoute
 {
-    /** @var string */
-    private $value;
 
-    /**
-     * @param string $value
-     */
-    public function __construct($value)
-    {
-        $this->value = (string) $value;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->value;
-    }
-
-    /**
-     * @return string
-     */
-    public function getValue()
-    {
-        return (string) $this->value;
-    }
 }

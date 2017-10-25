@@ -21,16 +21,22 @@
 
 namespace Shopgate\CloudIntegrationSdk\ValueObject\Base;
 
-abstract class Integer
+class Integer
 {
     /** @var int */
     private $value;
 
     /**
-     * @param int $value
+     * @param $value
+     *
+     * @throws \InvalidArgumentException
      */
     public function __construct($value)
     {
+        if (null === $value) {
+            throw new \InvalidArgumentException("Integer value must not be 'null'.");
+        }
+
         $this->value = (int) $value;
     }
 

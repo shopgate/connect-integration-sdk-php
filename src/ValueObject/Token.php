@@ -23,5 +23,101 @@ namespace Shopgate\CloudIntegrationSdk\ValueObject;
 
 class Token
 {
+    /** @var  TokenType\AbstractTokenType */
+    private $type;
 
+    /** @var  TokenId */
+    private $tokenId;
+
+    /** @var  ClientId */
+    private $clientId;
+
+    /** @var  UserId | null */
+    private $userId;
+
+    /** @var  Base\String | null */
+    private $expires;
+
+    /** @var  Base\String | null */
+    private $scope;
+
+    /**
+     * @param TokenType\AbstractTokenType $type
+     * @param TokenId                     $tokenId
+     * @param ClientId                    $clientId
+     * @param UserId|null                 $userId
+     * @param Base\String|null            $expires
+     * @param Base\String|null            $scope
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function __construct(
+        TokenType\AbstractTokenType $type,
+        TokenId $tokenId,
+        ClientId $clientId,
+        UserId $userId = null,
+        Base\String $expires = null,
+        Base\String $scope = null
+    ) {
+        if (is_null($type) || is_null($tokenId) || is_null($clientId)) {
+            throw new \InvalidArgumentException("Token parameters 'tokenId', 'clientId' and 'type must' be valid.");
+        }
+
+        $this->type     = $type;
+        $this->tokenId  = $tokenId;
+        $this->clientId = $clientId;
+        $this->userId   = $userId;
+        $this->expires  = $expires;
+        $this->scope    = $scope;
+    }
+
+    /**
+     * @return TokenType\AbstractTokenType
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @return TokenId
+     */
+    public function getTokenId()
+    {
+        return $this->tokenId;
+    }
+
+    /**
+     * @return ClientId
+     */
+    public function getClientId()
+    {
+        return $this->clientId;
+    }
+
+    /**
+     * @return UserId | null
+     */
+    public function getUserId()
+    {
+        return $this->userId;
+    }
+
+    /**
+     * Returns a datestring or null if the the token does not expire.
+     *
+     * @return Base\String | null
+     */
+    public function getExpires()
+    {
+        return $this->expires;
+    }
+
+    /**
+     * @return Base\String | null
+     */
+    public function getScope()
+    {
+        return $this->scope;
+    }
 }

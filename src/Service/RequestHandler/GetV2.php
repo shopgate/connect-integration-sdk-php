@@ -68,7 +68,7 @@ class GetV2 implements RequestHandlerInterface
      *
      * @throws \RuntimeException
      */
-    public function handle(Request\Request $request)
+    public function handle(Request\Request $request, $uriParams)
     {
         // check if there is a file available to be shown
         $specificationPath = $this->repository->getSpecificationPath();

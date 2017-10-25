@@ -34,8 +34,9 @@ interface RequestHandlerInterface
 
     /**
      * @param Request\Request $request
+     * @param string[]        $uriParams
      *
      * @return Response
      */
-    public function handle(Request\Request $request);
+    public function handle(Request\Request $request, $uriParams);
 }

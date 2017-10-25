@@ -141,7 +141,10 @@ class Router
         }
         $auth->authenticate($request);
 
+        // let the UriParser parse the parameters for the given route and uri string
+        $uriParams = $this->uriParser->getRouteParams($route, $request->getUri());
+
         // finally handle the request using the request handler, subscribed by the rout+method combination
-        return $requestHandler->handle($request);
+        return $requestHandler->handle($request, $uriParams);
     }
 }

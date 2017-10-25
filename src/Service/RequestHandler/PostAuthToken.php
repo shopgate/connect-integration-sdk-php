@@ -52,7 +52,7 @@ class PostAuthToken implements RequestHandlerInterface
         return $this->authenticator;
     }
 
-    public function handle(Request\Request $request)
+    public function handle(Request\Request $request, $uriParams)
     {
         return new Response(200, array(), ''); // TODO: Implement handle() method.
     }

@@ -80,7 +80,7 @@ class GetV2 implements RequestHandlerInterface
         $specification = file_get_contents($specificationPath);
         $responseHeaders = array(
             'Content-Type'     => 'text/json; charset=utf-8',
-            'Cache-Control'    => 'max-age=3600',
+            'Cache-Control'    => 'max-age=3600', // 60 minutes
             'Content-Language' => 'en',
             'Content-Length'   => (string) strlen($specification)
         );

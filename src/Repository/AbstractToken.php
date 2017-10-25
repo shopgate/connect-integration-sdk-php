@@ -21,9 +21,10 @@
 
 namespace Shopgate\CloudIntegrationSdk\Repository;
 
-use Shopgate\CloudIntegrationSdk\ValueObject\TokenId;
 use Shopgate\CloudIntegrationSdk\ValueObject\TokenType\AbstractTokenType;
 use Shopgate\CloudIntegrationSdk\ValueObject\Token;
+use Shopgate\CloudIntegrationSdk\ValueObject\TokenId;
+use Shopgate\CloudIntegrationSdk\ValueObject\UserId;
 
 abstract class AbstractToken implements RepositoryInterface
 {
@@ -36,11 +37,12 @@ abstract class AbstractToken implements RepositoryInterface
     public abstract function loadToken(TokenId $token, AbstractTokenType $type);
 
     /**
-     * @param string $userId
+     * @param UserId            $userId
+     * @param AbstractTokenType $type
      *
      * @return Token | null
      */
-    public abstract function loadTokenByUserId($userId);
+    public abstract function loadTokenByUserId($userId, AbstractTokenType $type);
 
     /**
      * @param Token $tokenData

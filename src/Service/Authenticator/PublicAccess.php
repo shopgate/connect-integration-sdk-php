@@ -25,8 +25,12 @@ use Shopgate\CloudIntegrationSdk\ValueObject\Request;
 
 class PublicAccess implements AuthenticatorInterface
 {
+    /**
+     * No authentication required
+     *
+     * @param Request\Request $request
+     */
     public function authenticate(Request\Request $request)
     {
-        // no authentication required
     }
 }

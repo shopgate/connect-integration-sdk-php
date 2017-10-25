@@ -21,9 +21,8 @@
 
 namespace Shopgate\CloudIntegrationSdk\Service\RequestHandler;
 
-use Shopgate\CloudIntegrationSdk\Service\Authenticator;
 use Shopgate\CloudIntegrationSdk\Repository;
-
+use Shopgate\CloudIntegrationSdk\Service\Authenticator;
 use Shopgate\CloudIntegrationSdk\ValueObject\Request;
 use Shopgate\CloudIntegrationSdk\ValueObject\Response;
 
@@ -36,8 +35,6 @@ class GetV2 implements RequestHandlerInterface
     private $repository;
 
     /**
-     * GetV2 constructor.
-     *
      * @param Repository\AbstractClientCredentials $clientCredentialsRepository
      * @param Repository\AbstractPathInfo          $pathInfoRepository
      *
@@ -81,12 +78,12 @@ class GetV2 implements RequestHandlerInterface
 
         // load file contents to be returned as a response for display
         $specification = file_get_contents($specificationPath);
-        $responseHeaders = [
-            "Content-Type"     => "text/json; charset=utf-8",
-            "Cache-Control"    => "max-age=3600",
-            "Content-Language" => "en",
-            "Content-Length"   => (string) strlen($specification)
-        ];
+        $responseHeaders = array(
+            'Content-Type'     => 'text/json; charset=utf-8',
+            'Cache-Control'    => 'max-age=3600',
+            'Content-Language' => 'en',
+            'Content-Length'   => (string) strlen($specification)
+        );
 
         return new Response(200, $responseHeaders, $specification);
     }

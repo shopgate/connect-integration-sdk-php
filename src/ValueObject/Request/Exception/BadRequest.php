@@ -26,14 +26,12 @@ use Throwable;
 class BadRequest extends \Exception
 {
     /**
-     * Unauthorized constructor.
-     *
      * @param string         $message
      * @param Throwable|null $previous
      */
-    public function __construct($message = "", Throwable $previous = null)
+    public function __construct($message = '', Throwable $previous = null)
     {
-        if ($message === "") {
+        if ($message === '') {
             $message = 'Invalid request or missing parameter(s).';
         }
         $message = "Bad Request: {$message}";

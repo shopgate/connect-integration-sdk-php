@@ -36,8 +36,6 @@ class ResourceAccess implements AuthenticatorInterface
     private $resourceOwnerId;
 
     /**
-     * ResourceAdminAccess constructor.
-     *
      * @param Repository\AbstractToken $accessTokenRepository
      * @param UserId |null             $resourceOwnerId
      */
@@ -75,7 +73,10 @@ class ResourceAccess implements AuthenticatorInterface
 
         // check if the given access_token is valid and not expired
         $accessToken = $this->repository->loadToken(new TokenId($authorization[1]), new TokenType\AccessToken());
-        if ($accessToken->getExpires() !== null && strtotime($accessToken->getExpires() < time())) {
+        if(null === $accessToken) {
+            throw new Exception\Unauthorized('The bearer token provided does not exist.');
+        }
+        if ($accessToken->getExpires() !== null && strtotime($accessToken->getExpires()) < time()) {
             throw new Exception\Unauthorized('The bearer token provided is expired.');
         }
 

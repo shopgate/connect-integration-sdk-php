@@ -27,11 +27,13 @@ class Integer
     private $value;
 
     /**
-     * @param int $value
+     * @param $value
+     *
+     * @throws \InvalidArgumentException
      */
     public function __construct($value)
     {
-        if (is_null($value)) {
+        if (null === $value) {
             throw new \InvalidArgumentException("Integer value must not be 'null'.");
         }
 

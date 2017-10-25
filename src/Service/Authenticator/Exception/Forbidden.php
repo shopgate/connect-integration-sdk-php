@@ -26,14 +26,12 @@ use Throwable;
 class Forbidden extends \Exception
 {
     /**
-     * Forbidden constructor.
-     *
      * @param string         $message
      * @param Throwable|null $previous
      */
-    public function __construct($message = "", Throwable $previous = null)
+    public function __construct($message = '', Throwable $previous = null)
     {
-        if ($message === "") {
+        if ($message === '') {
             $message = 'BasicAuth does not have permissions to access the requested resource.';
         }
         $message = "Forbidden: {$message}";

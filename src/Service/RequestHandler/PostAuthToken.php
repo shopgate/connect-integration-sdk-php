@@ -33,8 +33,6 @@ class PostAuthToken implements RequestHandlerInterface
     private $authenticator;
 
     /**
-     * PostAuthToken constructor.
-     *
      * @param Repository\AbstractClientCredentials $clientCredentialsRepository
      * @param Repository\AbstractToken             $tokenRepository
      * @param Repository\AbstractUser              $userRepository
@@ -56,6 +54,6 @@ class PostAuthToken implements RequestHandlerInterface
 
     public function handle(Request\Request $request)
     {
-        return new Response(200, [], ""); // TODO: Implement handle() method.
+        return new Response(200, array(), ''); // TODO: Implement handle() method.
     }
 }

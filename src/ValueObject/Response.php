@@ -33,17 +33,15 @@ class Response
     private $body;
 
     /**
-     * Response constructor.
-     *
      * @param int      $httpCode
      * @param string[] $headers
      * @param string   $body
      */
-    public function __construct($httpCode, $headers, $body)
+    public function __construct($httpCode, array $headers, $body)
     {
         $this->code = (int) $httpCode;
 
-        $this->headers = [];
+        $this->headers = array();
         foreach ($headers as $key => $header) {
             $this->headers[(string) $key] = (string) $header;
         }

@@ -25,6 +25,8 @@ class NonEmptyString extends String
 {
     /**
      * @param string $value
+     *
+     * @throws \InvalidArgumentException
      */
     public function __construct($value)
     {

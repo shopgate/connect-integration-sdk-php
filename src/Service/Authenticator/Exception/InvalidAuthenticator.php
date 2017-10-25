@@ -26,14 +26,12 @@ use Throwable;
 class InvalidAuthenticator extends \Exception
 {
     /**
-     * UnregisteredRouteMethod constructor.
-     *
      * @param Throwable|null $previous
      */
     public function __construct(Throwable $previous = null)
     {
         parent::__construct(
-            "Invalid authenticator object.",
+            'Invalid authenticator object.',
             1012,
             $previous
         );

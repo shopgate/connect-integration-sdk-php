@@ -97,7 +97,11 @@ class TokenRequest implements AuthenticatorInterface
         $password = $request->getParam($passwordKey);
 
         // check if given credentials are valid or not
-        $userId = $this->userRepository->getUserIdByCredentials(new Username($username), new Password($password));
+        try {
+            $userId = $this->userRepository->getUserIdByCredentials(new Username($username), new Password($password));
+        } catch (\Exception $e) {
+            throw new \RuntimeException('Failed to load the UserId from repository.', 0, $e);
+        }
         if (empty($username) || empty($password) || null === $userId) {
             throw new Exception\Unauthorized('Invalid user credentials provided.');
         }

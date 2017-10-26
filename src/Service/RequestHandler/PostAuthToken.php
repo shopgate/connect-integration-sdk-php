@@ -129,7 +129,11 @@ class PostAuthToken implements RequestHandlerInterface
                 }
 
                 // check credentials
-                $userId = $this->userRepository->getUserIdByCredentials($username, $password);
+                try {
+                    $userId = $this->userRepository->getUserIdByCredentials($username, $password);
+                } catch (\Exception $e) {
+                    throw new \RuntimeException('Failed to load the UserId from repository.', 0, $e);
+                }
                 if (null === $userId) {
                     throw new Authenticator\Exception\Unauthorized('The given user credentials are invalid.');
                 }

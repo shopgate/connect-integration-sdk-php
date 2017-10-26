@@ -76,7 +76,11 @@ class ResourceAccess implements AuthenticatorInterface
         if(null === $accessToken) {
             throw new Exception\Unauthorized('The bearer token provided does not exist.');
         }
-        if ($accessToken->getExpires() !== null && strtotime($accessToken->getExpires()) < time()) {
+        if (
+            $accessToken->getExpires() !== null &&
+            (string) $accessToken->getExpires() !== '' &&
+            strtotime($accessToken->getExpires()) < time()
+        ) {
             throw new Exception\Unauthorized('The bearer token provided is expired.');
         }
 

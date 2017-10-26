@@ -21,15 +21,13 @@
 
 namespace Shopgate\CloudIntegrationSdk\Service\Authenticator\Exception;
 
-use Throwable;
-
 class Forbidden extends \Exception
 {
     /**
-     * @param string         $message
-     * @param Throwable|null $previous
+     * @param string            $message
+     * @param \Throwable | null $previous
      */
-    public function __construct($message = '', Throwable $previous = null)
+    public function __construct($message = '', \Throwable $previous = null)
     {
         if ($message === '') {
             $message = 'BasicAuth does not have permissions to access the requested resource.';

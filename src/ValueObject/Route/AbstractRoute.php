@@ -23,14 +23,28 @@ namespace Shopgate\CloudIntegrationSdk\ValueObject\Route;
 
 abstract class AbstractRoute
 {
-    /** @var string[] */
-    protected $paramNameList;
-
     /** @var string */
     protected $pattern;
 
     /** @var string */
     protected $identifier;
+
+    /** @var string[] */
+    protected $paramNameList;
+
+    /**
+     * @return string
+     */
+    public function getIdentifier() {
+        return $this->identifier;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPattern() {
+        return $this->pattern;
+    }
 
     /**
      * @return string[]
@@ -49,19 +63,5 @@ abstract class AbstractRoute
             ? $this->paramNameList[$paramPosition]
             : null
         ;
-    }
-
-    /**
-     * @return string
-     */
-    public function getIdentifier() {
-        return $this->identifier;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPattern() {
-        return $this->pattern;
     }
 }

@@ -56,15 +56,16 @@ class GetV2 implements RequestHandlerInterface
         $this->repository = $pathInfoRepository;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getAuthenticator()
     {
         return $this->authenticator;
     }
 
     /**
-     * @param Request\Request $request
-     *
-     * @return Response
+     * @inheritdoc
      *
      * @throws \RuntimeException
      */

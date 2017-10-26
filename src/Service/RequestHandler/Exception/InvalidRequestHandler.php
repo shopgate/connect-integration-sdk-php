@@ -21,14 +21,12 @@
 
 namespace Shopgate\CloudIntegrationSdk\Service\RequestHandler\Exception;
 
-use Throwable;
-
 class InvalidRequestHandler extends \Exception
 {
     /**
-     * @param Throwable|null $previous
+     * @param \Throwable | null $previous
      */
-    public function __construct(Throwable $previous = null)
+    public function __construct(\Throwable $previous = null)
     {
         parent::__construct(
             'Invalid request handler object.',

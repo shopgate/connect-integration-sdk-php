@@ -38,7 +38,7 @@ class BasicAuth implements AuthenticatorInterface
     }
 
     /**
-     * @param Request\Request $request
+     * @inheritdoc
      *
      * @throws Exception\Unauthorized
      * @throws \RuntimeException

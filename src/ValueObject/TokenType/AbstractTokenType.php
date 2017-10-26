@@ -28,6 +28,9 @@ abstract class AbstractTokenType extends Enum
     const REFRESH_TOKEN = 'refresh_token';
     const ACCESS_TOKEN  = 'access_token';
 
+    /**
+     * @inheritdoc
+     */
     public function getEnumValues()
     {
         return [self::ACCESS_TOKEN, self::REFRESH_TOKEN];

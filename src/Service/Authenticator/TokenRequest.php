@@ -55,7 +55,7 @@ class TokenRequest implements AuthenticatorInterface
     }
 
     /**
-     * @param Request\Request $request
+     * @inheritdoc
      *
      * @throws Exception\Unauthorized
      * @throws Request\Exception\BadRequest

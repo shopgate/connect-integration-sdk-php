@@ -24,8 +24,8 @@ namespace Shopgate\CloudIntegrationSdk\ValueObject\Route;
 class AuthToken extends AbstractRoute
 {
     public function __construct() {
-        $this->paramNameList = array();
         $this->identifier    = '/auth/token';
         $this->pattern       = '/^\/auth\/token\/*$/';
+        $this->paramNameList = array();
     }
 }

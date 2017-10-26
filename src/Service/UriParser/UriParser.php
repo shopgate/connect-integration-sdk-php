@@ -56,7 +56,7 @@ class UriParser
     public function getRoute($uriString)
     {
         foreach ($this->routes as $route) {
-            $match = $this->matchRouteUri($route->getPattern(), $this->siplifyUriString($uriString));
+            $match = $this->matchRouteUri($route->getPattern(), $this->simplifyUriString($uriString));
             if (!empty($match)) {
                 return $route;
             }
@@ -78,7 +78,7 @@ class UriParser
      * @throws \RuntimeException
      */
     public function getRouteParams(Route\AbstractRoute $route, $uriString) {
-        $match = $this->matchRouteUri($route->getPattern(), $this->siplifyUriString($uriString));
+        $match = $this->matchRouteUri($route->getPattern(), $this->simplifyUriString($uriString));
 
         // read only named elements, that are furthermore called "params"
         $result = array();
@@ -96,7 +96,7 @@ class UriParser
      *
      * @return string
      */
-    private function siplifyUriString($uriString) {
+    private function simplifyUriString($uriString) {
         return '/' . ltrim(parse_url($uriString, PHP_URL_PATH), '/');
     }
 

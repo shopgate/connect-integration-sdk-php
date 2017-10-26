@@ -21,15 +21,13 @@
 
 namespace Shopgate\CloudIntegrationSdk\Service\Router\Exception;
 
-use Throwable;
-
 class UnregisteredRoute extends \Exception
 {
     /**
      * @param string           $route
-     * @param Throwable | null $previous
+     * @param \Throwable | null $previous
      */
-    public function __construct($route, Throwable $previous = null)
+    public function __construct($route, \Throwable $previous = null)
     {
         $routeString = trim('/', $route);
         parent::__construct(

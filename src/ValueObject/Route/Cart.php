@@ -24,10 +24,10 @@ namespace Shopgate\CloudIntegrationSdk\ValueObject\Route;
 class Cart extends AbstractRoute
 {
     public function __construct() {
+        $this->identifier    = "/carts/{$this->paramNameList[0]}";
+        $this->pattern       = "/^\\/carts\\/(?<{$this->paramNameList[0]}>[^/?]*)\\/*$/";
         $this->paramNameList = array(
             'cartId'
         );
-        $this->identifier    = "/carts/{$this->paramNameList[0]}";
-        $this->pattern       = "/^\\/carts\\/(?<{$this->paramNameList[0]}>[^/?]*)\\/*$/";
     }
 }

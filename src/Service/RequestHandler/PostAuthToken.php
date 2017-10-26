@@ -70,16 +70,16 @@ class PostAuthToken implements RequestHandlerInterface
         $this->userRepository              = $userRepository;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getAuthenticator()
     {
         return $this->authenticator;
     }
 
     /**
-     * @param Request\Request $request
-     * @param null            $uriParams
-     *
-     * @return Response
+     * @inheritdoc
      *
      * @throws Authenticator\Exception\Unauthorized
      * @throws Request\Exception\BadRequest

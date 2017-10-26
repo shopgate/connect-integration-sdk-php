@@ -49,6 +49,7 @@ class ResourceAccess implements AuthenticatorInterface
      *
      * @throws Exception\Unauthorized
      * @throws Request\Exception\BadRequest
+     * @throws \RuntimeException
      */
     public function authenticate(Request\Request $request)
     {
@@ -72,7 +73,11 @@ class ResourceAccess implements AuthenticatorInterface
         }
 
         // check if the given access_token is valid and not expired
-        $accessToken = $this->repository->loadToken(new TokenId($authorization[1]), new TokenType\AccessToken());
+        try {
+            $accessToken = $this->repository->loadToken(new TokenId($authorization[1]), new TokenType\AccessToken());
+        } catch (\Exception $e) {
+            throw new \RuntimeException('Failed to load access token from repository.', 0, $e);
+        }
         if(null === $accessToken) {
             throw new Exception\Unauthorized('The bearer token provided does not exist.');
         }

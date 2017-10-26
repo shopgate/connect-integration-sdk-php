@@ -75,6 +75,16 @@ class PostAuthToken implements RequestHandlerInterface
         return $this->authenticator;
     }
 
+    /**
+     * @param Request\Request $request
+     * @param null            $uriParams
+     *
+     * @return Response
+     *
+     * @throws Authenticator\Exception\Unauthorized
+     * @throws Request\Exception\BadRequest
+     * @throws \RuntimeException
+     */
     public function handle(Request\Request $request, $uriParams = null)
     {
         $responseBody = json_encode($this->generateTokens($request));
@@ -91,8 +101,10 @@ class PostAuthToken implements RequestHandlerInterface
      * @param Request\Request $request
      *
      * @return \string[]
+     *
      * @throws Authenticator\Exception\Unauthorized
      * @throws Request\Exception\BadRequest
+     * @throws \RuntimeException
      */
     private function generateTokens(Request\Request $request) {
         $usernameKey = 'username';
@@ -122,19 +134,31 @@ class PostAuthToken implements RequestHandlerInterface
                     throw new Authenticator\Exception\Unauthorized('The given user credentials are invalid.');
                 }
 
-                $oldAccessToken  = $this->tokenRepository->loadTokenByUserId($userId, new AccessToken());
-                $oldRefreshToken = $this->tokenRepository->loadTokenByUserId($userId, new RefreshToken());
+                try {
+                    $oldAccessToken  = $this->tokenRepository->loadTokenByUserId($userId, new AccessToken());
+                    $oldRefreshToken = $this->tokenRepository->loadTokenByUserId($userId, new RefreshToken());
+                } catch (\Exception $e) {
+                    throw new \RuntimeException('Failed to load access and/or refresh token from repository.', 0, $e);
+                }
 
                 break;
             case $refreshTokenKey:
                 // find userId by refresh token
                 $refreshTokenId = new TokenId($request->getParam($refreshTokenKey));
-                $oldRefreshToken = $this->tokenRepository->loadToken($refreshTokenId, new RefreshToken());
+                try {
+                    $oldRefreshToken = $this->tokenRepository->loadToken($refreshTokenId, new RefreshToken());
+                } catch (\Exception $e) {
+                    throw new \RuntimeException('Failed to load refresh token from repository.', 0, $e);
+                }
                 $userId = $oldRefreshToken->getUserId();
 
                 // check if an old access token exists and load it
                 if (null !== $userId) {
-                    $oldAccessToken = $this->tokenRepository->loadTokenByUserId($userId, new AccessToken());
+                    try {
+                        $oldAccessToken = $this->tokenRepository->loadTokenByUserId($userId, new AccessToken());
+                    } catch (\Exception $e) {
+                        throw new \RuntimeException('Failed to load access token from repository.', 0, $e);
+                    }
                 } else {
                     $oldAccessToken = null;
                 }
@@ -152,7 +176,7 @@ class PostAuthToken implements RequestHandlerInterface
         $this->expireToken($oldAccessToken);
         $this->expireToken($oldRefreshToken);
 
-        return $this->formatResponse($accessToken, $refreshToken, $expiresIn);
+        return $this->createResponse($accessToken, $refreshToken, $expiresIn);
     }
 
     /**
@@ -161,46 +185,51 @@ class PostAuthToken implements RequestHandlerInterface
      * @param int               $expirationTime
      *
      * @return Token
+     *
+     * @throws \RuntimeException
      */
     private function createToken($type, $userId, $expirationTime = 60) {
         $expirationDateString = new Base\String(date('Y-m-dTH:i:s'), time() + 60 * $expirationTime);
-        $result = new Token(
-            $type,
-            $this->createTokenId(),
-            new ClientId($this->clientCredentialsRepository->getClientId()),
-            $userId,
-            $expirationDateString,
-            null // no scopes supported, yet
-        );
-        $this->tokenRepository->saveToken($result);
+        try {
+            $result = new Token(
+                $type,
+                $this->tokenRepository->generateTokenId($type),
+                new ClientId($this->clientCredentialsRepository->getClientId()),
+                $userId,
+                $expirationDateString,
+                null // no scopes supported, yet
+            );
+
+            $this->tokenRepository->saveToken($result);
+        } catch (\Exception $e) {
+            throw new \RuntimeException("Token of type '{$type->getValue()}' failed to to create or save.", 0, $e);
+        }
 
         return $result;
     }
 
     /**
-     * @return TokenId
-     */
-    private function createTokenId() {
-        // TODO: generate new token id
-        return new TokenId("TODO");
-    }
-
-    /**
      * @param Token $token
+     *
+     * @throws \RuntimeException
      */
     private function expireToken(Token $token) {
         $currentDateString = new Base\String(date('Y-m-dTH:i:s'));
         if (null !== $token) {
-            $this->tokenRepository->saveToken(
-                new Token(
-                    $token->getType(),
-                    $token->getTokenId(),
-                    $token->getClientId(),
-                    $token->getUserId(),
-                    $currentDateString,
-                    $token->getScope()
-                )
-            );
+            try {
+                $this->tokenRepository->saveToken(
+                    new Token(
+                        $token->getType(),
+                        $token->getTokenId(),
+                        $token->getClientId(),
+                        $token->getUserId(),
+                        $currentDateString,
+                        $token->getScope()
+                    )
+                );
+            } catch (\Exception $e) {
+                throw new \RuntimeException("Failed to save token of type: {$token->getType()->getValue()}", 0, $e);
+            }
         }
     }
 
@@ -211,7 +240,7 @@ class PostAuthToken implements RequestHandlerInterface
      *
      * @return string[]
      */
-    private function formatResponse(Token $accessToken, Token $refreshToken, $expiresIn) {
+    private function createResponse(Token $accessToken, Token $refreshToken, $expiresIn) {
         return array(
             'token_type' => 'Bearer',
             (string) $accessToken->getType() => (string) $accessToken->getTokenId(),

@@ -137,7 +137,7 @@ class Router
         // check if a valid authenticator was provided and authenticate the request
         $auth = $requestHandler->getAuthenticator();
         if (!($auth instanceof Authenticator\AuthenticatorInterface)) {
-            throw new Authenticator\Exception\Unauthorized();
+            throw new Authenticator\Exception\InvalidAuthenticator();
         }
         $auth->authenticate($request);
 

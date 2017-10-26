@@ -41,11 +41,20 @@ class BasicAuth implements AuthenticatorInterface
      * @param Request\Request $request
      *
      * @throws Exception\Unauthorized
+     * @throws \RuntimeException
      */
     public function authenticate(Request\Request $request)
     {
         // build basic auth string for comparison with the given one
-        $authHash = base64_encode($this->repository->getClientId() . ':' . $this->repository->getClientSecret());
+        try {
+            $authHash = base64_encode(
+                $this->repository->getClientId().
+                ':'.
+                $this->repository->getClientSecret()
+            );
+        } catch (\Exception $e) {
+            throw new \RuntimeException('Failed to create basic auth string.', 0, $e);
+        }
         $basicAuth = "Basic {$authHash}";
 
         // check if the auth header is set and matches the auth string build before

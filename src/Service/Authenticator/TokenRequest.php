@@ -59,6 +59,7 @@ class TokenRequest implements AuthenticatorInterface
      *
      * @throws Exception\Unauthorized
      * @throws Request\Exception\BadRequest
+     * @throws \RuntimeException
      */
     public function authenticate(Request\Request $request) {
         // check basic authorization, before trying to validate any tokens
@@ -96,10 +97,8 @@ class TokenRequest implements AuthenticatorInterface
         $password = $request->getParam($passwordKey);
 
         // check if given credentials are valid or not
-        if (empty($username) || empty($password) || null === $this->userRepository->getUserIdByCredentials(
-            new Username($username),
-            new Password($password))
-        ) {
+        $userId = $this->userRepository->getUserIdByCredentials(new Username($username), new Password($password));
+        if (empty($username) || empty($password) || null === $userId) {
             throw new Exception\Unauthorized('Invalid user credentials provided.');
         }
     }
@@ -110,14 +109,19 @@ class TokenRequest implements AuthenticatorInterface
      *
      * @throws Exception\Unauthorized
      * @throws Request\Exception\BadRequest
+     * @throws \RuntimeException
      */
     private function authenticateGrantTypeRefreshToken(Request\Request $request, $refreshTokenKey) {
         // get refresh token from params and try to load the refresh token
         $refreshToken = $request->getParam($refreshTokenKey);
-        $token = $this->tokenRepository->loadToken(
-            new TokenId($refreshToken),
-            new TokenType\RefreshToken()
-        );
+        try {
+            $token = $this->tokenRepository->loadToken(
+                new TokenId($refreshToken),
+                new TokenType\RefreshToken()
+            );
+        } catch (\Exception $e) {
+            throw new \RuntimeException('Failed to load access token from repository.', 0, $e);
+        }
 
         // check if a refresh token was found
         if (null === $token) {

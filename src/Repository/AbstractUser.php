@@ -31,7 +31,9 @@ abstract class AbstractUser implements RepositoryInterface
      * @param Username $login
      * @param Password $password
      *
-     * @return UserId | null
+     * @return UserId | null Returns null only if the credentials are wrong or no user exists for them
+     *
+     * @throws \Exception Throws a custom exception if accessing the data source fails
      */
     public abstract function getUserIdByCredentials(Username $login, Password $password);
 }

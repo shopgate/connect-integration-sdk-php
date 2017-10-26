@@ -21,29 +21,50 @@
 
 namespace Shopgate\CloudIntegrationSdk\Repository;
 
-use Shopgate\CloudIntegrationSdk\ValueObject\TokenId;
 use Shopgate\CloudIntegrationSdk\ValueObject\TokenType\AbstractTokenType;
 use Shopgate\CloudIntegrationSdk\ValueObject\Token;
+use Shopgate\CloudIntegrationSdk\ValueObject\TokenId;
+use Shopgate\CloudIntegrationSdk\ValueObject\UserId;
 
 abstract class AbstractToken implements RepositoryInterface
 {
     /**
+     * Generates a TokenId of the given type that is unique for the system, where it's created in
+     *
+     * @param AbstractTokenType $type
+     *
+     * @return TokenId
+     *
+     * @throws \Exception
+     */
+    public abstract function generateTokenId(AbstractTokenType $type);
+
+    /**
      * @param TokenId           $token
      * @param AbstractTokenType $type
      *
-     * @return Token | null
+     * @return Token | null Returns null only if there was no Token found or it's expired
+     *
+     * @throws \Exception Throws a custom exception if trying to load the token fails for some reason
      */
     public abstract function loadToken(TokenId $token, AbstractTokenType $type);
 
     /**
-     * @param string $userId
+     * @param UserId            $userId
+     * @param AbstractTokenType $type
      *
-     * @return Token | null
+     * @return Token | null Returns null only if there was no Token found for the given UserId
+     *
+     * @throws \Exception Throws a custom exception if trying to load the token fails for some reason
      */
-    public abstract function loadTokenByUserId($userId);
+    public abstract function loadTokenByUserId($userId, AbstractTokenType $type);
 
     /**
+     * Creates a new token in the data source or overwrites it, if the TokenId already exists
+     *
      * @param Token $tokenData
+     *
+     * @throws \Exception Throws a custom exception if the call failed
      */
     public abstract function saveToken(Token $tokenData);
 }

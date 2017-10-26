@@ -25,6 +25,8 @@ abstract class AbstractPathInfo implements RepositoryInterface
 {
     /**
      * @return string
+     *
+     * @throws \Exception
      */
     public abstract function getSpecificationPath();
 }

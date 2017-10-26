@@ -29,7 +29,7 @@ use Shopgate\CloudIntegrationSdk\ValueObject\UserId;
 abstract class AbstractToken implements RepositoryInterface
 {
     /**
-     * Generates a TokenId of the given type that is unique for the system, where it's created in.
+     * Generates a TokenId of the given type that is unique for the system, where it's created in
      *
      * @param AbstractTokenType $type
      *

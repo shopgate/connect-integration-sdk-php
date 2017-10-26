@@ -71,7 +71,11 @@ class GetV2 implements RequestHandlerInterface
     public function handle(Request\Request $request, $uriParams)
     {
         // check if there is a file available to be shown
-        $specificationPath = $this->repository->getSpecificationPath();
+        try {
+            $specificationPath = $this->repository->getSpecificationPath();
+        } catch (\Exception $e) {
+            throw new \RuntimeException('Failed to fetch specification file path from repository', 0, $e);
+        }
         if (!file_exists($specificationPath)) {
             throw new \RuntimeException("Specification file '{$specificationPath}' does not exist or can't be read.");
         }

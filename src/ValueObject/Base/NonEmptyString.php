@@ -24,7 +24,7 @@ namespace Shopgate\CloudIntegrationSdk\ValueObject\Base;
 class NonEmptyString extends String
 {
     /**
-     * @param string $value
+     * @inheritdoc
      *
      * @throws \InvalidArgumentException
      */

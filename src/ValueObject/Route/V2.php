@@ -23,5 +23,10 @@ namespace Shopgate\CloudIntegrationSdk\ValueObject\Route;
 
 class V2 extends AbstractRoute
 {
-
+    public function __construct()
+    {
+        $this->paramNameList = array();
+        $this->identifier    = '/v2';
+        $this->pattern       = '/^\/v2\/*$/';
+    }
 }

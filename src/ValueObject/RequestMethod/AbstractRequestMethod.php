@@ -31,7 +31,7 @@ abstract class AbstractRequestMethod extends Enum
     const DELETE = 'DELETE';
 
     /**
-     * @return string[]
+     * @inheritdoc
      */
     public function getEnumValues()
     {

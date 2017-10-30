@@ -38,11 +38,11 @@ class UriParser
      * @throws Exception\InvalidRoute
      */
     public function addRoute(Route\AbstractRoute $route) {
-        // TODO: Finish implementation
         if (empty($route)) {
             throw new Exception\InvalidRoute();
         }
-        $routes[$route->getIdentifier()] = $route;
+
+        $this->routes[$route->getIdentifier()] = $route;
     }
 
     /**
@@ -56,7 +56,8 @@ class UriParser
     public function getRoute($uriString)
     {
         foreach ($this->routes as $route) {
-            if ($this->matchRouteUri($route->getPattern(), $uriString)) {
+            $match = $this->matchRouteUri($route->getPattern(), $this->simplifyUriString($uriString));
+            if (!empty($match)) {
                 return $route;
             }
         }
@@ -66,10 +67,46 @@ class UriParser
     }
 
     /**
+     * Returns the list of parameters in defined order, that the given route takes and the given uri string contains
+     *
+     * @param Route\AbstractRoute $route
+     * @param string $uriString
+     *
+     * @return string[]
+     *
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
+     */
+    public function getRouteParams(Route\AbstractRoute $route, $uriString) {
+        $match = $this->matchRouteUri($route->getPattern(), $this->simplifyUriString($uriString));
+
+        // read only named elements, that are furthermore called "params"
+        $result = array();
+        foreach ($route->getParamNameList() as $paramName) {
+            $result[(string) $paramName] = $match[(string) $paramName];
+        }
+
+        return $result;
+    }
+
+    /**
+     * Simplifies pattern matching by only using the actual path string (plus squash left slashes for easier patterns)
+     *
+     * @param string $uriString
+     *
+     * @return string
+     */
+    private function simplifyUriString($uriString) {
+        return '/' . ltrim(parse_url($uriString, PHP_URL_PATH), '/');
+    }
+
+    /**
+     * Result will be empty if there was no match. Contains all parsed elements otherwise.
+     *
      * @param string $pattern
      * @param string $uriString
      *
-     * @return bool
+     * @return string[]
      *
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
@@ -84,11 +121,11 @@ class UriParser
             throw new \InvalidArgumentException("Invalid argument '\$uriString'.");
         }
 
-        $matchResult = preg_match($pattern, $uriString);
+        $matchResult = preg_match($pattern, $uriString, $matches);
         if (false === $matchResult) {
             throw new \RuntimeException('Unexpected failure while parsing a given uri string.');
         }
 
-        return (bool) $matchResult;
+        return $matches;
     }
 }

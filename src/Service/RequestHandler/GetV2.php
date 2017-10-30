@@ -56,22 +56,27 @@ class GetV2 implements RequestHandlerInterface
         $this->repository = $pathInfoRepository;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getAuthenticator()
     {
         return $this->authenticator;
     }
 
     /**
-     * @param Request\Request $request
-     *
-     * @return Response
+     * @inheritdoc
      *
      * @throws \RuntimeException
      */
-    public function handle(Request\Request $request)
+    public function handle(Request\Request $request, $uriParams)
     {
         // check if there is a file available to be shown
-        $specificationPath = $this->repository->getSpecificationPath();
+        try {
+            $specificationPath = $this->repository->getSpecificationPath();
+        } catch (\Exception $e) {
+            throw new \RuntimeException('Failed to fetch specification file path from repository', 0, $e);
+        }
         if (!file_exists($specificationPath)) {
             throw new \RuntimeException("Specification file '{$specificationPath}' does not exist or can't be read.");
         }
@@ -80,7 +85,7 @@ class GetV2 implements RequestHandlerInterface
         $specification = file_get_contents($specificationPath);
         $responseHeaders = array(
             'Content-Type'     => 'text/json; charset=utf-8',
-            'Cache-Control'    => 'max-age=3600',
+            'Cache-Control'    => 'max-age=3600', // 60 minutes
             'Content-Language' => 'en',
             'Content-Length'   => (string) strlen($specification)
         );

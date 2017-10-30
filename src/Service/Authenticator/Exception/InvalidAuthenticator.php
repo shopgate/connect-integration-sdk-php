@@ -21,14 +21,12 @@
 
 namespace Shopgate\CloudIntegrationSdk\Service\Authenticator\Exception;
 
-use Throwable;
-
 class InvalidAuthenticator extends \Exception
 {
     /**
-     * @param Throwable|null $previous
+     * @param \Throwable | null $previous
      */
-    public function __construct(Throwable $previous = null)
+    public function __construct(\Throwable $previous = null)
     {
         parent::__construct(
             'Invalid authenticator object.',

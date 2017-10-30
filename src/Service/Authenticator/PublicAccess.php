@@ -28,7 +28,7 @@ class PublicAccess implements AuthenticatorInterface
     /**
      * No authentication required
      *
-     * @param Request\Request $request
+     * @inheritdoc
      */
     public function authenticate(Request\Request $request)
     {

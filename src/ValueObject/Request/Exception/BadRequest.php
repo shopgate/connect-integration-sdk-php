@@ -21,15 +21,13 @@
 
 namespace Shopgate\CloudIntegrationSdk\ValueObject\Request\Exception;
 
-use Throwable;
-
 class BadRequest extends \Exception
 {
     /**
-     * @param string         $message
-     * @param Throwable|null $previous
+     * @param string            $message
+     * @param \Throwable | null $previous
      */
-    public function __construct($message = '', Throwable $previous = null)
+    public function __construct($message = '', \Throwable $previous = null)
     {
         if ($message === '') {
             $message = 'Invalid request or missing parameter(s).';

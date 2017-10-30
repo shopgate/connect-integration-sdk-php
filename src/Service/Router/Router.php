@@ -110,7 +110,7 @@ class Router
      * @throws RequestHandler\Exception\InvalidRequestHandler
      * @throws UriParser\Exception\InvalidRoute
      * @throws \RuntimeException
-     * @throws \InvalidArgumentException
+     * @throws Authenticator\Exception\InvalidAuthenticator
      */
     public function dispatch(Request\Request $request)
     {
@@ -137,11 +137,14 @@ class Router
         // check if a valid authenticator was provided and authenticate the request
         $auth = $requestHandler->getAuthenticator();
         if (!($auth instanceof Authenticator\AuthenticatorInterface)) {
-            throw new Authenticator\Exception\Unauthorized();
+            throw new Authenticator\Exception\InvalidAuthenticator();
         }
         $auth->authenticate($request);
 
+        // let the UriParser parse the parameters for the given route and uri string
+        $uriParams = $this->uriParser->getRouteParams($route, $request->getUri());
+
         // finally handle the request using the request handler, subscribed by the rout+method combination
-        return $requestHandler->handle($request);
+        return $requestHandler->handle($request, $uriParams);
     }
 }

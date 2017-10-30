@@ -21,6 +21,6 @@
 
 namespace Shopgate\CloudIntegrationSdk\ValueObject;
 
-class UserId extends Base\String
+class UserId extends Base\NonEmptyString
 {
 }

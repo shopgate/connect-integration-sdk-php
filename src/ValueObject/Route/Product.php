@@ -21,12 +21,12 @@
 
 namespace Shopgate\CloudIntegrationSdk\ValueObject\Route;
 
-class AuthToken extends AbstractRoute
+class Product extends AbstractRoute
 {
     public function __construct()
     {
-        $this->paramNameList = array();
-        $this->identifier    = '/auth/token';
-        $this->pattern       = '/^\/auth\/token\/*$/';
+        $this->paramNameList = array('productId');
+        $this->identifier    = "/products/{$this->paramNameList[0]}";
+        $this->pattern       = "/^\\/products\\/(?<{$this->paramNameList[0]}>[^/?]*)\\/*$/";
     }
 }

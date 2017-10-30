@@ -49,6 +49,14 @@ abstract class Enum
     }
 
     /**
+     * @return string
+     */
+    public function getValue()
+    {
+        return (string) $this->value;
+    }
+
+    /**
      * @return string[]
      */
     public abstract function getEnumValues();

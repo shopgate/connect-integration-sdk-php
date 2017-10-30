@@ -23,7 +23,6 @@ namespace Shopgate\CloudIntegrationSdk\Service\RequestHandler;
 
 use Shopgate\CloudIntegrationSdk\Repository;
 use Shopgate\CloudIntegrationSdk\Service\Authenticator;
-
 use Shopgate\CloudIntegrationSdk\ValueObject\Base;
 use Shopgate\CloudIntegrationSdk\ValueObject\Request;
 use Shopgate\CloudIntegrationSdk\ValueObject\TokenType\AbstractTokenType;
@@ -51,15 +50,20 @@ class PostAuthToken implements RequestHandlerInterface
     /** @var Repository\AbstractUser */
     private $userRepository;
 
+    /** @var int */
+    private $tokenExpirationTime;
+
     /**
      * @param Repository\AbstractClientCredentials $clientCredentialsRepository
      * @param Repository\AbstractToken             $tokenRepository
      * @param Repository\AbstractUser              $userRepository
+     * @param int                                  $tokenExpirationTime
      */
     public function __construct(
         Repository\AbstractClientCredentials $clientCredentialsRepository,
         Repository\AbstractToken $tokenRepository,
-        Repository\AbstractUser $userRepository
+        Repository\AbstractUser $userRepository,
+        $tokenExpirationTime = 60
     ) {
         $this->authenticator = new Authenticator\TokenRequest(
             $clientCredentialsRepository, $tokenRepository, $userRepository
@@ -68,6 +72,7 @@ class PostAuthToken implements RequestHandlerInterface
         $this->clientCredentialsRepository = $clientCredentialsRepository;
         $this->tokenRepository             = $tokenRepository;
         $this->userRepository              = $userRepository;
+        $this->tokenExpirationTime         = $tokenExpirationTime;
     }
 
     /**
@@ -106,7 +111,8 @@ class PostAuthToken implements RequestHandlerInterface
      * @throws Request\Exception\BadRequest
      * @throws \RuntimeException
      */
-    private function generateTokens(Request\Request $request) {
+    private function generateTokens(Request\Request $request)
+    {
         $usernameKey = 'username';
         $passwordKey = 'password';
         $refreshTokenKey = 'refresh_token';
@@ -172,15 +178,14 @@ class PostAuthToken implements RequestHandlerInterface
                 throw new Request\Exception\BadRequest('Unsupported or no grant_type provided.');
         }
 
-        $expiresIn = 60;
-        $accessToken  = $this->createToken(new AccessToken(), $userId, $expiresIn);
-        $refreshToken = $this->createToken(new RefreshToken(), $userId, $expiresIn);
+        $accessToken  = $this->createToken(new AccessToken(), $userId, $this->tokenExpirationTime);
+        $refreshToken = $this->createToken(new RefreshToken(), $userId, $this->tokenExpirationTime);
 
         // clean up with the old tokens
         $this->expireToken($oldAccessToken);
         $this->expireToken($oldRefreshToken);
 
-        return $this->createResponse($accessToken, $refreshToken, $expiresIn);
+        return $this->createResponse($accessToken, $refreshToken, $this->tokenExpirationTime);
     }
 
     /**
@@ -192,8 +197,9 @@ class PostAuthToken implements RequestHandlerInterface
      *
      * @throws \RuntimeException
      */
-    private function createToken($type, $userId, $expirationTime = 60) {
-        $expirationDateString = new Base\String(date('Y-m-dTH:i:s'), time() + 60 * $expirationTime);
+    private function createToken($type, $userId, $expirationTime = 60)
+    {
+        $expirationDateString = new Base\String(date('Y-m-dTH:i:s', time() + 60 * $expirationTime));
         try {
             $result = new Token(
                 $type,

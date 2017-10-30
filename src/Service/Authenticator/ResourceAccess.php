@@ -78,7 +78,7 @@ class ResourceAccess implements AuthenticatorInterface
         } catch (\Exception $e) {
             throw new \RuntimeException('Failed to load access token from repository.', 0, $e);
         }
-        if(null === $accessToken) {
+        if (null === $accessToken) {
             throw new Exception\Unauthorized('The bearer token provided does not exist.');
         }
         if (

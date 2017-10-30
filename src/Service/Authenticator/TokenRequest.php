@@ -61,7 +61,8 @@ class TokenRequest implements AuthenticatorInterface
      * @throws Request\Exception\BadRequest
      * @throws \RuntimeException
      */
-    public function authenticate(Request\Request $request) {
+    public function authenticate(Request\Request $request)
+    {
         // check basic authorization, before trying to validate any tokens
         $this->basicAuthAuthenticator->authenticate($request);
 
@@ -92,7 +93,8 @@ class TokenRequest implements AuthenticatorInterface
      * @throws Exception\Unauthorized
      * @throws Request\Exception\BadRequest
      */
-    private function authenticateGrantTypePassword(Request\Request $request, $usernameKey, $passwordKey) {
+    private function authenticateGrantTypePassword(Request\Request $request, $usernameKey, $passwordKey)
+    {
         $username = $request->getParam($usernameKey);
         $password = $request->getParam($passwordKey);
 
@@ -115,7 +117,8 @@ class TokenRequest implements AuthenticatorInterface
      * @throws Request\Exception\BadRequest
      * @throws \RuntimeException
      */
-    private function authenticateGrantTypeRefreshToken(Request\Request $request, $refreshTokenKey) {
+    private function authenticateGrantTypeRefreshToken(Request\Request $request, $refreshTokenKey)
+    {
         // get refresh token from params and try to load the refresh token
         $refreshToken = $request->getParam($refreshTokenKey);
         try {

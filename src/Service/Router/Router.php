@@ -110,7 +110,7 @@ class Router
      * @throws RequestHandler\Exception\InvalidRequestHandler
      * @throws UriParser\Exception\InvalidRoute
      * @throws \RuntimeException
-     * @throws \InvalidArgumentException
+     * @throws Authenticator\Exception\InvalidAuthenticator
      */
     public function dispatch(Request\Request $request)
     {

@@ -23,11 +23,10 @@ namespace Shopgate\CloudIntegrationSdk\ValueObject\Route;
 
 class Product extends AbstractRoute
 {
-    public function __construct() {
+    public function __construct()
+    {
+        $this->paramNameList = array('productId');
         $this->identifier    = "/products/{$this->paramNameList[0]}";
         $this->pattern       = "/^\\/products\\/(?<{$this->paramNameList[0]}>[^/?]*)\\/*$/";
-        $this->paramNameList = array(
-            'productId'
-        );
     }
 }

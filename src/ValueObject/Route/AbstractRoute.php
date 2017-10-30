@@ -50,7 +50,7 @@ abstract class AbstractRoute
         return array_key_exists((int) $paramPosition, $this->paramNameList)
             ? $this->paramNameList[$paramPosition]
             : null
-            ;
+        ;
     }
 
     /**

@@ -39,8 +39,9 @@ class ResourceAccess implements AuthenticatorInterface
      * @param Repository\AbstractToken $accessTokenRepository
      * @param UserId |null             $resourceOwnerId
      */
-    public function __construct(Repository\AbstractToken $accessTokenRepository, UserId $resourceOwnerId = null) {
-        $this->repository = $accessTokenRepository;
+    public function __construct(Repository\AbstractToken $accessTokenRepository, UserId $resourceOwnerId = null)
+    {
+        $this->repository      = $accessTokenRepository;
         $this->resourceOwnerId = $resourceOwnerId;
     }
 

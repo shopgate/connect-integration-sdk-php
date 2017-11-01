@@ -56,7 +56,7 @@ class Router
         $this->uriParser = new UriParser\UriParser();
 
         // add predefined routes
-        $this->subscribe(new Route\AuthToken(), new RequestMethod\Get(),
+        $this->subscribe(new Route\AuthToken(), new RequestMethod\Post(),
             new RequestHandler\PostAuthToken(
                 $clientCredentialsRepository, $tokenRepository, $userRepository
             )

@@ -26,9 +26,9 @@ use Shopgate\CloudIntegrationSdk\Service\Authenticator;
 use Shopgate\CloudIntegrationSdk\Service\RequestHandler;
 use Shopgate\CloudIntegrationSdk\Service\UriParser;
 use Shopgate\CloudIntegrationSdk\ValueObject\Request;
+use Shopgate\CloudIntegrationSdk\ValueObject\RequestMethod;
 use Shopgate\CloudIntegrationSdk\ValueObject\Response;
 use Shopgate\CloudIntegrationSdk\ValueObject\Route;
-use Shopgate\CloudIntegrationSdk\ValueObject\RequestMethod;
 
 class Router
 {
@@ -56,12 +56,16 @@ class Router
         $this->uriParser = new UriParser\UriParser();
 
         // add predefined routes
-        $this->subscribe(new Route\AuthToken(), new RequestMethod\Post(),
+        $this->subscribe(
+            new Route\AuthToken(),
+            new RequestMethod\Post(),
             new RequestHandler\PostAuthToken(
                 $clientCredentialsRepository, $tokenRepository, $userRepository
             )
         );
-        $this->subscribe(new Route\V2(), new RequestMethod\Get(),
+        $this->subscribe(
+            new Route\V2(),
+            new RequestMethod\Get(),
             new RequestHandler\GetV2($clientCredentialsRepository, $pathInfoRepository)
         );
     }
@@ -104,7 +108,7 @@ class Router
      *
      * @return Response
      *
-     * @throws Authenticator\Exception\Unauthorized
+     * @throws \InvalidArgumentException
      * @throws Exception\UnregisteredRoute
      * @throws Exception\UnregisteredRouteMethod
      * @throws RequestHandler\Exception\InvalidRequestHandler
@@ -116,7 +120,7 @@ class Router
     {
         // get the route from the uri parser by passing the uri string
         $route = $this->uriParser->getRoute($request->getUri());
-        if (empty($route)) {
+        if (null === $route) {
             throw new UriParser\Exception\InvalidRoute();
         }
 
@@ -130,7 +134,7 @@ class Router
 
         // get request handler that a route -method combination subscribed
         $requestHandler = $this->requestHandlers[$route->getIdentifier()][(string) $request->getMethod()];
-        if (empty($requestHandler)) {
+        if (null === $requestHandler) {
             throw new RequestHandler\Exception\InvalidRequestHandler();
         }
 

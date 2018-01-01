@@ -27,6 +27,6 @@ class AuthToken extends AbstractRoute
     {
         $this->paramNameList = array();
         $this->identifier    = '/auth/token';
-        $this->pattern       = '/^\/auth\/token\/*$/';
+        $this->pattern       = '/\/auth\/token\/*$/';
     }
 }

@@ -24,15 +24,15 @@ namespace Shopgate\CloudIntegrationSdk\Service\RequestHandler;
 use Shopgate\CloudIntegrationSdk\Repository;
 use Shopgate\CloudIntegrationSdk\Service\Authenticator;
 use Shopgate\CloudIntegrationSdk\ValueObject\Base;
-use Shopgate\CloudIntegrationSdk\ValueObject\Request;
-use Shopgate\CloudIntegrationSdk\ValueObject\TokenType\AbstractTokenType;
-use Shopgate\CloudIntegrationSdk\ValueObject\TokenType\AccessToken;
-use Shopgate\CloudIntegrationSdk\ValueObject\TokenType\RefreshToken;
 use Shopgate\CloudIntegrationSdk\ValueObject\ClientId;
 use Shopgate\CloudIntegrationSdk\ValueObject\Password;
+use Shopgate\CloudIntegrationSdk\ValueObject\Request;
 use Shopgate\CloudIntegrationSdk\ValueObject\Response;
 use Shopgate\CloudIntegrationSdk\ValueObject\Token;
 use Shopgate\CloudIntegrationSdk\ValueObject\TokenId;
+use Shopgate\CloudIntegrationSdk\ValueObject\TokenType\AbstractTokenType;
+use Shopgate\CloudIntegrationSdk\ValueObject\TokenType\AccessToken;
+use Shopgate\CloudIntegrationSdk\ValueObject\TokenType\RefreshToken;
 use Shopgate\CloudIntegrationSdk\ValueObject\UserId;
 use Shopgate\CloudIntegrationSdk\ValueObject\Username;
 
@@ -92,13 +92,14 @@ class PostAuthToken implements RequestHandlerInterface
      */
     public function handle(Request\Request $request, $uriParams = null)
     {
-        $responseBody = json_encode($this->generateTokens($request));
+        $responseBody    = json_encode($this->generateTokens($request));
         $responseHeaders = array(
-            'Content-Type'     => 'text/json; charset=utf-8',
+            'Content-Type'     => 'application/json; charset=utf-8',
             'Cache-Control'    => 'no-cache',
             'Content-Language' => 'en',
             'Content-Length'   => (string) strlen($responseBody)
         );
+
         return new Response(200, $responseHeaders, $responseBody);
     }
 
@@ -107,19 +108,20 @@ class PostAuthToken implements RequestHandlerInterface
      *
      * @return \string[]
      *
+     * @throws \InvalidArgumentException
      * @throws Authenticator\Exception\Unauthorized
      * @throws Request\Exception\BadRequest
      * @throws \RuntimeException
      */
     private function generateTokens(Request\Request $request)
     {
-        $usernameKey = 'username';
-        $passwordKey = 'password';
+        $usernameKey     = 'username';
+        $passwordKey     = 'password';
         $refreshTokenKey = 'refresh_token';
         switch ($request->getParam('grant_type')) {
             case 'client_credentials':
                 // no userId available
-                $userId          = null;
+                $userId = null;
 
                 // no previous tokens to invalidate
                 $oldAccessToken  = null;
@@ -199,7 +201,7 @@ class PostAuthToken implements RequestHandlerInterface
      */
     private function createToken($type, $userId, $expirationTime = 60)
     {
-        $expirationDateString = new Base\String(date('Y-m-dTH:i:s', time() + 60 * $expirationTime));
+        $expirationDateString = new Base\BaseString(date('Y-m-dTH:i:s', time() + 60 * $expirationTime));
         try {
             $result = new Token(
                 $type,
@@ -219,12 +221,13 @@ class PostAuthToken implements RequestHandlerInterface
     }
 
     /**
-     * @param Token $token
+     * @param Token | null $token
      *
      * @throws \RuntimeException
      */
-    private function expireToken(Token $token) {
-        $currentDateString = new Base\String(date('Y-m-dTH:i:s'));
+    private function expireToken($token)
+    {
+        $currentDateString = new Base\BaseString(date('Y-m-dTH:i:s'));
         if (null !== $token) {
             try {
                 $this->tokenRepository->saveToken(
@@ -250,14 +253,15 @@ class PostAuthToken implements RequestHandlerInterface
      *
      * @return string[]
      */
-    private function createResponse(Token $accessToken, Token $refreshToken, $expiresIn) {
+    private function createResponse(Token $accessToken, Token $refreshToken, $expiresIn)
+    {
         return array(
-            'token_type' => 'Bearer',
-            (string) $accessToken->getType() => (string) $accessToken->getTokenId(),
-            'expires_in' => $expiresIn,
+            'token_type'                      => 'Bearer',
+            (string) $accessToken->getType()  => (string) $accessToken->getTokenId(),
+            'expires_in'                      => $expiresIn,
             (string) $refreshToken->getType() => (string) $refreshToken->getTokenId(),
-            'scope' => (string) $accessToken->getScope(),
-            'user_id' => (string) $accessToken->getUserId(),
+            'scope'                           => (string) $accessToken->getScope(),
+            'user_id'                         => (string) $accessToken->getUserId(),
         );
     }
 }

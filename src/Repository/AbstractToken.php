@@ -57,7 +57,7 @@ abstract class AbstractToken implements RepositoryInterface
      *
      * @throws \Exception Throws a custom exception if trying to load the token fails for some reason
      */
-    abstract public function loadTokenByUserId($userId, AbstractTokenType $type);
+    abstract public function loadTokenByUserId(UserId $userId, AbstractTokenType $type);
 
     /**
      * Creates a new token in the data source or overwrites it, if the TokenId already exists

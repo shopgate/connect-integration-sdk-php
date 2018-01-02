@@ -63,7 +63,7 @@ class PostAuthToken implements RequestHandlerInterface
         Repository\AbstractClientCredentials $clientCredentialsRepository,
         Repository\AbstractToken $tokenRepository,
         Repository\AbstractUser $userRepository,
-        $tokenExpirationTime = 60
+        $tokenExpirationTime = 3600
     ) {
         $this->authenticator = new Authenticator\TokenRequest(
             $clientCredentialsRepository, $tokenRepository, $userRepository
@@ -199,9 +199,9 @@ class PostAuthToken implements RequestHandlerInterface
      *
      * @throws \RuntimeException
      */
-    private function createToken($type, $userId, $expirationTime = 60)
+    private function createToken($type, $userId, $expirationTime = 3600)
     {
-        $expirationDateString = new Base\BaseString(date('Y-m-dTH:i:s', time() + 60 * $expirationTime));
+        $expirationDateString = new Base\BaseString(date('Y-m-dTH:i:s', time() + $expirationTime));
         try {
             $result = new Token(
                 $type,

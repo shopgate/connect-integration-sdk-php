@@ -27,6 +27,6 @@ class Cart extends AbstractRoute
     {
         $this->paramNameList = array('cartId');
         $this->identifier    = "/carts/{$this->paramNameList[0]}";
-        $this->pattern       = "/^\\/carts\\/(?<{$this->paramNameList[0]}>[^/?]*)\\/*$/";
+        $this->pattern       = "~\/carts\/(?<{$this->paramNameList[0]}>[^/?]*)\/*$~";
     }
 }

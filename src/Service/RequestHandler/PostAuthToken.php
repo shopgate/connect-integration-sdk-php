@@ -260,6 +260,7 @@ class PostAuthToken implements RequestHandlerInterface
             (string) $accessToken->getType()  => (string) $accessToken->getTokenId(),
             'expires_in'                      => $expiresIn,
             (string) $refreshToken->getType() => (string) $refreshToken->getTokenId(),
+            //todo-sg: don't create for guest user
             'scope'                           => (string) $accessToken->getScope(),
             'user_id'                         => (string) $accessToken->getUserId(),
         );

@@ -26,7 +26,7 @@ class Carts extends AbstractRoute
     public function __construct()
     {
         $this->paramNameList = array();
-        $this->identifier    = "/carts";
-        $this->pattern       = "/^\\/carts\\/*$/";
+        $this->identifier    = '/carts';
+        $this->pattern       = '/\/carts\/*$/';
     }
 }

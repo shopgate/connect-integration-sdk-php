@@ -27,6 +27,6 @@ class V2 extends AbstractRoute
     {
         $this->paramNameList = array();
         $this->identifier    = '/v2';
-        $this->pattern       = '/\/v2\/*$/';
+        $this->pattern       = '~^\/v2\/*$~';
     }
 }

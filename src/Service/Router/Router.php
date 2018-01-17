@@ -57,7 +57,7 @@ class Router
 
         // add predefined routes
         $this->subscribe(
-            new Route\AuthToken(),
+            new Route\V2\AuthToken(),
             new RequestMethod\Post(),
             new RequestHandler\PostAuthToken(
                 $clientCredentialsRepository, $tokenRepository, $userRepository

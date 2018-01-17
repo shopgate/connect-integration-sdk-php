@@ -19,7 +19,9 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\ValueObject\Route;
+namespace Shopgate\CloudIntegrationSdk\ValueObject\Route\V2;
+
+use Shopgate\CloudIntegrationSdk\ValueObject\Route\AbstractRoute;
 
 class Products extends AbstractRoute
 {
@@ -27,6 +29,6 @@ class Products extends AbstractRoute
     {
         $this->paramNameList = array();
         $this->identifier    = '/products';
-        $this->pattern       = '~\/products\/*$~';
+        $this->pattern       = '~^\/v2\/products\/*$~';
     }
 }

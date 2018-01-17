@@ -32,6 +32,15 @@ class Response
     const HTTP_INTERNAL_SERVER_ERROR = 500;
     const HTTP_NOT_IMPLEMENTED       = 501;
 
+    /**
+     * Custom HTTP codes
+     */
+    const HTTP_UNREGISTERED_ROUTE        = 1001;
+    const HTTP_UNREGISTERED_ROUTE_METHOD = 1002;
+    const HTTP_INVALID_ROUTE             = 1010;
+    const HTTP_INVALID_REQUEST_HANDLER   = 1011;
+    const HTTP_INVALID_AUTHENTICATOR     = 1012;
+
     /** @var int */
     private $code;
 

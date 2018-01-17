@@ -100,7 +100,7 @@ class PostAuthToken implements RequestHandlerInterface
             'Content-Length'   => (string) strlen($responseBody)
         );
 
-        return new Response(200, $responseHeaders, $responseBody);
+        return new Response(Response::HTTP_OK, $responseHeaders, $responseBody);
     }
 
     /**

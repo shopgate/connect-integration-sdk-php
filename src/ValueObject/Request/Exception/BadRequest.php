@@ -21,6 +21,8 @@
 
 namespace Shopgate\CloudIntegrationSdk\ValueObject\Request\Exception;
 
+use Shopgate\CloudIntegrationSdk\ValueObject\Response;
+
 class BadRequest extends \Exception
 {
     /**
@@ -35,7 +37,7 @@ class BadRequest extends \Exception
         $message = "Bad Request: {$message}";
         parent::__construct(
             $message,
-            400,
+            Response::HTTP_BAD_REQUEST,
             $previous
         );
     }

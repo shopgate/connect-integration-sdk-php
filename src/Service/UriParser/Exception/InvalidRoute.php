@@ -21,6 +21,8 @@
 
 namespace Shopgate\CloudIntegrationSdk\Service\UriParser\Exception;
 
+use Shopgate\CloudIntegrationSdk\ValueObject\Response;
+
 class InvalidRoute extends \Exception
 {
     /**
@@ -30,7 +32,7 @@ class InvalidRoute extends \Exception
     {
         parent::__construct(
             'Invalid route object.',
-            1010,
+            Response::HTTP_INVALID_ROUTE,
             $previous
         );
     }

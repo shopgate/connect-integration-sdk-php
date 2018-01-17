@@ -22,11 +22,11 @@
 namespace Shopgate\CloudIntegrationSdk\Service\Authenticator;
 
 use Shopgate\CloudIntegrationSdk\Repository;
-use Shopgate\CloudIntegrationSdk\ValueObject\Request;
-use Shopgate\CloudIntegrationSdk\ValueObject\Username;
 use Shopgate\CloudIntegrationSdk\ValueObject\Password;
+use Shopgate\CloudIntegrationSdk\ValueObject\Request;
 use Shopgate\CloudIntegrationSdk\ValueObject\TokenId;
 use Shopgate\CloudIntegrationSdk\ValueObject\TokenType;
+use Shopgate\CloudIntegrationSdk\ValueObject\Username;
 
 class TokenRequest implements AuthenticatorInterface
 {
@@ -87,9 +87,10 @@ class TokenRequest implements AuthenticatorInterface
 
     /**
      * @param Request\Request $request
-     * @param string  $usernameKey
-     * @param string  $passwordKey
+     * @param string          $usernameKey
+     * @param string          $passwordKey
      *
+     * @throws \RuntimeException
      * @throws Exception\Unauthorized
      * @throws Request\Exception\BadRequest
      */

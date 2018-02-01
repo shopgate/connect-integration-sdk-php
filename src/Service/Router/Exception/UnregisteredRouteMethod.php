@@ -35,7 +35,7 @@ class UnregisteredRouteMethod extends \Exception
         $routeString = trim('/', $route);
         parent::__construct(
             "Method '$method' is not registered for route '$routeString'",
-            Response::HTTP_UNREGISTERED_ROUTE_METHOD,
+            Response::UNREGISTERED_ROUTE_METHOD,
             $previous
         );
     }

@@ -32,7 +32,7 @@ class InvalidAuthenticator extends \Exception
     {
         parent::__construct(
             'Invalid authenticator object.',
-            Response::HTTP_INVALID_AUTHENTICATOR,
+            Response::INVALID_AUTHENTICATOR,
             $previous
         );
     }

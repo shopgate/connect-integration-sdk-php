@@ -32,7 +32,7 @@ class InvalidRoute extends \Exception
     {
         parent::__construct(
             'Invalid route object.',
-            Response::HTTP_INVALID_ROUTE,
+            Response::INVALID_ROUTE,
             $previous
         );
     }

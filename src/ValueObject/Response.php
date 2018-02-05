@@ -103,4 +103,37 @@ class Response
     {
         return $this->body;
     }
+
+    /**
+     * Checks if the code is not a HTTP code
+     *
+     * @api
+     * @return bool
+     */
+    final public function isInvalid()
+    {
+        return $this->code < 100 || $this->code >= 600;
+    }
+
+    /**
+     * Checks if the HTTP code is a successful response
+     *
+     * @api
+     * @return bool
+     */
+    final public function isSuccessful()
+    {
+        return $this->code >= 200 && $this->code < 300;
+    }
+
+    /**
+     * Checks if the HTTP code is a server error code
+     *
+     * @api
+     * @return bool
+     */
+    final public function isServerError()
+    {
+        return $this->code >= 500 && $this->code < 600;
+    }
 }

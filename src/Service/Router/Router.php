@@ -115,6 +115,7 @@ class Router
      * @throws UriParser\Exception\InvalidRoute
      * @throws \RuntimeException
      * @throws Authenticator\Exception\InvalidAuthenticator
+     * @throws Authenticator\Exception\Unauthorized
      */
     public function dispatch(Request\Request $request)
     {

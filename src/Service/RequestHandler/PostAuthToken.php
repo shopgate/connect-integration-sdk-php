@@ -86,6 +86,7 @@ class PostAuthToken implements RequestHandlerInterface
     /**
      * @inheritdoc
      *
+     * @throws \InvalidArgumentException
      * @throws Authenticator\Exception\Unauthorized
      * @throws Request\Exception\BadRequest
      * @throws \RuntimeException
@@ -132,7 +133,7 @@ class PostAuthToken implements RequestHandlerInterface
                 // check if credentials available
                 $username = new Username($request->getParam($usernameKey));
                 $password = new Password($request->getParam($passwordKey));
-                if ((string) $username === '' || (string) $password === '') {
+                if ('' === (string) $username || '' === (string) $password) {
                     throw new Request\Exception\BadRequest('No username or password specified.');
                 }
 
@@ -187,7 +188,7 @@ class PostAuthToken implements RequestHandlerInterface
         $this->expireToken($oldAccessToken);
         $this->expireToken($oldRefreshToken);
 
-        return $this->createResponse($accessToken, $refreshToken, $this->tokenExpirationTime);
+        return $this->createResponse($accessToken, $this->tokenExpirationTime, $refreshToken);
     }
 
     /**
@@ -201,6 +202,10 @@ class PostAuthToken implements RequestHandlerInterface
      */
     private function createToken($type, $userId, $expirationTime = 3600)
     {
+        if ($type instanceof RefreshToken && null === $userId) {
+            return null;
+        }
+
         $expirationDateString = new Base\BaseString(date('Y-m-dTH:i:s', time() + $expirationTime));
         try {
             $result = new Token(
@@ -247,22 +252,26 @@ class PostAuthToken implements RequestHandlerInterface
     }
 
     /**
-     * @param Token $accessToken
-     * @param Token $refreshToken
-     * @param int   $expiresIn
+     * @param Token        $accessToken
+     * @param int          $expiresIn
+     * @param Token | null $refreshToken
      *
      * @return string[]
      */
-    private function createResponse(Token $accessToken, Token $refreshToken, $expiresIn)
+    private function createResponse(Token $accessToken, $expiresIn, Token $refreshToken = null)
     {
-        return array(
-            'token_type'                      => 'Bearer',
-            (string) $accessToken->getType()  => (string) $accessToken->getTokenId(),
-            'expires_in'                      => $expiresIn,
-            (string) $refreshToken->getType() => (string) $refreshToken->getTokenId(),
-            //todo-sg: don't create for guest user
-            'scope'                           => (string) $accessToken->getScope(),
-            'user_id'                         => (string) $accessToken->getUserId(),
+        $response = array(
+            'token_type'                     => 'Bearer',
+            (string) $accessToken->getType() => (string) $accessToken->getTokenId(),
+            'expires_in'                     => $expiresIn,
+            'scope'                          => (string) $accessToken->getScope(),
+            'user_id'                        => (string) $accessToken->getUserId(),
         );
+
+        if ($refreshToken instanceof Token) {
+            $response[(string) $refreshToken->getType()] = (string) $refreshToken->getTokenId();
+        }
+
+        return $response;
     }
 }

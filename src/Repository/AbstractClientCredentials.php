@@ -28,12 +28,12 @@ abstract class AbstractClientCredentials implements RepositoryInterface
      *
      * @throws \Exception
      */
-    public abstract function getClientId();
+    abstract public function getClientId();
 
     /**
      * @return string
      *
      * @throws \Exception
      */
-    public abstract function getClientSecret();
+    abstract public function getClientSecret();
 }

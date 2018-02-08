@@ -21,6 +21,8 @@
 
 namespace Shopgate\CloudIntegrationSdk\Service\Authenticator\Exception;
 
+use Shopgate\CloudIntegrationSdk\ValueObject\Response;
+
 class InvalidAuthenticator extends \Exception
 {
     /**
@@ -30,7 +32,7 @@ class InvalidAuthenticator extends \Exception
     {
         parent::__construct(
             'Invalid authenticator object.',
-            1012,
+            Response::INVALID_AUTHENTICATOR,
             $previous
         );
     }

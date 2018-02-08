@@ -90,6 +90,6 @@ class GetV2 implements RequestHandlerInterface
             'Content-Length'   => (string) strlen($specification)
         );
 
-        return new Response(200, $responseHeaders, $specification);
+        return new Response(Response::HTTP_OK, $responseHeaders, $specification);
     }
 }

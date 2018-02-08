@@ -28,6 +28,8 @@ abstract class Enum
 
     /**
      * @param mixed $value
+     *
+     * @throws \InvalidArgumentException
      */
     public function __construct($value)
     {
@@ -59,5 +61,5 @@ abstract class Enum
     /**
      * @return string[]
      */
-    public abstract function getEnumValues();
+    abstract public function getEnumValues();
 }

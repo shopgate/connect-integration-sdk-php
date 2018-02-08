@@ -21,6 +21,6 @@
 
 namespace Shopgate\CloudIntegrationSdk\ValueObject;
 
-class Username extends Base\String
+class Username extends Base\BaseString
 {
 }

@@ -21,9 +21,9 @@
 
 namespace Shopgate\CloudIntegrationSdk\Repository;
 
-use Shopgate\CloudIntegrationSdk\ValueObject\TokenType\AbstractTokenType;
 use Shopgate\CloudIntegrationSdk\ValueObject\Token;
 use Shopgate\CloudIntegrationSdk\ValueObject\TokenId;
+use Shopgate\CloudIntegrationSdk\ValueObject\TokenType\AbstractTokenType;
 use Shopgate\CloudIntegrationSdk\ValueObject\UserId;
 
 abstract class AbstractToken implements RepositoryInterface
@@ -37,7 +37,7 @@ abstract class AbstractToken implements RepositoryInterface
      *
      * @throws \Exception
      */
-    public abstract function generateTokenId(AbstractTokenType $type);
+    abstract public function generateTokenId(AbstractTokenType $type);
 
     /**
      * @param TokenId           $token
@@ -47,7 +47,7 @@ abstract class AbstractToken implements RepositoryInterface
      *
      * @throws \Exception Throws a custom exception if trying to load the token fails for some reason
      */
-    public abstract function loadToken(TokenId $token, AbstractTokenType $type);
+    abstract public function loadToken(TokenId $token, AbstractTokenType $type);
 
     /**
      * @param UserId            $userId
@@ -57,7 +57,7 @@ abstract class AbstractToken implements RepositoryInterface
      *
      * @throws \Exception Throws a custom exception if trying to load the token fails for some reason
      */
-    public abstract function loadTokenByUserId($userId, AbstractTokenType $type);
+    abstract public function loadTokenByUserId(UserId $userId, AbstractTokenType $type);
 
     /**
      * Creates a new token in the data source or overwrites it, if the TokenId already exists
@@ -66,5 +66,5 @@ abstract class AbstractToken implements RepositoryInterface
      *
      * @throws \Exception Throws a custom exception if the call failed
      */
-    public abstract function saveToken(Token $tokenData);
+    abstract public function saveToken(Token $tokenData);
 }

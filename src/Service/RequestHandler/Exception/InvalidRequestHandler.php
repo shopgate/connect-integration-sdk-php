@@ -21,6 +21,8 @@
 
 namespace Shopgate\CloudIntegrationSdk\Service\RequestHandler\Exception;
 
+use Shopgate\CloudIntegrationSdk\ValueObject\Response;
+
 class InvalidRequestHandler extends \Exception
 {
     /**
@@ -30,7 +32,7 @@ class InvalidRequestHandler extends \Exception
     {
         parent::__construct(
             'Invalid request handler object.',
-            1011,
+            Response::INVALID_REQUEST_HANDLER,
             $previous
         );
     }

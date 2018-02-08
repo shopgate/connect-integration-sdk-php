@@ -21,7 +21,7 @@
 
 namespace Shopgate\CloudIntegrationSdk\ValueObject\Base;
 
-class String
+class BaseString
 {
     /** @var string */
     private $value;
@@ -47,6 +47,6 @@ class String
      */
     public function getValue()
     {
-        return (string) $this->value;
+        return $this->value;
     }
 }

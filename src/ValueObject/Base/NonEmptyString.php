@@ -21,7 +21,7 @@
 
 namespace Shopgate\CloudIntegrationSdk\ValueObject\Base;
 
-class NonEmptyString extends String
+class NonEmptyString extends BaseString
 {
     /**
      * @inheritdoc

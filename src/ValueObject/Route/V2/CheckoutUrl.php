@@ -19,14 +19,16 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\ValueObject\Route;
+namespace Shopgate\CloudIntegrationSdk\ValueObject\Route\V2;
 
-class Carts extends AbstractRoute
+use Shopgate\CloudIntegrationSdk\ValueObject\Route\AbstractRoute;
+
+class CheckoutUrl extends AbstractRoute
 {
     public function __construct()
     {
-        $this->paramNameList = array();
-        $this->identifier    = "/carts";
-        $this->pattern       = "/^\\/carts\\/*$/";
+        $this->paramNameList = array('cartId');
+        $this->identifier    = "/carts/{$this->paramNameList[0]}/checkoutUrl";
+        $this->pattern       = "~^\/v2\/carts\\/(?<{$this->paramNameList[0]}>[^/?]*)\/checkoutUrl\/*$~";
     }
 }

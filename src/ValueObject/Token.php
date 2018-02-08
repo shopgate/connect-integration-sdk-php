@@ -35,10 +35,10 @@ class Token
     /** @var  UserId | null */
     private $userId;
 
-    /** @var  Base\String | null */
+    /** @var  Base\BaseString | null */
     private $expires;
 
-    /** @var  Base\String | null */
+    /** @var  Base\BaseString | null */
     private $scope;
 
     /**
@@ -46,8 +46,8 @@ class Token
      * @param TokenId                     $tokenId
      * @param ClientId                    $clientId
      * @param UserId|null                 $userId
-     * @param Base\String|null            $expires
-     * @param Base\String|null            $scope
+     * @param Base\BaseString|null        $expires
+     * @param Base\BaseString|null        $scope
      *
      * @throws \InvalidArgumentException
      */
@@ -56,10 +56,10 @@ class Token
         TokenId $tokenId,
         ClientId $clientId,
         UserId $userId = null,
-        Base\String $expires = null,
-        Base\String $scope = null
+        Base\BaseString $expires = null,
+        Base\BaseString $scope = null
     ) {
-        if (is_null($type) || is_null($tokenId) || is_null($clientId)) {
+        if (null === $type || null === $tokenId || null === $clientId) {
             throw new \InvalidArgumentException("Token parameters 'tokenId', 'clientId' and 'type must' be valid.");
         }
 
@@ -106,7 +106,7 @@ class Token
     /**
      * Returns a datestring or null if the the token does not expire.
      *
-     * @return Base\String | null
+     * @return Base\BaseString | null
      */
     public function getExpires()
     {
@@ -114,7 +114,7 @@ class Token
     }
 
     /**
-     * @return Base\String | null
+     * @return Base\BaseString | null
      */
     public function getScope()
     {

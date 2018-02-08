@@ -96,7 +96,8 @@ class PostAuthToken implements RequestHandlerInterface
         $responseBody    = json_encode($this->generateTokens($request));
         $responseHeaders = array(
             'Content-Type'     => 'application/json; charset=utf-8',
-            'Cache-Control'    => 'no-cache',
+            'Cache-Control'    => 'no-store',
+            'Pragma'           => 'no-cache',
             'Content-Language' => 'en',
             'Content-Length'   => (string) strlen($responseBody)
         );

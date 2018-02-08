@@ -53,6 +53,6 @@ class Integer
      */
     public function getValue()
     {
-        return (int) $this->value;
+        return $this->value;
     }
 }

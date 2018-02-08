@@ -21,6 +21,8 @@
 
 namespace Shopgate\CloudIntegrationSdk\Service\Authenticator\Exception;
 
+use Shopgate\CloudIntegrationSdk\ValueObject\Response;
+
 class Forbidden extends \Exception
 {
     /**
@@ -35,7 +37,7 @@ class Forbidden extends \Exception
         $message = "Forbidden: {$message}";
         parent::__construct(
             $message,
-            403,
+            Response::HTTP_FORBIDDEN,
             $previous
         );
     }

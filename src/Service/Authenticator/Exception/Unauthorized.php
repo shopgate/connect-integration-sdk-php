@@ -21,6 +21,8 @@
 
 namespace Shopgate\CloudIntegrationSdk\Service\Authenticator\Exception;
 
+use Shopgate\CloudIntegrationSdk\ValueObject\Response;
+
 class Unauthorized extends \Exception
 {
     /**
@@ -35,7 +37,7 @@ class Unauthorized extends \Exception
         $message = "Unauthorized: {$message}";
         parent::__construct(
             $message,
-            401,
+            Response::HTTP_UNAUTHORIZED,
             $previous
         );
     }

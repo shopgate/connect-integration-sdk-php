@@ -23,6 +23,24 @@ namespace Shopgate\CloudIntegrationSdk\ValueObject;
 
 class Response
 {
+    const HTTP_OK                    = 200;
+    const HTTP_BAD_REQUEST           = 400;
+    const HTTP_UNAUTHORIZED          = 401;
+    const HTTP_FORBIDDEN             = 403;
+    const HTTP_NOT_FOUND             = 404;
+    const HTTP_METHOD_NOT_ALLOWED    = 405;
+    const HTTP_INTERNAL_SERVER_ERROR = 500;
+    const HTTP_NOT_IMPLEMENTED       = 501;
+
+    /**
+     * Custom invalid codes
+     */
+    const UNREGISTERED_ROUTE        = 1001;
+    const UNREGISTERED_ROUTE_METHOD = 1002;
+    const INVALID_ROUTE             = 1010;
+    const INVALID_REQUEST_HANDLER   = 1011;
+    const INVALID_AUTHENTICATOR     = 1012;
+
     /** @var int */
     private $code;
 
@@ -52,14 +70,16 @@ class Response
     /**
      * @return int
      */
-    public function getCode() {
+    public function getCode()
+    {
         return $this->code;
     }
 
     /**
      * @return string[]
      */
-    public function getHeaders() {
+    public function getHeaders()
+    {
         return $this->headers;
     }
 
@@ -79,7 +99,41 @@ class Response
     /**
      * @return string
      */
-    public function getBody() {
+    public function getBody()
+    {
         return $this->body;
+    }
+
+    /**
+     * Checks if the code is not a HTTP code
+     *
+     * @api
+     * @return bool
+     */
+    final public function isInvalid()
+    {
+        return $this->code < 100 || $this->code >= 600;
+    }
+
+    /**
+     * Checks if the HTTP code is a successful response
+     *
+     * @api
+     * @return bool
+     */
+    final public function isSuccessful()
+    {
+        return $this->code >= 200 && $this->code < 300;
+    }
+
+    /**
+     * Checks if the HTTP code is a server error code
+     *
+     * @api
+     * @return bool
+     */
+    final public function isServerError()
+    {
+        return $this->code >= 500 && $this->code < 600;
     }
 }

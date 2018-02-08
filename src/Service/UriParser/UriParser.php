@@ -28,7 +28,8 @@ class UriParser
     /** @var Route\AbstractRoute[] */
     private $routes;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->routes = array();
     }
 
@@ -37,7 +38,8 @@ class UriParser
      *
      * @throws Exception\InvalidRoute
      */
-    public function addRoute(Route\AbstractRoute $route) {
+    public function addRoute(Route\AbstractRoute $route)
+    {
         if (empty($route)) {
             throw new Exception\InvalidRoute();
         }
@@ -70,14 +72,15 @@ class UriParser
      * Returns the list of parameters in defined order, that the given route takes and the given uri string contains
      *
      * @param Route\AbstractRoute $route
-     * @param string $uriString
+     * @param string              $uriString
      *
      * @return string[]
      *
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */
-    public function getRouteParams(Route\AbstractRoute $route, $uriString) {
+    public function getRouteParams(Route\AbstractRoute $route, $uriString)
+    {
         $match = $this->matchRouteUri($route->getPattern(), $this->simplifyUriString($uriString));
 
         // read only named elements, that are furthermore called "params"
@@ -96,7 +99,8 @@ class UriParser
      *
      * @return string
      */
-    private function simplifyUriString($uriString) {
+    private function simplifyUriString($uriString)
+    {
         return '/' . ltrim(parse_url($uriString, PHP_URL_PATH), '/');
     }
 

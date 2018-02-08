@@ -21,9 +21,9 @@
 
 namespace Shopgate\CloudIntegrationSdk\Repository;
 
+use Shopgate\CloudIntegrationSdk\ValueObject\Password;
 use Shopgate\CloudIntegrationSdk\ValueObject\UserId;
 use Shopgate\CloudIntegrationSdk\ValueObject\Username;
-use Shopgate\CloudIntegrationSdk\ValueObject\Password;
 
 abstract class AbstractUser implements RepositoryInterface
 {
@@ -35,5 +35,5 @@ abstract class AbstractUser implements RepositoryInterface
      *
      * @throws \Exception Throws a custom exception if accessing the data source fails
      */
-    public abstract function getUserIdByCredentials(Username $login, Password $password);
+    abstract public function getUserIdByCredentials(Username $login, Password $password);
 }

@@ -21,11 +21,13 @@
 
 namespace Shopgate\CloudIntegrationSdk\Service\Router\Exception;
 
+use Shopgate\CloudIntegrationSdk\ValueObject\Response;
+
 class UnregisteredRouteMethod extends \Exception
 {
     /**
-     * @param string           $method
-     * @param string           $route
+     * @param string            $method
+     * @param string            $route
      * @param \Throwable | null $previous
      */
     public function __construct($method, $route, \Throwable $previous = null)
@@ -33,7 +35,7 @@ class UnregisteredRouteMethod extends \Exception
         $routeString = trim('/', $route);
         parent::__construct(
             "Method '$method' is not registered for route '$routeString'",
-            1002,
+            Response::UNREGISTERED_ROUTE_METHOD,
             $previous
         );
     }

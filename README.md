@@ -1,9 +1,9 @@
-# Shopgate Cloud Integration SDK
+# Shopgate Connect Integration SDK
 
 [![GitHub license](http://dmlc.github.io/img/apache2.svg)](LICENSE.md)
 [![Build Status](https://travis-ci.org/shopgate/cloud-integration-sdk.svg?branch=master)](https://travis-ci.org/shopgate/cloud-integration-sdk)
 
-The Shopgate Cloud Integration SDK is a compilation of classes to manage the communication between your shop system and Shopgate Connect.
+The Shopgate Connect Integration SDK is a compilation of classes to manage the communication between your shop system and Shopgate Connect.
 
 ## Getting Started
 #### Via Composer

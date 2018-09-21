@@ -146,7 +146,7 @@ class Request
      *
      * @return string
      */
-    private function parseContentType($contentType) 
+    private function parseContentType($contentType)
     {
         // the content type is always the first part of to possible ones, delimited by semicolon
         $parts = explode(';', trim($contentType));

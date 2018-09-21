@@ -7,7 +7,7 @@ The Shopgate Connect Integration SDK is a compilation of classes to manage the c
 
 ## Getting Started
 #### Via Composer
-```composer require shopgate/cloud-integration-sdk```
+```composer require shopgate/connect-integration-sdk```
 
 ## Changelog
 
@@ -23,6 +23,6 @@ Shopgate is the leading mobile commerce platform.
 
 ## License
 
-The Shopgate Cloud Integration SDK is available under the Apache License, Version 2.0.
+The Shopgate Connect Integration SDK is available under the Apache License, Version 2.0.
 
 See the [LICENSE.md](LICENSE.md) file for more information.

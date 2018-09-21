@@ -126,7 +126,7 @@ class Request
             }
 
             // check if the provided content type is supported
-            switch($this->parseContentType($requestHeaders[$contentTypeKey])) {
+            switch ($this->parseContentType($requestHeaders[$contentTypeKey])) {
                 case 'application/json':
                     $data = json_decode($this->getBody(), true);
                     break;

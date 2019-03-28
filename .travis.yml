@@ -7,18 +7,10 @@ before_script:
 - composer install
 
 script:
-- vendor/bin/phpunit
+- vendor/bin/phpunit --prepend build/xdebug-filter.php --coverage-html build/coverage-report
 
 jobs:
   include:
-  - stage: Unit Test + Code Style Fixing
-    php: 5.3
-  - stage: Unit Test + Code Style Fixing
-    php: 5.4
-  - stage: Unit Test + Code Style Fixing
-    php: 5.5
-  - stage: Unit Test + Code Style Fixing
-    php: 7.0
   - stage: Unit Test + Code Style Fixing
     php: 7.1
   - stage: Unit Test + Code Style Fixing

@@ -23,7 +23,7 @@ namespace unit\Service\Authenticator\Exception;
 
 use Shopgate\CloudIntegrationSdk\Service\Authenticator\Exception\Forbidden as ForbiddenException;
 
-class ForbiddenTest extends \PHPUnit_Framework_TestCase
+class ForbiddenTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @param \Exception  $expectedResult

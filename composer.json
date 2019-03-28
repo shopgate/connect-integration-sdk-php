@@ -4,11 +4,6 @@
     "homepage": "https://github.com/shopgate/connect-integration-sdk",
     "license": "Apache-2.0",
     "version": "1.0.0-alpha",
-    "config": {
-        "platform": {
-            "php": "5.3.3"
-        }
-    },
     "authors": [
         {
             "name": "Shopgate",

@@ -20,7 +20,13 @@
  */
 
 require_once dirname(__FILE__) . '/../vendor/autoload.php';
+require_once dirname(__FILE__) . '/../src/Repository/RepositoryInterface.php';
+require_once dirname(__FILE__) . '/../src/Repository/AbstractClientCredentials.php';
+require_once dirname(__FILE__) . '/../src/Service/Authenticator/AuthenticatorInterface.php';
+require_once dirname(__FILE__) . '/../src/Service/Authenticator/BasicAuth.php';
 require_once dirname(__FILE__) . '/../src/Service/Authenticator/Exception/Forbidden.php';
 require_once dirname(__FILE__) . '/../src/Service/Authenticator/Exception/InvalidAuthenticator.php';
 require_once dirname(__FILE__) . '/../src/Service/Authenticator/Exception/Unauthorized.php';
+require_once dirname(__FILE__) . '/../src/ValueObject/Request/Request.php';
 require_once dirname(__FILE__) . '/../src/ValueObject/Response.php';
+require_once dirname(__FILE__) . '/Stubs/Repository/ClientCredentials.php';

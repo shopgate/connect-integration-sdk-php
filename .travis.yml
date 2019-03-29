@@ -7,7 +7,7 @@ before_script:
 - composer install
 
 script:
-- vendor/bin/phpunit --prepend build/xdebug-filter.php --coverage-html build/coverage-report
+- vendor/bin/phpunit --coverage-html build/coverage-report
 
 jobs:
   include:

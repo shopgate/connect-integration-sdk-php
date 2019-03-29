@@ -28,8 +28,9 @@ class ClientCredentials extends \Shopgate\CloudIntegrationSdk\Repository\Abstrac
      *
      * @throws \Exception
      */
-    public function getClientId() {
-        return '';
+    public function getClientId()
+    {
+        return 'someClientId';
     }
 
     /**
@@ -37,7 +38,8 @@ class ClientCredentials extends \Shopgate\CloudIntegrationSdk\Repository\Abstrac
      *
      * @throws \Exception
      */
-    public function getClientSecret() {
-        return '';
+    public function getClientSecret()
+    {
+        return 'someClientSecret';
     }
 }

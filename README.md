@@ -2,6 +2,7 @@
 
 [![GitHub license](http://dmlc.github.io/img/apache2.svg)](LICENSE.md)
 [![Build Status](https://travis-ci.org/shopgate/connect-integration-sdk.svg?branch=master)](https://travis-ci.org/shopgate/connect-integration-sdk)
+[![Coverage Status](https://coveralls.io/repos/github/shopgate/connect-integration-sdk-php/badge.svg?branch=master)](https://coveralls.io/github/shopgate/connect-integration-sdk-php?branch=master)
 
 The Shopgate Connect Integration SDK is a compilation of classes to manage the communication between your shop system and Shopgate Connect.
 

@@ -21,7 +21,7 @@
 
 namespace Shopgate\CloudIntegrationSdk\Tests\Unit\Service\Authenticator\Exception;
 
-use Shopgate\CloudIntegrationSdk\Service\RequestHandler\Exception\InvalidRequestHandler as InvalidRequestHandlerException;
+use Shopgate\CloudIntegrationSdk\Service\RequestHandler\Exception;
 
 class InvalidRequestHandlerTest extends \PHPUnit\Framework\TestCase
 {
@@ -33,7 +33,7 @@ class InvalidRequestHandlerTest extends \PHPUnit\Framework\TestCase
      */
     public function testConstruct($expectedResult)
     {
-        $result = new InvalidRequestHandlerException();
+        $result = new Exception\InvalidRequestHandler();
         $this->assertEquals($expectedResult->getMessage(), $result->getMessage());
         $this->assertEquals($expectedResult->getCode(), $result->getCode());
     }

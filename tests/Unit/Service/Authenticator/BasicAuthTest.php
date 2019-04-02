@@ -44,7 +44,7 @@ class BasicAuthTest extends \PHPUnit\Framework\TestCase
      */
     public function testAuthenticate($expectedResult, $requestAuthorizationHeader)
     {
-        /** @var \Shopgate\CloudIntegrationSdk\ValueObject\Request\Request $request */
+        /** @var \Shopgate\CloudIntegrationSdk\ValueObject\Request\Request|\PHPUnit\Framework\MockObject\MockObject $request */
         $request = $this
             ->getMockBuilder('\Shopgate\CloudIntegrationSdk\ValueObject\Request\Request')
             ->setConstructorArgs(['uri', 'method'])
@@ -64,7 +64,6 @@ class BasicAuthTest extends \PHPUnit\Framework\TestCase
         } catch (\Exception $exception) {
             $error = 2;
         }
-
 
         $this->assertEquals($expectedResult, $error);
     }

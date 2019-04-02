@@ -21,7 +21,7 @@
 
 namespace Shopgate\CloudIntegrationSdk\Tests\Unit\Service\Authenticator\Exception;
 
-use Shopgate\CloudIntegrationSdk\Service\Authenticator\Exception\Forbidden as ForbiddenException;
+use Shopgate\CloudIntegrationSdk\Service\Authenticator\Exception;
 
 class ForbiddenTest extends \PHPUnit\Framework\TestCase
 {
@@ -34,7 +34,7 @@ class ForbiddenTest extends \PHPUnit\Framework\TestCase
      */
     public function testConstruct($expectedResult, $errorMessage)
     {
-        $result = $errorMessage === null ? new ForbiddenException() : new ForbiddenException($errorMessage);
+        $result = $errorMessage === null ? new Exception\Forbidden() : new Exception\Forbidden($errorMessage);
         $this->assertEquals($expectedResult->getMessage(), $result->getMessage());
         $this->assertEquals($expectedResult->getCode(), $result->getCode());
     }

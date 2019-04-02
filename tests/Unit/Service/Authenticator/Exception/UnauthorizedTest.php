@@ -21,7 +21,7 @@
 
 namespace Shopgate\CloudIntegrationSdk\Tests\Unit\Service\Authenticator\Exception;
 
-use Shopgate\CloudIntegrationSdk\Service\Authenticator\Exception\Unauthorized as UnauthorizedException;
+use Shopgate\CloudIntegrationSdk\Service\Authenticator\Exception;
 
 class UnauthorizedTest extends \PHPUnit\Framework\TestCase
 {
@@ -34,7 +34,7 @@ class UnauthorizedTest extends \PHPUnit\Framework\TestCase
      */
     public function testConstruct($expectedResult, $errorMessage)
     {
-        $result = $errorMessage === null ? new UnauthorizedException() : new UnauthorizedException($errorMessage);
+        $result = $errorMessage === null ? new Exception\Unauthorized() : new Exception\Unauthorized($errorMessage);
         $this->assertEquals($expectedResult->getMessage(), $result->getMessage());
         $this->assertEquals($expectedResult->getCode(), $result->getCode());
     }

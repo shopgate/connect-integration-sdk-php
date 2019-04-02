@@ -12,7 +12,7 @@ script:
 jobs:
   include:
   - stage: Unit Tests + Code Style Fixing + Code Coverage
-    php: 7.3
+    php: 7.2
     before_script:
     - composer install
     script:
@@ -30,8 +30,6 @@ jobs:
     php: 7.0
   - stage: Unit Tests
     php: 7.1
-  - stage: Unit Tests
-    php: 7.2
   - stage: deploy
     php: 5.6
     before_script: skip

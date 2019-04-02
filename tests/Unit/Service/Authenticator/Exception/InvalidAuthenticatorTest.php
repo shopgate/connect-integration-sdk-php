@@ -28,7 +28,7 @@ class InvalidAuthenticatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @param \Exception $expectedResult
      *
-     * @covers       InvalidAuthenticator::__construct()
+     * @covers       \Shopgate\CloudIntegrationSdk\Service\Authenticator\Exception\InvalidAuthenticator::__construct()
      * @dataProvider provideConstructCases
      */
     public function testConstruct($expectedResult)

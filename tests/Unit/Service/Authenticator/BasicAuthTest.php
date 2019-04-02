@@ -39,7 +39,7 @@ class BasicAuthTest extends \PHPUnit\Framework\TestCase
      * @param \Exception $expectedResult
      * @param string     $requestAuthorizationHeader
      *
-     * @covers       BasicAuth::authenticate()
+     * @covers       \Shopgate\CloudIntegrationSdk\Service\Authenticator\BasicAuth::authenticate()
      * @dataProvider provideAuthenticateCases
      */
     public function testAuthenticate($expectedResult, $requestAuthorizationHeader)

@@ -29,7 +29,7 @@ class ForbiddenTest extends \PHPUnit\Framework\TestCase
      * @param \Exception  $expectedResult
      * @param string|null $errorMessage
      *
-     * @covers       ForbiddenException::__construct()
+     * @covers       \Shopgate\CloudIntegrationSdk\Service\Authenticator\Exception\Forbidden::__construct()
      * @dataProvider provideConstructCases
      */
     public function testConstruct($expectedResult, $errorMessage)

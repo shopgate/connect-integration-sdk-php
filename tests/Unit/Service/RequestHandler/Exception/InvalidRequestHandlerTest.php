@@ -28,7 +28,7 @@ class InvalidRequestHandlerTest extends \PHPUnit\Framework\TestCase
     /**
      * @param \Exception $expectedResult
      *
-     * @covers       InvalidRequestHandlerException::__construct()
+     * @covers       \Shopgate\CloudIntegrationSdk\Service\RequestHandler\Exception\InvalidRequestHandler::__construct()
      * @dataProvider provideConstructCases
      */
     public function testConstruct($expectedResult)

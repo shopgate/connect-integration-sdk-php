@@ -29,7 +29,7 @@ class UnauthorizedTest extends \PHPUnit\Framework\TestCase
      * @param \Exception  $expectedResult
      * @param string|null $errorMessage
      *
-     * @covers       UnauthorizedException::__construct()
+     * @covers       \Shopgate\CloudIntegrationSdk\Service\Authenticator\Exception\Unauthorized::__construct()
      * @dataProvider provideConstructCases
      */
     public function testConstruct($expectedResult, $errorMessage)

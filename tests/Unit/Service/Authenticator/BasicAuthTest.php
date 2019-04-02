@@ -24,6 +24,7 @@ namespace Shopgate\CloudIntegrationSdk\Tests\Unit\Service\Authenticator;
 use Shopgate\CloudIntegrationSdk\Service\Authenticator\BasicAuth;
 use Shopgate\CloudIntegrationSdk\Service\Authenticator\Exception\Unauthorized;
 use Shopgate\CloudIntegrationSdk\Tests\Stubs\Repository\ClientCredentials;
+use Shopgate\CloudIntegrationSdk\ValueObject\Request\Request;
 
 class BasicAuthTest extends \PHPUnit\Framework\TestCase
 {
@@ -44,9 +45,9 @@ class BasicAuthTest extends \PHPUnit\Framework\TestCase
      */
     public function testAuthenticate($expectedResult, $requestAuthorizationHeader)
     {
-        /** @var \Shopgate\CloudIntegrationSdk\ValueObject\Request\Request|\PHPUnit\Framework\MockObject\MockObject $request */
+        /** @var Request | \PHPUnit\Framework\MockObject\MockObject $request */
         $request = $this
-            ->getMockBuilder('\Shopgate\CloudIntegrationSdk\ValueObject\Request\Request')
+            ->getMockBuilder(Request::class)
             ->setConstructorArgs(['uri', 'method'])
             ->setMethods(['getHeader'])
             ->getMock();

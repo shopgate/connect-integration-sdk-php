@@ -30,7 +30,7 @@ class BasicAuthTest extends \PHPUnit\Framework\TestCase
     /** @var BasicAuth */
     private $basicAuth;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->basicAuth = new BasicAuth(new ClientCredentials());
     }

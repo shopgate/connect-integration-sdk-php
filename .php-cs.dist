@@ -8,15 +8,15 @@
 use PhpCsFixer\Config;
 use PhpCsFixer\Finder;
 
-$fixers = array(
+$fixers = [
     '@PSR1' => true,
     '@PSR2' => true,
-    'array_syntax' => array(
-        'syntax' => 'long',
-    ),
+    'array_syntax' => [
+        'syntax' => 'short',
+    ],
     'blank_line_after_opening_tag' => true,
     'method_argument_space' => false,
-);
+];
 
 return Config::create()
     ->setRiskyAllowed(true)

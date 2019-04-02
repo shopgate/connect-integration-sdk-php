@@ -44,19 +44,19 @@ class ForbiddenTest extends \PHPUnit\Framework\TestCase
      */
     public function provideConstructCases()
     {
-        return array(
-            'no message'    => array(
+        return [
+            'no message'    => [
                 new \Exception('Forbidden: BasicAuth does not have permissions to access the requested resource.', 403),
                 null,
-            ),
-            'empty message' => array(
+            ],
+            'empty message' => [
                 new \Exception('Forbidden: BasicAuth does not have permissions to access the requested resource.', 403),
                 '',
-            ),
-            'some message'  => array(
+            ],
+            'some message'  => [
                 new \Exception('Forbidden: some error', 403),
                 'some error',
-            ),
-        );
+            ],
+        ];
     }
 }

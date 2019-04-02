@@ -27,7 +27,7 @@ class CheckoutUrl extends AbstractRoute
 {
     public function __construct()
     {
-        $this->paramNameList = array('cartId');
+        $this->paramNameList = ['cartId'];
         $this->identifier    = "/carts/{$this->paramNameList[0]}/checkoutUrl";
         $this->pattern       = "~^\/v2\/carts\\/(?<{$this->paramNameList[0]}>[^/?]*)\/checkoutUrl\/*$~";
     }

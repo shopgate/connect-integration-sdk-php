@@ -44,19 +44,19 @@ class UnauthorizedTest extends \PHPUnit\Framework\TestCase
      */
     public function provideConstructCases()
     {
-        return array(
-            'no message'    => array(
+        return [
+            'no message'    => [
                 new \Exception('Unauthorized: Invalid or missing authorization.', 401),
                 null,
-            ),
-            'empty message' => array(
+            ],
+            'empty message' => [
                 new \Exception('Unauthorized: Invalid or missing authorization.', 401),
                 '',
-            ),
-            'some message'  => array(
+            ],
+            'some message'  => [
                 new \Exception('Unauthorized: some error', 401),
                 'some error',
-            ),
-        );
+            ],
+        ];
     }
 }

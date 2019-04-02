@@ -83,12 +83,12 @@ class GetV2 implements RequestHandlerInterface
 
         // load file contents to be returned as a response for display
         $specification = file_get_contents($specificationPath);
-        $responseHeaders = array(
+        $responseHeaders = [
             'Content-Type'     => 'text/json; charset=utf-8',
             'Cache-Control'    => 'max-age=3600', // 60 minutes
             'Content-Language' => 'en',
             'Content-Length'   => (string) strlen($specification)
-        );
+        ];
 
         return new Response(Response::HTTP_OK, $responseHeaders, $specification);
     }

@@ -41,12 +41,12 @@ class Request
      * @param string[]      $headers
      * @param string | null $body
      */
-    public function __construct($uri, $method, array $headers = array(), $body = null)
+    public function __construct($uri, $method, array $headers = [], $body = null)
     {
         $this->uri = (string) $uri;
         $this->method = (string) $method;
 
-        $this->headers = array();
+        $this->headers = [];
         foreach ($headers as $key => $header) {
             $this->headers[(string) $key] = (string) $header;
         }
@@ -112,7 +112,7 @@ class Request
      */
     public function getParam($paramName)
     {
-        $data = array();
+        $data = [];
         parse_str(parse_url($this->getUri(), PHP_URL_QUERY), $data);
 
         // parse either from request query or from request body

@@ -27,7 +27,7 @@ class Products extends AbstractRoute
 {
     public function __construct()
     {
-        $this->paramNameList = array();
+        $this->paramNameList = [];
         $this->identifier    = '/products';
         $this->pattern       = '~^\/v2\/products\/*$~';
     }

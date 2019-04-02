@@ -98,7 +98,7 @@ class Router
 
         // do the actual subscription by assigning a request handler to the given route and method
         if (!array_key_exists($route->getIdentifier(), $this->requestHandlers)) {
-            $this->requestHandlers[$route->getIdentifier()] = array();
+            $this->requestHandlers[$route->getIdentifier()] = [];
         }
         $this->requestHandlers[$route->getIdentifier()][(string) $method] = $handler;
     }

@@ -35,6 +35,6 @@ abstract class AbstractRequestMethod extends Enum
      */
     public function getEnumValues()
     {
-        return array(self::GET, self::POST, self::PUT, self::DELETE);
+        return [self::GET, self::POST, self::PUT, self::DELETE];
     }
 }

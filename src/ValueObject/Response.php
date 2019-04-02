@@ -59,7 +59,7 @@ class Response
     {
         $this->code = (int) $httpCode;
 
-        $this->headers = array();
+        $this->headers = [];
         foreach ($headers as $key => $header) {
             $this->headers[(string) $key] = (string) $header;
         }

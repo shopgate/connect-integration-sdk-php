@@ -21,9 +21,9 @@
 
 namespace Shopgate\CloudIntegrationSdk\Tests\Unit\Service\Authenticator;
 
-use \Shopgate\CloudIntegrationSdk\Service\Authenticator\BasicAuth;
-use \Shopgate\CloudIntegrationSdk\Service\Authenticator\Exception\Unauthorized;
-use \Stubs\Repository\ClientCredentials;
+use Shopgate\CloudIntegrationSdk\Service\Authenticator\BasicAuth;
+use Shopgate\CloudIntegrationSdk\Service\Authenticator\Exception\Unauthorized;
+use Shopgate\CloudIntegrationSdk\Tests\Stubs\Repository\ClientCredentials;
 
 class BasicAuthTest extends \PHPUnit\Framework\TestCase
 {
@@ -47,8 +47,8 @@ class BasicAuthTest extends \PHPUnit\Framework\TestCase
         /** @var \Shopgate\CloudIntegrationSdk\ValueObject\Request\Request $request */
         $request = $this
             ->getMockBuilder('\Shopgate\CloudIntegrationSdk\ValueObject\Request\Request')
-            ->setConstructorArgs(array('uri', 'method'))
-            ->setMethods(array('getHeader'))
+            ->setConstructorArgs(['uri', 'method'])
+            ->setMethods(['getHeader'])
             ->getMock();
         $request
             ->expects($this->once())
@@ -74,19 +74,19 @@ class BasicAuthTest extends \PHPUnit\Framework\TestCase
      */
     public function provideAuthenticateCases()
     {
-        return array(
-            'correct authorization header'   => array(
+        return [
+            'correct authorization header'   => [
                 0,
                 'Basic ' . base64_encode('someClientId:someClientSecret'),
-            ),
-            'incorrect authorization header' => array(
+            ],
+            'incorrect authorization header' => [
                 1,
                 'Basic ' . base64_encode('Basic someDifferentClientId:someDifferentClientSecret'),
-            ),
-            'missing authorization header'   => array(
+            ],
+            'missing authorization header'   => [
                 1,
                 '',
-            ),
-        );
+            ],
+        ];
     }
 }

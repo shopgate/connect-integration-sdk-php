@@ -43,10 +43,10 @@ class InvalidAuthenticatorTest extends \PHPUnit\Framework\TestCase
      */
     public function provideConstructCases()
     {
-        return array(
-            'construct' => array(
+        return [
+            'construct' => [
                 new \Exception('Invalid authenticator object.', 1012),
-            ),
-        );
+            ],
+        ];
     }
 }

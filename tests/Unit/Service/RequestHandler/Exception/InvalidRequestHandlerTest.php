@@ -43,10 +43,10 @@ class InvalidRequestHandlerTest extends \PHPUnit\Framework\TestCase
      */
     public function provideConstructCases()
     {
-        return array(
-            'new exception' => array(
+        return [
+            'new exception' => [
                 new \Exception('Invalid request handler object.', 1011),
-            ),
-        );
+            ],
+        ];
     }
 }

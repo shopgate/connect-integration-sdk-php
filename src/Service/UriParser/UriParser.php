@@ -30,7 +30,7 @@ class UriParser
 
     public function __construct()
     {
-        $this->routes = array();
+        $this->routes = [];
     }
 
     /**
@@ -84,7 +84,7 @@ class UriParser
         $match = $this->matchRouteUri($route->getPattern(), $this->simplifyUriString($uriString));
 
         // read only named elements, that are furthermore called "params"
-        $result = array();
+        $result = [];
         foreach ($route->getParamNameList() as $paramName) {
             $result[(string) $paramName] = $match[(string) $paramName];
         }

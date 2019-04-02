@@ -19,7 +19,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Unit\Service\Authenticator\Exception;
+namespace Shopgate\CloudIntegrationSdk\Tests\Unit\Service\Authenticator\Exception;
 
 use Shopgate\CloudIntegrationSdk\Service\Authenticator\Exception\Unauthorized as UnauthorizedException;
 
@@ -32,7 +32,7 @@ class UnauthorizedTest extends \PHPUnit\Framework\TestCase
      * @covers       UnauthorizedException::__construct()
      * @dataProvider provideConstructCases
      */
-    public function test_construct($expectedResult, $errorMessage)
+    public function testConstruct($expectedResult, $errorMessage)
     {
         $result = $errorMessage === null ? new UnauthorizedException() : new UnauthorizedException($errorMessage);
         $this->assertEquals($expectedResult->getMessage(), $result->getMessage());

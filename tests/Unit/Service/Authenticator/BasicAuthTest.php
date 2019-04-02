@@ -19,7 +19,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Unit\Service\Authenticator;
+namespace Shopgate\CloudIntegrationSdk\Tests\Unit\Service\Authenticator;
 
 use \Shopgate\CloudIntegrationSdk\Service\Authenticator\BasicAuth;
 use \Shopgate\CloudIntegrationSdk\Service\Authenticator\Exception\Unauthorized;
@@ -42,7 +42,7 @@ class BasicAuthTest extends \PHPUnit\Framework\TestCase
      * @covers       BasicAuth::authenticate()
      * @dataProvider provideAuthenticateCases
      */
-    public function test_authenticate($expectedResult, $requestAuthorizationHeader)
+    public function testAuthenticate($expectedResult, $requestAuthorizationHeader)
     {
         /** @var \Shopgate\CloudIntegrationSdk\ValueObject\Request\Request $request */
         $request = $this

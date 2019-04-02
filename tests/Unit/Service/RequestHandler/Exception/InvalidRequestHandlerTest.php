@@ -19,7 +19,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Unit\Service\Authenticator\Exception;
+namespace Shopgate\CloudIntegrationSdk\Tests\Unit\Service\Authenticator\Exception;
 
 use Shopgate\CloudIntegrationSdk\Service\RequestHandler\Exception\InvalidRequestHandler as InvalidRequestHandlerException;
 
@@ -31,7 +31,7 @@ class InvalidRequestHandlerTest extends \PHPUnit\Framework\TestCase
      * @covers       InvalidRequestHandlerException::__construct()
      * @dataProvider provideConstructCases
      */
-    public function test_construct($expectedResult)
+    public function testConstruct($expectedResult)
     {
         $result = new InvalidRequestHandlerException();
         $this->assertEquals($expectedResult->getMessage(), $result->getMessage());

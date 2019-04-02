@@ -15,11 +15,13 @@
         "zendframework/zend-json": "2.2.*"
     },
     "require-dev": {
-        "phpunit/phpunit": "*"
+        "phpunit/phpunit": ">=4.8",
+        "php-coveralls/php-coveralls": "^2.1"
     },
     "autoload": {
-        "files": [
-            "shopgate.php"
-        ]
+        "psr-4": {
+            "Shopgate\\CloudIntegrationSdk\\": "src/",
+            "Shopgate\\CloudIntegrationSdk\\Tests\\": "tests/"
+        }
     }
 }

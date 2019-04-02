@@ -19,7 +19,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Stubs\Repository;
+namespace Shopgate\CloudIntegrationSdk\Tests\Stubs\Repository;
 
 class ClientCredentials extends \Shopgate\CloudIntegrationSdk\Repository\AbstractClientCredentials
 {

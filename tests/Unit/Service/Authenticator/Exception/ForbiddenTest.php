@@ -19,7 +19,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Unit\Service\Authenticator\Exception;
+namespace Shopgate\CloudIntegrationSdk\Tests\Unit\Service\Authenticator\Exception;
 
 use Shopgate\CloudIntegrationSdk\Service\Authenticator\Exception\Forbidden as ForbiddenException;
 
@@ -32,7 +32,7 @@ class ForbiddenTest extends \PHPUnit\Framework\TestCase
      * @covers       ForbiddenException::__construct()
      * @dataProvider provideConstructCases
      */
-    public function test_construct($expectedResult, $errorMessage)
+    public function testConstruct($expectedResult, $errorMessage)
     {
         $result = $errorMessage === null ? new ForbiddenException() : new ForbiddenException($errorMessage);
         $this->assertEquals($expectedResult->getMessage(), $result->getMessage());

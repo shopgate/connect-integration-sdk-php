@@ -94,13 +94,13 @@ class PostAuthToken implements RequestHandlerInterface
     public function handle(Request\Request $request, $uriParams = null)
     {
         $responseBody    = json_encode($this->generateTokens($request));
-        $responseHeaders = array(
+        $responseHeaders = [
             'Content-Type'     => 'application/json; charset=utf-8',
             'Cache-Control'    => 'no-store',
             'Pragma'           => 'no-cache',
             'Content-Language' => 'en',
             'Content-Length'   => (string) strlen($responseBody)
-        );
+        ];
 
         return new Response(Response::HTTP_OK, $responseHeaders, $responseBody);
     }
@@ -261,13 +261,13 @@ class PostAuthToken implements RequestHandlerInterface
      */
     private function createResponse(Token $accessToken, $expiresIn, Token $refreshToken = null)
     {
-        $response = array(
+        $response = [
             'token_type'                     => 'Bearer',
             (string) $accessToken->getType() => (string) $accessToken->getTokenId(),
             'expires_in'                     => $expiresIn,
             'scope'                          => (string) $accessToken->getScope(),
             'user_id'                        => (string) $accessToken->getUserId(),
-        );
+        ];
 
         if ($refreshToken instanceof Token) {
             $response[(string) $refreshToken->getType()] = (string) $refreshToken->getTokenId();

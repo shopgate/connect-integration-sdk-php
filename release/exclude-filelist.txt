@@ -5,5 +5,5 @@
 .php-cs.dist
 .travis.yml
 build_release_package.sh
-shopgate-cloud-integration-sdk/
+shopgate-cloud-integration-sdk-php/
 release/

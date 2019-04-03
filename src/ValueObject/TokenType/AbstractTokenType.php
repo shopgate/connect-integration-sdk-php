@@ -33,6 +33,6 @@ abstract class AbstractTokenType extends Enum
      */
     public function getEnumValues()
     {
-        return array(self::ACCESS_TOKEN, self::REFRESH_TOKEN);
+        return [self::ACCESS_TOKEN, self::REFRESH_TOKEN];
     }
 }

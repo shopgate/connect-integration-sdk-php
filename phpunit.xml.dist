@@ -5,12 +5,15 @@
          bootstrap="vendor/autoload.php">
     <testsuites>
         <testsuite name="UnitTests">
-            <directory suffix="Test.php">tests/unit</directory>
+            <directory suffix="Test.php">tests/Unit</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist>
             <directory suffix=".php">src</directory>
+            <exclude>
+                <directory suffix=".php">src/ValueObject</directory>
+            </exclude>
         </whitelist>
     </filter>
 </phpunit>

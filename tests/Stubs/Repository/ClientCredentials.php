@@ -19,14 +19,27 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-if (!defined('DS')) {
-    define('DS', '/');
-}
+namespace Shopgate\CloudIntegrationSdk\Tests\Stubs\Repository;
 
-if (file_exists(dirname(__FILE__) . DS . 'dev.php')) {
-    include_once(dirname(__FILE__) . DS . 'dev.php');
-}
+class ClientCredentials extends \Shopgate\CloudIntegrationSdk\Repository\AbstractClientCredentials
+{
+    /**
+     * @return string
+     *
+     * @throws \Exception
+     */
+    public function getClientId()
+    {
+        return 'someClientId';
+    }
 
-if (file_exists(dirname(__FILE__) . DS . 'vendor' . DS . 'autoload.php')) {
-    include_once(dirname(__FILE__) . DS . 'vendor' . DS . 'autoload.php');
+    /**
+     * @return string
+     *
+     * @throws \Exception
+     */
+    public function getClientSecret()
+    {
+        return 'someClientSecret';
+    }
 }

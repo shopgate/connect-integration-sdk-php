@@ -6,5 +6,6 @@
 /.settings
 /.IDEA
 /.idea
+composer.lock
 /vendor
 /.php-cs.cache

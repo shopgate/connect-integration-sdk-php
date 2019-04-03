@@ -27,7 +27,7 @@ class AuthToken extends AbstractRoute
 {
     public function __construct()
     {
-        $this->paramNameList = array();
+        $this->paramNameList = [];
         $this->identifier    = '/auth/token';
         $this->pattern       = '~^\/v2\/auth\/token\/*$~';
     }

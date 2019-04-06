@@ -3,7 +3,7 @@
     "description": "A PHP framework supporting the integration with the Shogate Connect Platform.",
     "homepage": "https://github.com/shopgate/connect-integration-sdk-php",
     "license": "Apache-2.0",
-    "version": "1.0.0-alpha",
+    "version": "0.1.0",
     "authors": [
         {
             "name": "Shopgate",
@@ -11,8 +11,10 @@
         }
     ],
     "require": {
-        "php": ">=5.4",
-        "zendframework/zend-json": "2.2.*"
+        "php": ">=5.5",
+        "zendframework/zend-json": "2.2.*",
+        "guzzlehttp/guzzle": "~6.0",
+        "guzzlehttp/psr7": "^1.5"
     },
     "require-dev": {
         "phpunit/phpunit": ">=5 <8",

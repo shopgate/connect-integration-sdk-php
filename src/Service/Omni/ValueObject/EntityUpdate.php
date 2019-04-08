@@ -19,18 +19,15 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\Service\Request;
+namespace Shopgate\CloudIntegrationSdk\Service\Omni\ValueObject;
 
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
-
-interface RequestServiceInterface
+class EntityUpdate extends Event
 {
-    /**
-     * @param RequestInterface $request
-     * @param string[]         $uriParams
-     *
-     * @return ResponseInterface
-     */
-    public function handle(RequestInterface $request, $uriParams);
+    public function __construct($entity, $entityId, $payload)
+    {
+        $this->event = Event::UPDATE;
+        $this->entity = $entity;
+        $this->entityId = $entityId;
+        $this->payload = $payload;
+    }
 }

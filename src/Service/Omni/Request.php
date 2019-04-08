@@ -19,12 +19,12 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\Service\Request;
+namespace Shopgate\CloudIntegrationSdk\Service\Omni;
 
 use Psr\Http\Message\RequestInterface;
 use Shopgate\CloudIntegrationSdk\Client;
 
-class Omni implements RequestServiceInterface
+class Request implements RequestServiceInterface
 {
     // TODO-sg: maybe move out constants into special service config
     const BASE_URI = 'https://shopgate.com';
@@ -55,8 +55,6 @@ class Omni implements RequestServiceInterface
      */
     public function handle(RequestInterface $request, $uriParams = [])
     {
-        $request->withUri(new \GuzzleHttp\Psr7\Uri(self::BASE_URI . self::VERSION . self::ENDPOINT_PATH));
-
         return $this->client->request($request, $uriParams);
     }
 
@@ -69,15 +67,17 @@ class Omni implements RequestServiceInterface
      */
     public function update($entityType, $entityId, $data)
     {
-        $updateEvent = new Omni\ValueObject\EntityUpdate(
+        $updateEvent = new ValueObject\EntityUpdate(
             $entityType,
             $entityId,
             $data
         );
 
-        $request = new \GuzzleHttp\Psr7\Request();
-        $request->withMethod('POST')
-            ->withBody(\GuzzleHttp\Psr7\stream_for(http_build_query($updateEvent->toArray())));
+        $request = new \GuzzleHttp\Psr7\Request(
+            'POST',
+            new \GuzzleHttp\Psr7\Uri(self::BASE_URI . self::VERSION . self::ENDPOINT_PATH)
+        );
+        $request->withBody(\GuzzleHttp\Psr7\stream_for(http_build_query($updateEvent->toArray())));
 
         return $this->handle($request);
     }

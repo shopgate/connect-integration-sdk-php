@@ -19,19 +19,18 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\Service\Request\Exception;
+namespace Shopgate\CloudIntegrationSdk\Service\Omni;
 
-class InvalidRequest extends \Exception
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
+
+interface RequestServiceInterface
 {
     /**
-     * @param \Throwable | null $previous
+     * @param RequestInterface $request
+     * @param string[]         $uriParams
+     *
+     * @return ResponseInterface
      */
-    public function __construct(\Throwable $previous = null)
-    {
-        parent::__construct(
-            'Invalid request handler object.',
-            1011,
-            $previous
-        );
-    }
+    public function handle(RequestInterface $request, $uriParams);
 }

@@ -62,6 +62,16 @@ class GuzzleHTTPTest extends \PHPUnit\Framework\TestCase
                 '',
                 [],
                 []
+            ],
+            'missing auth header data' => [
+                'basic',
+                ['auth' => ['user' => 'username']],
+                []
+            ],
+            'unknown authentication' => [
+                'digest',
+                ['auth' => ['user' => 'username', 'pass' => 'password', 'digest' => 'dig']],
+                []
             ]
         ];
     }

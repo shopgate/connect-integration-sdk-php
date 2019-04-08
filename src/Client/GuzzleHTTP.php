@@ -84,7 +84,7 @@ class GuzzleHTTP implements ClientInterface
         switch ($this->getAuthentication()) {
             case ClientInterface::AUTHENTICATION_TYPE_BASIC:
                 if (!isset($authenticationData[self::CONFIG_KEY_AUTHENTICATION_PASSWORD])
-                    && !isset($authenticationData[self::CONFIG_KEY_AUTHENTICATION_USER])
+                    || !isset($authenticationData[self::CONFIG_KEY_AUTHENTICATION_USER])
                 ) {
                     return $options;
                 }

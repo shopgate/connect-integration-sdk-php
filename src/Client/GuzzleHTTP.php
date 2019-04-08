@@ -21,28 +21,31 @@
 
 namespace Shopgate\CloudIntegrationSdk\Client;
 
-use GuzzleHttp;
+use GuzzleHttp as Guzzle;
 use Psr\Http\Message\RequestInterface;
-use Shopgate\CloudIntegrationSdk\Repository\Config\ConfigInterface;
 
 class GuzzleHTTP implements ClientInterface
 {
-    /** @var GuzzleHttp\ClientInterface */
+    const CONFIG_KEY_AUTHENTICATION             = 'auth';
+    const CONFIG_KEY_AUTHENTICATION_USER        = 'user';
+    const CONFIG_KEY_AUTHENTICATION_PASSWORD    = 'pass';
+
+    /** @var Guzzle\ClientInterface */
     private $guzzleClient;
 
     /** @var string|null */
     private $authentication;
 
-    /** @var ConfigInterface */
+    /** @var array */
     private $config;
 
     /**
-     * @param string            $authentication    Authentication mode, e.g. 'basic'
-     * @param ConfigInterface   $config
+     * @param string  $authentication    Authentication mode, e.g. 'basic'
+     * @param array   $config
      */
-    public function __construct($authentication = null, ConfigInterface $config)
+    public function __construct($authentication = null, array $config)
     {
-        $this->guzzleClient = new GuzzleHttp\Client();
+        $this->guzzleClient = new Guzzle\Client();
         $this->authentication = $authentication;
         $this->config = $config;
     }
@@ -52,7 +55,7 @@ class GuzzleHTTP implements ClientInterface
      */
     public function request(RequestInterface $request, array $options = [])
     {
-        $options = $this->setAthenticationHeader($options);
+        $options = $this->setAuthenticationHeader($options);
 
         return $this->guzzleClient->send($request, $options);
     }
@@ -70,12 +73,25 @@ class GuzzleHTTP implements ClientInterface
      *
      * @return array
      */
-    private function setAthenticationHeader($options)
+    private function setAuthenticationHeader($options)
     {
+        if (!isset($this->config[self::CONFIG_KEY_AUTHENTICATION])) {
+            return $options;
+        }
+
+        $authenticationData = $this->config[self::CONFIG_KEY_AUTHENTICATION];
+
         switch ($this->getAuthentication()) {
             case ClientInterface::AUTHENTICATION_TYPE_BASIC:
-                // TODO-sg: need to inject auth header from config or maybe service config
-                $options[GuzzleHttp\RequestOptions::AUTH] = ['', ''];
+                if (!isset($authenticationData[self::CONFIG_KEY_AUTHENTICATION_PASSWORD])
+                    && !isset($authenticationData[self::CONFIG_KEY_AUTHENTICATION_USER])
+                ) {
+                    return $options;
+                }
+                $options[Guzzle\RequestOptions::AUTH] = [
+                    $authenticationData[self::CONFIG_KEY_AUTHENTICATION_USER],
+                    $authenticationData[self::CONFIG_KEY_AUTHENTICATION_PASSWORD]
+                ];
                 break;
             default:
                 break;

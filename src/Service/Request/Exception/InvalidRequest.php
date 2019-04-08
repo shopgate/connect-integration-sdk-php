@@ -30,7 +30,7 @@ class InvalidRequest extends \Exception
     {
         parent::__construct(
             'Invalid request handler object.',
-            Response::INVALID_REQUEST_HANDLER,
+            1011,
             $previous
         );
     }

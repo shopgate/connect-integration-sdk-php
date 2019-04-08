@@ -23,8 +23,6 @@ namespace Shopgate\CloudIntegrationSdk\Service\Request;
 
 use Psr\Http\Message\RequestInterface;
 use Shopgate\CloudIntegrationSdk\Client;
-use Shopgate\CloudIntegrationSdk\Repository\Config;
-use Shopgate\CloudIntegrationSdk\Service\Request\Omni\ValueObject\Event;
 
 class Omni implements RequestServiceInterface
 {
@@ -37,13 +35,16 @@ class Omni implements RequestServiceInterface
     /** @var Client\ClientInterface */
     private $client;
 
+    /** @var array */
+    private $config;
+
     /**
-     * @param Client\ClientInterface $client
-     * @param Config\ConfigInterface $config
+     * @param Client\ClientInterface    $client
+     * @param array                     $config
      */
     public function __construct(
         Client\ClientInterface $client,
-        Config\ConfigInterface $config
+        array $config
     ) {
         $this->client = $client;
         $this->config = $config;
@@ -60,7 +61,11 @@ class Omni implements RequestServiceInterface
     }
 
     /**
-     * TODO-sg: remove as it is just for proof of concept
+     * @param string $entityType
+     * @param string $entityId
+     * @param array  $data
+     *
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function update($entityType, $entityId, $data)
     {

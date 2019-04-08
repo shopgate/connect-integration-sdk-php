@@ -6,8 +6,6 @@ use Shopgate\CloudIntegrationSdk\Service\Request;
 
 
 
-
-
 $config = new Config\Config();
 $guzzleClient = new Client\GuzzleHTTP(
     Client\ClientInterface::AUTHENTICATION_TYPE_BASIC,

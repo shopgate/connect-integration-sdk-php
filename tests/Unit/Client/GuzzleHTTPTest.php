@@ -32,6 +32,7 @@ class GuzzleHTTPTest extends \PHPUnit\Framework\TestCase
      * @param array  $expectedAuthHeader
      *
      * @covers       \Shopgate\CloudIntegrationSdk\Client\GuzzleHTTP::setAuthenticationHeader()
+     * @covers       \Shopgate\CloudIntegrationSdk\Client\GuzzleHTTP::getAuthentication()
      * @dataProvider provideAuthenticationHeader
      */
     public function testSetAuthenticationHeader($authentication, $config, $expectedAuthHeader)

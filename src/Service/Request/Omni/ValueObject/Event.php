@@ -25,7 +25,7 @@ class Event
 {
     const UPDATE = 'entityUpdated';
 
-    CONST ENTITY_PRODUCT = 'product';
+    const ENTITY_PRODUCT = 'product';
 
     /** @var string */
     protected $event;

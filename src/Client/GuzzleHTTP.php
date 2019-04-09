@@ -22,13 +22,14 @@
 namespace Shopgate\CloudIntegrationSdk\Client;
 
 use GuzzleHttp as Guzzle;
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\RequestInterface;
 
-class GuzzleHTTP implements ClientInterface
+class GuzzleHttp implements ClientInterface
 {
-    const CONFIG_KEY_AUTHENTICATION             = 'auth';
-    const CONFIG_KEY_AUTHENTICATION_USER        = 'user';
-    const CONFIG_KEY_AUTHENTICATION_PASSWORD    = 'pass';
+    const CONFIG_KEY_AUTHENTICATION          = 'auth';
+    const CONFIG_KEY_AUTHENTICATION_USER     = 'user';
+    const CONFIG_KEY_AUTHENTICATION_PASSWORD = 'pass';
 
     /** @var Guzzle\ClientInterface */
     private $guzzleClient;
@@ -40,18 +41,20 @@ class GuzzleHTTP implements ClientInterface
     private $config;
 
     /**
-     * @param string  $authentication    Authentication mode, e.g. 'basic'
-     * @param array   $config
+     * @param string $authentication Authentication mode, e.g. 'basic'
+     * @param array  $config
      */
-    public function __construct($authentication = null, array $config)
+    public function __construct($authentication = null, array $config = [])
     {
-        $this->guzzleClient = new Guzzle\Client();
+        $this->guzzleClient   = new Guzzle\Client();
         $this->authentication = $authentication;
-        $this->config = $config;
+        $this->config         = $config;
     }
 
     /**
      * @inheritdoc
+     *
+     * @throws GuzzleException
      */
     public function request(RequestInterface $request, array $options = [])
     {
@@ -81,20 +84,16 @@ class GuzzleHTTP implements ClientInterface
 
         $authenticationData = $this->config[self::CONFIG_KEY_AUTHENTICATION];
 
-        switch ($this->getAuthentication()) {
-            case ClientInterface::AUTHENTICATION_TYPE_BASIC:
-                if (!isset($authenticationData[self::CONFIG_KEY_AUTHENTICATION_PASSWORD])
-                    || !isset($authenticationData[self::CONFIG_KEY_AUTHENTICATION_USER])
-                ) {
-                    return $options;
-                }
-                $options[Guzzle\RequestOptions::AUTH] = [
-                    $authenticationData[self::CONFIG_KEY_AUTHENTICATION_USER],
-                    $authenticationData[self::CONFIG_KEY_AUTHENTICATION_PASSWORD]
-                ];
-                break;
-            default:
-                break;
+        if ($this->getAuthentication() === ClientInterface::AUTHENTICATION_TYPE_BASIC
+            && isset(
+                $authenticationData[self::CONFIG_KEY_AUTHENTICATION_PASSWORD],
+                $authenticationData[self::CONFIG_KEY_AUTHENTICATION_USER]
+            )
+        ) {
+            $options[Guzzle\RequestOptions::AUTH] = [
+                $authenticationData[self::CONFIG_KEY_AUTHENTICATION_USER],
+                $authenticationData[self::CONFIG_KEY_AUTHENTICATION_PASSWORD]
+            ];
         }
 
         return $options;

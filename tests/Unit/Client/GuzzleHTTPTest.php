@@ -22,27 +22,26 @@
 namespace Shopgate\CloudIntegrationSdk\Tests\Unit\Client;
 
 use GuzzleHttp as Guzzle;
-use Shopgate\CloudIntegrationSdk\Client\GuzzleHTTP;
+use Shopgate\CloudIntegrationSdk\Client\GuzzleHttp;
 
-class GuzzleHTTPTest extends \PHPUnit\Framework\TestCase
+class GuzzleHttpTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @param string $authentication
      * @param array  $config
      * @param array  $expectedAuthHeader
      *
-     * @covers       \Shopgate\CloudIntegrationSdk\Client\GuzzleHTTP::setAuthenticationHeader()
-     * @covers       \Shopgate\CloudIntegrationSdk\Client\GuzzleHTTP::getAuthentication()
+     * @covers       \Shopgate\CloudIntegrationSdk\Client\GuzzleHttp::setAuthenticationHeader()
+     * @covers       \Shopgate\CloudIntegrationSdk\Client\GuzzleHttp::getAuthentication()
      * @dataProvider provideAuthenticationHeader
      */
     public function testSetAuthenticationHeader($authentication, $config, $expectedAuthHeader)
     {
-        $reflectionClass = new \ReflectionClass(GuzzleHTTP::class);
-        $method = $reflectionClass->getMethod('setAuthenticationHeader');
+        $reflectionClass = new \ReflectionClass(GuzzleHttp::class);
+        $method          = $reflectionClass->getMethod('setAuthenticationHeader');
         $method->setAccessible(true);
 
-        $client = new GuzzleHTTP($authentication, $config);
-
+        $client     = new GuzzleHttp($authentication, $config);
         $authHeader = $method->invokeArgs($client, [[]]);
 
         $this->assertEquals($expectedAuthHeader, $authHeader);
@@ -54,26 +53,26 @@ class GuzzleHTTPTest extends \PHPUnit\Framework\TestCase
     public function provideAuthenticationHeader()
     {
         return [
-            'basic authentication' => [
+            'basic authentication'     => [
                 'basic',
                 ['auth' => ['user' => 'username', 'pass' => 'password']],
-                [Guzzle\RequestOptions::AUTH => ['username', 'password']]
+                [Guzzle\RequestOptions::AUTH => ['username', 'password']],
             ],
-            'NO authentication' => [
+            'NO authentication'        => [
                 '',
                 [],
-                []
+                [],
             ],
             'missing auth header data' => [
                 'basic',
                 ['auth' => ['user' => 'username']],
-                []
+                [],
             ],
-            'unknown authentication' => [
+            'unknown authentication'   => [
                 'digest',
                 ['auth' => ['user' => 'username', 'pass' => 'password', 'digest' => 'dig']],
-                []
-            ]
+                [],
+            ],
         ];
     }
 }

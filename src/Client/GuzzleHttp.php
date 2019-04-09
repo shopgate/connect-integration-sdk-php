@@ -84,11 +84,11 @@ class GuzzleHttp implements ClientInterface
 
         $authenticationData = $this->config[self::CONFIG_KEY_AUTHENTICATION];
 
-        if ($this->getAuthentication() === ClientInterface::AUTHENTICATION_TYPE_BASIC
-            && isset(
+        if (isset(
                 $authenticationData[self::CONFIG_KEY_AUTHENTICATION_PASSWORD],
                 $authenticationData[self::CONFIG_KEY_AUTHENTICATION_USER]
             )
+            && $this->getAuthentication() === ClientInterface::AUTHENTICATION_TYPE_BASIC
         ) {
             $options[Guzzle\RequestOptions::AUTH] = [
                 $authenticationData[self::CONFIG_KEY_AUTHENTICATION_USER],

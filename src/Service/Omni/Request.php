@@ -21,16 +21,19 @@
 
 namespace Shopgate\CloudIntegrationSdk\Service\Omni;
 
+use function GuzzleHttp\Psr7\stream_for;
+use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use Shopgate\CloudIntegrationSdk\Client;
 
 class Request implements RequestServiceInterface
 {
     // TODO-sg: maybe move out constants into special service config
     const BASE_URI = 'https://shopgate.com';
-    const VERSION = '/v1';
-    // TODO-sg: merchantCode needs to be replacable
-    const ENDPOINT_PATH = "/merchants/{merchantCode}/events";
+    const VERSION  = '/v1';
+    // TODO-sg: merchantCode needs to be replaceable
+    const ENDPOINT_PATH = '/merchants/{merchantCode}/events';
 
     /** @var Client\ClientInterface */
     private $client;
@@ -39,8 +42,8 @@ class Request implements RequestServiceInterface
     private $config;
 
     /**
-     * @param Client\ClientInterface    $client
-     * @param array                     $config
+     * @param Client\ClientInterface $client
+     * @param array                  $config
      */
     public function __construct(
         Client\ClientInterface $client,
@@ -63,7 +66,7 @@ class Request implements RequestServiceInterface
      * @param string $entityId
      * @param array  $data
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface
      */
     public function update($entityType, $entityId, $data)
     {
@@ -75,9 +78,9 @@ class Request implements RequestServiceInterface
 
         $request = new \GuzzleHttp\Psr7\Request(
             'POST',
-            new \GuzzleHttp\Psr7\Uri(self::BASE_URI . self::VERSION . self::ENDPOINT_PATH)
+            new Uri(self::BASE_URI . self::VERSION . self::ENDPOINT_PATH)
         );
-        $request->withBody(\GuzzleHttp\Psr7\stream_for(http_build_query($updateEvent->toArray())));
+        $request->withBody(stream_for(http_build_query($updateEvent->toArray())));
 
         return $this->handle($request);
     }

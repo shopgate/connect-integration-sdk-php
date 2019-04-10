@@ -10,6 +10,29 @@ The Shopgate Connect Integration SDK is a compilation of classes to manage the c
 #### Via Composer
 ```composer require shopgate/connect-integration-sdk-php```
 
+#### Usage
+Example for calling a service in order to update the name of the product using the guzzle client and basic authentication:
+```
+<?php
+
+use Shopgate\CloudIntegrationSdk\Client;
+use Shopgate\CloudIntegrationSdk\Service\Omni;
+use Shopgate\CloudIntegrationSdk\Service\Omni\ValueObject\Event;
+
+$config = [
+    Client\GuzzleHttp::CONFIG_KEY_AUTHENTICATION => [
+        Client\GuzzleHttp::CONFIG_KEY_AUTHENTICATION_USER => 'username',
+        Client\GuzzleHttp::CONFIG_KEY_AUTHENTICATION_PASSWORD => 'password',
+    ]
+];
+
+$client  = new Client\GuzzleHttp(Client\GuzzleHttp::AUTHENTICATION_TYPE_BASIC, $config);
+$request = new Omni\Request($client, $config);
+
+$request->update(Event::ENTITY_PRODUCT, 1, ['name' => 'New product name']);
+
+```
+
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md) file for more information.

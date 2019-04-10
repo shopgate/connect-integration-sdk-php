@@ -19,16 +19,30 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\ValueObject\Route\V2;
+namespace Shopgate\CloudIntegrationSdk\Service\Omni\ValueObject;
 
-use Shopgate\CloudIntegrationSdk\ValueObject\Route\AbstractRoute;
-
-class CheckoutUrl extends AbstractRoute
+class Event
 {
-    public function __construct()
+    const UPDATE = 'entityUpdated';
+
+    const ENTITY_PRODUCT = 'product';
+
+    /** @var string */
+    protected $event;
+    /** @var string */
+    protected $entity;
+    /** @var string */
+    protected $entityId;
+    /** @var array */
+    protected $payload;
+
+    public function toArray()
     {
-        $this->paramNameList = ['cartId'];
-        $this->identifier    = "/carts/{$this->paramNameList[0]}/checkoutUrl";
-        $this->pattern       = "~^\/v2\/carts\\/(?<{$this->paramNameList[0]}>[^/?]*)\/checkoutUrl\/*$~";
+        return [
+            'event'    => $this->event,
+            'entity'   => $this->entity,
+            'entityId' => $this->entityId,
+            'payload'  => $this->payload
+        ];
     }
 }

@@ -19,24 +19,18 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\Service\Router\Exception;
+namespace Shopgate\CloudIntegrationSdk\Service\Omni;
 
-use Shopgate\CloudIntegrationSdk\ValueObject\Response;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
-class UnregisteredRouteMethod extends \Exception
+interface RequestServiceInterface
 {
     /**
-     * @param string            $method
-     * @param string            $route
-     * @param \Throwable | null $previous
+     * @param RequestInterface $request
+     * @param string[]         $uriParams
+     *
+     * @return ResponseInterface
      */
-    public function __construct($method, $route, \Throwable $previous = null)
-    {
-        $routeString = trim('/', $route);
-        parent::__construct(
-            "Method '$method' is not registered for route '$routeString'",
-            Response::UNREGISTERED_ROUTE_METHOD,
-            $previous
-        );
-    }
+    public function handle(RequestInterface $request, $uriParams);
 }

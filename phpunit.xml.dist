@@ -12,7 +12,7 @@
         <whitelist>
             <directory suffix=".php">src</directory>
             <exclude>
-                <directory suffix=".php">src/ValueObject</directory>
+                <directory suffix=".php">src/Service/Omni/ValueObject</directory>
             </exclude>
         </whitelist>
     </filter>

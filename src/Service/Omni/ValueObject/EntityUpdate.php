@@ -19,26 +19,15 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\Service\Authenticator\Exception;
+namespace Shopgate\CloudIntegrationSdk\Service\Omni\ValueObject;
 
-use Shopgate\CloudIntegrationSdk\ValueObject\Response;
-
-class Unauthorized extends \Exception
+class EntityUpdate extends Event
 {
-    /**
-     * @param string            $message
-     * @param \Throwable | null $previous
-     */
-    public function __construct($message = '', \Throwable $previous = null)
+    public function __construct($entity, $entityId, $payload)
     {
-        if ($message === '') {
-            $message = 'Invalid or missing authorization.';
-        }
-        $message = "Unauthorized: {$message}";
-        parent::__construct(
-            $message,
-            Response::HTTP_UNAUTHORIZED,
-            $previous
-        );
+        $this->event    = Event::UPDATE;
+        $this->entity   = $entity;
+        $this->entityId = $entityId;
+        $this->payload  = $payload;
     }
 }

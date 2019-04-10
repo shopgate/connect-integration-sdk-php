@@ -19,16 +19,25 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\ValueObject\Route\V2;
+namespace Shopgate\CloudIntegrationSdk\Client;
 
-use Shopgate\CloudIntegrationSdk\ValueObject\Route\AbstractRoute;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
-class Product extends AbstractRoute
+interface ClientInterface
 {
-    public function __construct()
-    {
-        $this->paramNameList = ['productId'];
-        $this->identifier    = "/products/{$this->paramNameList[0]}";
-        $this->pattern       = "~^\/v2\/products\/(?<{$this->paramNameList[0]}>[^/?]*)\/*$~";
-    }
+    const AUTHENTICATION_TYPE_BASIC = 'basic';
+
+    /**
+     * @param RequestInterface  $request
+     * @param array             $options
+     *
+     * @return ResponseInterface
+     */
+    public function request(RequestInterface $request, array $options = []);
+
+    /**
+     * @return string
+     */
+    public function getAuthentication();
 }

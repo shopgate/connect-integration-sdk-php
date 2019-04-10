@@ -25,9 +25,9 @@ class EntityUpdate extends Event
 {
     public function __construct($entity, $entityId, $payload)
     {
-        $this->event = Event::UPDATE;
-        $this->entity = $entity;
+        $this->event    = Event::UPDATE;
+        $this->entity   = $entity;
         $this->entityId = $entityId;
-        $this->payload = $payload;
+        $this->payload  = $payload;
     }
 }

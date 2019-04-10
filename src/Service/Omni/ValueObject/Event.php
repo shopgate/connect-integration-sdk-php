@@ -39,10 +39,10 @@ class Event
     public function toArray()
     {
         return [
-            'event' => $this->event,
-            'entity' => $this->entity,
+            'event'    => $this->event,
+            'entity'   => $this->entity,
             'entityId' => $this->entityId,
-            'payload' => $this->payload
+            'payload'  => $this->payload
         ];
     }
 }

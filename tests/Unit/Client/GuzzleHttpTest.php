@@ -22,9 +22,12 @@
 namespace Shopgate\CloudIntegrationSdk\Tests\Unit\Client;
 
 use GuzzleHttp as Guzzle;
+use PHPUnit\Framework\TestCase;
+use ReflectionClass;
+use ReflectionException;
 use Shopgate\CloudIntegrationSdk\Client\GuzzleHttp;
 
-class GuzzleHttpTest extends \PHPUnit\Framework\TestCase
+class GuzzleHttpTest extends TestCase
 {
     /**
      * @param string $authentication
@@ -34,10 +37,11 @@ class GuzzleHttpTest extends \PHPUnit\Framework\TestCase
      * @covers       \Shopgate\CloudIntegrationSdk\Client\GuzzleHttp::setAuthenticationHeader()
      * @covers       \Shopgate\CloudIntegrationSdk\Client\GuzzleHttp::getAuthentication()
      * @dataProvider provideAuthenticationHeader
+     * @throws ReflectionException
      */
     public function testSetAuthenticationHeader($authentication, $config, $expectedAuthHeader)
     {
-        $reflectionClass = new \ReflectionClass(GuzzleHttp::class);
+        $reflectionClass = new ReflectionClass(GuzzleHttp::class);
         $method          = $reflectionClass->getMethod('setAuthenticationHeader');
         $method->setAccessible(true);
 

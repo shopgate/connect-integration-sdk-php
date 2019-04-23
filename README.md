@@ -15,9 +15,9 @@ Example for calling a service in order to update the name of the product using t
 ```
 <?php
 
-use Shopgate\CloudIntegrationSdk\Client;
-use Shopgate\CloudIntegrationSdk\Service\Omni;
-use Shopgate\CloudIntegrationSdk\Service\Omni\ValueObject\Event;
+use Shopgate\ConnectSdk\Http;
+use Shopgate\ConnectSdk\Services\OER;
+use Shopgate\ConnectSdk\Services\OER\ValueObject\Event;
 
 $config = [
     Client\GuzzleHttp::CONFIG_KEY_AUTHENTICATION => [

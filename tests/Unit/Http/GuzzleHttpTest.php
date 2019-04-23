@@ -19,13 +19,13 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\Tests\Unit\Client;
+namespace Shopgate\ConnectSdk\Tests\Unit\Http;
 
 use GuzzleHttp as Guzzle;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
-use Shopgate\CloudIntegrationSdk\Client\GuzzleHttp;
+use Shopgate\ConnectSdk\Http\GuzzleClient;
 
 class GuzzleHttpTest extends TestCase
 {
@@ -34,18 +34,18 @@ class GuzzleHttpTest extends TestCase
      * @param array  $config
      * @param array  $expectedAuthHeader
      *
-     * @covers       \Shopgate\CloudIntegrationSdk\Client\GuzzleHttp::setAuthenticationHeader()
-     * @covers       \Shopgate\CloudIntegrationSdk\Client\GuzzleHttp::getAuthentication()
+     * @covers       \Shopgate\ConnectSdk\Http\GuzzleClient::setAuthenticationHeader()
+     * @covers       \Shopgate\ConnectSdk\Http\GuzzleClient::getAuthentication()
      * @dataProvider provideAuthenticationHeader
      * @throws ReflectionException
      */
     public function testSetAuthenticationHeader($authentication, $config, $expectedAuthHeader)
     {
-        $reflectionClass = new ReflectionClass(GuzzleHttp::class);
+        $reflectionClass = new ReflectionClass(GuzzleClient::class);
         $method          = $reflectionClass->getMethod('setAuthenticationHeader');
         $method->setAccessible(true);
 
-        $client     = new GuzzleHttp($authentication, $config);
+        $client     = new GuzzleClient($authentication, $config);
         $authHeader = $method->invokeArgs($client, [[]]);
 
         $this->assertEquals($expectedAuthHeader, $authHeader);

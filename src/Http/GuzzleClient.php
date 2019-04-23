@@ -19,13 +19,13 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\Client;
+namespace Shopgate\ConnectSdk\Http;
 
 use GuzzleHttp as Guzzle;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\RequestInterface;
 
-class GuzzleHttp implements ClientInterface
+class GuzzleClient implements ClientInterface
 {
     const CONFIG_KEY_AUTHENTICATION          = 'auth';
     const CONFIG_KEY_AUTHENTICATION_USER     = 'user';

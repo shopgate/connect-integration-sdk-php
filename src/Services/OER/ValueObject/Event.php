@@ -19,15 +19,30 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\Service\Omni\ValueObject;
+namespace Shopgate\ConnectSdk\Services\OER\ValueObject;
 
-class EntityUpdate extends Event
+class Event
 {
-    public function __construct($entity, $entityId, $payload)
+    const UPDATE = 'entityUpdated';
+
+    const ENTITY_PRODUCT = 'product';
+
+    /** @var string */
+    protected $event;
+    /** @var string */
+    protected $entity;
+    /** @var string */
+    protected $entityId;
+    /** @var array */
+    protected $payload;
+
+    public function toArray()
     {
-        $this->event    = Event::UPDATE;
-        $this->entity   = $entity;
-        $this->entityId = $entityId;
-        $this->payload  = $payload;
+        return [
+            'event'    => $this->event,
+            'entity'   => $this->entity,
+            'entityId' => $this->entityId,
+            'payload'  => $this->payload
+        ];
     }
 }

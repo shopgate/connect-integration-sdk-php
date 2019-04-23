@@ -19,15 +19,16 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\Service\Omni;
+namespace Shopgate\ConnectSdk\Services\OER;
 
-use function GuzzleHttp\Psr7\stream_for;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Shopgate\CloudIntegrationSdk\Client;
+use Shopgate\ConnectSdk\Http;
+use function GuzzleHttp\Psr7\stream_for;
 
-class Request implements RequestServiceInterface
+class Client implements RequestServiceInterface
 {
     // TODO-sg: maybe move out constants into special service config
     const BASE_URI = 'https://shopgate.com';
@@ -35,18 +36,18 @@ class Request implements RequestServiceInterface
     // TODO-sg: merchantCode needs to be replaceable
     const ENDPOINT_PATH = '/merchants/{merchantCode}/events';
 
-    /** @var Client\ClientInterface */
+    /** @var Http\ClientInterface */
     private $client;
 
     /** @var array */
     private $config;
 
     /**
-     * @param Client\ClientInterface $client
-     * @param array                  $config
+     * @param Http\ClientInterface $client
+     * @param array                $config
      */
     public function __construct(
-        Client\ClientInterface $client,
+        Http\ClientInterface $client,
         array $config
     ) {
         $this->client = $client;
@@ -76,7 +77,7 @@ class Request implements RequestServiceInterface
             $data
         );
 
-        $request = new \GuzzleHttp\Psr7\Request(
+        $request = new Request(
             'POST',
             new Uri(self::BASE_URI . self::VERSION . self::ENDPOINT_PATH)
         );

@@ -21,68 +21,58 @@
 
 namespace Shopgate\ConnectSdk\Services\OER;
 
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Uri;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
+use Exception;
 use Shopgate\ConnectSdk\Http;
-use function GuzzleHttp\Psr7\stream_for;
 
-class Client implements RequestServiceInterface
+class Client
 {
-    // TODO-sg: maybe move out constants into special service config
-    const BASE_URI = 'https://shopgate.com';
-    const VERSION  = '/v1';
-    // TODO-sg: merchantCode needs to be replaceable
-    const ENDPOINT_PATH = '/merchants/{merchantCode}/events';
-
     /** @var Http\ClientInterface */
     private $client;
 
-    /** @var array */
-    private $config;
-
     /**
-     * @param Http\ClientInterface $client
-     * @param array                $config
-     */
-    public function __construct(
-        Http\ClientInterface $client,
-        array $config
-    ) {
-        $this->client = $client;
-        $this->config = $config;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function handle(RequestInterface $request, $uriParams = [])
-    {
-        return $this->client->request($request, $uriParams);
-    }
-
-    /**
-     * @param string $entityType
-     * @param string $entityId
-     * @param array  $data
+     * Contains entities to use, e.g. catalog, product, media, etc.
      *
-     * @return ResponseInterface
+     * @var array
      */
-    public function update($entityType, $entityId, $data)
+    private $entities = [];
+
+    /**
+     * This client accepts the following options:
+     *  - http (array) a list of client related data
+     *    * client (Http\ClientInterface, default=Http\GuzzleClient) - accepts a custom HTTP client if needed
+     *    * auth (array) authentication data necessary for the client to make calls
+     *
+     * @param array $config
+     */
+    public function __construct(array $config)
     {
-        $updateEvent = new ValueObject\EntityUpdate(
-            $entityType,
-            $entityId,
-            $data
-        );
+        $this->client = isset($config['http']['client']) && $config['http']['client'] instanceof Http\ClientInterface
+            ? $config['http']['client']
+            : new Http\GuzzleClient($config);
+    }
 
-        $request = new Request(
-            'POST',
-            new Uri(self::BASE_URI . self::VERSION . self::ENDPOINT_PATH)
-        );
-        $request->withBody(stream_for(http_build_query($updateEvent->toArray())));
+    /**
+     * For direct objects calls like $sdk->catalog->update()
+     *
+     * @param string $name
+     * @param array  $args
+     *
+     * @return Entities\EntityInterface
+     * @throws Exception
+     */
+    public function __call($name, array $args = [])
+    {
+        if (isset($this->entities[$name])) {
+            return $this->entities[$name]($this->client);
+        }
+        $class = "Shopgate\ConnectSdk\Services\OER\Entities\{$name}";
+        if (class_exists($class)) {
+            $this->entities[$name] = new $class($this->client);
+        } else {
+            //todo-sg: custom exception for entities
+            throw new Exception('Entity does not exist');
+        }
 
-        return $this->handle($request);
+        return $this->entities[$name];
     }
 }

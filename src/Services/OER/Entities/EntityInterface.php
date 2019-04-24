@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright Shopgate Inc.
  *
@@ -19,18 +20,16 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Services\OER;
+namespace Shopgate\ConnectSdk\Services\OER\Entities;
 
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
-
-interface RequestServiceInterface
+interface EntityInterface
 {
     /**
-     * @param RequestInterface $request
-     * @param string[]         $uriParams
+     * @param string $entityId
+     * @param array  $data - related to the payload
+     * @param array  $meta - non-related to the call
      *
-     * @return ResponseInterface
+     * @return bool
      */
-    public function handle(RequestInterface $request, $uriParams);
+    public function update($entityId, $data = [], $meta = []);
 }

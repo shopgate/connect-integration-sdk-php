@@ -21,34 +21,37 @@
 
 namespace Shopgate\ConnectSdk\Http;
 
-use GuzzleHttp as Guzzle;
+use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\RequestInterface;
 
 class GuzzleClient implements ClientInterface
 {
-    const CONFIG_KEY_AUTHENTICATION          = 'auth';
-    const CONFIG_KEY_AUTHENTICATION_USER     = 'user';
-    const CONFIG_KEY_AUTHENTICATION_PASSWORD = 'pass';
+    /**
+     * The key for Guzzle authentication
+     */
+    const CONFIG_KEY_AUTHENTICATION = RequestOptions::AUTH;
 
-    /** @var Guzzle\ClientInterface */
-    private $guzzleClient;
-
-    /** @var string|null */
-    private $authentication;
+    /** @var \GuzzleHttp\ClientInterface */
+    private $client;
 
     /** @var array */
     private $config;
 
     /**
-     * @param string $authentication Authentication mode, e.g. 'basic'
-     * @param array  $config
+     * The client accepts the following options:
+     *  - auth (array) - a list of credentials as needed by Guzzle, e.g. ["username", "password"] for basic auth
+     *  - any other options accepted by Guzzle's request method
+     *
+     * @see http://docs.guzzlephp.org/en/stable/request-options.html#auth
+     *
+     * @param array $config
      */
-    public function __construct($authentication = null, array $config = [])
+    public function __construct(array $config = [])
     {
-        $this->guzzleClient   = new Guzzle\Client();
-        $this->authentication = $authentication;
-        $this->config         = $config;
+        $this->client = new Client();
+        $this->config = $config;
     }
 
     /**
@@ -58,44 +61,8 @@ class GuzzleClient implements ClientInterface
      */
     public function request(RequestInterface $request, array $options = [])
     {
-        $options = $this->setAuthenticationHeader($options);
+        $config = $this->config['http'][self::CONFIG_KEY_AUTHENTICATION] + $options;
 
-        return $this->guzzleClient->send($request, $options);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getAuthentication()
-    {
-        return $this->authentication;
-    }
-
-    /**
-     * @param array $options
-     *
-     * @return array
-     */
-    private function setAuthenticationHeader($options)
-    {
-        if (!isset($this->config[self::CONFIG_KEY_AUTHENTICATION])) {
-            return $options;
-        }
-
-        $authenticationData = $this->config[self::CONFIG_KEY_AUTHENTICATION];
-
-        if (isset(
-                $authenticationData[self::CONFIG_KEY_AUTHENTICATION_PASSWORD],
-                $authenticationData[self::CONFIG_KEY_AUTHENTICATION_USER]
-            )
-            && $this->getAuthentication() === ClientInterface::AUTHENTICATION_TYPE_BASIC
-        ) {
-            $options[Guzzle\RequestOptions::AUTH] = [
-                $authenticationData[self::CONFIG_KEY_AUTHENTICATION_USER],
-                $authenticationData[self::CONFIG_KEY_AUTHENTICATION_PASSWORD]
-            ];
-        }
-
-        return $options;
+        return $this->client->send($request, $config);
     }
 }

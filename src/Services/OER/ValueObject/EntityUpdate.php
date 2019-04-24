@@ -23,7 +23,14 @@ namespace Shopgate\ConnectSdk\Services\OER\ValueObject;
 
 class EntityUpdate extends Event
 {
-    public function __construct($entity, $entityId, $payload)
+    /**
+     * @param string $entity
+     * @param string $entityId
+     * @param array  $payload
+     *
+     * @todo-sg: probably use that DTO plugin for this @see https://packagist.org/packages/dto/dto
+     */
+    public function __construct($entity, $entityId, array $payload)
     {
         $this->event    = Event::UPDATE;
         $this->entity   = $entity;

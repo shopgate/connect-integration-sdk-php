@@ -30,22 +30,20 @@ use Shopgate\ConnectSdk\Http\GuzzleClient;
 class GuzzleHttpTest extends TestCase
 {
     /**
-     * @param string $authentication
-     * @param array  $config
-     * @param array  $expectedAuthHeader
+     * @param array $config
+     * @param array $expectedAuthHeader
      *
-     * @covers       \Shopgate\ConnectSdk\Http\GuzzleClient::setAuthenticationHeader()
-     * @covers       \Shopgate\ConnectSdk\Http\GuzzleClient::getAuthentication()
      * @dataProvider provideAuthenticationHeader
      * @throws ReflectionException
+     * @todo-sg      : need to rework this test as this is no longer relevant
      */
-    public function testSetAuthenticationHeader($authentication, $config, $expectedAuthHeader)
+    public function testGetAuthenticationHeader($config, $expectedAuthHeader)
     {
         $reflectionClass = new ReflectionClass(GuzzleClient::class);
-        $method          = $reflectionClass->getMethod('setAuthenticationHeader');
+        $method          = $reflectionClass->getMethod('getAuthenticationHeader');
         $method->setAccessible(true);
 
-        $client     = new GuzzleClient($authentication, $config);
+        $client     = new GuzzleClient($config);
         $authHeader = $method->invokeArgs($client, [[]]);
 
         $this->assertEquals($expectedAuthHeader, $authHeader);
@@ -58,7 +56,6 @@ class GuzzleHttpTest extends TestCase
     {
         return [
             'basic authentication'     => [
-                'basic',
                 ['auth' => ['user' => 'username', 'pass' => 'password']],
                 [Guzzle\RequestOptions::AUTH => ['username', 'password']],
             ],
@@ -68,12 +65,10 @@ class GuzzleHttpTest extends TestCase
                 [],
             ],
             'missing auth header data' => [
-                'basic',
                 ['auth' => ['user' => 'username']],
                 [],
             ],
             'unknown authentication'   => [
-                'digest',
                 ['auth' => ['user' => 'username', 'pass' => 'password', 'digest' => 'dig']],
                 [],
             ],

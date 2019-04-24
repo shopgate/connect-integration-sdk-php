@@ -11,26 +11,27 @@ The Shopgate Connect Integration SDK is a compilation of classes to manage the c
 ```composer require shopgate/connect-integration-sdk-php```
 
 #### Usage
-Example for calling a service in order to update the name of the product using the guzzle client and basic authentication:
+Example for calling a service in order to update the name of the category using the Guzzle client and basic authentication:
 ```
 <?php
 
-use Shopgate\ConnectSdk\Http;
-use Shopgate\ConnectSdk\Services\OER;
-use Shopgate\ConnectSdk\Services\OER\ValueObject\Event;
+use Shopgate\ConnectSdk\Http\GuzzleClient;
+use Shopgate\ConnectSdk\Services\OER\Client;
 
 $config = [
-    Client\GuzzleHttp::CONFIG_KEY_AUTHENTICATION => [
-        Client\GuzzleHttp::CONFIG_KEY_AUTHENTICATION_USER => 'username',
-        Client\GuzzleHttp::CONFIG_KEY_AUTHENTICATION_PASSWORD => 'password',
+    'http' => [
+        'auth' => ['username', 'password']
     ]
 ];
 
-$client  = new Client\GuzzleHttp(Client\GuzzleHttp::AUTHENTICATION_TYPE_BASIC, $config);
-$request = new Omni\Request($client, $config);
+$client = new Client($config);
 
-$request->update(Event::ENTITY_PRODUCT, 1, ['name' => 'New product name']);
-
+// update category
+$meta = ['catalogCode' => 'cat1', 'language' => 'de-de'];
+$client->catalog->update($catalogId, ['name' => 'New category name'], $meta);
+// update category sync
+$meta = ['catalogCode' => 'cat1', 'language' => 'de-de', 'requestType' => 'direct'];
+$client->catalog->update($catalogId, ['name' => 'New category name'], $meta);
 ```
 
 ## Changelog

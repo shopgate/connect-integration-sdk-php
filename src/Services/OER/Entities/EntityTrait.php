@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright Shopgate Inc.
  *
@@ -19,20 +20,20 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Http;
+namespace Shopgate\ConnectSdk\Services\OER\Entities;
 
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
+use Shopgate\ConnectSdk\Http\ClientInterface;
 
-interface ClientInterface
+trait EntityTrait
 {
-    const AUTHENTICATION_TYPE_BASIC = 'basic';
-
     /**
-     * @param RequestInterface  $request
-     * @param array             $options
-     *
-     * @return ResponseInterface
+     * @todo-sg: may need to think about logging/debugging requests and returning data for mage to log?
+     * @var ClientInterface
      */
-    public function request(RequestInterface $request, array $options = []);
+    protected $client;
+
+    public function __construct(ClientInterface $client)
+    {
+        $this->client = $client;
+    }
 }

@@ -22,47 +22,19 @@
 namespace Shopgate\ConnectSdk\Http;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\RequestOptions;
-use Psr\Http\Message\RequestInterface;
 
-class GuzzleClient implements ClientInterface
+class GuzzleClient extends Client implements ClientInterface
 {
     /**
-     * The key for Guzzle authentication
-     */
-    const CONFIG_KEY_AUTHENTICATION = RequestOptions::AUTH;
-
-    /** @var \GuzzleHttp\ClientInterface */
-    private $client;
-
-    /** @var array */
-    private $config;
-
-    /**
      * The client accepts the following options:
-     *  - auth (array) - a list of credentials as needed by Guzzle, e.g. ["username", "password"] for basic auth
-     *  - any other options accepted by Guzzle's request method
+     *  - http - this should contain all configurations meant for the HTTP client, namely Guzzle request options
      *
-     * @see http://docs.guzzlephp.org/en/stable/request-options.html#auth
+     * @see http://docs.guzzlephp.org/en/stable/request-options.html
      *
      * @param array $config
      */
     public function __construct(array $config = [])
     {
-        $this->client = new Client();
-        $this->config = $config;
-    }
-
-    /**
-     * @inheritdoc
-     *
-     * @throws GuzzleException
-     */
-    public function request(RequestInterface $request, array $options = [])
-    {
-        $config = $this->config['http'][self::CONFIG_KEY_AUTHENTICATION] + $options;
-
-        return $this->client->send($request, $config);
+        parent::__construct(isset($config['http']) ? $config['http'] : []);
     }
 }

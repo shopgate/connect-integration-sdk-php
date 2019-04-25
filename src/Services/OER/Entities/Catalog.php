@@ -22,8 +22,6 @@
 
 namespace Shopgate\ConnectSdk\Services\OER\Entities;
 
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Services\OER\ValueObject;
 use function GuzzleHttp\Psr7\stream_for;
@@ -32,16 +30,9 @@ class Catalog implements EntityInterface
 {
     use EntityTrait;
 
-    /**
-     * @todo-sg: move this to some sort of default config loader, can probably use an .env module handler as well
-     * @see    https://packagist.org/packages/vlucas/phpdotenv
-     */
-    const BASE_URI      = 'https://shopgate.com';
-    const VERSION       = '/v1';
-    const ENDPOINT_PATH = '/merchants/{merchantCode}/events';
-
-    /** Entity type */
-    const ENTITY = 'catalog';
+    const ENTITY       = 'catalog';
+    const PATH_SERVICE = 'category';
+    const PATH_EVENTS  = 'events';
 
     /**
      * @param string $entityId
@@ -58,13 +49,26 @@ class Catalog implements EntityInterface
             $data
         );
 
-        //@todo-sg: allow to pass these from meta?, but base uri should be part of the initial config
-        $request = new Request(
-            'POST',
-            new Uri(self::BASE_URI . self::VERSION . self::ENDPOINT_PATH)
-        );
-        $request->withBody(stream_for(http_build_query($updateEvent->toArray())));
+        //@todo-sg: body is different based on async or not, need two different DTOs
+        $request = [
+                'body'    => stream_for(http_build_query($updateEvent->toArray())),
+                'service' => $this->isAsync($meta) ? self::PATH_EVENTS : self::PATH_SERVICE
+            ] + $meta;
 
-        return $this->client->request($request); //todo-sg: may need to handle response in a special way?
+        //todo-sg: mark an exception thrown here possibly, implementer needs to handle
+        return $this->client->request('post', '/', $request);
+    }
+
+    /**
+     * @todo-sg: implement logic to call `events` endpoint on non-direct
+     *
+     * @param array $config
+     *
+     * @return bool
+     */
+    private function isAsync(array $config)
+    {
+        //todo-sg: constant if needed, may need to rethink
+        return !isset($config['requestType']) || $config['requestType'] !== 'direct';
     }
 }

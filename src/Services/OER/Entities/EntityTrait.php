@@ -32,6 +32,9 @@ trait EntityTrait
      */
     protected $client;
 
+    /**
+     * @param ClientInterface $client
+     */
     public function __construct(ClientInterface $client)
     {
         $this->client = $client;

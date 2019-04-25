@@ -24,6 +24,9 @@ namespace Shopgate\ConnectSdk\Services\OER;
 use Exception;
 use Shopgate\ConnectSdk\Http;
 
+/**
+ * @property Entities\Catalog catalog
+ */
 class Client
 {
     /** @var Http\ClientInterface */
@@ -38,34 +41,35 @@ class Client
 
     /**
      * This client accepts the following options:
-     *  - http (array) a list of client related data
-     *    * client (Http\ClientInterface, default=Http\GuzzleClient) - accepts a custom HTTP client if needed
-     *    * auth (array) authentication data necessary for the client to make calls
+     *  - http_client (Http\ClientInterface, default=Http\GuzzleClient) - accepts a custom HTTP client if needed
+     *  - auth (array) authentication data necessary for the client to make calls
      *
      * @param array $config
+     *
+     * @codeCoverageIgnore
      */
     public function __construct(array $config)
     {
-        $this->client = isset($config['http']['client']) && $config['http']['client'] instanceof Http\ClientInterface
-            ? $config['http']['client']
+        $this->client = isset($config['http_client']) && $config['http_client'] instanceof Http\ClientInterface
+            ? $config['http_client']
             : new Http\GuzzleClient($config);
     }
 
+    /** @noinspection MagicMethodsValidityInspection */
     /**
      * For direct objects calls like $sdk->catalog->update()
      *
      * @param string $name
-     * @param array  $args
      *
      * @return Entities\EntityInterface
      * @throws Exception
      */
-    public function __call($name, array $args = [])
+    public function __get($name)
     {
         if (isset($this->entities[$name])) {
-            return $this->entities[$name]($this->client);
+            return $this->entities[$name]();
         }
-        $class = "Shopgate\ConnectSdk\Services\OER\Entities\{$name}";
+        $class = 'Shopgate\ConnectSdk\Services\OER\Entities\\' . ucfirst($name);
         if (class_exists($class)) {
             $this->entities[$name] = new $class($this->client);
         } else {

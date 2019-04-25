@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright Shopgate Inc.
  *
@@ -19,18 +20,24 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Http;
+namespace Shopgate\ConnectSdk\Tests\Unit\Services;
 
-use Psr\Http\Message\ResponseInterface;
+use PHPUnit\Framework\TestCase;
+use Shopgate\ConnectSdk\Services\OER\Client;
+use Shopgate\ConnectSdk\Services\OER\Entities\Catalog;
 
-interface ClientInterface
+/**
+ * @coversDefaultClass \Shopgate\ConnectSdk\Services\OER\Client
+ */
+class ClientTest extends TestCase
 {
     /**
-     * @param string $method - put, post, get, delete, etc
-     * @param string $uri    - full url or path that will be concatenated to the base_uri provided to the client
-     * @param array  $options
-     *
-     * @return ResponseInterface
+     * Tests the magic getter for catalog
      */
-    public function request($method, $uri = '', array $options = []);
+    public function testGet()
+    {
+        $subjectUnderTest = new Client([]);
+        /** @noinspection PhpParamsInspection */
+        $this->assertInstanceOf(Catalog::class, $subjectUnderTest->catalog);
+    }
 }

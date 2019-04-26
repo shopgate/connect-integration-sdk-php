@@ -14,24 +14,25 @@ The Shopgate Connect Integration SDK is a compilation of classes to manage the c
 Example for calling a service in order to update the name of the category using the Guzzle client and basic authentication:
 ```
 <?php
-
-use Shopgate\ConnectSdk\Http\GuzzleClient;
-use Shopgate\ConnectSdk\Services\OER\Client;
+use Shopgate\ConnectSdk\Services\Events\Client;
 
 $config = [
     'http' => [
-        'auth' => ['username', 'password']
-    ]
+        'base_uri'     => 'https://{service}.shopgate.services/v1/merchants/{merchantCode}/events',
+        'auth'         => ['username', 'password'],
+        'merchantCode' => 'EE1',
+        'service'      => 'omni-event-receiver'
+    ],
 ];
 
 $client = new Client($config);
 
 // update category
 $meta = ['catalogCode' => 'cat1', 'language' => 'de-de'];
-$client->catalog->update($catalogId, ['name' => 'New category name'], $meta);
+$client->catalog->updateCategory('4', ['title' => 'New category name'], $meta);
 // update category sync
 $meta = ['catalogCode' => 'cat1', 'language' => 'de-de', 'requestType' => 'direct'];
-$client->catalog->update($catalogId, ['name' => 'New category name'], $meta);
+$client->catalog->updateCategory('4', ['title' => 'New category name'], $meta);
 ```
 
 ## Changelog

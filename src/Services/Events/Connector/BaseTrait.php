@@ -20,16 +20,23 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Services\OER\Entities;
+namespace Shopgate\ConnectSdk\Services\Events\Connector;
 
-interface EntityInterface
+use Shopgate\ConnectSdk\Http\ClientInterface;
+
+trait BaseTrait
 {
     /**
-     * @param string $entityId
-     * @param array  $data - related to the payload
-     * @param array  $meta - non-related to the call
-     *
-     * @return bool
+     * @todo-sg: may need to think about logging/debugging requests and returning data for mage to log?
+     * @var ClientInterface
      */
-    public function update($entityId, $data = [], $meta = []);
+    protected $client;
+
+    /**
+     * @param ClientInterface $client
+     */
+    public function __construct(ClientInterface $client)
+    {
+        $this->client = $client;
+    }
 }

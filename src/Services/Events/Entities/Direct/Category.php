@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright Shopgate Inc.
  *
@@ -19,18 +20,18 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Http;
+namespace Shopgate\ConnectSdk\Services\Events\Entities\Direct;
 
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
+use Shopgate\ConnectSdk\Services\Events\Entities\EntityInterface;
 
-interface ClientInterface
+class Category implements EntityInterface
 {
+
     /**
-     * @param RequestInterface $request
-     * @param array            $options
-     *
-     * @return ResponseInterface
+     * @inheritDoc
      */
-    public function send(RequestInterface $request, array $options = []);
+    public function update($entityId, $data = [], $meta = [])
+    {
+        //todo-sg: make a call to direct URI instead of event, set up DTOs
+    }
 }

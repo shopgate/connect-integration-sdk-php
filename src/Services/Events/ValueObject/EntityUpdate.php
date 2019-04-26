@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright Shopgate Inc.
  *
@@ -20,23 +19,22 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Services\OER\Entities;
+namespace Shopgate\ConnectSdk\Services\Events\ValueObject;
 
-use Shopgate\ConnectSdk\Http\ClientInterface;
-
-trait EntityTrait
+class EntityUpdate extends Event
 {
     /**
-     * @todo-sg: may need to think about logging/debugging requests and returning data for mage to log?
-     * @var ClientInterface
+     * @param string $entity
+     * @param string $entityId
+     * @param array  $payload
+     *
+     * @todo-sg: probably use that DTO plugin for this @see https://packagist.org/packages/dto/dto
      */
-    protected $client;
-
-    /**
-     * @param ClientInterface $client
-     */
-    public function __construct(ClientInterface $client)
+    public function __construct($entity, $entityId, array $payload)
     {
-        $this->client = $client;
+        $this->event    = Event::UPDATE;
+        $this->entity   = $entity;
+        $this->entityId = $entityId;
+        $this->payload  = $payload;
     }
 }

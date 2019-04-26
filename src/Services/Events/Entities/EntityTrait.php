@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright Shopgate Inc.
  *
@@ -19,30 +20,23 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Services\OER\ValueObject;
+namespace Shopgate\ConnectSdk\Services\Events\Entities;
 
-class Event
+use Shopgate\ConnectSdk\Http\ClientInterface;
+
+trait EntityTrait
 {
-    const UPDATE = 'entityUpdated';
+    /**
+     * @todo-sg: may need to think about logging/debugging requests and returning data for mage to log?
+     * @var ClientInterface
+     */
+    protected $client;
 
-    const ENTITY_PRODUCT = 'product';
-
-    /** @var string */
-    protected $event;
-    /** @var string */
-    protected $entity;
-    /** @var string */
-    protected $entityId;
-    /** @var array */
-    protected $payload;
-
-    public function toArray()
+    /**
+     * @param ClientInterface $client
+     */
+    public function __construct(ClientInterface $client)
     {
-        return [
-            'event'    => $this->event,
-            'entity'   => $this->entity,
-            'entityId' => $this->entityId,
-            'payload'  => $this->payload
-        ];
+        $this->client = $client;
     }
 }

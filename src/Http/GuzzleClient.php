@@ -25,16 +25,4 @@ use GuzzleHttp\Client;
 
 class GuzzleClient extends Client implements ClientInterface
 {
-    /**
-     * The client accepts the following options:
-     *  - http - this should contain all configurations meant for the HTTP client, namely Guzzle request options
-     *
-     * @see http://docs.guzzlephp.org/en/stable/request-options.html
-     *
-     * @param array $config
-     */
-    public function __construct(array $config = [])
-    {
-        parent::__construct(isset($config['http']) ? $config['http'] : []);
-    }
 }

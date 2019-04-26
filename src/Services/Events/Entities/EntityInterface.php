@@ -20,24 +20,18 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Tests\Unit\Services;
+namespace Shopgate\ConnectSdk\Services\Events\Entities;
 
-use PHPUnit\Framework\TestCase;
-use Shopgate\ConnectSdk\Services\OER\Client;
-use Shopgate\ConnectSdk\Services\OER\Entities\Catalog;
+use Psr\Http\Message\ResponseInterface;
 
-/**
- * @coversDefaultClass \Shopgate\ConnectSdk\Services\OER\Client
- */
-class ClientTest extends TestCase
+interface EntityInterface
 {
     /**
-     * Tests the magic getter for catalog
+     * @param string $entityId
+     * @param array  $data - related to the payload
+     * @param array  $meta - non-related to the call
+     *
+     * @return ResponseInterface
      */
-    public function testGet()
-    {
-        $subjectUnderTest = new Client([]);
-        /** @noinspection PhpParamsInspection */
-        $this->assertInstanceOf(Catalog::class, $subjectUnderTest->catalog);
-    }
+    public function update($entityId, $data = [], $meta = []);
 }

@@ -20,19 +20,19 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Services\OER\Entities;
+namespace Shopgate\ConnectSdk\Services\Events\Entities\Async;
 
+use GuzzleHttp\Psr7\Request;
 use Psr\Http\Message\ResponseInterface;
-use Shopgate\ConnectSdk\Services\OER\ValueObject;
+use Shopgate\ConnectSdk\Services\Events\Entities;
+use Shopgate\ConnectSdk\Services\Events\ValueObject;
 use function GuzzleHttp\Psr7\stream_for;
 
-class Catalog implements EntityInterface
+class Category implements Entities\EntityInterface
 {
-    use EntityTrait;
+    use Entities\EntityTrait;
 
-    const ENTITY       = 'catalog';
-    const PATH_SERVICE = 'category';
-    const PATH_EVENTS  = 'events';
+    const ENTITY = 'category';
 
     /**
      * @param string $entityId
@@ -50,25 +50,10 @@ class Catalog implements EntityInterface
         );
 
         //@todo-sg: body is different based on async or not, need two different DTOs
-        $request = [
-                'body'    => stream_for(http_build_query($updateEvent->toArray())),
-                'service' => $this->isAsync($meta) ? self::PATH_EVENTS : self::PATH_SERVICE
-            ] + $meta;
+        $request = new Request('PUT', '/');
+        $request->withBody(stream_for(http_build_query($updateEvent->toArray())));
 
         //todo-sg: mark an exception thrown here possibly, implementer needs to handle
-        return $this->client->request('post', '/', $request);
-    }
-
-    /**
-     * @todo-sg: implement logic to call `events` endpoint on non-direct
-     *
-     * @param array $config
-     *
-     * @return bool
-     */
-    private function isAsync(array $config)
-    {
-        //todo-sg: constant if needed, may need to rethink
-        return !isset($config['requestType']) || $config['requestType'] !== 'direct';
+        return $this->client->send($request, $meta);
     }
 }

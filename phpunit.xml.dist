@@ -11,7 +11,7 @@
         <whitelist>
             <directory suffix=".php">src</directory>
             <exclude>
-                <directory suffix=".php">src/Service/OER/ValueObject</directory>
+                <directory suffix=".php">src/Service/Events/ValueObject</directory>
             </exclude>
         </whitelist>
     </filter>

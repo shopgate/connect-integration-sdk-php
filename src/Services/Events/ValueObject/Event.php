@@ -19,18 +19,30 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Http;
+namespace Shopgate\ConnectSdk\Services\Events\ValueObject;
 
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
-
-interface ClientInterface
+class Event
 {
-    /**
-     * @param RequestInterface $request
-     * @param array            $options
-     *
-     * @return ResponseInterface
-     */
-    public function send(RequestInterface $request, array $options = []);
+    const UPDATE = 'entityUpdated';
+
+    const ENTITY_PRODUCT = 'product';
+
+    /** @var string */
+    protected $event;
+    /** @var string */
+    protected $entity;
+    /** @var string */
+    protected $entityId;
+    /** @var array */
+    protected $payload;
+
+    public function toArray()
+    {
+        return [
+            'event'    => $this->event,
+            'entity'   => $this->entity,
+            'entityId' => $this->entityId,
+            'payload'  => $this->payload
+        ];
+    }
 }

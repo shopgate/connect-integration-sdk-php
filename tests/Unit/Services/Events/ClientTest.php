@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright Shopgate Inc.
  *
@@ -19,22 +20,24 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Services\OER\ValueObject;
+namespace Shopgate\ConnectSdk\Tests\Unit\Services\Events;
 
-class EntityUpdate extends Event
+use PHPUnit\Framework\TestCase;
+use Shopgate\ConnectSdk\Services\Events\Client;
+use Shopgate\ConnectSdk\Services\Events\Connector\Catalog;
+
+/**
+ * @coversDefaultClass \Shopgate\ConnectSdk\Services\Events\Client
+ */
+class ClientTest extends TestCase
 {
     /**
-     * @param string $entity
-     * @param string $entityId
-     * @param array  $payload
-     *
-     * @todo-sg: probably use that DTO plugin for this @see https://packagist.org/packages/dto/dto
+     * Tests the magic getter for catalog
      */
-    public function __construct($entity, $entityId, array $payload)
+    public function testGet()
     {
-        $this->event    = Event::UPDATE;
-        $this->entity   = $entity;
-        $this->entityId = $entityId;
-        $this->payload  = $payload;
+        $subjectUnderTest = new Client([]);
+        /** @noinspection PhpParamsInspection */
+        $this->assertInstanceOf(Catalog::class, $subjectUnderTest->catalog);
     }
 }

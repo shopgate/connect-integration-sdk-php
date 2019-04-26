@@ -20,26 +20,23 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Services\Events\Entities\Async;
+namespace Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category;
 
 use GuzzleHttp\Psr7\Request;
-use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Services\Events\Entities;
 use Shopgate\ConnectSdk\Services\Events\ValueObject;
 use function GuzzleHttp\Psr7\stream_for;
 
-class Category implements Entities\EntityInterface
+class Async implements Entities\EntityInterface
 {
     use Entities\EntityTrait;
 
     const ENTITY = 'category';
 
     /**
-     * @param string $entityId
-     * @param array  $data
-     * @param array  $meta
+     * @inheritDoc
      *
-     * @return ResponseInterface
+     * @used-by \Shopgate\ConnectSdk\Services\Events\Connector\Catalog::__call()
      */
     public function update($entityId, $data = [], $meta = [])
     {
@@ -50,7 +47,7 @@ class Category implements Entities\EntityInterface
         );
 
         //@todo-sg: body is different based on async or not, need two different DTOs
-        $request = new Request('PUT', '/');
+        $request = new Request('POST', '/');
         $request->withBody(stream_for(http_build_query($updateEvent->toArray())));
 
         //todo-sg: mark an exception thrown here possibly, implementer needs to handle

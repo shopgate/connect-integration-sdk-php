@@ -24,61 +24,32 @@ namespace Shopgate\ConnectSdk\Services\Events\Connector;
 
 use Exception;
 use Psr\Http\Message\ResponseInterface;
-use Shopgate\ConnectSdk\Services\Events\Entities\EntityInterface;
 
 /**
  * @method ResponseInterface updateCategory(string $entityId, array $payload, array $meta)
  */
-class Catalog
+class Catalog extends Base
 {
-    use BaseTrait;
-
     /**
      * @param string $name
      * @param array  $args
      *
      * @return ResponseInterface
      * @throws Exception
+     * @uses \Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category\Async::update()
+     * @uses \Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category\Direct::update()
      */
     public function __call($name, $args = [])
     {
-        if (count($args) > 3) {
-            throw new Exception('Too many parameters passed');
+        if (empty($args) || count($args) > 3) {
+            throw new Exception('Invalid amount of parameters provided');
         }
-        //todo-sg: test weird stuff
-        list($method, $class) = preg_split('/(?=[A-Z])/', $name);
+        //todo-sg: test weird stuff, make sure it allows just 'update' instead of updateCategory
+        list($method, $folder) = preg_split('/(?=[A-Z])/', $name);
 
-        //todo-sg: test different amount of params and errors
-        $direct = $this->isDirect($args[0]) || $this->isDirect($args[2]);
+        //todo-sg: test different amount of params and possible errors
+        $direct = $this->isDirect($args[count($args) - 1]);
 
-        return $this->instantiateClass($class, $direct)->$method(...$args);
-    }
-
-    /**
-     * @param array|mixed $config
-     *
-     * @return bool
-     */
-    protected function isDirect($config)
-    {
-        return is_array($config) && isset($config['requestType']) && $config['requestType'] === 'direct';
-    }
-
-    /**
-     * @param string $name
-     * @param bool   $isDirect
-     *
-     * @return EntityInterface
-     * @throws Exception
-     */
-    private function instantiateClass($name, $isDirect = false)
-    {
-        $direct = $isDirect ? 'Direct\\' : 'Async\\';
-        $class  = 'Shopgate\ConnectSdk\Services\Events\Entities\\' . $direct . ucfirst($name);
-        if (class_exists($class)) {
-            return new $class($this->client);
-        }
-        //todo-sg: custom exception for entities
-        throw new Exception('Entity does not exist');
+        return $this->instantiateClass($folder, $direct)->$method(...$args);
     }
 }

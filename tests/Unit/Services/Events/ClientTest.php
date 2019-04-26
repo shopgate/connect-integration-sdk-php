@@ -22,8 +22,11 @@
 
 namespace Shopgate\ConnectSdk\Tests\Unit\Services\Events;
 
+use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\TestCase;
+use Shopgate\ConnectSdk\Http\GuzzleClient;
 use Shopgate\ConnectSdk\Services\Events\Client;
+use Shopgate\ConnectSdk\Services\Events\Connector\Base;
 use Shopgate\ConnectSdk\Services\Events\Connector\Catalog;
 
 /**
@@ -32,12 +35,37 @@ use Shopgate\ConnectSdk\Services\Events\Connector\Catalog;
 class ClientTest extends TestCase
 {
     /**
+     * @var MockBuilder
+     */
+    protected $httpClient;
+
+    /**
+     * Set up needed objects
+     */
+    protected function setUp()
+    {
+        $this->httpClient = $this->getMockBuilder(GuzzleClient::class)->disableOriginalConstructor();
+    }
+
+    /**
      * Tests the magic getter for catalog
      */
-    public function testGet()
+    public function testGetCatalog()
     {
         $subjectUnderTest = new Client([]);
         /** @noinspection PhpParamsInspection */
         $this->assertInstanceOf(Catalog::class, $subjectUnderTest->catalog);
+    }
+
+    /**
+     * Checking the basic routing, more complicated tests should be done per class
+     */
+    public function testGetCatalogActions()
+    {
+        $mock             = $this->httpClient->getMock();
+        $subjectUnderTest = new Client(['http_client' => $mock]);
+        $mock->expects($this->atLeastOnce())->method('send');
+        $subjectUnderTest->catalog->updateCategory(1, [], []);
+        $subjectUnderTest->catalog->updateCategory(1, [], [Base::KEY_TYPE => Base::SYNC]);
     }
 }

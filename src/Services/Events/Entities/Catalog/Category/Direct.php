@@ -20,23 +20,21 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Services\Events\Connector;
+namespace Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category;
 
-use Shopgate\ConnectSdk\Http\ClientInterface;
+use Shopgate\ConnectSdk\Services\Events\Entities;
 
-trait BaseTrait
+class Direct implements Entities\EntityInterface
 {
-    /**
-     * @todo-sg: may need to think about logging/debugging requests and returning data for mage to log?
-     * @var ClientInterface
-     */
-    protected $client;
+    use Entities\EntityTrait;
 
     /**
-     * @param ClientInterface $client
+     * @inheritDoc
+     * @used-by \Shopgate\ConnectSdk\Services\Events\Connector\Catalog::__call()
      */
-    public function __construct(ClientInterface $client)
+    public function update($entityId, $data = [], $meta = [])
     {
-        $this->client = $client;
+        //todo-sg: make a call to direct URI instead of event, set up DTOs
+        //Guzzle URL has a template like structure -> {service}, supposedly passing $meta['service'] would replace it
     }
 }

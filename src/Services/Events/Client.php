@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright Shopgate Inc.
  *
@@ -24,10 +25,11 @@ namespace Shopgate\ConnectSdk\Services\Events;
 use Exception;
 use Shopgate\ConnectSdk\Http;
 use Shopgate\ConnectSdk\Http\ClientInterface;
+use Shopgate\ConnectSdk\Services\Events\Connector\Base;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @property Connector\Catalog catalog
+ * @property-read Connector\Catalog catalog
  */
 class Client
 {
@@ -68,26 +70,28 @@ class Client
 
     /** @noinspection MagicMethodsValidityInspection */
     /**
-     * For direct objects calls like $sdk->catalog->update()
+     * For redirecting calls like $sdk->catalog->... to the right connector, e.g Connector\Catalog
      *
      * @param string $name
      *
-     * @return Entities\EntityInterface
+     * @return Base
      * @throws Exception
      */
     public function __get($name)
     {
         if (isset($this->entities[$name])) {
-            return $this->entities[$name]();
+            return $this->entities[$name];
         }
 
         return $this->entities[$name] = $this->instantiateClass($name);
     }
 
     /**
+     * A factory for connector classes
+     *
      * @param string $name
      *
-     * @return Entities\EntityInterface
+     * @return Base
      * @throws Exception
      */
     private function instantiateClass($name)

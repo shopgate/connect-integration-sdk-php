@@ -20,18 +20,9 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Services\Events\Entities\Direct;
+namespace Shopgate\ConnectSdk\Services\Events;
 
-use Shopgate\ConnectSdk\Services\Events\Entities\EntityInterface;
-
-class Category implements EntityInterface
+class Config
 {
-
-    /**
-     * @inheritDoc
-     */
-    public function update($entityId, $data = [], $meta = [])
-    {
-        //todo-sg: make a call to direct URI instead of event, set up DTOs
-    }
+    //todo-sg: move the configuration resolving from the main Events\Client to here
 }

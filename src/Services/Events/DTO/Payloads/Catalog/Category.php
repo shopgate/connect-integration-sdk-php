@@ -20,22 +20,21 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Services\Events\ValueObject;
+namespace Shopgate\ConnectSdk\Services\Events\DTO\Payloads\Catalog;
 
-class EntityUpdate extends Event
+use Shopgate\ConnectSdk\Services\Events\DTO\Payloads\Payload;
+
+/**
+ * @method Category setTitle(string $title)
+ */
+class Category extends Payload
 {
-    /**
-     * @param string $entity
-     * @param string $entityId
-     * @param array  $payload
-     *
-     * @todo-sg: probably use that DTO plugin for this @see https://packagist.org/packages/dto/dto
-     */
-    public function __construct($entity, $entityId, array $payload)
-    {
-        $this->event    = Event::UPDATE;
-        $this->entity   = $entity;
-        $this->entityId = $entityId;
-        $this->payload  = $payload;
-    }
+    //todo-sg: supposed to implement the payload for category, should be same for both Async & Direct endpoints
+    protected $schema = [
+        'type'                 => 'object',
+        'properties'           => [
+            'title' => ['type' => 'string']
+        ],
+        'additionalProperties' => false
+    ];
 }

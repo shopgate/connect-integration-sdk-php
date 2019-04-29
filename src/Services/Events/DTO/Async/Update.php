@@ -20,30 +20,40 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Services\Events\ValueObject;
+namespace Shopgate\ConnectSdk\Services\Events\DTO\Async;
 
-class Event
+use Shopgate\ConnectSdk\Services\Events\DTO\Payloads\Payload;
+
+/**
+ * @todo-sg: Should be a factory of some sort, need to create events and instantiate payloads
+ */
+class Update
 {
-    const UPDATE = 'entityUpdated';
+    const EVENT = 'entityUpdated';
 
-    const ENTITY_PRODUCT = 'product';
+    /**
+     * @var Events
+     */
+    protected $events;
 
-    /** @var string */
-    protected $event;
-    /** @var string */
-    protected $entity;
-    /** @var string */
-    protected $entityId;
-    /** @var array */
-    protected $payload;
-
-    public function toArray()
+    /**
+     */
+    public function __construct()
     {
-        return [
-            'event'    => $this->event,
-            'entity'   => $this->entity,
-            'entityId' => $this->entityId,
-            'payload'  => $this->payload
-        ];
+        $this->events = new Events();
+    }
+
+    /**
+     * @param       $entityId
+     * @param       $entity
+     * @param array $payload
+     *
+     * @return Event
+     */
+    public function createEvent($entityId, $entity, Payload $payload)
+    {
+        $event = new Event();
+
+        return $event->setEvent(static::EVENT)->setEntity($entity)->setEntityId($entityId)->setPayload($payload);
     }
 }

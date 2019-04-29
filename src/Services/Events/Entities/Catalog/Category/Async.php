@@ -22,9 +22,12 @@
 
 namespace Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category;
 
+use Dto\Exceptions\InvalidDataTypeException;
+use Exception;
 use GuzzleHttp\Psr7\Request;
+use Shopgate\ConnectSdk\Services\Events\DTO\Async\Update;
+use Shopgate\ConnectSdk\Services\Events\DTO\Payloads\Catalog\Category;
 use Shopgate\ConnectSdk\Services\Events\Entities;
-use Shopgate\ConnectSdk\Services\Events\ValueObject;
 use function GuzzleHttp\Psr7\stream_for;
 
 class Async implements Entities\EntityInterface
@@ -37,20 +40,33 @@ class Async implements Entities\EntityInterface
      * @inheritDoc
      *
      * @used-by \Shopgate\ConnectSdk\Services\Events\Connector\Catalog::__call()
+     * @throws InvalidDataTypeException
+     * @throws Exception
      */
     public function update($entityId, $data = [], $meta = [])
     {
-        $updateEvent = new ValueObject\EntityUpdate(
-            self::ENTITY,
-            $entityId,
-            $data
-        );
+        $payloadClass = $this->getPayload();
+        if (!class_exists($payloadClass)) {
+            throw new Exception('Error instantiating class');
+        }
+        /** @var Category $payload */
+        $payload     = new $payloadClass();
+        $updateEvent = new Update();
+        $event       = $updateEvent->createEvent($entityId, self::ENTITY, $payload->setData($data));
 
         //@todo-sg: body is different based on async or not, need two different DTOs
         $request = new Request('POST', '/');
-        $request->withBody(stream_for(http_build_query($updateEvent->toArray())));
+        $request->withBody(stream_for(http_build_query($event->toArray())));
 
         //todo-sg: mark an exception thrown here possibly, implementer needs to handle
         return $this->client->send($request, $meta);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getPayload()
+    {
+        return str_replace('Entities', 'DTO\Payloads', __NAMESPACE__);
     }
 }

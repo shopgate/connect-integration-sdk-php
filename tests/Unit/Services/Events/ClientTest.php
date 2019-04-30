@@ -26,8 +26,8 @@ use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\TestCase;
 use Shopgate\ConnectSdk\Http\GuzzleClient;
 use Shopgate\ConnectSdk\Services\Events\Client;
-use Shopgate\ConnectSdk\Services\Events\Connector\Base;
-use Shopgate\ConnectSdk\Services\Events\Connector\Catalog;
+use Shopgate\ConnectSdk\Services\Events\Connector\Entities\Base;
+use Shopgate\ConnectSdk\Services\Events\Connector\Entities\Catalog;
 
 /**
  * @coversDefaultClass \Shopgate\ConnectSdk\Services\Events\Client

@@ -88,4 +88,16 @@ class Base extends Dto
 
         return $this;
     }
+
+    /**
+     * @inheritDoc
+     *
+     * @return Base
+     */
+    public function hydrate($value)
+    {
+        parent::hydrate($value);
+
+        return $this;
+    }
 }

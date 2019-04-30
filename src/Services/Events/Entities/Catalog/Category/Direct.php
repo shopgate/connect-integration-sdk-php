@@ -30,7 +30,7 @@ class Direct implements Entities\EntityInterface
 
     /**
      * @inheritDoc
-     * @used-by \Shopgate\ConnectSdk\Services\Events\Connector\Catalog::__call()
+     * @used-by \Shopgate\ConnectSdk\Services\Events\Connector\Entities\Catalog::__call()
      */
     public function update($entityId, $data = [], $meta = [])
     {

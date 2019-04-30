@@ -25,11 +25,11 @@ namespace Shopgate\ConnectSdk\Services\Events;
 use Exception;
 use Shopgate\ConnectSdk\Http;
 use Shopgate\ConnectSdk\Http\ClientInterface;
-use Shopgate\ConnectSdk\Services\Events\Connector\Base;
+use Shopgate\ConnectSdk\Services\Events\Connector\Entities\Base;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @property-read Connector\Catalog catalog
+ * @property-read Connector\Entities\Catalog catalog
  */
 class Client
 {
@@ -70,7 +70,7 @@ class Client
 
     /** @noinspection MagicMethodsValidityInspection */
     /**
-     * For redirecting calls like $sdk->catalog->... to the right connector, e.g Connector\Catalog
+     * For redirecting calls like $sdk->catalog->... to the right connector, e.g Connector\Entities\Catalog
      *
      * @param string $name
      *
@@ -96,7 +96,7 @@ class Client
      */
     private function instantiateClass($name)
     {
-        $class = 'Shopgate\ConnectSdk\Services\Events\Connector\\' . ucfirst($name);
+        $class = 'Shopgate\ConnectSdk\Services\Events\Connector\Entities\\' . ucfirst($name);
         if (class_exists($class)) {
             return new $class($this->client);
         }

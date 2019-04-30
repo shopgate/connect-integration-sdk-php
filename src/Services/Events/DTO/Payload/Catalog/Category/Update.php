@@ -20,40 +20,18 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Services\Events\DTO\Async;
+namespace Shopgate\ConnectSdk\Services\Events\DTO\Payload\Catalog\Category;
 
-use Shopgate\ConnectSdk\Services\Events\DTO\Payloads\Payload;
+use Shopgate\ConnectSdk\Services\Events\DTO\Base;
 
-/**
- * @todo-sg: Should be a factory of some sort, need to create events and instantiate payloads
- */
-class Update
+class Update extends Base
 {
-    const EVENT = 'entityUpdated';
-
-    /**
-     * @var Events
-     */
-    protected $events;
-
-    /**
-     */
-    public function __construct()
-    {
-        $this->events = new Events();
-    }
-
-    /**
-     * @param       $entityId
-     * @param       $entity
-     * @param array $payload
-     *
-     * @return Event
-     */
-    public function createEvent($entityId, $entity, Payload $payload)
-    {
-        $event = new Event();
-
-        return $event->setEvent(static::EVENT)->setEntity($entity)->setEntityId($entityId)->setPayload($payload);
-    }
+    // todo-sg: supposed to implement the payload for category, should be same for both Async & Direct endpoints
+    protected $schema = [
+        'type'                 => 'object',
+        'properties'           => [
+            'title' => ['type' => 'string']
+        ],
+        'additionalProperties' => false
+    ];
 }

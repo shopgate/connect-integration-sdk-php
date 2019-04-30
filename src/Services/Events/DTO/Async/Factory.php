@@ -20,25 +20,50 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Services\Events\DTO\Payloads;
+namespace Shopgate\ConnectSdk\Services\Events\DTO\Async;
 
 use Dto\Exceptions\InvalidDataTypeException;
-use Shopgate\ConnectSdk\Services\Events\DTO\Base;
+use Shopgate\ConnectSdk\Services\Events\DTO\Base as Payload;
 
-class Payload extends Base
+class Factory
 {
+    const EVENT_UPDATE = 'entityUpdated';
+
     /**
-     * @param array $payload
+     * @var Request
+     */
+    protected $request;
+
+    /**
+     * Initialize events
+     */
+    public function __construct()
+    {
+        $this->request = (new Request())->setEvents([]);
+    }
+
+    /**
+     * @param string  $entityId
+     * @param string  $entity
+     * @param Payload $payload
      *
-     * @return Payload
+     * @return Factory
      * @throws InvalidDataTypeException
      */
-    public function setData(array $payload)
+    public function addUpdateEvent($entityId, $entity, Payload $payload)
     {
-        foreach ($payload as $key => $value) {
-            $this->set($key, $value);
-        }
+        $event = new Event();
+        $event->setEvent(static::EVENT_UPDATE)->setEntity($entity)->setEntityId($entityId)->setPayload($payload);
+        $this->request->getEvents()->append($event);
 
         return $this;
+    }
+
+    /**
+     * @return Request
+     */
+    public function getRequest()
+    {
+        return $this->request;
     }
 }

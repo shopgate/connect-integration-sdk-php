@@ -22,8 +22,8 @@
 
 namespace Shopgate\ConnectSdk\Services\Events\DTO\Async;
 
+use Shopgate\ConnectSdk\Services\Events\DTO\Async\Factory as DTOFactory;
 use Shopgate\ConnectSdk\Services\Events\DTO\Base;
-use Shopgate\ConnectSdk\Services\Events\DTO\Payloads\Payload;
 use Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category\Async as Category;
 
 /**
@@ -33,7 +33,7 @@ use Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category\Async as Categ
  * @method Event setEntity(string $entity)
  * @method string getEntityId()
  * @method Event setEntityId(string $entityId)
- * @method Event setPayload(Payload $payload)
+ * @method Event setPayload(Base $payload)
  */
 class Event extends Base
 {
@@ -47,14 +47,14 @@ class Event extends Base
             'properties'           => [
                 'event'    => [
                     'type' => 'string',
-                    'enum' => [Update::EVENT/*, Delete:EVENT, Create::EVENT*/]
+                    'enum' => [DTOFactory::EVENT_UPDATE/*, DTOFactory:EVENT_DELETE, DTOFactory::EVENT_CREATE*/]
                 ],
                 'entity'   => [
                     'type' => 'string',
                     'enum' => [Category::ENTITY]
                 ],
                 'entityId' => ['type' => 'string'],
-                'payload'  => ['type' => Payload::class]
+                'payload'  => ['type' => 'object']
             ],
             'additionalProperties' => false
         ];

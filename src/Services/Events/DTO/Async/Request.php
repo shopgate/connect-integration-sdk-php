@@ -20,20 +20,28 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Services\Events\DTO\Payloads\Catalog;
+namespace Shopgate\ConnectSdk\Services\Events\DTO\Async;
 
-use Shopgate\ConnectSdk\Services\Events\DTO\Payloads\Payload;
+use Shopgate\ConnectSdk\Services\Events\DTO\Base;
 
 /**
- * @method Category setTitle(string $title)
+ * @method Request setEvents(Event[] $events) - note, this rewrites the list. Use append if you want to add to the list.
+ * @method Request getEvents()
  */
-class Category extends Payload
+class Request extends Base
 {
-    //todo-sg: supposed to implement the payload for category, should be same for both Async & Direct endpoints
+    /**
+     * @var array
+     */
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'title' => ['type' => 'string']
+            'events' => [
+                'type'  => 'array',
+                'items' => [
+                    'type' => 'object'
+                ]
+            ]
         ],
         'additionalProperties' => false
     ];

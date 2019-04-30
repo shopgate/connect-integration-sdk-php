@@ -23,10 +23,9 @@
 namespace Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category;
 
 use Dto\Exceptions\InvalidDataTypeException;
-use Exception;
 use GuzzleHttp\Psr7\Request;
-use Shopgate\ConnectSdk\Services\Events\DTO\Async\Update;
-use Shopgate\ConnectSdk\Services\Events\DTO\Payloads\Catalog\Category;
+use Shopgate\ConnectSdk\Services\Events\DTO\Async\Factory as EventFactory;
+use Shopgate\ConnectSdk\Services\Events\DTO\Payload\Factory as PayloadFactory;
 use Shopgate\ConnectSdk\Services\Events\Entities;
 use function GuzzleHttp\Psr7\stream_for;
 
@@ -39,34 +38,18 @@ class Async implements Entities\EntityInterface
     /**
      * @inheritDoc
      *
-     * @used-by \Shopgate\ConnectSdk\Services\Events\Connector\Catalog::__call()
+     * @used-by \Shopgate\ConnectSdk\Services\Events\Connector\Entities\Catalog::__call()
      * @throws InvalidDataTypeException
-     * @throws Exception
      */
     public function update($entityId, $data = [], $meta = [])
     {
-        $payloadClass = $this->getPayload();
-        if (!class_exists($payloadClass)) {
-            throw new Exception('Error instantiating class');
-        }
-        /** @var Category $payload */
-        $payload     = new $payloadClass();
-        $updateEvent = new Update();
-        $event       = $updateEvent->createEvent($entityId, self::ENTITY, $payload->setData($data));
+        $payload     = (new PayloadFactory())->catalog->updateCategory($data);
+        $updateEvent = (new EventFactory())->addUpdateEvent($entityId, self::ENTITY, $payload);
 
-        //@todo-sg: body is different based on async or not, need two different DTOs
         $request = new Request('POST', '/');
-        $request->withBody(stream_for(http_build_query($event->toArray())));
+        $request->withBody(stream_for(http_build_query($updateEvent->getRequest()->toArray())));
 
         //todo-sg: mark an exception thrown here possibly, implementer needs to handle
         return $this->client->send($request, $meta);
-    }
-
-    /**
-     * @return string
-     */
-    protected function getPayload()
-    {
-        return str_replace('Entities', 'DTO\Payloads', __NAMESPACE__);
     }
 }

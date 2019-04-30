@@ -20,28 +20,13 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Services\Events\DTO\Async;
+namespace Shopgate\ConnectSdk\Services\Events\Connector\DTO\Payload;
 
-use Shopgate\ConnectSdk\Services\Events\DTO\Base;
+use Shopgate\ConnectSdk\Services\Events\DTO\Base as Payload;
 
 /**
- * @method Events setEvents(Event[] $events)
+ * @method Payload updateCategory(array $payload)
  */
-class Events extends Base
+class Catalog extends Base
 {
-    /**
-     * @var array
-     */
-    protected $schema = [
-        'type'                 => 'object',
-        'properties'           => [
-            'events' => [
-                'type'  => 'array',
-                'items' => [
-                    'type' => Event::class
-                ]
-            ]
-        ],
-        'additionalProperties' => false
-    ];
 }

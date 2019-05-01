@@ -23,11 +23,15 @@
 namespace Shopgate\ConnectSdk\Services\Events\Connector\Entities;
 
 use Exception;
+use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Http\ClientInterface;
+use Shopgate\ConnectSdk\Services\Events\Connector\Utility;
 use Shopgate\ConnectSdk\Services\Events\Entities\EntityInterface;
 
 class Base
 {
+    use Utility;
+
     const KEY_TYPE = 'requestType';
     const SYNC     = 'direct';
     const ASYNC    = 'async';
@@ -46,6 +50,28 @@ class Base
     }
 
     /**
+     * @param string $name
+     * @param array  $args
+     *
+     * @return ResponseInterface
+     * @throws Exception
+     * @uses \Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category\Async::update()
+     * @uses \Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category\Direct::update()
+     */
+    public function __call($name, $args = [])
+    {
+        if (empty($args) || count($args) > 3) {
+            throw new Exception('Invalid amount of parameters provided');
+        }
+
+        list($method, $folder) = $this->splitMethodName($name);
+        //todo-sg: test different amount of params and possible errors
+        $direct = $this->isDirect($args[count($args) - 1]);
+
+        return $this->instantiateClass($folder, $direct)->$method(...$args);
+    }
+
+    /**
      * @param array|mixed $config
      *
      * @return bool
@@ -56,22 +82,18 @@ class Base
     }
 
     /**
-     * @param string $folder - name of the folder the entity resides
-     * @param bool   $isDirect
+     * @param string|null $folder - name of the folder the entity resides
+     * @param bool        $isDirect
      *
      * @return EntityInterface
      * @throws Exception
      */
     protected function instantiateClass($folder, $isDirect = false)
     {
-        $folder  = $folder ? '\\' . ucfirst($folder) : '';
+        $current = $this->getClassPath($folder);
         $direct  = '\\' . ucfirst($isDirect ? self::SYNC : self::ASYNC);
-        $current = '\\' . substr(strrchr(static::class, "\\"), 1);
-        $class   = 'Shopgate\ConnectSdk\Services\Events\Entities' . $current . $folder . $direct;
-        if (class_exists($class)) {
-            return new $class($this->client);
-        }
-        //todo-sg: custom exception for entities
-        throw new Exception('Entity does not exist');
+        $class   = 'Shopgate\ConnectSdk\Services\Events\Entities' . $current . $direct;
+
+        return $this->getClass($class, [$this->client]);
     }
 }

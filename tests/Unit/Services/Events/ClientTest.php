@@ -64,7 +64,8 @@ class ClientTest extends TestCase
     {
         $mock             = $this->httpClient->getMock();
         $subjectUnderTest = new Client(['http_client' => $mock]);
-        $mock->expects($this->atLeastOnce())->method('send');
+        /** @noinspection PhpParamsInspection */
+        $mock->expects($this->exactly(2))->method('send');
         $subjectUnderTest->catalog->updateCategory(1, [], []);
         $subjectUnderTest->catalog->updateCategory(1, [], [Base::KEY_TYPE => Base::SYNC]);
     }

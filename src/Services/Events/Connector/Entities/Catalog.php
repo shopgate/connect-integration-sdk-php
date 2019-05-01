@@ -22,7 +22,6 @@
 
 namespace Shopgate\ConnectSdk\Services\Events\Connector\Entities;
 
-use Exception;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -30,26 +29,4 @@ use Psr\Http\Message\ResponseInterface;
  */
 class Catalog extends Base
 {
-    /**
-     * @param string $name
-     * @param array  $args
-     *
-     * @return ResponseInterface
-     * @throws Exception
-     * @uses \Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category\Async::update()
-     * @uses \Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category\Direct::update()
-     */
-    public function __call($name, $args = [])
-    {
-        if (empty($args) || count($args) > 3) {
-            throw new Exception('Invalid amount of parameters provided');
-        }
-        //todo-sg: test weird stuff, make sure it allows just 'update' instead of updateCategory
-        list($method, $folder) = preg_split('/(?=[A-Z])/', $name);
-
-        //todo-sg: test different amount of params and possible errors
-        $direct = $this->isDirect($args[count($args) - 1]);
-
-        return $this->instantiateClass($folder, $direct)->$method(...$args);
-    }
 }

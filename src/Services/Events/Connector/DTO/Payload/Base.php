@@ -23,15 +23,20 @@
 namespace Shopgate\ConnectSdk\Services\Events\Connector\DTO\Payload;
 
 use Exception;
-use Psr\Http\Message\ResponseInterface;
+use Shopgate\ConnectSdk\Services\Events\Connector\Utility;
+use Shopgate\ConnectSdk\Services\Events\DTO\Base as Payload;
 
 class Base
 {
+    use Utility {
+        splitMethodName as traitSplitMethod;
+    }
+
     /**
      * @param string $name
      * @param array  $args
      *
-     * @return ResponseInterface
+     * @return Payload
      * @throws Exception
      */
     public function __call($name, $args = [])
@@ -40,27 +45,44 @@ class Base
             throw new Exception('Invalid amount of parameters provided');
         }
         //todo-sg: test weird stuff, make sure it allows just 'update' instead of updateCategory
-        list($method, $folder) = preg_split('/(?=[A-Z])/', $name);
-        $structure = $folder . '\\' . ucfirst($method); //todo-sg: cleanup
+        $folder = $this->namespaceFromMethod($name);
 
-        return $this->instantiateClass($structure)->hydrate(...$args);
+        return $this->instantiateClass($folder)->hydrate(...$args);
+    }
+
+    /**
+     * @param string $method
+     *
+     * @return string
+     */
+    private function namespaceFromMethod($method)
+    {
+        return implode('\\', array_map('ucfirst', $this->splitMethodName($method)));
     }
 
     /**
      * @param string $folder - name of the folder the entity resides
      *
-     * @return mixed
+     * @return Payload
      * @throws Exception
      */
     protected function instantiateClass($folder)
     {
-        $folder  = $folder ? '\\' . ucfirst($folder) : '';
-        $current = '\\' . substr(strrchr(static::class, "\\"), 1);
-        $class   = 'Shopgate\ConnectSdk\Services\Events\DTO\Payload' . $current . $folder;
-        if (class_exists($class)) {
-            return new $class();
-        }
-        //todo-sg: custom exception for entities
-        throw new Exception('Entity does not exist');
+        $current = $this->getClassPath($folder);
+        $class   = 'Shopgate\ConnectSdk\Services\Events\DTO\Payload' . $current;
+
+        return $this->getClass($class);
+    }
+
+    /**
+     * Rewrite to reverse the split method output
+     *
+     * @param string $name
+     *
+     * @return array
+     */
+    public function splitMethodName($name)
+    {
+        return array_reverse($this->traitSplitMethod($name));
     }
 }

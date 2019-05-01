@@ -22,7 +22,11 @@
 
 namespace Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category;
 
+use Dto\Exceptions\InvalidDataTypeException;
+use GuzzleHttp\Psr7\Request;
+use Shopgate\ConnectSdk\Services\Events\DTO\Payload\Factory as PayloadFactory;
 use Shopgate\ConnectSdk\Services\Events\Entities;
+use function GuzzleHttp\Psr7\stream_for;
 
 class Direct implements Entities\EntityInterface
 {
@@ -31,10 +35,16 @@ class Direct implements Entities\EntityInterface
     /**
      * @inheritDoc
      * @used-by \Shopgate\ConnectSdk\Services\Events\Connector\Entities\Catalog::__call()
+     * @throws InvalidDataTypeException
      */
     public function update($entityId, $data = [], $meta = [])
     {
-        //todo-sg: make a call to direct URI instead of event, set up DTOs
+        $payload = (new PayloadFactory())->catalog->updateCategory($data);
+
+        $request = new Request('POST', '');
+        $request->withBody(stream_for(http_build_query($payload->toArray())));
+
+        return $this->client->send($request, $meta);
         //Guzzle URL has a template like structure -> {service}, supposedly passing $meta['service'] would replace it
     }
 }

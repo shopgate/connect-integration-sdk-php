@@ -49,6 +49,9 @@ class ClientTest extends TestCase
 
     /**
      * Tests the magic getter for catalog
+     *
+     * @covers \Shopgate\ConnectSdk\Services\Events\Client
+     * @covers \Shopgate\ConnectSdk\Services\Events\Connector\Entities\Base::__call
      */
     public function testGetCatalog()
     {
@@ -59,6 +62,9 @@ class ClientTest extends TestCase
 
     /**
      * Checking the basic routing, more complicated tests should be done per class
+     *
+     * @covers \Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category\Async
+     * @covers \Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category\Direct
      */
     public function testGetCatalogActions()
     {

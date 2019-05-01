@@ -12,6 +12,11 @@
             <directory suffix=".php">src</directory>
             <exclude>
                 <directory suffix=".php">src/Service/Events/ValueObject</directory>
+                <directory suffix=".php">tests</directory>
+                <file>src/Services/Events/DTO/Base.php</file>
+                <file>src/Services/Events/DTO/Async/Request.php</file>
+                <file>src/Services/Events/DTO/Async/Event.php</file>
+                <file>src/Services/Events/DTO/Payload/Catalog/Category/Update.php</file>
             </exclude>
         </whitelist>
     </filter>

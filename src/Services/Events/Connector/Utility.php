@@ -35,20 +35,34 @@ trait Utility
      */
     public function splitMethodName($name)
     {
-        return array_map('lcfirst', preg_split('/(?=[A-Z])/', $name));
+        if (empty($name)) {
+            return [];
+        }
+
+        return array_map('lcfirst', preg_split('/(?=[A-Z])/', lcfirst($name)));
     }
 
     /**
+     * If inheriting class is Catalog and folder Category, we get \Catalog\Category
+     *
      * @param string|null $folder
      *
      * @return string
      */
     public function getClassPath($folder)
     {
-        $folder  = empty($folder) ? '' : '\\' . ucfirst($folder);
-        $current = '\\' . substr(strrchr(static::class, '\\'), 1);
+        $curClass = substr(strrchr(static::class, '\\'), 1);
+        $result   = implode(
+            '\\',
+            array_filter(
+                [$curClass, $folder],
+                static function ($item) {
+                    return empty($item) ? false : ucfirst($item);
+                }
+            )
+        );
 
-        return $current . $folder;
+        return '\\' . $result;
     }
 
     /**

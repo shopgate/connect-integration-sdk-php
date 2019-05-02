@@ -22,7 +22,10 @@
 
 namespace Shopgate\ConnectSdk\Services\Events\Entities;
 
+use Dto\Exceptions\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Http\ClientInterface;
+use Shopgate\ConnectSdk\Services\Events\DTO\Async\Factory as EventFactory;
+use Shopgate\ConnectSdk\Services\Events\DTO\Payload\Factory as PayloadFactory;
 
 trait EntityTrait
 {
@@ -39,4 +42,39 @@ trait EntityTrait
     {
         $this->client = $client;
     }
+
+    //todo-sg: may need this for multi item payloads
+    //    protected function parse2d($data)
+    //    {
+    //        if ($this->is2d($data)) {
+    //            foreach ($data as $body) {
+    //                $this->addEvent($updateEvent, $entityId, $body);
+    //            }
+    //        } else {
+    //            $this->addEvent($updateEvent, $entityId, $data);
+    //        }
+    //    }
+
+    /**
+     * @param EventFactory $updateEvent
+     * @param string       $entityId
+     * @param array        $body
+     *
+     * @throws InvalidDataTypeException
+     */
+    private function addEvent(EventFactory $updateEvent, $entityId, $body)
+    {
+        $payload = (new PayloadFactory())->catalog->updateCategory($body);
+        $updateEvent->addUpdateEvent($entityId, self::ENTITY, $payload);
+    }
+
+    /**
+     * @param array $array
+     *
+     * @return bool
+     */
+    //    private function is2d(array $array)
+    //    {
+    //        return count($array) !== count($array, COUNT_RECURSIVE);
+    //    }
 }

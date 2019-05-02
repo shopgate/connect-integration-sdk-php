@@ -1,31 +1,31 @@
 {
-    "name": "shopgate/connect-integration-sdk-php",
-    "description": "A PHP framework supporting the integration with the Shogate Connect Platform.",
-    "homepage": "https://github.com/shopgate/connect-integration-sdk-php",
-    "license": "Apache-2.0",
-    "version": "0.1.0",
-    "authors": [
-        {
-            "name": "Shopgate",
-            "email": "interfaces@shopgate.com"
-        }
-    ],
-    "require": {
-        "php": ">=5.6",
-        "guzzlehttp/guzzle": "~6.0",
-        "guzzlehttp/psr7": "^1.5",
-      "symfony/options-resolver": "^3.4",
-      "dto/dto": "^3.2.7"
-    },
-    "require-dev": {
-        "roave/security-advisories": "dev-master",
-        "phpunit/phpunit": ">=5 <8",
-        "php-coveralls/php-coveralls": "^2.1"
-    },
-    "autoload": {
-        "psr-4": {
-            "Shopgate\\ConnectSdk\\": "src/",
-            "Shopgate\\ConnectSdk\\Tests\\": "tests/"
-        }
+  "name": "shopgate/connect-integration-sdk-php",
+  "description": "A PHP framework supporting the integration with the Shogate Connect Platform.",
+  "homepage": "https://github.com/shopgate/connect-integration-sdk-php",
+  "license": "Apache-2.0",
+  "version": "0.1.0",
+  "authors": [
+    {
+      "name": "Shopgate",
+      "email": "interfaces@shopgate.com"
     }
+  ],
+  "require": {
+    "php": ">=5.6",
+    "guzzlehttp/guzzle": "~6.0",
+    "guzzlehttp/psr7": "^1.5",
+    "symfony/options-resolver": "^3.4",
+    "dto/dto": "^3.2.7"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-master",
+    "phpunit/phpunit": ">=5 <8",
+    "php-coveralls/php-coveralls": "^2.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Shopgate\\ConnectSdk\\": "src/",
+      "Shopgate\\ConnectSdk\\Tests\\": "tests/"
+    }
+  }
 }

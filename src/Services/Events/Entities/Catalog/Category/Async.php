@@ -23,11 +23,8 @@
 namespace Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category;
 
 use Dto\Exceptions\InvalidDataTypeException;
-use GuzzleHttp\Psr7\Request;
 use Shopgate\ConnectSdk\Services\Events\DTO\Async\Factory as EventFactory;
-use Shopgate\ConnectSdk\Services\Events\DTO\Payload\Factory as PayloadFactory;
 use Shopgate\ConnectSdk\Services\Events\Entities;
-use function GuzzleHttp\Psr7\stream_for;
 
 class Async implements Entities\EntityInterface
 {
@@ -43,13 +40,14 @@ class Async implements Entities\EntityInterface
      */
     public function update($entityId, $data = [], $meta = [])
     {
-        $payload     = (new PayloadFactory())->catalog->updateCategory($data);
-        $updateEvent = (new EventFactory())->addUpdateEvent($entityId, self::ENTITY, $payload);
-
-        $request = new Request('POST', '/');
-        $request->withBody(stream_for(http_build_query($updateEvent->getRequest()->toArray())));
+        $updateEvent = new EventFactory();
+        $this->addEvent($updateEvent, $entityId, $data);
 
         //todo-sg: mark an exception thrown here possibly, implementer needs to handle
-        return $this->client->send($request, $meta);
+        return $this->client->request(
+            'post',
+            'events',
+            ['json' => $updateEvent->getRequest()->toArray(), 'query' => $meta]
+        );
     }
 }

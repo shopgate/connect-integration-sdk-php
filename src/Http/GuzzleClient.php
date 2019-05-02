@@ -23,7 +23,33 @@
 namespace Shopgate\ConnectSdk\Http;
 
 use GuzzleHttp\Client;
+use function GuzzleHttp\uri_template;
 
 class GuzzleClient extends Client implements ClientInterface
 {
+    /**
+     * Rewritten to resolve base_uri templates
+     *
+     * @inheritDoc
+     */
+    public function __construct(array $config = [])
+    {
+        if (isset($config['base_uri'])) {
+            $config['base_uri'] = $this->resolveTemplate($config['base_uri'], $config);
+        }
+        parent::__construct($config);
+    }
+
+    /**
+     * Resolves the template style strings
+     *
+     * @param string $component
+     * @param array  $options
+     *
+     * @return string
+     */
+    public function resolveTemplate($component, array $options = [])
+    {
+        return uri_template(urldecode($component), array_merge($this->getConfig() ? : [], $options));
+    }
 }

@@ -24,6 +24,10 @@ namespace Shopgate\ConnectSdk\Services\Events\DTO\Payload\Catalog\Category;
 
 use Shopgate\ConnectSdk\Services\Events\DTO\Base as DTOBase;
 
+/**
+ * Default class that handles validation for category Update/Create payloads.
+ * If there is a need to differentiate, one can create a class Update.php, etc. and extend this one
+ */
 class Base extends DTOBase
 {
     protected $schema = [

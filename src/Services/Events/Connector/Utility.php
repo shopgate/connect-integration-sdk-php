@@ -54,11 +54,9 @@ trait Utility
         $curClass = substr(strrchr(static::class, '\\'), 1);
         $result   = implode(
             '\\',
-            array_filter(
-                [$curClass, $folder],
-                static function ($item) {
-                    return empty($item) ? false : ucfirst($item);
-                }
+            array_map(
+                'ucfirst',
+                array_filter([$curClass, $folder])
             )
         );
 

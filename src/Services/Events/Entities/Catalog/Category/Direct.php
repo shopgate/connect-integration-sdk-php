@@ -47,4 +47,20 @@ class Direct implements Entities\EntityInterface
             ['json' => $payload->toArray(), 'query' => $meta]
         );
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function create($data = [], $meta = [])
+    {
+        // todo-sg: Implement create() method.
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function delete($entityId, $meta = [])
+    {
+        // todo-sg: Implement delete() method.
+    }
 }

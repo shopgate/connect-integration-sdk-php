@@ -55,6 +55,7 @@ class Async implements Entities\EntityInterface
     /**
      * @inheritDoc
      *
+     * @used-by \Shopgate\ConnectSdk\Services\Events\Connector\Entities\Catalog::__call()
      * @throws InvalidDataTypeException
      */
     public function create($data = [], $meta = [])
@@ -72,6 +73,7 @@ class Async implements Entities\EntityInterface
     /**
      * @inheritDoc
      *
+     * @used-by \Shopgate\ConnectSdk\Services\Events\Connector\Entities\Catalog::__call()
      * @throws InvalidDataTypeException
      */
     public function delete($entityId, $meta = [])

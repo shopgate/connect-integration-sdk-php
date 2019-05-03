@@ -38,4 +38,20 @@ interface EntityInterface
      * @return ResponseInterface
      */
     public function update($entityId, $data = [], $meta = []);
+
+    /**
+     * @param array $data
+     * @param array $meta
+     *
+     * @return ResponseInterface
+     */
+    public function create($data = [], $meta = []);
+
+    /**
+     * @param string $entityId
+     * @param array  $meta
+     *
+     * @return ResponseInterface
+     */
+    public function delete($entityId, $meta = []);
 }

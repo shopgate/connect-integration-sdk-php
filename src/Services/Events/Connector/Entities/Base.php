@@ -56,6 +56,8 @@ class Base
      * @return ResponseInterface
      * @throws Exception
      * @uses \Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category\Async::update()
+     * @uses \Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category\Async::create()
+     * @uses \Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category\Async::delete()
      * @uses \Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category\Direct::update()
      */
     public function __call($name, $args = [])

@@ -26,6 +26,10 @@ use Psr\Http\Message\ResponseInterface;
 
 interface EntityInterface
 {
+    const EVENT_TYPE_CREATE = 'create';
+    const EVENT_TYPE_UPDATE = 'update';
+    const EVENT_TYPE_DELETE = 'remove';
+
     /**
      * @param string $entityId
      * @param array  $data - related to the payload

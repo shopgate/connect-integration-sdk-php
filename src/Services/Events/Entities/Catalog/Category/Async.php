@@ -23,13 +23,14 @@
 namespace Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category;
 
 use Dto\Exceptions\InvalidDataTypeException;
-use Shopgate\ConnectSdk\Services\Events\DTO\Async\Factory as EventFactory;
+use Shopgate\ConnectSdk\Services\Events\DTO\Payload\Factory as PayloadFactory;
 use Shopgate\ConnectSdk\Services\Events\Entities;
 
 class Async implements Entities\EntityInterface
 {
     use Entities\EntityTrait;
 
+    /** @var string - needs to be implemented for every class */
     const ENTITY = 'category';
 
     /**
@@ -40,14 +41,47 @@ class Async implements Entities\EntityInterface
      */
     public function update($entityId, $data = [], $meta = [])
     {
-        $updateEvent = new EventFactory();
-        $this->addEvent($updateEvent, $entityId, $data);
+        $payload = (new PayloadFactory())->catalog->updateCategory($data);
+        $factory = $this->addEvent(Entities\EntityInterface::EVENT_TYPE_UPDATE, $entityId, $payload);
 
         //todo-sg: mark an exception thrown here possibly, implementer needs to handle
         return $this->client->request(
             'post',
             'events',
-            ['json' => $updateEvent->getRequest()->toArray(), 'query' => $meta]
+            ['json' => $factory->getRequest()->toArray(), 'query' => $meta]
+        );
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @throws InvalidDataTypeException
+     */
+    public function create($data = [], $meta = [])
+    {
+        $payload = (new PayloadFactory())->catalog->createCategory($data);
+        $factory = $this->addEvent(Entities\EntityInterface::EVENT_TYPE_CREATE, '', $payload);
+
+        return $this->client->request(
+            'post',
+            'events',
+            ['json' => $factory->getRequest()->toArray(), 'query' => $meta]
+        );
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @throws InvalidDataTypeException
+     */
+    public function delete($entityId, $meta = [])
+    {
+        $factory = $this->addEvent(Entities\EntityInterface::EVENT_TYPE_DELETE, $entityId);
+
+        return $this->client->request(
+            'post',
+            'events',
+            ['json' => $factory->getRequest()->toArray(), 'query' => $meta]
         );
     }
 }

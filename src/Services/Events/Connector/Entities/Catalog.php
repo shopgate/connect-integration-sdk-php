@@ -26,6 +26,8 @@ use Psr\Http\Message\ResponseInterface;
 
 /**
  * @method ResponseInterface updateCategory(string $entityId, array $payload, array $meta)
+ * @method ResponseInterface createCategory(array $payload, array $meta)
+ * @method ResponseInterface deleteCategory(string $entityId, array $meta)
  */
 class Catalog extends Base
 {

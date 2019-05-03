@@ -34,15 +34,16 @@ class Direct implements Entities\EntityInterface
      * @inheritDoc
      * @used-by \Shopgate\ConnectSdk\Services\Events\Connector\Entities\Catalog::__call()
      * @throws InvalidDataTypeException
+     *
+     * todo-sg: untested
      */
     public function update($entityId, $data = [], $meta = [])
     {
         $payload = (new PayloadFactory())->catalog->updateCategory($data);
 
-        //todo-sg: need to finish implementing
         return $this->client->request(
             'post',
-            '',
+            'categories/' . $entityId,
             ['json' => $payload->toArray(), 'query' => $meta]
         );
     }

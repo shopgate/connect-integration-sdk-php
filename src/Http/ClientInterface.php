@@ -22,20 +22,11 @@
 
 namespace Shopgate\ConnectSdk\Http;
 
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
 
 interface ClientInterface
 {
-    /**
-     * @param RequestInterface $request
-     * @param array            $options
-     *
-     * @return ResponseInterface
-     */
-    public function send(RequestInterface $request, array $options = []);
-
     /**
      * Create and send an HTTP request.
      *

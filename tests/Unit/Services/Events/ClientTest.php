@@ -69,8 +69,10 @@ class ClientTest extends TestCase
         $mock             = $this->httpClient->getMock();
         $subjectUnderTest = new Client(['http_client' => $mock]);
         /** @noinspection PhpParamsInspection */
-        $mock->expects($this->exactly(2))->method('request');
+        $mock->expects($this->exactly(4))->method('request');
         $subjectUnderTest->catalog->updateCategory(1, [], []);
         $subjectUnderTest->catalog->updateCategory(1, [], [Base::KEY_TYPE => Base::SYNC]);
+        $subjectUnderTest->catalog->createCategory([], []);
+        $subjectUnderTest->catalog->deleteCategory('1', []);
     }
 }

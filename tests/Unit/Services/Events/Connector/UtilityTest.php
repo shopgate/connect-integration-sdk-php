@@ -33,30 +33,6 @@ use Shopgate\ConnectSdk\Services\Events\Connector\Utility;
 class UtilityTest extends TestCase
 {
     /**
-     * @return array
-     */
-    public static function splitNameProvider()
-    {
-        return [
-            [['update', 'category'], 'updateCategory'],
-            [['update', 'category'], 'UpdateCategory'],
-            [['update'], 'update'],
-            [[], null],
-            [[], '']
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    public static function getClassPathProvider()
-    {
-        return [
-            ['\SomeFolder', 'SomeFolder'],
-        ];
-    }
-
-    /**
      * @param array  $expected
      * @param string $methodName
      *
@@ -84,5 +60,29 @@ class UtilityTest extends TestCase
         $mock = $this->getMockForTrait(Utility::class);
 
         $this->assertEquals($expected, $mock->getClassPath($folder));
+    }
+
+    /**
+     * @return array
+     */
+    public function splitNameProvider()
+    {
+        return [
+            [['update', 'category'], 'updateCategory'],
+            [['update', 'category'], 'UpdateCategory'],
+            [['update'], 'update'],
+            [[], null],
+            [[], '']
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getClassPathProvider()
+    {
+        return [
+            ['\SomeFolder', 'SomeFolder'],
+        ];
     }
 }

@@ -26,6 +26,7 @@ use Shopgate\ConnectSdk\Services\Events\DTO\Base as Payload;
 
 /**
  * @method Payload updateCategory(array $payload)
+ * @method Payload createCategory(array $payload)
  */
 class Catalog extends Base
 {

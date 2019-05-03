@@ -22,15 +22,20 @@
 
 namespace Shopgate\ConnectSdk\Services\Events\DTO\Payload\Catalog\Category;
 
-use Shopgate\ConnectSdk\Services\Events\DTO\Base;
+use Shopgate\ConnectSdk\Services\Events\DTO\Base as DTOBase;
 
-class Update extends Base
+class Base extends DTOBase
 {
-    // todo-sg: supposed to implement the payload for category, should be same for both Async & Direct endpoints
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'title' => ['type' => 'string']
+            'code'        => ['type' => 'string'],
+            'parentCode'  => ['type' => 'string'],
+            'catalogCode' => ['type' => 'string'],
+            'title'       => ['type' => 'string'],
+            'description' => ['type' => 'string'],
+            'imageUrl'    => ['type' => 'string'],
+            'categoryUrl' => ['type' => 'string']
         ],
         'additionalProperties' => false
     ];

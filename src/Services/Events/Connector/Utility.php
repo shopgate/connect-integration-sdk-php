@@ -77,7 +77,13 @@ trait Utility
         if (class_exists($class)) {
             return new $class(...$constructorArgs);
         }
+
+        // Uses Base as backup in case the class does not exist
+        $backup = substr($class, 0, strrpos($class, '\\')) . '\Base';
+        if (class_exists($backup)) {
+            return new $backup(...$constructorArgs);
+        }
         //todo-sg: custom exception for entities
-        throw new Exception('Entity does not exist');
+        throw new Exception("Entity does not exist {$class}");
     }
 }

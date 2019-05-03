@@ -25,7 +25,7 @@ namespace Shopgate\ConnectSdk\Services\Events\Entities;
 use Dto\Exceptions\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\Services\Events\DTO\Async\Factory as EventFactory;
-use Shopgate\ConnectSdk\Services\Events\DTO\Payload\Factory as PayloadFactory;
+use Shopgate\ConnectSdk\Services\Events\DTO\Base as Payload;
 
 trait EntityTrait
 {
@@ -34,6 +34,8 @@ trait EntityTrait
      * @var ClientInterface
      */
     protected $client;
+    /** @var EventFactory */
+    protected $eventFactory;
 
     /**
      * @param ClientInterface $client
@@ -43,38 +45,31 @@ trait EntityTrait
         $this->client = $client;
     }
 
-    //todo-sg: may need this for multi item payloads
-    //    protected function parse2d($data)
-    //    {
-    //        if ($this->is2d($data)) {
-    //            foreach ($data as $body) {
-    //                $this->addEvent($updateEvent, $entityId, $body);
-    //            }
-    //        } else {
-    //            $this->addEvent($updateEvent, $entityId, $data);
-    //        }
-    //    }
-
     /**
-     * @param EventFactory $updateEvent
-     * @param string       $entityId
-     * @param array        $body
+     * @param string       $type     - see EntityInterface constants
+     * @param string       $entityId - id of the entity to update
+     * @param Payload|null $payload
      *
+     * @return EventFactory
      * @throws InvalidDataTypeException
      */
-    private function addEvent(EventFactory $updateEvent, $entityId, $body)
+    protected function addEvent($type, $entityId, Payload $payload = null)
     {
-        $payload = (new PayloadFactory())->catalog->updateCategory($body);
-        $updateEvent->addUpdateEvent($entityId, self::ENTITY, $payload);
+        $eventFactory = $this->getEventFactory();
+        $eventFactory->addEvent($type, $entityId, self::ENTITY, $payload);
+
+        return $eventFactory;
     }
 
     /**
-     * @param array $array
-     *
-     * @return bool
+     * @return EventFactory
      */
-    //    private function is2d(array $array)
-    //    {
-    //        return count($array) !== count($array, COUNT_RECURSIVE);
-    //    }
+    protected function getEventFactory()
+    {
+        if (null === $this->eventFactory) {
+            $this->eventFactory = new EventFactory();
+        }
+
+        return $this->eventFactory;
+    }
 }

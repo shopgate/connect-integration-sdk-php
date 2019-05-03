@@ -22,7 +22,73 @@
 
 namespace Shopgate\ConnectSdk\Services\Events;
 
+use Shopgate\ConnectSdk\Http\ClientInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 class Config
 {
-    //todo-sg: move the configuration resolving from the main Events\Client to here
+
+    /**
+     * @param array $config
+     *
+     * @return array
+     */
+    public function resolveMainOptions(array $config)
+    {
+        $resolver = new OptionsResolver();
+        $this->mainDefaultOptions($resolver);
+
+        return $resolver->resolve($config);
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return array
+     */
+    public function resolveHttpOptions(array $options)
+    {
+        $httpResolver = new OptionsResolver();
+        $this->httpDefaultOptions($httpResolver);
+
+        return $httpResolver->resolve($options);
+    }
+
+    /**
+     * These options get injected directly into the HTTP Client
+     *
+     * @param OptionsResolver $resolver
+     */
+    private function httpDefaultOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(
+            [
+                'base_uri' => 'https://{service}.shopgate{env}.services/v{ver}/merchants/{merchantCode}/',
+                'env'      => '',
+                'ver'      => 1,
+                'service'  => 'omni-event-receiver'
+            ]
+        );
+        $resolver->setDefined(['merchantCode', 'auth']);
+        $resolver->setAllowedValues('env', ['pg', 'dev', '']);
+        $resolver->setAllowedTypes('auth', 'string[]');
+        $resolver->setAllowedTypes('merchantCode', 'string');
+        $resolver->setAllowedTypes('ver', 'int');
+    }
+
+    /**
+     * @param OptionsResolver $resolver
+     */
+    private function mainDefaultOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(
+            [
+                'http'        => [],
+                'http_client' => null
+            ]
+        );
+        $resolver->setDefined(['http_client']);
+        $resolver->setAllowedTypes('http', 'array');
+        $resolver->setAllowedTypes('http_client', [ClientInterface::class, 'null']);
+    }
 }

@@ -26,7 +26,6 @@ use Exception;
 use Shopgate\ConnectSdk\Http;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\Services\Events\Connector\Entities\Base;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @property-read Connector\Entities\Catalog catalog
@@ -55,13 +54,9 @@ class Client
      */
     public function __construct(array $config)
     {
-        $resolver = new OptionsResolver();
-        $this->configureOptions($resolver);
-        $options = $resolver->resolve($config);
-
-        $httpResolver = new OptionsResolver();
-        $this->httpResolver($httpResolver);
-        $httpOptions = $httpResolver->resolve($options['http']);
+        $configResolver = new Config();
+        $options        = $configResolver->resolveMainOptions($config);
+        $httpOptions    = $configResolver->resolveHttpOptions($options['http']);
 
         $this->client = null !== $options['http_client']
             ? $options['http_client']
@@ -102,43 +97,5 @@ class Client
         }
         //todo-sg: custom exception for Connectors
         throw new Exception('Connector does not exist');
-    }
-
-    /**
-     * These options get injected directly into the HTTP Client
-     *
-     * @param OptionsResolver $resolver
-     */
-    protected function httpResolver(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults(
-            [
-                'base_uri' => 'https://{service}.shopgate{env}.services/v{ver}/merchants/{merchantCode}/',
-                'env'      => '',
-                'ver'      => 1,
-                'service'  => 'omni-event-receiver'
-            ]
-        );
-        $resolver->setDefined(['merchantCode', 'auth']);
-        $resolver->setAllowedValues('env', ['pg', 'dev', '']);
-        $resolver->setAllowedTypes('auth', 'string[]');
-        $resolver->setAllowedTypes('merchantCode', 'string');
-        $resolver->setAllowedTypes('ver', 'int');
-    }
-
-    /**
-     * @param OptionsResolver $resolver
-     */
-    protected function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults(
-            [
-                'http'        => [],
-                'http_client' => null
-            ]
-        );
-        $resolver->setDefined(['http_client']);
-        $resolver->setAllowedTypes('http', 'array');
-        $resolver->setAllowedTypes('http_client', [ClientInterface::class, 'null']);
     }
 }

@@ -35,11 +35,7 @@ trait Utility
      */
     public function splitMethodName($name)
     {
-        if (empty($name)) {
-            return [];
-        }
-
-        return array_map('lcfirst', preg_split('/(?=[A-Z])/', lcfirst($name)));
+        return array_filter(array_map('lcfirst', preg_split('/(?=[A-Z])/', lcfirst($name))));
     }
 
     /**

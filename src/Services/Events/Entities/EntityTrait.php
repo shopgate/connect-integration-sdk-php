@@ -30,7 +30,6 @@ use Shopgate\ConnectSdk\Services\Events\DTO\Base as Payload;
 trait EntityTrait
 {
     /**
-     * @todo-sg: may need to think about logging/debugging requests and returning data for mage to log?
      * @var ClientInterface
      */
     protected $client;

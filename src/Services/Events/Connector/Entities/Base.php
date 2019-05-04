@@ -67,7 +67,6 @@ class Base
         }
 
         list($method, $folder) = $this->splitMethodName($name);
-        //todo-sg: test different amount of params and possible errors
         $direct = $this->isDirect($args[count($args) - 1]);
 
         return $this->instantiateClass($folder, $direct)->$method(...$args);

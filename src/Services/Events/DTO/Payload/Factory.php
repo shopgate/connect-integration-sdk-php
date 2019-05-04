@@ -22,8 +22,8 @@
 
 namespace Shopgate\ConnectSdk\Services\Events\DTO\Payload;
 
-use Exception;
 use Shopgate\ConnectSdk\Services\Events\Connector\DTO\Payload;
+use Shopgate\ConnectSdk\Services\Events\Exceptions\ClassNoExistException;
 
 /**
  * @property-read Payload\Catalog catalog
@@ -42,7 +42,7 @@ class Factory
      * @param string $name
      *
      * @return Payload\Base
-     * @throws Exception
+     * @throws ClassNoExistException
      */
     public function __get($name)
     {
@@ -59,7 +59,7 @@ class Factory
      * @param string $name
      *
      * @return Payload\Base
-     * @throws Exception
+     * @throws ClassNoExistException
      */
     private function instantiateClass($name)
     {
@@ -67,7 +67,6 @@ class Factory
         if (class_exists($class)) {
             return new $class();
         }
-        //todo-sg: custom exception for Connectors
-        throw new Exception('Connector does not exist');
+        throw new ClassNoExistException('Connector class does not exist');
     }
 }

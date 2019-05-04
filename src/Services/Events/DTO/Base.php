@@ -24,12 +24,10 @@ namespace Shopgate\ConnectSdk\Services\Events\DTO;
 
 use Dto\Dto;
 use Dto\Exceptions\InvalidDataTypeException;
+use Dto\Exceptions\InvalidIndexException;
 use Dto\RegulatorInterface;
 use Exception;
 
-/**
- *
- */
 class Base extends Dto
 {
     /**
@@ -72,8 +70,8 @@ class Base extends Dto
 
                 return $this->set($key, isset($args[0]) ? $args[0] : null);
         }
-        //todo-sg: handle error
-        throw new Exception('Invalid method ' . get_class($this) . '::' . $method . '(' . print_r($args, 1) . ')');
+        $error = 'Invalid method ' . get_class($this) . '::' . $method . '(' . print_r($args, 1) . ')';
+        throw new InvalidIndexException($error);
     }
 
     /**

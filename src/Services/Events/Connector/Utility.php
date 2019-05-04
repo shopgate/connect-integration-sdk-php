@@ -22,7 +22,7 @@
 
 namespace Shopgate\ConnectSdk\Services\Events\Connector;
 
-use Exception;
+use Shopgate\ConnectSdk\Services\Events\Exceptions\ClassNoExistException;
 
 trait Utility
 {
@@ -57,7 +57,7 @@ trait Utility
      * @param array  $constructorArgs - pass arguments to the constructor
      *
      * @return mixed
-     * @throws Exception
+     * @throws ClassNoExistException
      */
     public function getClass($class, array $constructorArgs = [])
     {
@@ -70,7 +70,6 @@ trait Utility
         if (class_exists($backup)) {
             return new $backup(...$constructorArgs);
         }
-        //todo-sg: custom exception for entities
-        throw new Exception("Entity does not exist {$class}");
+        throw new ClassNoExistException("Entity does not exist {$class}");
     }
 }

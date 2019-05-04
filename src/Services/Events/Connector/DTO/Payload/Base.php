@@ -22,9 +22,11 @@
 
 namespace Shopgate\ConnectSdk\Services\Events\Connector\DTO\Payload;
 
-use Exception;
+use Dto\Exceptions\UnstorableValueException;
 use Shopgate\ConnectSdk\Services\Events\Connector\Utility;
 use Shopgate\ConnectSdk\Services\Events\DTO\Base as Payload;
+use Shopgate\ConnectSdk\Services\Events\Exceptions\ClassNoExistException;
+use Shopgate\ConnectSdk\Services\Events\Exceptions\TooManyArgsException;
 
 class Base
 {
@@ -37,14 +39,15 @@ class Base
      * @param array  $args
      *
      * @return Payload
-     * @throws Exception
+     * @throws TooManyArgsException
+     * @throws UnstorableValueException
+     * @throws ClassNoExistException
      */
     public function __call($name, $args = [])
     {
         if (empty($args) || count($args) > 3) {
-            throw new Exception('Invalid amount of parameters provided');
+            throw new TooManyArgsException('Invalid amount of parameters provided');
         }
-        //todo-sg: test weird stuff, make sure it allows just 'update' instead of updateCategory
         $folder = $this->namespaceFromMethod($name);
 
         return $this->instantiateClass($folder)->hydrate(...$args);
@@ -64,7 +67,7 @@ class Base
      * @param string $folder - name of the folder the entity resides
      *
      * @return Payload
-     * @throws Exception
+     * @throws ClassNoExistException
      */
     protected function instantiateClass($folder)
     {

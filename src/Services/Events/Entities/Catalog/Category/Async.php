@@ -44,7 +44,6 @@ class Async implements Entities\EntityInterface
         $payload = (new PayloadFactory())->catalog->updateCategory($data);
         $factory = $this->addEvent(Entities\EntityInterface::EVENT_TYPE_UPDATE, $entityId, $payload);
 
-        //todo-sg: mark an exception thrown here possibly, implementer needs to handle
         return $this->client->request(
             'post',
             'events',

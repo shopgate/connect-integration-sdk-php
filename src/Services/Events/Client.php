@@ -26,6 +26,7 @@ use Exception;
 use Shopgate\ConnectSdk\Http;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\Services\Events\Connector\Entities\Base;
+use Shopgate\ConnectSdk\Services\Events\Exceptions\ClassNoExistException;
 
 /**
  * @property-read Connector\Entities\Catalog catalog
@@ -95,7 +96,6 @@ class Client
         if (class_exists($class)) {
             return new $class($this->client);
         }
-        //todo-sg: custom exception for Connectors
-        throw new Exception('Connector does not exist');
+        throw new ClassNoExistException('Connector does not exist');
     }
 }

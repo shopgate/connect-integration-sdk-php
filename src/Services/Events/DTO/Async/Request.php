@@ -45,4 +45,17 @@ class Request extends Base
         ],
         'additionalProperties' => false
     ];
+
+    /**
+     * This just makes sure that an empty object is
+     * treated as a json object, not an array.
+     *
+     * @inheritDoc
+     */
+    public function toJson($pretty = false)
+    {
+        $json = parent::toJson();
+
+        return str_replace('[]', '{}', $json);
+    }
 }

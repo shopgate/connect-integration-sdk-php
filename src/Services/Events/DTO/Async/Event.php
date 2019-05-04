@@ -33,7 +33,7 @@ use Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category\Async as Categ
  * @method Event setEntity(string $entity)
  * @method string getEntityId()
  * @method Event setEntityId(string $entityId)
- * @method Event setPayload(Base|array $payload)
+ * @method Event setPayload(Base $payload)
  */
 class Event extends Base
 {
@@ -54,7 +54,7 @@ class Event extends Base
                     'enum' => [Category::ENTITY]
                 ],
                 'entityId' => ['type' => 'string'],
-                'payload'  => ['type' => ['object', 'array']]
+                'payload'  => ['type' => 'object']
             ],
             'additionalProperties' => false
         ];

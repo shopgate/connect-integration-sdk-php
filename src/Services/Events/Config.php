@@ -69,11 +69,12 @@ class Config
                 'service'  => 'omni-event-receiver'
             ]
         );
-        $resolver->setDefined(['merchantCode', 'auth']);
+        $resolver->setDefined(['merchantCode', 'auth', 'handler']);
         $resolver->setAllowedValues('env', ['pg', 'dev', '']);
         $resolver->setAllowedTypes('auth', 'string[]');
         $resolver->setAllowedTypes('merchantCode', 'string');
         $resolver->setAllowedTypes('ver', 'int');
+        $resolver->setAllowedTypes('handler', ['object', 'null']);
     }
 
     /**
@@ -84,7 +85,7 @@ class Config
         $resolver->setDefaults(
             [
                 'http'        => [],
-                'http_client' => null
+                'http_client' => null,
             ]
         );
         $resolver->setDefined(['http_client']);

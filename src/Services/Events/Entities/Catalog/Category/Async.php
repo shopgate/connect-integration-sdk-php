@@ -48,7 +48,7 @@ class Async implements Entities\EntityInterface
         return $this->client->request(
             'post',
             'events',
-            ['json' => $factory->getRequest()->toArray(), 'query' => $meta]
+            ['json' => $factory->getRequest()->toJson(), 'query' => $meta]
         );
     }
 
@@ -66,7 +66,7 @@ class Async implements Entities\EntityInterface
         return $this->client->request(
             'post',
             'events',
-            ['json' => $factory->getRequest()->toArray(), 'query' => $meta]
+            ['json' => $factory->getRequest()->toJson(), 'query' => $meta]
         );
     }
 
@@ -83,7 +83,7 @@ class Async implements Entities\EntityInterface
         return $this->client->request(
             'post',
             'events',
-            ['json' => $factory->getRequest()->toArray(), 'query' => $meta]
+            ['json' => $factory->getRequest()->toJson(), 'query' => $meta]
         );
     }
 }

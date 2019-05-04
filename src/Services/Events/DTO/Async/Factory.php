@@ -67,7 +67,10 @@ class Factory
     {
         $eventType = $this->translateType($type);
         $event     = new Event();
-        $event->setEvent($eventType)->setEntity($entity)->setEntityId($entityId)->setPayload($payload ? : []);
+        $event->setEvent($eventType)
+              ->setEntity($entity)
+              ->setEntityId($entityId)
+              ->setPayload($payload ? : new Payload());
         $this->request->getEvents()->append($event);
 
         return $this;

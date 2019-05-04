@@ -39,7 +39,8 @@ class Base extends DTOBase
             'title'       => ['type' => 'string'],
             'description' => ['type' => 'string'],
             'imageUrl'    => ['type' => 'string'],
-            'categoryUrl' => ['type' => 'string']
+            'categoryUrl' => ['type' => 'string'],
+            'sequenceId'  => ['type' => 'integer'],
         ],
         'additionalProperties' => false
     ];

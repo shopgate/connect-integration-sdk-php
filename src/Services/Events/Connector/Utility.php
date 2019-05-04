@@ -52,15 +52,8 @@ trait Utility
     public function getClassPath($folder)
     {
         $curClass = substr(strrchr(static::class, '\\'), 1);
-        $result   = implode(
-            '\\',
-            array_map(
-                'ucfirst',
-                array_filter([$curClass, $folder])
-            )
-        );
 
-        return '\\' . $result;
+        return '\\' . implode('\\', array_map('ucfirst', array_filter([$curClass, $folder])));
     }
 
     /**

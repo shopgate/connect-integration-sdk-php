@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
-         backupGlobals="false"
          bootstrap="vendor/autoload.php">
     <testsuites>
         <testsuite name="UnitTests">
-            <directory suffix="Test.php">tests/Unit</directory>
+            <directory>tests/Unit</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist>
             <directory suffix=".php">src</directory>
             <exclude>
-                <directory suffix=".php">src/Service/Omni/ValueObject</directory>
+                <file>src/Services/Events/DTO/Base.php</file>
+                <file>src/Services/Events/DTO/Async/Request.php</file>
+                <file>src/Services/Events/DTO/Async/Event.php</file>
+                <file>src/Services/Events/DTO/Payload/Catalog/Category/Update.php</file>
             </exclude>
         </whitelist>
     </filter>

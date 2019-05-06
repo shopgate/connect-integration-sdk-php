@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright Shopgate Inc.
  *
@@ -19,30 +20,10 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\Service\Omni\ValueObject;
+namespace Shopgate\ConnectSdk\Services\Events\Exceptions;
 
-class Event
+use Exception;
+
+class ClassNoExistException extends Exception
 {
-    const UPDATE = 'entityUpdated';
-
-    const ENTITY_PRODUCT = 'product';
-
-    /** @var string */
-    protected $event;
-    /** @var string */
-    protected $entity;
-    /** @var string */
-    protected $entityId;
-    /** @var array */
-    protected $payload;
-
-    public function toArray()
-    {
-        return [
-            'event'    => $this->event,
-            'entity'   => $this->entity,
-            'entityId' => $this->entityId,
-            'payload'  => $this->payload
-        ];
-    }
 }

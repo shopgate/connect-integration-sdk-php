@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright Shopgate Inc.
  *
@@ -19,25 +20,15 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\Client;
+namespace Shopgate\ConnectSdk\Services\Events\Connector\Entities;
 
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-interface ClientInterface
+/**
+ * @method ResponseInterface updateCategory(string $entityId, array $payload, array $meta)
+ * @method ResponseInterface createCategory(array $payload, array $meta)
+ * @method ResponseInterface deleteCategory(string $entityId, array $meta)
+ */
+class Catalog extends Base
 {
-    const AUTHENTICATION_TYPE_BASIC = 'basic';
-
-    /**
-     * @param RequestInterface  $request
-     * @param array             $options
-     *
-     * @return ResponseInterface
-     */
-    public function request(RequestInterface $request, array $options = []);
-
-    /**
-     * @return string
-     */
-    public function getAuthentication();
 }

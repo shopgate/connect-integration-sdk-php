@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright Shopgate Inc.
  *
@@ -19,18 +20,36 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\Service\Omni;
+namespace Shopgate\ConnectSdk\Http;
 
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
+use GuzzleHttp\Client;
+use function GuzzleHttp\uri_template;
 
-interface RequestServiceInterface
+class GuzzleClient extends Client implements ClientInterface
 {
     /**
-     * @param RequestInterface $request
-     * @param string[]         $uriParams
+     * Rewritten to resolve base_uri templates
      *
-     * @return ResponseInterface
+     * @inheritDoc
      */
-    public function handle(RequestInterface $request, $uriParams);
+    public function __construct(array $config = [])
+    {
+        if (isset($config['base_uri'])) {
+            $config['base_uri'] = $this->resolveTemplate($config['base_uri'], $config);
+        }
+        parent::__construct($config);
+    }
+
+    /**
+     * Resolves the template style strings
+     *
+     * @param string $component
+     * @param array  $options
+     *
+     * @return string
+     */
+    public function resolveTemplate($component, array $options = [])
+    {
+        return uri_template(urldecode($component), array_merge($this->getConfig() ? : [], $options));
+    }
 }

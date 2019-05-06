@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright Shopgate Inc.
  *
@@ -19,15 +20,10 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\CloudIntegrationSdk\Service\Omni\ValueObject;
+namespace Shopgate\ConnectSdk\Services\Events\Exceptions;
 
-class EntityUpdate extends Event
+use Exception;
+
+class TooManyArgsException extends Exception
 {
-    public function __construct($entity, $entityId, $payload)
-    {
-        $this->event    = Event::UPDATE;
-        $this->entity   = $entity;
-        $this->entityId = $entityId;
-        $this->payload  = $payload;
-    }
 }

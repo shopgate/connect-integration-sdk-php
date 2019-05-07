@@ -32,6 +32,7 @@ class Request extends Base
 {
     /**
      * @var array
+     * @codeCoverageIgnore
      */
     protected $schema = [
         'type'                 => 'object',

@@ -31,6 +31,13 @@ interface EntityInterface
     const EVENT_TYPE_DELETE = 'remove';
 
     /**
+     * Event entities
+     */
+    const EVENT_ENTITY_CATEGORY  = 'category';
+    const EVENT_ENTITY_PRODUCT   = 'product';
+    const EVENT_ENTITY_ATTRIBUTE = 'attribute';
+
+    /**
      * @param string $entityId
      * @param array  $data - related to the payload
      * @param array  $meta - non-related to the call

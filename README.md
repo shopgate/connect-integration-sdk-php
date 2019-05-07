@@ -23,22 +23,21 @@ $config = [
         'auth'         => ['username', 'password'],
         'merchantCode' => 'EE1',
         'service'      => 'omni-event-receiver'
-    ],
+    ]
 ];
 
 $client = new Client($config);
 
-// update category
-$meta = ['catalogCode' => 'cat1', 'language' => 'de-de'];
-$client->catalog->updateCategory('4', ['title' => 'Skirts'], $meta);
 // create category
-$client->catalog->createCategory(['title' => 'Blue Jeans', 'code'=>'pants', 'sequenceId' => 1], $meta);
+$client->catalog->createCategory(['code'=>'pants', 'name' => 'Blue Jeans', 'sequenceId' => 1]);
+// update category
+$client->catalog->updateCategory('pants', ['name' => 'Skirts']);
 // delete category
-$client->catalog->deleteCategory('pants', $meta);
+$client->catalog->deleteCategory('pants');
 
 // update category sync (not currently functional)
-$meta = ['catalogCode' => 'cat1', 'language' => 'de-de', 'requestType' => 'direct'];
-$client->catalog->updateCategory('4', ['title' => 'Skirts'], $meta);
+$meta = ['requestType' => 'direct'];
+$client->catalog->updateCategory('4', ['name' => 'Skirts'], $meta);
 ```
 
 #### Config

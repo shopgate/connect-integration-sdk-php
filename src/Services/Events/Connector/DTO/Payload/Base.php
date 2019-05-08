@@ -28,6 +28,11 @@ use Shopgate\ConnectSdk\Services\Events\DTO\Base as Payload;
 use Shopgate\ConnectSdk\Services\Events\Exceptions\ClassNoExistException;
 use Shopgate\ConnectSdk\Services\Events\Exceptions\TooManyArgsException;
 
+/**
+ * Just like the other connector classes, this helps with the magic instantiation of correct Payload DTO classes
+ * via factory by using (new ...\DTO\Payload\Factory)->catalog->updateCategory, where catalog is the class that
+ * inherits this one and adds the appropriate methods to the docblock.
+ */
 class Base
 {
     use Utility {

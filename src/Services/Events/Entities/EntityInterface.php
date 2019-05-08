@@ -28,7 +28,7 @@ interface EntityInterface
 {
     const EVENT_TYPE_CREATE = 'create';
     const EVENT_TYPE_UPDATE = 'update';
-    const EVENT_TYPE_DELETE = 'remove';
+    const EVENT_TYPE_DELETE = 'delete';
 
     /**
      * Event entities

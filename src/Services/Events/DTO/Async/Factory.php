@@ -26,6 +26,7 @@ use Dto\Exceptions\InvalidDataTypeException;
 use Exception;
 use Shopgate\ConnectSdk\Services\Events\DTO\Base as Payload;
 use Shopgate\ConnectSdk\Services\Events\Entities\EntityInterface;
+use Shopgate\ConnectSdk\Services\Events\Exceptions\TypeNoExistException;
 
 class Factory
 {
@@ -87,7 +88,7 @@ class Factory
         if (isset($this->typeMap[$type])) {
             return $this->typeMap[$type];
         }
-        throw new Exception('Incorrect type provided');
+        throw new TypeNoExistException('Incorrect type provided');
     }
 
     /**

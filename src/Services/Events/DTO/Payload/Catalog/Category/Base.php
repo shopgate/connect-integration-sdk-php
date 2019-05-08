@@ -30,18 +30,21 @@ use Shopgate\ConnectSdk\Services\Events\DTO\Base as DTOBase;
  */
 class Base extends DTOBase
 {
+    /**
+     * @var array
+     * @codeCoverageIgnore
+     */
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'code'        => ['type' => 'string'],
-            'parentCode'  => ['type' => 'string'],
-            'catalogCode' => ['type' => 'string'],
-            'title'       => ['type' => 'string'],
-            'description' => ['type' => 'string'],
-            'imageUrl'    => ['type' => 'string'],
-            'categoryUrl' => ['type' => 'string'],
-            'sequenceId'  => ['type' => 'integer'],
+            'code'               => ['type' => 'string'],
+            'parentCategoryCode' => ['type' => 'string'],
+            'name'               => ['type' => 'string'],
+            'description'        => ['type' => 'string'],
+            'image'              => ['type' => 'string'],
+            'url'                => ['type' => 'string'],
+            'sequenceId'         => ['type' => 'integer']
         ],
-        'additionalProperties' => false
+        'additionalProperties' => true
     ];
 }

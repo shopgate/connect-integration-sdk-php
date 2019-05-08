@@ -28,6 +28,9 @@ use Dto\Exceptions\InvalidIndexException;
 use Dto\RegulatorInterface;
 use Exception;
 
+/**
+ * @codeCoverageIgnore
+ */
 class Base extends Dto
 {
     /**

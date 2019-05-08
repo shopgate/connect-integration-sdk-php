@@ -25,9 +25,12 @@ namespace Shopgate\ConnectSdk\Services\Events\Connector\Entities;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * @method ResponseInterface updateCategory(string $entityId, array $payload, array $meta)
- * @method ResponseInterface createCategory(array $payload, array $meta)
- * @method ResponseInterface deleteCategory(string $entityId, array $meta)
+ * @method ResponseInterface updateCategory(string $entityId, array $payload, array $meta = [])
+ * @method ResponseInterface createCategory(array $payload, array $meta = [])
+ * @method ResponseInterface deleteCategory(string $entityId, array $meta = [])
+ *
+ * @see \Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category\Async
+ * @see \Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category\Direct
  */
 class Catalog extends Base
 {

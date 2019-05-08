@@ -31,7 +31,7 @@ class Async implements Entities\EntityInterface
     use Entities\EntityTrait;
 
     /** @var string - needs to be implemented for every class */
-    const ENTITY = 'category';
+    const ENTITY = Entities\EntityInterface::EVENT_ENTITY_CATEGORY;
 
     /**
      * @inheritDoc

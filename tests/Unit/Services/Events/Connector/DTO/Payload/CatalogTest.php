@@ -28,7 +28,7 @@ use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
 use Shopgate\ConnectSdk\Services\Events\Connector\DTO\Payload\Catalog;
-use Shopgate\ConnectSdk\Services\Events\DTO\Payload\Catalog\Category\Base;
+use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Category\Base;
 
 /**
  * @coversDefaultClass \Shopgate\ConnectSdk\Services\Events\Connector\DTO\Payload\Catalog

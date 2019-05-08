@@ -27,7 +27,7 @@ use Shopgate\ConnectSdk\Services\Events\DTO\Base as Payload;
 /**
  * This class forwards
  *
- * @see \Shopgate\ConnectSdk\Services\Events\DTO\Payload\Catalog\Category\Base
+ * @see \Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Category\Base
  *
  * @method Payload updateCategory(array $payload)
  * @method Payload createCategory(array $payload)

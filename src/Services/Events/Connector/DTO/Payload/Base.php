@@ -39,6 +39,17 @@ class Base
         splitMethodName as traitSplitMethod;
     }
 
+    /** @var string */
+    protected $version;
+
+    /**
+     * @param string $version - version of the API
+     */
+    public function __construct($version = 'v1')
+    {
+        $this->version = $version;
+    }
+
     /**
      * @param string $name
      * @param array  $args
@@ -76,8 +87,9 @@ class Base
      */
     protected function instantiateClass($folder)
     {
+        $version = strtoupper($this->version);
         $current = $this->getClassPath($folder);
-        $class   = 'Shopgate\ConnectSdk\Services\Events\DTO\Payload' . $current;
+        $class   = "Shopgate\ConnectSdk\Services\Events\DTO\\{$version}\Payload{$current}";
 
         return $this->getClass($class);
     }

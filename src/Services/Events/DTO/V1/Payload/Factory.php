@@ -20,7 +20,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Services\Events\DTO\Payload;
+namespace Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload;
 
 use Shopgate\ConnectSdk\Services\Events\Connector\DTO\Payload;
 use Shopgate\ConnectSdk\Services\Events\Exceptions\ClassNoExistException;
@@ -30,6 +30,17 @@ use Shopgate\ConnectSdk\Services\Events\Exceptions\ClassNoExistException;
  */
 class Factory
 {
+    /** @var string */
+    protected $version;
+
+    /**
+     * @param string $version - version of the API
+     */
+    public function __construct($version = 'v1')
+    {
+        $this->version = $version;
+    }
+
     /**
      * @var Payload\Base
      */
@@ -65,7 +76,7 @@ class Factory
     {
         $class = 'Shopgate\ConnectSdk\Services\Events\Connector\DTO\Payload\\' . ucfirst($name);
         if (class_exists($class)) {
-            return new $class();
+            return new $class($this->version);
         }
         throw new ClassNoExistException('Connector class does not exist');
     }

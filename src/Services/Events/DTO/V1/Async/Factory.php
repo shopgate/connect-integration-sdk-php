@@ -20,7 +20,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Services\Events\DTO\Async;
+namespace Shopgate\ConnectSdk\Services\Events\DTO\V1\Async;
 
 use Dto\Exceptions\InvalidDataTypeException;
 use Exception;

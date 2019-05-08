@@ -23,7 +23,7 @@
 namespace Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category;
 
 use Dto\Exceptions\InvalidDataTypeException;
-use Shopgate\ConnectSdk\Services\Events\DTO\Payload\Factory as PayloadFactory;
+use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Factory as PayloadFactory;
 use Shopgate\ConnectSdk\Services\Events\Entities;
 
 class Direct implements Entities\EntityInterface

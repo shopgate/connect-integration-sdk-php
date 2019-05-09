@@ -51,7 +51,8 @@ class Category extends DTOBase
             'description'        => ['type' => 'string'],
             'image'              => ['type' => 'string'],
             'url'                => ['type' => 'string'],
-            'sequenceId'         => ['type' => 'integer']
+            'sequenceId'         => ['type' => 'integer'],
+            'externalUpdateDate' => ['type' => 'string']
         ],
         'additionalProperties' => true
     ];

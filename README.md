@@ -39,7 +39,7 @@ $client->catalog->updateCategory('pants', $updateDto);
 // delete category
 $client->catalog->deleteCategory('pants');
 
-// update category sync (not currently functional)
+// update category sync
 $updateDto = new CategoryDto(['name' => 'Skirts']);
 $client->catalog->updateCategory('4', $updateDto, ['requestType' => 'direct']);
 ```

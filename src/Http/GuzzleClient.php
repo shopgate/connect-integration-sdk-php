@@ -39,7 +39,7 @@ class GuzzleClient extends Client implements ClientInterface
      */
     public function request($method, $uri = '', array $options = [])
     {
-        $baseUri = $this->resolveUri($uri, $options);
+        $baseUri = $this->resolveUri($uri, $options['query']);
 
         return parent::request($method, $baseUri, $options);
     }
@@ -55,6 +55,7 @@ class GuzzleClient extends Client implements ClientInterface
         /** @var Psr7\Uri $baseUri */
         $baseUri = $this->getConfig('base_uri');
         if (!empty($uri)) {
+            $uri     = $this->resolveTemplate($uri, $options);
             $baseUri = Psr7\UriResolver::resolve($baseUri, uri_for($uri));
         }
         $baseUri = $baseUri->withHost($this->resolveTemplate($baseUri->getHost(), $options));

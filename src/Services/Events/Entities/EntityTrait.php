@@ -24,6 +24,7 @@ namespace Shopgate\ConnectSdk\Services\Events\Entities;
 
 use Dto\Exceptions\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Http\ClientInterface;
+use Shopgate\ConnectSdk\Services\Events\Connector\Entities\Base;
 use Shopgate\ConnectSdk\Services\Events\DTO\Base as Payload;
 use Shopgate\ConnectSdk\Services\Events\DTO\V1\Async\Factory as EventFactory;
 
@@ -70,5 +71,24 @@ trait EntityTrait
         }
 
         return $this->eventFactory;
+    }
+
+    /**
+     * Remove meta that does not need to be sent to the endpoints
+     *
+     * @param array $meta
+     *
+     * @return array
+     */
+    public function cleanInternalMeta(array $meta = [])
+    {
+        $blacklist = [Base::KEY_TYPE];
+
+        return array_filter(
+            $meta,
+            static function ($item) use ($blacklist) {
+                return in_array($item, $blacklist, true);
+            }
+        );
     }
 }

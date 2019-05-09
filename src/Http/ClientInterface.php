@@ -40,7 +40,7 @@ interface ClientInterface
      *
      * @return ResponseInterface
      */
-    public function request($method, $uri, array $options = []);
+    public function request($method, $uri = '', array $options = []);
 
     /**
      * @param string|null $option

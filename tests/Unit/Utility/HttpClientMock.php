@@ -29,7 +29,7 @@ class HttpClientMock implements ClientInterface
     /**
      * @inheritDoc
      */
-    public function request($method, $uri, array $options = [])
+    public function request($method, $uri = '', array $options = [])
     {
         return null;
     }

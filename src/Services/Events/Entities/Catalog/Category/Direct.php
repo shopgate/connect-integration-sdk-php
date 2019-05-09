@@ -23,7 +23,7 @@
 namespace Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category;
 
 use Dto\Exceptions\InvalidDataTypeException;
-use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Factory as PayloadFactory;
+use Shopgate\ConnectSdk\Services\Events\DTO\Base as Payload;
 use Shopgate\ConnectSdk\Services\Events\Entities;
 
 class Direct implements Entities\EntityInterface
@@ -37,10 +37,8 @@ class Direct implements Entities\EntityInterface
      *
      * todo-sg: untested
      */
-    public function update($entityId, $data = [], $meta = [])
+    public function update($entityId, Payload $payload, $meta = [])
     {
-        $payload = (new PayloadFactory())->catalog->updateCategory($data);
-
         return $this->client->request(
             'post',
             'categories/' . $entityId,
@@ -50,14 +48,16 @@ class Direct implements Entities\EntityInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
-    public function create($data = [], $meta = [])
+    public function create(Payload $payload, $meta = [])
     {
         // todo-sg: Implement create() method.
     }
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function delete($entityId, $meta = [])
     {

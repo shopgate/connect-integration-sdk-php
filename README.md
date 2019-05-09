@@ -16,6 +16,7 @@ Example for calling a service in order to update the name of the category using 
 ```
 <?php
 use Shopgate\ConnectSdk\Services\Events\Client;
+use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Category as CategoryDto;
 
 $config = [
     'http' => [
@@ -28,16 +29,19 @@ $config = [
 
 $client = new Client($config);
 
-// create category
-$client->catalog->createCategory(['code'=>'pants', 'name' => 'Blue Jeans', 'sequenceId' => 1]);
-// update category
-$client->catalog->updateCategory('pants', ['name' => 'Skirts']);
+// create new category
+$categoryPayload = new CategoryDto();
+$categoryPayload->setCode('pants')->setName('Denim Pants')->setSequenceId(1);
+$client->catalog->createCategory($categoryPayload);
+// update category with constructor input example
+$updateDto = new CategoryDto(['name' => 'Skirts']);
+$client->catalog->updateCategory('pants', $updateDto);
 // delete category
 $client->catalog->deleteCategory('pants');
 
 // update category sync (not currently functional)
-$meta = ['requestType' => 'direct'];
-$client->catalog->updateCategory('4', ['name' => 'Skirts'], $meta);
+$updateDto = new CategoryDto(['name' => 'Skirts']);
+$client->catalog->updateCategory('4', $updateDto, ['requestType' => 'direct']);
 ```
 
 #### Config

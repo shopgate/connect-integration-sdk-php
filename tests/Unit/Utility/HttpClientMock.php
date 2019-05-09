@@ -20,10 +20,25 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Services\Events\Exceptions;
+namespace Shopgate\ConnectSdk\Tests\Unit\Utility;
 
-use Exception;
+use Shopgate\ConnectSdk\Http\ClientInterface;
 
-class TooManyArgsException extends Exception
+class HttpClientMock implements ClientInterface
 {
+    /**
+     * @inheritDoc
+     */
+    public function request($method, $uri, array $options = [])
+    {
+        return null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getConfig($option = null)
+    {
+        return [];
+    }
 }

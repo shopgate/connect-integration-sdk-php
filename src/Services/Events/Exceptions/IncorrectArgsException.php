@@ -20,18 +20,10 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Services\Events\Connector\DTO\Payload;
+namespace Shopgate\ConnectSdk\Services\Events\Exceptions;
 
-use Shopgate\ConnectSdk\Services\Events\DTO\Base as Payload;
+use Exception;
 
-/**
- * This class forwards
- *
- * @see \Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Category\Base
- *
- * @method Payload updateCategory(array $payload)
- * @method Payload createCategory(array $payload)
- */
-class Catalog extends Base
+class IncorrectArgsException extends Exception
 {
 }

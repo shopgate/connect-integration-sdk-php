@@ -23,11 +23,12 @@
 namespace Shopgate\ConnectSdk\Services\Events\Connector\Entities;
 
 use Psr\Http\Message\ResponseInterface;
+use Shopgate\ConnectSdk\Services\Events\DTO\Base as DTOBase;
 
 /**
- * @method ResponseInterface updateCategory(string $entityId, array $payload, array $meta = [])
- * @method ResponseInterface createCategory(array $payload, array $meta = [])
- * @method ResponseInterface deleteCategory(string $entityId, array $meta = [])
+ * @method ResponseInterface createCategory(DTOBase $payload, array $meta = [])
+ * @method ResponseInterface updateCategory(string $categoryCode, DTOBase $payload, array $meta = [])
+ * @method ResponseInterface deleteCategory(string $categoryCode, array $meta = [])
  *
  * @see \Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category\Async
  * @see \Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category\Direct

@@ -27,7 +27,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class Config
 {
-
     /**
      * @param array $config
      *

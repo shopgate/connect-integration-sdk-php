@@ -20,10 +20,30 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Services\Events\Exceptions;
+namespace Shopgate\ConnectSdk\Services\Events\DTO\V1\Direct\Catalog;
 
-use Exception;
+use Shopgate\ConnectSdk\Services\Events\DTO\Base;
 
-class TooManyArgsException extends Exception
+/**
+ * @method Categories setCategories(Base[] $payloads)
+ * @method Categories getCategories()
+ */
+class Categories extends Base
 {
+    /**
+     * @var array
+     * @codeCoverageIgnore
+     */
+    protected $schema = [
+        'type'                 => 'object',
+        'properties'           => [
+            'categories' => [
+                'type'  => 'array',
+                'items' => [
+                    'type' => 'object'
+                ]
+            ]
+        ],
+        'additionalProperties' => false
+    ];
 }

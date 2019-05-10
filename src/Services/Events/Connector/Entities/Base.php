@@ -27,6 +27,7 @@ use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\Services\Events\Connector\Utility;
 use Shopgate\ConnectSdk\Services\Events\Entities\EntityInterface;
+use Shopgate\ConnectSdk\Services\Events\Exceptions\IncorrectArgsException;
 
 class Base
 {
@@ -63,7 +64,7 @@ class Base
     public function __call($name, $args = [])
     {
         if (empty($args) || count($args) > 3) {
-            throw new Exception('Invalid amount of parameters provided');
+            throw new IncorrectArgsException('Invalid amount of parameters provided');
         }
 
         list($method, $folder) = $this->splitMethodName($name);

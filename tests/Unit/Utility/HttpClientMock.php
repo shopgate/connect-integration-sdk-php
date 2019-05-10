@@ -20,32 +20,25 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Http;
+namespace Shopgate\ConnectSdk\Tests\Unit\Utility;
 
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\UriInterface;
+use Shopgate\ConnectSdk\Http\ClientInterface;
 
-interface ClientInterface
+class HttpClientMock implements ClientInterface
 {
     /**
-     * Create and send an HTTP request.
-     *
-     * Use an absolute path to override the base path of the client, or a
-     * relative path to append to the base path of the client. The URL can
-     * contain the query string as well.
-     *
-     * @param string              $method  HTTP method.
-     * @param string|UriInterface $uri     URI object or string.
-     * @param array               $options Request options to apply.
-     *
-     * @return ResponseInterface
+     * @inheritDoc
      */
-    public function request($method, $uri = '', array $options = []);
+    public function request($method, $uri = '', array $options = [])
+    {
+        return null;
+    }
 
     /**
-     * @param string|null $option
-     *
-     * @return mixed
+     * @inheritDoc
      */
-    public function getConfig($option = null);
+    public function getConfig($option = null)
+    {
+        return [];
+    }
 }

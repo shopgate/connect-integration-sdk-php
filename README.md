@@ -16,6 +16,7 @@ Example for calling a service in order to update the name of the category using 
 ```
 <?php
 use Shopgate\ConnectSdk\Services\Events\Client;
+use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Category as CategoryDto;
 
 $config = [
     'http' => [
@@ -28,25 +29,27 @@ $config = [
 
 $client = new Client($config);
 
-// create category
-$client->catalog->createCategory(['code'=>'pants', 'name' => 'Blue Jeans', 'sequenceId' => 1]);
-// update category
-$client->catalog->updateCategory('pants', ['name' => 'Skirts']);
+// create new category
+$categoryPayload = new CategoryDto();
+$categoryPayload->setCode('pants')->setName('Denim Pants')->setSequenceId(1);
+$client->catalog->createCategory($categoryPayload);
+// update category with constructor input example
+$updateDto = new CategoryDto(['name' => 'Skirts']);
+$client->catalog->updateCategory('pants', $updateDto);
 // delete category
 $client->catalog->deleteCategory('pants');
 
-// update category sync (not currently functional)
-$meta = ['requestType' => 'direct'];
-$client->catalog->updateCategory('4', ['name' => 'Skirts'], $meta);
+// update category sync
+$updateDto = new CategoryDto(['name' => 'Skirts']);
+$client->catalog->updateCategory('4', $updateDto, ['requestType' => 'direct']);
 ```
 
 #### Config
 
-* __http__ (array, default: []) - these configurations are passed down to the default HTTP Client, which is Guzzle. See [Guzzle documentation] for more information.
+* __http__ (array, default: []) - these configurations are passed down to the default HTTP Client, which is [Guzzle].
   * __base_uri__ (string, default: _https://{service}.shopgate{env}.services/v{ver}/merchants/{merchantCode}/_) - if rewriting, make sure to add a forward slash at end as the calls will append paths
-  * __auth__ (array) - see [Guzzle auth] documentation for more info on passing auth data
-  * __handler__ (GuzzleHttp\HandlerStack) - see [Guzzle handler] documentation for using handlers
-  * __merchantCode__ (string) - this is actually not Guzzle related, but template system related. The _base_uri_ provided above takes in variables in __{merchantCode}__ format. These params just replace these variables. This way you do not need to rewrite the base_uri, but just provide the correct variables to replace the template components.
+  * __auth__ (array) - the simple usage is providing ['username', 'password'] for basic auth
+  * __merchantCode__ (string) - the following are template system related, the default _base_uri_ provided above takes in variables in __{merchantCode}__ format. These params just replace these variables. This way you do not need to rewrite the base_uri, but just provide the correct variables to replace the template components.
   * __service__ (string, default: _omni-event-receiver_) - template variable
   * __ver__ (integer, default: 1) - template variable
   * __env__ (string, default: '') - template variable
@@ -70,6 +73,4 @@ The Shopgate Connect Integration SDK is available under the Apache License, Vers
 
 See the [LICENSE.md](LICENSE.md) file for more information.
 
-[Guzzle auth]:http://docs.guzzlephp.org/en/stable/request-options.html#auth
-[Guzzle handler]: http://docs.guzzlephp.org/en/stable/handlers-and-middleware.html
-[Guzzle documentation]:http://docs.guzzlephp.org/en/stable/request-options.html
+[Guzzle]:http://docs.guzzlephp.org/en/stable/request-options.html

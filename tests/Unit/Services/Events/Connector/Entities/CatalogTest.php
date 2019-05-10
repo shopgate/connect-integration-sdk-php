@@ -20,22 +20,22 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Tests\Unit\Services\Events\Connector\DTO\Payload;
+namespace Shopgate\ConnectSdk\Tests\Unit\Services\Events\Connector\Entities;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
-use Shopgate\ConnectSdk\Services\Events\Connector\DTO\Payload\Catalog;
-use Shopgate\ConnectSdk\Services\Events\DTO\Payload\Catalog\Category\Base;
+use Shopgate\ConnectSdk\Services\Events\Connector\Entities\Catalog;
+use Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category;
+use Shopgate\ConnectSdk\Tests\Unit\Utility\HttpClientMock;
 
 /**
- * @coversDefaultClass \Shopgate\ConnectSdk\Services\Events\Connector\DTO\Payload\Catalog
+ * @coversDefaultClass \Shopgate\ConnectSdk\Services\Events\Connector\Entities\Catalog
  */
 class CatalogTest extends TestCase
 {
-
     /**
      * @param array  $expected
      * @param string $folder
@@ -44,7 +44,7 @@ class CatalogTest extends TestCase
      */
     public function testGetClassPath($expected, $folder)
     {
-        $catalog = new Catalog();
+        $catalog = new Catalog(new HttpClientMock());
 
         $this->assertEquals($expected, $catalog->getClassPath($folder));
     }
@@ -57,24 +57,25 @@ class CatalogTest extends TestCase
         return [
             ['\Catalog\SomeFolder', 'SomeFolder'],
             ['\Catalog', ''],
-            ['\Catalog', null],
+            ['\Catalog', null]
         ];
     }
 
     /**
-     * @param string $expected
-     * @param string $payload
-     *
-     * @dataProvider getInstantiateClassProvider
+     * @param string $expected   - expected class name
+     * @param string $folderName - folder to look into
+     * @param bool   $direct     - is the call direct or async
      *
      * @throws ReflectionException
+     * @dataProvider getInstantiateClassProvider
+     *
      */
-    public function testInstantiateClass($expected, $payload)
+    public function testInstantiateClass($expected, $folderName, $direct)
     {
         /** @var MockObject|Catalog $catalog */
         $method  = self::getMethod(Catalog::class, 'instantiateClass');
-        $catalog = new Catalog();
-        $actual  = $method->invokeArgs($catalog, [$payload]);
+        $catalog = new Catalog(new HttpClientMock());
+        $actual  = $method->invokeArgs($catalog, [$folderName, $direct]);
         /** @noinspection PhpParamsInspection */
         $this->assertInstanceOf($expected, $actual);
     }
@@ -85,8 +86,8 @@ class CatalogTest extends TestCase
     public function getInstantiateClassProvider()
     {
         return [
-            [Base::class, 'Category\Update'],
-            [Base::class, 'Category\Base'],
+            [Category\Async::class, 'Category', false],
+            [Category\Direct::class, 'Category', true]
         ];
     }
 

@@ -20,19 +20,10 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Services\Events\Connector\Entities;
+namespace Shopgate\ConnectSdk\Services\Events\Exceptions;
 
-use Psr\Http\Message\ResponseInterface;
-use Shopgate\ConnectSdk\Services\Events\DTO\Base as DTOBase;
+use Exception;
 
-/**
- * @method ResponseInterface createCategory(DTOBase $payload, array $meta = [])
- * @method ResponseInterface updateCategory(string $categoryCode, DTOBase $payload, array $meta = [])
- * @method ResponseInterface deleteCategory(string $categoryCode, array $meta = [])
- *
- * @see \Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category\Async
- * @see \Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category\Direct
- */
-class Catalog extends Base
+class IncorrectArgsException extends Exception
 {
 }

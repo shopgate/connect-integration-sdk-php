@@ -26,6 +26,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionException;
 use Shopgate\ConnectSdk\Services\Events\Connector\Utility;
+use Shopgate\ConnectSdk\Services\Events\Exceptions\ClassNoExistException;
 
 /**
  * @coversDefaultClass \Shopgate\ConnectSdk\Services\Events\Connector\Utility
@@ -63,6 +64,19 @@ class UtilityTest extends TestCase
     }
 
     /**
+     * @throws ReflectionException
+     * @throws ClassNoExistException
+     */
+    public function testGetClassException()
+    {
+        /** @noinspection PhpParamsInspection */
+        $this->expectException(ClassNoExistException::class);
+        /** @var MockObject | Utility $mock */
+        $mock = $this->getMockForTrait(Utility::class);
+        $mock->getClass('not existing class');
+    }
+
+    /**
      * @return array
      */
     public function splitNameProvider()
@@ -82,7 +96,7 @@ class UtilityTest extends TestCase
     public function getClassPathProvider()
     {
         return [
-            ['\SomeFolder', 'SomeFolder'],
+            ['\SomeFolder', 'SomeFolder']
         ];
     }
 }

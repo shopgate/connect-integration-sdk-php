@@ -20,12 +20,13 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Services\Events\DTO\Async;
+namespace Shopgate\ConnectSdk\Services\Events\DTO\V1\Async;
 
 use Dto\Exceptions\InvalidDataTypeException;
 use Exception;
 use Shopgate\ConnectSdk\Services\Events\DTO\Base as Payload;
 use Shopgate\ConnectSdk\Services\Events\Entities\EntityInterface;
+use Shopgate\ConnectSdk\Services\Events\Exceptions\TypeNoExistException;
 
 class Factory
 {
@@ -87,7 +88,7 @@ class Factory
         if (isset($this->typeMap[$type])) {
             return $this->typeMap[$type];
         }
-        throw new Exception('Incorrect type provided');
+        throw new TypeNoExistException('Incorrect type provided');
     }
 
     /**

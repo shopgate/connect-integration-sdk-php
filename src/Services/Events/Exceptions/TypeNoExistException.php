@@ -20,14 +20,10 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Services\Events\Connector\DTO\Payload;
+namespace Shopgate\ConnectSdk\Services\Events\Exceptions;
 
-use Shopgate\ConnectSdk\Services\Events\DTO\Base as Payload;
+use Exception;
 
-/**
- * @method Payload updateCategory(array $payload)
- * @method Payload createCategory(array $payload)
- */
-class Catalog extends Base
+class TypeNoExistException extends Exception
 {
 }

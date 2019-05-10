@@ -6,8 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
-## 0.1.0 - 2019-05-06
+## 0.1.0 - 2019-05-10
 ### Added
-- updateCategory event logic
-- createCategory event logic
-- deleteCategory event logic
+- updateCategory event & direct logic
+- createCategory event & direct logic
+- deleteCategory event & direct logic

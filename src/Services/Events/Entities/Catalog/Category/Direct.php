@@ -23,7 +23,8 @@
 namespace Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category;
 
 use Dto\Exceptions\InvalidDataTypeException;
-use Shopgate\ConnectSdk\Services\Events\DTO\Payload\Factory as PayloadFactory;
+use Shopgate\ConnectSdk\Services\Events\DTO\Base as Payload;
+use Shopgate\ConnectSdk\Services\Events\DTO\V1\Direct\Catalog\Categories;
 use Shopgate\ConnectSdk\Services\Events\Entities;
 
 class Direct implements Entities\EntityInterface
@@ -33,34 +34,43 @@ class Direct implements Entities\EntityInterface
     /**
      * @inheritDoc
      * @used-by \Shopgate\ConnectSdk\Services\Events\Connector\Entities\Catalog::__call()
-     * @throws InvalidDataTypeException
-     *
-     * todo-sg: untested
      */
-    public function update($entityId, $data = [], $meta = [])
+    public function update($entityId, Payload $payload, $meta = [])
     {
-        $payload = (new PayloadFactory())->catalog->updateCategory($data);
-
         return $this->client->request(
             'post',
             'categories/' . $entityId,
-            ['json' => $payload->toArray(), 'query' => $meta]
+            ['json' => $payload->toJson(), 'query' => $meta]
         );
     }
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
+     * @throws InvalidDataTypeException
      */
-    public function create($data = [], $meta = [])
+    public function create(Payload $payload, $meta = [])
     {
-        // todo-sg: Implement create() method.
+        $request = new Categories();
+        $request->set('categories', [$payload]);
+
+        return $this->client->request(
+            'post',
+            'categories',
+            ['json' => $request->toJson(), 'query' => $meta]
+        );
     }
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function delete($entityId, $meta = [])
     {
-        // todo-sg: Implement delete() method.
+        return $this->client->request(
+            'delete',
+            'categories/' . $entityId,
+            ['json' => '{}', 'query' => $meta]
+        );
     }
 }

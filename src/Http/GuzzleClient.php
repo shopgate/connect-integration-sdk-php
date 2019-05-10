@@ -23,21 +23,48 @@
 namespace Shopgate\ConnectSdk\Http;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Psr7;
+use Psr\Http\Message\UriInterface;
+use Shopgate\ConnectSdk\Services\Events\Connector\Entities\Base;
+use function GuzzleHttp\Psr7\uri_for;
 use function GuzzleHttp\uri_template;
 
 class GuzzleClient extends Client implements ClientInterface
 {
     /**
-     * Rewritten to resolve base_uri templates
+     * Resolves the templates
      *
      * @inheritDoc
+     * @throws GuzzleException
      */
-    public function __construct(array $config = [])
+    public function request($method, $uri = '', array $options = [])
     {
-        if (isset($config['base_uri'])) {
-            $config['base_uri'] = $this->resolveTemplate($config['base_uri'], $config);
+        $baseUri          = $this->resolveUri($uri, $options['query']);
+        $options['query'] = $this->cleanInternalMeta($options['query']);
+
+        return parent::request($method, $baseUri, $options);
+    }
+
+    /**
+     * @param string $uri
+     * @param array  $options
+     *
+     * @return Psr7\Uri|UriInterface
+     */
+    private function resolveUri($uri, array $options = [])
+    {
+        /** @var Psr7\Uri $baseUri */
+        $baseUri = $this->getConfig('base_uri');
+        if (!empty($uri)) {
+            $uri     = $this->resolveTemplate($uri, $options);
+            $baseUri = Psr7\UriResolver::resolve($baseUri, uri_for($uri));
         }
-        parent::__construct($config);
+        $baseUri = $baseUri->withHost($this->resolveTemplate($baseUri->getHost(), $options));
+        $baseUri = $baseUri->withPath($this->resolveTemplate($baseUri->getPath(), $options));
+        $baseUri = $baseUri->withQuery($this->resolveTemplate($baseUri->getQuery(), $options));
+
+        return $baseUri;
     }
 
     /**
@@ -48,8 +75,28 @@ class GuzzleClient extends Client implements ClientInterface
      *
      * @return string
      */
-    public function resolveTemplate($component, array $options = [])
+    private function resolveTemplate($component, array $options = [])
     {
         return uri_template(urldecode($component), array_merge($this->getConfig() ? : [], $options));
+    }
+
+    /**
+     * Remove meta that does not need to be sent to the endpoints
+     *
+     * @param array $meta
+     *
+     * @return array
+     */
+    private function cleanInternalMeta(array $meta = [])
+    {
+        $blacklist = [Base::KEY_TYPE, 'service', 'ver', 'env'];
+
+        return array_filter(
+            $meta,
+            static function ($item) use ($blacklist) {
+                return !in_array($item, $blacklist, true);
+            },
+            ARRAY_FILTER_USE_KEY
+        );
     }
 }

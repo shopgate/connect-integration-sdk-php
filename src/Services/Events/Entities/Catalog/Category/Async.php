@@ -23,7 +23,7 @@
 namespace Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category;
 
 use Dto\Exceptions\InvalidDataTypeException;
-use Shopgate\ConnectSdk\Services\Events\DTO\Payload\Factory as PayloadFactory;
+use Shopgate\ConnectSdk\Services\Events\DTO\Base as Payload;
 use Shopgate\ConnectSdk\Services\Events\Entities;
 
 class Async implements Entities\EntityInterface
@@ -39,9 +39,8 @@ class Async implements Entities\EntityInterface
      * @used-by \Shopgate\ConnectSdk\Services\Events\Connector\Entities\Catalog::__call()
      * @throws InvalidDataTypeException
      */
-    public function update($entityId, $data = [], $meta = [])
+    public function update($entityId, Payload $payload, $meta = [])
     {
-        $payload = (new PayloadFactory())->catalog->updateCategory($data);
         $factory = $this->addEvent(Entities\EntityInterface::EVENT_TYPE_UPDATE, $entityId, $payload);
 
         return $this->client->request(
@@ -57,9 +56,8 @@ class Async implements Entities\EntityInterface
      * @used-by \Shopgate\ConnectSdk\Services\Events\Connector\Entities\Catalog::__call()
      * @throws InvalidDataTypeException
      */
-    public function create($data = [], $meta = [])
+    public function create(Payload $payload, $meta = [])
     {
-        $payload = (new PayloadFactory())->catalog->createCategory($data);
         $factory = $this->addEvent(Entities\EntityInterface::EVENT_TYPE_CREATE, '', $payload);
 
         return $this->client->request(

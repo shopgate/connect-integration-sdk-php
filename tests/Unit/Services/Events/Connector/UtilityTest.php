@@ -96,7 +96,7 @@ class UtilityTest extends TestCase
     public function getClassPathProvider()
     {
         return [
-            ['\SomeFolder', 'SomeFolder'],
+            ['\SomeFolder', 'SomeFolder']
         ];
     }
 }

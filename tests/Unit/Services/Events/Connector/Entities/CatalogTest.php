@@ -57,7 +57,7 @@ class CatalogTest extends TestCase
         return [
             ['\Catalog\SomeFolder', 'SomeFolder'],
             ['\Catalog', ''],
-            ['\Catalog', null],
+            ['\Catalog', null]
         ];
     }
 
@@ -87,7 +87,7 @@ class CatalogTest extends TestCase
     {
         return [
             [Category\Async::class, 'Category', false],
-            [Category\Direct::class, 'Category', true],
+            [Category\Direct::class, 'Category', true]
         ];
     }
 

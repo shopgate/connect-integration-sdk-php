@@ -105,7 +105,7 @@ class GuzzleClientTest extends TestCase
             ['dev.shopgate/v1', '{service}.shopgate/v{ver}', ['service' => 'dev', 'ver' => 1], []],
             ['dev.shopgate/v1', '{service}.shopgate/v{ver}', [], ['service' => 'dev', 'ver' => 1]],
             ['dev.shopgate', '%7Bservice%7D.shopgate', [], ['service' => 'dev']],
-            ['dev.shopgate', '%7Bservice%7D.shopgate', ['service' => 'dev'], []],
+            ['dev.shopgate', '%7Bservice%7D.shopgate', ['service' => 'dev'], []]
         ];
     }
 }

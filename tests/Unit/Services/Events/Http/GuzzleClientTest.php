@@ -27,6 +27,7 @@ use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
 use Shopgate\ConnectSdk\Http\GuzzleClient;
+use Shopgate\ConnectSdk\Services\Events\Connector\Entities\Base;
 
 class GuzzleClientTest extends TestCase
 {
@@ -46,6 +47,33 @@ class GuzzleClientTest extends TestCase
         $client = new GuzzleClient($clientConfig);
         $return = $method->invokeArgs($client, [$component, $options]);
         $this->assertEquals($expected, $return);
+    }
+
+    /**
+     * @param string $expected
+     * @param array  $meta
+     *
+     * @dataProvider getClearInternalMetaProvider
+     * @throws ReflectionException
+     */
+    public function testClearInternalMeta($expected, $meta)
+    {
+        $method = self::getMethod(GuzzleClient::class, 'cleanInternalMeta');
+        $client = new GuzzleClient();
+        $return = $method->invokeArgs($client, [$meta]);
+        $this->assertEquals($expected, $return);
+    }
+
+    /**
+     * @return array
+     */
+    public function getClearInternalMetaProvider()
+    {
+        return [
+            [[], ['service' => 'dev']],
+            [['notFiltered' => true], [Base::KEY_TYPE => 'dev', 'notFiltered' => true]],
+            [['1' => 1, '2' => 2], ['1' => 1, 'ver' => 1, '2' => 2, 'env' => 'dev']]
+        ];
     }
 
     /**

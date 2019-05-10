@@ -26,6 +26,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7;
 use Psr\Http\Message\UriInterface;
+use Shopgate\ConnectSdk\Services\Events\Connector\Entities\Base;
 use function GuzzleHttp\Psr7\uri_for;
 use function GuzzleHttp\uri_template;
 
@@ -39,7 +40,8 @@ class GuzzleClient extends Client implements ClientInterface
      */
     public function request($method, $uri = '', array $options = [])
     {
-        $baseUri = $this->resolveUri($uri, $options['query']);
+        $baseUri          = $this->resolveUri($uri, $options['query']);
+        $options['query'] = $this->cleanInternalMeta($options['query']);
 
         return parent::request($method, $baseUri, $options);
     }
@@ -76,5 +78,25 @@ class GuzzleClient extends Client implements ClientInterface
     private function resolveTemplate($component, array $options = [])
     {
         return uri_template(urldecode($component), array_merge($this->getConfig() ? : [], $options));
+    }
+
+    /**
+     * Remove meta that does not need to be sent to the endpoints
+     *
+     * @param array $meta
+     *
+     * @return array
+     */
+    private function cleanInternalMeta(array $meta = [])
+    {
+        $blacklist = [Base::KEY_TYPE, 'service', 'ver', 'env'];
+
+        return array_filter(
+            $meta,
+            static function ($item) use ($blacklist) {
+                return !in_array($item, $blacklist, true);
+            },
+            ARRAY_FILTER_USE_KEY
+        );
     }
 }

@@ -37,8 +37,6 @@ class Direct implements Entities\EntityInterface
      */
     public function update($entityId, Payload $payload, $meta = [])
     {
-        $meta = $this->cleanInternalMeta($meta);
-
         return $this->client->request(
             'post',
             'categories/' . $entityId,
@@ -53,7 +51,6 @@ class Direct implements Entities\EntityInterface
      */
     public function create(Payload $payload, $meta = [])
     {
-        $meta    = $this->cleanInternalMeta($meta);
         $request = new Categories();
         $request->set('categories', [$payload]);
 
@@ -70,8 +67,6 @@ class Direct implements Entities\EntityInterface
      */
     public function delete($entityId, $meta = [])
     {
-        $meta = $this->cleanInternalMeta($meta);
-
         return $this->client->request(
             'delete',
             'categories/' . $entityId,

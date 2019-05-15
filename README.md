@@ -10,7 +10,7 @@ The Shopgate Connect Integration SDK is a compilation of classes to manage the c
 Create a developer account at https://developer.shopgate.com
 
 ## Requirements
-* PHP 5.5 and above
+* PHP 5.6 and above
 
 ## Getting Started
 #### Via Composer

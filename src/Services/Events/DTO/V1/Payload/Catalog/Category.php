@@ -35,6 +35,7 @@ use Shopgate\ConnectSdk\Services\Events\DTO\Base as DTOBase;
  * @method Category setImage(string $image)
  * @method Category setUrl(string $url)
  * @method Category setSequenceId(integer $sequenceId)
+ * @method Category setExternalUpdateDate(string $updateDate)
  */
 class Category extends DTOBase
 {

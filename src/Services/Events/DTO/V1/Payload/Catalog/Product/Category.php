@@ -20,22 +20,14 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog;
+namespace Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Product;
 
 use Shopgate\ConnectSdk\Services\Events\DTO\Base as DTOBase;
 
 /**
- * Default class that handles validation for category Update/Create payloads.
- * If there is a need to differentiate, one can create a class Update.php, etc. and extend this one
- *
- * @method Category setCode(string $code)
- * @method Category setParentCategoryCode(string $parentCategoryCode)
- * @method Category setName(string $name)
- * @method Category setDescription(string $description)
- * @method Category setImage(string $image)
- * @method Category setUrl(string $url)
- * @method Category setSequenceId(integer $sequenceId)
- * @method Category setExternalUpdateDate(string $externalUpdateDate)
+ * @method Category setCategoryCode(string $categoryCode)
+ * @method Category setCategoryName(string $categoryName)
+ * @method Category setIsPrimary(boolean $isPrimary)
  */
 class Category extends DTOBase
 {
@@ -46,14 +38,9 @@ class Category extends DTOBase
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'code'               => ['type' => 'string'],
-            'parentCategoryCode' => ['type' => 'string'],
-            'name'               => ['type' => 'string'],
-            'description'        => ['type' => 'string'],
-            'image'              => ['type' => 'string'],
-            'url'                => ['type' => 'string'],
-            'sequenceId'         => ['type' => 'integer'],
-            'externalUpdateDate' => ['type' => 'string']
+            'categoryCode' => ['type' => 'string'],
+            'categoryName' => ['type' => 'string'],
+            'isPrimary'    => ['type' => 'boolean']
         ],
         'additionalProperties' => true
     ];

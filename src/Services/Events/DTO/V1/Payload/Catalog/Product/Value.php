@@ -25,8 +25,8 @@ namespace Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Product;
 use Shopgate\ConnectSdk\Services\Events\DTO\Base as DTOBase;
 
 /**
- * @method Category setCode(string $code)
- * @method Category setAdditionalPrice(number $additionalPrice)
+ * @method Value setCode(string $code)
+ * @method Value setAdditionalPrice(number $additionalPrice)
  */
 class Value extends DTOBase
 {

@@ -25,8 +25,8 @@ namespace Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Product;
 use Shopgate\ConnectSdk\Services\Events\DTO\Base as DTOBase;
 
 /**
- * @method Category setCode(string $code)
- * @method Category setValues(Value[] $values)
+ * @method Option setCode(string $code)
+ * @method Option setValues(Value[] $values)
  */
 class Option extends DTOBase
 {

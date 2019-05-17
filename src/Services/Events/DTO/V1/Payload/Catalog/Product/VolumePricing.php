@@ -25,18 +25,17 @@ namespace Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Product;
 use Shopgate\ConnectSdk\Services\Events\DTO\Base as DTOBase;
 
 /**
- * @method Media setCode(string $code)
- * @method Media setUrl(string $url)
- * @method Media setType(string $type)
- * @method Media setAltText(string $altText)
- * @method Media setTitle(string $title)
- * @method Media setSequenceId(number $sequenceId)
+ * @method VolumePricing setMinQty(number $minQty)
+ * @method VolumePricing setMaxQty(number $maxQty)
+ * @method VolumePricing setPrice(number $price)
+ * @method VolumePricing setSalePrice(number $salePrice)
+ * @method VolumePricing setUnit(string $unit)
+ * @method VolumePricing setPriceType(string $priceType)
  */
-class Media extends DTOBase
+class VolumePricing extends DTOBase
 {
-    const TYPE_IMAGE = 'image';
-    const TYPE_VIDEO = 'video';
-    const TYPE_PDF   = 'pdf';
+    const PRICE_TYPE_FIXED = 'fixed';
+    const PRICE_TYPE_RELATIVE = 'relative';
 
     /**
      * @var array
@@ -45,19 +44,18 @@ class Media extends DTOBase
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'code'       => ['type' => 'string'],
-            'url'        => ['type' => 'string'],
-            'type'       => [
+            'minQty'    => ['type' => 'number'],
+            'maxQty'    => ['type' => 'number'],
+            'price'     => ['type' => 'number'],
+            'salePrice' => ['type' => 'number'],
+            'unit'      => ['type' => 'string'],
+            'priceType' => [
                 'type' => 'string',
                 'enum' => [
-                    self::TYPE_IMAGE,
-                    self::TYPE_VIDEO,
-                    self::TYPE_PDF
+                    self::PRICE_TYPE_FIXED,
+                    self::PRICE_TYPE_RELATIVE
                 ]
-            ],
-            'altText'    => ['type' => 'string'],
-            'title'      => ['type' => 'string'],
-            'sequenceId' => ['type' => 'number']
+            ]
         ],
         'additionalProperties' => true
     ];

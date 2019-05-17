@@ -25,19 +25,16 @@ namespace Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Product;
 use Shopgate\ConnectSdk\Services\Events\DTO\Base as DTOBase;
 
 /**
- * @method Media setCode(string $code)
- * @method Media setUrl(string $url)
- * @method Media setType(string $type)
- * @method Media setAltText(string $altText)
- * @method Media setTitle(string $title)
- * @method Media setSequenceId(number $sequenceId)
+ * @method ShippingInformation setIsShippedAlone(boolean $isShippedAlone)
+ * @method ShippingInformation setHeight(number $height)
+ * @method ShippingInformation setHeightUnit(string $heightUnit)
+ * @method ShippingInformation setWidth(number $width)
+ * @method ShippingInformation setWidthUnit(string $widthUnit)
+ * @method ShippingInformation setWeight(number $weight)
+ * @method ShippingInformation setWeightUnit(string $weightUnit)
  */
-class Media extends DTOBase
+class ShippingInformation extends DTOBase
 {
-    const TYPE_IMAGE = 'image';
-    const TYPE_VIDEO = 'video';
-    const TYPE_PDF   = 'pdf';
-
     /**
      * @var array
      * @codeCoverageIgnore
@@ -45,19 +42,13 @@ class Media extends DTOBase
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'code'       => ['type' => 'string'],
-            'url'        => ['type' => 'string'],
-            'type'       => [
-                'type' => 'string',
-                'enum' => [
-                    self::TYPE_IMAGE,
-                    self::TYPE_VIDEO,
-                    self::TYPE_PDF
-                ]
-            ],
-            'altText'    => ['type' => 'string'],
-            'title'      => ['type' => 'string'],
-            'sequenceId' => ['type' => 'number']
+            'isShippedAlone' => ['type' => 'boolean'],
+            'height'         => ['type' => 'number'],
+            'heightUnit'     => ['type' => 'string'],
+            'width'          => ['type' => 'number'],
+            'widthUnit'      => ['type' => 'string'],
+            'weight'         => ['type' => 'number'],
+            'weightUnit'     => ['type' => 'string']
         ],
         'additionalProperties' => true
     ];

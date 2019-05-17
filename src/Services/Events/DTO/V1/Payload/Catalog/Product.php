@@ -72,6 +72,21 @@ use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Product\ShippingI
  */
 class Product extends DTOBase
 {
+    const MODEL_TYPE_STANDARD = 'standard';
+    const MODEL_TYPE_CONFIGURABLE = 'configurable';
+    const MODEL_TYPE_BUNDLE = 'bundle';
+    const MODEL_TYPE_BUNDLE_ITEM = 'bundleItem';
+    const MODEL_TYPE_VARIANT = 'variant';
+
+    const STATUS_ACTIVE = 'active';
+    const STATUS_INACTIVE = 'inactive';
+    const STATUS_DELETED = 'deleted';
+    const STATUS_SCHEDULED = 'scheduled';
+
+    const INVENTORY_TREATMENT_SHOW_OUT_OF_STOCK = 'showOutOfStock';
+    const INVENTORY_TREATMENT_ALLOW_BACK_ORDERS = 'allowBackOrders';
+    const INVENTORY_TREATMENT_PRE_ORDER = 'preOrder';
+
     /**
      * @var array
      * @codeCoverageIgnore
@@ -87,11 +102,11 @@ class Product extends DTOBase
             'modelType'           => [
                 'type' => 'string',
                 'enum' => [
-                    'standard',
-                    'configurable',
-                    'bundle',
-                    'bundleItem',
-                    'variant'
+                    self::MODEL_TYPE_STANDARD,
+                    self::MODEL_TYPE_CONFIGURABLE,
+                    self::MODEL_TYPE_BUNDLE,
+                    self::MODEL_TYPE_BUNDLE_ITEM,
+                    self::MODEL_TYPE_VARIANT
                 ]
             ],
             'categories'          => [
@@ -113,10 +128,10 @@ class Product extends DTOBase
             'status'              => [
                 'type' => 'string',
                 'enum' => [
-                    'active',
-                    'inactive',
-                    'deleted',
-                    'scheduled'
+                    self::STATUS_ACTIVE,
+                    self::STATUS_INACTIVE,
+                    self::STATUS_DELETED,
+                    self::STATUS_SCHEDULED
                 ]
             ],
             'startDate'           => ['type' => 'string'],
@@ -127,9 +142,9 @@ class Product extends DTOBase
             'inventoryTreatment'  => [
                 'type' => 'string',
                 'enum' => [
-                    'showOutOfStock',
-                    'allowBackOrders',
-                    'preOrder'
+                    self::INVENTORY_TREATMENT_SHOW_OUT_OF_STOCK,
+                    self::INVENTORY_TREATMENT_ALLOW_BACK_ORDERS,
+                    self::INVENTORY_TREATMENT_PRE_ORDER
                 ]
             ],
             'properties'          => [

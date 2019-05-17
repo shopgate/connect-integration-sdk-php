@@ -25,11 +25,11 @@ namespace Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Product;
 use Shopgate\ConnectSdk\Services\Events\DTO\Base as DTOBase;
 
 /**
- * @method Category setMfgPartNum(string $mfgPartNum)
- * @method Category setUpc(string $upc)
- * @method Category setEan(string $ean)
- * @method Category setIsbn(string $isbn)
- * @method Category setSku(string $sku)
+ * @method Identifiers setMfgPartNum(string $mfgPartNum)
+ * @method Identifiers setUpc(string $upc)
+ * @method Identifiers setEan(string $ean)
+ * @method Identifiers setIsbn(string $isbn)
+ * @method Identifiers setSku(string $sku)
  */
 class Identifiers extends DTOBase
 {

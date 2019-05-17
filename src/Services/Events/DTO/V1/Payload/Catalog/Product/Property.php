@@ -25,15 +25,26 @@ namespace Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Product;
 use Shopgate\ConnectSdk\Services\Events\DTO\Base as DTOBase;
 
 /**
- * @method Category setCode(string $code)
- * @method Category setName(string $name)
- * @method Category setValue(DTOBase $value)
- * @method Category setType(string $type)
- * @method Category setDisplayGroup(string $displayGroup)
- * @method Category setSubDisplayGroup(string $subDisplayGroup)
+ * @method Property setCode(string $code)
+ * @method Property setName(string $name)
+ * @method Property setValue(DTOBase $value)
+ * @method Property setType(string $type)
+ * @method Property setDisplayGroup(string $displayGroup)
+ * @method Property setSubDisplayGroup(string $subDisplayGroup)
  */
 class Property extends DTOBase
 {
+    const TYPE_SIMPLE = 'simple';
+    const TYPE_OPTION = 'option';
+    const TYPE_INPUT = 'input';
+    const TYPE_PRODUCT = 'product';
+    const TYPE_PRODUCT_LIST = 'productList';
+
+    const DISPLAY_GROUP_PROPERTIES = 'properties';
+    const DISPLAY_GROUP_FEATURES = 'features';
+    const DISPLAY_GROUP_GENERAL = 'general';
+    const DISPLAY_GROUP_PRICING = 'pricing';
+
     /**
      * @var array
      * @codeCoverageIgnore
@@ -47,20 +58,20 @@ class Property extends DTOBase
             'type'            => [
                 'type' => 'string',
                 'enum' => [
-                    'simple',
-                    'option',
-                    'input',
-                    'product',
-                    'productList'
+                    self::TYPE_SIMPLE,
+                    self::TYPE_OPTION,
+                    self::TYPE_INPUT,
+                    self::TYPE_PRODUCT,
+                    self::TYPE_PRODUCT_LIST
                 ]
             ],
             'displayGroup'    => [
                 'type' => 'string',
                 'enum' => [
-                    'properties',
-                    'features',
-                    'general',
-                    'pricing'
+                    self::DISPLAY_GROUP_PROPERTIES,
+                    self::DISPLAY_GROUP_FEATURES,
+                    self::DISPLAY_GROUP_GENERAL,
+                    self::DISPLAY_GROUP_PRICING
                 ]
             ],
             'subDisplayGroup' => ['type' => 'object'],

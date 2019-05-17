@@ -25,19 +25,12 @@ namespace Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Product;
 use Shopgate\ConnectSdk\Services\Events\DTO\Base as DTOBase;
 
 /**
- * @method Media setCode(string $code)
- * @method Media setUrl(string $url)
- * @method Media setType(string $type)
- * @method Media setAltText(string $altText)
- * @method Media setTitle(string $title)
- * @method Media setSequenceId(number $sequenceId)
+ * @method MapPricing setStartDate(string $startDate)
+ * @method MapPricing setEndDate(string $endDate)
+ * @method MapPricing setPrice(number $price)
  */
-class Media extends DTOBase
+class MapPricing extends DTOBase
 {
-    const TYPE_IMAGE = 'image';
-    const TYPE_VIDEO = 'video';
-    const TYPE_PDF   = 'pdf';
-
     /**
      * @var array
      * @codeCoverageIgnore
@@ -45,19 +38,9 @@ class Media extends DTOBase
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'code'       => ['type' => 'string'],
-            'url'        => ['type' => 'string'],
-            'type'       => [
-                'type' => 'string',
-                'enum' => [
-                    self::TYPE_IMAGE,
-                    self::TYPE_VIDEO,
-                    self::TYPE_PDF
-                ]
-            ],
-            'altText'    => ['type' => 'string'],
-            'title'      => ['type' => 'string'],
-            'sequenceId' => ['type' => 'number']
+            'startDate' => ['type' => 'string'],
+            'endDate'   => ['type' => 'string'],
+            'price'     => ['type' => 'number']
         ],
         'additionalProperties' => true
     ];

@@ -27,6 +27,9 @@ use Shopgate\ConnectSdk\Services\Events\DTO\Base as Payload;
 
 interface EntityInterface
 {
+    /**
+     * Event types
+     */
     const EVENT_TYPE_CREATE = 'create';
     const EVENT_TYPE_UPDATE = 'update';
     const EVENT_TYPE_DELETE = 'delete';

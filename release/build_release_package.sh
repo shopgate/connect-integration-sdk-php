@@ -1,7 +1,7 @@
 #!/bin/sh
 
 mkdir release/shopgate-cloud-integration-sdk-php
-rm-rf vendor
+rm -rf vendor
 composer install -vvv --no-dev
 rsync -av --exclude-from './release/exclude-filelist.txt' ./ release/shopgate-cloud-integration-sdk-php
 cd release

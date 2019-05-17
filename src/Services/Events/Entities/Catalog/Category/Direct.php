@@ -37,6 +37,8 @@ class Direct implements Entities\EntityInterface
      */
     public function update($entityId, Payload $payload, $meta = [])
     {
+        $meta = array_merge(['service' => 'catalog'], $meta);
+
         return $this->client->request(
             'post',
             'categories/' . $entityId,
@@ -51,6 +53,7 @@ class Direct implements Entities\EntityInterface
      */
     public function create(Payload $payload, $meta = [])
     {
+        $meta    = array_merge(['service' => 'catalog'], $meta);
         $request = new Categories();
         $request->set('categories', [$payload]);
 
@@ -67,6 +70,8 @@ class Direct implements Entities\EntityInterface
      */
     public function delete($entityId, $meta = [])
     {
+        $meta = array_merge(['service' => 'catalog'], $meta);
+
         return $this->client->request(
             'delete',
             'categories/' . $entityId,

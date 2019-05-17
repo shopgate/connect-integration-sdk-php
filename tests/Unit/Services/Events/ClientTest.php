@@ -29,6 +29,7 @@ use Shopgate\ConnectSdk\Services\Events\Client;
 use Shopgate\ConnectSdk\Services\Events\Connector\Entities\Base;
 use Shopgate\ConnectSdk\Services\Events\Connector\Entities\Catalog;
 use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Category as CategoryDto;
+use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Product as ProductDto;
 
 /**
  * @coversDefaultClass \Shopgate\ConnectSdk\Services\Events\Client
@@ -70,13 +71,19 @@ class ClientTest extends TestCase
         $mock             = $this->httpClient->getMock();
         $subjectUnderTest = new Client(['http_client' => $mock]);
         /** @noinspection PhpParamsInspection */
-        $mock->expects($this->exactly(6))->method('request');
+        $mock->expects($this->exactly(12))->method('request');
         $subjectUnderTest->catalog->updateCategory(1, new CategoryDto());
         $subjectUnderTest->catalog->updateCategory(1, new CategoryDto(), [Base::KEY_TYPE => Base::SYNC]);
         $subjectUnderTest->catalog->createCategory(new CategoryDto());
         $subjectUnderTest->catalog->createCategory(new CategoryDto(), [Base::KEY_TYPE => Base::SYNC]);
         $subjectUnderTest->catalog->deleteCategory('1');
         $subjectUnderTest->catalog->deleteCategory('1', [Base::KEY_TYPE => Base::SYNC]);
+        $subjectUnderTest->catalog->updateProduct(1, new ProductDto());
+        $subjectUnderTest->catalog->updateProduct(1, new ProductDto(), [Base::KEY_TYPE => Base::SYNC]);
+        $subjectUnderTest->catalog->createProduct(new ProductDto());
+        $subjectUnderTest->catalog->createProduct(new ProductDto(), [Base::KEY_TYPE => Base::SYNC]);
+        $subjectUnderTest->catalog->deleteProduct('1');
+        $subjectUnderTest->catalog->deleteProduct('1', [Base::KEY_TYPE => Base::SYNC]);
     }
 
     /**
@@ -89,7 +96,7 @@ class ClientTest extends TestCase
         $mock             = $this->httpClient->getMock();
         $subjectUnderTest = new Client(['http_client' => $mock]);
         /** @noinspection PhpParamsInspection */
-        $mock->expects($this->exactly(6))->method('request')->withConsecutive(
+        $mock->expects($this->exactly(12))->method('request')->withConsecutive(
             [
                 $this->equalTo('post'),
                 $this->equalTo('categories/' . $entityId),
@@ -119,6 +126,36 @@ class ClientTest extends TestCase
                 $this->equalTo('post'),
                 $this->equalTo('categories'),
                 ['query' => ['service' => 'test', Base::KEY_TYPE => Base::SYNC], 'json' => '{"categories":[[]]}']
+            ],
+            [
+                $this->equalTo('post'),
+                $this->equalTo('products/' . $entityId),
+                ['query' => $defaultMeta, 'json' => '{}']
+            ],
+            [
+                $this->equalTo('delete'),
+                $this->equalTo('products/' . $entityId),
+                ['query' => $defaultMeta, 'json' => '{}']
+            ],
+            [
+                $this->equalTo('post'),
+                $this->equalTo('products'),
+                ['query' => $defaultMeta, 'json' => '{"products":[[]]}']
+            ],
+            [
+                $this->equalTo('post'),
+                $this->equalTo('products/' . $entityId),
+                ['query' => ['service' => 'test', Base::KEY_TYPE => Base::SYNC], 'json' => '{}']
+            ],
+            [
+                $this->equalTo('delete'),
+                $this->equalTo('products/' . $entityId),
+                ['query' => ['service' => 'test', Base::KEY_TYPE => Base::SYNC], 'json' => '{}']
+            ],
+            [
+                $this->equalTo('post'),
+                $this->equalTo('products'),
+                ['query' => ['service' => 'test', Base::KEY_TYPE => Base::SYNC], 'json' => '{"products":[[]]}']
             ]
         );
 
@@ -135,5 +172,19 @@ class ClientTest extends TestCase
         );
         $subjectUnderTest->catalog->deleteCategory($entityId, ['service' => 'test', Base::KEY_TYPE => Base::SYNC]);
         $subjectUnderTest->catalog->createCategory($payload, ['service' => 'test', Base::KEY_TYPE => Base::SYNC]);
+
+        $payload = new ProductDto();
+        $subjectUnderTest->catalog->updateProduct($entityId, $payload, [Base::KEY_TYPE => Base::SYNC]);
+        $subjectUnderTest->catalog->deleteProduct($entityId, [Base::KEY_TYPE => Base::SYNC]);
+        $subjectUnderTest->catalog->createProduct($payload, [Base::KEY_TYPE => Base::SYNC]);
+
+        // rewriting service via direct call
+        $subjectUnderTest->catalog->updateProduct(
+            $entityId,
+            $payload,
+            ['service' => 'test', Base::KEY_TYPE => Base::SYNC]
+        );
+        $subjectUnderTest->catalog->deleteProduct($entityId, ['service' => 'test', Base::KEY_TYPE => Base::SYNC]);
+        $subjectUnderTest->catalog->createProduct($payload, ['service' => 'test', Base::KEY_TYPE => Base::SYNC]);
     }
 }

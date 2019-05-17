@@ -29,9 +29,14 @@ use Shopgate\ConnectSdk\Services\Events\DTO\Base as DTOBase;
  * @method ResponseInterface createCategory(DTOBase $payload, array $meta = [])
  * @method ResponseInterface updateCategory(string $categoryCode, DTOBase $payload, array $meta = [])
  * @method ResponseInterface deleteCategory(string $categoryCode, array $meta = [])
+ * @method ResponseInterface createProduct(DTOBase $payload, array $meta = [])
+ * @method ResponseInterface updateProduct(string $productCode, DTOBase $payload, array $meta = [])
+ * @method ResponseInterface deleteProduct(string $productCode, array $meta = [])
  *
  * @see \Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category\Async
  * @see \Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category\Direct
+ * @see \Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Product\Async
+ * @see \Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Product\Direct
  */
 class Catalog extends Base
 {

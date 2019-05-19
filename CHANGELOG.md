@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Fixed
 - direct call endpoint
+- most Guzzle HTTP options are now allowed
 
 ## 0.1.0 - 2019-05-10
 ### Added

@@ -23,7 +23,7 @@
 namespace Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog;
 
 use Shopgate\ConnectSdk\Services\Events\DTO\Base as DTOBase;
-use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Product\Category;
+use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Product\Category as ProductCategory;
 use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Product\Extra;
 use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Product\Identifiers;
 use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Product\Media;
@@ -42,7 +42,7 @@ use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Product\ShippingI
  * @method Product setLongName(string $longName)
  * @method Product setCatalogCode(string $catalogCode)
  * @method Product setModelType(string $modelType)
- * @method Product setCategories(Category[] $categories)
+ * @method Product setCategories(ProductCategory[] $categories)
  * @method Product setIdentifiers(Identifiers $identifiers)
  * @method Product setPrice(Price $price)
  * @method Product setFulfillmentMethods(string[] $fulfillmentMethods)

@@ -72,20 +72,20 @@ use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Product\ShippingI
  */
 class Product extends DTOBase
 {
-    const MODEL_TYPE_STANDARD = 'standard';
+    const MODEL_TYPE_STANDARD     = 'standard';
     const MODEL_TYPE_CONFIGURABLE = 'configurable';
-    const MODEL_TYPE_BUNDLE = 'bundle';
-    const MODEL_TYPE_BUNDLE_ITEM = 'bundleItem';
-    const MODEL_TYPE_VARIANT = 'variant';
+    const MODEL_TYPE_BUNDLE       = 'bundle';
+    const MODEL_TYPE_BUNDLE_ITEM  = 'bundleItem';
+    const MODEL_TYPE_VARIANT      = 'variant';
 
-    const STATUS_ACTIVE = 'active';
-    const STATUS_INACTIVE = 'inactive';
-    const STATUS_DELETED = 'deleted';
+    const STATUS_ACTIVE    = 'active';
+    const STATUS_INACTIVE  = 'inactive';
+    const STATUS_DELETED   = 'deleted';
     const STATUS_SCHEDULED = 'scheduled';
 
     const INVENTORY_TREATMENT_SHOW_OUT_OF_STOCK = 'showOutOfStock';
     const INVENTORY_TREATMENT_ALLOW_BACK_ORDERS = 'allowBackOrders';
-    const INVENTORY_TREATMENT_PRE_ORDER = 'preOrder';
+    const INVENTORY_TREATMENT_PRE_ORDER         = 'preOrder';
 
     /**
      * @var array

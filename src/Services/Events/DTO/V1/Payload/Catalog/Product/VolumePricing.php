@@ -34,7 +34,7 @@ use Shopgate\ConnectSdk\Services\Events\DTO\Base as DTOBase;
  */
 class VolumePricing extends DTOBase
 {
-    const PRICE_TYPE_FIXED = 'fixed';
+    const PRICE_TYPE_FIXED    = 'fixed';
     const PRICE_TYPE_RELATIVE = 'relative';
 
     /**

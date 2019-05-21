@@ -34,16 +34,16 @@ use Shopgate\ConnectSdk\Services\Events\DTO\Base as DTOBase;
  */
 class Property extends DTOBase
 {
-    const TYPE_SIMPLE = 'simple';
-    const TYPE_OPTION = 'option';
-    const TYPE_INPUT = 'input';
-    const TYPE_PRODUCT = 'product';
+    const TYPE_SIMPLE       = 'simple';
+    const TYPE_OPTION       = 'option';
+    const TYPE_INPUT        = 'input';
+    const TYPE_PRODUCT      = 'product';
     const TYPE_PRODUCT_LIST = 'productList';
 
     const DISPLAY_GROUP_PROPERTIES = 'properties';
-    const DISPLAY_GROUP_FEATURES = 'features';
-    const DISPLAY_GROUP_GENERAL = 'general';
-    const DISPLAY_GROUP_PRICING = 'pricing';
+    const DISPLAY_GROUP_FEATURES   = 'features';
+    const DISPLAY_GROUP_GENERAL    = 'general';
+    const DISPLAY_GROUP_PRICING    = 'pricing';
 
     /**
      * @var array

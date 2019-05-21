@@ -26,12 +26,12 @@ use Dto\Exceptions\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Services\Events\DTO\Base as Payload;
 use Shopgate\ConnectSdk\Services\Events\Entities;
 
-class Async implements Entities\EntityInterface
+class Async implements Entities\AsyncEntityInterface
 {
     use Entities\EntityTrait;
 
     /** @var string - needs to be implemented for every class */
-    const ENTITY = Entities\EntityInterface::EVENT_ENTITY_PRODUCT;
+    const ENTITY = Entities\AsyncEntityInterface::EVENT_ENTITY_PRODUCT;
 
     /**
      * @inheritDoc
@@ -41,7 +41,7 @@ class Async implements Entities\EntityInterface
      */
     public function update($entityId, Payload $payload, $meta = [])
     {
-        $factory = $this->addEvent(Entities\EntityInterface::EVENT_TYPE_UPDATE, $entityId, $payload);
+        $factory = $this->addEvent(Entities\AsyncEntityInterface::EVENT_TYPE_UPDATE, $entityId, $payload);
 
         return $this->client->request(
             'post',
@@ -58,7 +58,7 @@ class Async implements Entities\EntityInterface
      */
     public function create(Payload $payload, $meta = [])
     {
-        $factory = $this->addEvent(Entities\EntityInterface::EVENT_TYPE_CREATE, '', $payload);
+        $factory = $this->addEvent(Entities\AsyncEntityInterface::EVENT_TYPE_CREATE, '', $payload);
 
         return $this->client->request(
             'post',
@@ -75,7 +75,7 @@ class Async implements Entities\EntityInterface
      */
     public function delete($entityId, $meta = [])
     {
-        $factory = $this->addEvent(Entities\EntityInterface::EVENT_TYPE_DELETE, $entityId);
+        $factory = $this->addEvent(Entities\AsyncEntityInterface::EVENT_TYPE_DELETE, $entityId);
 
         return $this->client->request(
             'post',

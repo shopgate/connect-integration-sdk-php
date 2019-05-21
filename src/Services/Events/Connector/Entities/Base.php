@@ -26,7 +26,7 @@ use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\Services\Events\Connector\Utility;
-use Shopgate\ConnectSdk\Services\Events\Entities\EntityInterface;
+use Shopgate\ConnectSdk\Services\Events\Entities\AsyncEntityInterface;
 use Shopgate\ConnectSdk\Services\Events\Exceptions\IncorrectArgsException;
 
 class Base
@@ -68,7 +68,7 @@ class Base
         }
 
         list($method, $folder) = $this->splitMethodName($name);
-        $direct = $this->isDirect($args[count($args) - 1]);
+        $direct = $method === 'get' || $this->isDirect($args[count($args) - 1]);
 
         return $this->instantiateClass($folder, $direct)->$method(...$args);
     }
@@ -87,7 +87,7 @@ class Base
      * @param string|null $folder - name of the folder the entity resides
      * @param bool        $isDirect
      *
-     * @return EntityInterface
+     * @return AsyncEntityInterface
      * @throws Exception
      */
     protected function instantiateClass($folder, $isDirect = false)

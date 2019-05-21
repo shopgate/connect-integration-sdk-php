@@ -27,7 +27,7 @@ use Shopgate\ConnectSdk\Services\Events\DTO\Base as Payload;
 use Shopgate\ConnectSdk\Services\Events\DTO\V1\Direct\Catalog\Products;
 use Shopgate\ConnectSdk\Services\Events\Entities;
 
-class Direct implements Entities\EntityInterface
+class Direct implements Entities\DirectEntityInterface
 {
     use Entities\EntityTrait;
 
@@ -75,6 +75,24 @@ class Direct implements Entities\EntityInterface
         return $this->client->request(
             'delete',
             'products/' . $entityId,
+            ['json' => '{}', 'query' => $meta]
+        );
+    }
+
+    /**
+     * @inheritDoc
+     * @codeCoverageIgnore
+     */
+    public function get(array $meta)
+    {
+        $meta = array_merge(['service' => 'catalog'], $meta);
+        if (isset($meta['filters'])) {
+            $meta['filters'] = \GuzzleHttp\json_encode($meta['filters']);
+        }
+
+        return $this->client->request(
+            'get',
+            'products' . (isset($meta['productCode']) ? '/{productCode}' : ''),
             ['json' => '{}', 'query' => $meta]
         );
     }

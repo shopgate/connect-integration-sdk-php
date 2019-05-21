@@ -23,32 +23,13 @@
 namespace Shopgate\ConnectSdk\Services\Events\Entities;
 
 use Psr\Http\Message\ResponseInterface;
-use Shopgate\ConnectSdk\Services\Events\DTO\Base as Payload;
 
-interface EntityInterface
+interface DirectEntityInterface extends EntityInterface
 {
     /**
-     * @param string  $entityId - entity code
-     * @param Payload $payload
-     * @param array   $meta     - query parameters
+     * @param string[] $meta
      *
      * @return ResponseInterface
      */
-    public function update($entityId, Payload $payload, $meta = []);
-
-    /**
-     * @param Payload $payload
-     * @param array   $meta - query parameters
-     *
-     * @return ResponseInterface
-     */
-    public function create(Payload $payload, $meta = []);
-
-    /**
-     * @param string $entityId - entity code
-     * @param array  $meta     - query parameters
-     *
-     * @return ResponseInterface
-     */
-    public function delete($entityId, $meta = []);
+    public function get(array $meta);
 }

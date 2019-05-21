@@ -71,7 +71,7 @@ class ClientTest extends TestCase
         $mock             = $this->httpClient->getMock();
         $subjectUnderTest = new Client(['http_client' => $mock]);
         /** @noinspection PhpParamsInspection */
-        $mock->expects($this->exactly(12))->method('request');
+        $mock->expects($this->exactly(14))->method('request');
         $subjectUnderTest->catalog->updateCategory(1, new CategoryDto());
         $subjectUnderTest->catalog->updateCategory(1, new CategoryDto(), [Base::KEY_TYPE => Base::SYNC]);
         $subjectUnderTest->catalog->createCategory(new CategoryDto());
@@ -84,6 +84,8 @@ class ClientTest extends TestCase
         $subjectUnderTest->catalog->createProduct(new ProductDto(), [Base::KEY_TYPE => Base::SYNC]);
         $subjectUnderTest->catalog->deleteProduct('1');
         $subjectUnderTest->catalog->deleteProduct('1', [Base::KEY_TYPE => Base::SYNC]);
+        $subjectUnderTest->catalog->getProduct([Base::KEY_TYPE => Base::SYNC]);
+        $subjectUnderTest->catalog->getProduct([]);
     }
 
     /**
@@ -154,7 +156,7 @@ class ClientTest extends TestCase
         $mock             = $this->httpClient->getMock();
         $subjectUnderTest = new Client(['http_client' => $mock]);
         /** @noinspection PhpParamsInspection */
-        $mock->expects($this->exactly(6))->method('request')->withConsecutive(
+        $mock->expects($this->exactly(8))->method('request')->withConsecutive(
             [
                 $this->equalTo('post'),
                 $this->equalTo('products/' . $entityId),
@@ -184,6 +186,16 @@ class ClientTest extends TestCase
                 $this->equalTo('post'),
                 $this->equalTo('products'),
                 ['query' => ['service' => 'test', Base::KEY_TYPE => Base::SYNC], 'json' => '{"products":[[]]}']
+            ],
+            [
+                $this->equalTo('get'),
+                $this->equalTo('products'),
+                ['query' => ['service' => 'test', Base::KEY_TYPE => Base::SYNC], 'json' => '{}']
+            ],
+            [
+                $this->equalTo('get'),
+                $this->equalTo('products'),
+                ['query' => ['service' => 'test'], 'json' => '{}']
             ]
         );
 
@@ -200,5 +212,7 @@ class ClientTest extends TestCase
         );
         $subjectUnderTest->catalog->deleteProduct($entityId, ['service' => 'test', Base::KEY_TYPE => Base::SYNC]);
         $subjectUnderTest->catalog->createProduct($payload, ['service' => 'test', Base::KEY_TYPE => Base::SYNC]);
+        $subjectUnderTest->catalog->getProduct(['service' => 'test', Base::KEY_TYPE => Base::SYNC]);
+        $subjectUnderTest->catalog->getProduct(['service' => 'test']);
     }
 }

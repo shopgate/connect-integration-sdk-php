@@ -27,7 +27,7 @@ use Shopgate\ConnectSdk\Services\Events\DTO\Base as Payload;
 use Shopgate\ConnectSdk\Services\Events\DTO\V1\Direct\Catalog\Categories;
 use Shopgate\ConnectSdk\Services\Events\Entities;
 
-class Direct implements Entities\EntityInterface
+class Direct implements Entities\DirectEntityInterface
 {
     use Entities\EntityTrait;
 
@@ -77,5 +77,14 @@ class Direct implements Entities\EntityInterface
             'categories/' . $entityId,
             ['json' => '{}', 'query' => $meta]
         );
+    }
+
+    /**
+     * @inheritDoc
+     * @codeCoverageIgnore
+     */
+    public function get(array $meta)
+    {
+        // todo-sg: Implement get() method.
     }
 }

@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - updateProduct event & direct logic
 - createProduct event & direct logic
 - deleteProduct event & direct logic
+- getProduct direct logic
 
 ### Fixed
 - direct call endpoint

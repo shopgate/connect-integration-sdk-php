@@ -87,16 +87,16 @@ class ClientTest extends TestCase
     }
 
     /**
-     * Testing direct calls and service rewrites
+     * Testing direct calls and service rewrites for categories
      */
-    public function testDirectCatalogActions()
+    public function testDirectCatalogCategoryActions()
     {
         $entityId         = 1;
         $defaultMeta      = ['service' => 'catalog', Base::KEY_TYPE => Base::SYNC];
         $mock             = $this->httpClient->getMock();
         $subjectUnderTest = new Client(['http_client' => $mock]);
         /** @noinspection PhpParamsInspection */
-        $mock->expects($this->exactly(12))->method('request')->withConsecutive(
+        $mock->expects($this->exactly(6))->method('request')->withConsecutive(
             [
                 $this->equalTo('post'),
                 $this->equalTo('categories/' . $entityId),
@@ -126,7 +126,35 @@ class ClientTest extends TestCase
                 $this->equalTo('post'),
                 $this->equalTo('categories'),
                 ['query' => ['service' => 'test', Base::KEY_TYPE => Base::SYNC], 'json' => '{"categories":[[]]}']
-            ],
+            ]
+        );
+
+        $payload = new CategoryDto();
+        $subjectUnderTest->catalog->updateCategory($entityId, $payload, [Base::KEY_TYPE => Base::SYNC]);
+        $subjectUnderTest->catalog->deleteCategory($entityId, [Base::KEY_TYPE => Base::SYNC]);
+        $subjectUnderTest->catalog->createCategory($payload, [Base::KEY_TYPE => Base::SYNC]);
+
+        // rewriting service via direct call
+        $subjectUnderTest->catalog->updateCategory(
+            $entityId,
+            $payload,
+            ['service' => 'test', Base::KEY_TYPE => Base::SYNC]
+        );
+        $subjectUnderTest->catalog->deleteCategory($entityId, ['service' => 'test', Base::KEY_TYPE => Base::SYNC]);
+        $subjectUnderTest->catalog->createCategory($payload, ['service' => 'test', Base::KEY_TYPE => Base::SYNC]);
+    }
+
+    /**
+     * Testing direct calls and service rewrites for products
+     */
+    public function testDirectCatalogProductActions()
+    {
+        $entityId         = 1;
+        $defaultMeta      = ['service' => 'catalog', Base::KEY_TYPE => Base::SYNC];
+        $mock             = $this->httpClient->getMock();
+        $subjectUnderTest = new Client(['http_client' => $mock]);
+        /** @noinspection PhpParamsInspection */
+        $mock->expects($this->exactly(6))->method('request')->withConsecutive(
             [
                 $this->equalTo('post'),
                 $this->equalTo('products/' . $entityId),
@@ -158,20 +186,6 @@ class ClientTest extends TestCase
                 ['query' => ['service' => 'test', Base::KEY_TYPE => Base::SYNC], 'json' => '{"products":[[]]}']
             ]
         );
-
-        $payload = new CategoryDto();
-        $subjectUnderTest->catalog->updateCategory($entityId, $payload, [Base::KEY_TYPE => Base::SYNC]);
-        $subjectUnderTest->catalog->deleteCategory($entityId, [Base::KEY_TYPE => Base::SYNC]);
-        $subjectUnderTest->catalog->createCategory($payload, [Base::KEY_TYPE => Base::SYNC]);
-
-        // rewriting service via direct call
-        $subjectUnderTest->catalog->updateCategory(
-            $entityId,
-            $payload,
-            ['service' => 'test', Base::KEY_TYPE => Base::SYNC]
-        );
-        $subjectUnderTest->catalog->deleteCategory($entityId, ['service' => 'test', Base::KEY_TYPE => Base::SYNC]);
-        $subjectUnderTest->catalog->createCategory($payload, ['service' => 'test', Base::KEY_TYPE => Base::SYNC]);
 
         $payload = new ProductDto();
         $subjectUnderTest->catalog->updateProduct($entityId, $payload, [Base::KEY_TYPE => Base::SYNC]);

@@ -26,8 +26,7 @@ use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Category as Categ
 
 $config = [
     'http' => [
-        'base_uri'     => 'https://{service}.shopgate.services/v1/merchants/{merchantCode}/',
-        'auth'         => ['username', 'password'],
+        'headers' => ['Authorization' => 'Bearer XXX'],
         'merchantCode' => 'EE1',
         'service'      => 'omni-event-receiver'
     ]
@@ -55,6 +54,7 @@ Example for calling our service in order to create, update or delete a simple pr
 <?php
 use Shopgate\ConnectSdk\Services\Events\Client;
 use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Product as ProductDto;
+use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Product\Price as PriceDto;
 
 $config = [
     'http' => [
@@ -70,7 +70,11 @@ $price = new PriceDto();
 $price->setPrice(90)->setSalePrice(84.99)->setCurrencyCode(PriceDto::CURRENCY_CODE_EUR);
 // create new product
 $productPayload = new ProductDto();
-$productPayload->setCode('42')->setName('Blue Jeans regular')->setStatus(ProductDto::STATUS_ACTIVE)->setPrice($price);
+$productPayload->setCode('42')
+               ->setCatalogCode('my_catalog')
+               ->setName('Blue Jeans regular')
+               ->setStatus(ProductDto::STATUS_ACTIVE)
+               ->setPrice($price);
 $client->catalog->createProduct($productPayload);
 // update product with constructor input example
 $updateDto = new ProductDto(['name' => 'Blue Jeans fancy']);

@@ -50,7 +50,7 @@ $updateDto = new CategoryDto(['name' => 'Skirts']);
 $client->catalog->updateCategory('4', $updateDto, ['requestType' => 'direct']);
 ```
 
-Example for calling a service in order to create, update and delete a product using the Guzzle client and basic authentication:
+Example for calling our service in order to create, update or delete a simple product:
 ```
 <?php
 use Shopgate\ConnectSdk\Services\Events\Client;

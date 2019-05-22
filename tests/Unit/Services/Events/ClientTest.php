@@ -30,6 +30,7 @@ use Shopgate\ConnectSdk\Services\Events\Connector\Entities\Base;
 use Shopgate\ConnectSdk\Services\Events\Connector\Entities\Catalog;
 use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Category as CategoryDto;
 use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Product as ProductDto;
+use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Product\Price as PriceDto;
 
 /**
  * @coversDefaultClass \Shopgate\ConnectSdk\Services\Events\Client
@@ -46,6 +47,27 @@ class ClientTest extends TestCase
      */
     protected function setUp()
     {
+
+
+        $client = new Client([]);
+        // create new price
+        $price = new PriceDto();
+        $price->setPrice(90)->setSalePrice(84.99)->setCurrencyCode(PriceDto::CURRENCY_CODE_EUR);
+        // create new product
+        $productPayload = new ProductDto();
+        $productPayload->setCode('42')->setName('Blue Jeans regular')->setStatus(ProductDto::STATUS_ACTIVE)->setPrice($price);
+        $client->catalog->createProduct($productPayload);
+        // update product with constructor input example
+        $updateDto = new ProductDto(['name' => 'Blue Jeans fancy']);
+        $client->catalog->updateProduct('42', $updateDto);
+        // delete product
+        $client->catalog->deleteProduct('42');
+
+        // update product sync
+        $updateDto = new ProductDto(['status' => ProductDto::STATUS_ACTIVE]);
+        $client->catalog->updateProduct('42', $updateDto, ['requestType' => 'direct']);
+
+
         $this->httpClient = $this->getMockBuilder(GuzzleClient::class)->disableOriginalConstructor();
     }
 

@@ -18,8 +18,8 @@ Create a developer account at https://developer.shopgate.com
 
 
 #### Usage
-Example for calling a service in order to create, update and delete a category using the Guzzle client and basic authentication:
-```
+Example for calling our service in order to create, update or delete a category:
+```php
 <?php
 use Shopgate\ConnectSdk\Services\Events\Client;
 use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Category as CategoryDto;
@@ -51,15 +51,14 @@ $client->catalog->updateCategory('4', $updateDto, ['requestType' => 'direct']);
 ```
 
 Example for calling our service in order to create, update or delete a simple product:
-```
+```php
 <?php
 use Shopgate\ConnectSdk\Services\Events\Client;
 use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Product as ProductDto;
 
 $config = [
     'http' => [
-        'base_uri'     => 'https://{service}.shopgate.services/v1/merchants/{merchantCode}/',
-        'auth'         => ['username', 'password'],
+        'headers' => ['Authorization' => 'Bearer XXX'],
         'merchantCode' => 'EE1',
         'service'      => 'omni-event-receiver'
     ]

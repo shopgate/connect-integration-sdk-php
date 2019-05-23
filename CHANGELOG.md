@@ -6,7 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
-## 0.2.0 - 2019-05-23
+## [0.2.1]- 2019-05-23
+### Updated
+- symphony option-resolver version to be compatible with Mage 2.3+
+
+## [0.2.0] - 2019-05-23
 ### Added
 - updateProduct event & direct logic
 - createProduct event & direct logic
@@ -23,5 +27,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - createCategory event & direct logic
 - deleteCategory event & direct logic
 
-[Unreleased]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.2.0...HEAD
+[Unreleased]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.2.1...HEAD
+[0.2.1]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.2.0...0.2.1
 [0.2.0]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.1.0...0.2.0

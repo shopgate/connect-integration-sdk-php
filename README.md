@@ -74,6 +74,8 @@ $productPayload->setCode('42')
                ->setCatalogCode('my_catalog')
                ->setName('Blue Jeans regular')
                ->setStatus(ProductDto::STATUS_ACTIVE)
+               ->setModelType(ProductDto::MODEL_TYPE_STANDARD)
+               ->setIsInventoryManaged(true)
                ->setPrice($price);
 $client->catalog->createProduct($productPayload);
 // update product with constructor input example

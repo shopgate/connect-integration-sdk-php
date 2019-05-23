@@ -84,6 +84,10 @@ class UtilityTest extends TestCase
         return [
             [['update', 'category'], 'updateCategory'],
             [['update', 'category'], 'UpdateCategory'],
+            [['get', 'category'], 'GetCategory'],
+            [['create', 'product'], 'createProduct'],
+            [['delete', 'product'], 'deleteProduct'],
+            [['get', 'product'], 'getProduct'],
             [['update'], 'update'],
             [[], null],
             [[], '']

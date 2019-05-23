@@ -20,35 +20,30 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Services\Events\Entities;
+namespace Shopgate\ConnectSdk\Services\Events\DTO\V1\Direct\Catalog;
 
-use Psr\Http\Message\ResponseInterface;
-use Shopgate\ConnectSdk\Services\Events\DTO\Base as Payload;
+use Shopgate\ConnectSdk\Services\Events\DTO\Base;
 
-interface EntityInterface
+/**
+ * @method Products setProducts(Base [] $payloads)
+ * @method Products getProducts()
+ */
+class Products extends Base
 {
     /**
-     * @param string  $entityId - entity code
-     * @param Payload $payload
-     * @param array   $meta     - query parameters
-     *
-     * @return ResponseInterface
+     * @var array
+     * @codeCoverageIgnore
      */
-    public function update($entityId, Payload $payload, $meta = []);
-
-    /**
-     * @param Payload $payload
-     * @param array   $meta - query parameters
-     *
-     * @return ResponseInterface
-     */
-    public function create(Payload $payload, $meta = []);
-
-    /**
-     * @param string $entityId - entity code
-     * @param array  $meta     - query parameters
-     *
-     * @return ResponseInterface
-     */
-    public function delete($entityId, $meta = []);
+    protected $schema = [
+        'type'                 => 'object',
+        'properties'           => [
+            'products' => [
+                'type'  => 'array',
+                'items' => [
+                    'type' => 'object',
+                ],
+            ],
+        ],
+        'additionalProperties' => false,
+    ];
 }

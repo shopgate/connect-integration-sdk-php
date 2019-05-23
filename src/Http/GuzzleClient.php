@@ -89,7 +89,7 @@ class GuzzleClient extends Client implements ClientInterface
      */
     private function cleanInternalMeta(array $meta = [])
     {
-        $blacklist = [Base::KEY_TYPE, 'service', 'ver', 'env'];
+        $blacklist = [Base::KEY_TYPE, 'service', 'ver', 'env', 'merchantCode', 'productCode', 'categoryCode'];
 
         return array_filter(
             $meta,

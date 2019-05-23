@@ -20,11 +20,11 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category;
+namespace Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Product;
 
 use Dto\Exceptions\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Services\Events\DTO\Base as Payload;
-use Shopgate\ConnectSdk\Services\Events\DTO\V1\Direct\Catalog\Categories;
+use Shopgate\ConnectSdk\Services\Events\DTO\V1\Direct\Catalog\Products;
 use Shopgate\ConnectSdk\Services\Events\Entities;
 
 class Direct implements Entities\DirectEntityInterface
@@ -41,7 +41,7 @@ class Direct implements Entities\DirectEntityInterface
 
         return $this->client->request(
             'post',
-            'categories/' . $entityId,
+            'products/' . $entityId,
             ['json' => $payload->toJson(), 'query' => $meta]
         );
     }
@@ -54,12 +54,12 @@ class Direct implements Entities\DirectEntityInterface
     public function create(Payload $payload, $meta = [])
     {
         $meta    = array_merge(['service' => 'catalog'], $meta);
-        $request = new Categories();
-        $request->set('categories', [$payload]);
+        $request = new Products();
+        $request->set('products', [$payload]);
 
         return $this->client->request(
             'post',
-            'categories',
+            'products',
             ['json' => $request->toJson(), 'query' => $meta]
         );
     }
@@ -74,7 +74,7 @@ class Direct implements Entities\DirectEntityInterface
 
         return $this->client->request(
             'delete',
-            'categories/' . $entityId,
+            'products/' . $entityId,
             ['json' => '{}', 'query' => $meta]
         );
     }
@@ -85,6 +85,15 @@ class Direct implements Entities\DirectEntityInterface
      */
     public function get(array $meta)
     {
-        // todo-sg: Implement get() method.
+        $meta = array_merge(['service' => 'catalog'], $meta);
+        if (isset($meta['filters'])) {
+            $meta['filters'] = \GuzzleHttp\json_encode($meta['filters']);
+        }
+
+        return $this->client->request(
+            'get',
+            'products' . (isset($meta['productCode']) ? '/{productCode}' : ''),
+            ['json' => '{}', 'query' => $meta]
+        );
     }
 }

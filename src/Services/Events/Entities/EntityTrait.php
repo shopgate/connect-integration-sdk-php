@@ -45,7 +45,7 @@ trait EntityTrait
     }
 
     /**
-     * @param string       $type     - see EntityInterface constants
+     * @param string       $type     - see AsyncEntityInterface constants
      * @param string       $entityId - id of the entity to update
      * @param Payload|null $payload
      *

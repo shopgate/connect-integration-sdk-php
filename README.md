@@ -26,7 +26,7 @@ use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Category as Categ
 
 $config = [
     'http' => [
-        'headers' => ['Authorization' => 'Bearer XXX'],
+        'headers'      => ['Authorization' => 'Bearer XXX'],
         'merchantCode' => 'EE1',
         'service'      => 'omni-event-receiver'
     ]
@@ -58,7 +58,7 @@ use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Product\Price as 
 
 $config = [
     'http' => [
-        'headers' => ['Authorization' => 'Bearer XXX'],
+        'headers'      => ['Authorization' => 'Bearer XXX'],
         'merchantCode' => 'EE1',
         'service'      => 'omni-event-receiver'
     ]

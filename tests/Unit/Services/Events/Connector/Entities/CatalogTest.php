@@ -29,6 +29,7 @@ use ReflectionException;
 use ReflectionMethod;
 use Shopgate\ConnectSdk\Services\Events\Connector\Entities\Catalog;
 use Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category;
+use Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Product;
 use Shopgate\ConnectSdk\Tests\Unit\Utility\HttpClientMock;
 
 /**
@@ -87,7 +88,9 @@ class CatalogTest extends TestCase
     {
         return [
             [Category\Async::class, 'Category', false],
-            [Category\Direct::class, 'Category', true]
+            [Category\Direct::class, 'Category', true],
+            [Product\Async::class, 'Product', false],
+            [Product\Direct::class, 'Product', true]
         ];
     }
 

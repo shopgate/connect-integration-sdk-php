@@ -29,13 +29,13 @@ use Shopgate\ConnectSdk\Services\Events\DTO\Base as DTOBase;
  * If there is a need to differentiate, one can create a class Update.php, etc. and extend this one
  *
  * @method Category setCode(string $code)
- * @method Category setParentCategoryCode(string $parentCode)
+ * @method Category setParentCategoryCode(string $parentCategoryCode)
  * @method Category setName(string $name)
  * @method Category setDescription(string $description)
  * @method Category setImage(string $image)
  * @method Category setUrl(string $url)
  * @method Category setSequenceId(integer $sequenceId)
- * @method Category setExternalUpdateDate(string $updateDate)
+ * @method Category setExternalUpdateDate(string $externalUpdateDate)
  */
 class Category extends DTOBase
 {

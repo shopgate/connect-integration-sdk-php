@@ -18,16 +18,15 @@ Create a developer account at https://developer.shopgate.com
 
 
 #### Usage
-Example for calling a service in order to update the name of the category using the Guzzle client and basic authentication:
-```
+Example for calling our service in order to create, update or delete a category:
+```php
 <?php
 use Shopgate\ConnectSdk\Services\Events\Client;
 use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Category as CategoryDto;
 
 $config = [
     'http' => [
-        'base_uri'     => 'https://{service}.shopgate.services/v1/merchants/{merchantCode}/',
-        'auth'         => ['username', 'password'],
+        'headers'      => ['Authorization' => 'Bearer XXX'],
         'merchantCode' => 'EE1',
         'service'      => 'omni-event-receiver'
     ]
@@ -48,6 +47,44 @@ $client->catalog->deleteCategory('pants');
 // update category sync
 $updateDto = new CategoryDto(['name' => 'Skirts']);
 $client->catalog->updateCategory('4', $updateDto, ['requestType' => 'direct']);
+```
+
+Example for calling our service in order to create, update or delete a simple product:
+```php
+<?php
+use Shopgate\ConnectSdk\Services\Events\Client;
+use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Product as ProductDto;
+use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Product\Price as PriceDto;
+
+$config = [
+    'http' => [
+        'headers'      => ['Authorization' => 'Bearer XXX'],
+        'merchantCode' => 'EE1',
+        'service'      => 'omni-event-receiver'
+    ]
+];
+
+$client = new Client($config);
+// create new price
+$price = new PriceDto();
+$price->setPrice(90)->setSalePrice(84.99)->setCurrencyCode(PriceDto::CURRENCY_CODE_EUR);
+// create new product
+$productPayload = new ProductDto();
+$productPayload->setCode('42')
+               ->setCatalogCode('my_catalog')
+               ->setName('Blue Jeans regular')
+               ->setStatus(ProductDto::STATUS_ACTIVE)
+               ->setPrice($price);
+$client->catalog->createProduct($productPayload);
+// update product with constructor input example
+$updateDto = new ProductDto(['name' => 'Blue Jeans fancy']);
+$client->catalog->updateProduct('42', $updateDto);
+// delete product
+$client->catalog->deleteProduct('42');
+
+// update product sync
+$updateDto = new ProductDto(['status' => ProductDto::STATUS_INACTIVE]);
+$client->catalog->updateProduct('42', $updateDto, ['requestType' => 'direct']);
 ```
 
 #### Config

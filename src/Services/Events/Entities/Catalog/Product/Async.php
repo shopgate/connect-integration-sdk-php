@@ -20,71 +20,67 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Category;
+namespace Shopgate\ConnectSdk\Services\Events\Entities\Catalog\Product;
 
 use Dto\Exceptions\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Services\Events\DTO\Base as Payload;
-use Shopgate\ConnectSdk\Services\Events\DTO\V1\Direct\Catalog\Categories;
 use Shopgate\ConnectSdk\Services\Events\Entities;
 
-class Direct implements Entities\DirectEntityInterface
+class Async implements Entities\AsyncEntityInterface
 {
     use Entities\EntityTrait;
 
+    /** @var string - needs to be implemented for every class */
+    const ENTITY = Entities\AsyncEntityInterface::EVENT_ENTITY_PRODUCT;
+
     /**
      * @inheritDoc
+     *
      * @used-by \Shopgate\ConnectSdk\Services\Events\Connector\Entities\Catalog::__call()
+     * @throws InvalidDataTypeException
      */
     public function update($entityId, Payload $payload, $meta = [])
     {
-        $meta = array_merge(['service' => 'catalog'], $meta);
+        $factory = $this->addEvent(Entities\AsyncEntityInterface::EVENT_TYPE_UPDATE, $entityId, $payload);
 
         return $this->client->request(
             'post',
-            'categories/' . $entityId,
-            ['json' => $payload->toJson(), 'query' => $meta]
+            'events',
+            ['json' => $factory->getRequest()->toJson(), 'query' => $meta]
         );
     }
 
     /**
      * @inheritDoc
-     * @codeCoverageIgnore
+     *
+     * @used-by \Shopgate\ConnectSdk\Services\Events\Connector\Entities\Catalog::__call()
      * @throws InvalidDataTypeException
      */
     public function create(Payload $payload, $meta = [])
     {
-        $meta    = array_merge(['service' => 'catalog'], $meta);
-        $request = new Categories();
-        $request->set('categories', [$payload]);
+        $factory = $this->addEvent(Entities\AsyncEntityInterface::EVENT_TYPE_CREATE, '', $payload);
 
         return $this->client->request(
             'post',
-            'categories',
-            ['json' => $request->toJson(), 'query' => $meta]
+            'events',
+            ['json' => $factory->getRequest()->toJson(), 'query' => $meta]
         );
     }
 
     /**
      * @inheritDoc
-     * @codeCoverageIgnore
+     *
+     * @used-by \Shopgate\ConnectSdk\Services\Events\Connector\Entities\Catalog::__call()
+     * @throws InvalidDataTypeException
      */
     public function delete($entityId, $meta = [])
     {
-        $meta = array_merge(['service' => 'catalog'], $meta);
+        $factory = $this->addEvent(Entities\AsyncEntityInterface::EVENT_TYPE_DELETE, $entityId);
 
         return $this->client->request(
-            'delete',
-            'categories/' . $entityId,
-            ['json' => '{}', 'query' => $meta]
+            'post',
+            'events',
+            ['json' => $factory->getRequest()->toJson(), 'query' => $meta]
         );
-    }
-
-    /**
-     * @inheritDoc
-     * @codeCoverageIgnore
-     */
-    public function get(array $meta)
-    {
-        // todo-sg: Implement get() method.
     }
 }

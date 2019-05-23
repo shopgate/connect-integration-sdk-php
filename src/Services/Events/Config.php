@@ -68,12 +68,33 @@ class Config
                 'service'  => 'omni-event-receiver'
             ]
         );
-        $resolver->setDefined(['merchantCode', 'auth', 'handler']);
+
+        $typeList = [
+            'auth'             => 'string[]',
+            'merchantCode'     => 'string',
+            'ver'              => 'int',
+            'handler'          => ['object', 'null'],
+            'connect_timeout'  => ['float'],
+            'read_timeout'     => ['float'],
+            'timeout'          => ['float'],
+            'allow_redirects'  => ['bool'],
+            'cert'             => ['string', 'string[]'],
+            'debug'            => ['bool', 'object'],
+            'delay'            => ['int', 'float'],
+            'force_ip_resolve' => ['string'],
+            'headers'          => ['string[]'],
+            'http_errors'      => ['bool'],
+            'synchronous'      => ['bool'],
+            'verify'           => ['bool', 'string'],
+            'version'          => ['float', 'string'],
+            'proxy'            => ['string[]', 'string']
+        ];
+        $resolver->setDefined(array_keys($typeList));
         $resolver->setAllowedValues('env', ['pg', 'dev', '']);
-        $resolver->setAllowedTypes('auth', 'string[]');
-        $resolver->setAllowedTypes('merchantCode', 'string');
-        $resolver->setAllowedTypes('ver', 'int');
-        $resolver->setAllowedTypes('handler', ['object', 'null']);
+
+        foreach ($typeList as $key => $type) {
+            $resolver->setAllowedTypes($key, $type);
+        }
     }
 
     /**

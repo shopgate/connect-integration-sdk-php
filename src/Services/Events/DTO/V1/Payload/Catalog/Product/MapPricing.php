@@ -20,35 +20,28 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Services\Events\Entities;
+namespace Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Product;
 
-use Psr\Http\Message\ResponseInterface;
-use Shopgate\ConnectSdk\Services\Events\DTO\Base as Payload;
+use Shopgate\ConnectSdk\Services\Events\DTO\Base as DTOBase;
 
-interface EntityInterface
+/**
+ * @method MapPricing setStartDate(string $startDate)
+ * @method MapPricing setEndDate(string $endDate)
+ * @method MapPricing setPrice(number $price)
+ */
+class MapPricing extends DTOBase
 {
     /**
-     * @param string  $entityId - entity code
-     * @param Payload $payload
-     * @param array   $meta     - query parameters
-     *
-     * @return ResponseInterface
+     * @var array
+     * @codeCoverageIgnore
      */
-    public function update($entityId, Payload $payload, $meta = []);
-
-    /**
-     * @param Payload $payload
-     * @param array   $meta - query parameters
-     *
-     * @return ResponseInterface
-     */
-    public function create(Payload $payload, $meta = []);
-
-    /**
-     * @param string $entityId - entity code
-     * @param array  $meta     - query parameters
-     *
-     * @return ResponseInterface
-     */
-    public function delete($entityId, $meta = []);
+    protected $schema = [
+        'type'                 => 'object',
+        'properties'           => [
+            'startDate' => ['type' => 'string'],
+            'endDate'   => ['type' => 'string'],
+            'price'     => ['type' => 'number']
+        ],
+        'additionalProperties' => true
+    ];
 }

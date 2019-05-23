@@ -22,33 +22,19 @@
 
 namespace Shopgate\ConnectSdk\Services\Events\Entities;
 
-use Psr\Http\Message\ResponseInterface;
-use Shopgate\ConnectSdk\Services\Events\DTO\Base as Payload;
-
-interface EntityInterface
+interface AsyncEntityInterface extends EntityInterface
 {
     /**
-     * @param string  $entityId - entity code
-     * @param Payload $payload
-     * @param array   $meta     - query parameters
-     *
-     * @return ResponseInterface
+     * Event types
      */
-    public function update($entityId, Payload $payload, $meta = []);
+    const EVENT_TYPE_CREATE = 'create';
+    const EVENT_TYPE_UPDATE = 'update';
+    const EVENT_TYPE_DELETE = 'delete';
 
     /**
-     * @param Payload $payload
-     * @param array   $meta - query parameters
-     *
-     * @return ResponseInterface
+     * Event entities
      */
-    public function create(Payload $payload, $meta = []);
-
-    /**
-     * @param string $entityId - entity code
-     * @param array  $meta     - query parameters
-     *
-     * @return ResponseInterface
-     */
-    public function delete($entityId, $meta = []);
+    const EVENT_ENTITY_CATEGORY  = 'category';
+    const EVENT_ENTITY_PRODUCT   = 'product';
+    const EVENT_ENTITY_ATTRIBUTE = 'attribute';
 }

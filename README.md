@@ -83,7 +83,7 @@ $client->catalog->updateProduct('42', $updateDto);
 $client->catalog->deleteProduct('42');
 
 // update product sync
-$updateDto = new ProductDto(['status' => ProductDto::STATUS_ACTIVE]);
+$updateDto = new ProductDto(['status' => ProductDto::STATUS_INACTIVE]);
 $client->catalog->updateProduct('42', $updateDto, ['requestType' => 'direct']);
 ```
 

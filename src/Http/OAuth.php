@@ -1,0 +1,67 @@
+<?php
+
+/**
+ * Copyright Shopgate Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * @author    Shopgate Inc, 804 Congress Ave, Austin, Texas 78701 <interfaces@shopgate.com>
+ * @copyright Shopgate Inc
+ * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
+ */
+
+namespace Shopgate\ConnectSdk\Http;
+
+use kamermans\OAuth2\GrantType\ClientCredentials;
+use kamermans\OAuth2\OAuth2Middleware;
+use kamermans\OAuth2\Persistence\FileTokenPersistence;
+
+class OAuth
+{
+    /** @var array */
+    protected $config;
+
+    /**
+     * @param array $config
+     */
+    public function __construct(array $config = [])
+    {
+        //todo-sg: validate incoming config via config resolver
+        //todo-sg: validate client
+        //todo-sg: default for base_uri
+        $config['client_id']     = $config['clientId'];
+        $config['client_secret'] = $config['clientSecret'];
+        $config['client']        = isset($config['client']) ? $config['client'] : new GuzzleClient($config);
+        $this->config            = $config;
+    }
+
+    /**
+     * @param array $meta
+     *
+     * @return OAuth2Middleware
+     */
+    public function getOauthMiddleware($meta = [])
+    {
+        $config = array_merge($this->config, ['base_uri' => 'https://auth.shopgatedev.services/oauth/token'], $meta);
+
+        $grant_type = new ClientCredentials($config['client'], $config);
+        //$refresh_grant_type = new RefreshToken($config['client'], $config);
+        $oath2 = new OAuth2Middleware($grant_type/*, $refresh_grant_type*/);
+
+        $token_persistence = new FileTokenPersistence('/tmp/access_token.json');
+
+        $oath2->setTokenPersistence($token_persistence);
+
+        return $oath2;
+    }
+}

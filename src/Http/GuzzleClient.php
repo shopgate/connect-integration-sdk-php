@@ -27,6 +27,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7;
 use Psr\Http\Message\UriInterface;
+use Shopgate\ConnectSdk\Services\Events\Config;
 use Shopgate\ConnectSdk\Services\Events\Connector\Entities\Base;
 use function GuzzleHttp\Psr7\uri_for;
 use function GuzzleHttp\uri_template;
@@ -38,16 +39,17 @@ class GuzzleClient extends Client implements ClientInterface
      */
     public function __construct(array $config = [])
     {
-        if (isset($config['oauth'])) {
-            $config['auth'] = 'oauth';
-        }
-
         parent::__construct($config);
 
-        /** @var HandlerStack $handler */
-        $handler = $this->getConfig('handler');
-        $oauth   = new OAuth($config['oauth']);
-        $handler->push($oauth->getOauthMiddleware());
+        if (isset($config['oauth'])) {
+            $configResolver   = new Config();
+            $data             = $configResolver->resolveHttpOauthOptions($config['oauth']);
+            $data['base_uri'] = $this->resolveTemplate($data['base_uri']);
+            /** @var HandlerStack $handler */
+            $handler = $this->getConfig('handler');
+            $oauth   = new OAuth($data);
+            $handler->push($oauth->getOauthMiddleware());
+        }
     }
 
     /**

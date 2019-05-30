@@ -22,6 +22,7 @@
 
 namespace Shopgate\ConnectSdk\Http;
 
+use GuzzleHttp\Client;
 use kamermans\OAuth2\GrantType\ClientCredentials;
 use kamermans\OAuth2\OAuth2Middleware;
 use kamermans\OAuth2\Persistence\FileTokenPersistence;
@@ -36,31 +37,20 @@ class OAuth
      */
     public function __construct(array $config = [])
     {
-        //todo-sg: validate incoming config via config resolver
-        //todo-sg: validate client
-        //todo-sg: default for base_uri
-        $config['client_id']     = $config['clientId'];
-        $config['client_secret'] = $config['clientSecret'];
-        $config['client']        = isset($config['client']) ? $config['client'] : new GuzzleClient($config);
-        $this->config            = $config;
+        $config['client'] = isset($config['client']) ? $config['client'] : new Client($config);
+        $this->config     = $config;
     }
 
     /**
-     * @param array $meta
-     *
      * @return OAuth2Middleware
      */
-    public function getOauthMiddleware($meta = [])
+    public function getOauthMiddleware()
     {
-        $config = array_merge($this->config, ['base_uri' => 'https://auth.shopgatedev.services/oauth/token'], $meta);
+        $grantType   = new ClientCredentials($this->config['client'], $this->config);
+        $oath2       = new OAuth2Middleware($grantType);
+        $persistence = new FileTokenPersistence('/tmp/access_token.json');
 
-        $grant_type = new ClientCredentials($config['client'], $config);
-        //$refresh_grant_type = new RefreshToken($config['client'], $config);
-        $oath2 = new OAuth2Middleware($grant_type/*, $refresh_grant_type*/);
-
-        $token_persistence = new FileTokenPersistence('/tmp/access_token.json');
-
-        $oath2->setTokenPersistence($token_persistence);
+        $oath2->setTokenPersistence($persistence);
 
         return $oath2;
     }

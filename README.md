@@ -26,9 +26,12 @@ use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Category as Categ
 
 $config = [
     'http' => [
-        'headers'      => ['Authorization' => 'Bearer XXX'],
         'merchantCode' => 'EE1',
-        'service'      => 'omni-event-receiver'
+        'service'      => 'omni-event-receiver',
+        'oauth'        => [
+            'clientId'     => 'xxx',
+            'clientSecret' => 'xxx',
+        ]
     ]
 ];
 
@@ -58,9 +61,12 @@ use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Product\Price as 
 
 $config = [
     'http' => [
-        'headers'      => ['Authorization' => 'Bearer XXX'],
         'merchantCode' => 'EE1',
-        'service'      => 'omni-event-receiver'
+        'service'      => 'omni-event-receiver',
+        'oauth'        => [
+            'client_id'     => 'xxx',
+            'client_secret' => 'xxx',
+        ]
     ]
 ];
 
@@ -93,11 +99,16 @@ $client->catalog->updateProduct('42', $updateDto, ['requestType' => 'direct']);
 
 * __http__ (array, default: []) - these configurations are passed down to the default HTTP Client, which is [Guzzle].
   * __base_uri__ (string, default: _https://{service}.shopgate{env}.services/v{ver}/merchants/{merchantCode}/_) - if rewriting, make sure to add a forward slash at end as the calls will append paths
-  * __auth__ (array) - the simple usage is providing ['username', 'password'] for basic auth
   * __merchantCode__ (string) - the following are template system related, the default _base_uri_ provided above takes in variables in __{merchantCode}__ format. These params just replace these variables. This way you do not need to rewrite the base_uri, but just provide the correct variables to replace the template components.
   * __service__ (string, default: _omni-event-receiver_) - template variable
-  * __ver__ (integer, default: 1) - template variable
-  * __env__ (string, default: '') - template variable
+  * __ver__ (integer, default: 1) - template variable, can be substituted on a per call level in the meta array parameters
+  * __env__ (string, default: '') - template variable, can also be 'dev' or 'pg'
+  * __oauth__ (array) - required to authenticate the calls
+    * __client_id__ (string)
+    * __client_secret__ (string)
+    * __scope__ (string) - possible values
+    * __base_uri__ (string, default: _https://auth.shopgate{env}.services/oauth/token_) - can be rewritten for alternate authentication
+    * __client__ (GuzzleHttp\Client, default: GuzzleHttp\Client) - can possibly rewrite the client being used for authentication call
 * __http_client__ (Shopgate\ConnectSdk\Http\ClientInterface, default: GuzzleHttp\Client) - one could provide their own HTTP client if needed be, the http array would not be needed though, just pass your own config when instantiating.
 
 ## Changelog

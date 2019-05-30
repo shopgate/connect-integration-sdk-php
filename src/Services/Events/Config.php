@@ -54,6 +54,19 @@ class Config
     }
 
     /**
+     * @param array $options
+     *
+     * @return array
+     */
+    public function resolveHttpOauthOptions(array $options)
+    {
+        $httpResolver = new OptionsResolver();
+        $this->oauthDefaultOptions($httpResolver);
+
+        return $httpResolver->resolve($options);
+    }
+
+    /**
      * These options get injected directly into the HTTP Client
      *
      * @param OptionsResolver $resolver
@@ -65,12 +78,14 @@ class Config
                 'base_uri' => 'https://{service}.shopgate{env}.services/v{ver}/merchants/{merchantCode}/',
                 'env'      => '',
                 'ver'      => 1,
-                'service'  => 'omni-event-receiver'
+                'service'  => 'omni-event-receiver',
+                'auth'     => 'oauth'
             ]
         );
 
         $typeList = [
-            'auth'             => 'string[]',
+            'oauth'            => 'string[]',
+            'auth'             => ['string[]', 'string'],
             'merchantCode'     => 'string',
             'ver'              => 'int',
             'handler'          => ['object', 'null'],
@@ -111,5 +126,30 @@ class Config
         $resolver->setDefined(['http_client']);
         $resolver->setAllowedTypes('http', 'array');
         $resolver->setAllowedTypes('http_client', [ClientInterface::class, 'null']);
+    }
+
+    /**
+     * @param OptionsResolver $resolver
+     */
+    private function oauthDefaultOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(
+            [
+                'base_uri' => 'https://auth.shopgate{env}.services/oauth/token',
+            ]
+        );
+
+        $typeList = [
+            'client_id'     => 'string',
+            'client_secret' => 'string',
+            'base_uri'      => 'string',
+            'scope'         => 'string',
+            'time'          => 'string',
+            'client'        => [\GuzzleHttp\Client::class, ClientInterface::class, 'null']
+        ];
+        $resolver->setDefined(array_keys($typeList));
+        foreach ($typeList as $key => $type) {
+            $resolver->setAllowedTypes($key, $type);
+        }
     }
 }

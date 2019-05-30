@@ -48,7 +48,7 @@ class GuzzleClient extends Client implements ClientInterface
             /** @var HandlerStack $handler */
             $handler = $this->getConfig('handler');
             $oauth   = new OAuth($data);
-            $handler->push($oauth->getOauthMiddleware());
+            $handler->push($oauth->getClientCredOauthMiddleware());
         }
     }
 

@@ -37,20 +37,22 @@ class OAuth
      */
     public function __construct(array $config = [])
     {
-        $config['client'] = isset($config['client']) ? $config['client'] : new Client($config);
-        $this->config     = $config;
+        $config['client']  = isset($config['client']) ? $config['client'] : new Client($config);
+        $config['storage'] = isset($config['storage'])
+            ? $config['storage']
+            : new FileTokenPersistence($config['storage_path']);
+        $this->config      = $config;
     }
 
     /**
      * @return OAuth2Middleware
      */
-    public function getOauthMiddleware()
+    public function getClientCredOauthMiddleware()
     {
-        $grantType   = new ClientCredentials($this->config['client'], $this->config);
-        $oath2       = new OAuth2Middleware($grantType);
-        $persistence = new FileTokenPersistence('/tmp/access_token.json');
+        $grantType = new ClientCredentials($this->config['client'], $this->config);
+        $oath2     = new OAuth2Middleware($grantType);
 
-        $oath2->setTokenPersistence($persistence);
+        $oath2->setTokenPersistence($this->config['storage']);
 
         return $oath2;
     }

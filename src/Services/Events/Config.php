@@ -22,6 +22,7 @@
 
 namespace Shopgate\ConnectSdk\Services\Events;
 
+use kamermans\OAuth2\Persistence\TokenPersistenceInterface;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -135,17 +136,18 @@ class Config
     {
         $resolver->setDefaults(
             [
-                'base_uri' => 'https://auth.shopgate{env}.services/oauth/token',
+                'base_uri'     => 'https://auth.shopgate{env}.services/oauth/token',
+                'storage_path' => '/tmp/access_token.json'
             ]
         );
 
         $typeList = [
             'client_id'     => 'string',
             'client_secret' => 'string',
-            'base_uri'      => 'string',
             'scope'         => 'string',
             'time'          => 'string',
-            'client'        => [\GuzzleHttp\Client::class, ClientInterface::class, 'null']
+            'client'        => [\GuzzleHttp\Client::class, ClientInterface::class, 'null'],
+            'storage'       => [TokenPersistenceInterface::class, 'null'],
         ];
         $resolver->setDefined(array_keys($typeList));
         foreach ($typeList as $key => $type) {

@@ -22,6 +22,7 @@
 
 namespace Shopgate\ConnectSdk\Services\Events;
 
+use kamermans\OAuth2\GrantType\GrantTypeInterface;
 use kamermans\OAuth2\Persistence\TokenPersistenceInterface;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -148,6 +149,7 @@ class Config
             'time'          => 'string',
             'client'        => [\GuzzleHttp\Client::class, ClientInterface::class, 'null'],
             'storage'       => [TokenPersistenceInterface::class, 'null'],
+            'grant_type'    => [GrantTypeInterface::class, 'null'],
         ];
         $resolver->setDefined(array_keys($typeList));
         foreach ($typeList as $key => $type) {

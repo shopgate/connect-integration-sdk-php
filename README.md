@@ -29,8 +29,8 @@ $config = [
         'merchantCode' => 'EE1',
         'service'      => 'omni-event-receiver',
         'oauth'        => [
-            'clientId'     => 'xxx',
-            'clientSecret' => 'xxx',
+            'client_id'     => 'xxx',
+            'client_secret' => 'xxx',
         ]
     ]
 ];
@@ -111,6 +111,7 @@ $client->catalog->updateProduct('42', $updateDto, ['requestType' => 'direct']);
     * __client__ (GuzzleHttp\Client, default: GuzzleHttp\Client) - can possibly rewrite the client being used for authentication call
     * __storage__ (kamermans\OAuth2\Persistence\TokenPersistenceInterface, default: kamermans\OAuth2\Persistence\FileTokenPersistence) - token saving storage, file based by default
     * __storage_path__ (string, default: /tmp/access_token.json) - token saving storage, file based by default
+    * __grant_type__ (kamermans\OAuth2\GrantType\GrantTypeInterface, default: kamermans\OAuth2\GrantType\ClientCredentials) - can rewrite the grant_type login method if needed
 * __http_client__ (Shopgate\ConnectSdk\Http\ClientInterface, default: GuzzleHttp\Client) - one could provide their own HTTP client if needed be, the http array would not be needed though, just pass your own config when instantiating.
 
 ## Changelog

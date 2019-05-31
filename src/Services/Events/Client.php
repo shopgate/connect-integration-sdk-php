@@ -55,9 +55,10 @@ class Client
      */
     public function __construct(array $config)
     {
-        $configResolver = new Config();
-        $options        = $configResolver->resolveMainOptions($config);
-        $httpOptions    = $configResolver->resolveHttpOptions($options['http']);
+        $configResolver       = new Config();
+        $options              = $configResolver->resolveMainOptions($config);
+        $httpOptions          = $configResolver->resolveHttpOptions($options['http']);
+        $httpOptions['oauth'] = $configResolver->resolveHttpOauthOptions($httpOptions['oauth']);
 
         $this->client = null !== $options['http_client']
             ? $options['http_client']

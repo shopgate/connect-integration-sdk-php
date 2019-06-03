@@ -49,9 +49,6 @@ class Client
      * This client accepts the following options:
      *  - http_client (Http\ClientInterface, default=Http\GuzzleClient) - accepts a custom HTTP client if needed
      *  - http - holder for all HTTP Client configurations
-     *      - oauth (array) authentication data necessary for the client to make calls
-     *          - client_id (string)
-     *          - client_secret (string)
      *
      * @param array $config
      *

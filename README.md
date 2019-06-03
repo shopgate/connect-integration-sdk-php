@@ -26,12 +26,10 @@ use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Category as Categ
 
 $config = [
     'http' => [
-        'merchantCode' => 'EE1',
-        'service'      => 'omni-event-receiver',
-        'oauth'        => [
-            'client_id'     => 'xxx',
-            'client_secret' => 'xxx',
-        ]
+        'merchantCode'  => 'EE1',
+        'service'       => 'omni-event-receiver',
+        'clientId'      => 'xxx',
+        'clientSecret'  => 'xxx'
     ]
 ];
 
@@ -61,12 +59,10 @@ use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Product\Price as 
 
 $config = [
     'http' => [
-        'merchantCode' => 'EE1',
-        'service'      => 'omni-event-receiver',
-        'oauth'        => [
-            'client_id'     => 'xxx',
-            'client_secret' => 'xxx',
-        ]
+        'merchantCode'  => 'EE1',
+        'service'       => 'omni-event-receiver',
+        'clientId'      => 'xxx',
+        'clientSecret'  => 'xxx'
     ]
 ];
 
@@ -103,15 +99,8 @@ $client->catalog->updateProduct('42', $updateDto, ['requestType' => 'direct']);
   * __service__ (string, default: _omni-event-receiver_) - template variable
   * __ver__ (integer, default: 1) - template variable, can be substituted on a per call level in the meta array parameters
   * __env__ (string, default: '') - template variable, can also be 'dev' or 'pg'
-  * __oauth__ (array) - required to authenticate the calls
-    * __client_id__ (string) - oAuth2 client ID
-    * __client_secret__ (string) - oAuth2 client secret
-    * __scope__ (string) - possible scope values, not needed at the time of writing
-    * __base_uri__ (string, default: _https://auth.shopgate{env}.services/oauth/token_) - can be rewritten for alternate authentication, the HTTP array template variables are used here as well
-    * __client__ (GuzzleHttp\Client, default: GuzzleHttp\Client) - can possibly rewrite the client being used for authentication call
-    * __storage__ (kamermans\OAuth2\Persistence\TokenPersistenceInterface, default: kamermans\OAuth2\Persistence\FileTokenPersistence) - token saving storage, file based by default
-    * __storage_path__ (string, default: /tmp/access_token.json) - token saving storage, file based by default
-    * __grant_type__ (kamermans\OAuth2\GrantType\GrantTypeInterface, default: kamermans\OAuth2\GrantType\ClientCredentials) - can rewrite the grant_type login method if needed
+  * __client_id__ (string) - oAuth2 client ID
+  * __client_secret__ (string) - oAuth2 client secret
 * __http_client__ (Shopgate\ConnectSdk\Http\ClientInterface, default: GuzzleHttp\Client) - one could provide their own HTTP client if needed be, the http array would not be needed though, just pass your own config when instantiating.
 
 ## Changelog

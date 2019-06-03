@@ -40,13 +40,13 @@ class GuzzleClient extends Client implements ClientInterface
     {
         parent::__construct($config);
 
-        if (!empty($config['oauth'])) {
-            $config['oauth']['base_uri'] = $this->resolveTemplate($config['oauth']['base_uri']);
-            /** @var HandlerStack $handler */
-            $handler = $this->getConfig('handler');
-            $oauth   = new OAuth($config['oauth']);
-            $handler->push($oauth->getOauthMiddleware(), 'OAuth2');
-        }
+        $config['oauth']['base_uri']      = $this->resolveTemplate($config['oauth']['base_uri']);
+        $config['oauth']['client_id']     = $config['clientId'];
+        $config['oauth']['client_secret'] = $config['clientSecret'];
+        /** @var HandlerStack $handler */
+        $handler = $this->getConfig('handler');
+        $oauth   = new OAuth($config['oauth']);
+        $handler->push($oauth->getOauthMiddleware(), 'OAuth2');
     }
 
     /**
@@ -98,7 +98,7 @@ class GuzzleClient extends Client implements ClientInterface
     }
 
     /**
-     * Remove meta that does not need to be sent to the endpoints
+     * Remove meta that does not need to be sent to the endpoints via query
      *
      * @param array $meta
      *
@@ -106,7 +106,17 @@ class GuzzleClient extends Client implements ClientInterface
      */
     private function cleanInternalMeta(array $meta = [])
     {
-        $blacklist = [Base::KEY_TYPE, 'service', 'ver', 'env', 'merchantCode', 'productCode', 'categoryCode'];
+        $blacklist = [
+            Base::KEY_TYPE,
+            'service',
+            'ver',
+            'env',
+            'merchantCode',
+            'productCode',
+            'categoryCode',
+            'clientId',
+            'clientSecret'
+        ];
 
         return array_filter(
             $meta,

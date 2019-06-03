@@ -56,14 +56,13 @@ class Client
      */
     public function __construct(array $config)
     {
-        $configResolver       = new Config();
-        $options              = $configResolver->resolveMainOptions($config);
-        $httpOptions          = $configResolver->resolveHttpOptions($options['http']);
-        $httpOptions['oauth'] = $configResolver->resolveHttpOauthOptions($httpOptions['oauth']);
+        $configResolver   = new Config();
+        $options          = $configResolver->resolveMainOptions($config);
+        $options['oauth'] = $configResolver->resolveOauthOptions($options['oauth']);
 
-        $this->client = null !== $options['http_client']
+        $this->client = isset($options['http_client'])
             ? $options['http_client']
-            : new Http\GuzzleClient($httpOptions);
+            : new Http\GuzzleClient($options);
     }
 
     /** @noinspection MagicMethodsValidityInspection */

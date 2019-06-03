@@ -41,11 +41,11 @@ class GuzzleClient extends Client implements ClientInterface
         parent::__construct($config);
 
         if (!empty($config['oauth'])) {
-            $config['base_uri'] = $this->resolveTemplate($config['base_uri']);
+            $config['oauth']['base_uri'] = $this->resolveTemplate($config['oauth']['base_uri']);
             /** @var HandlerStack $handler */
             $handler = $this->getConfig('handler');
             $oauth   = new OAuth($config['oauth']);
-            $handler->push($oauth->getOauthMiddleware());
+            $handler->push($oauth->getOauthMiddleware(), 'OAuth2');
         }
     }
 

@@ -58,7 +58,8 @@ class ClientTest extends TestCase
      */
     public function testGetCatalog()
     {
-        $subjectUnderTest = new Client([]);
+        $mock             = $this->httpClient->getMock();
+        $subjectUnderTest = new Client(['http_client' => $mock]);
         /** @noinspection PhpParamsInspection */
         $this->assertInstanceOf(Catalog::class, $subjectUnderTest->catalog);
     }

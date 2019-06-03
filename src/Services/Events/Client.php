@@ -23,6 +23,8 @@
 namespace Shopgate\ConnectSdk\Services\Events;
 
 use Exception;
+use GuzzleHttp\HandlerStack;
+use kamermans\OAuth2\Persistence\TokenPersistenceInterface;
 use Shopgate\ConnectSdk\Http;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\Services\Events\Connector\Entities\Base;
@@ -47,7 +49,9 @@ class Client
      * This client accepts the following options:
      *  - http_client (Http\ClientInterface, default=Http\GuzzleClient) - accepts a custom HTTP client if needed
      *  - http - holder for all HTTP Client configurations
-     *      - auth (array) authentication data necessary for the client to make calls
+     *      - oauth (array) authentication data necessary for the client to make calls
+     *          - client_id (string)
+     *          - client_secret (string)
      *
      * @param array $config
      *
@@ -98,5 +102,19 @@ class Client
             return new $class($this->client);
         }
         throw new ClassNoExistException('Connector does not exist');
+    }
+
+    /**
+     * @param TokenPersistenceInterface $storage
+     */
+    public function setStorage(TokenPersistenceInterface $storage)
+    {
+        /** @var HandlerStack $handler */
+        $handler = $this->client->getConfig('handler');
+        $handler->remove('OAuth2');
+        $oauth      = new Http\OAuth($this->client->getConfig('oauth'));
+        $middleware = $oauth->getOauthMiddleware();
+        $middleware->setTokenPersistence($storage);
+        $handler->push($middleware, 'OAuth2');
     }
 }

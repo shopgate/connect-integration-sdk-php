@@ -81,12 +81,13 @@ class Config
                 'env'      => '',
                 'ver'      => 1,
                 'service'  => 'omni-event-receiver',
-                'auth'     => 'oauth'
+                'auth'     => 'oauth',
+                'oauth'    => []
             ]
         );
 
         $typeList = [
-            'oauth'            => 'string[]',
+            'oauth'            => 'array',
             'auth'             => ['string[]', 'string'],
             'merchantCode'     => 'string',
             'ver'              => 'int',

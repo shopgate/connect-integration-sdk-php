@@ -111,6 +111,6 @@ class Client
         $oauth      = new Http\OAuth($this->client->getConfig('oauth'));
         $middleware = $oauth->getOauthMiddleware();
         $middleware->setTokenPersistence($storage);
-        $handler->push($middleware, 'OAuth2');
+        $handler->push($middleware, 'OAuth2.custom');
     }
 }

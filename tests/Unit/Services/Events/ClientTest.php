@@ -22,7 +22,10 @@
 
 namespace Shopgate\ConnectSdk\Tests\Unit\Services\Events;
 
+use GuzzleHttp\HandlerStack;
+use kamermans\OAuth2\Persistence\NullTokenPersistence;
 use PHPUnit\Framework\MockObject\MockBuilder;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Shopgate\ConnectSdk\Http\GuzzleClient;
 use Shopgate\ConnectSdk\Services\Events\Client;
@@ -215,5 +218,20 @@ class ClientTest extends TestCase
         $subjectUnderTest->catalog->createProduct($payload, ['service' => 'test', Base::KEY_TYPE => Base::SYNC]);
         $subjectUnderTest->catalog->getProduct(['service' => 'test', Base::KEY_TYPE => Base::SYNC]);
         $subjectUnderTest->catalog->getProduct(['service' => 'test']);
+    }
+
+    public function testSettingCustomPersistence()
+    {
+        /** @var MockObject|GuzzleClient $mock */
+        $mock             = new GuzzleClient(['clientSecret' => '', 'clientId' => '', 'oauth' => ['base_uri' => '']]);
+        $subjectUnderTest = new Client(['http_client' => $mock]);
+        /** @var HandlerStack $handler */
+        $handler = $mock->getConfig('handler');
+        $out     = (string) $handler;
+        $this->assertStringContainsString("> 1) Name: 'OAuth2'", $out);
+        $subjectUnderTest->setStorage(new NullTokenPersistence());
+        $out2 = (string) $handler;
+        $this->assertStringNotContainsString("> 1) Name: 'OAuth2'", $out2);
+        $this->assertStringContainsString("> 1) Name: 'OAuth2.custom'", $out2);
     }
 }

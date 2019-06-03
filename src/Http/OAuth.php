@@ -24,7 +24,6 @@ namespace Shopgate\ConnectSdk\Http;
 
 use GuzzleHttp\Client;
 use kamermans\OAuth2\GrantType\ClientCredentials;
-use kamermans\OAuth2\OAuth2Middleware;
 use kamermans\OAuth2\Persistence\FileTokenPersistence;
 
 class OAuth

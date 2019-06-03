@@ -10,3 +10,4 @@ composer.lock
 /vendor
 /.php-cs.cache
 test.php
+access_token.json

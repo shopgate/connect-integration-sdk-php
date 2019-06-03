@@ -38,14 +38,14 @@ class GuzzleClient extends Client implements ClientInterface
      */
     public function __construct(array $config = [])
     {
-        $config['oauth']['base_uri']      = $this->resolveTemplate($config['oauth']['base_uri']);
         $config['oauth']['client_id']     = $config['clientId'];
         $config['oauth']['client_secret'] = $config['clientSecret'];
         parent::__construct($config);
 
         /** @var HandlerStack $handler */
-        $handler = $this->getConfig('handler');
-        $oauth   = new OAuth($config['oauth']);
+        $config['oauth']['base_uri'] = $this->resolveTemplate($config['oauth']['base_uri']);
+        $handler                     = $this->getConfig('handler');
+        $oauth                       = new OAuth($config['oauth']);
         $handler->push($oauth->getOauthMiddleware(), 'OAuth2');
     }
 
@@ -115,7 +115,8 @@ class GuzzleClient extends Client implements ClientInterface
             'productCode',
             'categoryCode',
             'clientId',
-            'clientSecret'
+            'clientSecret',
+            'oauth'
         ];
 
         return array_filter(

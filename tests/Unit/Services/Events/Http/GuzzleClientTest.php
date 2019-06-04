@@ -59,7 +59,7 @@ class GuzzleClientTest extends TestCase
     public function testClearInternalMeta($expected, $meta)
     {
         $method = self::getMethod(GuzzleClient::class, 'cleanInternalMeta');
-        $client = new GuzzleClient();
+        $client = new GuzzleClient(['clientId' => '', 'clientSecret' => '', 'oauth' => ['base_uri' => '']]);
         $return = $method->invokeArgs($client, [$meta]);
         $this->assertEquals($expected, $return);
     }
@@ -100,8 +100,18 @@ class GuzzleClientTest extends TestCase
     public function getResolveTemplateProvider()
     {
         return [
-            ['dev.shopgate', '{service}.shopgate', [], ['service' => 'dev', 'clientId' => '', 'clientSecret' => '']],
-            ['dev.shopgate', '{service}.shopgate', ['service' => 'dev'], ['clientId' => '', 'clientSecret' => '']],
+            [
+                'dev.shopgate',
+                '{service}.shopgate',
+                [],
+                ['service' => 'dev', 'clientId' => '', 'clientSecret' => '', 'oauth' => ['base_uri' => '']]
+            ],
+            [
+                'dev.shopgate',
+                '{service}.shopgate',
+                ['service' => 'dev'],
+                ['clientId' => '', 'clientSecret' => '', 'oauth' => ['base_uri' => '']]
+            ],
             [
                 'dev.shopgate/v1',
                 '{service}.shopgate/v{ver}',
@@ -112,7 +122,7 @@ class GuzzleClientTest extends TestCase
                 'dev.shopgate/v1',
                 '{service}.shopgate/v{ver}',
                 [],
-                ['service' => 'dev', 'ver' => 1, 'clientId' => '', 'clientSecret' => '']
+                ['service' => 'dev', 'ver' => 1, 'clientId' => '', 'clientSecret' => '', 'oauth' => ['base_uri' => '']]
             ],
             [
                 'dev.shopgate',
@@ -120,7 +130,12 @@ class GuzzleClientTest extends TestCase
                 [],
                 ['service' => 'dev', 'clientId' => '', 'clientSecret' => '']
             ],
-            ['dev.shopgate', '%7Bservice%7D.shopgate', ['service' => 'dev'], ['clientId' => '', 'clientSecret' => '']]
+            [
+                'dev.shopgate',
+                '%7Bservice%7D.shopgate',
+                ['service' => 'dev'],
+                ['clientId' => '', 'clientSecret' => '', 'oauth' => ['base_uri' => '']]
+            ]
         ];
     }
 }

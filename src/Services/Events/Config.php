@@ -96,6 +96,7 @@ class Config
             'proxy'            => ['string[]', 'string'],
             'http_client'      => [ClientInterface::class, 'null']
         ];
+        $resolver->setRequired(['clientId', 'clientSecret', 'merchantCode']);
         $resolver->setDefined(array_keys($typeList));
         $resolver->setAllowedValues('env', ['pg', 'dev', '']);
 

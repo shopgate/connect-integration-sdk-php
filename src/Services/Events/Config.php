@@ -124,6 +124,7 @@ class Config
             'client'        => [\GuzzleHttp\Client::class, ClientInterface::class, 'null'],
             'storage'       => [TokenPersistenceInterface::class, 'null'],
             'grant_type'    => [GrantTypeInterface::class, 'null'],
+            'storage_path'  => ['string', null]
         ];
         $resolver->setDefined(array_keys($typeList));
         foreach ($typeList as $key => $type) {

@@ -100,12 +100,27 @@ class GuzzleClientTest extends TestCase
     public function getResolveTemplateProvider()
     {
         return [
-            ['dev.shopgate', '{service}.shopgate', [], ['service' => 'dev']],
-            ['dev.shopgate', '{service}.shopgate', ['service' => 'dev'], []],
-            ['dev.shopgate/v1', '{service}.shopgate/v{ver}', ['service' => 'dev', 'ver' => 1], []],
-            ['dev.shopgate/v1', '{service}.shopgate/v{ver}', [], ['service' => 'dev', 'ver' => 1]],
-            ['dev.shopgate', '%7Bservice%7D.shopgate', [], ['service' => 'dev']],
-            ['dev.shopgate', '%7Bservice%7D.shopgate', ['service' => 'dev'], []]
+            ['dev.shopgate', '{service}.shopgate', [], ['service' => 'dev', 'clientId' => '', 'clientSecret' => '']],
+            ['dev.shopgate', '{service}.shopgate', ['service' => 'dev'], ['clientId' => '', 'clientSecret' => '']],
+            [
+                'dev.shopgate/v1',
+                '{service}.shopgate/v{ver}',
+                ['service' => 'dev', 'ver' => 1],
+                ['clientId' => '', 'clientSecret' => '']
+            ],
+            [
+                'dev.shopgate/v1',
+                '{service}.shopgate/v{ver}',
+                [],
+                ['service' => 'dev', 'ver' => 1, 'clientId' => '', 'clientSecret' => '']
+            ],
+            [
+                'dev.shopgate',
+                '%7Bservice%7D.shopgate',
+                [],
+                ['service' => 'dev', 'clientId' => '', 'clientSecret' => '']
+            ],
+            ['dev.shopgate', '%7Bservice%7D.shopgate', ['service' => 'dev'], ['clientId' => '', 'clientSecret' => '']]
         ];
     }
 }

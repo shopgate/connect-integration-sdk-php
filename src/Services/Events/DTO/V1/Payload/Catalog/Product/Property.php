@@ -74,7 +74,7 @@ class Property extends DTOBase
                     self::DISPLAY_GROUP_PRICING
                 ]
             ],
-            'subDisplayGroup' => ['type' => 'object'],
+            'subDisplayGroup' => ['type' => 'string'],
         ],
         'additionalProperties' => true
     ];

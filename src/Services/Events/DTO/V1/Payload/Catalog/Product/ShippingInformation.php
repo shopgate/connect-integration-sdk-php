@@ -30,6 +30,8 @@ use Shopgate\ConnectSdk\Services\Events\DTO\Base as DTOBase;
  * @method ShippingInformation setHeightUnit(string $heightUnit)
  * @method ShippingInformation setWidth(number $width)
  * @method ShippingInformation setWidthUnit(string $widthUnit)
+ * @method ShippingInformation setLength(number $length)
+ * @method ShippingInformation setLengthUnit(string $lengthUnit)
  * @method ShippingInformation setWeight(number $weight)
  * @method ShippingInformation setWeightUnit(string $weightUnit)
  */
@@ -47,6 +49,8 @@ class ShippingInformation extends DTOBase
             'heightUnit'     => ['type' => 'string'],
             'width'          => ['type' => 'number'],
             'widthUnit'      => ['type' => 'string'],
+            'length'         => ['type' => 'number'],
+            'lengthUnit'     => ['type' => 'string'],
             'weight'         => ['type' => 'number'],
             'weightUnit'     => ['type' => 'string']
         ],

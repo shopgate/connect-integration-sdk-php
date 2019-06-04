@@ -54,6 +54,7 @@ class GuzzleClient extends Client implements ClientInterface
      *
      * @inheritDoc
      * @throws GuzzleException
+     * @codeCoverageIgnore
      */
     public function request($method, $uri = '', array $options = [])
     {
@@ -68,6 +69,7 @@ class GuzzleClient extends Client implements ClientInterface
      * @param array  $options
      *
      * @return Psr7\Uri|UriInterface
+     * @codeCoverageIgnore
      */
     private function resolveUri($uri, array $options = [])
     {

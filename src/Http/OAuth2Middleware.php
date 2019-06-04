@@ -31,6 +31,7 @@ use function GuzzleHttp\Promise\rejection_for;
  * OAuth2 plugin.
  *
  * @link http://tools.ietf.org/html/rfc6749 OAuth2 specification
+ * @codeCoverageIgnore
  */
 class OAuth2Middleware extends \kamermans\OAuth2\OAuth2Middleware
 {

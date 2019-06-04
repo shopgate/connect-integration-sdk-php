@@ -24,7 +24,7 @@ namespace Shopgate\ConnectSdk\Http;
 
 use GuzzleHttp\Client;
 use kamermans\OAuth2\GrantType\ClientCredentials;
-use kamermans\OAuth2\Persistence\FileTokenPersistence;
+use Shopgate\ConnectSdk\Http\Persistence\FileTokenPersistence;
 
 class OAuth
 {
@@ -41,7 +41,7 @@ class OAuth
         $config['client']     = isset($config['client']) ? $config['client'] : new Client($config);
         $config['storage']    = isset($config['storage'])
             ? $config['storage']
-            : new FileTokenPersistence($config['storage_path']);
+            : new FileTokenPersistence($config['storage_path'], $config['client_secret']);
         $config['grant_type'] = isset($config['grant_type'])
             ? $config['grant_type']
             : new ClientCredentials($config['client'], $config);

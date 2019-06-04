@@ -26,7 +26,6 @@ use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Category as Categ
 
 $config = [
     'merchantCode'  => 'EE1',
-    'service'       => 'omni-event-receiver',
     'clientId'      => 'xxx',
     'clientSecret'  => 'xxx'
 ];
@@ -57,7 +56,6 @@ use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Product\Price as 
 
 $config = [
     'merchantCode'  => 'EE1',
-    'service'       => 'omni-event-receiver',
     'clientId'      => 'xxx',
     'clientSecret'  => 'xxx'
 ];

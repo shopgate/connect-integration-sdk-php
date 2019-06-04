@@ -64,7 +64,9 @@ class GuzzleClientTest extends TestCase
     public function testClearInternalMeta($expected, $meta)
     {
         $method = self::getMethod(GuzzleClient::class, 'cleanInternalMeta');
-        $client = new GuzzleClient(['clientId' => '', 'clientSecret' => '', 'oauth' => ['base_uri' => '']]);
+        $client = new GuzzleClient(
+            ['clientId' => '', 'clientSecret' => '', 'oauth' => ['base_uri' => '', 'storage_path' => '']]
+        );
         $return = $method->invokeArgs($client, [$meta]);
         $this->assertEquals($expected, $return);
     }

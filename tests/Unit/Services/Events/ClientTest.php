@@ -223,7 +223,9 @@ class ClientTest extends TestCase
     public function testSettingCustomPersistence()
     {
         /** @var MockObject|GuzzleClient $mock */
-        $mock             = new GuzzleClient(['clientSecret' => '', 'clientId' => '', 'oauth' => ['base_uri' => '']]);
+        $mock             = new GuzzleClient(
+            ['clientSecret' => '', 'clientId' => '', 'oauth' => ['base_uri' => '', 'storage_path' => '']]
+        );
         $subjectUnderTest = new Client(['http_client' => $mock]);
         /** @var HandlerStack $handler */
         $handler = $mock->getConfig('handler');

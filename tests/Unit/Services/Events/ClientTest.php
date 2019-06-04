@@ -62,7 +62,14 @@ class ClientTest extends TestCase
     public function testGetCatalog()
     {
         $mock             = $this->httpClient->getMock();
-        $subjectUnderTest = new Client(['http_client' => $mock]);
+        $subjectUnderTest = new Client(
+            [
+                'http_client'  => $mock,
+                'clientSecret' => '',
+                'clientId'     => '',
+                'merchantCode' => 'x'
+            ]
+        );
         /** @noinspection PhpParamsInspection */
         $this->assertInstanceOf(Catalog::class, $subjectUnderTest->catalog);
     }
@@ -73,7 +80,14 @@ class ClientTest extends TestCase
     public function testGetCatalogActions()
     {
         $mock             = $this->httpClient->getMock();
-        $subjectUnderTest = new Client(['http_client' => $mock]);
+        $subjectUnderTest = new Client(
+            [
+                'http_client'  => $mock,
+                'clientSecret' => '',
+                'clientId'     => '',
+                'merchantCode' => 'x'
+            ]
+        );
         /** @noinspection PhpParamsInspection */
         $mock->expects($this->exactly(14))->method('request');
         $subjectUnderTest->catalog->updateCategory(1, new CategoryDto());
@@ -100,7 +114,14 @@ class ClientTest extends TestCase
         $entityId         = 1;
         $defaultMeta      = ['service' => 'catalog', Base::KEY_TYPE => Base::SYNC];
         $mock             = $this->httpClient->getMock();
-        $subjectUnderTest = new Client(['http_client' => $mock]);
+        $subjectUnderTest = new Client(
+            [
+                'http_client'  => $mock,
+                'clientSecret' => '',
+                'clientId'     => '',
+                'merchantCode' => 'x'
+            ]
+        );
         /** @noinspection PhpParamsInspection */
         $mock->expects($this->exactly(6))->method('request')->withConsecutive(
             [
@@ -158,7 +179,14 @@ class ClientTest extends TestCase
         $entityId         = 1;
         $defaultMeta      = ['service' => 'catalog', Base::KEY_TYPE => Base::SYNC];
         $mock             = $this->httpClient->getMock();
-        $subjectUnderTest = new Client(['http_client' => $mock]);
+        $subjectUnderTest = new Client(
+            [
+                'http_client'  => $mock,
+                'clientSecret' => '',
+                'clientId'     => '',
+                'merchantCode' => 'x',
+            ]
+        );
         /** @noinspection PhpParamsInspection */
         $mock->expects($this->exactly(8))->method('request')->withConsecutive(
             [
@@ -224,9 +252,21 @@ class ClientTest extends TestCase
     {
         /** @var MockObject|GuzzleClient $mock */
         $mock             = new GuzzleClient(
-            ['clientSecret' => '', 'clientId' => '', 'oauth' => ['base_uri' => '', 'storage_path' => '']]
+            [
+                'clientSecret' => '',
+                'clientId'     => '',
+                'merchantCode' => 'x',
+                'oauth'        => ['base_uri' => '', 'storage_path' => '']
+            ]
         );
-        $subjectUnderTest = new Client(['http_client' => $mock]);
+        $subjectUnderTest = new Client(
+            [
+                'http_client'  => $mock,
+                'clientSecret' => '',
+                'clientId'     => '',
+                'merchantCode' => 'x'
+            ]
+        );
         /** @var HandlerStack $handler */
         $handler = $mock->getConfig('handler');
         $out     = (string) $handler;

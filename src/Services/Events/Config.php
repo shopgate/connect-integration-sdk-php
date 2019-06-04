@@ -112,7 +112,7 @@ class Config
         $resolver->setDefaults(
             [
                 'base_uri'     => 'https://auth.shopgate{env}.services/oauth/token',
-                'storage_path' => './access_token.json'
+                'storage_path' => './access_token.txt'
             ]
         );
 

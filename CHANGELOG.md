@@ -7,9 +7,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## [Unreleased]
 ### Added
 - oauth2 authentication for endpoint calls
+- encrypted token saving to a file
+
+### Changed
+- client SDK configuration to be more flat
 
 ## [0.2.1]- 2019-05-23
-### Updated
+### Changed
 - symphony option-resolver version to be compatible with Mage 2.3+
 
 ## [0.2.0] - 2019-05-23

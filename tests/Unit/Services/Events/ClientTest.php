@@ -230,10 +230,10 @@ class ClientTest extends TestCase
         /** @var HandlerStack $handler */
         $handler = $mock->getConfig('handler');
         $out     = (string) $handler;
-        $this->assertStringContainsString("> 1) Name: 'OAuth2'", $out);
+        $this->assertNotFalse(strpos($out, "> 1) Name: 'OAuth2'"));
         $subjectUnderTest->setStorage(new NullTokenPersistence());
         $out2 = (string) $handler;
-        $this->assertStringNotContainsString("> 1) Name: 'OAuth2'", $out2);
-        $this->assertStringContainsString("> 1) Name: 'OAuth2.custom'", $out2);
+        $this->assertFalse(strpos($out2, "> 1) Name: 'OAuth2'"));
+        $this->assertNotFalse(strpos($out2, "> 1) Name: 'OAuth2.custom'"));
     }
 }

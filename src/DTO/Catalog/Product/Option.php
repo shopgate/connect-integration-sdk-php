@@ -20,15 +20,15 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\DTO\V1\Payload\Catalog\Product;
+namespace Shopgate\ConnectSdk\DTO\Catalog\Product;
 
 use Shopgate\ConnectSdk\DTO\Base as DTOBase;
 
 /**
- * @method Extra setCode(string $code)
- * @method Extra setValues(Value[] $values)
+ * @method Option setCode(string $code)
+ * @method Option setValues(Value[] $values)
  */
-class Extra extends DTOBase
+class Option extends DTOBase
 {
     /**
      * @var array

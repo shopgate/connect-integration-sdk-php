@@ -20,17 +20,17 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\DTO\V1\Payload\Catalog;
+namespace Shopgate\ConnectSdk\DTO\Catalog;
 
 use Shopgate\ConnectSdk\DTO\Base as DTOBase;
-use Shopgate\ConnectSdk\DTO\V1\Payload\Catalog\Product\Category as ProductCategory;
-use Shopgate\ConnectSdk\DTO\V1\Payload\Catalog\Product\Extra;
-use Shopgate\ConnectSdk\DTO\V1\Payload\Catalog\Product\Identifiers;
-use Shopgate\ConnectSdk\DTO\V1\Payload\Catalog\Product\Media;
-use Shopgate\ConnectSdk\DTO\V1\Payload\Catalog\Product\Option;
-use Shopgate\ConnectSdk\DTO\V1\Payload\Catalog\Product\Price;
-use Shopgate\ConnectSdk\DTO\V1\Payload\Catalog\Product\Property;
-use Shopgate\ConnectSdk\DTO\V1\Payload\Catalog\Product\ShippingInformation;
+use Shopgate\ConnectSdk\DTO\Catalog\Product\Category as ProductCategory;
+use Shopgate\ConnectSdk\DTO\Catalog\Product\Extra;
+use Shopgate\ConnectSdk\DTO\Catalog\Product\Identifiers;
+use Shopgate\ConnectSdk\DTO\Catalog\Product\Media;
+use Shopgate\ConnectSdk\DTO\Catalog\Product\Option;
+use Shopgate\ConnectSdk\DTO\Catalog\Product\Price;
+use Shopgate\ConnectSdk\DTO\Catalog\Product\Property;
+use Shopgate\ConnectSdk\DTO\Catalog\Product\ShippingInformation;
 
 /**
  * Default class that handles validation for product Update/Create payloads.

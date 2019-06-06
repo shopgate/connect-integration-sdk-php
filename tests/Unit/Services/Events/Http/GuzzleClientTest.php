@@ -26,7 +26,6 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
-use Shopgate\ConnectSdk\Connector_\Entities\Base;
 use Shopgate\ConnectSdk\Http\GuzzleClient;
 
 class GuzzleClientTest extends TestCase
@@ -78,7 +77,7 @@ class GuzzleClientTest extends TestCase
     {
         return [
             [[], ['service' => 'dev']],
-            [['notFiltered' => true], [Base::KEY_TYPE => 'dev', 'notFiltered' => true]],
+            [['notFiltered' => true], ['env' => 'dev', 'notFiltered' => true]],
             [['1' => 1, '2' => 2], ['1' => 1, 'ver' => 1, '2' => 2, 'env' => 'dev']]
         ];
     }

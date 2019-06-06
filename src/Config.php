@@ -64,12 +64,13 @@ class Config
     {
         $resolver->setDefaults(
             [
-                'base_uri' => 'https://{service}.shopgate{env}.services/v{ver}/merchants/{merchantCode}/',
-                'env'      => '',
-                'ver'      => 1,
-                'service'  => 'omni-event-receiver',
-                'auth'     => 'oauth',
-                'oauth'    => []
+                'base_uri'        => 'https://{service}.shopgate{env}.services/v{ver}/merchants/{merchantCode}/',
+                'env'             => '',
+                'ver'             => 1,
+                'service'         => 'omni-event-receiver',
+                'auth'            => 'oauth',
+                'oauth'           => [],
+                'connect_timeout' => 5.0
             ]
         );
 

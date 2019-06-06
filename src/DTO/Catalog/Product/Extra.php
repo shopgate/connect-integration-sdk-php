@@ -20,35 +20,31 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Entities;
+namespace Shopgate\ConnectSdk\DTO\Catalog\Product;
 
-use Psr\Http\Message\ResponseInterface;
-use Shopgate\ConnectSdk\DTO\Base as Payload;
+use Shopgate\ConnectSdk\DTO\Base as DTOBase;
 
-interface EntityInterface
+/**
+ * @method Extra setCode(string $code)
+ * @method Extra setValues(Value[] $values)
+ */
+class Extra extends DTOBase
 {
     /**
-     * @param string  $entityId - entity code
-     * @param Payload $payload
-     * @param array   $meta     - query parameters
-     *
-     * @return ResponseInterface
+     * @var array
+     * @codeCoverageIgnore
      */
-    public function update($entityId, Payload $payload, $meta = []);
-
-    /**
-     * @param Payload $payload
-     * @param array   $meta - query parameters
-     *
-     * @return ResponseInterface
-     */
-    public function create(Payload $payload, $meta = []);
-
-    /**
-     * @param string $entityId - entity code
-     * @param array  $meta     - query parameters
-     *
-     * @return ResponseInterface
-     */
-    public function delete($entityId, $meta = []);
+    protected $schema = [
+        'type'                 => 'object',
+        'properties'           => [
+            'code'   => ['type' => 'string'],
+            'values' => [
+                'type'  => 'array',
+                'items' => [
+                    'type' => 'object'
+                ]
+            ]
+        ],
+        'additionalProperties' => true
+    ];
 }

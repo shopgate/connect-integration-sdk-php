@@ -20,15 +20,18 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\DTO\V1\Direct\Catalog;
+namespace Shopgate\ConnectSdk\DTO\Catalog\Product;
 
-use Shopgate\ConnectSdk\DTO\Base;
+use Shopgate\ConnectSdk\DTO\Base as DTOBase;
 
 /**
- * @method Products setProducts(Base [] $payloads)
- * @method Products getProducts()
+ * @method Identifiers setMfgPartNum(string $mfgPartNum)
+ * @method Identifiers setUpc(string $upc)
+ * @method Identifiers setEan(string $ean)
+ * @method Identifiers setIsbn(string $isbn)
+ * @method Identifiers setSku(string $sku)
  */
-class Products extends Base
+class Identifiers extends DTOBase
 {
     /**
      * @var array
@@ -37,13 +40,12 @@ class Products extends Base
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'products' => [
-                'type'  => 'array',
-                'items' => [
-                    'type' => 'object',
-                ],
-            ],
+            'mfgPartNum' => ['type' => 'string'],
+            'upc'        => ['type' => 'string'],
+            'ean'        => ['type' => 'string'],
+            'isbn'       => ['type' => 'string'],
+            'sku'        => ['type' => 'string']
         ],
-        'additionalProperties' => false,
+        'additionalProperties' => true
     ];
 }

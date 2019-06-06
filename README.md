@@ -21,8 +21,8 @@ Create a developer account at https://developer.shopgate.com
 Example for calling our service in order to create, update or delete a category:
 ```php
 <?php
-use Shopgate\ConnectSdk\Services\Events\Client;
-use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Category as CategoryDto;
+use Shopgate\ConnectSdk\ShopgateSdk;
+use Shopgate\ConnectSdk\DTO\Catalog\Category as CategoryDto;
 
 $config = [
     'merchantCode'  => 'EE1',
@@ -30,17 +30,19 @@ $config = [
     'clientSecret'  => 'xxx'
 ];
 
-$client = new Client($config);
+$client = new ShopgateSdk($config);
 
 // create new category
 $categoryPayload = new CategoryDto();
 $categoryPayload->setCode('pants')->setName('Denim Pants')->setSequenceId(1);
-$client->catalog->createCategory($categoryPayload);
+$client->catalog->addCategories([$categoryPayload]);
 // update category with constructor input example
 $updateDto = new CategoryDto(['name' => 'Skirts']);
 $client->catalog->updateCategory('pants', $updateDto);
 // delete category
 $client->catalog->deleteCategory('pants');
+// get categories
+$categories = $client->catalog->getCategories(['limit' => 5]);
 
 // update category sync
 $updateDto = new CategoryDto(['name' => 'Skirts']);
@@ -50,9 +52,9 @@ $client->catalog->updateCategory('4', $updateDto, ['requestType' => 'direct']);
 Example for calling our service in order to create, update or delete a simple product:
 ```php
 <?php
-use Shopgate\ConnectSdk\Services\Events\Client;
-use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Product as ProductDto;
-use Shopgate\ConnectSdk\Services\Events\DTO\V1\Payload\Catalog\Product\Price as PriceDto;
+use Shopgate\ConnectSdk\ShopgateSdk;
+use Shopgate\ConnectSdk\DTO\Catalog\Product as ProductDto;
+use Shopgate\ConnectSdk\DTO\Catalog\Product\Price as PriceDto;
 
 $config = [
     'merchantCode'  => 'EE1',
@@ -60,7 +62,7 @@ $config = [
     'clientSecret'  => 'xxx'
 ];
 
-$client = new Client($config);
+$client = new ShopgateSdk($config);
 // create new price
 $price = new PriceDto();
 $price->setPrice(90)->setSalePrice(84.99)->setCurrencyCode(PriceDto::CURRENCY_CODE_EUR);
@@ -73,7 +75,7 @@ $productPayload->setCode('42')
                ->setModelType(ProductDto::MODEL_TYPE_STANDARD)
                ->setIsInventoryManaged(true)
                ->setPrice($price);
-$client->catalog->createProduct($productPayload);
+$client->catalog->addProducts([$productPayload]);
 // update product with constructor input example
 $updateDto = new ProductDto(['name' => 'Blue Jeans fancy']);
 $client->catalog->updateProduct('42', $updateDto);

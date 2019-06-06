@@ -20,16 +20,23 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\DTO\V1\Payload\Catalog\Product;
+namespace Shopgate\ConnectSdk\DTO\Catalog\Product;
 
 use Shopgate\ConnectSdk\DTO\Base as DTOBase;
 
 /**
- * @method Option setCode(string $code)
- * @method Option setValues(Value[] $values)
+ * @method VolumePricing setMinQty(number $minQty)
+ * @method VolumePricing setMaxQty(number $maxQty)
+ * @method VolumePricing setPrice(number $price)
+ * @method VolumePricing setSalePrice(number $salePrice)
+ * @method VolumePricing setUnit(string $unit)
+ * @method VolumePricing setPriceType(string $priceType)
  */
-class Option extends DTOBase
+class VolumePricing extends DTOBase
 {
+    const PRICE_TYPE_FIXED    = 'fixed';
+    const PRICE_TYPE_RELATIVE = 'relative';
+
     /**
      * @var array
      * @codeCoverageIgnore
@@ -37,11 +44,16 @@ class Option extends DTOBase
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'code'   => ['type' => 'string'],
-            'values' => [
-                'type'  => 'array',
-                'items' => [
-                    'type' => 'object'
+            'minQty'    => ['type' => 'number'],
+            'maxQty'    => ['type' => 'number'],
+            'price'     => ['type' => 'number'],
+            'salePrice' => ['type' => 'number'],
+            'unit'      => ['type' => 'string'],
+            'priceType' => [
+                'type' => 'string',
+                'enum' => [
+                    self::PRICE_TYPE_FIXED,
+                    self::PRICE_TYPE_RELATIVE
                 ]
             ]
         ],

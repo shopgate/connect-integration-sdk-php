@@ -57,8 +57,8 @@ class GuzzleClient extends Client implements ClientInterface
      */
     public function request($method, $uri = '', array $options = [])
     {
-        $baseUri          = $this->resolveUri($uri, $options['query']);
-        $options['query'] = $this->cleanInternalMeta($options['query']);
+        $baseUri          = $this->resolveUri($uri, isset($options['query']) ? $options['query'] : []);
+        $options['query'] = $this->cleanInternalMeta(isset($options['query']) ? $options['query'] : []);
 
         return parent::request($method, $baseUri, $options);
     }

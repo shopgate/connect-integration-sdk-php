@@ -24,7 +24,6 @@ namespace Shopgate\ConnectSdk\DTO\V1\Async;
 
 use Shopgate\ConnectSdk\DTO\Base;
 use Shopgate\ConnectSdk\DTO\V1\Async\Factory as DTOFactory;
-use Shopgate\ConnectSdk\Entities\AsyncEntityInterface;
 
 /**
  * @method string getEvent()
@@ -53,9 +52,9 @@ class Event extends Base
                 'entity'   => [
                     'type' => 'string',
                     'enum' => [
-                        AsyncEntityInterface::EVENT_ENTITY_CATEGORY,
-                        AsyncEntityInterface::EVENT_ENTITY_PRODUCT,
-                        AsyncEntityInterface::EVENT_ENTITY_ATTRIBUTE
+                        'category',
+                        'product',
+                        'attribute'
                     ]
                 ],
                 'entityId' => ['type' => 'string'],

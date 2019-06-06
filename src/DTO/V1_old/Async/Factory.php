@@ -25,7 +25,6 @@ namespace Shopgate\ConnectSdk\DTO\V1\Async;
 use Dto\Exceptions\InvalidDataTypeException;
 use Exception;
 use Shopgate\ConnectSdk\DTO\Base as Payload;
-use Shopgate\ConnectSdk\Entities\AsyncEntityInterface;
 use Shopgate\ConnectSdk\Exceptions\TypeNoExistException;
 
 class Factory
@@ -36,9 +35,9 @@ class Factory
 
     /** @var array - DTO entity event type map */
     protected $typeMap = [
-        AsyncEntityInterface::EVENT_TYPE_UPDATE => self::EVENT_UPDATE,
-        AsyncEntityInterface::EVENT_TYPE_CREATE => self::EVENT_CREATE,
-        AsyncEntityInterface::EVENT_TYPE_DELETE => self::EVENT_DELETE,
+        'update' => self::EVENT_UPDATE,
+        'create' => self::EVENT_CREATE,
+        'delete' => self::EVENT_DELETE,
     ];
 
     /**

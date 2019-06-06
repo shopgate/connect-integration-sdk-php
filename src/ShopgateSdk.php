@@ -24,34 +24,32 @@ namespace Shopgate\ConnectSdk;
 
 use GuzzleHttp\HandlerStack;
 use kamermans\OAuth2\Persistence\TokenPersistenceInterface;
-use Shopgate\ConnectSdk\Connector_\Entities\Base;
-use Shopgate\ConnectSdk\Exceptions\ClassNoExistException;
+use Shopgate\ConnectSdk\Entities\Catalog;
 use Shopgate\ConnectSdk\Http;
-use Shopgate\ConnectSdk\Http\ClientInterface;
 
 class ShopgateSdk
 {
-    /** @var Base */
+    /** @var Catalog */
     public $catalog;
-
-    /** @var ClientInterface */
+    /** @var Http\ClientInterface */
+    protected $httpClient;
+    /** @var IClient */
     private $client;
 
     /**
      * @param array $config
      *
      * @codeCoverageIgnore
-     * @throws ClassNoExistException
      */
     public function __construct(array $config)
     {
         $configResolver   = new Config();
         $options          = $configResolver->resolveMainOptions($config);
         $options['oauth'] = $configResolver->resolveOauthOptions($options['oauth']);
-
-        $this->client = isset($options['http_client'])
+        $this->httpClient = isset($options['http_client'])
             ? $options['http_client']
             : new Http\GuzzleClient($options);
+        $this->client     = new Client($this->httpClient);
 
         $this->catalog = $this->instantiateClass('catalog');
     }
@@ -61,27 +59,26 @@ class ShopgateSdk
      *
      * @param string $name
      *
-     * @return Base
-     * @throws ClassNoExistException
+     * @return mixed
      */
     private function instantiateClass($name)
     {
         $class = 'Shopgate\ConnectSdk\Entities\\' . ucfirst($name);
-        if (class_exists($class)) {
-            return new $class($this->client);
-        }
-        throw new ClassNoExistException('Connector does not exist');
+
+        return new $class($this->client);
     }
 
     /**
+     * @todo-sg: test external setter
+     *
      * @param TokenPersistenceInterface $storage
      */
     public function setStorage(TokenPersistenceInterface $storage)
     {
         /** @var HandlerStack $handler */
-        $handler = $this->client->getConfig('handler');
+        $handler = $this->httpClient->getConfig('handler');
         $handler->remove('OAuth2');
-        $oauth      = new Http\OAuth($this->client->getConfig('oauth'));
+        $oauth      = new Http\OAuth($this->httpClient->getConfig('oauth'));
         $middleware = $oauth->getOauthMiddleware();
         $middleware->setTokenPersistence($storage);
         $handler->push($middleware, 'OAuth2.custom');

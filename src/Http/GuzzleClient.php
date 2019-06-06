@@ -24,6 +24,7 @@ namespace Shopgate\ConnectSdk\Http;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7;
 use Psr\Http\Message\UriInterface;
 use Shopgate\ConnectSdk\Services\Events\Connector\Entities\Base;
@@ -33,10 +34,27 @@ use function GuzzleHttp\uri_template;
 class GuzzleClient extends Client implements ClientInterface
 {
     /**
+     * @param array $config
+     */
+    public function __construct(array $config = [])
+    {
+        $config['oauth']['client_id']     = $config['clientId'];
+        $config['oauth']['client_secret'] = $config['clientSecret'];
+        parent::__construct($config);
+
+        /** @var HandlerStack $handler */
+        $config['oauth']['base_uri'] = $this->resolveTemplate($config['oauth']['base_uri']);
+        $handler                     = $this->getConfig('handler');
+        $oauth                       = new OAuth($config['oauth']);
+        $handler->push($oauth->getOauthMiddleware(), 'OAuth2');
+    }
+
+    /**
      * Resolves the templates
      *
      * @inheritDoc
      * @throws GuzzleException
+     * @codeCoverageIgnore
      */
     public function request($method, $uri = '', array $options = [])
     {
@@ -51,6 +69,7 @@ class GuzzleClient extends Client implements ClientInterface
      * @param array  $options
      *
      * @return Psr7\Uri|UriInterface
+     * @codeCoverageIgnore
      */
     private function resolveUri($uri, array $options = [])
     {
@@ -81,7 +100,7 @@ class GuzzleClient extends Client implements ClientInterface
     }
 
     /**
-     * Remove meta that does not need to be sent to the endpoints
+     * Remove meta that does not need to be sent to the endpoints via query
      *
      * @param array $meta
      *
@@ -89,7 +108,18 @@ class GuzzleClient extends Client implements ClientInterface
      */
     private function cleanInternalMeta(array $meta = [])
     {
-        $blacklist = [Base::KEY_TYPE, 'service', 'ver', 'env', 'merchantCode', 'productCode', 'categoryCode'];
+        $blacklist = [
+            Base::KEY_TYPE,
+            'service',
+            'ver',
+            'env',
+            'merchantCode',
+            'productCode',
+            'categoryCode',
+            'clientId',
+            'clientSecret',
+            'oauth'
+        ];
 
         return array_filter(
             $meta,

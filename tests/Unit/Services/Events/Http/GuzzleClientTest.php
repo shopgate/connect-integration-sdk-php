@@ -44,7 +44,12 @@ class GuzzleClientTest extends TestCase
     public function testResolveTemplate($expected, $component, array $options = [], array $clientConfig = [])
     {
         $method = self::getMethod(GuzzleClient::class, 'resolveTemplate');
-        $client = new GuzzleClient($clientConfig);
+        $client = new GuzzleClient(
+            array_merge(
+                ['clientId' => '', 'clientSecret' => '', 'oauth' => ['base_uri' => '', 'storage_path' => '']],
+                $clientConfig
+            )
+        );
         $return = $method->invokeArgs($client, [$component, $options]);
         $this->assertEquals($expected, $return);
     }
@@ -59,7 +64,9 @@ class GuzzleClientTest extends TestCase
     public function testClearInternalMeta($expected, $meta)
     {
         $method = self::getMethod(GuzzleClient::class, 'cleanInternalMeta');
-        $client = new GuzzleClient();
+        $client = new GuzzleClient(
+            ['clientId' => '', 'clientSecret' => '', 'oauth' => ['base_uri' => '', 'storage_path' => '']]
+        );
         $return = $method->invokeArgs($client, [$meta]);
         $this->assertEquals($expected, $return);
     }

@@ -22,7 +22,10 @@
 
 namespace Shopgate\ConnectSdk\Tests\Unit\Services\Events;
 
+use GuzzleHttp\HandlerStack;
+use kamermans\OAuth2\Persistence\NullTokenPersistence;
 use PHPUnit\Framework\MockObject\MockBuilder;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Shopgate\ConnectSdk\Http\GuzzleClient;
 use Shopgate\ConnectSdk\Services\Events\Client;
@@ -58,7 +61,15 @@ class ClientTest extends TestCase
      */
     public function testGetCatalog()
     {
-        $subjectUnderTest = new Client([]);
+        $mock             = $this->httpClient->getMock();
+        $subjectUnderTest = new Client(
+            [
+                'http_client'  => $mock,
+                'clientSecret' => '',
+                'clientId'     => '',
+                'merchantCode' => 'x'
+            ]
+        );
         /** @noinspection PhpParamsInspection */
         $this->assertInstanceOf(Catalog::class, $subjectUnderTest->catalog);
     }
@@ -69,7 +80,14 @@ class ClientTest extends TestCase
     public function testGetCatalogActions()
     {
         $mock             = $this->httpClient->getMock();
-        $subjectUnderTest = new Client(['http_client' => $mock]);
+        $subjectUnderTest = new Client(
+            [
+                'http_client'  => $mock,
+                'clientSecret' => '',
+                'clientId'     => '',
+                'merchantCode' => 'x'
+            ]
+        );
         /** @noinspection PhpParamsInspection */
         $mock->expects($this->exactly(14))->method('request');
         $subjectUnderTest->catalog->updateCategory(1, new CategoryDto());
@@ -96,7 +114,14 @@ class ClientTest extends TestCase
         $entityId         = 1;
         $defaultMeta      = ['service' => 'catalog', Base::KEY_TYPE => Base::SYNC];
         $mock             = $this->httpClient->getMock();
-        $subjectUnderTest = new Client(['http_client' => $mock]);
+        $subjectUnderTest = new Client(
+            [
+                'http_client'  => $mock,
+                'clientSecret' => '',
+                'clientId'     => '',
+                'merchantCode' => 'x'
+            ]
+        );
         /** @noinspection PhpParamsInspection */
         $mock->expects($this->exactly(6))->method('request')->withConsecutive(
             [
@@ -154,7 +179,14 @@ class ClientTest extends TestCase
         $entityId         = 1;
         $defaultMeta      = ['service' => 'catalog', Base::KEY_TYPE => Base::SYNC];
         $mock             = $this->httpClient->getMock();
-        $subjectUnderTest = new Client(['http_client' => $mock]);
+        $subjectUnderTest = new Client(
+            [
+                'http_client'  => $mock,
+                'clientSecret' => '',
+                'clientId'     => '',
+                'merchantCode' => 'x',
+            ]
+        );
         /** @noinspection PhpParamsInspection */
         $mock->expects($this->exactly(8))->method('request')->withConsecutive(
             [
@@ -214,5 +246,34 @@ class ClientTest extends TestCase
         $subjectUnderTest->catalog->createProduct($payload, ['service' => 'test', Base::KEY_TYPE => Base::SYNC]);
         $subjectUnderTest->catalog->getProduct(['service' => 'test', Base::KEY_TYPE => Base::SYNC]);
         $subjectUnderTest->catalog->getProduct(['service' => 'test']);
+    }
+
+    public function testSettingCustomPersistence()
+    {
+        /** @var MockObject|GuzzleClient $mock */
+        $mock             = new GuzzleClient(
+            [
+                'clientSecret' => '',
+                'clientId'     => '',
+                'merchantCode' => 'x',
+                'oauth'        => ['base_uri' => '', 'storage_path' => '']
+            ]
+        );
+        $subjectUnderTest = new Client(
+            [
+                'http_client'  => $mock,
+                'clientSecret' => '',
+                'clientId'     => '',
+                'merchantCode' => 'x'
+            ]
+        );
+        /** @var HandlerStack $handler */
+        $handler = $mock->getConfig('handler');
+        $out     = (string) $handler;
+        $this->assertNotFalse(strpos($out, "> 1) Name: 'OAuth2'"));
+        $subjectUnderTest->setStorage(new NullTokenPersistence());
+        $out2 = (string) $handler;
+        $this->assertFalse(strpos($out2, "> 1) Name: 'OAuth2'"));
+        $this->assertNotFalse(strpos($out2, "> 1) Name: 'OAuth2.custom'"));
     }
 }

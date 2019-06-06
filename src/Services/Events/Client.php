@@ -23,6 +23,8 @@
 namespace Shopgate\ConnectSdk\Services\Events;
 
 use Exception;
+use GuzzleHttp\HandlerStack;
+use kamermans\OAuth2\Persistence\TokenPersistenceInterface;
 use Shopgate\ConnectSdk\Http;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\Services\Events\Connector\Entities\Base;
@@ -47,7 +49,6 @@ class Client
      * This client accepts the following options:
      *  - http_client (Http\ClientInterface, default=Http\GuzzleClient) - accepts a custom HTTP client if needed
      *  - http - holder for all HTTP Client configurations
-     *      - auth (array) authentication data necessary for the client to make calls
      *
      * @param array $config
      *
@@ -55,13 +56,13 @@ class Client
      */
     public function __construct(array $config)
     {
-        $configResolver = new Config();
-        $options        = $configResolver->resolveMainOptions($config);
-        $httpOptions    = $configResolver->resolveHttpOptions($options['http']);
+        $configResolver   = new Config();
+        $options          = $configResolver->resolveMainOptions($config);
+        $options['oauth'] = $configResolver->resolveOauthOptions($options['oauth']);
 
-        $this->client = null !== $options['http_client']
+        $this->client = isset($options['http_client'])
             ? $options['http_client']
-            : new Http\GuzzleClient($httpOptions);
+            : new Http\GuzzleClient($options);
     }
 
     /** @noinspection MagicMethodsValidityInspection */
@@ -97,5 +98,19 @@ class Client
             return new $class($this->client);
         }
         throw new ClassNoExistException('Connector does not exist');
+    }
+
+    /**
+     * @param TokenPersistenceInterface $storage
+     */
+    public function setStorage(TokenPersistenceInterface $storage)
+    {
+        /** @var HandlerStack $handler */
+        $handler = $this->client->getConfig('handler');
+        $handler->remove('OAuth2');
+        $oauth      = new Http\OAuth($this->client->getConfig('oauth'));
+        $middleware = $oauth->getOauthMiddleware();
+        $middleware->setTokenPersistence($storage);
+        $handler->push($middleware, 'OAuth2.custom');
     }
 }

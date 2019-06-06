@@ -22,22 +22,24 @@
 
 namespace Shopgate\ConnectSdk\Services\Events;
 
+use kamermans\OAuth2\GrantType\GrantTypeInterface;
+use kamermans\OAuth2\Persistence\TokenPersistenceInterface;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class Config
 {
     /**
-     * @param array $config
+     * @param array $options
      *
      * @return array
      */
-    public function resolveMainOptions(array $config)
+    public function resolveMainOptions(array $options)
     {
-        $resolver = new OptionsResolver();
-        $this->mainDefaultOptions($resolver);
+        $httpResolver = new OptionsResolver();
+        $this->httpDefaultOptions($httpResolver);
 
-        return $resolver->resolve($config);
+        return $httpResolver->resolve($options);
     }
 
     /**
@@ -45,10 +47,10 @@ class Config
      *
      * @return array
      */
-    public function resolveHttpOptions(array $options)
+    public function resolveOauthOptions(array $options)
     {
         $httpResolver = new OptionsResolver();
-        $this->httpDefaultOptions($httpResolver);
+        $this->oauthDefaultOptions($httpResolver);
 
         return $httpResolver->resolve($options);
     }
@@ -65,12 +67,16 @@ class Config
                 'base_uri' => 'https://{service}.shopgate{env}.services/v{ver}/merchants/{merchantCode}/',
                 'env'      => '',
                 'ver'      => 1,
-                'service'  => 'omni-event-receiver'
+                'service'  => 'omni-event-receiver',
+                'auth'     => 'oauth',
+                'oauth'    => []
             ]
         );
 
         $typeList = [
-            'auth'             => 'string[]',
+            'clientId'         => 'string',
+            'clientSecret'     => 'string',
+            'auth'             => ['string[]', 'string'],
             'merchantCode'     => 'string',
             'ver'              => 'int',
             'handler'          => ['object', 'null'],
@@ -87,8 +93,10 @@ class Config
             'synchronous'      => ['bool'],
             'verify'           => ['bool', 'string'],
             'version'          => ['float', 'string'],
-            'proxy'            => ['string[]', 'string']
+            'proxy'            => ['string[]', 'string'],
+            'http_client'      => [ClientInterface::class, 'null']
         ];
+        $resolver->setRequired(['clientId', 'clientSecret', 'merchantCode']);
         $resolver->setDefined(array_keys($typeList));
         $resolver->setAllowedValues('env', ['pg', 'dev', '']);
 
@@ -100,16 +108,28 @@ class Config
     /**
      * @param OptionsResolver $resolver
      */
-    private function mainDefaultOptions(OptionsResolver $resolver)
+    private function oauthDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [
-                'http'        => [],
-                'http_client' => null,
+                'base_uri'     => 'https://auth.shopgate{env}.services/oauth/token',
+                'storage_path' => './access_token.txt'
             ]
         );
-        $resolver->setDefined(['http_client']);
-        $resolver->setAllowedTypes('http', 'array');
-        $resolver->setAllowedTypes('http_client', [ClientInterface::class, 'null']);
+
+        $typeList = [
+            'client_id'     => 'string',
+            'client_secret' => 'string',
+            'scope'         => 'string',
+            'time'          => 'string',
+            'client'        => [\GuzzleHttp\Client::class, ClientInterface::class, 'null'],
+            'storage'       => [TokenPersistenceInterface::class, 'null'],
+            'grant_type'    => [GrantTypeInterface::class, 'null'],
+            'storage_path'  => ['string', null]
+        ];
+        $resolver->setDefined(array_keys($typeList));
+        foreach ($typeList as $key => $type) {
+            $resolver->setAllowedTypes($key, $type);
+        }
     }
 }

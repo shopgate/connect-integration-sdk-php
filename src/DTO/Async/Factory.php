@@ -20,29 +20,14 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\DTO\V1\Async;
+namespace Shopgate\ConnectSdk\DTO\Async;
 
 use Dto\Exceptions\InvalidDataTypeException;
-use Exception;
 use Shopgate\ConnectSdk\DTO\Base as Payload;
-use Shopgate\ConnectSdk\Exceptions\TypeNoExistException;
 
 class Factory
 {
-    const EVENT_UPDATE = 'entityUpdated';
-    const EVENT_CREATE = 'entityCreated';
-    const EVENT_DELETE = 'entityDeleted';
-
-    /** @var array - DTO entity event type map */
-    protected $typeMap = [
-        'update' => self::EVENT_UPDATE,
-        'create' => self::EVENT_CREATE,
-        'delete' => self::EVENT_DELETE,
-    ];
-
-    /**
-     * @var Request
-     */
+    /** @var Request */
     protected $request;
 
     /**
@@ -61,33 +46,17 @@ class Factory
      *
      * @return Factory
      * @throws InvalidDataTypeException
-     * @throws Exception
      */
     public function addEvent($type, $entityId, $entity, Payload $payload = null)
     {
-        $eventType = $this->translateType($type);
         $event     = new Event();
-        $event->setEvent($eventType)
-              ->setEntity($entity)
+        $event->setEvent('entity' . ucfirst($type) . 'd')
               ->setEntityId($entityId)
+              ->setEntity($entity)
               ->setPayload($payload ? : new Payload());
         $this->request->getEvents()->append($event);
 
         return $this;
-    }
-
-    /**
-     * @param string $type
-     *
-     * @return string
-     * @throws Exception
-     */
-    private function translateType($type)
-    {
-        if (isset($this->typeMap[$type])) {
-            return $this->typeMap[$type];
-        }
-        throw new TypeNoExistException('Incorrect type provided');
     }
 
     /**

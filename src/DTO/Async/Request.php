@@ -20,7 +20,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\DTO\V1\Async;
+namespace Shopgate\ConnectSdk\DTO\Async;
 
 use Shopgate\ConnectSdk\DTO\Base;
 

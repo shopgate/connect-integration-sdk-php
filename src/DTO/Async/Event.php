@@ -20,10 +20,9 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\DTO\V1\Async;
+namespace Shopgate\ConnectSdk\DTO\Async;
 
 use Shopgate\ConnectSdk\DTO\Base;
-use Shopgate\ConnectSdk\DTO\V1\Async\Factory as DTOFactory;
 
 /**
  * @method string getEvent()
@@ -47,7 +46,7 @@ class Event extends Base
             'properties'           => [
                 'event'    => [
                     'type' => 'string',
-                    'enum' => [DTOFactory::EVENT_UPDATE, DTOFactory::EVENT_CREATE, DTOFactory::EVENT_DELETE]
+                    'enum' => ['entityUpdated', 'entityCreated', 'entityDeleted']
                 ],
                 'entity'   => [
                     'type' => 'string',

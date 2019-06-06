@@ -22,9 +22,11 @@
 
 namespace Shopgate\ConnectSdk;
 
+use Dto\Exceptions\InvalidDataTypeException;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
-use Shopgate\ConnectSdk\DTO\Base;
+use Psr\Http\Message\ResponseInterface;
+use Shopgate\ConnectSdk\DTO\Async\Factory;
 
 class Client implements IClient
 {
@@ -46,11 +48,12 @@ class Client implements IClient
     /**
      * @param array $params
      *
-     * @return mixed
+     * @return ResponseInterface
+     * @throws InvalidDataTypeException
      */
     public function doRequest(array $params)
     {
-        if ($params['method'] !== 'get' || (isset($params['requestType']) && $params['requestType'] !== 'direct')) {
+        if (!$this->isDirect($params)) {
             return $this->triggerEvent($params);
         }
 
@@ -59,7 +62,8 @@ class Client implements IClient
                 $params['method'],
                 $params['path'],
                 [
-                    'query' => array_merge($params['query'], ['service' => $params['service']])
+                    'query' => ['service' => $params['service']] + (isset($params['query']) ? $params['query'] : []),
+                    'json'  => isset($params['body']) ? $params['body']->toJson() : '{}'
                 ]
             );
         } catch (GuzzleException $e) {
@@ -67,42 +71,33 @@ class Client implements IClient
             echo $e->getMessage();
         }
 
-        return \GuzzleHttp\json_decode($response->getBody(), true);
+        return $response;
     }
 
     /**
      * @param array $params
+     *
+     * @throws InvalidDataTypeException
      */
     private function triggerEvent(array $params)
     {
-        //todo-sg: needs to handle DTOs properly instead of flat array structures
         $values = [$params['body']];
         if ($params['action'] === 'create') {
             $key    = array_keys($params['body'])[0];
             $values = $params['body'][$key];
         }
 
-        $events = [];
-        foreach ($values as $value) {
-            $event = [
-                'event'   => 'entity' . ucfirst($params['action']) . "d",
-                'entity'  => $params['entity'],
-                'payload' => $value instanceof Base ? $value->toJson() : (array) $value
-                // todo-sg: issue with empty objects representing as arrays, instead of {}
-            ];
-
-            if (!empty($params['entityId'])) {
-                $event['entityId'] = $params['entityId'];
-            }
-            $events[] = $event;
+        $factory = new Factory();
+        foreach ($values as $payload) {
+            $factory->addEvent($params['action'], $params['entityId'], $params['entity'], $payload);
         }
 
         try {
             $this->guzzleClient->request(
-                $params['method'],
+                'post',
                 'events',
                 [
-                    'json'        => ['events' => $events],
+                    'json'        => $factory->getRequest()->toJson(),
                     'http_errors' => false
                 ]
             );
@@ -110,5 +105,16 @@ class Client implements IClient
             //todo-sg: handle exception
             echo $e->getMessage();
         }
+    }
+
+    /**
+     * @param array $params
+     *
+     * @return bool
+     * @todo-sg: unit tests
+     */
+    public function isDirect(array $params)
+    {
+        return (!isset($params['requestType']) && $params['method'] === 'get') || $params['requestType'] === 'direct';
     }
 }

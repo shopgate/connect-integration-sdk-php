@@ -22,6 +22,7 @@
 
 namespace Shopgate\ConnectSdk\Entities;
 
+use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\DTO\Catalog\Category;
 use Shopgate\ConnectSdk\DTO\Catalog\Product;
 use Shopgate\ConnectSdk\IClient;
@@ -43,20 +44,22 @@ class Catalog
      * @param Category[] $categories
      * @param array      $meta
      *
-     * @return mixed
+     * @return ResponseInterface
      */
-    public function addCategories(array $categories, $meta = [])
+    public function addCategories(array $categories, array $meta = [])
     {
-        //todo-sg: test
         return $this->client->doRequest(
             [
-                'service'     => 'catalog',
+                // general
                 'method'      => 'post',
-                'path'        => 'categories',
-                'entity'      => 'category',
-                'action'      => 'create',
+                'requestType' => $meta['requestType'],
                 'body'        => ['categories' => $categories],
-                'requestType' => $meta['requestType']
+                // direct
+                'service'     => 'catalog',
+                'path'        => 'categories',
+                // async
+                'entity'      => 'category',
+                'action'      => 'create'
             ]
         );
     }
@@ -66,20 +69,23 @@ class Catalog
      * @param Category $payload
      * @param array    $meta
      *
-     * @return mixed
+     * @return ResponseInterface
      */
-    public function updateCategory($entityId, Category $payload, $meta = [])
+    public function updateCategory($entityId, Category $payload, array $meta = [])
     {
-        //todo-sg: test
         return $this->client->doRequest(
             [
-                'service'     => 'catalog',
+                // general
+                'requestType' => $meta['requestType'],
+                'body'        => $payload,
+                // direct
                 'method'      => 'post',
+                'service'     => 'catalog',
                 'path'        => 'categories/' . $entityId,
+                // async
                 'entity'      => 'category',
                 'action'      => 'update',
-                'body'        => $payload,
-                'requestType' => $meta['requestType']
+                'entityId'    => $entityId
             ]
         );
     }
@@ -88,19 +94,22 @@ class Catalog
      * @param string $entityId
      * @param array  $meta
      *
-     * @return mixed
+     * @return ResponseInterface
      */
-    public function deleteCategory($entityId, $meta = [])
+    public function deleteCategory($entityId, array $meta = [])
     {
-        //todo-sg: test
         return $this->client->doRequest(
             [
+                // general
+                'requestType' => $meta['requestType'],
+                // direct
+                'method'      => 'delete',
                 'service'     => 'catalog',
-                'method'      => 'post',
                 'path'        => 'categories/' . $entityId,
+                // async
                 'entity'      => 'category',
                 'action'      => 'delete',
-                'requestType' => $meta['requestType']
+                'entityId'    => $entityId
             ]
         );
     }
@@ -111,31 +120,33 @@ class Catalog
      * @todo-sg: supposedly needs more than just limit/offset as there are many query methods defined, ask Pascal
      * @return mixed
      */
-    public function getCategories($meta = [])
+    public function getCategories(array $meta = [])
     {
         if (isset($meta['filters'])) {
             $meta['filters'] = \GuzzleHttp\json_encode($meta['filters']);
         }
 
-        //todo-sg: test
-        return $this->client->doRequest(
+        $response = $this->client->doRequest(
             [
-                'service'     => 'catalog',
-                'method'      => 'get',
-                'path'        => 'categories',
-                'requestType' => $meta['requestType'],
-                'query'       => $meta
+                // direct only
+                'service' => 'catalog',
+                'method'  => 'get',
+                'path'    => 'categories',
+                'query'   => $meta
             ]
         );
+
+        //todo-sg: parse into DTO
+        return $response;
     }
 
     /**
      * @param Product[] $products
      * @param array     $meta
      *
-     * @return mixed
+     * @return ResponseInterface
      */
-    public function addProducts(array $products, $meta = [])
+    public function addProducts(array $products, array $meta = [])
     {
         //todo-sg: test
         return $this->client->doRequest(
@@ -156,9 +167,9 @@ class Catalog
      * @param Product $payload
      * @param array   $meta
      *
-     * @return mixed
+     * @return ResponseInterface
      */
-    public function updateProduct($entityId, Product $payload, $meta = [])
+    public function updateProduct($entityId, Product $payload, array $meta = [])
     {
         //todo-sg: test
         return $this->client->doRequest(
@@ -178,9 +189,9 @@ class Catalog
      * @param string $entityId
      * @param array  $meta
      *
-     * @return mixed
+     * @return ResponseInterface
      */
-    public function deleteProduct($entityId, $meta = [])
+    public function deleteProduct($entityId, array $meta = [])
     {
         //todo-sg: test
         return $this->client->doRequest(
@@ -190,8 +201,14 @@ class Catalog
                 'path'        => 'products/' . $entityId,
                 'entity'      => 'product',
                 'action'      => 'delete',
+                'entityId'    => $entityId,
                 'requestType' => $meta['requestType']
             ]
         );
+    }
+
+    public function getProducts(array $meta = [])
+    {
+        //todo-sg: finish up
     }
 }

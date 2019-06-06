@@ -26,8 +26,8 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
+use Shopgate\ConnectSdk\Connector_\Entities\Base;
 use Shopgate\ConnectSdk\Http\GuzzleClient;
-use Shopgate\ConnectSdk\Services\Events\Connector\Entities\Base;
 
 class GuzzleClientTest extends TestCase
 {

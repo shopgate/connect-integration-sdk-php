@@ -27,7 +27,6 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7;
 use Psr\Http\Message\UriInterface;
-use Shopgate\ConnectSdk\Services\Events\Connector\Entities\Base;
 use function GuzzleHttp\Psr7\uri_for;
 use function GuzzleHttp\uri_template;
 
@@ -109,7 +108,7 @@ class GuzzleClient extends Client implements ClientInterface
     private function cleanInternalMeta(array $meta = [])
     {
         $blacklist = [
-            Base::KEY_TYPE,
+            'requestType',
             'service',
             'ver',
             'env',

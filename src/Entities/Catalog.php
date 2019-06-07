@@ -24,8 +24,10 @@ namespace Shopgate\ConnectSdk\Entities;
 
 use Dto\Exceptions\InvalidDataTypeException;
 use Psr\Http\Message\ResponseInterface;
+use Shopgate\ConnectSdk\DTO\Catalog\Attribute\Get as Attribute;
 use Shopgate\ConnectSdk\DTO\Catalog\Category\Create;
 use Shopgate\ConnectSdk\DTO\Catalog\Category\Get as Category;
+use Shopgate\ConnectSdk\DTO\Catalog\Attribute\GetList as AttributeList;
 use Shopgate\ConnectSdk\DTO\Catalog\Category\GetList as CategoryList;
 use Shopgate\ConnectSdk\DTO\Catalog\Product;
 use Shopgate\ConnectSdk\DTO\Meta;
@@ -239,5 +241,71 @@ class Catalog
     public function getProducts(array $meta = [])
     {
         //todo-sg: finish up
+    }
+
+    /**
+     * @param Attribute[] $attributes
+     * @param array      $meta
+     *
+     * @return ResponseInterface
+     */
+    public function addAttributes(array $attributes, array $meta = [])
+    {
+        $requestAttributes = [];
+        foreach($attributes as $attribute) {
+            try {
+                $requestAttributes[] = $attribute->toArray();
+            } catch (InvalidDataTypeException $e) {
+                // TODO: handle exception
+            }
+        }
+
+        return $this->client->doRequest(
+            [
+                // general
+                'method'      => 'post',
+                'requestType' => $meta['requestType'],
+                'body'        => json_encode(['attributes' => $requestAttributes]),
+                // direct
+                'service'     => 'catalog',
+                'path'        => 'attributes',
+                // async
+                'entity'      => 'attribute',
+                'action'      => 'create'
+            ]
+        );
+    }
+
+    /**
+     * @param array $meta
+     *
+     * @todo-sg: supposedly needs more than just limit/offset as there are many query methods defined, ask Pascal
+     * @return AttributeList
+     */
+    public function getAttributes(array $meta = [])
+    {
+        if (isset($meta['filters'])) {
+            $meta['filters'] = \GuzzleHttp\json_encode($meta['filters']);
+        }
+
+        $response = $this->client->doRequest(
+            [
+                // direct only
+                'service' => 'catalog',
+                'method'  => 'get',
+                'path'    => 'attributes',
+                'query'   => $meta
+            ]
+        );
+        $response = json_decode($response->getBody(), true);
+
+        $attributes = array();
+        foreach ($response['attributes'] as $attribute) {
+            $attributes[] = new Attribute($attribute);
+        }
+        $response['meta'] = new Meta($response['meta']);
+        $response['attributes'] = $attributes;
+
+        return new AttributeList($response);
     }
 }

@@ -23,7 +23,7 @@
 namespace Shopgate\ConnectSdk\Entities;
 
 use Psr\Http\Message\ResponseInterface;
-use Shopgate\ConnectSdk\DTO\Catalog\Category;
+use Shopgate\ConnectSdk\DTO\Catalog\Category\Create;
 use Shopgate\ConnectSdk\DTO\Catalog\Product;
 use Shopgate\ConnectSdk\IClient;
 
@@ -41,7 +41,7 @@ class Catalog
     }
 
     /**
-     * @param Category[] $categories
+     * @param Create[] $categories
      * @param array      $meta
      *
      * @return ResponseInterface
@@ -66,12 +66,12 @@ class Catalog
 
     /**
      * @param string   $entityId
-     * @param Category $payload
+     * @param Create $payload
      * @param array    $meta
      *
      * @return ResponseInterface
      */
-    public function updateCategory($entityId, Category $payload, array $meta = [])
+    public function updateCategory($entityId, Create $payload, array $meta = [])
     {
         return $this->client->doRequest(
             [

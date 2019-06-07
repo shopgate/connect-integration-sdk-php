@@ -20,11 +20,9 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\DTO\Catalog;
+namespace Shopgate\ConnectSdk\DTO\Catalog\Category;
 
 use Shopgate\ConnectSdk\DTO\Base as DTOBase;
-use Shopgate\ConnectSdk\DTO\Catalog\Category\Description;
-use Shopgate\ConnectSdk\DTO\Catalog\Category\Name;
 
 /**
  * Default class that handles validation for category Update payloads.

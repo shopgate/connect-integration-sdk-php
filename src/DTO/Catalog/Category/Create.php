@@ -23,21 +23,23 @@
 namespace Shopgate\ConnectSdk\DTO\Catalog;
 
 use Shopgate\ConnectSdk\DTO\Base as DTOBase;
+use Shopgate\ConnectSdk\DTO\Catalog\Category\Description;
+use Shopgate\ConnectSdk\DTO\Catalog\Category\Name;
 
 /**
  * Default class that handles validation for category Update/Create payloads.
  * If there is a need to differentiate, one can create a class Update.php, etc. and extend this one
  *
- * @method Category setCode(string $code)
- * @method Category setParentCategoryCode(string $parentCategoryCode)
- * @method Category setName(string $name)
- * @method Category setDescription(string $description)
- * @method Category setImage(string $image)
- * @method Category setUrl(string $url)
- * @method Category setSequenceId(integer $sequenceId)
- * @method Category setExternalUpdateDate(string $externalUpdateDate)
+ * @method Create setCode(string $code)
+ * @method Create setParentCategoryCode(string $parentCategoryCode)
+ * @method Create setImage(string $image)
+ * @method Create setName(Name $name)
+ * @method Create setUrl(string $url)
+ * @method Create setSequenceId(integer $sequenceId)
+ * @method Create setDescription(Description $description)
+ * @method Create setExternalUpdateDate(string $externalUpdateDate)
  */
-class Category extends DTOBase
+class Create extends DTOBase
 {
     /**
      * @var array
@@ -48,12 +50,12 @@ class Category extends DTOBase
         'properties'           => [
             'code'               => ['type' => 'string'],
             'parentCategoryCode' => ['type' => 'string'],
-            'name'               => ['type' => 'string'],
-            'description'        => ['type' => 'string'],
             'image'              => ['type' => 'string'],
+            'name'               => ['type' => 'object'],
             'url'                => ['type' => 'string'],
             'sequenceId'         => ['type' => 'integer'],
-            'externalUpdateDate' => ['type' => 'string']
+            'description'        => ['type' => 'object'],
+            'externalUpdateDate' => ['type' => 'string'],
         ],
         'additionalProperties' => true
     ];

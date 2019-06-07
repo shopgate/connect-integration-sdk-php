@@ -22,8 +22,11 @@
 
 namespace Shopgate\ConnectSdk\Entities;
 
+use Dto\Exceptions\InvalidDataTypeException;
 use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\DTO\Catalog\Category\Create;
+use Shopgate\ConnectSdk\DTO\Catalog\Category\Get as Category;
+use Shopgate\ConnectSdk\DTO\Catalog\Category\GetList as CategoryList;
 use Shopgate\ConnectSdk\DTO\Catalog\Product;
 use Shopgate\ConnectSdk\DTO\Meta;
 use Shopgate\ConnectSdk\ClientInterface;
@@ -49,12 +52,21 @@ class Catalog
      */
     public function addCategories(array $categories, array $meta = [])
     {
+        $requestCategories = [];
+        foreach($categories as $category) {
+            try {
+                $requestCategories[] = $category->toArray();
+            } catch (InvalidDataTypeException $e) {
+                // TODO: handle exception
+            }
+        }
+
         return $this->client->doRequest(
             [
                 // general
                 'method'      => 'post',
                 'requestType' => $meta['requestType'],
-                'body'        => ['categories' => $categories],
+                'body'        => json_encode(['categories' => $requestCategories]),
                 // direct
                 'service'     => 'catalog',
                 'path'        => 'categories',
@@ -78,7 +90,7 @@ class Catalog
             [
                 // general
                 'requestType' => $meta['requestType'],
-                'body'        => $payload,
+                'body'        => $payload->toJson(),
                 // direct
                 'method'      => 'post',
                 'service'     => 'catalog',
@@ -119,7 +131,7 @@ class Catalog
      * @param array $meta
      *
      * @todo-sg: supposedly needs more than just limit/offset as there are many query methods defined, ask Pascal
-     * @return mixed
+     * @return CategoryList
      */
     public function getCategories(array $meta = [])
     {
@@ -136,9 +148,16 @@ class Catalog
                 'query'   => $meta
             ]
         );
+        $response = json_decode($response->getBody(), true);
 
-        //todo-sg: parse into DTO
-        return $response;
+        $categories = array();
+        foreach ($response['categories'] as $category) {
+            $categories[] = new Category($category);
+        }
+        $response['meta'] = new Meta($response['meta']);
+        $response['categories'] = $categories;
+
+        return new CategoryList($response);
     }
 
     /**
@@ -180,7 +199,7 @@ class Catalog
                 'path'        => 'products/' . $entityId,
                 'entity'      => 'product',
                 'action'      => 'update',
-                'body'        => $payload,
+                'body'        => $payload->toJson(),
                 'requestType' => $meta['requestType']
             ]
         );

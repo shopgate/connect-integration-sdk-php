@@ -56,14 +56,14 @@ class Client implements ClientInterface
         if (!$this->isDirect($params)) {
             return $this->triggerEvent($params);
         }
-
+        $response = null;
         try {
             $response = $this->guzzleClient->request(
                 $params['method'],
                 $params['path'],
                 [
                     'query' => ['service' => $params['service']] + (isset($params['query']) ? $params['query'] : []),
-                    'json'  => isset($params['body']) ? $params['body']->toJson() : '{}'
+                    'json' => isset($params['body']) ? $params['body'] : '{}'
                 ]
             );
         } catch (GuzzleException $e) {

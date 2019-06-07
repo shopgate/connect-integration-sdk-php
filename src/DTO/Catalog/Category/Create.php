@@ -27,8 +27,7 @@ use Shopgate\ConnectSdk\DTO\Catalog\Category\Description;
 use Shopgate\ConnectSdk\DTO\Catalog\Category\Name;
 
 /**
- * Default class that handles validation for category Update/Create payloads.
- * If there is a need to differentiate, one can create a class Update.php, etc. and extend this one
+ * Default class that handles validation for category Create payloads.
  *
  * @method Create setCode(string $code)
  * @method Create setParentCategoryCode(string $parentCategoryCode)

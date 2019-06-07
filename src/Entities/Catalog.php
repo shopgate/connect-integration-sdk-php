@@ -25,17 +25,18 @@ namespace Shopgate\ConnectSdk\Entities;
 use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\DTO\Catalog\Category\Create;
 use Shopgate\ConnectSdk\DTO\Catalog\Product;
-use Shopgate\ConnectSdk\IClient;
+use Shopgate\ConnectSdk\DTO\Meta;
+use Shopgate\ConnectSdk\ClientInterface;
 
 class Catalog
 {
-    /** @var IClient */
+    /** @var ClientInterface */
     private $client;
 
     /**
-     * @param IClient $client
+     * @param ClientInterface $client
      */
-    public function __construct(IClient $client)
+    public function __construct(ClientInterface $client)
     {
         $this->client = $client;
     }

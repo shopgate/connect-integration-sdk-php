@@ -33,7 +33,7 @@ class ShopgateSdk
     public $catalog;
     /** @var Http\ClientInterface */
     protected $httpClient;
-    /** @var IClient */
+    /** @var ClientInterface */
     private $client;
 
     /**

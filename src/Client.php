@@ -23,24 +23,24 @@
 namespace Shopgate\ConnectSdk;
 
 use Dto\Exceptions\InvalidDataTypeException;
-use GuzzleHttp\ClientInterface;
+use GuzzleHttp\ClientInterface as GuzzleClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\DTO\Async\Factory;
 
-class Client implements IClient
+class Client implements ClientInterface
 {
     /**
-     * @var ClientInterface
+     * @var GuzzleClientInterface
      */
     private $guzzleClient;
 
     /**
      * Client constructor.
      *
-     * @param ClientInterface $guzzleClient
+     * @param GuzzleClientInterface $guzzleClient
      */
-    public function __construct(ClientInterface $guzzleClient)
+    public function __construct(GuzzleClientInterface $guzzleClient)
     {
         $this->guzzleClient = $guzzleClient;
     }

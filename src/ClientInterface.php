@@ -22,7 +22,7 @@
 
 namespace Shopgate\ConnectSdk;
 
-interface IClient
+interface ClientInterface
 {
     /**
      * @param array $params

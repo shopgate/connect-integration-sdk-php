@@ -22,7 +22,7 @@ Example for calling our service in order to create, update or delete a category:
 ```php
 <?php
 use Shopgate\ConnectSdk\ShopgateSdk;
-use Shopgate\ConnectSdk\DTO\Catalog\Category as CategoryDto;
+use Shopgate\ConnectSdk\DTO\Catalog\Category;
 
 $config = [
     'merchantCode'  => 'EE1',
@@ -33,11 +33,12 @@ $config = [
 $client = new ShopgateSdk($config);
 
 // create new category
-$categoryPayload = new CategoryDto();
-$categoryPayload->setCode('pants')->setName('Denim Pants')->setSequenceId(1);
+$categoryPayload = new Category\Create();
+$name            = new Category\Name(['en-us' => 'Denim Pants']);
+$categoryPayload->setCode('pants')->setName($name)->setSequenceId(1);
 $client->catalog->addCategories([$categoryPayload]);
 // update category with constructor input example
-$updateDto = new CategoryDto(['name' => 'Skirts']);
+$updateDto = new Category\Update(['name' => 'Skirts']);
 $client->catalog->updateCategory('pants', $updateDto);
 // delete category
 $client->catalog->deleteCategory('pants');
@@ -45,7 +46,8 @@ $client->catalog->deleteCategory('pants');
 $categories = $client->catalog->getCategories(['limit' => 5]);
 
 // update category sync
-$updateDto = new CategoryDto(['name' => 'Skirts']);
+$name      = (new Category\Name())->add('en-us', 'Skirts');
+$updateDto = new Category\Update(['name' => $name]);
 $client->catalog->updateCategory('4', $updateDto, ['requestType' => 'direct']);
 ```
 
@@ -53,7 +55,7 @@ Example for calling our service in order to create, update or delete a simple pr
 ```php
 <?php
 use Shopgate\ConnectSdk\ShopgateSdk;
-use Shopgate\ConnectSdk\DTO\Catalog\Product as ProductDto;
+use Shopgate\ConnectSdk\DTO\Catalog\Product;
 use Shopgate\ConnectSdk\DTO\Catalog\Product\Price as PriceDto;
 
 $config = [
@@ -67,23 +69,24 @@ $client = new ShopgateSdk($config);
 $price = new PriceDto();
 $price->setPrice(90)->setSalePrice(84.99)->setCurrencyCode(PriceDto::CURRENCY_CODE_EUR);
 // create new product
-$productPayload = new ProductDto();
+$productPayload = new Product\Create();
+$name = new Product\Name(['en-us' => 'Blue Jeans regular']);
 $productPayload->setCode('42')
                ->setCatalogCode('my_catalog')
-               ->setName('Blue Jeans regular')
-               ->setStatus(ProductDto::STATUS_ACTIVE)
-               ->setModelType(ProductDto::MODEL_TYPE_STANDARD)
+               ->setName($name)
+               ->setStatus(Product\Create::STATUS_ACTIVE)
+               ->setModelType(Product\Create::MODEL_TYPE_STANDARD)
                ->setIsInventoryManaged(true)
                ->setPrice($price);
 $client->catalog->addProducts([$productPayload]);
 // update product with constructor input example
-$updateDto = new ProductDto(['name' => 'Blue Jeans fancy']);
+$updateDto = new Product\Update(['name' => new Product\Name(['en-us' => 'Blue Jeans regular'])]);
 $client->catalog->updateProduct('42', $updateDto);
 // delete product
 $client->catalog->deleteProduct('42');
 
 // update product sync
-$updateDto = new ProductDto(['status' => ProductDto::STATUS_INACTIVE]);
+$updateDto = new Product\Update(['status' => Product\Create::STATUS_INACTIVE]);
 $client->catalog->updateProduct('42', $updateDto, ['requestType' => 'direct']);
 ```
 

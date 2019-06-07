@@ -168,6 +168,15 @@ class Catalog
      */
     public function addProducts(array $products, array $meta = [])
     {
+        $requestProducts = [];
+        foreach($products as $product) {
+            try {
+                $requestProducts[] = $product->toArray();
+            } catch (InvalidDataTypeException $e) {
+                // TODO: handle exception
+            }
+        }
+
         //todo-sg: test
         return $this->client->doRequest(
             [
@@ -176,7 +185,7 @@ class Catalog
                 'path'        => 'products',
                 'entity'      => 'product',
                 'action'      => 'create',
-                'body'        => ['products' => $products],
+                'body'        => json_encode(['products' => $requestProducts]),
                 'requestType' => $meta['requestType']
             ]
         );

@@ -25,18 +25,11 @@ namespace Shopgate\ConnectSdk\DTO\Catalog\Product;
 use Shopgate\ConnectSdk\DTO\Base as DTOBase;
 
 /**
- * @method VolumePricing setMinQty(number $minQty)
- * @method VolumePricing setMaxQty(number $maxQty)
- * @method VolumePricing setPrice(number $price)
- * @method VolumePricing setSalePrice(number $salePrice)
- * @method VolumePricing setUnit(string $unit)
- * @method VolumePricing setPriceType(string $priceType)
+ * @method CategoryMapping setCategoryCode(string $categoryCode)
+ * @method CategoryMapping setIsPrimary(boolean $isPrimary)
  */
-class VolumePricing extends DTOBase
+class CategoryMapping extends DTOBase
 {
-    const PRICE_TYPE_FIXED    = 'fixed';
-    const PRICE_TYPE_RELATIVE = 'relative';
-
     /**
      * @var array
      * @codeCoverageIgnore
@@ -44,14 +37,8 @@ class VolumePricing extends DTOBase
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'minQty'    => ['type' => 'number'],
-            'maxQty'    => ['type' => 'number'],
-            'price'     => ['type' => 'number'],
-            'salePrice' => ['type' => 'number'],
-            'unit'      => ['type' => 'string'],
-            'priceType' => [
-                'type' => 'string'
-            ]
+            'categoryCode' => ['type' => 'string'],
+            'isPrimary'    => ['type' => 'boolean']
         ],
         'additionalProperties' => true
     ];

@@ -25,34 +25,26 @@ namespace Shopgate\ConnectSdk\DTO\Catalog\Product;
 use Shopgate\ConnectSdk\DTO\Base as DTOBase;
 
 /**
- * @method VolumePricing setMinQty(number $minQty)
- * @method VolumePricing setMaxQty(number $maxQty)
- * @method VolumePricing setPrice(number $price)
- * @method VolumePricing setSalePrice(number $salePrice)
- * @method VolumePricing setUnit(string $unit)
- * @method VolumePricing setPriceType(string $priceType)
+ * Localized Media Entities
  */
-class VolumePricing extends DTOBase
+class LocalizationMedia extends DTOBase
 {
-    const PRICE_TYPE_FIXED    = 'fixed';
-    const PRICE_TYPE_RELATIVE = 'relative';
-
     /**
      * @var array
      * @codeCoverageIgnore
      */
     protected $schema = [
         'type'                 => 'object',
-        'properties'           => [
-            'minQty'    => ['type' => 'number'],
-            'maxQty'    => ['type' => 'number'],
-            'price'     => ['type' => 'number'],
-            'salePrice' => ['type' => 'number'],
-            'unit'      => ['type' => 'string'],
-            'priceType' => [
-                'type' => 'string'
-            ]
-        ],
         'additionalProperties' => true
     ];
+
+    /**
+     * @param string  $locale
+     * @param Media[] $media
+     */
+    public function add($locale, array $media)
+    {
+        // TODO logic to "add" additional media entities to an existing localization index?!
+        $this->set((string)$locale, $media);
+    }
 }

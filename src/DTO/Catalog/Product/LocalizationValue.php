@@ -20,14 +20,14 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\DTO\Catalog\Category;
+namespace Shopgate\ConnectSdk\DTO\Catalog\Product;
 
-use Shopgate\ConnectSdk\DTO\LocalizedString;
+use Shopgate\ConnectSdk\DTO\Base as DTOBase;
 
 /**
- * Localized name
+ * Property Values
  */
-class Name extends LocalizedString
+class LocalizationValue extends DTOBase
 {
 
 }

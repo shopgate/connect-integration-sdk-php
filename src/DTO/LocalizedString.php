@@ -39,6 +39,6 @@ class LocalizedString extends DTOBase
     ];
 
     public function add($locale, $string) {
-        $this->set($locale, $string);
+        $this->set((string)$locale, (string)$string);
     }
 }

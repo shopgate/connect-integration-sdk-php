@@ -68,11 +68,7 @@ class Price extends DTOBase
                 ]
             ],
             'currencyCode'  => [
-                'type' => 'string',
-                'enum' => [
-                    self::CURRENCY_CODE_EUR,
-                    self::CURRENCY_CODE_USD
-                ]
+                'type' => 'string'
             ]
         ],
         'additionalProperties' => true

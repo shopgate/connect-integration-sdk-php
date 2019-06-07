@@ -29,7 +29,7 @@ use Shopgate\ConnectSdk\DTO\Base as DTOBase;
  * @method Media setUrl(string $url)
  * @method Media setType(string $type)
  * @method Media setAltText(string $altText)
- * @method Media setTitle(string $title)
+ * @method Media setSubTitle(string $title)
  * @method Media setSequenceId(number $sequenceId)
  */
 class Media extends DTOBase
@@ -47,16 +47,9 @@ class Media extends DTOBase
         'properties'           => [
             'code'       => ['type' => 'string'],
             'url'        => ['type' => 'string'],
-            'type'       => [
-                'type' => 'string',
-                'enum' => [
-                    self::TYPE_IMAGE,
-                    self::TYPE_VIDEO,
-                    self::TYPE_PDF
-                ]
-            ],
+            'type'       => ['type' => 'string'],
             'altText'    => ['type' => 'string'],
-            'title'      => ['type' => 'string'],
+            'subTitle'   => ['type' => 'string'],
             'sequenceId' => ['type' => 'number']
         ],
         'additionalProperties' => true

@@ -35,8 +35,7 @@ class LocalizedString extends DTOBase
      */
     protected $schema = [
         'type'                 => 'object',
-        'properties'           => [
-        ],
+        'properties'           => [], // TODO should we remove this line?
         'additionalProperties' => true
     ];
 

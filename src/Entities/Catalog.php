@@ -29,7 +29,7 @@ use Shopgate\ConnectSdk\DTO\Catalog\Category\Create;
 use Shopgate\ConnectSdk\DTO\Catalog\Category\Get as Category;
 use Shopgate\ConnectSdk\DTO\Catalog\Attribute\GetList as AttributeList;
 use Shopgate\ConnectSdk\DTO\Catalog\Category\GetList as CategoryList;
-use Shopgate\ConnectSdk\DTO\Catalog\Product;
+use Shopgate\ConnectSdk\DTO\Catalog\Product\Create as CreateProduct;
 use Shopgate\ConnectSdk\DTO\Meta;
 use Shopgate\ConnectSdk\ClientInterface;
 
@@ -163,8 +163,8 @@ class Catalog
     }
 
     /**
-     * @param Product[] $products
-     * @param array     $meta
+     * @param CreateProduct[] $products
+     * @param array           $meta
      *
      * @return ResponseInterface
      */

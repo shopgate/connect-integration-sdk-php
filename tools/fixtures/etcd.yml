@@ -1,0 +1,59 @@
+development:
+  endpoints:
+    services:
+      omni-worker: "http://omni-worker/"
+      omni-event-receiver: "http://omni-event-receiver/"
+      omni-merchant: "http://omni-merchant/"
+      omni-location: "http://omni-location/"
+      catalog: "http://catalog/"
+
+  settings:
+    auth2:
+      mysql:
+        connectionLimit: 10
+        database: authservice
+        host: mysql
+        password: secret
+        port: 3306
+        user: root
+
+    OmniWorkerService:
+      googleCloud:
+        projectId: test-project
+
+    OmniEventReceiverService:
+      bigApi:
+        baseUrl: http://{serviceName}.shopgatedev.services/
+        clientId: omni-interface-adapter
+        clientSecret: omni-interface-adapter
+      googleCloud:
+        projectId: test-project
+
+    OmniMerchantService:
+      mysql:
+        connectionLimit: 1
+        database: omnichannel
+        host: mysql
+        password: secret
+        port: 3306
+        user: root
+
+    OmniLocationService:
+      mysql:
+        connectionLimit: 1
+        database: omnichannel
+        host: mysql
+        password: secret
+        port: 3306
+        user: root
+
+    CatalogService:
+      mysql:
+        connectionLimit: 1
+        database: omnichannel
+        host: mysql
+        password: secret
+        port: 3306
+        user: root
+      googleCloud:
+        projectId: test-project

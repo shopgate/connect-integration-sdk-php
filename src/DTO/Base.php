@@ -101,4 +101,9 @@ class Base extends Dto
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return parent::toJson(true);
+    }
 }

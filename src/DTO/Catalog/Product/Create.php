@@ -16,7 +16,7 @@
  * limitations under the License.
  *
  * @author    Shopgate Inc, 804 Congress Ave, Austin, Texas 78701 <interfaces@shopgate.com>
- * @copyright Shopgate Inc
+ * @copyright 2019 Shopgate Inc
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
@@ -29,18 +29,18 @@ use Shopgate\ConnectSdk\DTO\Base as DTOBase;
  *
  * @method Create setName(Name $name)
  * @method Create setLongName(LongName $longName)
- * @method Create setCategories(CategoryMapping[] $categories)
- * @method Create setProperties(Property[] $properties)
+ * @method Create setCategories(CategoryMapping [] $categories)
+ * @method Create setProperties(Property [] $properties)
  * @method Create setMedia(LocalizationMedia $media)
- * @method Create setOptions(Option[] $options)
- * @method Create setExtras(Extra[] $extras)
+ * @method Create setOptions(Option [] $options)
+ * @method Create setExtras(Extra [] $extras)
  * @method Create setCode(string $code)
  * @method Create setParentProductCode(string $parentProductCode)
  * @method Create setCatalogCode(string $catalogCode)
  * @method Create setModelType(string $modelType)
  * @method Create setIdentifiers(Identifiers $identifiers)
  * @method Create setPrice(Price $price)
- * @method Create setFulfillmentMethods(string[] $fulfillmentMethods)
+ * @method Create setFulfillmentMethods(string [] $fulfillmentMethods)
  * @method Create setUnit(string $unit)
  * @method Create setIsSerialized(boolean $isSerialized)
  * @method Create setStatus(string $status)
@@ -66,15 +66,15 @@ class Create extends DTOBase
     const MODEL_TYPE_BUNDLE       = 'bundle';
     const MODEL_TYPE_BUNDLE_ITEM  = 'bundleItem';
     const MODEL_TYPE_VARIANT      = 'variant';
-
     const STATUS_ACTIVE    = 'active';
     const STATUS_INACTIVE  = 'inactive';
     const STATUS_DELETED   = 'deleted';
     const STATUS_SCHEDULED = 'scheduled';
-
     const INVENTORY_TREATMENT_SHOW_OUT_OF_STOCK = 'showOutOfStock';
     const INVENTORY_TREATMENT_ALLOW_BACK_ORDERS = 'allowBackOrders';
     const INVENTORY_TREATMENT_PRE_ORDER         = 'preOrder';
+    const FULFILLMENT_METHOD_SIMPLE_PICKUP_IN_STORE = 'simplePickUpInStore';
+    const FULFILLMENT_METHOD_DIRECT_SHIP            = 'directShip';
 
     /**
      * @var array
@@ -88,27 +88,27 @@ class Create extends DTOBase
             'categories'          => [
                 'type'  => 'array',
                 'items' => [
-                    'type' => 'object'
-                ]
+                    'type' => 'object',
+                ],
             ],
             'properties'          => [
                 'type'  => 'array',
                 'items' => [
-                    'type' => 'object'
-                ]
+                    'type' => 'object',
+                ],
             ],
             'media'               => ['type' => 'object'],
             'options'             => [
                 'type'  => 'array',
                 'items' => [
-                    'type' => 'object'
-                ]
+                    'type' => 'object',
+                ],
             ],
             'extras'              => [
                 'type'  => 'array',
                 'items' => [
-                    'type' => 'object'
-                ]
+                    'type' => 'object',
+                ],
             ],
             'code'                => ['type' => 'string'],
             'parentProductCode'   => ['type' => 'string'],
@@ -119,8 +119,8 @@ class Create extends DTOBase
             'fulfillmentMethods'  => [
                 'type'  => 'array',
                 'items' => [
-                    'type' => 'string'
-                ]
+                    'type' => 'string',
+                ],
             ],
             'unit'                => ['type' => 'string'],
             'isSerialized'        => ['type' => 'boolean'],
@@ -138,8 +138,8 @@ class Create extends DTOBase
             'taxClass'            => ['type' => 'string'],
             'minQty'              => ['type' => 'number'],
             'maxQty'              => ['type' => 'number'],
-            'externalUpdateDate'  => ['type' => 'string']
+            'externalUpdateDate'  => ['type' => 'string'],
         ],
-        'additionalProperties' => true
+        'additionalProperties' => true,
     ];
 }

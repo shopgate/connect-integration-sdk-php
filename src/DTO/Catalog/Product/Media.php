@@ -49,9 +49,9 @@ class Media extends DTOBase
             'url'        => ['type' => 'string'],
             'type'       => ['type' => 'string'],
             'altText'    => ['type' => 'string'],
-            'subTitle'   => ['type' => 'string'],
-            'sequenceId' => ['type' => 'number']
+            'title'      => ['type' => 'string'],
+            'sequenceId' => ['type' => 'number'],
         ],
-        'additionalProperties' => true
+        'additionalProperties' => true,
     ];
 }

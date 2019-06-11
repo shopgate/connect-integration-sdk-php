@@ -198,10 +198,13 @@ class Catalog
                 'service'     => 'catalog',
                 'method'      => 'post',
                 'path'        => 'products/' . $entityId,
+                'entityId'    => $entityId,
                 'entity'      => 'product',
                 'action'      => 'update',
                 'body'        => $payload,
-                'requestType' => isset($meta['requestType']) ? $meta['requestType'] : ShopgateSdk::REQUEST_TYPE_EVENT
+                'requestType' => isset($meta['requestType'])
+                    ? $meta['requestType']
+                    : ShopgateSdk::REQUEST_TYPE_EVENT,
             ]
         );
     }

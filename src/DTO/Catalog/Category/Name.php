@@ -22,7 +22,6 @@
 
 namespace Shopgate\ConnectSdk\DTO\Catalog\Category;
 
-
 use Shopgate\ConnectSdk\DTO\LocalizedString;
 
 /**
@@ -30,5 +29,4 @@ use Shopgate\ConnectSdk\DTO\LocalizedString;
  */
 class Name extends LocalizedString
 {
-
 }

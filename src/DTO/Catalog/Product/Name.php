@@ -22,26 +22,12 @@
 
 namespace Shopgate\ConnectSdk\DTO\Catalog\Product;
 
-use Shopgate\ConnectSdk\DTO\Base as DTOBase;
+use Shopgate\ConnectSdk\DTO\LocalizedString;
 
 /**
- * @method Category setCategoryCode(string $categoryCode)
- * @method Category setCategoryName(string $categoryName)
- * @method Category setIsPrimary(boolean $isPrimary)
+ * Localized name
  */
-class Category extends DTOBase
+class Name extends LocalizedString
 {
-    /**
-     * @var array
-     * @codeCoverageIgnore
-     */
-    protected $schema = [
-        'type'                 => 'object',
-        'properties'           => [
-            'categoryCode' => ['type' => 'string'],
-            'categoryName' => ['type' => 'string'],
-            'isPrimary'    => ['type' => 'boolean']
-        ],
-        'additionalProperties' => true
-    ];
+
 }

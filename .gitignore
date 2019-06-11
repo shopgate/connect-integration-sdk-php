@@ -12,3 +12,4 @@ composer.lock
 test.php
 access_token.txt
 /tools/docker-compose.yml
+.env

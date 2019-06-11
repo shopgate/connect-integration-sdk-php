@@ -20,13 +20,26 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\DTO\Catalog\Category;
+namespace Shopgate\ConnectSdk\DTO\Catalog\Product;
 
-use Shopgate\ConnectSdk\DTO\LocalizedString;
+use Shopgate\ConnectSdk\DTO\Base as DTOBase;
 
 /**
- * Localized description
+ * @method CategoryMapping setCategoryCode(string $categoryCode)
+ * @method CategoryMapping setIsPrimary(boolean $isPrimary)
  */
-class Description extends LocalizedString
+class CategoryMapping extends DTOBase
 {
+    /**
+     * @var array
+     * @codeCoverageIgnore
+     */
+    protected $schema = [
+        'type'                 => 'object',
+        'properties'           => [
+            'categoryCode' => ['type' => 'string'],
+            'isPrimary'    => ['type' => 'boolean']
+        ],
+        'additionalProperties' => true
+    ];
 }

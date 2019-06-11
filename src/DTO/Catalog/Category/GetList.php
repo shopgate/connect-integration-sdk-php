@@ -25,7 +25,6 @@ namespace Shopgate\ConnectSdk\DTO\Catalog\Category;
 use Shopgate\ConnectSdk\DTO\Base as DTOBase;
 use Shopgate\ConnectSdk\DTO\Meta;
 
-
 /**
  * DTO for category list response.
  *
@@ -35,6 +34,4 @@ use Shopgate\ConnectSdk\DTO\Meta;
  */
 class GetList extends DTOBase
 {
-
 }
-

@@ -27,6 +27,7 @@ use GuzzleHttp\ClientInterface as GuzzleClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\DTO\Async\Factory;
+use Shopgate\ConnectSdk\DTO\Base;
 
 class Client implements ClientInterface
 {
@@ -57,13 +58,14 @@ class Client implements ClientInterface
             return $this->triggerEvent($params);
         }
         $response = null;
+        $body     = isset($params['body']) ? $params['body'] : [];
         try {
             $response = $this->guzzleClient->request(
                 $params['method'],
                 $params['path'],
                 [
                     'query' => ['service' => $params['service']] + (isset($params['query']) ? $params['query'] : []),
-                    'json' => isset($params['body']) ? $params['body'] : '{}'
+                    'json'  => $body instanceof Base ? $body->toJson() : (new Base($body))->toJson()
                 ]
             );
         } catch (GuzzleException $e) {
@@ -89,7 +91,8 @@ class Client implements ClientInterface
 
         $factory = new Factory();
         foreach ($values as $payload) {
-            $factory->addEvent($params['action'], $params['entityId'], $params['entity'], $payload);
+            $entityId = isset($params['entityId']) ? $params['entityId'] : null;
+            $factory->addEvent($params['action'], $params['entity'], $payload, $entityId);
         }
 
         try {

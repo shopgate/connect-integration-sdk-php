@@ -20,7 +20,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Tests\Unit\Services\Events;
+namespace Shopgate\ConnectSdk\Tests\Unit;
 
 use GuzzleHttp\HandlerStack;
 use kamermans\OAuth2\Persistence\NullTokenPersistence;

@@ -50,11 +50,7 @@ class VolumePricing extends DTOBase
             'salePrice' => ['type' => 'number'],
             'unit'      => ['type' => 'string'],
             'priceType' => [
-                'type' => 'string',
-                'enum' => [
-                    self::PRICE_TYPE_FIXED,
-                    self::PRICE_TYPE_RELATIVE
-                ]
+                'type' => 'string'
             ]
         ],
         'additionalProperties' => true

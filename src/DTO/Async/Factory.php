@@ -40,20 +40,22 @@ class Factory
 
     /**
      * @param string       $type
-     * @param string       $entityId
      * @param string       $entity
      * @param Payload|null $payload
+     * @param string|null  $entityId
      *
      * @return Factory
      * @throws InvalidDataTypeException
      */
-    public function addEvent($type, $entityId, $entity, Payload $payload = null)
+    public function addEvent($type, $entity, Payload $payload = null, $entityId = null)
     {
-        $event     = new Event();
+        $event = new Event();
         $event->setEvent('entity' . ucfirst($type) . 'd')
-              ->setEntityId($entityId)
               ->setEntity($entity)
               ->setPayload($payload ? : new Payload());
+        if ($entityId) {
+            $event->setEntityId($entityId);
+        }
         $this->request->getEvents()->append($event);
 
         return $this;

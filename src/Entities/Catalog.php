@@ -24,14 +24,12 @@ namespace Shopgate\ConnectSdk\Entities;
 
 use Dto\Exceptions\InvalidDataTypeException;
 use Psr\Http\Message\ResponseInterface;
+use Shopgate\ConnectSdk\ClientInterface;
 use Shopgate\ConnectSdk\DTO\Catalog\Attribute\Get as Attribute;
-use Shopgate\ConnectSdk\DTO\Catalog\Category\Create;
-use Shopgate\ConnectSdk\DTO\Catalog\Category\Get as Category;
 use Shopgate\ConnectSdk\DTO\Catalog\Attribute\GetList as AttributeList;
-use Shopgate\ConnectSdk\DTO\Catalog\Category\GetList as CategoryList;
+use Shopgate\ConnectSdk\DTO\Catalog\Category;
 use Shopgate\ConnectSdk\DTO\Catalog\Product;
 use Shopgate\ConnectSdk\DTO\Meta;
-use Shopgate\ConnectSdk\ClientInterface;
 
 class Catalog
 {
@@ -47,28 +45,19 @@ class Catalog
     }
 
     /**
-     * @param Create[] $categories
-     * @param array      $meta
+     * @param Category\Create[] $categories
+     * @param array             $meta
      *
      * @return ResponseInterface
      */
     public function addCategories(array $categories, array $meta = [])
     {
-        $requestCategories = [];
-        foreach($categories as $category) {
-            try {
-                $requestCategories[] = $category->toArray();
-            } catch (InvalidDataTypeException $e) {
-                // TODO: handle exception
-            }
-        }
-
         return $this->client->doRequest(
             [
                 // general
                 'method'      => 'post',
-                'requestType' => $meta['requestType'],
-                'body'        => json_encode(['categories' => $requestCategories]),
+                'requestType' => isset($meta['requestType']) ? $meta['requestType'] : 'async',
+                'body'        => ['categories' => $categories],
                 // direct
                 'service'     => 'catalog',
                 'path'        => 'categories',
@@ -80,13 +69,13 @@ class Catalog
     }
 
     /**
-     * @param string   $entityId
-     * @param Create $payload
-     * @param array    $meta
+     * @param string          $entityId
+     * @param Category\Update $payload
+     * @param array           $meta
      *
      * @return ResponseInterface
      */
-    public function updateCategory($entityId, Create $payload, array $meta = [])
+    public function updateCategory($entityId, Category\Update $payload, array $meta = [])
     {
         return $this->client->doRequest(
             [
@@ -133,7 +122,7 @@ class Catalog
      * @param array $meta
      *
      * @todo-sg: supposedly needs more than just limit/offset as there are many query methods defined, ask Pascal
-     * @return CategoryList
+     * @return Category\GetList
      */
     public function getCategories(array $meta = [])
     {
@@ -152,24 +141,33 @@ class Catalog
         );
         $response = json_decode($response->getBody(), true);
 
-        $categories = array();
+        $categories = [];
         foreach ($response['categories'] as $category) {
-            $categories[] = new Category($category);
+            $categories[] = new Category\Get($category);
         }
-        $response['meta'] = new Meta($response['meta']);
+        $response['meta']       = new Meta($response['meta']);
         $response['categories'] = $categories;
 
-        return new CategoryList($response);
+        return new Category\GetList($response);
     }
 
     /**
-     * @param Product[] $products
-     * @param array     $meta
+     * @param Product\Create[] $products
+     * @param array            $meta
      *
      * @return ResponseInterface
      */
     public function addProducts(array $products, array $meta = [])
     {
+        $requestProducts = [];
+        foreach ($products as $product) {
+            try {
+                $requestProducts[] = $product->toArray();
+            } catch (InvalidDataTypeException $e) {
+                // TODO: handle exception
+            }
+        }
+
         //todo-sg: test
         return $this->client->doRequest(
             [
@@ -178,7 +176,7 @@ class Catalog
                 'path'        => 'products',
                 'entity'      => 'product',
                 'action'      => 'create',
-                'body'        => ['products' => $products],
+                'body'        => json_encode(['products' => $requestProducts]),
                 'requestType' => $meta['requestType']
             ]
         );
@@ -236,14 +234,14 @@ class Catalog
 
     /**
      * @param Attribute[] $attributes
-     * @param array      $meta
+     * @param array       $meta
      *
      * @return ResponseInterface
      */
     public function addAttributes(array $attributes, array $meta = [])
     {
         $requestAttributes = [];
-        foreach($attributes as $attribute) {
+        foreach ($attributes as $attribute) {
             try {
                 $requestAttributes[] = $attribute->toArray();
             } catch (InvalidDataTypeException $e) {
@@ -290,11 +288,11 @@ class Catalog
         );
         $response = json_decode($response->getBody(), true);
 
-        $attributes = array();
+        $attributes = [];
         foreach ($response['attributes'] as $attribute) {
             $attributes[] = new Attribute($attribute);
         }
-        $response['meta'] = new Meta($response['meta']);
+        $response['meta']       = new Meta($response['meta']);
         $response['attributes'] = $attributes;
 
         return new AttributeList($response);

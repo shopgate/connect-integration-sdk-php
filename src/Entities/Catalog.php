@@ -160,14 +160,14 @@ class Catalog
      */
     public function addProducts(array $products, array $meta = [])
     {
-        $requestProducts = [];
-        foreach ($products as $product) {
-            try {
-                $requestProducts[] = $product->toArray();
-            } catch (InvalidDataTypeException $e) {
-                // TODO: handle exception
-            }
-        }
+//        $requestProducts = [];
+//        foreach ($products as $product) {
+//            try {
+//                $requestProducts[] = $product->toArray();
+//            } catch (InvalidDataTypeException $e) {
+//                // TODO: handle exception
+//            }
+//        }
 
         //todo-sg: test
         return $this->client->doRequest(
@@ -177,7 +177,7 @@ class Catalog
                 'path'        => 'products',
                 'entity'      => 'product',
                 'action'      => 'create',
-                'body'        => ['products' => $requestProducts],
+                'body'        => ['products' => $products],
                 'requestType' => isset($meta['requestType']) ? $meta['requestType'] : ShopgateSdk::REQUEST_TYPE_EVENT
             ]
         );

@@ -85,7 +85,7 @@ services:
       - LOG_TO_SYSLOG=false
 
   catalog:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/catalog:v1.0.0-alpha.57
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/catalog:v1.0.0-alpha.58-development
     restart: always
     links:
       - etcd

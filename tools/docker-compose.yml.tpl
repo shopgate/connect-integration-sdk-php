@@ -13,17 +13,19 @@ services:
     environment:
       - ETCD_HOST=http://etcd:2379
       - PUBSUB_EMULATOR_HOST=googlepubsub-emulator:8085
-
     volumes:
-      - ..:/sdk
+      - ../composer.json:/sdk/composer.json
+      - ../phpunit.xml.dist:/sdk/phpunit.xml.dist
+      - ../src:/sdk/src
+      - ../tests:/sdk/tests
+      - ../tools:/sdk/tools
+      - ../vendor:/vendor
     tty: true
 
 ### infra-structure
   etcd:
     image: elcolio/etcd
     restart: always
-    ports:
-      - 2379:2379
     environment:
       - 'ETCD_ADVERTISE_CLIENT_URLS=http://etcd:2379,http://etcd:4001'
 
@@ -43,6 +45,8 @@ services:
       - APP_PORT=80
       - MANAGEMENT_PORT=81
       - LOG_TO_SYSLOG=false
+    ports:
+      - 8080:80
     networks:
       default:
         aliases:
@@ -55,8 +59,6 @@ services:
     build:
       context: ./dockerfiles
       dockerfile: GooglePubsub
-    ports:
-      - 8085:8085
 
 ### services
   omni-worker:
@@ -103,8 +105,6 @@ services:
     restart: always
     links:
       - etcd
-    ports:
-      - 8080:80
     environment:
       - NODE_ENV=development
       - APP_PORT=80

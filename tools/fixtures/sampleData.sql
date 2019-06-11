@@ -1,5 +1,13 @@
 SET FOREIGN_KEY_CHECKS=1;
 
+INSERT IGNORE INTO authservice.`clients` (`id`,`name`,`secret`,`grantTypes`,`userId`,`accessTokenLifetime`,`refreshTokenLifetime`)
+VALUES
+(1, 'integration-tests', 'integration-tests', 'client_credentials,refresh_token',1,3600,7776000);
+
+INSERT IGNORE INTO authservice.`users` (`id`,`name`,`type`,`password`,`scopes`,`parentId`)
+VALUES
+(1, 'tester', 'system', '', 'shop.*:rw', null);
+
 INSERT IGNORE INTO merchant.`Merchant` (`MerchantID`, `OwnerUserID`, `MerchantName`, `MerchantCode`, `Region`, `AppLogo`, `CreateBy`)
 VALUES
 ('1', '4b4b51ce-a4de-4e48-9cf4-ade08de2cc02', 'Test Merchant 1', 'TM1', 'US', 'https://scontent-ber1-1.xx.fbcdn.net/v/t1.0-1/p200x200/28471572_10156169825948781_8970975354537639936_n.jpg?_nc_cat=106&_nc_ht=scontent-ber1-1.xx&oh=b7c659809d68e285aca5fcfab13dec91&oe=5C6E1AD0', 'Mike Haze');

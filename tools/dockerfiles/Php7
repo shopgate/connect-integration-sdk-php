@@ -6,4 +6,4 @@ RUN apt-get update && apt-get install -y zip git &&\
 
 WORKDIR /sdk
 
-CMD ["php", "-a"]
+CMD ["bash"]

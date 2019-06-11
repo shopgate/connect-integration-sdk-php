@@ -1,13 +1,70 @@
 SET GLOBAL sql_mode = 'NO_ENGINE_SUBSTITUTION';
 SET FOREIGN_KEY_CHECKS=0;
 
+DROP DATABASE IF EXISTS authservice;
 DROP DATABASE IF EXISTS catalog;
 DROP DATABASE IF EXISTS location;
 DROP DATABASE IF EXISTS merchant;
 
+CREATE DATABASE authservice;
 CREATE DATABASE catalog;
 CREATE DATABASE location;
 CREATE DATABASE merchant;
+
+CREATE TABLE authservice.`access_tokens` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `token` varchar(50) NOT NULL,
+  `expires` datetime NOT NULL,
+  `clientId` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `token` (`token`),
+  KEY `expires` (`expires`),
+  KEY `clientId` (`clientId`),
+  KEY `userId` (`userId`),
+  CONSTRAINT `access_tokens_ibfk_1` FOREIGN KEY (`clientId`) REFERENCES `clients` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `access_tokens_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=488622 DEFAULT CHARSET=utf8;
+
+CREATE TABLE authservice.`clients` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `secret` varchar(100) NOT NULL,
+  `grantTypes` varchar(100) NOT NULL,
+  `userId` int(11) DEFAULT NULL,
+  `accessTokenLifetime` int(10) NOT NULL,
+  `refreshTokenLifetime` int(10) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
+
+CREATE TABLE authservice.`refresh_tokens` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `token` varchar(50) NOT NULL,
+  `expires` datetime NOT NULL,
+  `clientId` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `token` (`token`),
+  KEY `expires` (`expires`),
+  KEY `clientId` (`clientId`),
+  KEY `userId` (`userId`),
+  CONSTRAINT `refresh_tokens_ibfk_1` FOREIGN KEY (`clientId`) REFERENCES `clients` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `refresh_tokens_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=140691 DEFAULT CHARSET=utf8;
+
+CREATE TABLE authservice.`users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `type` varchar(15) NOT NULL DEFAULT 'system',
+  `password` varchar(100) DEFAULT NULL,
+  `scopes` text,
+  `parentId` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`,`type`),
+  KEY `parentId` (`parentId`),
+  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`parentId`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=30989 DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS location.`Location`;
 

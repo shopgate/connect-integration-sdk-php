@@ -2,8 +2,7 @@ SET FOREIGN_KEY_CHECKS=1;
 
 INSERT IGNORE INTO merchant.`Merchant` (`MerchantID`, `OwnerUserID`, `MerchantName`, `MerchantCode`, `Region`, `AppLogo`, `CreateBy`)
 VALUES
-('1', '4b4b51ce-a4de-4e48-9cf4-ade08de2cc02', 'Ponder Nerd', '1', 'US', 'https://scontent-ber1-1.xx.fbcdn.net/v/t1.0-1/p200x200/28471572_10156169825948781_8970975354537639936_n.jpg?_nc_cat=106&_nc_ht=scontent-ber1-1.xx&oh=b7c659809d68e285aca5fcfab13dec91&oe=5C6E1AD0', 'Mike Haze'),
-('6395bd1f-c2df-4d20-9ada-374def0ab516', '4b4b51ce-a4de-4e48-9cf4-ade08de2cc02', 'Ponder Nerd', 'newMerchant', 'US', 'https://scontent-ber1-1.xx.fbcdn.net/v/t1.0-1/p200x200/28471572_10156169825948781_8970975354537639936_n.jpg?_nc_cat=106&_nc_ht=scontent-ber1-1.xx&oh=b7c659809d68e285aca5fcfab13dec91&oe=5C6E1AD0', 'Mike Haze');
+('1', '4b4b51ce-a4de-4e48-9cf4-ade08de2cc02', 'Test Merchant 1', 'TM1', 'US', 'https://scontent-ber1-1.xx.fbcdn.net/v/t1.0-1/p200x200/28471572_10156169825948781_8970975354537639936_n.jpg?_nc_cat=106&_nc_ht=scontent-ber1-1.xx&oh=b7c659809d68e285aca5fcfab13dec91&oe=5C6E1AD0', 'Mike Haze');
 
 INSERT IGNORE INTO merchant.`MerchantSetting` (`MerchantSettingID`,`MerchantID`,`Key`,`Value`,`CreateBy`,`CreateDate`,`UpdateBy`,`UpdateDate`,`DeleteBy`,`DeleteDate`)
 VALUES
@@ -18,8 +17,8 @@ VALUES
 
 INSERT IGNORE INTO location.`Location` (`LocationID`, `MerchantID`, `LocationTypeID`, `LocationCode`, `LocationName`, `LocationStatus`, `Latitude`, `Longitude`, `CreateBy`, `IsDefault`)
 VALUES
-('d581bf8e-acab-4273-b6a8-48aea3ecb38b', '1', '1', '1', 'Ponder Nerd Warehouse', 'active', '50.117330', '9.681810', 'Mike Haze', 1),
-('0890dc14-5888-48a6-a29a-b57df677e5ef', '1', '1', 'DEMO 2', 'Ponder Nerd Warehouse 3', 'active', '45.117330', '19.681810', 'Mike Haze', 0);
+('1', '1', '1', 'WHS1', 'Test Merchant Warehouse 1', 'active', '50.117330', '9.681810', 'Mike Haze', 1),
+('2', '1', '1', 'WHS2', 'Test Merchabt Warehouse 3', 'active', '45.117330', '19.681810', 'Mike Haze', 0);
 
 
 INSERT IGNORE INTO catalog.`ParentCatalog` (`ParentCatalogID`, `MerchantID`, `ParentCatalogCode`, `ParentCatalogName`, `DefaultLocaleCode`, `DefaultCurrencyCode`, `Status`, `isDefault`, `CreateBy`, `CreateDate`, `UpdateBy`, `UpdateDate`, `DeleteBy`, `DeleteDate`)

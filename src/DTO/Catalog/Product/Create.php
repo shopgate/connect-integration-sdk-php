@@ -29,6 +29,8 @@ use Shopgate\ConnectSdk\DTO\Base as DTOBase;
  *
  * @method Create setName(Name $name)
  * @method Create setLongName(LongName $longName)
+ * @method Create setShortDescription(ShortDescription $name)
+ * @method Create setLongDescription(LongDescription $longName)
  * @method Create setCategories(CategoryMapping [] $categories)
  * @method Create setProperties(Property [] $properties)
  * @method Create setMedia(LocalizationMedia $media)
@@ -62,18 +64,18 @@ use Shopgate\ConnectSdk\DTO\Base as DTOBase;
 class Create extends DTOBase
 {
     // todo-sg: outsource to a single place for update and create
-    const MODEL_TYPE_STANDARD     = 'standard';
-    const MODEL_TYPE_CONFIGURABLE = 'configurable';
-    const MODEL_TYPE_BUNDLE       = 'bundle';
-    const MODEL_TYPE_BUNDLE_ITEM  = 'bundleItem';
-    const MODEL_TYPE_VARIANT      = 'variant';
-    const STATUS_ACTIVE    = 'active';
-    const STATUS_INACTIVE  = 'inactive';
-    const STATUS_DELETED   = 'deleted';
-    const STATUS_SCHEDULED = 'scheduled';
-    const INVENTORY_TREATMENT_SHOW_OUT_OF_STOCK = 'showOutOfStock';
-    const INVENTORY_TREATMENT_ALLOW_BACK_ORDERS = 'allowBackOrders';
-    const INVENTORY_TREATMENT_PRE_ORDER         = 'preOrder';
+    const MODEL_TYPE_STANDARD                       = 'standard';
+    const MODEL_TYPE_CONFIGURABLE                   = 'configurable';
+    const MODEL_TYPE_BUNDLE                         = 'bundle';
+    const MODEL_TYPE_BUNDLE_ITEM                    = 'bundleItem';
+    const MODEL_TYPE_VARIANT                        = 'variant';
+    const STATUS_ACTIVE                             = 'active';
+    const STATUS_INACTIVE                           = 'inactive';
+    const STATUS_DELETED                            = 'deleted';
+    const STATUS_SCHEDULED                          = 'scheduled';
+    const INVENTORY_TREATMENT_SHOW_OUT_OF_STOCK     = 'showOutOfStock';
+    const INVENTORY_TREATMENT_ALLOW_BACK_ORDERS     = 'allowBackOrders';
+    const INVENTORY_TREATMENT_PRE_ORDER             = 'preOrder';
     const FULFILLMENT_METHOD_SIMPLE_PICKUP_IN_STORE = 'simplePickUpInStore';
     const FULFILLMENT_METHOD_DIRECT_SHIP            = 'directShip';
 
@@ -86,6 +88,8 @@ class Create extends DTOBase
         'properties'           => [
             'name'                => ['type' => 'object'],
             'longName'            => ['type' => 'object'],
+            'shortDescription'    => ['type' => 'object'],
+            'longDescription'     => ['type' => 'object'],
             'categories'          => [
                 'type'  => 'array',
                 'items' => [

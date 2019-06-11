@@ -51,6 +51,7 @@ PUBSUB_EMULATOR_HOST=localhost:8085 php ./pubsubfiller.php
 docker-compose $DOCKER_COMPOSE_FILES build
 retry "MySQL" "docker-compose exec -T mysql mysql -uroot -psecret -e \"select 1 from dual\" 2>&1"
 
+docker-compose exec -T mysql mysql -u root -psecret < ./fixtures/schema.sql
 php ./etcdfiller.php
 docker-compose $DOCKER_COMPOSE_FILES up -d omni-event-receiver
 retry "EventReceiver" "docker-compose exec -T omni-event-receiver curl http://localhost/health -o /dev/null 2>&1"
@@ -61,5 +62,7 @@ retry "AuthService" "docker-compose exec -T auth curl http://localhost/health -o
 retry "MerchantService" "docker-compose exec -T omni-merchant curl http://localhost/health -o /dev/null 2>&1"
 retry "LocationService" "docker-compose exec -T omni-location curl http://localhost/health -o /dev/null 2>&1"
 retry "CatalogService" "docker-compose exec -T catalog curl http://localhost/health -o /dev/null 2>&1"
+
+docker-compose exec -T mysql mysql -u root -psecret < ./fixtures/sampleData.sql
 
 echo "To start tests against the local stack, just run 'npm run localIntegration'"

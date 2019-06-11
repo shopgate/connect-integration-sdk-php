@@ -32,7 +32,7 @@ development:
     OmniMerchantService:
       mysql:
         connectionLimit: 1
-        database: omnichannel
+        database: merchant
         host: mysql
         password: secret
         port: 3306
@@ -41,7 +41,7 @@ development:
     OmniLocationService:
       mysql:
         connectionLimit: 1
-        database: omnichannel
+        database: location
         host: mysql
         password: secret
         port: 3306
@@ -50,7 +50,7 @@ development:
     CatalogService:
       mysql:
         connectionLimit: 1
-        database: omnichannel
+        database: catalog
         host: mysql
         password: secret
         port: 3306

@@ -26,7 +26,7 @@ use Shopgate\ConnectSdk\DTO\Base as DTOBase;
 
 /**
  * @method Property setCode(string $code)
- * @method Property setName(string $name)
+ * @method Property setName(Name $name)
  * @method Property setValue(LocalizationValue $value)
  * @method Property setType(string $type)
  * @method Property setDisplayGroup(string $displayGroup)
@@ -53,7 +53,7 @@ class Property extends DTOBase
         'type'                 => 'object',
         'properties'           => [
             'code'            => ['type' => 'string'],
-            'name'            => ['type' => 'string'],
+            'name'            => ['type' => 'object'],
             'value'           => ['type' => 'object'],
             'type'            => ['type' => 'string'],
             'displayGroup'    => ['type' => 'string'],

@@ -25,8 +25,7 @@ namespace Shopgate\ConnectSdk\Entities;
 use Dto\Exceptions\InvalidDataTypeException;
 use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\ClientInterface;
-use Shopgate\ConnectSdk\DTO\Catalog\Attribute\Get as Attribute;
-use Shopgate\ConnectSdk\DTO\Catalog\Attribute\GetList as AttributeList;
+use Shopgate\ConnectSdk\DTO\Catalog\Attribute;
 use Shopgate\ConnectSdk\DTO\Catalog\Category;
 use Shopgate\ConnectSdk\DTO\Catalog\Product;
 use Shopgate\ConnectSdk\DTO\Meta;
@@ -57,14 +56,16 @@ class Catalog
             [
                 // general
                 'method'      => 'post',
-                'requestType' => isset($meta['requestType']) ? $meta['requestType'] : ShopgateSdk::REQUEST_TYPE_EVENT,
+                'requestType' => isset($meta['requestType'])
+                    ? $meta['requestType']
+                    : ShopgateSdk::REQUEST_TYPE_EVENT,
                 'body'        => ['categories' => $categories],
                 // direct
                 'service'     => 'catalog',
                 'path'        => 'categories',
                 // async
                 'entity'      => 'category',
-                'action'      => 'create'
+                'action'      => 'create',
             ]
         );
     }
@@ -81,7 +82,9 @@ class Catalog
         return $this->client->doRequest(
             [
                 // general
-                'requestType' => isset($meta['requestType']) ? $meta['requestType'] : ShopgateSdk::REQUEST_TYPE_EVENT,
+                'requestType' => isset($meta['requestType'])
+                    ? $meta['requestType']
+                    : ShopgateSdk::REQUEST_TYPE_EVENT,
                 'body'        => $payload,
                 // direct
                 'method'      => 'post',
@@ -90,7 +93,7 @@ class Catalog
                 // async
                 'entity'      => 'category',
                 'action'      => 'update',
-                'entityId'    => $entityId
+                'entityId'    => $entityId,
             ]
         );
     }
@@ -106,7 +109,9 @@ class Catalog
         return $this->client->doRequest(
             [
                 // general
-                'requestType' => isset($meta['requestType']) ? $meta['requestType'] : ShopgateSdk::REQUEST_TYPE_EVENT,
+                'requestType' => isset($meta['requestType'])
+                    ? $meta['requestType']
+                    : ShopgateSdk::REQUEST_TYPE_EVENT,
                 // direct
                 'method'      => 'delete',
                 'service'     => 'catalog',
@@ -114,7 +119,7 @@ class Catalog
                 // async
                 'entity'      => 'category',
                 'action'      => 'delete',
-                'entityId'    => $entityId
+                'entityId'    => $entityId,
             ]
         );
     }
@@ -137,7 +142,7 @@ class Catalog
                 'service' => 'catalog',
                 'method'  => 'get',
                 'path'    => 'categories',
-                'query'   => $meta
+                'query'   => $meta,
             ]
         );
         $response = json_decode($response->getBody(), true);
@@ -178,15 +183,17 @@ class Catalog
                 'entity'      => 'product',
                 'action'      => 'create',
                 'body'        => ['products' => $products],
-                'requestType' => isset($meta['requestType']) ? $meta['requestType'] : ShopgateSdk::REQUEST_TYPE_EVENT
+                'requestType' => isset($meta['requestType'])
+                    ? $meta['requestType']
+                    : ShopgateSdk::REQUEST_TYPE_EVENT,
             ]
         );
     }
 
     /**
-     * @param string  $entityId
+     * @param string         $entityId
      * @param Product\Update $payload //TODO: change Create to Update once it exists
-     * @param array   $meta
+     * @param array          $meta
      *
      * @return ResponseInterface
      */
@@ -226,19 +233,74 @@ class Catalog
                 'entity'      => 'product',
                 'action'      => 'delete',
                 'entityId'    => $entityId,
-                'requestType' => isset($meta['requestType']) ? $meta['requestType'] : ShopgateSdk::REQUEST_TYPE_EVENT
+                'requestType' => isset($meta['requestType'])
+                    ? $meta['requestType']
+                    : ShopgateSdk::REQUEST_TYPE_EVENT,
             ]
         );
     }
 
+    /**
+     * @param array $meta
+     *
+     * @return Product\GetList
+     */
     public function getProducts(array $meta = [])
     {
-        //todo-sg: finish up
+        if (isset($meta['filters'])) {
+            $meta['filters'] = \GuzzleHttp\json_encode($meta['filters']);
+        }
+
+        $response = $this->client->doRequest(
+            [
+                // direct only
+                'service' => 'catalog',
+                'method'  => 'get',
+                'path'    => 'products',
+                'query'   => $meta,
+            ]
+        );
+        $response = json_decode($response->getBody(), true);
+
+        $products = [];
+        foreach ($response['products'] as $product) {
+            $products[] = new Product\Get($product);
+        }
+        $response['meta']     = new Meta($response['meta']);
+        $response['products'] = $products;
+
+        return new Product\GetList($response);
     }
 
     /**
-     * @param Attribute[] $attributes
-     * @param array       $meta
+     * @param string $productCode
+     * @param string $fields
+     * @param boolean $getOriginalImageUrls
+     *
+     * @return Attribute
+     */
+    public function getProduct($productCode, $fields = '', $getOriginalImageUrls = false)
+    {
+        $response = $this->client->doRequest(
+            [
+                // direct only
+                'service' => 'catalog',
+                'method'  => 'get',
+                'path'    => 'products/' . $productCode,
+                'query'   => [
+                    'fields' => $fields,
+                    'getOriginalImageUrls' => json_encode($getOriginalImageUrls)
+                ],
+            ]
+        );
+        $response = json_decode($response->getBody(), true);
+
+        return new Product\Get($response['product']);
+    }
+
+    /**
+     * @param Attribute\Create[] $attributes
+     * @param array              $meta
      *
      * @return ResponseInterface
      */
@@ -257,14 +319,16 @@ class Catalog
             [
                 // general
                 'method'      => 'post',
-                'requestType' => isset($meta['requestType']) ? $meta['requestType'] : ShopgateSdk::REQUEST_TYPE_EVENT,
+                'requestType' => isset($meta['requestType'])
+                    ? $meta['requestType']
+                    : ShopgateSdk::REQUEST_TYPE_EVENT,
                 'body'        => ['attributes' => $requestAttributes],
                 // direct
                 'service'     => 'catalog',
                 'path'        => 'attributes',
                 // async
                 'entity'      => 'attribute',
-                'action'      => 'create'
+                'action'      => 'create',
             ]
         );
     }
@@ -273,7 +337,7 @@ class Catalog
      * @param array $meta
      *
      * @todo-sg: supposedly needs more than just limit/offset as there are many query methods defined, ask Pascal
-     * @return AttributeList
+     * @return Attribute\GetList
      */
     public function getAttributes(array $meta = [])
     {
@@ -287,18 +351,145 @@ class Catalog
                 'service' => 'catalog',
                 'method'  => 'get',
                 'path'    => 'attributes',
-                'query'   => $meta
+                'query'   => $meta,
             ]
         );
         $response = json_decode($response->getBody(), true);
 
         $attributes = [];
         foreach ($response['attributes'] as $attribute) {
-            $attributes[] = new Attribute($attribute);
+            $attributes[] = new Attribute\Get($attribute);
         }
         $response['meta']       = new Meta($response['meta']);
         $response['attributes'] = $attributes;
 
-        return new AttributeList($response);
+        return new Attribute\GetList($response);
+    }
+
+    /**
+     * @param string $attributeCode
+     * @param string $localeCode
+     *
+     * @return Attribute\Get
+     */
+    public function getAttribute($attributeCode, $localeCode = '')
+    {
+        $response = $this->client->doRequest(
+            [
+                // direct only
+                'service' => 'catalog',
+                'method'  => 'get',
+                'path'    => 'attributes/' . $attributeCode,
+                'query'   => [
+                    'localeCode' => $localeCode,
+                ],
+            ]
+        );
+
+        $response = json_decode($response->getBody(), true);
+
+        return new Attribute\Get($response['attribute']);
+    }
+
+    /**
+     * @param string           $attributeCode
+     * @param Attribute\Update $payload
+     * @param array            $meta
+     *
+     * @return ResponseInterface
+     */
+    public function updateAttribute($attributeCode, Attribute\Update $payload, array $meta = [])
+    {
+        //todo-sg: test
+        return $this->client->doRequest(
+            [
+                'service'     => 'catalog',
+                'method'      => 'post',
+                'path'        => 'attributes/' . $attributeCode,
+                'entity'      => 'attribute',
+                'action'      => 'update',
+                'body'        => $payload,
+                'requestType' => isset($meta['requestType'])
+                    ? $meta['requestType']
+                    : ShopgateSdk::REQUEST_TYPE_EVENT,
+            ]
+        );
+    }
+
+    /**
+     * @param string $attributeCode
+     * @param array  $meta
+     *
+     * @return ResponseInterface
+     */
+    public function deleteAttribute($attributeCode, array $meta = [])
+    {
+        //todo-sg: test
+        return $this->client->doRequest(
+            [
+                'service'     => 'catalog',
+                'method'      => 'delete',
+                'path'        => 'attributes/' . $attributeCode,
+                'entity'      => 'attribute',
+                'action'      => 'delete',
+                'requestType' => isset($meta['requestType'])
+                    ? $meta['requestType']
+                    : ShopgateSdk::REQUEST_TYPE_EVENT,
+            ]
+        );
+    }
+
+    /**
+     * @param string                  $attributeCode
+     * @param string                  $attributeValueCode
+     * @param Attribute\Values\Update $payload
+     * @param array                   $meta
+     *
+     * @return ResponseInterface
+     */
+    public function updateAttributeValue(
+        $attributeCode,
+        $attributeValueCode,
+        Attribute\Values\Update $payload,
+        array $meta = []
+    ) {
+        //todo-sg: test
+        return $this->client->doRequest(
+            [
+                'service'     => 'catalog',
+                'method'      => 'post',
+                'path'        => 'attributes/' . $attributeCode . '/values/' . $attributeValueCode,
+                'entity'      => 'attribute',
+                'action'      => 'update',
+                'body'        => $payload,
+                'requestType' => isset($meta['requestType'])
+                    ? $meta['requestType']
+                    : ShopgateSdk::REQUEST_TYPE_EVENT,
+            ]
+        );
+    }
+
+    /**
+     * @param string $attributeCode
+     * @param string $attributeValueCode
+     * @param array  $meta
+     *
+     * @return ResponseInterface
+     */
+    public function deleteAttributeValue($attributeCode, $attributeValueCode, array $meta = [])
+    {
+        //todo-sg: test
+        return $this->client->doRequest(
+            [
+                'service'     => 'catalog',
+                'method'      => 'delete',
+                'path'        => 'attributes/' . $attributeCode . '/values/' . $attributeValueCode,
+                'entity'      => 'attribute',
+                'action'      => 'delete',
+                'requestType' => isset($meta['requestType'])
+                    ? $meta['requestType']
+                    : ShopgateSdk::REQUEST_TYPE_EVENT,
+            ]
+        );
     }
 }

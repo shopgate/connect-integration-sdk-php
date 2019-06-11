@@ -27,12 +27,12 @@ use Shopgate\ConnectSdk\DTO\Base as DTOBase;
 /**
  * Default class that handles validation for attribute Create payloads.
  *
- * @method string setCode(string $code)
- * @method string setType(string $type)
- * @method string setUse(string $use)
- * @method string setName(Name $name)
- * @method string setExternalUpdateDate(string $externalUpdateDate)
- * @method string setValues(string $values)
+ * @method Create setCode(string $code)
+ * @method Create setType(string $type)
+ * @method Create setUse(string $use)
+ * @method Create setName(Name $name)
+ * @method Create setExternalUpdateDate(string $externalUpdateDate)
+ * @method Create setValues(string $values)
  */
 class Create extends DTOBase
 {
@@ -48,7 +48,7 @@ class Create extends DTOBase
             'use'                => ['type' => 'string'],
             'name'               => ['type' => 'object'],
             'externalUpdateDate' => ['type' => 'string'],
-            'values'             => ['type' => 'string'],
+            'values'             => ['type' => 'array'],
         ],
         'additionalProperties' => true,
     ];

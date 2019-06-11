@@ -25,7 +25,7 @@ namespace Shopgate\ConnectSdk\DTO\Catalog\Attribute\Values;
 use Shopgate\ConnectSdk\DTO\Base as DTOBase;
 
 /**
- * Default class that handles validation for attribute Create payloads.
+ * Default class that handles swatches in DTOs
  *
  * @method string setType(string $type)
  * @method string setValue(int $value)

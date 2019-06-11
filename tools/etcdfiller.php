@@ -5,7 +5,12 @@ use LinkORB\Component\Etcd\Client;
 use LinkORB\Component\Etcd\Exception\KeyExistsException;
 use Symfony\Component\Yaml\Yaml;
 
-$etcdClient = new Client('http://localhost:2379');
+if (!getenv('ETCD_HOST')) {
+    echo 'GOT NO ETCD';
+    putenv('ECTD_HOST=http://localhost:2379');
+}
+
+$etcdClient = new Client(getenv('ETCD_HOST'));
 $etcdValues = Yaml::parseFile(__DIR__ . '/fixtures/etcd.yml');
 
 fillEtcd($etcdValues);

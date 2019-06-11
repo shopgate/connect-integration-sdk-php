@@ -42,17 +42,21 @@ export SERVICE=sdk
 docker network create ${SERVICE}-integration-network
 
 set -e
+docker-compose $DOCKER_COMPOSE_FILES up -d php
 docker-compose $DOCKER_COMPOSE_FILES up -d mysql
 
 docker-compose $DOCKER_COMPOSE_FILES up -d etcd
 docker-compose $DOCKER_COMPOSE_FILES up -d googlepubsub-emulator
-PUBSUB_EMULATOR_HOST=localhost:8085 php ./pubsubfiller.php
+
+docker-compose exec php composer update
+docker-compose exec php php ./tools/pubsubfiller.php
+docker-compose exec php php ./tools/etcdfiller.php
 
 docker-compose $DOCKER_COMPOSE_FILES build
 retry "MySQL" "docker-compose exec -T mysql mysql -uroot -psecret -e \"select 1 from dual\" 2>&1"
 
 docker-compose exec -T mysql mysql -u root -psecret < ./fixtures/schema.sql
-php ./etcdfiller.php
+
 docker-compose $DOCKER_COMPOSE_FILES up -d omni-event-receiver
 retry "EventReceiver" "docker-compose exec -T omni-event-receiver curl http://localhost/health -o /dev/null 2>&1"
 
@@ -64,5 +68,3 @@ retry "LocationService" "docker-compose exec -T omni-location curl http://localh
 retry "CatalogService" "docker-compose exec -T catalog curl http://localhost/health -o /dev/null 2>&1"
 
 docker-compose exec -T mysql mysql -u root -psecret < ./fixtures/sampleData.sql
-
-echo "To start tests against the local stack, just run 'npm run localIntegration'"

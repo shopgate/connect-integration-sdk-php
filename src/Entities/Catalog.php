@@ -231,9 +231,36 @@ class Catalog
         );
     }
 
+    /**
+     * @param array $meta
+     *
+     * @return Product\GetList
+     */
     public function getProducts(array $meta = [])
     {
-        //todo-sg: finish up
+        if (isset($meta['filters'])) {
+            $meta['filters'] = \GuzzleHttp\json_encode($meta['filters']);
+        }
+
+        $response = $this->client->doRequest(
+            [
+                // direct only
+                'service' => 'catalog',
+                'method'  => 'get',
+                'path'    => 'products',
+                'query'   => $meta
+            ]
+        );
+        $response = json_decode($response->getBody(), true);
+
+        $products = [];
+        foreach ($response['products'] as $product) {
+            $products[] = new Product\Get($product);
+        }
+        $response['meta']       = new Meta($response['meta']);
+        $response['products'] = $products;
+
+        return new Product\GetList($response);
     }
 
     /**

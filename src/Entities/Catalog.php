@@ -25,10 +25,6 @@ namespace Shopgate\ConnectSdk\Entities;
 use Dto\Exceptions\InvalidDataTypeException;
 use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\ClientInterface;
-
-//use Shopgate\ConnectSdk\DTO\Catalog\Attribute\Get as Attribute;
-//use Shopgate\ConnectSdk\DTO\Catalog\Attribute\GetList as AttributeList;
-//use Shopgate\ConnectSdk\DTO\Catalog\Attribute\Update;
 use Shopgate\ConnectSdk\DTO\Catalog\Attribute;
 use Shopgate\ConnectSdk\DTO\Catalog\Category;
 use Shopgate\ConnectSdk\DTO\Catalog\Product;

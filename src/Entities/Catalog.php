@@ -446,4 +446,28 @@ class Catalog
             ]
         );
     }
+
+    /**
+     * @param string $attributeCode
+     * @param string $attributeValueCode
+     * @param array  $meta
+     *
+     * @return ResponseInterface
+     */
+    public function deleteAttributeValue($attributeCode, $attributeValueCode, array $meta = [])
+    {
+        //todo-sg: test
+        return $this->client->doRequest(
+            [
+                'service'     => 'catalog',
+                'method'      => 'delete',
+                'path'        => 'attributes/' . $attributeCode . '/values/' . $attributeValueCode,
+                'entity'      => 'attribute',
+                'action'      => 'delete',
+                'requestType' => isset($meta['requestType'])
+                    ? $meta['requestType']
+                    : ShopgateSdk::REQUEST_TYPE_EVENT,
+            ]
+        );
+    }
 }

@@ -83,7 +83,7 @@ class Client implements ClientInterface
      */
     private function triggerEvent(array $params)
     {
-        $values = [$params['body']];
+        $values = [isset($params['body']) ? $params['body'] : new Base()];
         if ($params['action'] === 'create') {
             $key    = array_keys($params['body'])[0];
             $values = $params['body'][$key];
@@ -118,6 +118,6 @@ class Client implements ClientInterface
      */
     public function isDirect(array $params)
     {
-        return (!isset($params['requestType']) && $params['method'] === 'get') || $params['requestType'] === 'direct';
+        return (!isset($params['requestType']) && $params['method'] === 'get') || $params['requestType'] === ShopgateSdk::REQUEST_TYPE_DIRECT;
     }
 }

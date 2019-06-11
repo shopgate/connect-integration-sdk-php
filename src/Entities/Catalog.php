@@ -30,6 +30,7 @@ use Shopgate\ConnectSdk\DTO\Catalog\Attribute\GetList as AttributeList;
 use Shopgate\ConnectSdk\DTO\Catalog\Category;
 use Shopgate\ConnectSdk\DTO\Catalog\Product;
 use Shopgate\ConnectSdk\DTO\Meta;
+use Shopgate\ConnectSdk\ShopgateSdk;
 
 class Catalog
 {
@@ -56,7 +57,7 @@ class Catalog
             [
                 // general
                 'method'      => 'post',
-                'requestType' => isset($meta['requestType']) ? $meta['requestType'] : 'async',
+                'requestType' => isset($meta['requestType']) ? $meta['requestType'] : ShopgateSdk::REQUEST_TYPE_EVENT,
                 'body'        => ['categories' => $categories],
                 // direct
                 'service'     => 'catalog',
@@ -80,8 +81,8 @@ class Catalog
         return $this->client->doRequest(
             [
                 // general
-                'requestType' => $meta['requestType'],
-                'body'        => $payload->toJson(),
+                'requestType' => isset($meta['requestType']) ? $meta['requestType'] : ShopgateSdk::REQUEST_TYPE_EVENT,
+                'body'        => $payload,
                 // direct
                 'method'      => 'post',
                 'service'     => 'catalog',
@@ -105,7 +106,7 @@ class Catalog
         return $this->client->doRequest(
             [
                 // general
-                'requestType' => $meta['requestType'],
+                'requestType' => isset($meta['requestType']) ? $meta['requestType'] : ShopgateSdk::REQUEST_TYPE_EVENT,
                 // direct
                 'method'      => 'delete',
                 'service'     => 'catalog',
@@ -176,8 +177,8 @@ class Catalog
                 'path'        => 'products',
                 'entity'      => 'product',
                 'action'      => 'create',
-                'body'        => json_encode(['products' => $requestProducts]),
-                'requestType' => $meta['requestType']
+                'body'        => ['products' => $requestProducts],
+                'requestType' => isset($meta['requestType']) ? $meta['requestType'] : ShopgateSdk::REQUEST_TYPE_EVENT
             ]
         );
     }
@@ -189,7 +190,7 @@ class Catalog
      *
      * @return ResponseInterface
      */
-    public function updateProduct($entityId, Product $payload, array $meta = [])
+    public function updateProduct($entityId, Product\Create $payload, array $meta = [])
     {
         //todo-sg: test
         return $this->client->doRequest(
@@ -199,8 +200,8 @@ class Catalog
                 'path'        => 'products/' . $entityId,
                 'entity'      => 'product',
                 'action'      => 'update',
-                'body'        => $payload->toJson(),
-                'requestType' => $meta['requestType']
+                'body'        => $payload,
+                'requestType' => isset($meta['requestType']) ? $meta['requestType'] : ShopgateSdk::REQUEST_TYPE_EVENT
             ]
         );
     }
@@ -222,7 +223,7 @@ class Catalog
                 'entity'      => 'product',
                 'action'      => 'delete',
                 'entityId'    => $entityId,
-                'requestType' => $meta['requestType']
+                'requestType' => isset($meta['requestType']) ? $meta['requestType'] : ShopgateSdk::REQUEST_TYPE_EVENT
             ]
         );
     }
@@ -253,8 +254,8 @@ class Catalog
             [
                 // general
                 'method'      => 'post',
-                'requestType' => $meta['requestType'],
-                'body'        => json_encode(['attributes' => $requestAttributes]),
+                'requestType' => isset($meta['requestType']) ? $meta['requestType'] : ShopgateSdk::REQUEST_TYPE_EVENT,
+                'body'        => ['attributes' => $requestAttributes],
                 // direct
                 'service'     => 'catalog',
                 'path'        => 'attributes',

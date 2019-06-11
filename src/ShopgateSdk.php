@@ -29,6 +29,10 @@ use Shopgate\ConnectSdk\Http;
 
 class ShopgateSdk
 {
+
+    const REQUEST_TYPE_DIRECT = "direct";
+    const REQUEST_TYPE_EVENT = "event";
+
     /** @var Catalog */
     public $catalog;
     /** @var Http\ClientInterface */

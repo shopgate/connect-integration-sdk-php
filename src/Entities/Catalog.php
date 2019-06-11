@@ -275,6 +275,32 @@ class Catalog
     }
 
     /**
+     * @param string $productCode
+     * @param string $fields
+     * @param boolean $getOriginalImageUrls
+     *
+     * @return Attribute
+     */
+    public function getProduct($productCode, $fields = '', $getOriginalImageUrls = false)
+    {
+        $response = $this->client->doRequest(
+            [
+                // direct only
+                'service' => 'catalog',
+                'method'  => 'get',
+                'path'    => 'products/' . $productCode,
+                'query'   => [
+                    'fields' => $fields,
+                    'getOriginalImageUrls' => json_encode($getOriginalImageUrls)
+                ],
+            ]
+        );
+        $response = json_decode($response->getBody(), true);
+
+        return new Product\Get($response['product']);
+    }
+
+    /**
      * @param Attribute[] $attributes
      * @param array       $meta
      *

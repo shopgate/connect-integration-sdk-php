@@ -185,7 +185,7 @@ class Catalog
 
     /**
      * @param string  $entityId
-     * @param Product $payload
+     * @param Product\Update $payload //TODO: change Create to Update once it exists
      * @param array   $meta
      *
      * @return ResponseInterface

@@ -25,9 +25,11 @@ namespace Shopgate\ConnectSdk\Entities;
 use Dto\Exceptions\InvalidDataTypeException;
 use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\ClientInterface;
-use Shopgate\ConnectSdk\DTO\Catalog\Attribute\Get as Attribute;
-use Shopgate\ConnectSdk\DTO\Catalog\Attribute\GetList as AttributeList;
-use Shopgate\ConnectSdk\DTO\Catalog\Attribute\Update;
+
+//use Shopgate\ConnectSdk\DTO\Catalog\Attribute\Get as Attribute;
+//use Shopgate\ConnectSdk\DTO\Catalog\Attribute\GetList as AttributeList;
+//use Shopgate\ConnectSdk\DTO\Catalog\Attribute\Update;
+use Shopgate\ConnectSdk\DTO\Catalog\Attribute;
 use Shopgate\ConnectSdk\DTO\Catalog\Category;
 use Shopgate\ConnectSdk\DTO\Catalog\Product;
 use Shopgate\ConnectSdk\DTO\Meta;
@@ -259,7 +261,7 @@ class Catalog
                 'service' => 'catalog',
                 'method'  => 'get',
                 'path'    => 'products',
-                'query'   => $meta
+                'query'   => $meta,
             ]
         );
         $response = json_decode($response->getBody(), true);
@@ -268,15 +270,15 @@ class Catalog
         foreach ($response['products'] as $product) {
             $products[] = new Product\Get($product);
         }
-        $response['meta']       = new Meta($response['meta']);
+        $response['meta']     = new Meta($response['meta']);
         $response['products'] = $products;
 
         return new Product\GetList($response);
     }
 
     /**
-     * @param Attribute[] $attributes
-     * @param array       $meta
+     * @param Attribute\Create[] $attributes
+     * @param array              $meta
      *
      * @return ResponseInterface
      */
@@ -313,7 +315,7 @@ class Catalog
      * @param array $meta
      *
      * @todo-sg: supposedly needs more than just limit/offset as there are many query methods defined, ask Pascal
-     * @return AttributeList
+     * @return Attribute\GetList
      */
     public function getAttributes(array $meta = [])
     {
@@ -334,19 +336,19 @@ class Catalog
 
         $attributes = [];
         foreach ($response['attributes'] as $attribute) {
-            $attributes[] = new Attribute($attribute);
+            $attributes[] = new Attribute\Get($attribute);
         }
         $response['meta']       = new Meta($response['meta']);
         $response['attributes'] = $attributes;
 
-        return new AttributeList($response);
+        return new Attribute\GetList($response);
     }
 
     /**
      * @param string $attributeCode
      * @param string $localeCode
      *
-     * @return Attribute
+     * @return Attribute\Get
      */
     public function getAttribute($attributeCode, $localeCode = '')
     {
@@ -364,17 +366,17 @@ class Catalog
 
         $response = json_decode($response->getBody(), true);
 
-        return new Attribute($response['attribute']);
+        return new Attribute\Get($response['attribute']);
     }
 
     /**
-     * @param string $attributeCode
-     * @param Update $payload //TODO: change Create to Update once it exists
-     * @param array  $meta
+     * @param string           $attributeCode
+     * @param Attribute\Update $payload
+     * @param array            $meta
      *
      * @return ResponseInterface
      */
-    public function updateAttribute($attributeCode, Update $payload, array $meta = [])
+    public function updateAttribute($attributeCode, Attribute\Update $payload, array $meta = [])
     {
         //todo-sg: test
         return $this->client->doRequest(
@@ -416,17 +418,17 @@ class Catalog
     }
 
     /**
-     * @param string $attributeCode
-     * @param string $attributeValueCode
-     * @param Update $payload //TODO: change Create to Update once it exists
-     * @param array  $meta
+     * @param string                  $attributeCode
+     * @param string                  $attributeValueCode
+     * @param Attribute\Values\Update $payload
+     * @param array                   $meta
      *
      * @return ResponseInterface
      */
     public function updateAttributeValue(
         $attributeCode,
         $attributeValueCode,
-        \Shopgate\ConnectSdk\DTO\Catalog\Attribute\Values\Update $payload,
+        Attribute\Values\Update $payload,
         array $meta = []
     ) {
         //todo-sg: test

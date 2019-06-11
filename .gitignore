@@ -11,4 +11,5 @@ composer.lock
 /.php-cs.cache
 test.php
 access_token.txt
+/tools/docker-compose.yml
 .env

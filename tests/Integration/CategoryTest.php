@@ -79,7 +79,10 @@ class CategoryTest extends ShopgateSdkTest
     }
 
 
-    // TODO: It seems only one category is created in the service (Oliver is on it)
+    // TODO: It seems only one category is created in the service. Cause of this bug:
+    // https://gitlab.localdev.cc/omnichannel/services/worker/blob/v1.0.0-beta.10c/app/EventController.js#L37
+    // the return will interrupt the execution of following events
+    // will be fixed once we can use something later than omni-worker: v1.0.0-beta.10c
     public function testCreateCategoryEvent()
     {
         // Arrange

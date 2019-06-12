@@ -35,11 +35,15 @@ services:
       - MYSQL_ROOT_PASSWORD=secret
     %MYSQL_PORTS%
 
+  redis:
+    image: library/redis
+
   auth:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/auth2:latest
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/auth2:2018-02-12_48
     restart: always
     links:
       - etcd
+      - redis
     environment:
       - NODE_ENV=development
       - APP_PORT=80
@@ -62,7 +66,7 @@ services:
 
 ### services
   omni-worker:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/worker:v1.0.0-beta.10c
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/worker:v1.0.0-beta.10d
     links:
       - etcd
     environment:
@@ -83,7 +87,7 @@ services:
       - PUBSUB_EMULATOR_HOST=googlepubsub-emulator:8085
 
   omni-merchant:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/merchant:v1.0.0-beta.13
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/merchant:v1.0.0-beta.14
     links:
       - etcd
     environment:
@@ -92,7 +96,7 @@ services:
       - LOG_TO_SYSLOG=false
 
   omni-location:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/location:v1.0.0-alpha.32
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/location:v1.0.0-alpha.33
     links:
       - etcd
     environment:
@@ -101,7 +105,7 @@ services:
       - LOG_TO_SYSLOG=false
 
   catalog:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/catalog:v1.0.0-alpha.58-development
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/catalog:v1.0.0-alpha.59-development
     restart: always
     links:
       - etcd

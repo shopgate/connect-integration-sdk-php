@@ -24,8 +24,8 @@ development:
     OmniEventReceiverService:
       bigApi:
         baseUrl: http://{serviceName}.shopgatedev.services/
-        clientId: omni-interface-adapter
-        clientSecret: omni-interface-adapter
+        clientId: integration-tests
+        clientSecret: integration-tests
       googleCloud:
         projectId: test-project
 

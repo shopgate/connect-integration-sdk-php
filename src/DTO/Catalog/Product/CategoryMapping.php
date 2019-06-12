@@ -25,7 +25,7 @@ namespace Shopgate\ConnectSdk\DTO\Catalog\Product;
 use Shopgate\ConnectSdk\DTO\Base as DTOBase;
 
 /**
- * @method CategoryMapping setCategoryCode(string $categoryCode)
+ * @method CategoryMapping setCode(string $code)
  * @method CategoryMapping setIsPrimary(boolean $isPrimary)
  */
 class CategoryMapping extends DTOBase
@@ -37,9 +37,9 @@ class CategoryMapping extends DTOBase
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'categoryCode' => ['type' => 'string'],
-            'isPrimary'    => ['type' => 'boolean']
+            'code'      => ['type' => 'string'],
+            'isPrimary' => ['type' => 'boolean'],
         ],
-        'additionalProperties' => true
+        'additionalProperties' => true,
     ];
 }

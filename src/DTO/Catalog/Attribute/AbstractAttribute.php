@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright Shopgate Inc.
  *
@@ -20,13 +19,17 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\DTO\Catalog\Attribute\Values;
+namespace Shopgate\ConnectSdk\DTO\Catalog\Attribute;
 
-use Shopgate\ConnectSdk\DTO\LocalizedString;
+use Shopgate\ConnectSdk\DTO\Base;
 
-/**
- * Localized name
- */
-class Name extends LocalizedString
+class AbstractAttribute extends Base
 {
+    const USE_OPTION        = 'option';
+    const USE_EXTRA         = 'extra';
+    const USE_PROPERTY      = 'property';
+    const TYPE_TEXT         = 'text';
+    const TYPE_PRODUCT_LIST = 'product_list';
+    const TYPE_INPUT        = 'input';
+    const TYPE_NUMBER       = 'number';
 }

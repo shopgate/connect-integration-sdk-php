@@ -20,30 +20,17 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\DTO\Catalog\Attribute\Values;
-
-use Shopgate\ConnectSdk\DTO\Base as DTOBase;
+namespace Shopgate\ConnectSdk\DTO\Catalog\Attribute\Value;
 
 /**
- * Default class that handles validation for attribute values Update payloads.
+ * DTO for attribute values response.
  *
- * @method string setSequenceId(int $sequenceId)
- * @method string setName(Name $name)
- * @method string setSwatch(Swatch $swatch)
+ * @method string getCode()
+ * @method int getSequenceId()
+ * @method Name getName()
+ * @method Swatch getSwatch()
+ *
  */
-class Update extends DTOBase
+class Get extends AbstractValue
 {
-    /**
-     * @var array
-     * @codeCoverageIgnore
-     */
-    protected $schema = [
-        'type'                 => 'object',
-        'properties'           => [
-            'sequenceId' => ['type' => 'integer'],
-            'name'       => ['type' => 'object'],
-            'swatch'     => ['type' => 'object'],
-        ],
-        'additionalProperties' => true,
-    ];
 }

@@ -20,19 +20,13 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\DTO\Catalog\Attribute\Values;
+namespace Shopgate\ConnectSdk\DTO\Catalog\Attribute\Value;
 
-use Shopgate\ConnectSdk\DTO\Base as DTOBase;
+use Shopgate\ConnectSdk\DTO\LocalizedString;
 
 /**
- * DTO for attribute values response.
- *
- * @method string getCode()
- * @method int getSequenceId()
- * @method Name getName()
- * @method Swatch getSwatch()
- *
+ * Localized name
  */
-class Get extends DTOBase
+class Name extends LocalizedString
 {
 }

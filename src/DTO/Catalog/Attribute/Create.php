@@ -22,8 +22,6 @@
 
 namespace Shopgate\ConnectSdk\DTO\Catalog\Attribute;
 
-use Shopgate\ConnectSdk\DTO\Base as DTOBase;
-
 /**
  * Default class that handles validation for attribute Create payloads.
  *
@@ -34,7 +32,7 @@ use Shopgate\ConnectSdk\DTO\Base as DTOBase;
  * @method Create setExternalUpdateDate(string $externalUpdateDate)
  * @method Create setValues(string $values)
  */
-class Create extends DTOBase
+class Create extends AbstractAttribute
 {
     /**
      * @var array

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright Shopgate Inc.
  *
@@ -20,28 +19,12 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\DTO\Catalog\Attribute\Values;
+namespace Shopgate\ConnectSdk\DTO\Catalog\Attribute\Value;
 
-use Shopgate\ConnectSdk\DTO\Base as DTOBase;
+use Shopgate\ConnectSdk\DTO\Base;
 
-/**
- * Default class that handles swatches in DTOs
- *
- * @method string setType(string $type)
- * @method string setValue(int $value)
- */
-class Swatch extends DTOBase
+class AbstractValue extends Base
 {
-    /**
-     * @var array
-     * @codeCoverageIgnore
-     */
-    protected $schema = [
-        'type'                 => 'object',
-        'properties'           => [
-            'type'  => ['type' => 'string'],
-            'value' => ['type' => 'string'],
-        ],
-        'additionalProperties' => true,
-    ];
+    const SWATCH_TYPE_IMAGE   = 'image';
+    const SWATCH_TYPE_COLOR   = 'color';
 }

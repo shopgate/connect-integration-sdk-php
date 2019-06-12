@@ -20,18 +20,30 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\DTO\Catalog\Attribute;
-
-use Shopgate\ConnectSdk\DTO\Meta;
+namespace Shopgate\ConnectSdk\DTO\Catalog\Attribute\Value;
 
 /**
- * DTO for category list response.
+ * Default class that handles validation for attribute values Create payloads.
  *
- * @method Meta getMeta()
- * @method Get[] getAttributes()
- *
+ * @method string setCode(string $code)
+ * @method string setSequenceId(int $sequenceId)
+ * @method string setName(Name $name)
+ * @method string setSwatch(Swatch $swatch)
  */
-class GetList extends AbstractAttribute
+class Create extends AbstractValue
 {
+    /**
+     * @var array
+     * @codeCoverageIgnore
+     */
+    protected $schema = [
+        'type'                 => 'object',
+        'properties'           => [
+            'code'       => ['type' => 'string'],
+            'sequenceId' => ['type' => 'integer'],
+            'name'       => ['type' => 'object'],
+            'swatch'     => ['type' => 'object'],
+        ],
+        'additionalProperties' => true,
+    ];
 }
-

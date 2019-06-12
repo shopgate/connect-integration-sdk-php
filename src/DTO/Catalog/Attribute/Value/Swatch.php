@@ -20,18 +20,28 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\DTO\Catalog\Attribute;
+namespace Shopgate\ConnectSdk\DTO\Catalog\Attribute\Value;
 
-use Shopgate\ConnectSdk\DTO\Meta;
+use Shopgate\ConnectSdk\DTO\Base as DTOBase;
 
 /**
- * DTO for category list response.
+ * Default class that handles swatches in DTOs
  *
- * @method Meta getMeta()
- * @method Get[] getAttributes()
- *
+ * @method string setType(string $type)
+ * @method string setValue(int $value)
  */
-class GetList extends AbstractAttribute
+class Swatch extends DTOBase
 {
+    /**
+     * @var array
+     * @codeCoverageIgnore
+     */
+    protected $schema = [
+        'type'                 => 'object',
+        'properties'           => [
+            'type'  => ['type' => 'string'],
+            'value' => ['type' => 'string'],
+        ],
+        'additionalProperties' => true,
+    ];
 }
-

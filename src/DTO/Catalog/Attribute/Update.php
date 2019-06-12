@@ -22,8 +22,6 @@
 
 namespace Shopgate\ConnectSdk\DTO\Catalog\Attribute;
 
-use Shopgate\ConnectSdk\DTO\Base as DTOBase;
-
 /**
  * Default class that handles validation for attribute Update payloads.
  *
@@ -32,7 +30,7 @@ use Shopgate\ConnectSdk\DTO\Base as DTOBase;
  * @method string setName(Name $name)
  * @method string setValues(string $values)
  */
-class Update extends DTOBase
+class Update extends AbstractAttribute
 {
     /**
      * @var array

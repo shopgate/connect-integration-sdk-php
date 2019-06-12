@@ -22,8 +22,6 @@
 
 namespace Shopgate\ConnectSdk\DTO\Catalog\Attribute;
 
-use Shopgate\ConnectSdk\DTO\Base as DTOBase;
-
 /**
  * DTO for attribute response.
  *
@@ -34,6 +32,6 @@ use Shopgate\ConnectSdk\DTO\Base as DTOBase;
  * @method string getValues()
  *
  */
-class Get extends DTOBase
+class Get extends AbstractAttribute
 {
 }

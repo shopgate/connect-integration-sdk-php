@@ -59,6 +59,7 @@ services:
           - auth.shopgatedev.services
           - omni-merchant.shopgatedev.services
           - omni-location.shopgatedev.services
+          - omni-event-receiver.shopgatedev.services
           - catalog.shopgatedev.services
 
   googlepubsub-emulator:

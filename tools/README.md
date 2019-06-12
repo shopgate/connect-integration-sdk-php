@@ -50,7 +50,7 @@ Create the file `tests/Integration/.env` and put the following into it:
     merchantCode="TM2"
     env="dev"
 
-In your `/etc/hosts` file (usually `C:\\Windows\\System32\\Drivers\\etc\\hosts` on Windows) add the following entries:
+In your `/etc/hosts` file (usually `C:\Windows\System32\Drivers\etc\hosts` on Windows) add the following entries:
 
     127.0.0.1       auth.shopgatedev.services
     127.0.0.1       catalog.shopgatedev.services

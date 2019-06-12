@@ -20,31 +20,18 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\DTO\Catalog\Product;
+namespace Shopgate\ConnectSdk\DTO\Catalog\Product\Property;
 
 use Shopgate\ConnectSdk\DTO\Base as DTOBase;
 
 /**
  * @method Property setCode(string $code)
- * @method Property setName(Name $name)
- * @method Property setValue(LocalizationValue $value)
- * @method Property setType(string $type)
+ * @method Property setValue(string $value)
  * @method Property setDisplayGroup(string $displayGroup)
  * @method Property setSubDisplayGroup(LocalizationSubDisplayGroup $subDisplayGroup)
  */
-class Property extends DTOBase
+class Attribute extends DTOBase
 {
-    const TYPE_SIMPLE       = 'simple';
-    const TYPE_OPTION       = 'option';
-    const TYPE_INPUT        = 'input';
-    const TYPE_PRODUCT      = 'product';
-    const TYPE_PRODUCT_LIST = 'productList';
-
-    const DISPLAY_GROUP_PROPERTIES = 'properties';
-    const DISPLAY_GROUP_FEATURES   = 'features';
-    const DISPLAY_GROUP_GENERAL    = 'general';
-    const DISPLAY_GROUP_PRICING    = 'pricing';
-
     /**
      * @var array
      * @codeCoverageIgnore
@@ -53,12 +40,14 @@ class Property extends DTOBase
         'type'                 => 'object',
         'properties'           => [
             'code'            => ['type' => 'string'],
-            'name'            => ['type' => 'object'],
-            'value'           => ['type' => 'object'],
+            'value'           => ['type' => 'array'],
             'type'            => ['type' => 'string'],
             'displayGroup'    => ['type' => 'string'],
-            'subDisplayGroup' => ['type' => 'object']
+            'subDisplayGroup' => ['type' => 'object'],
         ],
-        'additionalProperties' => true
+        'default'              => [
+            'type' => 'attribute',
+        ],
+        'additionalProperties' => true,
     ];
 }

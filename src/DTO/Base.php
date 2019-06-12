@@ -91,6 +91,26 @@ class Base extends Dto
     }
 
     /**
+     * Rewritten to return the object for chaining purposes
+     *
+     * @inheritDoc
+     * @return Base
+     */
+    public function get($key)
+    {
+        /**
+         * @var Dto $result
+         */
+        $result = parent::get($key);
+
+        if ($result->getStorageType() == "scalar") {
+            return $result->toScalar();
+        }
+
+        return $result;
+    }
+
+    /**
      * @inheritDoc
      *
      * @return Base

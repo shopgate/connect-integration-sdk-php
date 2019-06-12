@@ -79,6 +79,8 @@ class Client implements ClientInterface
     /**
      * @param array $params
      *
+     * @return ResponseInterface
+     *
      * @throws InvalidDataTypeException
      */
     private function triggerEvent(array $params)
@@ -96,7 +98,7 @@ class Client implements ClientInterface
         }
 
         try {
-            $this->guzzleClient->request(
+            return $this->guzzleClient->request(
                 'post',
                 'events',
                 [

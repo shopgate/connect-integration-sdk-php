@@ -264,8 +264,8 @@ class Catalog
     }
 
     /**
-     * @param string $productCode
-     * @param string $fields
+     * @param string  $productCode
+     * @param string  $fields
      * @param boolean $getOriginalImageUrls
      *
      * @return Product\Get
@@ -279,8 +279,8 @@ class Catalog
                 'method'  => 'get',
                 'path'    => 'products/' . $productCode,
                 'query'   => [
-                    'fields' => $fields,
-                    'getOriginalImageUrls' => json_encode($getOriginalImageUrls)
+                    'fields'               => $fields,
+                    'getOriginalImageUrls' => json_encode($getOriginalImageUrls),
                 ],
             ]
         );
@@ -431,17 +431,17 @@ class Catalog
     }
 
     /**
-     * @param string                  $attributeCode
-     * @param string                  $attributeValueCode
-     * @param Attribute\Values\Update $payload
-     * @param array                   $meta
+     * @param string                 $attributeCode
+     * @param string                 $attributeValueCode
+     * @param Attribute\Value\Update $payload
+     * @param array                  $meta
      *
      * @return ResponseInterface
      */
     public function updateAttributeValue(
         $attributeCode,
         $attributeValueCode,
-        Attribute\Values\Update $payload,
+        Attribute\Value\Update $payload,
         array $meta = []
     ) {
         //todo-sg: test

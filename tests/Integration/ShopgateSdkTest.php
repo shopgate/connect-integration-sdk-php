@@ -67,7 +67,7 @@ abstract class ShopgateSdkTest extends TestCase
             $this->sdkConfig['base_uri'] = $baseUri;
         }
         if ($oauthBaseUri = getenv('oauthBaseUri')) {
-            $this->sdkConfig['oauth']['base_uri'] = $baseUri;
+            $this->sdkConfig['oauth']['base_uri'] = $oauthBaseUri;
         }
         if ($oauthStorage = getenv('oauthStoragePath')) {
             $this->sdkConfig['oauth']['storage_path'] = $oauthStorage;

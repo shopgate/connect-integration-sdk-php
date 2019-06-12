@@ -41,13 +41,14 @@ class CategoryTest extends ShopgateSdkTest
 
         // Assert
         $categories = $this->getCategories($this->getCategoryCodes($sampleCategories));
+        /** @noinspection PhpParamsInspection */
         $this->assertCount(2, $categories->getCategories());
     }
 
     public function testUpdateCategoryDirect()
     {
         // Arrange
-        $newName = "Renamed Product (Direct)";
+        $newName = 'Renamed Product (Direct)';
         $payload = new Category\Update(['name' => new Name(['en-us' => $newName])]);
 
         // Act
@@ -75,6 +76,7 @@ class CategoryTest extends ShopgateSdkTest
 
         // Assert
         $categories = $this->getCategories($this->getCategoryCodes($sampleCategories));
+        /** @noinspection PhpParamsInspection */
         $this->assertCount(0, $categories->getCategories());
     }
 
@@ -95,13 +97,14 @@ class CategoryTest extends ShopgateSdkTest
         // Assert
         $categories = $this->getCategories($this->getCategoryCodes($sampleCategories));
         $this->assertEquals(202, $response->getStatusCode());
+        /** @noinspection PhpParamsInspection */
         $this->assertCount(2, $categories->getCategories());
     }
 
     public function testUpdateCategoryEvent()
     {
         // Arrange
-        $newName = "Renamed Product (Event)";
+        $newName = 'Renamed Product (Event)';
         $payload = new Category\Update(['name' => new Name(['en-us' => $newName])]);
 
         // Act
@@ -129,6 +132,7 @@ class CategoryTest extends ShopgateSdkTest
 
         // Assert
         $categories = $this->getCategories($this->getCategoryCodes($sampleCategories));
+        /** @noinspection PhpParamsInspection */
         $this->assertCount(0, $categories->getCategories());
 
         foreach ($responses as $response) {
@@ -180,7 +184,7 @@ class CategoryTest extends ShopgateSdkTest
     {
         $categoryCodes = [];
         foreach ($categories as $category) {
-            $categoryCodes[] = $category->getCode();
+            $categoryCodes[] = $category->code;
         }
 
         return $categoryCodes;

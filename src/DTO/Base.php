@@ -94,7 +94,9 @@ class Base extends Dto
      * Rewritten to return the object for chaining purposes
      *
      * @inheritDoc
-     * @return Base
+     * @throws InvalidDataTypeException
+     * @throws \Dto\Exceptions\InvalidKeyException
+     * @throws Exception
      */
     public function get($key)
     {
@@ -103,7 +105,7 @@ class Base extends Dto
          */
         $result = parent::get($key);
 
-        if ($result->getStorageType() == "scalar") {
+        if ($result->getStorageType() === 'scalar') {
             return $result->toScalar();
         }
 

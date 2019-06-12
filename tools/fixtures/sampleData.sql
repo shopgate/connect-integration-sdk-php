@@ -10,41 +10,50 @@ VALUES
 
 INSERT IGNORE INTO merchant.`Merchant` (`MerchantID`, `OwnerUserID`, `MerchantName`, `MerchantCode`, `Region`, `AppLogo`, `CreateBy`)
 VALUES
-('1', '4b4b51ce-a4de-4e48-9cf4-ade08de2cc02', 'Test Merchant 1', 'TM1', 'US', 'https://scontent-ber1-1.xx.fbcdn.net/v/t1.0-1/p200x200/28471572_10156169825948781_8970975354537639936_n.jpg?_nc_cat=106&_nc_ht=scontent-ber1-1.xx&oh=b7c659809d68e285aca5fcfab13dec91&oe=5C6E1AD0', 'Mike Haze');
+('1', '4b4b51ce-a4de-4e48-9cf4-ade08de2cc02', 'Test Merchant 1', 'TM1', 'US', 'https://scontent-ber1-1.xx.fbcdn.net/v/t1.0-1/p200x200/28471572_10156169825948781_8970975354537639936_n.jpg?_nc_cat=106&_nc_ht=scontent-ber1-1.xx&oh=b7c659809d68e285aca5fcfab13dec91&oe=5C6E1AD0', 'Johnny Bravo'),
+('2', '4b4b51ce-a4de-4e48-9cf4-ade08de2cc02', 'Test Merchant 2', 'TM2', 'US', 'https://scontent-ber1-1.xx.fbcdn.net/v/t1.0-1/p200x200/28471572_10156169825948781_8970975354537639936_n.jpg?_nc_cat=106&_nc_ht=scontent-ber1-1.xx&oh=b7c659809d68e285aca5fcfab13dec91&oe=5C6E1AD0', 'Scooby Doo');
 
 INSERT IGNORE INTO merchant.`MerchantSetting` (`MerchantSettingID`,`MerchantID`,`Key`,`Value`,`CreateBy`,`CreateDate`,`UpdateBy`,`UpdateDate`,`DeleteBy`,`DeleteDate`)
 VALUES
 ('1','1','DefaultTimezone','America/Chicago','','1970-01-01 00:00:00',NULL,NULL,NULL,NULL),
 ('2','1','DefaultCurrency','USD','','1970-01-01 00:00:00',NULL,NULL,NULL,NULL),
-('3','1','DefaultLocale','en-us','','1970-01-01 00:00:00',NULL,NULL,NULL,NULL);
+('3','1','DefaultLocale','en-us','','1970-01-01 00:00:00',NULL,NULL,NULL,NULL),
+('1','2','DefaultTimezone','America/Chicago','','1970-01-01 00:00:00',NULL,NULL,NULL,NULL),
+('2','2','DefaultCurrency','USD','','1970-01-01 00:00:00',NULL,NULL,NULL,NULL),
+('3','2','DefaultLocale','en-us','','1970-01-01 00:00:00',NULL,NULL,NULL,NULL);
 
 INSERT IGNORE INTO location.`LocationType` (`LocationTypeID`, `LocationTypeCode`, `TypeDesc`, `CreateBy`, `CreateDate`, `UpdateBy`, `UpdateDate`, `DeleteBy`, `DeleteDate`)
 VALUES
-('1', 'WHS', 'Warehouse Location', 'Mike Haze', '2018-11-11 16:50:18', NULL, NULL, NULL, NULL);
+('1', 'WHS', 'Warehouse Location', 'Johnny Bravo', '2018-11-11 16:50:18', NULL, NULL, NULL, NULL);
 
 
 INSERT IGNORE INTO location.`Location` (`LocationID`, `MerchantID`, `LocationTypeID`, `LocationCode`, `LocationName`, `LocationStatus`, `Latitude`, `Longitude`, `CreateBy`, `IsDefault`)
 VALUES
-('1', '1', '1', 'WHS1', 'Test Merchant Warehouse 1', 'active', '50.117330', '9.681810', 'Mike Haze', 1),
-('2', '1', '1', 'WHS2', 'Test Merchabt Warehouse 3', 'active', '45.117330', '19.681810', 'Mike Haze', 0);
+('1', '1', '1', 'WHS1', 'Test Merchant 1 Warehouse 1', 'active', '50.117330', '9.681810', 'Johnny Bravo', 1),
+('2', '1', '1', 'WHS2', 'Test Merchant 1 Warehouse 3', 'active', '45.117330', '19.681810', 'Johnny Bravo', 0),
+('3', '2', '1', 'WHS1', 'Test Merchant 2 Warehouse 1', 'active', '47.117330', '20.681810', 'Scooby Doo', 1),
+('4', '2', '1', 'WHS2', 'Test Merchant 2 Warehouse 2', 'active', '51.117330', '10.681810', 'Shaggy', 0);
 
 
 INSERT IGNORE INTO catalog.`ParentCatalog` (`ParentCatalogID`, `MerchantID`, `ParentCatalogCode`, `ParentCatalogName`, `DefaultLocaleCode`, `DefaultCurrencyCode`, `Status`, `isDefault`, `CreateBy`, `CreateDate`, `UpdateBy`, `UpdateDate`, `DeleteBy`, `DeleteDate`)
 VALUES
-('71abdc28-17b2-49d6-ae11-bbfef9dbb868', '1', 'SGC', 'Shopgate Global Catalog', 'en-us', 'USD', 'Active', '1', 'Mike Haze', '2018-12-14 20:03:42', NULL, NULL, NULL, NULL);
+('71abdc28-17b2-49d6-ae11-bbfef9dbb868', '1', 'TM1C', 'Test Merchant 1 Global Catalog', 'en-us', 'USD', 'Active', '1', 'Johnny', '2018-12-14 20:03:42', NULL, NULL, NULL, NULL),
+('8db3bf9c-8d0d-11e9-9b17-87635c0726a2', '2', 'TM2C', 'Test Merchant 2 Global Catalog', 'en-us', 'USD', 'Active', '1', 'Shaggy', '2018-12-14 20:03:42', NULL, NULL, NULL, NULL);
 
 INSERT IGNORE INTO catalog.`Catalog` (`CatalogID`, `CatalogCode`, `ParentCatalogID`, `CatalogName`, `DefaultLocaleCode`, `DefaultCurrencyCode`, `isDefault`, `CreateBy`, `CreateDate`, `UpdateBy`, `UpdateDate`, `DeleteBy`, `DeleteDate`)
 VALUES
-('2d8ff9ab-0992-4e73-ae1f-046dd6e768a2', 'NA Wholesale', '71abdc28-17b2-49d6-ae11-bbfef9dbb868', 'North American Wholesale', 'en-us', 'USD', 0, 'Mike Haze', '2018-12-14 20:06:31', NULL, NULL, NULL, NULL),
-('ad14a8e9-6dac-4789-a593-5d263952557c', 'NA Retail', '71abdc28-17b2-49d6-ae11-bbfef9dbb868', 'North American Retail', 'en-us', 'USD', 1, 'Mike Haze', '2018-12-14 20:06:31', NULL, NULL, NULL, NULL);
+('2d8ff9ab-0992-4e73-ae1f-046dd6e768a2', 'NA Wholesale', '71abdc28-17b2-49d6-ae11-bbfef9dbb868', 'North American Wholesale', 'en-us', 'USD', 0, 'Johnny', '2018-12-14 20:06:31', NULL, NULL, NULL, NULL),
+('ad14a8e9-6dac-4789-a593-5d263952557c', 'NA Retail', '71abdc28-17b2-49d6-ae11-bbfef9dbb868', 'North American Retail', 'en-us', 'USD', 1, 'Johnny', '2018-12-14 20:06:31', NULL, NULL, NULL, NULL),
+('b77497de-8d0d-11e9-9cc9-07c69f123f51', 'NA Wholesale', '8db3bf9c-8d0d-11e9-9b17-87635c0726a2', 'North American Wholesale', 'en-us', 'USD', 0, 'Scooby', '2018-12-14 20:06:31', NULL, NULL, NULL, NULL),
+('bdcbf5dc-8d0d-11e9-8d76-4741ca66894d', 'NA Retail', '8db3bf9c-8d0d-11e9-9b17-87635c0726a2', 'North American Retail', 'en-us', 'USD', 1, 'Scooby', '2018-12-14 20:06:31', NULL, NULL, NULL, NULL);
 
-INSERT INTO catalog.`Category` (`CategoryId`, `CatalogId`, `ParentId`, `CategoryCode`, `ImgUrl`,`CategoryURL`, `SequenceId`, `CreateBy`)
+INSERT IGNORE INTO catalog.`Category` (`CategoryId`, `CatalogId`, `ParentId`, `CategoryCode`, `ImgUrl`,`CategoryURL`, `SequenceId`, `CreateBy`)
 VALUES
-('445da2b3-e8f8-47b4-a8f5-9adff092e751', 'ad14a8e9-6dac-4789-a593-5d263952557c', NULL, '41', NULL, NULL, 2, 'Pascal Vomhoff'),
-('6ae2310c-e6b5-46c5-a45b-1a03f6933b50', '2d8ff9ab-0992-4e73-ae1f-046dd6e768a2', NULL, 'wh-41', NULL, NULL, 1, 'Pascal Vomhoff'),
-('0e873427-d6a8-4965-99db-fcd247d6898b', '2d8ff9ab-0992-4e73-ae1f-046dd6e768a2', NULL, 'wh-42', NULL, NULL, 2, 'Pascal Vomhoff'),
-('ea8888fc-1b84-4417-a41b-3b140decafe4', '2d8ff9ab-0992-4e73-ae1f-046dd6e768a2', '0e873427-d6a8-4965-99db-fcd247d6898b', 'wh-43', 'https://www.shopgate.com/1.jpg', NULL, 3, 'Pascal Vomhoff'),
-('ca2f3023-4c08-4b22-8638-06ebb300bead', 'ad14a8e9-6dac-4789-a593-5d263952557c', NULL, '42', NULL, 'https://someurl/cat/42', 1, 'Pascal Vomhoff');
+('445da2b3-e8f8-47b4-a8f5-9adff092e751', 'ad14a8e9-6dac-4789-a593-5d263952557c', NULL, '41', NULL, NULL, 2, 'Jack Sparrow'),
+('6ae2310c-e6b5-46c5-a45b-1a03f6933b50', '2d8ff9ab-0992-4e73-ae1f-046dd6e768a2', NULL, 'wh-41', NULL, NULL, 1, 'Jack Sparrow'),
+('0e873427-d6a8-4965-99db-fcd247d6898b', '2d8ff9ab-0992-4e73-ae1f-046dd6e768a2', NULL, 'wh-42', NULL, NULL, 2, 'Jack Sparrow'),
+('ea8888fc-1b84-4417-a41b-3b140decafe4', '2d8ff9ab-0992-4e73-ae1f-046dd6e768a2', '0e873427-d6a8-4965-99db-fcd247d6898b', 'wh-43', 'https://www.shopgate.com/1.jpg', NULL, 3, 'Jack Sparrow'),
+('ca2f3023-4c08-4b22-8638-06ebb300bead', 'ad14a8e9-6dac-4789-a593-5d263952557c', NULL, '42', NULL, 'https://someurl/cat/42', 1, 'Jack Sparrow');
 
 INSERT IGNORE INTO catalog.`CategoryContent` (`CategoryContentId`, `CategoryId`, `LocaleCode`, `Name`, `Description`, `CreateBy`)
 VALUES
@@ -107,8 +116,8 @@ VALUES
 
 INSERT IGNORE INTO catalog.`InventoryReservation` (`InventoryReservationID`,`ProductInventoryID`,`FulfillmentOrderID`,`SalesOrderID`, `QTY`,`CreateBy`,`CreateDate`,`UpdateBy`,`UpdateDate`,`DeleteBy`,`DeleteDate`)
 VALUES
-('2cb17e52-5aa9-4101-87df-c0cbdcbc0bb5','152e5a0f-c76c-4d59-9a29-5k65k563nesc','92b63a49-ceb4-42ba-8ea6-42bfa4b13e1e','4321', 5,'Pascal Vomhoff','1970-01-01 00:00:00',NULL,'2019-02-07 19:32:09',NULL,NULL),
-('2cb17e52-5aa9-4101-87df-34j3k3k45jj5','152e5a0f-c76c-4d59-9a29-oijh4j5hjk4j','1306363b-583b-42b6-857b-1f228737477d','4321', 12,'Pascal Vomhoff','1970-01-01 00:00:00',NULL,'2019-02-07 19:32:09',NULL,NULL);
+('2cb17e52-5aa9-4101-87df-c0cbdcbc0bb5','152e5a0f-c76c-4d59-9a29-5k65k563nesc','92b63a49-ceb4-42ba-8ea6-42bfa4b13e1e','4321', 5,'Jack Sparrow','1970-01-01 00:00:00',NULL,'2019-02-07 19:32:09',NULL,NULL),
+('2cb17e52-5aa9-4101-87df-34j3k3k45jj5','152e5a0f-c76c-4d59-9a29-oijh4j5hjk4j','1306363b-583b-42b6-857b-1f228737477d','4321', 12,'Jack Sparrow','1970-01-01 00:00:00',NULL,'2019-02-07 19:32:09',NULL,NULL);
 
 INSERT IGNORE INTO catalog.`Attribute` (`AttributeID`,`MerchantID`,`AttributeCode`,`AttributeType`,`AttributeUse`,`CreateBy`,`CreateDate`,`UpdateBy`,`UpdateDate`,`DeleteBy`,`DeleteDate`)
 VALUES
@@ -204,7 +213,7 @@ VALUES
 ('1e4a6c00-ebe2-4507-b886-34r5th5thjk5','1b824405-aebc-45fc-b1af-eec59084b786','08cb912c-5083-4ac2-a1f2-2445a775d00d','c1fd3d91-75d6-4b2c-a4a1-aaaaaaaaaaaa',0,'Unknown','2019-03-01 15:25:16','',NULL,'',NULL),
 ('1e4a6c00-ebe2-4507-b886-0adf8eec0de7','1b824405-aebc-45fc-b1af-eec59084b786','fedd3eab-b506-423e-a28e-b3540517b353','a06b8211-6706-498f-9f17-0211c5b21115',0,'Unknown','2019-03-01 15:25:16','',NULL,'',NULL);
 
-INSERT INTO catalog.`ProductExtra` (`ProductExtraID`,`ProductID`,`AttributeID`,`AttributeValueID`,`AdditionalPrice`,`CreateBy`,`CreateDate`,`UpdateBy`,`UpdateDate`,`DeleteBy`,`DeleteDate`)
+INSERT IGNORE INTO catalog.`ProductExtra` (`ProductExtraID`,`ProductID`,`AttributeID`,`AttributeValueID`,`AdditionalPrice`,`CreateBy`,`CreateDate`,`UpdateBy`,`UpdateDate`,`DeleteBy`,`DeleteDate`)
 VALUES
     -- Red t-shirt
     -- -- Player numbers

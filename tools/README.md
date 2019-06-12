@@ -1,30 +1,7 @@
-# Local Stack & Integration Tests
+# Integration Tests & Local Stack
 
 Booting up the local service stack and execution of integration tests is restricted to Shopgate employees. This
 documentation is meant for internal use.
-
-## Local Stack Options
-### ECR Login
-On the first boot-up or upon updates you'll need to log in to ECR in you preferred CLI.
-
-### Composer Commands
-Composer commands are available for the most commonly used actions:
-* ```composer unit-tests``` - run unit tests
-* ```composer integration-tests-local``` run integration tests - needs setup, see below
-* ```composer start``` - boot up the local stack
-* ```composer ps``` - show a list of all services and their current status
-* ```composer logs [service name]``` - show (and follow) logs of the specified service
-* ```composer reset-db``` - reset the database within the local stack
-* ```composer integration-tests``` - run integration tests within the local stack
-* ```composer shutdown``` - shut down the local stack
-
-### Inspecting the Stack
-The stack configuration and all fixtures are located in the `tools` folder. Use `docker-compose` to view logs or open
-a shell within a container, e.g.:
-
-* ```cd tools```
-* ```docker-compose exec php bash```
-* ```docker-compose exec mysql -u root -p```
 
 ## Integration Tests
 ### On Local Stack
@@ -60,3 +37,26 @@ Log in to ECR and boot up the local stack using ```composer start```.
 
 #### Run Tests
 Execute the tests in you preferred IDE or by executing ```composer integration-tests-local```.
+
+## Local Stack Options
+### ECR Login
+On the first boot-up or upon updates you'll need to log in to ECR in you preferred CLI.
+
+### Composer Commands
+Composer commands are available for the most commonly used actions:
+* ```composer unit-tests``` - run unit tests
+* ```composer integration-tests-local``` run integration tests - needs setup, see below
+* ```composer start``` - boot up the local stack
+* ```composer ps``` - show a list of all services and their current status
+* ```composer logs [service name]``` - show (and follow) logs of the specified service
+* ```composer reset-db``` - reset the database within the local stack
+* ```composer integration-tests``` - run integration tests within the local stack
+* ```composer shutdown``` - shut down the local stack
+
+### Inspecting the Stack
+The stack configuration and all fixtures are located in the `tools` folder. Use `docker-compose` to view logs or open
+a shell within a container, e.g.:
+
+* ```cd tools```
+* ```docker-compose exec php bash```
+* ```docker-compose exec mysql -u root -p```

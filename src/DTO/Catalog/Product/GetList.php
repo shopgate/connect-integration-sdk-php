@@ -22,7 +22,6 @@
 
 namespace Shopgate\ConnectSdk\DTO\Catalog\Product;
 
-use Shopgate\ConnectSdk\DTO\Base as DTOBase;
 use Shopgate\ConnectSdk\DTO\Meta;
 
 /**
@@ -32,6 +31,6 @@ use Shopgate\ConnectSdk\DTO\Meta;
  * @method Get[] getProducts()
  *
  */
-class GetList extends DTOBase
+class GetList extends AbstractProduct
 {
 }

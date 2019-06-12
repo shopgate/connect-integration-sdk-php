@@ -22,8 +22,6 @@
 
 namespace Shopgate\ConnectSdk\DTO\Catalog\Product;
 
-use Shopgate\ConnectSdk\DTO\Base as DTOBase;
-
 /**
  * Default class that handles validation for product Create payloads.
  *
@@ -61,24 +59,8 @@ use Shopgate\ConnectSdk\DTO\Base as DTOBase;
  * @method Create setMaxQty(number $maxQty)
  * @method Create setExternalUpdateDate(string $externalUpdateDate)
  */
-class Create extends DTOBase
+class Create extends AbstractProduct
 {
-    // todo-sg: outsource to a single place for update and create
-    const MODEL_TYPE_STANDARD                       = 'standard';
-    const MODEL_TYPE_CONFIGURABLE                   = 'configurable';
-    const MODEL_TYPE_BUNDLE                         = 'bundle';
-    const MODEL_TYPE_BUNDLE_ITEM                    = 'bundleItem';
-    const MODEL_TYPE_VARIANT                        = 'variant';
-    const STATUS_ACTIVE                             = 'active';
-    const STATUS_INACTIVE                           = 'inactive';
-    const STATUS_DELETED                            = 'deleted';
-    const STATUS_SCHEDULED                          = 'scheduled';
-    const INVENTORY_TREATMENT_SHOW_OUT_OF_STOCK     = 'showOutOfStock';
-    const INVENTORY_TREATMENT_ALLOW_BACK_ORDERS     = 'allowBackOrders';
-    const INVENTORY_TREATMENT_PRE_ORDER             = 'preOrder';
-    const FULFILLMENT_METHOD_SIMPLE_PICKUP_IN_STORE = 'simplePickUpInStore';
-    const FULFILLMENT_METHOD_DIRECT_SHIP            = 'directShip';
-
     /**
      * @var array
      * @codeCoverageIgnore

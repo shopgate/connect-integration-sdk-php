@@ -22,8 +22,6 @@
 
 namespace Shopgate\ConnectSdk\DTO\Catalog\Product;
 
-use Shopgate\ConnectSdk\DTO\Base as DTOBase;
-
 /**
  * DTO for product response.
  *
@@ -58,6 +56,6 @@ use Shopgate\ConnectSdk\DTO\Base as DTOBase;
  * @method Option[] getOptions()
  * @method Extra[] getExtras()
  */
-class Get extends DTOBase
+class Get extends AbstractProduct
 {
 }

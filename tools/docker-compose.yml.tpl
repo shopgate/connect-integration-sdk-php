@@ -20,6 +20,7 @@ services:
       - ../tests:/sdk/tests
       - ../tools:/sdk/tools
       - ../vendor:/vendor
+      - ./fixtures/env:/sdk/tests/Integration/.env
     tty: true
 
 ### infra-structure

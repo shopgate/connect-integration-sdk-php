@@ -10,6 +10,14 @@
       "email": "interfaces@shopgate.com"
     }
   ],
+  "scripts": {
+    "unit-tests": "phpunit --testsuite UnitTests",
+    "integration-tests": "cd tools && docker-compose exec -T php composer integration-tests-local",
+    "integration-tests-local": "phpunit --testsuite IntegrationTests",
+    "start": "cd tools && ./initLocalStack.sh",
+    "reset-db": "cd tools && ./reset-db.sh",
+    "shutdown": "cd tools && docker-compose down"
+  },
   "require": {
     "php": ">=5.6",
     "ext-json": "*",

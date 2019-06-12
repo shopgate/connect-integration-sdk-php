@@ -48,10 +48,10 @@ docker-compose $DOCKER_COMPOSE_FILES up -d mysql
 docker-compose $DOCKER_COMPOSE_FILES up -d etcd
 docker-compose $DOCKER_COMPOSE_FILES up -d googlepubsub-emulator
 
-docker-compose exec php cp -R /vendor /sdk
-docker-compose exec php composer update
-docker-compose exec php php ./tools/pubsubfiller.php
-docker-compose exec php php ./tools/etcdfiller.php
+docker-compose exec -T php cp -R /vendor /sdk
+docker-compose exec -T php composer update
+docker-compose exec -T php php ./tools/pubsubfiller.php
+docker-compose exec -T php php ./tools/etcdfiller.php
 
 docker-compose $DOCKER_COMPOSE_FILES build
 retry "MySQL" "docker-compose exec -T mysql mysql -uroot -psecret -e \"select 1 from dual\" 2>&1"

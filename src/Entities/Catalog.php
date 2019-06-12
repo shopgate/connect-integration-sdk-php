@@ -277,7 +277,7 @@ class Catalog
      * @param string $fields
      * @param boolean $getOriginalImageUrls
      *
-     * @return Attribute
+     * @return Product\Get
      */
     public function getProduct($productCode, $fields = '', $getOriginalImageUrls = false)
     {

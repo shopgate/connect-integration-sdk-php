@@ -25,6 +25,7 @@ namespace Shopgate\ConnectSdk;
 use Dto\Exceptions\InvalidDataTypeException;
 use GuzzleHttp\ClientInterface as GuzzleClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\DTO\Async\Factory;
 use Shopgate\ConnectSdk\DTO\Base;
@@ -58,16 +59,25 @@ class Client implements ClientInterface
             return $this->triggerEvent($params);
         }
         $response = null;
-        $body     = isset($params['body']) ? $params['body'] : [];
+        $body     = isset($params['body'])
+            ? $params['body']
+            : [];
         try {
             $response = $this->guzzleClient->request(
                 $params['method'],
                 $params['path'],
                 [
-                    'query' => ['service' => $params['service']] + (isset($params['query']) ? $params['query'] : []),
-                    'json'  => $body instanceof Base ? $body->toJson() : (new Base($body))->toJson()
+                    'query' => ['service' => $params['service']] + (isset($params['query'])
+                            ? $params['query']
+                            : []),
+                    'json'  => $body instanceof Base
+                        ? $body->toJson()
+                        : (new Base($body))->toJson(),
                 ]
             );
+        } catch (RequestException $e) {
+            //todo-sg: exception handling
+            echo $e->getResponse()->getBody()->getContents();
         } catch (GuzzleException $e) {
             //todo-sg: exception handling
             echo $e->getMessage();

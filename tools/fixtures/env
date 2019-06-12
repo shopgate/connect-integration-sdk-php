@@ -1,4 +1,4 @@
-oauthBaseUri="http://auth.shopgatedev.services/oauth/token"
+oauthBaseUri="http://auth.shopgate{env}.services/oauth/token"
 oauthStoragePath="./access_token.txt"
 baseUri="http://{service}.shopgatedev.services/v{ver}/merchants/{merchantCode}/"
 clientId="integration-tests"

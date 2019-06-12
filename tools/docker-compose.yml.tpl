@@ -66,7 +66,7 @@ services:
 
 ### services
   omni-worker:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/worker:v1.0.0-beta.10d
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/worker:v1.0.0-beta.10c
     links:
       - etcd
     environment:

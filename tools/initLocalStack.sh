@@ -61,11 +61,13 @@ docker-compose exec -T mysql mysql -u root -psecret < ./fixtures/schema.sql
 docker-compose $DOCKER_COMPOSE_FILES up -d omni-event-receiver
 retry "EventReceiver" "docker-compose exec -T omni-event-receiver curl http://localhost/health -o /dev/null 2>&1"
 
+docker-compose $DOCKER_COMPOSE_FILES up -d catalog
+retry "CatalogService" "docker-compose exec -T catalog curl http://localhost/health -o /dev/null 2>&1"
+
 docker-compose $DOCKER_COMPOSE_FILES up -d
 
 retry "AuthService" "docker-compose exec -T auth curl http://localhost/health -o /dev/null 2>&1"
 retry "MerchantService" "docker-compose exec -T omni-merchant curl http://localhost/health -o /dev/null 2>&1"
 retry "LocationService" "docker-compose exec -T omni-location curl http://localhost/health -o /dev/null 2>&1"
-retry "CatalogService" "docker-compose exec -T catalog curl http://localhost/health -o /dev/null 2>&1"
 
 docker-compose exec -T mysql mysql -u root -psecret < ./fixtures/sampleData.sql

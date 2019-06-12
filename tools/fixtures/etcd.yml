@@ -5,6 +5,7 @@ development:
       omni-event-receiver: "http://omni-event-receiver/"
       omni-merchant: "http://omni-merchant/"
       omni-location: "http://omni-location/"
+      omni-product: "http://catalog/"
       catalog: "http://catalog/"
 
   settings:

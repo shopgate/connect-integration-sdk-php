@@ -165,15 +165,6 @@ class Catalog
      */
     public function addProducts(array $products, array $meta = [])
     {
-//        $requestProducts = [];
-//        foreach ($products as $product) {
-//            try {
-//                $requestProducts[] = $product->toArray();
-//            } catch (InvalidDataTypeException $e) {
-//                // TODO: handle exception
-//            }
-//        }
-
         //todo-sg: test
         return $this->client->doRequest(
             [
@@ -192,12 +183,12 @@ class Catalog
 
     /**
      * @param string         $entityId
-     * @param Product\Update $payload //TODO: change Create to Update once it exists
+     * @param Product\Update $payload
      * @param array          $meta
      *
      * @return ResponseInterface
      */
-    public function updateProduct($entityId, Product\Create $payload, array $meta = [])
+    public function updateProduct($entityId, Product\Update $payload, array $meta = [])
     {
         //todo-sg: test
         return $this->client->doRequest(

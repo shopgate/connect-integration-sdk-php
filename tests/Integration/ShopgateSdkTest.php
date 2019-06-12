@@ -34,23 +34,21 @@ abstract class ShopgateSdkTest extends TestCase
     /** @var ShopgateSdk */
     protected $sdk;
 
-    /**Ø
+    /**
      * Main setup before any tests are ran, runs once
      */
     public static function setUpBeforeClass()
     {
         $env = Dotenv::create(__DIR__);
         $env->load();
-        $env->required([
-            'baseUri',
-            'oauthBaseUri',
-            'oauthStoragePath',
-            'clientId',
-            'clientSecret',
-            'merchantCode',
-            'env'
-        ]);
-        //todo-sg: delete all previously (possibly) created categories
+        $env->required(
+            [
+                'clientId',
+                'clientSecret',
+                'merchantCode',
+                'env'
+            ]
+        );
     }
 
     /**
@@ -59,16 +57,21 @@ abstract class ShopgateSdkTest extends TestCase
     public function setUp()
     {
         $this->sdkConfig = [
-            'base_uri' => getenv('baseUri'),
-            'clientId' => getenv('clientId'),
+            'clientId'     => getenv('clientId'),
             'clientSecret' => getenv('clientSecret'),
             'merchantCode' => getenv('merchantCode'),
-            'env' => getenv('env'),
-            'oauth' => [
-                'base_uri' => getenv('oauthBaseUri'),
-                'storage_path' => getenv('oauthStoragePath'),
-            ]
+            'env'          => getenv('env'),
         ];
+
+        if ($baseUri = getenv('baseUri')) {
+            $this->sdkConfig['base_uri'] = $baseUri;
+        }
+        if ($oauthBaseUri = getenv('oauthBaseUri')) {
+            $this->sdkConfig['oauth']['base_uri'] = $baseUri;
+        }
+        if ($oauthStorage = getenv('oauthStoragePath')) {
+            $this->sdkConfig['oauth']['storage_path'] = $oauthStorage;
+        }
         $this->sdk = new ShopgateSdk($this->sdkConfig);
     }
 }

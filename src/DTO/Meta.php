@@ -33,5 +33,4 @@ use Shopgate\ConnectSdk\DTO\Base as DTOBase;
  */
 class Meta extends DTOBase
 {
-
 }

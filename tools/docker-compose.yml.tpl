@@ -45,6 +45,7 @@ services:
       - etcd
       - redis
     environment:
+      - SYSLOG_LOG_LEVEL=debug
       - NODE_ENV=development
       - APP_PORT=80
       - MANAGEMENT_PORT=81
@@ -70,6 +71,7 @@ services:
     links:
       - etcd
     environment:
+      - SYSLOG_LOG_LEVEL=debug
       - NODE_ENV=development
       - APP_PORT=80
       - LOG_TO_SYSLOG=false
@@ -81,6 +83,7 @@ services:
     links:
       - etcd
     environment:
+      - SYSLOG_LOG_LEVEL=debug
       - NODE_ENV=development
       - APP_PORT=80
       - LOG_TO_SYSLOG=false
@@ -91,6 +94,7 @@ services:
     links:
       - etcd
     environment:
+      - SYSLOG_LOG_LEVEL=debug
       - NODE_ENV=development
       - APP_PORT=80
       - LOG_TO_SYSLOG=false
@@ -100,6 +104,7 @@ services:
     links:
       - etcd
     environment:
+      - SYSLOG_LOG_LEVEL=debug
       - NODE_ENV=development
       - APP_PORT=80
       - LOG_TO_SYSLOG=false
@@ -110,6 +115,7 @@ services:
     links:
       - etcd
     environment:
+      - SYSLOG_LOG_LEVEL=debug
       - NODE_ENV=development
       - APP_PORT=80
       - LOG_TO_SYSLOG=false

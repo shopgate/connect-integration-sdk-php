@@ -23,14 +23,13 @@
 namespace Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
-use Shopgate\ConnectSdk\Dto\LocalizedString;
 
 /**
  * Default class that handles validation for attribute Update payloads.
  *
  * @method string setType(string $type)
  * @method string setUse(string $use)
- * @method string setName(LocalizedString $name)
+ * @method string setName(dto\Name $name)
  * @method string setValues(string $values)
  */
 class Update extends Attribute

@@ -14,13 +14,13 @@ services:
       - ETCD_HOST=http://etcd:2379
       - PUBSUB_EMULATOR_HOST=googlepubsub-emulator:8085
     volumes:
-      - ${PWD}/../composer.json:/sdk/composer.json
-      - ${PWD}/../phpunit.xml.dist:/sdk/phpunit.xml.dist
-      - ${PWD}/../src:/sdk/src
-      - ${PWD}/../tests:/sdk/tests
-      - ${PWD}/../tools:/sdk/tools
-      - ${PWD}/../vendor:/vendor
-      - ${PWD}/fixtures/env:/sdk/tests/Integration/.env
+      - /builds/omnichannel/integration-sdk-php/composer.json:/sdk/composer.json
+      - /builds/omnichannel/integration-sdk-php/phpunit.xml.dist:/sdk/phpunit.xml.dist
+      - /builds/omnichannel/integration-sdk-php/src:/sdk/src
+      - /builds/omnichannel/integration-sdk-php/tests:/sdk/tests
+      - /builds/omnichannel/integration-sdk-php/tools:/sdk/tools
+      - /builds/omnichannel/integration-sdk-php/vendor:/vendor
+      - /builds/omnichannel/integration-sdk-php/fixtures/env:/sdk/tests/Integration/.env
     tty: true
 
 ### infra-structure

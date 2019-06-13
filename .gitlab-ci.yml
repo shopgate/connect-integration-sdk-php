@@ -6,16 +6,10 @@ stages:
 download_prerequisites:
   stage: prepare
   script:
-    - if [ ! -d magento2 ]; then
-    -   wget $MAGENTO_DOWNLOAD_BASE/$MAGENTO_DOWNLOAD_FILE
-    -   mkdir magento2
-    -   tar --strip-components=1 -xvzf $MAGENTO_DOWNLOAD_FILE -C magento2
-    - fi
     - if [ ! -f php-dependency-checker.phar ]; then wget $PHP_DC_DOWNLOAD; chmod +x php-dependency-checker.phar; fi
   cache:
     key: $BUILD_PREREQUISITES_CACHE_KEY
     paths:
-      - magento2
       - php-dependency-checker.phar
     policy: pull-push
   tags:

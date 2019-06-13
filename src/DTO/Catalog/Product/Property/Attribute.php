@@ -23,12 +23,13 @@
 namespace Shopgate\ConnectSdk\DTO\Catalog\Product\Property;
 
 use Shopgate\ConnectSdk\DTO\Base as DTOBase;
+use Shopgate\ConnectSdk\DTO\Catalog\Product\LocalizationSubDisplayGroup;
 
 /**
- * @method Property setCode(string $code)
- * @method Property setValue(string $value)
- * @method Property setDisplayGroup(string $displayGroup)
- * @method Property setSubDisplayGroup(LocalizationSubDisplayGroup $subDisplayGroup)
+ * @method Attribute setCode(string $code)
+ * @method Attribute setValue(string $value)
+ * @method Attribute setDisplayGroup(string $displayGroup)
+ * @method Attribute setSubDisplayGroup(LocalizationSubDisplayGroup $subDisplayGroup)
  */
 class Attribute extends DTOBase
 {

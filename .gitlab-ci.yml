@@ -1,0 +1,58 @@
+stages:
+  - prepare
+  - check
+  - test
+
+download_prerequisites:
+  stage: prepare
+  script:
+    - if [ ! -d magento2 ]; then
+    -   wget $MAGENTO_DOWNLOAD_BASE/$MAGENTO_DOWNLOAD_FILE
+    -   mkdir magento2
+    -   tar --strip-components=1 -xvzf $MAGENTO_DOWNLOAD_FILE -C magento2
+    - fi
+    - if [ ! -f php-dependency-checker.phar ]; then wget $PHP_DC_DOWNLOAD; chmod +x php-dependency-checker.phar; fi
+  cache:
+    key: $BUILD_PREREQUISITES_CACHE_KEY
+    paths:
+      - magento2
+      - php-dependency-checker.phar
+    policy: pull-push
+  tags:
+    - docker
+
+check_dependencies:
+  image: php:7.1-cli-alpine
+  stage: check
+  script:
+    - ./php-dependency-checker.phar ./composer.lock
+  cache:
+    key: $BUILD_PREREQUISITES_CACHE_KEY
+    paths:
+      - php-dependency-checker.phar
+    policy: pull
+  tags:
+    - docker
+
+run_unit_tests:
+  image: composer:1.8.0
+  stage: test
+  script:
+    - composer install --ignore-platform-reqs
+    - php ./vendor/bin/phpunit --configuration ./phpunit.xml.dist ./tests/unit
+  tags:
+    - docker
+
+run_integration_tests:
+  stage: test
+  before_script:
+    - apk add--no-cache bash curl python3 jq nodejs nodejs-npm python make g++
+    - pip3 install docker-compose awscli
+    - $(aws ecr get-login --region=us-east-1 --no-include-email --registry-ids 602824140852)
+  script:
+    - cd tools
+    - ./initLocalStack
+    - docker-compose exec -T php composer integration-tests-local
+  tags:
+    - docker
+    - ecr

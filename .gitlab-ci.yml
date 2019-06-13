@@ -58,7 +58,8 @@ run_integration_tests:
   script:
     - cd tools
     - ./initLocalStack.sh
-    - docker-compose exec -T php composer integration-tests
+    - docker-compose exec -T php ls -al
+    - docker-compose exec -T php composer integration-tests-local
   cache:
     key: $BUILD_PREREQUISITES_CACHE_KEY
     paths:

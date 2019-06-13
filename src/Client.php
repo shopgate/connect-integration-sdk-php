@@ -25,10 +25,11 @@ namespace Shopgate\ConnectSdk;
 use Dto\Exceptions\InvalidDataTypeException;
 use GuzzleHttp\ClientInterface as GuzzleClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\RequestException as GuzzleRequestException;
 use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\DTO\Async\Factory;
 use Shopgate\ConnectSdk\DTO\Base;
+use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
 
 class Client implements ClientInterface
@@ -52,6 +53,7 @@ class Client implements ClientInterface
      * @param array $params
      *
      * @return ResponseInterface
+     * @throws RequestException
      * @throws UnknownException
      */
     public function doRequest(array $params)
@@ -76,10 +78,11 @@ class Client implements ClientInterface
                         : (new Base($body))->toJson(),
                 ]
             );
-        } catch (RequestException $e) {
-            //todo-sg: exception handling
-            echo $e->getResponse()->getBody()->getContents();
+        } catch (GuzzleRequestException $e) {
+            throw new RequestException($e->getResponse()->getBody()->getContents());
         } catch (GuzzleException $e) {
+            throw new UnknownException($e->getMessage());
+        } catch (\Exception $e) {
             throw new UnknownException($e->getMessage());
         }
 

@@ -25,10 +25,11 @@ namespace Shopgate\ConnectSdk\Service;
 use Dto\Exceptions\InvalidDataTypeException;
 use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\ClientInterface;
-use Shopgate\ConnectSdk\DTO\Catalog\Attribute;
-use Shopgate\ConnectSdk\DTO\Catalog\Category;
-use Shopgate\ConnectSdk\DTO\Catalog\Product;
-use Shopgate\ConnectSdk\DTO\Meta;
+use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
+use Shopgate\ConnectSdk\Dto\Catalog\Category;
+use Shopgate\ConnectSdk\Dto\Catalog\Product;
+use Shopgate\ConnectSdk\Dto\Meta;
+use Shopgate\ConnectSdk\Exception;
 use Shopgate\ConnectSdk\ShopgateSdk;
 
 class Catalog
@@ -49,6 +50,8 @@ class Catalog
      * @param array             $meta
      *
      * @return ResponseInterface
+     * @throws Exception\RequestException
+     * @throws Exception\UnknownException
      */
     public function addCategories(array $categories, array $meta = [])
     {
@@ -76,6 +79,8 @@ class Catalog
      * @param array           $meta
      *
      * @return ResponseInterface
+     * @throws Exception\RequestException
+     * @throws Exception\UnknownException
      */
     public function updateCategory($code, Category\Update $payload, array $meta = [])
     {
@@ -103,6 +108,8 @@ class Catalog
      * @param array  $meta
      *
      * @return ResponseInterface
+     * @throws Exception\RequestException
+     * @throws Exception\UnknownException
      */
     public function deleteCategory($code, array $meta = [])
     {
@@ -129,6 +136,8 @@ class Catalog
      *
      * @todo-sg: supposedly needs more than just limit/offset as there are many query methods defined, ask Pascal
      * @return Category\GetList
+     * @throws Exception\RequestException
+     * @throws Exception\UnknownException
      */
     public function getCategories(array $meta = [])
     {
@@ -162,6 +171,8 @@ class Catalog
      * @param array            $meta
      *
      * @return ResponseInterface
+     * @throws Exception\RequestException
+     * @throws Exception\UnknownException
      */
     public function addProducts(array $products, array $meta = [])
     {
@@ -187,6 +198,8 @@ class Catalog
      * @param array          $meta
      *
      * @return ResponseInterface
+     * @throws Exception\RequestException
+     * @throws Exception\UnknownException
      */
     public function updateProduct($code, Product\Update $payload, array $meta = [])
     {
@@ -212,6 +225,8 @@ class Catalog
      * @param array  $meta
      *
      * @return ResponseInterface
+     * @throws Exception\RequestException
+     * @throws Exception\UnknownException
      */
     public function deleteProduct($code, array $meta = [])
     {
@@ -235,6 +250,8 @@ class Catalog
      * @param array $meta
      *
      * @return Product\GetList
+     * @throws Exception\RequestException
+     * @throws Exception\UnknownException
      */
     public function getProducts(array $meta = [])
     {
@@ -269,6 +286,8 @@ class Catalog
      * @param boolean $getOriginalImageUrls
      *
      * @return Product\Get
+     * @throws Exception\RequestException
+     * @throws Exception\UnknownException
      */
     public function getProduct($code, $fields = '', $getOriginalImageUrls = false)
     {
@@ -294,6 +313,8 @@ class Catalog
      * @param array              $meta
      *
      * @return ResponseInterface
+     * @throws Exception\RequestException
+     * @throws Exception\UnknownException
      */
     public function addAttributes(array $attributes, array $meta = [])
     {
@@ -329,6 +350,8 @@ class Catalog
      *
      * @todo-sg: supposedly needs more than just limit/offset as there are many query methods defined, ask Pascal
      * @return Attribute\GetList
+     * @throws Exception\RequestException
+     * @throws Exception\UnknownException
      */
     public function getAttributes(array $meta = [])
     {
@@ -362,6 +385,8 @@ class Catalog
      * @param string $localeCode
      *
      * @return Attribute\Get
+     * @throws Exception\RequestException
+     * @throws Exception\UnknownException
      */
     public function getAttribute($code, $localeCode = '')
     {
@@ -388,6 +413,8 @@ class Catalog
      * @param array            $meta
      *
      * @return ResponseInterface
+     * @throws Exception\RequestException
+     * @throws Exception\UnknownException
      */
     public function updateAttribute($code, Attribute\Update $payload, array $meta = [])
     {
@@ -412,6 +439,8 @@ class Catalog
      * @param array  $meta
      *
      * @return ResponseInterface
+     * @throws Exception\RequestException
+     * @throws Exception\UnknownException
      */
     public function deleteAttribute($code, array $meta = [])
     {
@@ -431,17 +460,19 @@ class Catalog
     }
 
     /**
-     * @param string                 $code
-     * @param string                 $valueCode
-     * @param Attribute\Value\Update $payload
-     * @param array                  $meta
+     * @param string           $code
+     * @param string           $valueCode
+     * @param Attribute\Update $payload
+     * @param array            $meta
      *
      * @return ResponseInterface
+     * @throws Exception\RequestException
+     * @throws Exception\UnknownException
      */
     public function updateAttributeValue(
         $code,
         $valueCode,
-        Attribute\Value\Update $payload,
+        Attribute\Update $payload,
         array $meta = []
     ) {
         //todo-sg: test
@@ -466,6 +497,8 @@ class Catalog
      * @param array  $meta
      *
      * @return ResponseInterface
+     * @throws Exception\RequestException
+     * @throws Exception\UnknownException
      */
     public function deleteAttributeValue($code, $attributeValueCode, array $meta = [])
     {

@@ -20,9 +20,10 @@ download_prerequisites:
     - docker
 
 check_dependencies:
-  image: php:7.1-cli-alpine
+  image: composer:1.8.0
   stage: check
   script:
+    - composer update --ignore-platform-reqs
     - ./php-dependency-checker.phar ./composer.lock
   cache:
     key: $BUILD_PREREQUISITES_CACHE_KEY

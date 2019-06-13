@@ -71,13 +71,13 @@ class Catalog
     }
 
     /**
-     * @param string          $entityId
+     * @param string          $code
      * @param Category\Update $payload
      * @param array           $meta
      *
      * @return ResponseInterface
      */
-    public function updateCategory($entityId, Category\Update $payload, array $meta = [])
+    public function updateCategory($code, Category\Update $payload, array $meta = [])
     {
         return $this->client->doRequest(
             [
@@ -89,22 +89,22 @@ class Catalog
                 // direct
                 'method'      => 'post',
                 'service'     => 'catalog',
-                'path'        => 'categories/' . $entityId,
+                'path'        => 'categories/' . $code,
                 // async
                 'entity'      => 'category',
                 'action'      => 'update',
-                'entityId'    => $entityId,
+                'entityId'    => $code,
             ]
         );
     }
 
     /**
-     * @param string $entityId
+     * @param string $code
      * @param array  $meta
      *
      * @return ResponseInterface
      */
-    public function deleteCategory($entityId, array $meta = [])
+    public function deleteCategory($code, array $meta = [])
     {
         return $this->client->doRequest(
             [
@@ -115,11 +115,11 @@ class Catalog
                 // direct
                 'method'      => 'delete',
                 'service'     => 'catalog',
-                'path'        => 'categories/' . $entityId,
+                'path'        => 'categories/' . $code,
                 // async
                 'entity'      => 'category',
                 'action'      => 'delete',
-                'entityId'    => $entityId,
+                'entityId'    => $code,
             ]
         );
     }
@@ -182,21 +182,21 @@ class Catalog
     }
 
     /**
-     * @param string         $entityId
+     * @param string         $code
      * @param Product\Update $payload
      * @param array          $meta
      *
      * @return ResponseInterface
      */
-    public function updateProduct($entityId, Product\Update $payload, array $meta = [])
+    public function updateProduct($code, Product\Update $payload, array $meta = [])
     {
         //todo-sg: test
         return $this->client->doRequest(
             [
                 'service'     => 'catalog',
                 'method'      => 'post',
-                'path'        => 'products/' . $entityId,
-                'entityId'    => $entityId,
+                'path'        => 'products/' . $code,
+                'entityId'    => $code,
                 'entity'      => 'product',
                 'action'      => 'update',
                 'body'        => $payload,
@@ -208,22 +208,22 @@ class Catalog
     }
 
     /**
-     * @param string $entityId
+     * @param string $code
      * @param array  $meta
      *
      * @return ResponseInterface
      */
-    public function deleteProduct($entityId, array $meta = [])
+    public function deleteProduct($code, array $meta = [])
     {
         //todo-sg: test
         return $this->client->doRequest(
             [
                 'service'     => 'catalog',
                 'method'      => 'post',
-                'path'        => 'products/' . $entityId,
+                'path'        => 'products/' . $code,
                 'entity'      => 'product',
                 'action'      => 'delete',
-                'entityId'    => $entityId,
+                'entityId'    => $code,
                 'requestType' => isset($meta['requestType'])
                     ? $meta['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
@@ -264,20 +264,20 @@ class Catalog
     }
 
     /**
-     * @param string  $productCode
+     * @param string  $code
      * @param string  $fields
      * @param boolean $getOriginalImageUrls
      *
      * @return Product\Get
      */
-    public function getProduct($productCode, $fields = '', $getOriginalImageUrls = false)
+    public function getProduct($code, $fields = '', $getOriginalImageUrls = false)
     {
         $response = $this->client->doRequest(
             [
                 // direct only
                 'service' => 'catalog',
                 'method'  => 'get',
-                'path'    => 'products/' . $productCode,
+                'path'    => 'products/' . $code,
                 'query'   => [
                     'fields'               => $fields,
                     'getOriginalImageUrls' => json_encode($getOriginalImageUrls),
@@ -358,19 +358,19 @@ class Catalog
     }
 
     /**
-     * @param string $attributeCode
+     * @param string $code
      * @param string $localeCode
      *
      * @return Attribute\Get
      */
-    public function getAttribute($attributeCode, $localeCode = '')
+    public function getAttribute($code, $localeCode = '')
     {
         $response = $this->client->doRequest(
             [
                 // direct only
                 'service' => 'catalog',
                 'method'  => 'get',
-                'path'    => 'attributes/' . $attributeCode,
+                'path'    => 'attributes/' . $code,
                 'query'   => [
                     'localeCode' => $localeCode,
                 ],
@@ -383,20 +383,20 @@ class Catalog
     }
 
     /**
-     * @param string           $attributeCode
+     * @param string           $code
      * @param Attribute\Update $payload
      * @param array            $meta
      *
      * @return ResponseInterface
      */
-    public function updateAttribute($attributeCode, Attribute\Update $payload, array $meta = [])
+    public function updateAttribute($code, Attribute\Update $payload, array $meta = [])
     {
         //todo-sg: test
         return $this->client->doRequest(
             [
                 'service'     => 'catalog',
                 'method'      => 'post',
-                'path'        => 'attributes/' . $attributeCode,
+                'path'        => 'attributes/' . $code,
                 'entity'      => 'attribute',
                 'action'      => 'update',
                 'body'        => $payload,
@@ -408,19 +408,19 @@ class Catalog
     }
 
     /**
-     * @param string $attributeCode
+     * @param string $code
      * @param array  $meta
      *
      * @return ResponseInterface
      */
-    public function deleteAttribute($attributeCode, array $meta = [])
+    public function deleteAttribute($code, array $meta = [])
     {
         //todo-sg: test
         return $this->client->doRequest(
             [
                 'service'     => 'catalog',
                 'method'      => 'delete',
-                'path'        => 'attributes/' . $attributeCode,
+                'path'        => 'attributes/' . $code,
                 'entity'      => 'attribute',
                 'action'      => 'delete',
                 'requestType' => isset($meta['requestType'])
@@ -431,16 +431,16 @@ class Catalog
     }
 
     /**
-     * @param string                 $attributeCode
-     * @param string                 $attributeValueCode
+     * @param string                 $code
+     * @param string                 $valueCode
      * @param Attribute\Value\Update $payload
      * @param array                  $meta
      *
      * @return ResponseInterface
      */
     public function updateAttributeValue(
-        $attributeCode,
-        $attributeValueCode,
+        $code,
+        $valueCode,
         Attribute\Value\Update $payload,
         array $meta = []
     ) {
@@ -449,7 +449,7 @@ class Catalog
             [
                 'service'     => 'catalog',
                 'method'      => 'post',
-                'path'        => 'attributes/' . $attributeCode . '/values/' . $attributeValueCode,
+                'path'        => 'attributes/' . $code . '/values/' . $valueCode,
                 'entity'      => 'attribute',
                 'action'      => 'update',
                 'body'        => $payload,
@@ -461,20 +461,20 @@ class Catalog
     }
 
     /**
-     * @param string $attributeCode
+     * @param string $code
      * @param string $attributeValueCode
      * @param array  $meta
      *
      * @return ResponseInterface
      */
-    public function deleteAttributeValue($attributeCode, $attributeValueCode, array $meta = [])
+    public function deleteAttributeValue($code, $attributeValueCode, array $meta = [])
     {
         //todo-sg: test
         return $this->client->doRequest(
             [
                 'service'     => 'catalog',
                 'method'      => 'delete',
-                'path'        => 'attributes/' . $attributeCode . '/values/' . $attributeValueCode,
+                'path'        => 'attributes/' . $code . '/values/' . $attributeValueCode,
                 'entity'      => 'attribute',
                 'action'      => 'delete',
                 'requestType' => isset($meta['requestType'])

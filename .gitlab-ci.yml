@@ -6,7 +6,7 @@ stages:
 
 variables:
   PHP_DC_DOWNLOAD: https://github.com/Rekhyt/php-dependency-checker/releases/download/1.0.0-beta.1/php-dependency-checker.phar
-  PHP_CSF_DOWNLOAD: https://files.shopgate.com/travis-ci/php-cs-fixer-v2.phar
+  PHP_CSF_DOWNLOAD: http://files.shopgate.com/travis-ci/php-cs-fixer-v2.phar
   BUILD_PREREQUISITES_CACHE_KEY: "build_pre_${PHP_DC_DOWNLOAD}"
 
 download_prerequisites:

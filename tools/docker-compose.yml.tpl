@@ -14,10 +14,13 @@ services:
       - ETCD_HOST=http://etcd:2379
       - PUBSUB_EMULATOR_HOST=googlepubsub-emulator:8085
     volumes:
-      - ../:/fullSdk
-      - ../src:/sdk/src
-      - ../tests:/sdk/tests
-      - ../tools:/sdk/tools
+      - ${PWD}/../composer.json:/sdk/composer.json
+      - ${PWD}/../phpunit.xml.dist:/sdk/phpunit.xml.dist
+      - ${PWD}/../src:/sdk/src
+      - ${PWD}/../tests:/sdk/tests
+      - ${PWD}/../tools:/sdk/tools
+      - ${PWD}/../vendor:/vendor
+      - ${PWD}/fixtures/env:/sdk/tests/Integration/.env
     tty: true
 
 ### infra-structure

@@ -29,5 +29,4 @@ use Shopgate\ConnectSdk\DTO\Base as DTOBase;
  */
 class LocalizationValue extends DTOBase
 {
-
 }

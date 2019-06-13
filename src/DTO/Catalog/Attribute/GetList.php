@@ -34,4 +34,3 @@ use Shopgate\ConnectSdk\DTO\Meta;
 class GetList extends AbstractAttribute
 {
 }
-

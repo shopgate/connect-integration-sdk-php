@@ -29,5 +29,4 @@ use Shopgate\ConnectSdk\DTO\LocalizedString;
  */
 class LongName extends LocalizedString
 {
-
 }

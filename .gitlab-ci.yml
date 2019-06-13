@@ -11,13 +11,14 @@ download_prerequisites:
   image: composer:1.8.0
   stage: prepare
   script:
-    - if [ ! -d vendor ]; then composer install --ignore-platform-reqs; fi
+    - if [ ! -d vendor ] || [ ! -f composer.lock ]; then composer install --ignore-platform-reqs; fi
     - if [ ! -f php-dependency-checker.phar ]; then wget $PHP_DC_DOWNLOAD; chmod +x php-dependency-checker.phar; fi
   cache:
     key: $BUILD_PREREQUISITES_CACHE_KEY
     paths:
       - vendor
       - php-dependency-checker.phar
+      - composer.lock
     policy: pull-push
   tags:
     - docker
@@ -30,7 +31,7 @@ check_dependencies:
   cache:
     key: $BUILD_PREREQUISITES_CACHE_KEY
     paths:
-      - vendor
+      - composer.lock
       - php-dependency-checker.phar
     policy: pull
   tags:

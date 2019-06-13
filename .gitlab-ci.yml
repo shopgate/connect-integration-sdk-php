@@ -50,14 +50,15 @@ run_unit_tests:
     - docker
 
 run_integration_tests:
-  image: composer:1.8.0
   stage: test
   before_script:
     - apk add --no-cache bash curl python3 jq nodejs nodejs-npm python make g++
-    - pip3 install docker-compose==1.23.2 awscli
+    - pip3 install docker-compose
     - $(aws ecr get-login --region=us-east-1 --no-include-email --registry-ids 602824140852)
   script:
-    - composer integration-tests
+    - cd tools
+    - ./initLocalStack
+    - docker-compose exec -T php composer integration-tests
   cache:
     key: $BUILD_PREREQUISITES_CACHE_KEY
     paths:

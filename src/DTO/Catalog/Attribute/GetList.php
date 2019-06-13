@@ -20,17 +20,18 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\DTO\Catalog\Attribute;
+namespace Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 
-use Shopgate\ConnectSdk\DTO\Meta;
+use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
+use Shopgate\ConnectSdk\Dto\Meta;
 
 /**
- * DTO for category list response.
+ * Dto for category list response.
  *
  * @method Meta getMeta()
  * @method Get[] getAttributes()
  *
  */
-class GetList extends AbstractAttribute
+class GetList extends Attribute
 {
 }

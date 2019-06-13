@@ -20,17 +20,20 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\DTO\Catalog\Attribute;
+namespace Shopgate\ConnectSdk\Dto\Catalog\Attribute;
+
+use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
+use Shopgate\ConnectSdk\Dto\LocalizedString;
 
 /**
  * Default class that handles validation for attribute Update payloads.
  *
  * @method string setType(string $type)
  * @method string setUse(string $use)
- * @method string setName(Name $name)
+ * @method string setName(LocalizedString $name)
  * @method string setValues(string $values)
  */
-class Update extends AbstractAttribute
+class Update extends Attribute
 {
     /**
      * @var array

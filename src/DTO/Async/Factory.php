@@ -20,10 +20,10 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\DTO\Async;
+namespace Shopgate\ConnectSdk\Dto\Async;
 
 use Dto\Exceptions\InvalidDataTypeException;
-use Shopgate\ConnectSdk\DTO\Base as Payload;
+use Shopgate\ConnectSdk\Dto\Base as Payload;
 
 class Factory
 {

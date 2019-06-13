@@ -20,17 +20,17 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\DTO;
+namespace Shopgate\ConnectSdk\Dto;
 
-use Shopgate\ConnectSdk\DTO\Base as DTOBase;
+use Shopgate\ConnectSdk\Dto\Base as DtoBase;
 
 /**
- * Default class that handles localized strings in DTOs
+ * Default class that handles localized strings in Dtos
  *
  * @method int getLimit()
  * @method int getOffset()
  * @method int getTotalItemCount()
  */
-class Meta extends DTOBase
+class Meta extends DtoBase
 {
 }

@@ -20,35 +20,33 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Catalog\Category;
+namespace Shopgate\ConnectSdk\Dto;
 
-use Shopgate\ConnectSdk\Dto\Catalog\Category;
-use Shopgate\ConnectSdk\Dto\LocalizedString;
+use Dto\Exceptions\InvalidDataTypeException;
 
 /**
- * Default class that handles validation for category Update payloads.
+ * Default class that handles localized arrays in Dtos
  *
- * @method Update setImage(string $image)
- * @method Update setName(LocalizedString $name)
- * @method Update setParentCategoryCode(string $parentCategoryCode)
- * @method Update setUrl(string $url)
- * @method Update setDescription(LocalizedString $description)
+ * @codeCoverageIgnore
  */
-class Update extends Category
+class LocalizedArray extends Base
 {
     /**
      * @var array
-     * @codeCoverageIgnore
      */
     protected $schema = [
         'type'                 => 'object',
-        'properties'           => [
-            'image'              => ['type' => 'string'],
-            'name'               => ['type' => 'object'],
-            'parentCategoryCode' => ['type' => 'string'],
-            'url'                => ['type' => 'string'],
-            'description'        => ['type' => 'object'],
-        ],
         'additionalProperties' => true
     ];
+
+    /**
+     * @param string $locale
+     * @param string[] $array
+     *
+     * @throws InvalidDataTypeException
+     */
+    public function add($locale, $array)
+    {
+        $this->set((string) $locale, (array) $array);
+    }
 }

@@ -20,24 +20,26 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\DTO\Catalog\Product;
+namespace Shopgate\ConnectSdk\Dto\Catalog\Product;
+
+use Shopgate\ConnectSdk\Dto\Catalog\Product;
 
 /**
  * Default class that handles validation for product Update payloads.
  *
- * @method Update setName(Name $name)
- * @method Update setLongName(LongName $longName)
- * @method Update setCategories(CategoryMapping [] $categories)
- * @method Update setProperties(Property [] $properties)
- * @method Update setMedia(LocalizationMedia $media)
- * @method Update setOptions(Option [] $options)
- * @method Update setExtras(Extra [] $extras)
+ * @method Update setName(dto\Name $name)
+ * @method Update setLongName(dto\LongName $longName)
+ * @method Update setCategories(dto\Categories [] $categories)
+ * @method Update setProperties(dto\Properties [] $properties)
+ * @method Update setMedia(dto\Media $media)
+ * @method Update setOptions(dto\Options [] $options)
+ * @method Update setExtras(dto\Extras [] $extras)
  * @method Update setCode(string $code)
  * @method Update setParentProductCode(string $parentProductCode)
  * @method Update setCatalogCode(string $catalogCode)
  * @method Update setModelType(string $modelType)
- * @method Update setIdentifiers(Identifiers $identifiers)
- * @method Update setPrice(Price $price)
+ * @method Update setIdentifiers(dto\Identifiers $identifiers)
+ * @method Update setPrice(dto\Price $price)
  * @method Update setFulfillmentMethods(string [] $fulfillmentMethods)
  * @method Update setUnit(string $unit)
  * @method Update setIsSerialized(boolean $isSerialized)
@@ -48,7 +50,7 @@ namespace Shopgate\ConnectSdk\DTO\Catalog\Product;
  * @method Update setEolDate(string $eolDate)
  * @method Update setIsInventoryManaged(boolean $isInventoryManaged)
  * @method Update setInventoryTreatment(string $inventoryTreatment)
- * @method Update setShippingInformation(ShippingInformation $shippingInformation)
+ * @method Update setShippingInformation(dto\ShippingInformation $shippingInformation)
  * @method Update setRating(number $rating)
  * @method Update setUrl(string $url)
  * @method Update setIsTaxed(boolean $isTaxed)
@@ -57,7 +59,7 @@ namespace Shopgate\ConnectSdk\DTO\Catalog\Product;
  * @method Update setMaxQty(number $maxQty)
  * @method Update setExternalUpdateDate(string $externalUpdateDate)
  */
-class Update extends AbstractProduct
+class Update extends Product
 {
     /**
      * @var array
@@ -73,7 +75,7 @@ class Update extends AbstractProduct
                 'items' => [
                     'type' => 'object',
                 ],
-            ], // todo-sg: double check properties after we get examples
+            ],
             'properties'          => [
                 'type'  => 'array',
                 'items' => [

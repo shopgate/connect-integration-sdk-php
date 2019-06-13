@@ -20,22 +20,23 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Catalog\Category;
+namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Price;
 
-use Shopgate\ConnectSdk\Dto\Catalog\Category;
-use Shopgate\ConnectSdk\Dto\LocalizedString;
+use Shopgate\ConnectSdk\Dto\Base;
 
 /**
- * Default class that handles validation for category Update payloads.
- *
- * @method Update setImage(string $image)
- * @method Update setName(LocalizedString $name)
- * @method Update setParentCategoryCode(string $parentCategoryCode)
- * @method Update setUrl(string $url)
- * @method Update setDescription(LocalizedString $description)
+ * @method VolumePricing setMinQty(number $minQty)
+ * @method VolumePricing setMaxQty(number $maxQty)
+ * @method VolumePricing setPrice(number $price)
+ * @method VolumePricing setSalePrice(number $salePrice)
+ * @method VolumePricing setUnit(string $unit)
+ * @method VolumePricing setPriceType(string $priceType)
  */
-class Update extends Category
+class VolumePricing extends Base
 {
+    const PRICE_TYPE_FIXED    = 'fixed';
+    const PRICE_TYPE_RELATIVE = 'relative';
+
     /**
      * @var array
      * @codeCoverageIgnore
@@ -43,11 +44,14 @@ class Update extends Category
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'image'              => ['type' => 'string'],
-            'name'               => ['type' => 'object'],
-            'parentCategoryCode' => ['type' => 'string'],
-            'url'                => ['type' => 'string'],
-            'description'        => ['type' => 'object'],
+            'minQty'    => ['type' => 'number'],
+            'maxQty'    => ['type' => 'number'],
+            'price'     => ['type' => 'number'],
+            'salePrice' => ['type' => 'number'],
+            'unit'      => ['type' => 'string'],
+            'priceType' => [
+                'type' => 'string'
+            ]
         ],
         'additionalProperties' => true
     ];

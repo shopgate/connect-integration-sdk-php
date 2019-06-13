@@ -20,9 +20,9 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\DTO\Async;
+namespace Shopgate\ConnectSdk\Dto\Async;
 
-use Shopgate\ConnectSdk\DTO\Base;
+use Shopgate\ConnectSdk\Dto\Base;
 
 /**
  * @method Request setEvents(Event[] $events) - note, this rewrites the list. Use append if you want to add to the list.

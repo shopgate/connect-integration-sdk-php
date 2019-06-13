@@ -20,9 +20,10 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\DTO\Catalog\Category;
+namespace Shopgate\ConnectSdk\Dto\Catalog\Category;
 
-use Shopgate\ConnectSdk\DTO\Base as DTOBase;
+use Shopgate\ConnectSdk\Dto\Catalog\Category;
+use Shopgate\ConnectSdk\Dto\LocalizedString;
 
 /**
  * Default class that handles validation for category Create payloads.
@@ -30,13 +31,13 @@ use Shopgate\ConnectSdk\DTO\Base as DTOBase;
  * @method Create setCode(string $code)
  * @method Create setParentCategoryCode(string $parentCategoryCode)
  * @method Create setImage(string $image)
- * @method Create setName(Name $name)
+ * @method Create setName(LocalizedString $name)
  * @method Create setUrl(string $url)
  * @method Create setSequenceId(integer $sequenceId)
- * @method Create setDescription(Description $description)
+ * @method Create setDescription(LocalizedString $description)
  * @method Create setExternalUpdateDate(string $externalUpdateDate)
  */
-class Create extends DTOBase
+class Create extends Category
 {
     /**
      * @var array

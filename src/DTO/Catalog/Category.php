@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright Shopgate Inc.
  *
@@ -20,20 +19,13 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Catalog\Attribute;
+namespace Shopgate\ConnectSdk\Dto\Catalog;
 
-use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
+use Shopgate\ConnectSdk\Dto\Base;
 
 /**
- * Dto for attribute response.
- *
- * @method string getCode()
- * @method string getType()
- * @method string getUse()
- * @method string getName()
- * @method string getValues()
- *
+ * @package Shopgate\ConnectSdk\Dto\Catalog
  */
-class Get extends Attribute
+class Category extends Base
 {
 }

@@ -20,7 +20,10 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\DTO\Catalog\Attribute;
+namespace Shopgate\ConnectSdk\Dto\Catalog\Attribute;
+
+use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
+use Shopgate\ConnectSdk\Dto\LocalizedString;
 
 /**
  * Default class that handles validation for attribute Create payloads.
@@ -28,11 +31,11 @@ namespace Shopgate\ConnectSdk\DTO\Catalog\Attribute;
  * @method Create setCode(string $code)
  * @method Create setType(string $type)
  * @method Create setUse(string $use)
- * @method Create setName(Name $name)
+ * @method Create setName(LocalizedString $name)
  * @method Create setExternalUpdateDate(string $externalUpdateDate)
  * @method Create setValues(string $values)
  */
-class Create extends AbstractAttribute
+class Create extends Attribute
 {
     /**
      * @var array

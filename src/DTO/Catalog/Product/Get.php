@@ -20,17 +20,19 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\DTO\Catalog\Product;
+namespace Shopgate\ConnectSdk\Dto\Catalog\Product;
+
+use Shopgate\ConnectSdk\Dto\Catalog\Product;
 
 /**
- * DTO for product response.
+ * Dto for product response.
  *
  * @method string getCode()
  * @method string getParentProductCode()
  * @method string getCatalogCode()
  * @method string getModelType()
- * @method Identifiers getIdentifiers()
- * @method Price getPrice()
+ * @method dto\Identifiers getIdentifiers()
+ * @method dto\Price getPrice()
  * @method string[] getFulfillmentMethods()
  * @method string getUnit()
  * @method boolean getIsSerialized()
@@ -41,7 +43,7 @@ namespace Shopgate\ConnectSdk\DTO\Catalog\Product;
  * @method string getEolDate()
  * @method boolean getIsInventoryManaged()
  * @method string getInventoryTreatment()
- * @method ShippingInformation getShippingInformation()
+ * @method dto\ShippingInformation getShippingInformation()
  * @method number getRating()
  * @method string getUrl()
  * @method boolean getTaxClass()
@@ -49,13 +51,13 @@ namespace Shopgate\ConnectSdk\DTO\Catalog\Product;
  * @method number getMaxQty()
  * @method string getName()
  * @method string getLongName()
- * @method CategoryMapping[] getCategories()
- * @method Property[] getProperties()
- * @method LocalizationMedia getMedia()
- * @method Inventory[] getInventories()
- * @method Option[] getOptions()
- * @method Extra[] getExtras()
+ * @method dto\Categories getCategories()
+ * @method dto\Properties[] getProperties()
+ * @method dto\Media getMedia()
+ * @method dto\Inventory[] getInventories()
+ * @method dto\Options[] getOptions()
+ * @method dto\Extras[] getExtras()
  */
-class Get extends AbstractProduct
+class Get extends Product
 {
 }

@@ -20,21 +20,18 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Catalog\Category;
+namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto;
 
-use Shopgate\ConnectSdk\Dto\Catalog\Category;
-use Shopgate\ConnectSdk\Dto\LocalizedString;
+use Shopgate\ConnectSdk\Dto\Base as DtoBase;
 
 /**
- * Default class that handles validation for category Update payloads.
- *
- * @method Update setImage(string $image)
- * @method Update setName(LocalizedString $name)
- * @method Update setParentCategoryCode(string $parentCategoryCode)
- * @method Update setUrl(string $url)
- * @method Update setDescription(LocalizedString $description)
+ * @method Identifiers setMfgPartNum(string $mfgPartNum)
+ * @method Identifiers setUpc(string $upc)
+ * @method Identifiers setEan(string $ean)
+ * @method Identifiers setIsbn(string $isbn)
+ * @method Identifiers setSku(string $sku)
  */
-class Update extends Category
+class Identifiers extends DtoBase
 {
     /**
      * @var array
@@ -43,11 +40,11 @@ class Update extends Category
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'image'              => ['type' => 'string'],
-            'name'               => ['type' => 'object'],
-            'parentCategoryCode' => ['type' => 'string'],
-            'url'                => ['type' => 'string'],
-            'description'        => ['type' => 'object'],
+            'mfgPartNum' => ['type' => 'string'],
+            'upc'        => ['type' => 'string'],
+            'ean'        => ['type' => 'string'],
+            'isbn'       => ['type' => 'string'],
+            'sku'        => ['type' => 'string']
         ],
         'additionalProperties' => true
     ];

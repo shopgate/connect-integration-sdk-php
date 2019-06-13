@@ -20,21 +20,19 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Catalog\Category;
+namespace Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 
-use Shopgate\ConnectSdk\Dto\Catalog\Category;
+use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 use Shopgate\ConnectSdk\Dto\LocalizedString;
 
 /**
- * Default class that handles validation for category Update payloads.
+ * Default class that handles validation for attribute values Update payloads.
  *
- * @method Update setImage(string $image)
- * @method Update setName(LocalizedString $name)
- * @method Update setParentCategoryCode(string $parentCategoryCode)
- * @method Update setUrl(string $url)
- * @method Update setDescription(LocalizedString $description)
+ * @method string setSequenceId(int $sequenceId)
+ * @method string setName(LocalizedString $name)
+ * @method string setSwatch(dto\Swatch $swatch)
  */
-class Update extends Category
+class Update extends AttributeValue
 {
     /**
      * @var array
@@ -43,12 +41,10 @@ class Update extends Category
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'image'              => ['type' => 'string'],
-            'name'               => ['type' => 'object'],
-            'parentCategoryCode' => ['type' => 'string'],
-            'url'                => ['type' => 'string'],
-            'description'        => ['type' => 'object'],
+            'sequenceId' => ['type' => 'integer'],
+            'name'       => ['type' => 'object'],
+            'swatch'     => ['type' => 'object'],
         ],
-        'additionalProperties' => true
+        'additionalProperties' => true,
     ];
 }

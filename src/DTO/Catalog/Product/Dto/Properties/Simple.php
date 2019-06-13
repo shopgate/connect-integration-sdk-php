@@ -20,20 +20,22 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Catalog\Attribute;
+namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 
-use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
+use Dto\RegulatorInterface;
+use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 
 /**
- * Dto for attribute response.
- *
- * @method string getCode()
- * @method string getType()
- * @method string getUse()
- * @method string getName()
- * @method string getValues()
- *
+ * @package Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties
  */
-class Get extends Attribute
+class Simple extends Properties
 {
+    /**
+     * @inheritdoc
+     */
+    public function __construct($input = null, $schema = null, RegulatorInterface $regulator = null)
+    {
+        $this->schema['default']['type'] = 'simple';
+        parent::__construct($input, $schema, $regulator);
+    }
 }

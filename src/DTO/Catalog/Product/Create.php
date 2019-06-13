@@ -20,26 +20,28 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\DTO\Catalog\Product;
+namespace Shopgate\ConnectSdk\Dto\Catalog\Product;
+
+use Shopgate\ConnectSdk\Dto\Catalog\Product;
 
 /**
  * Default class that handles validation for product Create payloads.
  *
- * @method Create setName(Name $name)
- * @method Create setLongName(LongName $longName)
- * @method Create setShortDescription(ShortDescription $name)
- * @method Create setLongDescription(LongDescription $longName)
- * @method Create setCategories(CategoryMapping [] $categories)
- * @method Create setProperties(Property [] $properties)
- * @method Create setMedia(LocalizationMedia $media)
- * @method Create setOptions(Option [] $options)
- * @method Create setExtras(Extra [] $extras)
+ * @method Create setName(dto\Name $name)
+ * @method Create setLongName(dto\LongName $longName)
+ * @method Create setShortDescription(dto\ShortDescription $name)
+ * @method Create setLongDescription(dto\LongDescription $longName)
+ * @method Create setCategories(dto\Categories [] $categories)
+ * @method Create setProperties(dto\Properties [] $properties)
+ * @method Create setMedia(dto\Media $media)
+ * @method Create setOptions(dto\Options [] $options)
+ * @method Create setExtras(dto\Extras [] $extras)
  * @method Create setCode(string $code)
  * @method Create setParentProductCode(string $parentProductCode)
  * @method Create setCatalogCode(string $catalogCode)
  * @method Create setModelType(string $modelType)
- * @method Create setIdentifiers(Identifiers $identifiers)
- * @method Create setPrice(Price $price)
+ * @method Create setIdentifiers(dto\Identifiers $identifiers)
+ * @method Create setPrice(dto\Price $price)
  * @method Create setFulfillmentMethods(string [] $fulfillmentMethods)
  * @method Create setUnit(string $unit)
  * @method Create setIsSerialized(boolean $isSerialized)
@@ -50,7 +52,7 @@ namespace Shopgate\ConnectSdk\DTO\Catalog\Product;
  * @method Create setEolDate(string $eolDate)
  * @method Create setIsInventoryManaged(boolean $isInventoryManaged)
  * @method Create setInventoryTreatment(string $inventoryTreatment)
- * @method Create setShippingInformation(ShippingInformation $shippingInformation)
+ * @method Create setShippingInformation(dto\ShippingInformation $shippingInformation)
  * @method Create setRating(number $rating)
  * @method Create setUrl(string $url)
  * @method Create setIsTaxed(boolean $isTaxed)
@@ -59,7 +61,7 @@ namespace Shopgate\ConnectSdk\DTO\Catalog\Product;
  * @method Create setMaxQty(number $maxQty)
  * @method Create setExternalUpdateDate(string $externalUpdateDate)
  */
-class Create extends AbstractProduct
+class Create extends Product
 {
     /**
      * @var array
@@ -77,7 +79,7 @@ class Create extends AbstractProduct
                 'items' => [
                     'type' => 'object',
                 ],
-            ], // todo-sg: double check properties after we get examples
+            ],
             'properties'          => [
                 'type'  => 'array',
                 'items' => [

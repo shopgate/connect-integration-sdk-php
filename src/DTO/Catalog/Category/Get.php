@@ -20,12 +20,12 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\DTO\Catalog\Category;
+namespace Shopgate\ConnectSdk\Dto\Catalog\Category;
 
-use Shopgate\ConnectSdk\DTO\Base as DTOBase;
+use Shopgate\ConnectSdk\Dto\Catalog\Category;
 
 /**
- * DTO for category response.
+ * Dto for category response.
  *
  * @method string getCode()
  * @method string getParentCategoryCode()
@@ -35,6 +35,6 @@ use Shopgate\ConnectSdk\DTO\Base as DTOBase;
  * @method string getUrl()
  *
  */
-class Get extends DTOBase
+class Get extends Category
 {
 }

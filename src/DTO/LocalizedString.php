@@ -20,17 +20,17 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\DTO;
+namespace Shopgate\ConnectSdk\Dto;
 
 use Dto\Exceptions\InvalidDataTypeException;
-use Shopgate\ConnectSdk\DTO\Base as DTOBase;
+use Shopgate\ConnectSdk\Dto\Base as DtoBase;
 
 /**
- * Default class that handles localized strings in DTOs
+ * Default class that handles localized strings in Dtos
  *
  * @codeCoverageIgnore
  */
-class LocalizedString extends DTOBase
+class LocalizedString extends DtoBase
 {
     /**
      * @var array

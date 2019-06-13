@@ -7,5 +7,6 @@ RUN apt-get update && apt-get install -y zip git &&\
 WORKDIR /sdk
 
 COPY ./ /sdk/
+COPY ./tools/fixtures/env /sdk/tests/Integration/.env
 
 CMD ["bash"]

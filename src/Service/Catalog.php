@@ -234,7 +234,7 @@ class Catalog
         return $this->client->doRequest(
             [
                 'service'     => 'catalog',
-                'method'      => 'post',
+                'method'      => 'delete',
                 'path'        => 'products/' . $code,
                 'entity'      => 'product',
                 'action'      => 'delete',

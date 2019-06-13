@@ -23,7 +23,7 @@
 namespace Shopgate\ConnectSdk\Tests\Unit\Http;
 
 use PHPUnit\Framework\TestCase;
-use Shopgate\ConnectSdk\DTO\Base;
+use Shopgate\ConnectSdk\Dto\Base;
 
 class BaseTest extends TestCase
 {

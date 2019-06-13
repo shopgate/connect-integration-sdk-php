@@ -74,6 +74,7 @@ run_integration_tests:
     - $(aws ecr get-login --region=us-east-1 --no-include-email --registry-ids 602824140852)
   script:
     - cd tools
+    - docker-compose down
     - CI_STACK=1 ./initLocalStack.sh
     - docker-compose exec -T php composer integration-tests-local
   cache:
@@ -83,4 +84,3 @@ run_integration_tests:
   tags:
     - docker
     - ecr
-

@@ -52,8 +52,8 @@ run_unit_tests:
 run_integration_tests:
   stage: test
   before_script:
-    - apk add --no-cache bash curl python3 python3-dev jq python make g++ openssl-dev libgcc libffi-dev
-    - pip3 install docker-compose awscli
+    - apk add --no-cache apk add --no-cache bash curl python3 jq python make g++
+    - pip3 install docker-compose==1.23.2 awscli
     - $(aws ecr get-login --region=us-east-1 --no-include-email --registry-ids 602824140852)
   script:
     - pwd

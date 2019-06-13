@@ -17,7 +17,9 @@
     "cover-html": "phpunit --testsuite UnitTests --coverage-html build/coverage-html",
     "cover-text": "phpunit --testsuite UnitTests --coverage-text",
     "cover-clover": "phpunit --testsuite UnitTests --coverage-clover build/clover.xml",
-    "start": "cd tools && ./initLocalStack.sh",
+    "cs-fixer": "php-cs-fixer fix --config=.php-cs.dist --cache-file=.php-cs.cache --diff --verbose .",
+    "cs-fixer-dry": "php-cs-fixer fix --config=.php-cs.dist --cache-file=.php-cs.cache --diff --dry-run --verbose .",
+    "start": ["Composer\\Config::disableProcessTimeout", "cd tools && ./initLocalStack.sh"],
     "ps": "cd tools && docker-compose ps",
     "logs": "cd tools && docker-compose logs -f",
     "reset-db": "cd tools && ./reset-db.sh",
@@ -42,7 +44,8 @@
     "linkorb/etcd-php": "^1.6",
     "symfony/yaml": "^3.4.28",
     "google/cloud-pubsub": "^1.12",
-    "vlucas/phpdotenv": "^3.3.3"
+    "vlucas/phpdotenv": "^3.3.3",
+    "friendsofphp/php-cs-fixer": "^2.15"
   },
   "autoload": {
     "psr-4": {

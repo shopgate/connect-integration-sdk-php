@@ -27,8 +27,10 @@ use kamermans\OAuth2\Persistence\NullTokenPersistence;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Shopgate\ConnectSdk\DTO\Catalog\Category\Create as CategoryDto;
-use Shopgate\ConnectSdk\DTO\Catalog\Product as ProductDto;
+use Shopgate\ConnectSdk\Dto\Catalog\Category\Create as CategoryCreate;
+use Shopgate\ConnectSdk\Dto\Catalog\Category\Update as CategoryUpdate;
+use Shopgate\ConnectSdk\Dto\Catalog\Product\Create as ProductCreate;
+use Shopgate\ConnectSdk\Dto\Catalog\Product\Update as ProductUpdate;
 use Shopgate\ConnectSdk\Http\GuzzleClient;
 use Shopgate\ConnectSdk\ShopgateSdk;
 
@@ -65,21 +67,19 @@ class ShopgateSdkTest extends TestCase
             ]
         );
         /** @noinspection PhpParamsInspection */
-        $mock->expects($this->exactly(14))->method('request');
-        $subjectUnderTest->catalog->updateCategory(1, new CategoryDto());
-        $subjectUnderTest->catalog->updateCategory(1, new CategoryDto(), ['requestType' => 'direct']);
-        $subjectUnderTest->catalog->addCategories([new CategoryDto()]);
-        $subjectUnderTest->catalog->addCategories([new CategoryDto()], ['requestType' => 'direct']);
-        $subjectUnderTest->catalog->deleteCategory('1');
-        $subjectUnderTest->catalog->deleteCategory('1', ['requestType' => 'direct']);
-        $subjectUnderTest->catalog->updateProduct(1, new ProductDto());
-        $subjectUnderTest->catalog->updateProduct(1, new ProductDto(), ['requestType' => 'direct']);
-        $subjectUnderTest->catalog->createProduct(new ProductDto());
-        $subjectUnderTest->catalog->createProduct(new ProductDto(), ['requestType' => 'direct']);
-        $subjectUnderTest->catalog->deleteProduct('1');
-        $subjectUnderTest->catalog->deleteProduct('1', ['requestType' => 'direct']);
-        $subjectUnderTest->catalog->getProduct(['requestType' => 'direct']);
-        $subjectUnderTest->catalog->getProduct([]);
+        $mock->expects($this->exactly(12))->method('request');
+        $subjectUnderTest->getCatalogService()->updateCategory(1, new CategoryUpdate());
+        $subjectUnderTest->getCatalogService()->updateCategory(1, new CategoryUpdate(), ['requestType' => 'direct']);
+        $subjectUnderTest->getCatalogService()->addCategories([new CategoryCreate()]);
+        $subjectUnderTest->getCatalogService()->addCategories([new CategoryCreate()], ['requestType' => 'direct']);
+        $subjectUnderTest->getCatalogService()->deleteCategory('1');
+        $subjectUnderTest->getCatalogService()->deleteCategory('1', ['requestType' => 'direct']);
+        $subjectUnderTest->getCatalogService()->updateProduct(1, new ProductUpdate());
+        $subjectUnderTest->getCatalogService()->updateProduct(1, new ProductUpdate(), ['requestType' => 'direct']);
+        $subjectUnderTest->getCatalogService()->addProducts([new ProductCreate()]);
+        $subjectUnderTest->getCatalogService()->addProducts([new ProductCreate()], ['requestType' => 'direct']);
+        $subjectUnderTest->getCatalogService()->deleteProduct('1');
+        $subjectUnderTest->getCatalogService()->deleteProduct('1', ['requestType' => 'direct']);
     }
 
     /**
@@ -88,7 +88,7 @@ class ShopgateSdkTest extends TestCase
     public function testDirectCatalogCategoryActions()
     {
         $entityId         = 1;
-        $defaultMeta      = ['service' => 'catalog', 'requestType' => 'direct'];
+        $defaultMeta      = ['service' => 'catalog'];
         $mock             = $this->httpClient->getMock();
         $subjectUnderTest = new ShopgateSdk(
             [
@@ -99,7 +99,7 @@ class ShopgateSdkTest extends TestCase
             ]
         );
         /** @noinspection PhpParamsInspection */
-        $mock->expects($this->exactly(6))->method('request')->withConsecutive(
+        $mock->expects($this->exactly(3))->method('request')->withConsecutive(
             [
                 $this->equalTo('post'),
                 $this->equalTo('categories/' . $entityId),
@@ -108,43 +108,18 @@ class ShopgateSdkTest extends TestCase
             [
                 $this->equalTo('delete'),
                 $this->equalTo('categories/' . $entityId),
-                ['query' => $defaultMeta, 'json' => '{}']
+                ['query' => $defaultMeta, 'json' => '[]']
             ],
             [
                 $this->equalTo('post'),
                 $this->equalTo('categories'),
                 ['query' => $defaultMeta, 'json' => '{"categories":[[]]}']
-            ],
-            [
-                $this->equalTo('post'),
-                $this->equalTo('categories/' . $entityId),
-                ['query' => ['service' => 'test', 'requestType' => 'direct'], 'json' => '{}']
-            ],
-            [
-                $this->equalTo('delete'),
-                $this->equalTo('categories/' . $entityId),
-                ['query' => ['service' => 'test', 'requestType' => 'direct'], 'json' => '{}']
-            ],
-            [
-                $this->equalTo('post'),
-                $this->equalTo('categories'),
-                ['query' => ['service' => 'test', 'requestType' => 'direct'], 'json' => '{"categories":[[]]}']
             ]
         );
 
-        $payload = new CategoryDto();
-        $subjectUnderTest->catalog->updateCategory($entityId, $payload, ['requestType' => 'direct']);
-        $subjectUnderTest->catalog->deleteCategory($entityId, ['requestType' => 'direct']);
-        $subjectUnderTest->catalog->createCategory($payload, ['requestType' => 'direct']);
-
-        // rewriting service via direct call
-        $subjectUnderTest->catalog->updateCategory(
-            $entityId,
-            $payload,
-            ['service' => 'test', 'requestType' => 'direct']
-        );
-        $subjectUnderTest->catalog->deleteCategory($entityId, ['service' => 'test', 'requestType' => 'direct']);
-        $subjectUnderTest->catalog->createCategory($payload, ['service' => 'test', 'requestType' => 'direct']);
+        $subjectUnderTest->getCatalogService()->updateCategory($entityId, new CategoryUpdate(), ['requestType' => 'direct']);
+        $subjectUnderTest->getCatalogService()->deleteCategory($entityId, ['requestType' => 'direct']);
+        $subjectUnderTest->getCatalogService()->addCategories([new CategoryCreate()], ['requestType' => 'direct']);
     }
 
     /**
@@ -153,7 +128,7 @@ class ShopgateSdkTest extends TestCase
     public function testDirectCatalogProductActions()
     {
         $entityId         = 1;
-        $defaultMeta      = ['service' => 'catalog', 'requestType' => 'direct'];
+        $defaultMeta      = ['service' => 'catalog'];
         $mock             = $this->httpClient->getMock();
         $subjectUnderTest = new ShopgateSdk(
             [
@@ -164,7 +139,7 @@ class ShopgateSdkTest extends TestCase
             ]
         );
         /** @noinspection PhpParamsInspection */
-        $mock->expects($this->exactly(8))->method('request')->withConsecutive(
+        $mock->expects($this->exactly(3))->method('request')->withConsecutive(
             [
                 $this->equalTo('post'),
                 $this->equalTo('products/' . $entityId),
@@ -173,55 +148,18 @@ class ShopgateSdkTest extends TestCase
             [
                 $this->equalTo('delete'),
                 $this->equalTo('products/' . $entityId),
-                ['query' => $defaultMeta, 'json' => '{}']
+                ['query' => $defaultMeta, 'json' => '[]']
             ],
             [
                 $this->equalTo('post'),
                 $this->equalTo('products'),
                 ['query' => $defaultMeta, 'json' => '{"products":[[]]}']
-            ],
-            [
-                $this->equalTo('post'),
-                $this->equalTo('products/' . $entityId),
-                ['query' => ['service' => 'test', 'requestType' => 'direct'], 'json' => '{}']
-            ],
-            [
-                $this->equalTo('delete'),
-                $this->equalTo('products/' . $entityId),
-                ['query' => ['service' => 'test', 'requestType' => 'direct'], 'json' => '{}']
-            ],
-            [
-                $this->equalTo('post'),
-                $this->equalTo('products'),
-                ['query' => ['service' => 'test', 'requestType' => 'direct'], 'json' => '{"products":[[]]}']
-            ],
-            [
-                $this->equalTo('get'),
-                $this->equalTo('products'),
-                ['query' => ['service' => 'test', 'requestType' => 'direct'], 'json' => '{}']
-            ],
-            [
-                $this->equalTo('get'),
-                $this->equalTo('products'),
-                ['query' => ['service' => 'test'], 'json' => '{}']
             ]
         );
 
-        $payload = new ProductDto();
-        $subjectUnderTest->catalog->updateProduct($entityId, $payload, ['requestType' => 'direct']);
-        $subjectUnderTest->catalog->deleteProduct($entityId, ['requestType' => 'direct']);
-        $subjectUnderTest->catalog->createProduct($payload, ['requestType' => 'direct']);
-
-        // rewriting service via direct call
-        $subjectUnderTest->catalog->updateProduct(
-            $entityId,
-            $payload,
-            ['service' => 'test', 'requestType' => 'direct']
-        );
-        $subjectUnderTest->catalog->deleteProduct($entityId, ['service' => 'test', 'requestType' => 'direct']);
-        $subjectUnderTest->catalog->createProduct($payload, ['service' => 'test', 'requestType' => 'direct']);
-        $subjectUnderTest->catalog->getProduct(['service' => 'test', 'requestType' => 'direct']);
-        $subjectUnderTest->catalog->getProduct(['service' => 'test']);
+        $subjectUnderTest->getCatalogService()->updateProduct($entityId, new ProductUpdate(), ['requestType' => 'direct']);
+        $subjectUnderTest->getCatalogService()->deleteProduct($entityId, ['requestType' => 'direct']);
+        $subjectUnderTest->getCatalogService()->addProducts([new ProductCreate()], ['requestType' => 'direct']);
     }
 
     public function testSettingCustomPersistence()

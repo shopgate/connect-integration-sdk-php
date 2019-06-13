@@ -27,8 +27,8 @@ use GuzzleHttp\ClientInterface as GuzzleClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException as GuzzleRequestException;
 use Psr\Http\Message\ResponseInterface;
-use Shopgate\ConnectSdk\DTO\Async\Factory;
-use Shopgate\ConnectSdk\DTO\Base;
+use Shopgate\ConnectSdk\Dto\Async\Factory;
+use Shopgate\ConnectSdk\Dto\Base;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
 

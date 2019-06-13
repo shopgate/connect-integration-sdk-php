@@ -61,4 +61,4 @@ retry "AuthService" "docker-compose exec -T auth curl http://localhost/health -o
 retry "MerchantService" "docker-compose exec -T omni-merchant curl http://localhost/health -o /dev/null 2>&1"
 retry "LocationService" "docker-compose exec -T omni-location curl http://localhost/health -o /dev/null 2>&1"
 
-docker-compose exec -T mysql mysql -u root -psecret < ./fixtures/sampleData.sql
+retry "SampleData" "docker-compose exec -T mysql mysql -u root -psecret < ./fixtures/sampleData.sql 2>&1"

@@ -2,6 +2,7 @@ stages:
   - prepare
   - check
   - test
+  - deploy
 
 variables:
   PHP_DC_DOWNLOAD: https://github.com/Rekhyt/php-dependency-checker/releases/download/1.0.0-beta.1/php-dependency-checker.phar
@@ -37,11 +38,24 @@ check_dependencies:
   tags:
     - docker
 
+check_code_style:
+  image: composer:1.8.0
+  stage: check
+  script:
+    - composer cs-fixer-dry
+  cache:
+    key: $BUILD_PREREQUISITES_CACHE_KEY
+    paths:
+      - vendor
+    policy: pull
+  tags:
+    - docker
+
 run_unit_tests:
   image: composer:1.8.0
   stage: test
   script:
-    - composer unit-tests
+    - composer cover-text
   cache:
     key: $BUILD_PREREQUISITES_CACHE_KEY
     paths:
@@ -56,11 +70,9 @@ run_integration_tests:
     - pip3 install docker-compose==1.23.2 awscli
     - $(aws ecr get-login --region=us-east-1 --no-include-email --registry-ids 602824140852)
   script:
-    - pwd
-    - ls -al
     - cd tools
+    - docker-compose down
     - CI_STACK=1 ./initLocalStack.sh
-    - docker-compose exec -T php ls -al
     - docker-compose exec -T php composer integration-tests-local
   cache:
     key: $BUILD_PREREQUISITES_CACHE_KEY

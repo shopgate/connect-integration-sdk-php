@@ -29,6 +29,7 @@ use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\DTO\Async\Factory;
 use Shopgate\ConnectSdk\DTO\Base;
+use Shopgate\ConnectSdk\Exception\UnknownException;
 
 class Client implements ClientInterface
 {
@@ -51,7 +52,7 @@ class Client implements ClientInterface
      * @param array $params
      *
      * @return ResponseInterface
-     * @throws InvalidDataTypeException
+     * @throws UnknownException
      */
     public function doRequest(array $params)
     {
@@ -79,8 +80,7 @@ class Client implements ClientInterface
             //todo-sg: exception handling
             echo $e->getResponse()->getBody()->getContents();
         } catch (GuzzleException $e) {
-            //todo-sg: exception handling
-            echo $e->getMessage();
+            throw new UnknownException($e->getMessage());
         }
 
         return $response;

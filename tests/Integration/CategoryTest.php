@@ -22,8 +22,8 @@
 
 namespace Shopgate\ConnectSdk\Tests\Integration;
 
-use Shopgate\ConnectSdk\DTO\Catalog\Category;
-use Shopgate\ConnectSdk\DTO\Catalog\Product\Dto\Name;
+use Shopgate\ConnectSdk\Dto\Catalog\Category;
+use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Name;
 
 class CategoryTest extends ShopgateSdkTest
 {
@@ -112,7 +112,6 @@ class CategoryTest extends ShopgateSdkTest
     /**
      * error cases
      */
-
 
     /**
      * @param array $categoryData
@@ -221,7 +220,7 @@ class CategoryTest extends ShopgateSdkTest
     {
         // Arrange
         $categoryCode = 'example-code';
-        $existinCategory = $this->provideSampleCreateCategory(
+        $existingCategory = $this->provideSampleCreateCategory(
             $categoryCode,
             'test category',
             'http://www.google.e/image.png',
@@ -229,7 +228,7 @@ class CategoryTest extends ShopgateSdkTest
             'test description',
             '12345'
         );
-        $this->sdk->getCatalogService()->addCategories([$existinCategory], [
+        $this->sdk->getCatalogService()->addCategories([$existingCategory], [
             'requestType' => 'direct'
         ]);
         $updateCategory = new Category\Update();
@@ -327,7 +326,6 @@ class CategoryTest extends ShopgateSdkTest
      * error cases
      */
 
-
     /**
      * @param array $categoryData
      * @param string $expectedException
@@ -363,9 +361,6 @@ class CategoryTest extends ShopgateSdkTest
         // Act
         $this->createCategories([$category]);
     }
-
-
-
 
     /**
      * @param array $categoryCodes
@@ -469,7 +464,7 @@ class CategoryTest extends ShopgateSdkTest
             $category->setUrl($url);
         }
         if ($description) {
-            $translatedDescription = new Category\Dto\Description($description);
+            $translatedDescription = new Category\Dto\Description(['en-us' => $description]);
             $category->setDescription($translatedDescription);
         }
         if ($image) {
@@ -489,7 +484,6 @@ class CategoryTest extends ShopgateSdkTest
      */
     private function getCategoryCodes($categories)
     {
-
         $categoryCodes = [];
         foreach ($categories as $category) {
             $categoryCodes[] = $category->code;

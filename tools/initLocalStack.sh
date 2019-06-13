@@ -42,6 +42,9 @@ export SERVICE=sdk
 docker network create ${SERVICE}-integration-network
 
 set -e
+
+docker-compose $DOCKER_COMPOSE_FILES build --no-cache php
+
 docker-compose $DOCKER_COMPOSE_FILES up -d php
 docker-compose $DOCKER_COMPOSE_FILES up -d mysql
 

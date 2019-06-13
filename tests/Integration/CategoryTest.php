@@ -23,7 +23,7 @@
 namespace Shopgate\ConnectSdk\Tests\Integration;
 
 use Shopgate\ConnectSdk\DTO\Catalog\Category;
-use Shopgate\ConnectSdk\DTO\Catalog\Product\Name;
+use Shopgate\ConnectSdk\DTO\Catalog\Product\Dto\Name;
 
 class CategoryTest extends ShopgateSdkTest
 {
@@ -392,12 +392,12 @@ class CategoryTest extends ShopgateSdkTest
     private function provideSampleCategories()
     {
         $payload = new Category\Create();
-        $name = new Category\Name(['en-us' => 'Denim Jeans']);
+        $name = new Category\Dto\Name(['en-us' => 'Denim Jeans']);
         $payload->setCode(self::CATEGORY_CODE)->setName($name)->setSequenceId(1);
 
         $payload2 = (new Category\Create())
             ->setCode(self::CATEGORY_CODE . '_2')
-            ->setName(new Category\Name(['en-us' => 'Denim Skirts']))
+            ->setName(new Category\Dto\Name(['en-us' => 'Denim Skirts']))
             ->setSequenceId(2);
         return [$payload, $payload2];
     }
@@ -421,14 +421,14 @@ class CategoryTest extends ShopgateSdkTest
         $category = new Category\Update();
 
         if ($name) {
-            $translatedName = new Category\Name(['en-us' => $name]);
+            $translatedName = new Category\Dto\Name(['en-us' => $name]);
             $category->setName($translatedName);
         }
         if ($url) {
             $category->setUrl($url);
         }
         if ($description) {
-            $translatedDescription = new Category\Description($description);
+            $translatedDescription = new Category\Dto\Description($description);
             $category->setDescription($translatedDescription);
         }
         if ($image) {
@@ -463,13 +463,13 @@ class CategoryTest extends ShopgateSdkTest
     ) {
         $category = new Category\Create();
         $category->setCode($code)
-            ->setName(new Category\Name(['en-us' => $name]))
+            ->setName(new Category\Dto\Name(['en-us' => $name]))
             ->setSequenceId($sequenceId);
         if ($url) {
             $category->setUrl($url);
         }
         if ($description) {
-            $translatedDescription = new Category\Description($description);
+            $translatedDescription = new Category\Dto\Description($description);
             $category->setDescription($translatedDescription);
         }
         if ($image) {

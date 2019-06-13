@@ -20,19 +20,28 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk;
+namespace Shopgate\ConnectSdk\Dto\Catalog\AttributeValue\Dto;
 
-use Shopgate\ConnectSdk\Exception\RequestException;
-use Shopgate\ConnectSdk\Exception\UnknownException;
+use Shopgate\ConnectSdk\Dto\Base;
 
-interface ClientInterface
+/**
+ * Default class that handles swatches in Dtos
+ *
+ * @method string setType(string $type)
+ * @method string setValue(int $value)
+ */
+class Swatch extends Base
 {
     /**
-     * @param array $params
-     *
-     * @return mixed
-     * @throws UnknownException
-     * @throws RequestException
+     * @var array
+     * @codeCoverageIgnore
      */
-    public function doRequest(array $params);
+    protected $schema = [
+        'type'                 => 'object',
+        'properties'           => [
+            'type'  => ['type' => 'string'],
+            'value' => ['type' => 'string'],
+        ],
+        'additionalProperties' => true,
+    ];
 }

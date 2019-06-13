@@ -20,19 +20,26 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk;
+namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Options;
 
-use Shopgate\ConnectSdk\Exception\RequestException;
-use Shopgate\ConnectSdk\Exception\UnknownException;
+use Shopgate\ConnectSdk\Dto\Base;
 
-interface ClientInterface
+/**
+ * @method Values setCode(string $code)
+ * @method Values setAdditionalPrice(number $additionalPrice)
+ */
+class Values extends Base
 {
     /**
-     * @param array $params
-     *
-     * @return mixed
-     * @throws UnknownException
-     * @throws RequestException
+     * @var array
+     * @codeCoverageIgnore
      */
-    public function doRequest(array $params);
+    protected $schema = [
+        'type'                 => 'object',
+        'properties'           => [
+            'code'            => ['type' => 'string'],
+            'additionalPrice' => ['type' => 'number'],
+        ],
+        'additionalProperties' => true
+    ];
 }

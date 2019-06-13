@@ -20,19 +20,31 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk;
+namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto;
 
-use Shopgate\ConnectSdk\Exception\RequestException;
-use Shopgate\ConnectSdk\Exception\UnknownException;
+use Shopgate\ConnectSdk\Dto\Base;
 
-interface ClientInterface
+/**
+ * Localized Media Entities
+ */
+class Media extends Base
 {
     /**
-     * @param array $params
-     *
-     * @return mixed
-     * @throws UnknownException
-     * @throws RequestException
+     * @var array
+     * @codeCoverageIgnore
      */
-    public function doRequest(array $params);
+    protected $schema = [
+        'type'                 => 'object',
+        'additionalProperties' => true,
+    ];
+
+    /**
+     * @param string        $locale
+     * @param Media\Media[] $media
+     */
+    public function add($locale, array $media)
+    {
+        // TODO logic to "add" additional media entities to an existing localization index?!
+        $this->set((string)$locale, $media);
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 require(__DIR__ . '/../vendor/autoload.php');
 
 use LinkORB\Component\Etcd\Client;
@@ -26,7 +27,8 @@ function fillEtcd($etcdValues, $path = [])
         if (is_array($values)) {
             try {
                 $etcdClient->mkdir(implode('/', $currentPath));
-            } catch (KeyExistsException $e) { /* that's fine :) */ }
+            } catch (KeyExistsException $e) { /* that's fine :) */
+            }
 
             fillEtcd($values, $currentPath);
             continue;

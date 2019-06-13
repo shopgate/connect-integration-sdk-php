@@ -20,19 +20,17 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk;
+namespace Shopgate\ConnectSdk\Dto;
 
-use Shopgate\ConnectSdk\Exception\RequestException;
-use Shopgate\ConnectSdk\Exception\UnknownException;
+use Shopgate\ConnectSdk\Dto\Base as DtoBase;
 
-interface ClientInterface
+/**
+ * Default class that handles localized strings in Dtos
+ *
+ * @method int getLimit()
+ * @method int getOffset()
+ * @method int getTotalItemCount()
+ */
+class Meta extends DtoBase
 {
-    /**
-     * @param array $params
-     *
-     * @return mixed
-     * @throws UnknownException
-     * @throws RequestException
-     */
-    public function doRequest(array $params);
 }

@@ -20,19 +20,31 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk;
+namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto;
 
-use Shopgate\ConnectSdk\Exception\RequestException;
-use Shopgate\ConnectSdk\Exception\UnknownException;
+use Shopgate\ConnectSdk\Dto\Base as DtoBase;
 
-interface ClientInterface
+/**
+ * @method Options setCode(string $code)
+ * @method Options setValues(Options\Values[] $values)
+ */
+class Options extends DtoBase
 {
     /**
-     * @param array $params
-     *
-     * @return mixed
-     * @throws UnknownException
-     * @throws RequestException
+     * @var array
+     * @codeCoverageIgnore
      */
-    public function doRequest(array $params);
+    protected $schema = [
+        'type'                 => 'object',
+        'properties'           => [
+            'code'   => ['type' => 'string'],
+            'values' => [
+                'type'  => 'array',
+                'items' => [
+                    'type' => 'object'
+                ]
+            ]
+        ],
+        'additionalProperties' => true
+    ];
 }

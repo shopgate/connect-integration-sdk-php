@@ -20,19 +20,21 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk;
+namespace Shopgate\ConnectSdk\Dto\Catalog\Category;
 
-use Shopgate\ConnectSdk\Exception\RequestException;
-use Shopgate\ConnectSdk\Exception\UnknownException;
+use Shopgate\ConnectSdk\Dto\Catalog\Category;
 
-interface ClientInterface
+/**
+ * Dto for category response.
+ *
+ * @method string getCode()
+ * @method string getParentCategoryCode()
+ * @method string getCatalogCode()
+ * @method string getName()
+ * @method string getDescription()
+ * @method string getUrl()
+ *
+ */
+class Get extends Category
 {
-    /**
-     * @param array $params
-     *
-     * @return mixed
-     * @throws UnknownException
-     * @throws RequestException
-     */
-    public function doRequest(array $params);
 }

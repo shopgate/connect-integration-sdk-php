@@ -30,25 +30,25 @@ $config = [
     'clientSecret'  => 'xxx'
 ];
 
-$client = new ShopgateSdk($config);
+$sgSdk = new ShopgateSdk($config);
 
 // create new category
 $categoryPayload = new Category\Create();
 $name            = new Category\Name(['en-us' => 'Denim Pants']);
 $categoryPayload->setCode('pants')->setName($name)->setSequenceId(1);
-$client->catalog->addCategories([$categoryPayload]);
+$sgSdk->getCatalogService()->addCategories([$categoryPayload]);
 // update category with constructor input example
 $updateDto = new Category\Update(['name' => 'Skirts']);
-$client->catalog->updateCategory('pants', $updateDto);
+$sgSdk->getCatalogService()->updateCategory('pants', $updateDto);
 // delete category
-$client->catalog->deleteCategory('pants');
+$sgSdk->getCatalogService()->deleteCategory('pants');
 // get categories
-$categories = $client->catalog->getCategories(['limit' => 5]);
+$categories = $sgSdk->getCatalogService()->getCategories(['limit' => 5]);
 
 // update category sync
 $name      = (new Category\Name())->add('en-us', 'Skirts');
 $updateDto = new Category\Update(['name' => $name]);
-$client->catalog->updateCategory('4', $updateDto, ['requestType' => 'direct']);
+$sgSdk->getCatalogService()->updateCategory('4', $updateDto, ['requestType' => 'direct']);
 ```
 
 Example for calling our service in order to create, update or delete a simple product:
@@ -64,7 +64,7 @@ $config = [
     'clientSecret'  => 'xxx'
 ];
 
-$client = new ShopgateSdk($config);
+$sgSdk = new ShopgateSdk($config);
 // create new price
 $price = new PriceDto();
 $price->setPrice(90)->setSalePrice(84.99)->setCurrencyCode(PriceDto::CURRENCY_CODE_EUR);
@@ -78,16 +78,16 @@ $productPayload->setCode('42')
                ->setModelType(Product\Create::MODEL_TYPE_STANDARD)
                ->setIsInventoryManaged(true)
                ->setPrice($price);
-$client->catalog->addProducts([$productPayload]);
+$sgSdk->getCatalogService()->addProducts([$productPayload]);
 // update product with constructor input example
 $updateDto = new Product\Update(['name' => new Product\Name(['en-us' => 'Blue Jeans regular'])]);
-$client->catalog->updateProduct('42', $updateDto);
+$sgSdk->getCatalogService()->updateProduct('42', $updateDto);
 // delete product
-$client->catalog->deleteProduct('42');
+$sgSdk->getCatalogService()->deleteProduct('42');
 
 // update product sync
 $updateDto = new Product\Update(['status' => Product\Create::STATUS_INACTIVE]);
-$client->catalog->updateProduct('42', $updateDto, ['requestType' => 'direct']);
+$sgSdk->getCatalogService()->updateProduct('42', $updateDto, ['requestType' => 'direct']);
 ```
 
 #### Config

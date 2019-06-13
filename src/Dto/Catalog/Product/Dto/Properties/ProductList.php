@@ -20,19 +20,22 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk;
+namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 
-use Shopgate\ConnectSdk\Exception\RequestException;
-use Shopgate\ConnectSdk\Exception\UnknownException;
+use Dto\RegulatorInterface;
+use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 
-interface ClientInterface
+/**
+ * @package Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties
+ */
+class ProductList extends Properties
 {
     /**
-     * @param array $params
-     *
-     * @return mixed
-     * @throws UnknownException
-     * @throws RequestException
+     * @inheritdoc
      */
-    public function doRequest(array $params);
+    public function __construct($input = null, $schema = null, RegulatorInterface $regulator = null)
+    {
+        $this->schema['default']['type'] = 'productList';
+        parent::__construct($input, $schema, $regulator);
+    }
 }

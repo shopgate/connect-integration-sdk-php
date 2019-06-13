@@ -20,19 +20,20 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk;
+namespace Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 
-use Shopgate\ConnectSdk\Exception\RequestException;
-use Shopgate\ConnectSdk\Exception\UnknownException;
+use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
+use Shopgate\ConnectSdk\Dto\LocalizedString;
 
-interface ClientInterface
+/**
+ * Dto for attribute values response.
+ *
+ * @method string getCode()
+ * @method int getSequenceId()
+ * @method LocalizedString getName()
+ * @method dto\Swatch getSwatch()
+ *
+ */
+class Get extends AttributeValue
 {
-    /**
-     * @param array $params
-     *
-     * @return mixed
-     * @throws UnknownException
-     * @throws RequestException
-     */
-    public function doRequest(array $params);
 }

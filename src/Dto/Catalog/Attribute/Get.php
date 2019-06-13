@@ -20,19 +20,20 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk;
+namespace Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 
-use Shopgate\ConnectSdk\Exception\RequestException;
-use Shopgate\ConnectSdk\Exception\UnknownException;
+use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 
-interface ClientInterface
+/**
+ * Dto for attribute response.
+ *
+ * @method string getCode()
+ * @method string getType()
+ * @method string getUse()
+ * @method string getName()
+ * @method string getValues()
+ *
+ */
+class Get extends Attribute
 {
-    /**
-     * @param array $params
-     *
-     * @return mixed
-     * @throws UnknownException
-     * @throws RequestException
-     */
-    public function doRequest(array $params);
 }

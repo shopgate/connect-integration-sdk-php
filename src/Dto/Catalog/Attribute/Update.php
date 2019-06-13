@@ -20,19 +20,32 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk;
+namespace Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 
-use Shopgate\ConnectSdk\Exception\RequestException;
-use Shopgate\ConnectSdk\Exception\UnknownException;
+use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 
-interface ClientInterface
+/**
+ * Default class that handles validation for attribute Update payloads.
+ *
+ * @method string setType(string $type)
+ * @method string setUse(string $use)
+ * @method string setName(dto\Name $name)
+ * @method string setValues(string $values)
+ */
+class Update extends Attribute
 {
     /**
-     * @param array $params
-     *
-     * @return mixed
-     * @throws UnknownException
-     * @throws RequestException
+     * @var array
+     * @codeCoverageIgnore
      */
-    public function doRequest(array $params);
+    protected $schema = [
+        'type'                 => 'object',
+        'properties'           => [
+            'type'               => ['type' => 'string'],
+            'use'                => ['type' => 'string'],
+            'name'               => ['type' => 'object'],
+            'values'             => ['type' => 'array'],
+        ],
+        'additionalProperties' => true,
+    ];
 }

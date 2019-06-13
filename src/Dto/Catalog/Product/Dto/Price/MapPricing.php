@@ -20,19 +20,28 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk;
+namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Price;
 
-use Shopgate\ConnectSdk\Exception\RequestException;
-use Shopgate\ConnectSdk\Exception\UnknownException;
+use Shopgate\ConnectSdk\Dto\Base;
 
-interface ClientInterface
+/**
+ * @method MapPricing setStartDate(string $startDate)
+ * @method MapPricing setEndDate(string $endDate)
+ * @method MapPricing setPrice(number $price)
+ */
+class MapPricing extends Base
 {
     /**
-     * @param array $params
-     *
-     * @return mixed
-     * @throws UnknownException
-     * @throws RequestException
+     * @var array
+     * @codeCoverageIgnore
      */
-    public function doRequest(array $params);
+    protected $schema = [
+        'type'                 => 'object',
+        'properties'           => [
+            'startDate' => ['type' => 'string'],
+            'endDate'   => ['type' => 'string'],
+            'price'     => ['type' => 'number']
+        ],
+        'additionalProperties' => true
+    ];
 }

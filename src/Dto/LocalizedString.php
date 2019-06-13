@@ -20,19 +20,34 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk;
+namespace Shopgate\ConnectSdk\Dto;
 
-use Shopgate\ConnectSdk\Exception\RequestException;
-use Shopgate\ConnectSdk\Exception\UnknownException;
+use Dto\Exceptions\InvalidDataTypeException;
+use Shopgate\ConnectSdk\Dto\Base as DtoBase;
 
-interface ClientInterface
+/**
+ * Default class that handles localized strings in Dtos
+ *
+ * @codeCoverageIgnore
+ */
+class LocalizedString extends DtoBase
 {
     /**
-     * @param array $params
-     *
-     * @return mixed
-     * @throws UnknownException
-     * @throws RequestException
+     * @var array
      */
-    public function doRequest(array $params);
+    protected $schema = [
+        'type'                 => 'object',
+        'additionalProperties' => true,
+    ];
+
+    /**
+     * @param string $locale
+     * @param string $string
+     *
+     * @throws InvalidDataTypeException
+     */
+    public function add($locale, $string)
+    {
+        $this->set((string) $locale, (string) $string);
+    }
 }

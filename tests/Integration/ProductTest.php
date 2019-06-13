@@ -31,8 +31,8 @@ class ProductTest extends ShopgateSdkTest
     {
         $this->markTestSkipped('Skipped due to being unfinished');
         $productPayload = $this->prepareProductMinimum();
-        $this->sdk->catalog->createProduct($productPayload, ['requestType' => 'direct']);
-        $product = $this->sdk->catalog->getProduct($productPayload->code);
+        $this->sdk->getCatalogService()->createProduct($productPayload, ['requestType' => 'direct']);
+        $product = $this->sdk->getCatalogService()->getProduct($productPayload->code);
         $this->assertEquals($product->getCode(), $productPayload->code);
     }
 

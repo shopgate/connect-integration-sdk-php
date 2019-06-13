@@ -93,8 +93,8 @@ class Client implements ClientInterface
      * @param array $params
      *
      * @return ResponseInterface
-     *
-     * @throws InvalidDataTypeException
+     * @throws RequestException
+     * @throws UnknownException
      */
     private function triggerEvent(array $params)
     {
@@ -119,9 +119,12 @@ class Client implements ClientInterface
                     'http_errors' => false
                 ]
             );
+        } catch (GuzzleRequestException $e) {
+            throw new RequestException($e->getResponse()->getBody()->getContents());
         } catch (GuzzleException $e) {
-            //todo-sg: handle exception
-            echo $e->getMessage();
+            throw new UnknownException($e->getMessage());
+        } catch (\Exception $e) {
+            throw new UnknownException($e->getMessage());
         }
     }
 

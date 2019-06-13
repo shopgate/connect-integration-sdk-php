@@ -39,6 +39,20 @@ sh -c "sed -e \"s:%BUILD%:$BUILD:g\" docker-compose.yml.tmp $pipe"
 
 export SERVICE=sdk
 
+# create / copy folders to be mounted
+if [[ ! -d ./volumes/sdk ]]; then mkdir ./volumes/sdk; fi
+if [[ ! -d ./volumes/sdk/tools ]]; then mkdir ./volumes/sdk/tools; fi
+cp -R ../src ./volumes/sdk
+cp -R ../tests ./volumes/sdk
+cp -R ../vendor ./volumes/sdk
+cp -R ./fixtures/ ./volumes/sdk/tools
+cp ../composer.json ./volumes/sdk
+cp ../phpunit.xml.dist ./volumes/sdk
+cp ../index.php ./volumes/sdk
+cp ./fixtures/env ./volumes/sdk/tests/Integration/.env
+cp ./etcdfiller.php ./volumes/sdk/tools
+cp ./pubsubfiller.php ./volumes/sdk/tools
+
 docker network create ${SERVICE}-integration-network
 
 set -e
@@ -49,7 +63,6 @@ docker-compose $DOCKER_COMPOSE_FILES up -d etcd
 docker-compose $DOCKER_COMPOSE_FILES up -d googlepubsub-emulator
 
 docker-compose exec -T php ls -al
-docker-compose exec -T php cp -R /vendor /sdk
 docker-compose exec -T php composer update
 docker-compose exec -T php php ./tools/pubsubfiller.php
 docker-compose exec -T php php ./tools/etcdfiller.php

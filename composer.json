@@ -14,11 +14,15 @@
     "unit-tests": "phpunit --testsuite UnitTests",
     "integration-tests": "cd tools && docker-compose exec -T php composer integration-tests-local",
     "integration-tests-local": "phpunit --testsuite IntegrationTests",
+    "cover-html": "phpunit --testsuite UnitTests --coverage-html build/coverage-html",
+    "cover-text": "phpunit --testsuite UnitTests --coverage-text",
+    "cover-clover": "phpunit --testsuite UnitTests --coverage-clover build/clover.xml",
     "start": "cd tools && ./initLocalStack.sh",
     "ps": "cd tools && docker-compose ps",
     "logs": "cd tools && docker-compose logs -f",
     "reset-db": "cd tools && ./reset-db.sh",
-    "shutdown": "cd tools && docker-compose down"
+    "shutdown": "cd tools && docker-compose down",
+    "coveralls": "composer cover-clover && echo 'Pushing to coveralls will only work from Travis CI.' && php-coveralls -v -x build/clover.xml"
   },
   "require": {
     "php": ">=5.6",

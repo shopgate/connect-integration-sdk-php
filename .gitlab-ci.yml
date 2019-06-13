@@ -2,9 +2,11 @@ stages:
   - prepare
   - check
   - test
+  - deploy
 
 variables:
   PHP_DC_DOWNLOAD: https://github.com/Rekhyt/php-dependency-checker/releases/download/1.0.0-beta.1/php-dependency-checker.phar
+  PHP_CSF_DOWNLOAD: https://files.shopgate.com/travis-ci/php-cs-fixer-v2.phar
   BUILD_PREREQUISITES_CACHE_KEY: "build_pre_${PHP_DC_DOWNLOAD}"
 
 download_prerequisites:
@@ -13,11 +15,13 @@ download_prerequisites:
   script:
     - if [ ! -d vendor ] || [ ! -f composer.lock ]; then composer install --ignore-platform-reqs; fi
     - if [ ! -f php-dependency-checker.phar ]; then wget $PHP_DC_DOWNLOAD; chmod +x php-dependency-checker.phar; fi
+    - if [ ! -f php-cs-fixer-v2.phar ]; then wget ${PHP_CSF_DOWNLOAD}; chmod +x php-cs-fixer-v2.phar; fi
   cache:
     key: $BUILD_PREREQUISITES_CACHE_KEY
     paths:
       - vendor
       - php-dependency-checker.phar
+      - php-cs-fixer-v2.phar
       - composer.lock
     policy: pull-push
   tags:
@@ -37,11 +41,24 @@ check_dependencies:
   tags:
     - docker
 
+check_code_style:
+  image: composer:1.8.0
+  stage: check
+  script:
+    - ./php-cs-fixer-v2.phar fix --config=.php-cs.dist --cache-file=.php-cs.cache --diff --dry-run --verbose .
+  cache:
+    key: $BUILD_PREREQUISITES_CACHE_KEY
+    paths:
+      - php-cs-fixer-v2.phar
+    policy: pull
+  tags:
+    - docker
+
 run_unit_tests:
   image: composer:1.8.0
   stage: test
   script:
-    - composer unit-tests
+    - composer cover-text
   cache:
     key: $BUILD_PREREQUISITES_CACHE_KEY
     paths:
@@ -69,3 +86,4 @@ run_integration_tests:
   tags:
     - docker
     - ecr
+

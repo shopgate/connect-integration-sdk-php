@@ -98,7 +98,11 @@ class Client implements ClientInterface
      */
     private function triggerEvent(array $params)
     {
-        $values = [isset($params['body']) ? $params['body'] : new Base()];
+        $values = [
+            isset($params['body'])
+                ? $params['body']
+                : new Base(),
+        ];
         if ($params['action'] === 'create') {
             $key    = array_keys($params['body'])[0];
             $values = $params['body'][$key];
@@ -106,7 +110,9 @@ class Client implements ClientInterface
 
         $factory = new Factory();
         foreach ($values as $payload) {
-            $entityId = isset($params['entityId']) ? $params['entityId'] : null;
+            $entityId = isset($params['entityId'])
+                ? $params['entityId']
+                : null;
             $factory->addEvent($params['action'], $params['entity'], $payload, $entityId);
         }
 
@@ -116,7 +122,7 @@ class Client implements ClientInterface
                 'events',
                 [
                     'json'        => $factory->getRequest()->toJson(),
-                    'http_errors' => false
+                    'http_errors' => false,
                 ]
             );
         } catch (GuzzleRequestException $e) {

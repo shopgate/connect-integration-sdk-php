@@ -70,7 +70,7 @@ class Config
                 'service'         => 'omni-event-receiver',
                 'auth'            => 'oauth',
                 'oauth'           => [],
-                'connect_timeout' => 5.0
+                'connect_timeout' => 5.0,
             ]
         );
 
@@ -95,7 +95,7 @@ class Config
             'verify'           => ['bool', 'string'],
             'version'          => ['float', 'string'],
             'proxy'            => ['string[]', 'string'],
-            'http_client'      => [ClientInterface::class, 'null']
+            'http_client'      => [ClientInterface::class, 'null'],
         ];
         $resolver->setRequired(['clientId', 'clientSecret', 'merchantCode']);
         $resolver->setDefined(array_keys($typeList));
@@ -114,7 +114,7 @@ class Config
         $resolver->setDefaults(
             [
                 'base_uri'     => 'https://auth.shopgate{env}.services/oauth/token',
-                'storage_path' => './access_token.txt'
+                'storage_path' => './access_token.txt',
             ]
         );
 
@@ -126,7 +126,7 @@ class Config
             'client'        => [\GuzzleHttp\Client::class, ClientInterface::class, 'null'],
             'storage'       => [TokenPersistenceInterface::class, 'null'],
             'grant_type'    => [GrantTypeInterface::class, 'null'],
-            'storage_path'  => ['string', null]
+            'storage_path'  => ['string', null],
         ];
         $resolver->setDefined(array_keys($typeList));
         foreach ($typeList as $key => $type) {

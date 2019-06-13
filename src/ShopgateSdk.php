@@ -24,6 +24,7 @@ namespace Shopgate\ConnectSdk;
 
 use GuzzleHttp\HandlerStack;
 use kamermans\OAuth2\Persistence\TokenPersistenceInterface;
+use Shopgate\ConnectSdk\Service\BulkImport;
 use Shopgate\ConnectSdk\Service\Catalog;
 use Shopgate\ConnectSdk\Http;
 
@@ -34,6 +35,9 @@ class ShopgateSdk
 
     /** @var Catalog */
     private $catalog;
+
+    /** @var  BulkImport */
+    private $bulkImport;
 
     /** @var Http\ClientInterface */
     private $httpClient;
@@ -59,6 +63,7 @@ class ShopgateSdk
         $this->catalog    = is_null($catalog)
             ? $this->instantiateClass('catalog')
             : $catalog;
+        $this->bulkImport = new Service\BulkImport($this->client);
     }
 
     /**
@@ -67,6 +72,14 @@ class ShopgateSdk
     public function getCatalogService()
     {
         return $this->catalog;
+    }
+
+    /**
+     * @return Service\BulkImport
+     */
+    public function getBulkImportService()
+    {
+        return $this->bulkImport;
     }
 
     /**

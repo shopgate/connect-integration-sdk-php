@@ -28,7 +28,7 @@ use Shopgate\ConnectSdk\DTO\Base;
 class BaseTest extends TestCase
 {
     /**
-     * Dto\Exceptions\InvalidKeyException : The key "test" does not exist in this DTO.
+     * Dto\Exceptions\InvalidKeyException : The key "test" does not exist in this Dto.
      */
     public function testInvalidKeyException()
     {

@@ -59,7 +59,7 @@ run_integration_tests:
     - pwd
     - ls -al
     - cd tools
-    - ./initLocalStack.sh
+    - CI_STACK=1 ./initLocalStack.sh
     - docker-compose exec -T php ls -al
     - docker-compose exec -T php composer integration-tests-local
   cache:

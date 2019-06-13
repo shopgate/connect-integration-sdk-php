@@ -14,4 +14,5 @@ access_token.txt
 /tools/docker-compose.yml
 /tools/docker-compose.yml.tmp
 .env
+!tools/.env
 .php_cs.cache

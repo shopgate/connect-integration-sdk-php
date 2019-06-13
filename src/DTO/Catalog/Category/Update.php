@@ -23,16 +23,15 @@
 namespace Shopgate\ConnectSdk\Dto\Catalog\Category;
 
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
-use Shopgate\ConnectSdk\Dto\LocalizedString;
 
 /**
  * Default class that handles validation for category Update payloads.
  *
  * @method Update setImage(string $image)
- * @method Update setName(LocalizedString $name)
+ * @method Update setName(dto\Name $name)
  * @method Update setParentCategoryCode(string $parentCategoryCode)
  * @method Update setUrl(string $url)
- * @method Update setDescription(LocalizedString $description)
+ * @method Update setDescription(dto\Description $description)
  */
 class Update extends Category
 {

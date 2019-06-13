@@ -20,30 +20,13 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
+namespace Shopgate\ConnectSdk\Dto\Catalog\Category\Dto;
 
-use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
+use Shopgate\ConnectSdk\Dto\LocalizedString;
 
 /**
- * Default class that handles validation for attribute values Update payloads.
- *
- * @method string setSequenceId(int $sequenceId)
- * @method string setName(dto\Name $name)
- * @method string setSwatch(dto\Swatch $swatch)
+ * Localized name
  */
-class Update extends AttributeValue
+class Name extends LocalizedString
 {
-    /**
-     * @var array
-     * @codeCoverageIgnore
-     */
-    protected $schema = [
-        'type'                 => 'object',
-        'properties'           => [
-            'sequenceId' => ['type' => 'integer'],
-            'name'       => ['type' => 'object'],
-            'swatch'     => ['type' => 'object'],
-        ],
-        'additionalProperties' => true,
-    ];
 }

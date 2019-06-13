@@ -23,14 +23,13 @@
 namespace Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
-use Shopgate\ConnectSdk\Dto\LocalizedString;
 
 /**
  * Default class that handles validation for attribute values Create payloads.
  *
  * @method string setCode(string $code)
  * @method string setSequenceId(int $sequenceId)
- * @method string setName(LocalizedString $name)
+ * @method string setName(dto\Name $name)
  * @method string setSwatch(dto\Swatch $swatch)
  */
 class Create extends AttributeValue

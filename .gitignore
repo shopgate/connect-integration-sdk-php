@@ -13,6 +13,5 @@ test.php
 access_token.txt
 /tools/docker-compose.yml
 /tools/docker-compose.yml.tmp
-/tools/volumes/sdk
 .env
 .php_cs.cache

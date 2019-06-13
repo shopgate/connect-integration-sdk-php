@@ -8,13 +8,11 @@ services:
 ### PHP container for local testing
   php:
     build:
-      context: ./dockerfiles
-      dockerfile: Php7
+      context: ../
+      dockerfile: tools/dockerfiles/Php7
     environment:
       - ETCD_HOST=http://etcd:2379
       - PUBSUB_EMULATOR_HOST=googlepubsub-emulator:8085
-    volumes:
-      - ./volumes/sdk:/sdk
     tty: true
 
 ### infra-structure

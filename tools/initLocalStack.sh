@@ -48,8 +48,8 @@ docker-compose $DOCKER_COMPOSE_FILES up -d mysql
 docker-compose $DOCKER_COMPOSE_FILES up -d etcd
 docker-compose $DOCKER_COMPOSE_FILES up -d googlepubsub-emulator
 
-docker-compose exec -T php ls -al
 docker-compose exec -T php cp -R /vendor /sdk
+docker-compose exec -T php ls -al /sdk
 docker-compose exec -T php composer update
 docker-compose exec -T php php ./tools/pubsubfiller.php
 docker-compose exec -T php php ./tools/etcdfiller.php

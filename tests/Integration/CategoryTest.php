@@ -52,7 +52,7 @@ class CategoryTest extends ShopgateSdkTest
         $payload = new Category\Update(['name' => new Name(['en-us' => $newName])]);
 
         // Act
-        $this->sdk->catalog->updateCategory(self::CATEGORY_CODE, $payload, [
+        $this->sdk->getCatalogService()->updateCategory(self::CATEGORY_CODE, $payload, [
             'requestType' => 'direct'
         ]);
 
@@ -69,7 +69,7 @@ class CategoryTest extends ShopgateSdkTest
 
         // Act
         foreach ($this->getCategoryCodes($sampleCategories) as $categoryCode) {
-            $this->sdk->catalog->deleteCategory($categoryCode, [
+            $this->sdk->getCatalogService()->deleteCategory($categoryCode, [
                 'requestType' => 'direct'
             ]);
         }
@@ -108,7 +108,7 @@ class CategoryTest extends ShopgateSdkTest
         $payload = new Category\Update(['name' => new Name(['en-us' => $newName])]);
 
         // Act
-        $response = $this->sdk->catalog->updateCategory(self::CATEGORY_CODE, $payload);
+        $response = $this->sdk->getCatalogService()->updateCategory(self::CATEGORY_CODE, $payload);
         sleep(self::SLEEP_TIME_AFTER_EVENT);
 
         // Assert
@@ -126,7 +126,7 @@ class CategoryTest extends ShopgateSdkTest
 
         // Act
         foreach ($this->getCategoryCodes($sampleCategories) as $categoryCode) {
-            $responses[] = $this->sdk->catalog->deleteCategory($categoryCode);
+            $responses[] = $this->sdk->getCatalogService()->deleteCategory($categoryCode);
         }
         sleep(self::SLEEP_TIME_AFTER_EVENT);
 
@@ -146,7 +146,7 @@ class CategoryTest extends ShopgateSdkTest
      */
     private function getCategories($categoryCodes = [])
     {
-        return $this->sdk->catalog->getCategories(['filters' => ['code' => ['$in' => $categoryCodes]]]);
+        return $this->sdk->getCatalogService()->getCategories(['filters' => ['code' => ['$in' => $categoryCodes]]]);
     }
 
     /**
@@ -156,7 +156,7 @@ class CategoryTest extends ShopgateSdkTest
      */
     private function createCategories(array $sampleCategories, array $meta = [])
     {
-        return $this->sdk->catalog->addCategories($sampleCategories, $meta);
+        return $this->sdk->getCatalogService()->addCategories($sampleCategories, $meta);
     }
 
     /**

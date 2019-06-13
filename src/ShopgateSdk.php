@@ -24,27 +24,30 @@ namespace Shopgate\ConnectSdk;
 
 use GuzzleHttp\HandlerStack;
 use kamermans\OAuth2\Persistence\TokenPersistenceInterface;
-use Shopgate\ConnectSdk\Entities\Catalog;
+use Shopgate\ConnectSdk\Service\Catalog;
 use Shopgate\ConnectSdk\Http;
 
 class ShopgateSdk
 {
     const REQUEST_TYPE_DIRECT = "direct";
-    const REQUEST_TYPE_EVENT = "event";
+    const REQUEST_TYPE_EVENT  = "event";
 
     /** @var Catalog */
-    public $catalog;
+    private $catalog;
+
     /** @var Http\ClientInterface */
-    protected $httpClient;
+    private $httpClient;
+
     /** @var ClientInterface */
     private $client;
 
     /**
-     * @param array $config
+     * @param array   $config
+     * @param Catalog $catalog
      *
      * @codeCoverageIgnore
      */
-    public function __construct(array $config)
+    public function __construct(array $config, Catalog $catalog = null)
     {
         $configResolver   = new Config();
         $options          = $configResolver->resolveMainOptions($config);
@@ -53,8 +56,17 @@ class ShopgateSdk
             ? $options['http_client']
             : new Http\GuzzleClient($options);
         $this->client     = new Client($this->httpClient);
+        $this->catalog    = is_null($catalog)
+            ? $this->instantiateClass('catalog')
+            : $catalog;
+    }
 
-        $this->catalog = $this->instantiateClass('catalog');
+    /**
+     * @return Catalog
+     */
+    public function getCatalogService()
+    {
+        return $this->catalog;
     }
 
     /**
@@ -66,7 +78,7 @@ class ShopgateSdk
      */
     private function instantiateClass($name)
     {
-        $class = 'Shopgate\ConnectSdk\Entities\\' . ucfirst($name);
+        $class = 'Shopgate\ConnectSdk\Service\\' . ucfirst($name);
 
         return new $class($this->client);
     }

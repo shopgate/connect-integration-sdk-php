@@ -23,7 +23,6 @@
 namespace Shopgate\ConnectSdk\Dto\Catalog\Category;
 
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
-use Shopgate\ConnectSdk\Dto\LocalizedString;
 
 /**
  * Default class that handles validation for category Create payloads.
@@ -31,10 +30,10 @@ use Shopgate\ConnectSdk\Dto\LocalizedString;
  * @method Create setCode(string $code)
  * @method Create setParentCategoryCode(string $parentCategoryCode)
  * @method Create setImage(string $image)
- * @method Create setName(LocalizedString $name)
+ * @method Create setName(dto\Name $name)
  * @method Create setUrl(string $url)
  * @method Create setSequenceId(integer $sequenceId)
- * @method Create setDescription(LocalizedString $description)
+ * @method Create setDescription(dto\Description $description)
  * @method Create setExternalUpdateDate(string $externalUpdateDate)
  */
 class Create extends Category

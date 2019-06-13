@@ -73,6 +73,7 @@ run_integration_tests:
     - pip3 install docker-compose==1.23.2 awscli
     - $(aws ecr get-login --region=us-east-1 --no-include-email --registry-ids 602824140852)
   script:
+    - cd tools
     - CI_STACK=1 ./initLocalStack.sh
     - docker-compose exec -T php composer integration-tests-local
   cache:

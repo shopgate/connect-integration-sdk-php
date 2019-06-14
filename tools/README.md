@@ -1,7 +1,51 @@
-# Integration Tests & Local Stack
+# Internal Tools
 
-Booting up the local service stack and execution of integration tests is restricted to Shopgate employees. This
-documentation is meant for internal use.
+This section refers to internal tools that help developers & maintainers of this project assuring code quality and
+stability. Following documentation is meant for internal use.
+
+## Table Of Contents
+1. [Requirements](#requirements)
+1. [Code Style](#code-style)
+1. [Dependency Checking / Audit](#dependency-checking--audit)
+1. [Unit Tests & Coverage](#unit-tests--coverage)
+1. [Integration Tests](#integration-tests)
+1. [Local Stack Of Shopgate Services](#local-stack-of-shopgate-services)
+
+## Requirements
+Following software components should be installed on your system for everything below to work:
+* PHP >= 5.6 (>= 7.0 for dependency checking / audit)
+* [Composer](https://getcomposer.org) >= 1.7.0 (1.8.x will work)
+* [Docker](https://docs.docker.com/install/) >= 18.09
+* [Docker Compose](https://docs.docker.com/compose/install/) >= 1.22
+* [XDebug](https://xdebug.org) >= 2.6.0
+
+## Code Style
+To check or fix the code style use one of the following composer scripts:
+* `composer cs-fixer-dry` to check the code style
+* `composer cs-fixer` to check and auto-fix the code style
+
+## Dependency Checking / Audit
+To check for vulnerabilities in the project's dependencies run:
+
+    composer audit
+
+Vulnerable packages can be ignored by adding a line with the **composer package name** to the `audit-exclusions` file:
+
+    guzzlehttp/guzzle
+    phpunit/phpunit
+
+## Unit Tests & Coverage
+Unit tests with or without coverage can be run by executing one of the following composer scripts:
+
+* `composer unit-tests` for just running the tests without coverage report
+* `composer cover-clover` for an XML coverage report that can be interpreted by other tools (e.g. coveralls)
+* `composer cover-text` for a human readable text summary displayed below test results
+* `composer cover-html` for an HTML coverage report that visualizes (un)covered files & lines
+
+The XML coverage report is located in `build/clover.xml`. The HTML coverage report can be viewed  by opening
+`build/coverage-html/index.html` in your browser.
+
+The `composer coveralls` command is meant for CI usage only, it should not be used locally.
 
 ## Integration Tests
 ### On Local Stack
@@ -38,9 +82,9 @@ Log in to ECR and boot up the local stack using ```composer start```.
 #### Run Tests
 Execute the tests in you preferred IDE or by executing ```composer integration-tests-local```.
 
-## Local Stack Options
+## Local Stack Of Shopgate Services
 ### ECR Login
-On the first boot-up or upon updates you'll need to log in to ECR in you preferred CLI.
+On the first boot-up or upon updates you'll need to log in to ECR in your preferred CLI.
 
 ### Composer Commands
 Composer commands are available for the most commonly used actions:

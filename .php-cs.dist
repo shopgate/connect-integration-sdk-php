@@ -26,5 +26,5 @@ return Config::create()
         Finder::create()
            ->exclude('vendor')
            ->exclude('vendors')
-            ->in(__DIR__)
+           ->in(__DIR__)
     );

@@ -12,6 +12,7 @@ use Shopgate\ConnectSdk\ClientInterface;
 
 class Handler
 {
+    /** Define handler type */
     const HANDLER_TYPE = '';
 
     /** @var  ClientInterface */

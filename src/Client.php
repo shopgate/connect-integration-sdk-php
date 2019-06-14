@@ -22,7 +22,6 @@
 
 namespace Shopgate\ConnectSdk;
 
-use Dto\Exceptions\InvalidDataTypeException;
 use GuzzleHttp\ClientInterface as GuzzleClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException as GuzzleRequestException;

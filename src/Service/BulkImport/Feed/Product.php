@@ -41,11 +41,5 @@ class Product extends Feed
         }
 
         $this->isFirstItem = false;
-        /*
-        $stream = fopen($this->url, 'x');
-        fwrite($stream, 'Hello!');
-        fwrite($stream, 'World!');
-        fclose($stream);
-        */
     }
 }

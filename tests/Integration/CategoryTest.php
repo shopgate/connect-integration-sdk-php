@@ -65,10 +65,6 @@ class CategoryTest extends ShopgateSdkTest
      */
 
     /**
-     * valid
-     */
-
-    /**
      * @throws Exception
      */
     public function testCreateCategoryDirect()
@@ -143,10 +139,6 @@ class CategoryTest extends ShopgateSdkTest
     }
 
     /**
-     * error cases
-     */
-
-    /**
      * @param array $categoryData
      * @param string $expectedException
      *
@@ -201,8 +193,6 @@ class CategoryTest extends ShopgateSdkTest
     /**
      * @param array $categoryData
      * @param string $expectedException
-     *
-     * @throws Exception
      *
      * @dataProvider provideCreateCategory_InvalidDataTypes
      */
@@ -304,7 +294,7 @@ class CategoryTest extends ShopgateSdkTest
     }
 
     /**
-     * Events
+     * Event requests
      */
 
     // TODO: It seems only one category is created in the service. Cause of this bug:
@@ -389,10 +379,6 @@ class CategoryTest extends ShopgateSdkTest
             $this->assertEquals(202, $response->getStatusCode());
         }
     }
-
-    /**
-     * error cases
-     */
 
     /**
      * @param array $categoryData

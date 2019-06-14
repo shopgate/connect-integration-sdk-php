@@ -62,7 +62,7 @@ class Client implements ClientInterface
             return $this->triggerEvent($params);
         }
         $response = null;
-        $body     = isset($params['body'])
+        $body = isset($params['body'])
             ? $params['body']
             : [];
         try {
@@ -73,13 +73,17 @@ class Client implements ClientInterface
                     'query' => ['service' => $params['service']] + (isset($params['query'])
                             ? $params['query']
                             : []),
-                    'json'  => $body instanceof Base
+                    'json' => $body instanceof Base
                         ? $body->toJson()
                         : (new Base($body))->toJson(),
                 ]
             );
         } catch (GuzzleRequestException $e) {
-            throw new RequestException($e->getResponse()->getBody()->getContents());
+            $statusCode = $e->getResponse() ? $e->getResponse()->getStatusCode() : 0;
+            throw new RequestException(
+                $statusCode,
+                $e->getResponse() && $e->getResponse()->getBody() ? $e->getResponse()->getBody()->getContents() : $e->getMessage()
+            );
         } catch (GuzzleException $e) {
             throw new UnknownException($e->getMessage());
         } catch (\Exception $e) {
@@ -104,7 +108,7 @@ class Client implements ClientInterface
                 : new Base(),
         ];
         if ($params['action'] === 'create') {
-            $key    = array_keys($params['body'])[0];
+            $key = array_keys($params['body'])[0];
             $values = $params['body'][$key];
         }
 
@@ -121,12 +125,16 @@ class Client implements ClientInterface
                 'post',
                 'events',
                 [
-                    'json'        => $factory->getRequest()->toJson(),
+                    'json' => $factory->getRequest()->toJson(),
                     'http_errors' => false,
                 ]
             );
         } catch (GuzzleRequestException $e) {
-            throw new RequestException($e->getResponse()->getBody()->getContents());
+            $statusCode = $e->getResponse() ? $e->getResponse()->getStatusCode() : 0;
+            throw new RequestException(
+                $statusCode,
+                $e->getResponse() && $e->getResponse()->getBody() ? $e->getResponse()->getBody()->getContents() : $e->getMessage()
+            );
         } catch (GuzzleException $e) {
             throw new UnknownException($e->getMessage());
         } catch (\Exception $e) {

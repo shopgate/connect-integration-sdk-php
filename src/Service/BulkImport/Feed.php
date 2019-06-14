@@ -28,14 +28,20 @@ class Feed
     /** @var  string */
     private $url;
 
-    /** @var \Psr\Http\Message\StreamInterface */
+    /** @var \Psr\Http\Message\StreamInterface | resource */
     protected $stream;
 
     /** @var string */
     protected $handlerType;
 
+    /** @var array */
+    protected $requestBodyOptions;
+
     /** @var */
     protected $importClient;
+
+    /** @var bool */
+    protected $isFirstItem = true;
 
     /**
      * Feed constructor.
@@ -43,12 +49,18 @@ class Feed
      * @param ClientInterface $client
      * @param string          $importReference
      * @param string          $handlerType
+     * @param array           $requestBodyOptions
      */
-    public function __construct(ClientInterface $client, $importReference, $handlerType)
-    {
-        $this->client          = $client;
-        $this->importReference = $importReference;
-        $this->handlerType     = $handlerType;
+    public function __construct(
+        ClientInterface $client,
+        $importReference,
+        $handlerType,
+        $requestBodyOptions = []
+    ) {
+        $this->client             = $client;
+        $this->importReference    = $importReference;
+        $this->handlerType        = $handlerType;
+        $this->requestBodyOptions = $requestBodyOptions;
 
         $this->client       = $client;
         $this->importClient = new Client();
@@ -67,7 +79,37 @@ class Feed
     }
 
     /**
-     *
+     * @return mixed
+     */
+    protected function getUrl()
+    {
+        $response = $this->client->doRequest(
+            [
+                'method'      => 'post',
+                'body'        => $this->requestBodyOptions,
+                'requestType' => 'direct',
+                'service'     => 'import',
+                'path'        => 'imports/' . $this->importReference . '/' . 'urls',
+            ]
+        );
+
+        $response = json_decode($response->getBody(), true);
+
+        return $response['url'];
+    }
+
+    /**
+     * @return string
+     */
+    protected function getItemDivider()
+    {
+        return $this->isFirstItem
+            ? ''
+            : ',';
+    }
+
+    /**
+     * Upload content or finish stream to S3
      */
     public function end()
     {

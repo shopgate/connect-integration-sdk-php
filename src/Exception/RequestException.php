@@ -22,6 +22,30 @@
 
 namespace Shopgate\ConnectSdk\Exception;
 
+use Throwable;
+
 class RequestException extends Exception
 {
+    /** @var int */
+    private $statusCode;
+
+    /**
+     * @param int $statusCode
+     * @param string $message
+     * @param int $code
+     * @param Throwable|null $previous
+     */
+    public function __construct($statusCode = 0, $message = "", $code = 0, Throwable $previous = null)
+    {
+        $this->statusCode = $statusCode;
+        parent::__construct($message, $code, $previous);
+    }
+
+    /**
+     * @return int
+     */
+    public function getStatusCode()
+    {
+        return $this->statusCode;
+    }
 }

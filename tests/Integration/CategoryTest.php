@@ -22,14 +22,17 @@
 
 namespace Shopgate\ConnectSdk\Tests\Integration;
 
+use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Name;
+use Shopgate\ConnectSdk\Exception\Exception;
+use Shopgate\ConnectSdk\Exception\RequestException;
 
 class CategoryTest extends ShopgateSdkTest
 {
     const CATEGORY_CODE = 'integration-test';
 
-    private $cleanUpCategoryCodes;
+    private $cleanUpCategoryCodes = [];
 
     /**
      * Runs before every test
@@ -41,12 +44,19 @@ class CategoryTest extends ShopgateSdkTest
         $this->cleanUpCategoryCodes = [];
     }
 
+    /**
+     * @throws Exception
+     */
     public function tearDown()
     {
         parent::tearDown();
 
         foreach ($this->cleanUpCategoryCodes as $categoryCode) {
-            $this->sdk->getCatalogService()->deleteCategory($categoryCode);
+            $this->sdk->getCatalogService()->deleteCategory(
+                $categoryCode, [
+                    'requestType' => 'direct'
+                ]
+            );
         }
     }
 
@@ -58,25 +68,41 @@ class CategoryTest extends ShopgateSdkTest
      * valid
      */
 
+    /**
+     * @throws Exception
+     */
     public function testCreateCategoryDirect()
     {
         // Arrange
         $sampleCategories = $this->provideSampleCategories();
+        $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
 
         // Act
         $this->createCategories($sampleCategories, [
             'requestType' => 'direct'
         ]);
 
+        // CleanUp
+        $this->cleanUpCategoryCodes = array_merge($this->cleanUpCategoryCodes, $sampleCategoryCodes);
+
         // Assert
-        $categories = $this->getCategories($this->getCategoryCodes($sampleCategories));
+        $categories = $this->getCategories($sampleCategoryCodes);
         /** @noinspection PhpParamsInspection */
         $this->assertCount(2, $categories->getCategories());
     }
 
+    /**
+     * @throws Exception
+     */
     public function testUpdateCategoryDirect()
     {
         // Arrange
+        $this->sdk->getCatalogService()->addCategories(
+            [
+                $this->provideSampleCreateCategory(self::CATEGORY_CODE, 'Integration Test Category 1', 1)
+            ],
+            ['requestType' => 'direct']
+        );
         $newName = 'Renamed Product (Direct)';
         $category = new Category\Update(['name' => new Name(['en-us' => $newName])]);
 
@@ -85,16 +111,23 @@ class CategoryTest extends ShopgateSdkTest
             'requestType' => 'direct'
         ]);
 
+        // CleanUp
+        $this->cleanUpCategoryCodes[] = self::CATEGORY_CODE;
+
         // Assert
         $categories = $this->getCategories([self::CATEGORY_CODE]);
         $updatedCategory = $categories->getCategories()[0];
         $this->assertEquals($newName, $updatedCategory->getName());
     }
 
+    /**
+     * @throws Exception
+     */
     public function testDeleteCategoryDirect()
     {
         // Arrange
         $sampleCategories = $this->provideSampleCategories();
+        $this->sdk->getCatalogService()->addCategories($sampleCategories, ['requestType' => 'direct']);
 
         // Act
         foreach ($this->getCategoryCodes($sampleCategories) as $categoryCode) {
@@ -116,6 +149,8 @@ class CategoryTest extends ShopgateSdkTest
     /**
      * @param array $categoryData
      * @param string $expectedException
+     *
+     * @throws Exception
      *
      * @dataProvider provideCreateCategory_MissingRequiredFields
      */
@@ -144,21 +179,21 @@ class CategoryTest extends ShopgateSdkTest
                     'code' => 'category-test-code',
                     'sequenceId' => 1006
                 ],
-                'expectedException' => \Exception::class
+                'expectedException' => RequestException::class
             ],
             'missing code' => [
                 'categoryData' => [
                     'name' => 'Test Category',
                     'sequenceId' => 1006
                 ],
-                'expectedException' => \Exception::class
+                'expectedException' => RequestException::class
             ],
             'missing sequenceId' => [
                 'categoryData' => [
                     'name' => 'Test Category',
                     'code' => 'category-test-code',
                 ],
-                'expectedException' => \Exception::class
+                'expectedException' => RequestException::class
             ],
         ];
     }
@@ -166,6 +201,8 @@ class CategoryTest extends ShopgateSdkTest
     /**
      * @param array $categoryData
      * @param string $expectedException
+     *
+     * @throws Exception
      *
      * @dataProvider provideCreateCategory_InvalidDataTypes
      */
@@ -195,7 +232,7 @@ class CategoryTest extends ShopgateSdkTest
                     'code' => 'category-test-code',
                     'sequenceId' => 1006
                 ],
-                'expectedException' => \Exception::class
+                'expectedException' => RequestException::class
             ],
             'wrong code data type' => [
                 'categoryData' => [
@@ -203,7 +240,7 @@ class CategoryTest extends ShopgateSdkTest
                     'code' => 123456,
                     'sequenceId' => 1006
                 ],
-                'expectedException' => \Exception::class
+                'expectedException' => RequestException::class
             ],
             'wrong sequenceId data type' => [
                 'categoryData' => [
@@ -211,11 +248,14 @@ class CategoryTest extends ShopgateSdkTest
                     'code' => 'category-test-code',
                     'sequenceId' => '1006'
                 ],
-                'expectedException' => \Exception::class
+                'expectedException' => RequestException::class
             ],
         ];
     }
 
+    /**
+     * @throws Exception
+     */
     public function testUpdateCategory_WithoutAnyDataGiven()
     {
         // Arrange
@@ -233,17 +273,21 @@ class CategoryTest extends ShopgateSdkTest
         ]);
         $updateCategory = new Category\Update();
 
-        // Assert
-        $this->expectException(\Exception::class);
-
         // Act
-        $this->sdk->getCatalogService()->updateCategory($categoryCode, $updateCategory, [
+        $response = $this->sdk->getCatalogService()->updateCategory($categoryCode, $updateCategory, [
             'requestType' => 'direct'
         ]);
 
-        //TODO: clean up
+        // Assert
+        $this->assertEquals(204, $response->getStatusCode());
+
+        // Cleanup
+        $this->cleanUpCategoryCodes[] = $categoryCode;
     }
 
+    /**
+     * @throws Exception
+     */
     public function testUpdateCategory_NonExistingCategory()
     {
         // Arrange
@@ -251,7 +295,7 @@ class CategoryTest extends ShopgateSdkTest
         $category = $this->provideSampleUpdateCategory('test non existent category');
 
         // Assert
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
         // Act
         $this->sdk->getCatalogService()->updateCategory($nonExistentCategoryCode, $category, [
@@ -267,31 +311,50 @@ class CategoryTest extends ShopgateSdkTest
     // https://gitlab.localdev.cc/omnichannel/services/worker/blob/v1.0.0-beta.10c/app/EventController.js#L37
     // the return will interrupt the execution of following events
     // will be fixed once we can use something later than omni-worker: v1.0.0-beta.10c
+    /**
+     * @throws Exception
+     */
     public function testCreateCategoryEvent()
     {
         // Arrange
         $sampleCategories = $this->provideSampleCategories();
+        $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
 
         // Act
         $response = $this->createCategories($sampleCategories);
         sleep(self::SLEEP_TIME_AFTER_EVENT);
 
+        // CleanUp
+        $this->cleanUpCategoryCodes = array_merge($this->cleanUpCategoryCodes, $sampleCategoryCodes);
+
         // Assert
-        $categories = $this->getCategories($this->getCategoryCodes($sampleCategories));
+        $categories = $this->getCategories($sampleCategoryCodes);
         $this->assertEquals(202, $response->getStatusCode());
         /** @noinspection PhpParamsInspection */
         $this->assertCount(2, $categories->getCategories());
     }
 
+    /**
+     * @throws Exception
+     */
     public function testUpdateCategoryEvent()
     {
         // Arrange
+        $this->sdk->getCatalogService()->addCategories(
+            [
+                $this->provideSampleCreateCategory(self::CATEGORY_CODE, 'Integration Test Category 1', 1)
+            ],
+            ['requestType' => 'direct']
+        );
         $newName = 'Renamed Product (Event)';
-        $payload = new Category\Update(['name' => new Name(['en-us' => $newName])]);
+        $updatedCategory = new Category\Update(['name' => new Name(['en-us' => $newName])]);
 
         // Act
-        $response = $this->sdk->getCatalogService()->updateCategory(self::CATEGORY_CODE, $payload);
+        $response = $this->sdk->getCatalogService()->updateCategory(self::CATEGORY_CODE, $updatedCategory);
         sleep(self::SLEEP_TIME_AFTER_EVENT);
+
+        // CleanUp
+        $this->cleanUpCategoryCodes[] = self::CATEGORY_CODE;
 
         // Assert
         $categories = $this->getCategories([self::CATEGORY_CODE]);
@@ -300,17 +363,22 @@ class CategoryTest extends ShopgateSdkTest
         $this->assertEquals($newName, $updatedCategory->getName());
     }
 
+    /**
+     * @throws Exception
+     */
     public function testDeleteCategoryEvent()
     {
         // Arrange
         $sampleCategories = $this->provideSampleCategories();
+        $this->sdk->getCatalogService()->addCategories($sampleCategories, ['requestType' => 'direct']);
         $responses = [];
 
         // Act
         foreach ($this->getCategoryCodes($sampleCategories) as $categoryCode) {
             $responses[] = $this->sdk->getCatalogService()->deleteCategory($categoryCode);
+            // should be moved out of loop once the omni-worker service is released with a version higher worker:v1.0.0-beta.10d
+            sleep(self::SLEEP_TIME_AFTER_EVENT);
         }
-        sleep(self::SLEEP_TIME_AFTER_EVENT);
 
         // Assert
         $categories = $this->getCategories($this->getCategoryCodes($sampleCategories));
@@ -330,41 +398,52 @@ class CategoryTest extends ShopgateSdkTest
      * @param array $categoryData
      * @param string $expectedException
      *
+     * @throws Exception
+     *
      * @dataProvider provideCreateCategory_MissingRequiredFields
+     * TODO: Currently there is no validation for events! Waiting for the implementation in service
      */
-    public function testCreateCategoryEvent_MissingRequiredFields(array $categoryData, $expectedException)
-    {
-        // Arrange
-        $category = new Category\Create($categoryData);
-
-        // Assert
-        $this->expectException($expectedException);
-
-        // Act
-        $this->createCategories([$category]);
-    }
+//    public function testCreateCategoryEvent_MissingRequiredFields(array $categoryData, $expectedException)
+//    {
+//        // Arrange
+//        $category = new Category\Create($categoryData);
+//
+//        // Assert
+//        $this->expectException($expectedException);
+//
+//        // Act
+//        $this->createCategories([$category], [
+//            'requestType' => 'direct'
+//        ]);
+//    }
 
     /**
      * @param array $categoryData
      * @param string $expectedException
      *
+     * @throws Exception
+     *
      * @dataProvider provideCreateCategory_InvalidDataTypes
+     * TODO: Currently there is no validation for events! Waiting for the implementation in service
      */
-    public function testCreateCategoryEvent_InvalidDataTypes($categoryData, $expectedException)
-    {
-        // Arrange
-        $category = new Category\Create($categoryData);
-
-        // Assert
-        $this->expectException($expectedException);
-
-        // Act
-        $this->createCategories([$category]);
-    }
+//    public function testCreateCategoryEvent_InvalidDataTypes($categoryData, $expectedException)
+//    {
+//        // Arrange
+//        $category = new Category\Create($categoryData);
+//
+//        // Assert
+//        $this->expectException($expectedException);
+//
+//        // Act
+//        $this->createCategories([$category]);
+//    }
 
     /**
      * @param array $categoryCodes
+     *
      * @return Category\GetList
+     * @throws Exception
+     *
      */
     private function getCategories($categoryCodes = [])
     {
@@ -374,7 +453,10 @@ class CategoryTest extends ShopgateSdkTest
     /**
      * @param Category\Create[] $sampleCategories
      * @param array $meta
-     * @return \Psr\Http\Message\ResponseInterface
+     *
+     * @return ResponseInterface
+     * @throws Exception
+     *
      */
     private function createCategories(array $sampleCategories, array $meta = [])
     {
@@ -386,15 +468,10 @@ class CategoryTest extends ShopgateSdkTest
      */
     private function provideSampleCategories()
     {
-        $payload = new Category\Create();
-        $name = new Category\Dto\Name(['en-us' => 'Denim Jeans']);
-        $payload->setCode(self::CATEGORY_CODE)->setName($name)->setSequenceId(1);
-
-        $payload2 = (new Category\Create())
-            ->setCode(self::CATEGORY_CODE . '_2')
-            ->setName(new Category\Dto\Name(['en-us' => 'Denim Skirts']))
-            ->setSequenceId(2);
-        return [$payload, $payload2];
+        return [
+            $this->provideSampleCreateCategory(self::CATEGORY_CODE, 'Integration Test Category 1', 1),
+            $this->provideSampleCreateCategory(self::CATEGORY_CODE . '_2', 'Integration Test Category 2', 2)
+        ];
     }
 
     /**

@@ -24,33 +24,23 @@ namespace Shopgate\ConnectSdk\Service\BulkImport\Feed;
 
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Create;
 use Shopgate\ConnectSdk\Service\BulkImport\Feed;
+use Shopgate\ConnectSdk\Service\BulkImport\Handler\Stream;
+use Shopgate\ConnectSdk\Service\BulkImport\Handler\File;
 
 class Product extends Feed
 {
-    /**
-     * @return mixed
-     */
-    protected function getUrl()
-    {
-        $response = $this->client->doRequest(
-            [
-                // general
-                'method'      => 'post',
-                'body'        => ['entity' => 'product', 'catalogCode' => '123'],
-                'requestType' => 'direct',
-                'service'     => 'import',
-                'path'        => 'imports/' . $this->importReference . '/' . 'urls',
-            ]
-        );
-
-        $response = json_decode($response->getBody(), true);
-
-        return $response['url'];
-    }
-
     public function add(Create $product)
     {
-        $this->stream->write($product->toJson() . ',');
+        switch ($this->handlerType) {
+            case Stream::HANDLER_TYPE:
+                $this->stream->write($this->getItemDivider() . $product->toJson());
+                break;
+            case File::HANDLER_TYPE:
+                fwrite($this->stream, $this->getItemDivider() . $product->toJson());
+                break;
+        }
+
+        $this->isFirstItem = false;
         /*
         $stream = fopen($this->url, 'x');
         fwrite($stream, 'Hello!');

@@ -30,37 +30,16 @@ use Shopgate\ConnectSdk\Dto\Catalog\Category\Create;
 class Category extends Feed
 {
     /**
-     * @return mixed
-     */
-    protected function getUrl()
-    {
-        $response = $this->client->doRequest(
-            [
-                // general
-                'method'      => 'post',
-                'body'        => ['entity' => 'product', 'catalogCode' => '123'],
-                'requestType' => 'direct',
-                'service'     => 'import',
-                'path'        => 'imports/' . $this->importReference . '/' . 'urls',
-            ]
-        );
-
-        $response = json_decode($response->getBody(), true);
-
-        return $response['url'];
-    }
-
-    /**
      * @param Create $category
      */
     public function add(Create $category)
     {
         switch ($this->handlerType) {
             case Stream::HANDLER_TYPE:
-                $this->stream->write($category->toJson() . ',');
+                $this->stream->write($this->getItemDivider() . $category->toJson());
                 break;
             case File::HANDLER_TYPE:
-                fwrite($this->stream, $category->toJson() . ',');
+                fwrite($this->stream, $this->getItemDivider() . $category->toJson());
                 break;
         }
         /*

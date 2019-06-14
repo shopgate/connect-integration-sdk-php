@@ -26,5 +26,4 @@ namespace Shopgate\ConnectSdk\Exception;
 
 class Exception extends \Exception
 {
-
 }

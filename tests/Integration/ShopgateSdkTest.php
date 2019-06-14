@@ -28,7 +28,7 @@ use Shopgate\ConnectSdk\ShopgateSdk;
 
 abstract class ShopgateSdkTest extends TestCase
 {
-    const SLEEP_TIME_AFTER_EVENT = 1;
+    const SLEEP_TIME_AFTER_EVENT = 2;
     /** @var array */
     protected $sdkConfig = [];
     /** @var ShopgateSdk */

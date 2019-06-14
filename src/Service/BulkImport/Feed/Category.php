@@ -56,10 +56,10 @@ class Category extends Feed
     public function add(Create $category)
     {
         switch ($this->handlerType) {
-            case Stream::HANDLER_TYPE :
+            case Stream::HANDLER_TYPE:
                 $this->stream->write($category->toJson() . ',');
                 break;
-            case File::HANDLER_TYPE :
+            case File::HANDLER_TYPE:
                 fwrite($this->stream, $category->toJson() . ',');
                 break;
         }

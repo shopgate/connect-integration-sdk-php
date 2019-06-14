@@ -50,8 +50,6 @@ class Handler
 
     public function trigger()
     {
-        // TODO: Implement trigger() method.
-
         $response = $this->client->doRequest(
             [
                 // general

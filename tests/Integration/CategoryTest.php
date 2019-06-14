@@ -30,6 +30,7 @@ use Shopgate\ConnectSdk\Exception\RequestException;
 
 class CategoryTest extends ShopgateSdkTest
 {
+    const PARENT_CATEGORY_CODE = 'parent-integration-test';
     const CATEGORY_CODE = 'integration-test';
 
     private $cleanUpCategoryCodes = [];
@@ -59,10 +60,6 @@ class CategoryTest extends ShopgateSdkTest
             );
         }
     }
-
-    /**
-     * Direct requests
-     */
 
     /**
      * @throws Exception
@@ -95,7 +92,11 @@ class CategoryTest extends ShopgateSdkTest
         // Arrange
         $this->sdk->getCatalogService()->addCategories(
             [
-                $this->provideSampleCreateCategory(self::CATEGORY_CODE, 'Integration Test Category 1', 1)
+                $this->provideSampleCreateCategory(
+                    self::CATEGORY_CODE,
+                    'Integration Test Category 1',
+                    1
+                )
             ],
             ['requestType' => 'direct']
         );
@@ -114,6 +115,94 @@ class CategoryTest extends ShopgateSdkTest
         $categories = $this->getCategories([self::CATEGORY_CODE]);
         $updatedCategory = $categories->getCategories()[0];
         $this->assertEquals($newName, $updatedCategory->getName());
+    }
+
+    /**
+     * @param array $updateCategoryData
+     * @param string $expectedValue
+     * @throws Exception
+     *
+     * @dataProvider provideUpdateCategoryData
+     */
+    public function testUpdateCategoryPropertyDirect(array $updateCategoryData, $expectedValue)
+    {
+        // Arrange
+        $this->sdk->getCatalogService()->addCategories(
+            [
+                $this->provideSampleCreateCategory(
+                    self::PARENT_CATEGORY_CODE,
+                    'Parent Integration Test Category',
+                    1,
+                    'http://www.google.de/parent.png',
+                    'https://www.google.de/parent',
+                    'test parent description'
+                ),
+                $this->provideSampleCreateCategory(
+                    self::CATEGORY_CODE,
+                    'Integration Test Category 1',
+                    1,
+                    'http://www.google.de/image.png',
+                    'https://www.google.de',
+                    'test description'
+                )
+            ],
+            ['requestType' => 'direct']
+        );
+        $category = new Category\Update($updateCategoryData);
+
+        // Act
+        $this->sdk->getCatalogService()->updateCategory(self::CATEGORY_CODE, $category, [
+            'requestType' => 'direct'
+        ]);
+
+        // CleanUp
+        $this->cleanUpCategoryCodes[] = self::CATEGORY_CODE;
+        $this->cleanUpCategoryCodes[] = self::PARENT_CATEGORY_CODE;
+
+        // Assert
+        $categories = $this->getCategories([self::CATEGORY_CODE], ['getOriginalImageUrls' => 'true']);
+        $updatedCategory = $categories->getCategories()[0];
+        $updatedKey = array_keys($updateCategoryData)[0];
+        $this->assertEquals($expectedValue, $updatedCategory->get($updatedKey));
+    }
+
+    /**
+     * @return array
+     */
+    public function provideUpdateCategoryData()
+    {
+        return [
+            'name' => [
+                'updateCategoryData' => [
+                    'name' => new Name(['en-us' => 'Updated Name']),
+                ],
+                'expectedValue' => 'Updated Name'
+            ],
+            'description' => [
+                'updateCategoryData' => [
+                    'description' => new Category\Dto\Description(['en-us' => 'Updated Description']),
+                ],
+                'expectedValue' => 'Updated Description'
+            ],
+            'image' => [
+                'updateCategoryData' => [
+                    'image' => 'http://updated.com/image.png',
+                ],
+                'expectedValue' => 'http://updated.com/image.png'
+            ],
+            'url' => [
+                'updateCategoryData' => [
+                    'url' => 'http://updated.url.com',
+                ],
+                'expectedValue' => 'http://updated.url.com'
+            ],
+            'parentCategoryCode' => [
+                'updateCategoryData' => [
+                    'parentCategoryCode' => self::PARENT_CATEGORY_CODE,
+                ],
+                'expectedValue' => self::PARENT_CATEGORY_CODE
+            ],
+        ];
     }
 
     /**
@@ -136,6 +225,28 @@ class CategoryTest extends ShopgateSdkTest
         $categories = $this->getCategories($this->getCategoryCodes($sampleCategories));
         /** @noinspection PhpParamsInspection */
         $this->assertCount(0, $categories->getCategories());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testGetCategories()
+    {
+        // Arrange
+        $sampleCategories = $this->provideSampleCategories();
+        $this->sdk->getCatalogService()->addCategories($sampleCategories, ['requestType' => 'direct']);
+
+        // Act
+        $categories = $this->sdk->getCatalogService()->getCategories();
+
+        // CleanUp
+        $this->cleanUpCategoryCodes = array_merge($this->cleanUpCategoryCodes,
+            $this->getCategoryCodes($sampleCategories)
+        );
+
+        // Assert
+        /** @noinspection PhpParamsInspection */
+        $this->assertCount(2, $categories->getCategories());
     }
 
     /**
@@ -351,10 +462,6 @@ class CategoryTest extends ShopgateSdkTest
         $this->fail('Expected RequestException but wasn\'t thrown');
     }
 
-    /**
-     * Event requests
-     */
-
     // TODO: It seems only one category is created in the service. Cause of this bug:
     // https://gitlab.localdev.cc/omnichannel/services/worker/blob/v1.0.0-beta.10c/app/EventController.js#L37
     // the return will interrupt the execution of following events
@@ -486,14 +593,16 @@ class CategoryTest extends ShopgateSdkTest
 
     /**
      * @param array $categoryCodes
+     * @param array $meta
      *
      * @return Category\GetList
      * @throws Exception
      *
      */
-    private function getCategories($categoryCodes = [])
+    private function getCategories($categoryCodes = [], $meta = [])
     {
-        return $this->sdk->getCatalogService()->getCategories(['filters' => ['code' => ['$in' => $categoryCodes]]]);
+        return $this->sdk->getCatalogService()->getCategories(array_merge(['filters' => ['code' => ['$in' => $categoryCodes]]],
+            $meta));
     }
 
     /**

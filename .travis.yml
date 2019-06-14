@@ -27,7 +27,7 @@ jobs:
       provider: releases
       api_key:
         secure: "cJT+4K8obPbAssLQ9AgRr/5gCdQ+ifsGvzsQFG01vKY0sMNAVk3x41fNeN6TNqchnahzzR/nHsoEZ4qFoHluC1GEKkAv1geIOajPA0wiSUPUfOMXry/187rDGqW2oYe4mAnFUuf+E1K1B6OEdbFBJlNLWAOL9Z+G6xomHNiKyZnjfSuSwe8GgI6fJvSZ56RX1+BfHX27uxHkHhge99t1qKJUI85PsVyljLGQjGfEFy53HifyBS5wlMHvsqT7BG2w1D4GXjzGzGDTyKiOhKTbIrOZqkT5EaU0C3nUeF3eq71Uo/ct0Xd9fe53i2qSh6wLKDP09h5roh2xh5RR6+7pg6YzlxALRNAS3QjKSnStFWr7dhelAsy8vcWTZePmLpzQrqbGxY6W7nwFBNOZHJ/Dy7yVoM1hG6JfOhJjxRgELg9NVfuRL24zkznHO4pjaqgknlJSWR4ntpwrvVciem7hXMOkdS9V9MBBJlHCd+Z416yYrBrSM/JhLjXprVY1mGaITM8865N2SRMx5N0We/SzCiQ60SRnbyLuSXZWJL5ZSYm24ZbzIPm6jGVObzE7pU3ER17XY5Tir119CcMeJ0ZEVv4mnoo6oS1aGxiJnczpRBqi/lXcR1gkvho3iyzMT3f7mTkxt4d+jTX6Z6Q0YY9FRCsVJ/X8MKp7nZ9wdlDyC+s="
-      file: shopgate-cloud-integration-sdk-php.zip
+      file: shopgate-connect-integration-sdk-php.zip
       skip_cleanup: true
       on:
         tags: true

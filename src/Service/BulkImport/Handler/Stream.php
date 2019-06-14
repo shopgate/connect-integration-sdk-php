@@ -26,5 +26,6 @@ use Shopgate\ConnectSdk\Service\BulkImport\Handler;
 
 class Stream extends Handler
 {
+    /** Define handler type */
     const HANDLER_TYPE = 'stream';
 }

@@ -3,7 +3,7 @@
   "description": "A PHP framework supporting the integration with the Shogate Connect Platform.",
   "homepage": "https://github.com/shopgate/connect-integration-sdk-php",
   "license": "Apache-2.0",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "authors": [
     {
       "name": "Shopgate",
@@ -25,7 +25,7 @@
     "logs": "cd tools && docker-compose logs -f",
     "reset-db": "cd tools && ./reset-db.sh",
     "shutdown": "cd tools && docker-compose down",
-    "coveralls": "composer cover-clover && echo 'Pushing to coveralls will only work from Travis CI.' && php-coveralls -v -x build/clover.xml"
+    "coveralls": "composer cover-clover && echo 'Pushing to coveralls will only work from Travis CI.' && php-coveralls -v -x build/clover.xml -o build/coveralls.json"
   },
   "require": {
     "php": ">=5.6",

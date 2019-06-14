@@ -92,9 +92,11 @@ sync_to_github:
     - echo "$GITHUB_HK" > ~/.ssh/known_hosts && chmod 0600 ~/.ssh/known_hosts
   script:
     - git remote add github git@github.com:shopgate/connect-integration-sdk-php.git
-    - git push --set-upstream github master --force
+    - git checkout master
+    - git push github $CI_COMMIT_REF_NAME:master --force
     - git push --tags github
   tags:
     - docker
+  when: manual
   only:
     - tags

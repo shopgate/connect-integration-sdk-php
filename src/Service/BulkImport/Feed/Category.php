@@ -42,11 +42,7 @@ class Category extends Feed
                 fwrite($this->stream, $this->getItemDivider() . $category->toJson());
                 break;
         }
-        /*
-        $stream = fopen($this->url, 'x');
-        fwrite($stream, 'Hello!');
-        fwrite($stream, 'World!');
-        fclose($stream);
-        */
+
+        $this->isFirstItem = false;
     }
 }

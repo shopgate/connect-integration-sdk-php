@@ -26,5 +26,6 @@ use Shopgate\ConnectSdk\Service\BulkImport\Handler;
 
 class File extends Handler
 {
+    /** Define handler type */
     const HANDLER_TYPE = 'file';
 }

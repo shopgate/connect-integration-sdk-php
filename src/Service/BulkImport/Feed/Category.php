@@ -38,7 +38,7 @@ class Category extends Feed
             [
                 // general
                 'method'      => 'post',
-                'body'        => ['entity' => 'product', 'catalogCode' => '123'],
+                'body'        => array_merge(['entity' => 'category'], $this->additionalRequestBodyOptions),
                 'requestType' => 'direct',
                 'service'     => 'import',
                 'path'        => 'imports/' . $this->importReference . '/' . 'urls',

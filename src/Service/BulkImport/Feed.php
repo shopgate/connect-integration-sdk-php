@@ -51,11 +51,11 @@ class Feed
         $this->url          = $this->getUrl();
 
         switch ($this->handlerType) {
-            case Stream::HANDLER_TYPE :
+            case Stream::HANDLER_TYPE:
                 $this->stream = \GuzzleHttp\Psr7\stream_for();
                 $this->stream->write('[');
                 break;
-            case File::HANDLER_TYPE :
+            case File::HANDLER_TYPE:
                 $this->stream = tmpfile();
                 fwrite($this->stream, '[');
                 break;
@@ -68,7 +68,7 @@ class Feed
     public function end()
     {
         switch ($this->handlerType) {
-            case Stream::HANDLER_TYPE :
+            case Stream::HANDLER_TYPE:
                 $this->stream->write(']');
                 $this->importClient->request(
                     'PUT',
@@ -76,7 +76,7 @@ class Feed
                     ['body' => $this->stream]
                 );;
                 break;
-            case File::HANDLER_TYPE :
+            case File::HANDLER_TYPE:
                 fwrite($this->stream, ']');
                 try {
                     echo 'upload file';

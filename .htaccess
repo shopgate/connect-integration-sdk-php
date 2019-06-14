@@ -4,7 +4,3 @@
 Order deny,allow
 Deny from all
 Options -Indexes
-
-<Files api.php>
-	Allow from all
-</Files>

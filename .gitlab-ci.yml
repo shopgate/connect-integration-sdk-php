@@ -82,3 +82,19 @@ run_integration_tests:
   tags:
     - docker
     - ecr
+
+sync_to_github:
+  stage: deploy
+  before_script:
+    - apk add --no-cache openssh-client
+    - mkdir ~/.ssh && chmod 0700 ~/.ssh
+    - echo "$GITHUB_PK" > ~/.ssh/id_rsa && chmod 0600 ~/.ssh/id_rsa
+    - echo "$GITHUB_HK" > ~/.ssh/known_hosts && chmod 0600 ~/.ssh/known_hosts
+  script:
+    - git remote add github git@github.com:shopgate/connect-integration-sdk-php.git
+    - git push github master --force
+    - git push --tags github
+  tags:
+    - docker
+  only:
+    - tags

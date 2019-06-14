@@ -22,8 +22,6 @@
 
 namespace Shopgate\ConnectSdk\Exception;
 
-use Exception;
-
 class ClassNoExistException extends Exception
 {
 }

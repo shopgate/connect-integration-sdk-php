@@ -63,7 +63,6 @@ class ShopgateSdk
         $this->catalog    = is_null($catalog)
             ? $this->instantiateClass('catalog')
             : $catalog;
-        $this->bulkImport = new Service\BulkImport($this->client);
     }
 
     /**
@@ -79,6 +78,10 @@ class ShopgateSdk
      */
     public function getBulkImportService()
     {
+        if (is_null($this->bulkImport)) {
+            $this->bulkImport = new Service\BulkImport($this->client);
+        }
+
         return $this->bulkImport;
     }
 

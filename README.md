@@ -22,7 +22,7 @@ Example for calling our service in order to create, update or delete a category:
 ```php
 <?php
 use Shopgate\ConnectSdk\ShopgateSdk;
-use Shopgate\ConnectSdk\DTO\Catalog\Category;
+use Shopgate\ConnectSdk\Dto\Catalog\Category;
 
 $config = [
     'merchantCode'  => 'EE1',
@@ -95,7 +95,7 @@ Example for create bulk import:
 <?php
 
 use Shopgate\ConnectSdk\ShopgateSdk;
-use Shopgate\ConnectSdk\DTO\Catalog\Category;
+use Shopgate\ConnectSdk\Dto\Catalog\Category;
 
 $config = [
     'merchantCode'  => 'EE1',

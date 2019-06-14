@@ -65,10 +65,6 @@ class CategoryTest extends ShopgateSdkTest
      */
 
     /**
-     * valid
-     */
-
-    /**
      * @throws Exception
      */
     public function testCreateCategoryDirect()
@@ -143,12 +139,8 @@ class CategoryTest extends ShopgateSdkTest
     }
 
     /**
-     * error cases
-     */
-
-    /**
      * @param array $categoryData
-     * @param string $expectedException
+     * @param RequestException $expectedException
      *
      * @throws Exception
      *
@@ -159,13 +151,20 @@ class CategoryTest extends ShopgateSdkTest
         // Arrange
         $category = new Category\Create($categoryData);
 
-        // Assert
-        $this->expectException($expectedException);
-
         // Act
-        $this->createCategories([$category], [
-            'requestType' => 'direct'
-        ]);
+        try {
+            $this->createCategories([$category], [
+                'requestType' => 'direct'
+            ]);
+        } catch (RequestException $exception) {
+            // Assert
+            $this->assertInstanceOf(get_class($expectedException), $exception);
+            $this->assertEquals($expectedException->getStatusCode(), $exception->getStatusCode());
+
+            return;
+        }
+
+        $this->fail('Expected ' . get_class($expectedException) . ' but wasn\'t thrown');
     }
 
     /**
@@ -179,28 +178,28 @@ class CategoryTest extends ShopgateSdkTest
                     'code' => 'category-test-code',
                     'sequenceId' => 1006
                 ],
-                'expectedException' => RequestException::class
+                'expectedException' => new RequestException(400)
             ],
             'missing code' => [
                 'categoryData' => [
                     'name' => 'Test Category',
                     'sequenceId' => 1006
                 ],
-                'expectedException' => RequestException::class
+                'expectedException' => new RequestException(400)
             ],
             'missing sequenceId' => [
                 'categoryData' => [
                     'name' => 'Test Category',
                     'code' => 'category-test-code',
                 ],
-                'expectedException' => RequestException::class
+                'expectedException' => new RequestException(400)
             ],
         ];
     }
 
     /**
      * @param array $categoryData
-     * @param string $expectedException
+     * @param RequestException $expectedException
      *
      * @throws Exception
      *
@@ -211,13 +210,20 @@ class CategoryTest extends ShopgateSdkTest
         // Arrange
         $category = new Category\Create($categoryData);
 
-        // Assert
-        $this->expectException($expectedException);
-
         // Act
-        $this->createCategories([$category], [
-            'requestType' => 'direct'
-        ]);
+        try {
+            $this->createCategories([$category], [
+                'requestType' => 'direct'
+            ]);
+        } catch (RequestException $exception) {
+            // Assert
+            $this->assertInstanceOf(get_class($expectedException), $exception);
+            $this->assertEquals($expectedException->getStatusCode(), $exception->getStatusCode());
+
+            return;
+        }
+
+        $this->fail('Expected ' . get_class($expectedException) . ' but wasn\'t thrown');
     }
 
     /**
@@ -232,7 +238,7 @@ class CategoryTest extends ShopgateSdkTest
                     'code' => 'category-test-code',
                     'sequenceId' => 1006
                 ],
-                'expectedException' => RequestException::class
+                'expectedException' => new RequestException(400)
             ],
             'wrong code data type' => [
                 'categoryData' => [
@@ -240,7 +246,7 @@ class CategoryTest extends ShopgateSdkTest
                     'code' => 123456,
                     'sequenceId' => 1006
                 ],
-                'expectedException' => RequestException::class
+                'expectedException' => new RequestException(400)
             ],
             'wrong sequenceId data type' => [
                 'categoryData' => [
@@ -248,7 +254,43 @@ class CategoryTest extends ShopgateSdkTest
                     'code' => 'category-test-code',
                     'sequenceId' => '1006'
                 ],
-                'expectedException' => RequestException::class
+                'expectedException' => new RequestException(400)
+            ],
+            'wrong parentCategoryCode data type' => [
+                'categoryData' => [
+                    'name' => 'Test Category',
+                    'code' => 'category-test-code',
+                    'sequenceId' => 1006,
+                    'parentCategoryCode' => 12345
+                ],
+                'expectedException' => new RequestException(400)
+            ],
+            'wrong image data type' => [
+                'categoryData' => [
+                    'name' => 'Test Category',
+                    'code' => 'category-test-code',
+                    'sequenceId' => 1006,
+                    'image' => 12345
+                ],
+                'expectedException' => new RequestException(400)
+            ],
+            'wrong url type' => [
+                'categoryData' => [
+                    'name' => 'Test Category',
+                    'code' => 'category-test-code',
+                    'sequenceId' => 1006,
+                    'url' => 123456
+                ],
+                'expectedException' => new RequestException(400)
+            ],
+            'wrong description type' => [
+                'categoryData' => [
+                    'name' => 'Test Category',
+                    'code' => 'category-test-code',
+                    'sequenceId' => 1006,
+                    'description' => new Category\Dto\Description(['en-US' => 12345])
+                ],
+                'expectedException' => new RequestException(400)
             ],
         ];
     }
@@ -294,17 +336,23 @@ class CategoryTest extends ShopgateSdkTest
         $nonExistentCategoryCode = 'non-existent';
         $category = $this->provideSampleUpdateCategory('test non existent category');
 
-        // Assert
-        $this->expectException(Exception::class);
-
         // Act
-        $this->sdk->getCatalogService()->updateCategory($nonExistentCategoryCode, $category, [
-            'requestType' => 'direct'
-        ]);
+        try {
+            $this->sdk->getCatalogService()->updateCategory($nonExistentCategoryCode, $category, [
+                'requestType' => 'direct'
+            ]);
+        } catch (RequestException $exception) {
+            // Assert
+            $this->assertEquals(404, $exception->getStatusCode());
+
+            return;
+        }
+
+        $this->fail('Expected RequestException but wasn\'t thrown');
     }
 
     /**
-     * Events
+     * Event requests
      */
 
     // TODO: It seems only one category is created in the service. Cause of this bug:
@@ -391,10 +439,6 @@ class CategoryTest extends ShopgateSdkTest
     }
 
     /**
-     * error cases
-     */
-
-    /**
      * @param array $categoryData
      * @param string $expectedException
      *
@@ -455,6 +499,7 @@ class CategoryTest extends ShopgateSdkTest
      * @param array $meta
      *
      * @return ResponseInterface
+     * @throws RequestException
      * @throws Exception
      *
      */

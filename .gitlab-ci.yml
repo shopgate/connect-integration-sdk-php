@@ -51,6 +51,10 @@ check_code_style:
 run_unit_tests:
   image: composer:1.8.0
   stage: test
+  before_script:
+    - apk add --no-cache $PHPIZE_DEPS
+    - pecl install xdebug
+    - docker-php-ext-enable xdebug
   script:
     - composer cover-text
   cache:

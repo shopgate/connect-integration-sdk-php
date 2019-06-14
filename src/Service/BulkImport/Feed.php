@@ -11,7 +11,11 @@ namespace Shopgate\ConnectSdk\Service\BulkImport;
 use Shopgate\ConnectSdk\ClientInterface;
 use Shopgate\ConnectSdk\Service\BulkImport\Handler\File;
 use Shopgate\ConnectSdk\Service\BulkImport\Handler\Stream;
+use GuzzleHttp\Exception\RequestException as GuzzleRequestException;
 use GuzzleHttp\Client;
+use Shopgate\ConnectSdk\Exception\RequestException;
+use Shopgate\ConnectSdk\Exception\UnknownException;
+use GuzzleHttp\Exception\GuzzleException;
 
 class Feed
 {
@@ -67,9 +71,11 @@ class Feed
      */
     public function end()
     {
+        $requestOption = [];
         switch ($this->handlerType) {
             case Stream::HANDLER_TYPE:
                 $this->stream->write(']');
+                $requestOption = ['body' => $this->stream];
                 $this->importClient->request(
                     'PUT',
                     $this->url,
@@ -78,23 +84,22 @@ class Feed
                 break;
             case File::HANDLER_TYPE:
                 fwrite($this->stream, ']');
-                try {
-                    echo 'upload file';
-                    fseek($this->stream, 0);
-                    $this->importClient->request(
-                        'PUT',
-                        $this->url,
-                        ['body' => fread($this->stream, filesize(stream_get_meta_data($this->stream)['uri']))]
-                    );
-                } catch (Exception $e) {
-                    echo $e->getResponse()->getBody()->getContents();
-                }
-
-                //fseek($this->stream, 0);
-                //fseek($this->stream, 0);
-                //echo fread($this->stream, filesize(stream_get_meta_data($this->stream)['uri']));
+                fseek($this->stream, 0);
+                $requestOption = ['body' => fread($this->stream, filesize(stream_get_meta_data($this->stream)['uri']))];
                 fclose($this->stream);
                 break;
+        }
+
+        if (count($requestOption)) {
+            try {
+                $this->importClient->request('PUT', $this->url, $requestOption);
+            } catch (GuzzleRequestException $e) {
+                throw new RequestException($e->getResponse()->getBody()->getContents());
+            } catch (GuzzleException $e) {
+                throw new UnknownException($e->getMessage());
+            } catch (\Exception $e) {
+                throw new UnknownException($e->getMessage());
+            }
         }
     }
 }

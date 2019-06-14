@@ -72,12 +72,12 @@ $price->setPrice(90)->setSalePrice(84.99)->setCurrencyCode(PriceDto::CURRENCY_CO
 $productPayload = new Product\Create();
 $name = new Product\Dto\Name(['en-us' => 'Blue Jeans regular']);
 $productPayload->setCode('42')
-    ->setCatalogCode('my_catalog')
-    ->setName($name)
-    ->setStatus(Product\Create::STATUS_ACTIVE)
-    ->setModelType(Product\Create::MODEL_TYPE_STANDARD)
-    ->setIsInventoryManaged(true)
-    ->setPrice($price);
+               ->setCatalogCode('my_catalog')
+               ->setName($name)
+               ->setStatus(Product\Create::STATUS_ACTIVE)
+               ->setModelType(Product\Create::MODEL_TYPE_STANDARD)
+               ->setIsInventoryManaged(true)
+               ->setPrice($price);
 $sgSdk->getCatalogService()->addProducts([$productPayload]);
 // update product with constructor input example
 $updateDto = new Product\Update(['name' => new Product\Dto\Name(['en-us' => 'Blue Jeans regular'])]);

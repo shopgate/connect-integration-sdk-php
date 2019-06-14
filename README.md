@@ -34,7 +34,7 @@ $sgSdk = new ShopgateSdk($config);
 
 // create new category
 $categoryPayload = new Category\Create();
-$name            = new Category\Name(['en-us' => 'Denim Pants']);
+$name            = new Category\Dto\Name(['en-us' => 'Denim Pants']);
 $categoryPayload->setCode('pants')->setName($name)->setSequenceId(1);
 $sgSdk->getCatalogService()->addCategories([$categoryPayload]);
 // update category with constructor input example
@@ -46,7 +46,7 @@ $sgSdk->getCatalogService()->deleteCategory('pants');
 $categories = $sgSdk->getCatalogService()->getCategories(['limit' => 5]);
 
 // update category sync
-$name      = (new Category\Name())->add('en-us', 'Skirts');
+$name      = (new Category\Dto\Name())->add('en-us', 'Skirts');
 $updateDto = new Category\Update(['name' => $name]);
 $sgSdk->getCatalogService()->updateCategory('4', $updateDto, ['requestType' => 'direct']);
 ```
@@ -55,8 +55,8 @@ Example for calling our service in order to create, update or delete a simple pr
 ```php
 <?php
 use Shopgate\ConnectSdk\ShopgateSdk;
-use Shopgate\ConnectSdk\DTO\Catalog\Product;
-use Shopgate\ConnectSdk\DTO\Catalog\Product\Price as PriceDto;
+use Shopgate\ConnectSdk\Dto\Catalog\Product;
+use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Price as PriceDto;
 
 $config = [
     'merchantCode'  => 'EE1',
@@ -70,17 +70,17 @@ $price = new PriceDto();
 $price->setPrice(90)->setSalePrice(84.99)->setCurrencyCode(PriceDto::CURRENCY_CODE_EUR);
 // create new product
 $productPayload = new Product\Create();
-$name = new Product\Name(['en-us' => 'Blue Jeans regular']);
+$name = new Product\Dto\Name(['en-us' => 'Blue Jeans regular']);
 $productPayload->setCode('42')
-               ->setCatalogCode('my_catalog')
-               ->setName($name)
-               ->setStatus(Product\Create::STATUS_ACTIVE)
-               ->setModelType(Product\Create::MODEL_TYPE_STANDARD)
-               ->setIsInventoryManaged(true)
-               ->setPrice($price);
+    ->setCatalogCode('my_catalog')
+    ->setName($name)
+    ->setStatus(Product\Create::STATUS_ACTIVE)
+    ->setModelType(Product\Create::MODEL_TYPE_STANDARD)
+    ->setIsInventoryManaged(true)
+    ->setPrice($price);
 $sgSdk->getCatalogService()->addProducts([$productPayload]);
 // update product with constructor input example
-$updateDto = new Product\Update(['name' => new Product\Name(['en-us' => 'Blue Jeans regular'])]);
+$updateDto = new Product\Update(['name' => new Product\Dto\Name(['en-us' => 'Blue Jeans regular'])]);
 $sgSdk->getCatalogService()->updateProduct('42', $updateDto);
 // delete product
 $sgSdk->getCatalogService()->deleteProduct('42');

@@ -28,11 +28,14 @@ class Feed
     /** @var  string */
     private $url;
 
-    /** @var \Psr\Http\Message\StreamInterface */
+    /** @var \Psr\Http\Message\StreamInterface | resource */
     protected $stream;
 
     /** @var string */
     protected $handlerType;
+
+    /** @var array */
+    protected $additionalRequestBodyOptions;
 
     /** @var */
     protected $importClient;
@@ -43,12 +46,18 @@ class Feed
      * @param ClientInterface $client
      * @param string          $importReference
      * @param string          $handlerType
+     * @param array           $additionalRequestBodyOptions
      */
-    public function __construct(ClientInterface $client, $importReference, $handlerType)
-    {
-        $this->client          = $client;
-        $this->importReference = $importReference;
-        $this->handlerType     = $handlerType;
+    public function __construct(
+        ClientInterface $client,
+        $importReference,
+        $handlerType,
+        $additionalRequestBodyOptions = []
+    ) {
+        $this->client                       = $client;
+        $this->importReference              = $importReference;
+        $this->handlerType                  = $handlerType;
+        $this->additionalRequestBodyOptions = $additionalRequestBodyOptions;
 
         $this->client       = $client;
         $this->importClient = new Client();
@@ -67,7 +76,7 @@ class Feed
     }
 
     /**
-     *
+     * Upload content or finish stream to S3
      */
     public function end()
     {

@@ -33,11 +33,18 @@ class Handler
     }
 
     /**
+     * @param string $catalogCode
+     *
      * @return Feed\Category
      */
-    public function createCategoryFeed()
+    public function createCategoryFeed($catalogCode)
     {
-        return new Feed\Category($this->client, $this->importReference, $this::HANDLER_TYPE);
+        return new Feed\Category(
+            $this->client,
+            $this->importReference,
+            $this::HANDLER_TYPE,
+            ['catalogCode' => $catalogCode]
+        );
     }
 
     /**

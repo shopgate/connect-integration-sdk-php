@@ -35,10 +35,13 @@ class Feed
     protected $handlerType;
 
     /** @var array */
-    protected $additionalRequestBodyOptions;
+    protected $requestBodyOptions;
 
     /** @var */
     protected $importClient;
+
+    /** @var bool */
+    protected $isFirstItem = true;
 
     /**
      * Feed constructor.
@@ -46,18 +49,18 @@ class Feed
      * @param ClientInterface $client
      * @param string          $importReference
      * @param string          $handlerType
-     * @param array           $additionalRequestBodyOptions
+     * @param array           $requestBodyOptions
      */
     public function __construct(
         ClientInterface $client,
         $importReference,
         $handlerType,
-        $additionalRequestBodyOptions = []
+        $requestBodyOptions = []
     ) {
-        $this->client                       = $client;
-        $this->importReference              = $importReference;
-        $this->handlerType                  = $handlerType;
-        $this->additionalRequestBodyOptions = $additionalRequestBodyOptions;
+        $this->client             = $client;
+        $this->importReference    = $importReference;
+        $this->handlerType        = $handlerType;
+        $this->requestBodyOptions = $requestBodyOptions;
 
         $this->client       = $client;
         $this->importClient = new Client();
@@ -73,6 +76,36 @@ class Feed
                 fwrite($this->stream, '[');
                 break;
         }
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function getUrl()
+    {
+        $response = $this->client->doRequest(
+            [
+                'method'      => 'post',
+                'body'        => $this->requestBodyOptions,
+                'requestType' => 'direct',
+                'service'     => 'import',
+                'path'        => 'imports/' . $this->importReference . '/' . 'urls',
+            ]
+        );
+
+        $response = json_decode($response->getBody(), true);
+
+        return $response['url'];
+    }
+
+    /**
+     * @return string
+     */
+    protected function getItemDivider()
+    {
+        return $this->isFirstItem
+            ? ''
+            : ',';
     }
 
     /**

@@ -43,16 +43,23 @@ class Handler
             $this->client,
             $this->importReference,
             $this::HANDLER_TYPE,
-            ['catalogCode' => $catalogCode]
+            array_merge(['entity' => 'category'], ['catalogCode' => $catalogCode])
         );
     }
 
     /**
+     * @param string $catalogCode
+     *
      * @return Feed\Product
      */
-    public function createProductFeed()
+    public function createProductFeed($catalogCode)
     {
-        return new Feed\Product($this->client, $this->importReference, $this::HANDLER_TYPE);
+        return new Feed\Product(
+            $this->client,
+            $this->importReference,
+            $this::HANDLER_TYPE,
+            array_merge(['entity' => 'product'], ['catalogCode' => $catalogCode])
+        );
     }
 
     public function trigger()

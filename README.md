@@ -89,6 +89,54 @@ $sgSdk->getCatalogService()->deleteProduct('42');
 $updateDto = new Product\Update(['status' => Product\Create::STATUS_INACTIVE]);
 $sgSdk->getCatalogService()->updateProduct('42', $updateDto, ['requestType' => 'direct']);
 ```
+Example for create bulk import:
+
+```php
+<?php
+
+use Shopgate\ConnectSdk\ShopgateSdk;
+use Shopgate\ConnectSdk\DTO\Catalog\Category;
+
+$config = [
+    'merchantCode'  => 'EE1',
+    'clientId'      => 'xxx',
+    'clientSecret'  => 'xxx'
+];
+
+$sgSdk = new ShopgateSdk($config);
+
+// create new category 1
+$categoryPayload1 = new Category\Create();
+$name1            = new Category\Dto\Name(['en-us' => 'Denim Pants']);
+$categoryPayload1->setCode('pants')->setName($name1)->setSequenceId(1);
+
+// create new category 2
+$categoryPayload2 = new Category\Create();
+$name2            = new Category\Dto\Name(['en-us' => 'Denim Shirts']);
+$categoryPayload2->setCode('shirts')->setName($name1)->setSequenceId(1);
+
+// init stream import
+//$handler = $sgSdk->getBulkImportService()->createStreamImport();
+
+// init file import
+$handler = $sdk->getBulkImportService()->createFileImport();
+
+// create product feed
+// $productHandler = $handler->createProductFeed('8000');
+
+// create category feed
+$categoryHandler = $handler->createCategoryFeed('8000');
+
+// add payloads
+$categoryHandler->add($categoryPayload1);
+$categoryHandler->add($categoryPayload2);
+
+// submit items / stop stream
+$categoryHandler->end();
+
+// trigger import
+$handler->trigger();
+```
 
 #### Config
 

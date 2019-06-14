@@ -30,7 +30,7 @@ class BaseTest extends TestCase
     /**
      * Dto\Exceptions\InvalidKeyException : The key "test" does not exist in this Dto.
      */
-    public function testInvalidKeyException()
+    public function testInvalidKeyException_ValueNotSet()
     {
         //Arrange
         $schema = [
@@ -53,7 +53,7 @@ class BaseTest extends TestCase
     /**
      * Dto\Exceptions\InvalidDataTypeException : The get() method cannot be used on scalar objects.  Use toScalar() instead.
      */
-    public function testInvalidDataTypeException()
+    public function testInvalidDataTypeException_GetValueOnScalar()
     {
         //Arrange
         $base = new Base();
@@ -68,7 +68,7 @@ class BaseTest extends TestCase
     /**
      * InvalidArgumentException : Invalid data type for get() method. Scalar required.
      */
-    public function testInvalidArgumentException()
+    public function testInvalidArgumentException_InvalidDataType()
     {
         //Arrange
         $base = new Base();
@@ -84,7 +84,7 @@ class BaseTest extends TestCase
     /**
      * Dto\Exceptions\InvalidKeyException : Key not allowed by "properties", "patternProperties", or "additionalProperties": test
      */
-    public function testInvalidKeyException2()
+    public function testInvalidKeyException_AdditionalPropertiesNotAllowed()
     {
         //Arrange
         $schema = [
@@ -104,12 +104,24 @@ class BaseTest extends TestCase
     /**
      * Dto\Exceptions\InvalidDataTypeException : Properties can only be set on objects.
      */
-    public function testInvalidKeyException4()
+    public function testInvalidKeyException_SetValueOnScalarObject()
     {
         //Arrange
         $base = new Base();
 
         // Act
         $base->setNonExistent('1234');
+    }
+
+    /**
+     * Should not throw an exception
+     */
+    public function testNonExistingMethodCall()
+    {
+        //Arrange
+        $base = new Base();
+
+        // Act
+        $base->nonExistentMethod('1234');
     }
 }

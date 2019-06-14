@@ -73,8 +73,6 @@ class Base extends Dto
 
                 return $this->set($key, isset($args[0]) ? $args[0] : null);
         }
-        $error = 'Invalid method ' . get_class($this) . '::' . $method . '(' . print_r($args, 1) . ')';
-        throw new InvalidIndexException($error);
     }
 
     /**

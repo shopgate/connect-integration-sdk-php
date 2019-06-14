@@ -5,7 +5,6 @@ stages:
   - deploy
 
 variables:
-  PHP_DC_DOWNLOAD: https://github.com/Rekhyt/php-dependency-checker/releases/download/1.0.0-beta.1/php-dependency-checker.phar
   BUILD_PREREQUISITES_CACHE_KEY: "build_pre_${PHP_DC_DOWNLOAD}"
 
 download_prerequisites:
@@ -13,13 +12,11 @@ download_prerequisites:
   stage: prepare
   script:
     - if [ ! -d vendor ] || [ ! -f composer.lock ]; then composer install --ignore-platform-reqs; fi
-    - if [ ! -f php-dependency-checker.phar ]; then wget $PHP_DC_DOWNLOAD; chmod +x php-dependency-checker.phar; fi
   cache:
     key: $BUILD_PREREQUISITES_CACHE_KEY
     paths:
-      - vendor
-      - php-dependency-checker.phar
       - composer.lock
+      - vendor
     policy: pull-push
   tags:
     - docker
@@ -28,12 +25,12 @@ check_dependencies:
   image: composer:1.8.0
   stage: check
   script:
-    - ./php-dependency-checker.phar ./composer.lock
+    - composer audit
   cache:
     key: $BUILD_PREREQUISITES_CACHE_KEY
     paths:
       - composer.lock
-      - php-dependency-checker.phar
+      - vendor
     policy: pull
   tags:
     - docker

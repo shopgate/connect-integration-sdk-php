@@ -30,18 +30,18 @@ class BaseTest extends TestCase
     /**
      * Dto\Exceptions\InvalidKeyException : The key "test" does not exist in this Dto.
      */
-    public function testInvalidKeyException_ValueNotSet()
+    public function testInvalidKeyExceptionWithoutValueSet()
     {
         //Arrange
         $schema = [
-            'type' => 'object',
-            'properties' => [
+            'type'                 => 'object',
+            'properties'           => [
                 'code' => ['type' => 'string'],
                 'test' => ['type' => 'string'],
             ],
             'additionalProperties' => true
         ];
-        $base = new Base(null, $schema);
+        $base   = new Base(null, $schema);
 
         // Act
         $result = $base->getTest();
@@ -51,9 +51,10 @@ class BaseTest extends TestCase
     }
 
     /**
-     * Dto\Exceptions\InvalidDataTypeException : The get() method cannot be used on scalar objects.  Use toScalar() instead.
+     * Dto\Exceptions\InvalidDataTypeException : The get() method cannot be used on scalar objects.
+     * Use toScalar() instead.
      */
-    public function testInvalidDataTypeException_GetValueOnScalar()
+    public function testInvalidDataTypeExceptionWithGetValueOnScalar()
     {
         //Arrange
         $base = new Base();
@@ -68,7 +69,7 @@ class BaseTest extends TestCase
     /**
      * InvalidArgumentException : Invalid data type for get() method. Scalar required.
      */
-    public function testInvalidArgumentException_InvalidDataType()
+    public function testInvalidArgumentExceptionWithInvalidDataType()
     {
         //Arrange
         $base = new Base();
@@ -80,22 +81,22 @@ class BaseTest extends TestCase
         $this->assertNull($result);
     }
 
-
     /**
-     * Dto\Exceptions\InvalidKeyException : Key not allowed by "properties", "patternProperties", or "additionalProperties": test
+     * Dto\Exceptions\InvalidKeyException : Key not allowed by "properties", "patternProperties", or
+     * "additionalProperties": test
      */
-    public function testInvalidKeyException_AdditionalPropertiesNotAllowed()
+    public function testInvalidKeyExceptionWithAdditionalPropertiesNotAllowed()
     {
         //Arrange
         $schema = [
-            'type' => 'object',
-            'properties' => [
-                'code' => ['type' => 'string'],
+            'type'                 => 'object',
+            'properties'           => [
+                'code'  => ['type' => 'string'],
                 'other' => ['type' => 'string'],
             ],
             'additionalProperties' => false
         ];
-        $base = new Base(null, $schema);
+        $base   = new Base(null, $schema);
 
         // Act
         $base->setTest('test');
@@ -104,7 +105,7 @@ class BaseTest extends TestCase
     /**
      * Dto\Exceptions\InvalidDataTypeException : Properties can only be set on objects.
      */
-    public function testInvalidKeyException_SetValueOnScalarObject()
+    public function testInvalidKeyExceptionWithSetValueOnScalarObject()
     {
         //Arrange
         $base = new Base();

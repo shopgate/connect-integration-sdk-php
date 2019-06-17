@@ -36,13 +36,16 @@ class CategoryTest extends CatalogTest
     public function testCreateCategoryDirect()
     {
         // Arrange
-        $sampleCategories = $this->provideSampleCategories();
+        $sampleCategories    = $this->provideSampleCategories();
         $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
 
         // Act
-        $this->createCategories($sampleCategories, [
-            'requestType' => 'direct'
-        ]);
+        $this->createCategories(
+            $sampleCategories,
+            [
+                'requestType' => 'direct'
+            ]
+        );
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, $sampleCategoryCodes);
@@ -69,26 +72,31 @@ class CategoryTest extends CatalogTest
             ],
             ['requestType' => 'direct']
         );
-        $newName = 'Renamed Product (Direct)';
+        $newName  = 'Renamed Product (Direct)';
         $category = new Category\Update(['name' => new Name(['en-us' => $newName])]);
 
         // Act
-        $this->sdk->getCatalogService()->updateCategory(self::CATEGORY_CODE, $category, [
-            'requestType' => 'direct'
-        ]);
+        $this->sdk->getCatalogService()->updateCategory(
+            self::CATEGORY_CODE,
+            $category,
+            [
+                'requestType' => 'direct'
+            ]
+        );
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, [self::CATEGORY_CODE]);
 
         // Assert
-        $categories = $this->getCategories([self::CATEGORY_CODE]);
+        $categories      = $this->getCategories([self::CATEGORY_CODE]);
         $updatedCategory = $categories->getCategories()[0];
         $this->assertEquals($newName, $updatedCategory->getName());
     }
 
     /**
-     * @param array $updateCategoryData
+     * @param array  $updateCategoryData
      * @param string $expectedValue
+     *
      * @throws Exception
      *
      * @dataProvider provideUpdateCategoryData
@@ -120,20 +128,28 @@ class CategoryTest extends CatalogTest
         $category = new Category\Update($updateCategoryData);
 
         // Act
-        $this->sdk->getCatalogService()->updateCategory(self::CATEGORY_CODE, $category, [
-            'requestType' => 'direct'
-        ]);
+        $this->sdk->getCatalogService()->updateCategory(
+            self::CATEGORY_CODE,
+            $category,
+            [
+                'requestType' => 'direct'
+            ]
+        );
 
         // CleanUp
-        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, [
-            self::CATEGORY_CODE,
-            self::PARENT_CATEGORY_CODE
-        ]);
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_CATEGORY,
+            [
+                self::CATEGORY_CODE,
+                self::PARENT_CATEGORY_CODE
+            ]
+        );
 
         // Assert
-        $categories = $this->getCategories([self::CATEGORY_CODE], ['getOriginalImageUrls' => true]);
+        $categories      = $this->getCategories([self::CATEGORY_CODE], ['getOriginalImageUrls' => true]);
         $updatedCategory = $categories->getCategories()[0];
-        $updatedKey = array_keys($updateCategoryData)[0];
+        $updatedKey      = array_keys($updateCategoryData)[0];
         $this->assertEquals($expectedValue, $updatedCategory->get($updatedKey));
     }
 
@@ -143,35 +159,35 @@ class CategoryTest extends CatalogTest
     public function provideUpdateCategoryData()
     {
         return [
-            'name' => [
+            'name'               => [
                 'updateCategoryData' => [
                     'name' => new Name(['en-us' => 'Updated Name']),
                 ],
-                'expectedValue' => 'Updated Name'
+                'expectedValue'      => 'Updated Name'
             ],
-            'description' => [
+            'description'        => [
                 'updateCategoryData' => [
                     'description' => new Category\Dto\Description(['en-us' => 'Updated Description']),
                 ],
-                'expectedValue' => 'Updated Description'
+                'expectedValue'      => 'Updated Description'
             ],
-            'image' => [
+            'image'              => [
                 'updateCategoryData' => [
                     'image' => 'http://updated.com/image.png',
                 ],
-                'expectedValue' => 'http://updated.com/image.png'
+                'expectedValue'      => 'http://updated.com/image.png'
             ],
-            'url' => [
+            'url'                => [
                 'updateCategoryData' => [
                     'url' => 'http://updated.url.com',
                 ],
-                'expectedValue' => 'http://updated.url.com'
+                'expectedValue'      => 'http://updated.url.com'
             ],
             'parentCategoryCode' => [
                 'updateCategoryData' => [
                     'parentCategoryCode' => self::PARENT_CATEGORY_CODE,
                 ],
-                'expectedValue' => self::PARENT_CATEGORY_CODE
+                'expectedValue'      => self::PARENT_CATEGORY_CODE
             ],
         ];
     }
@@ -187,9 +203,12 @@ class CategoryTest extends CatalogTest
 
         // Act
         foreach ($this->getCategoryCodes($sampleCategories) as $categoryCode) {
-            $this->sdk->getCatalogService()->deleteCategory($categoryCode, [
-                'requestType' => 'direct'
-            ]);
+            $this->sdk->getCatalogService()->deleteCategory(
+                $categoryCode,
+                [
+                    'requestType' => 'direct'
+                ]
+            );
         }
 
         // Assert
@@ -211,8 +230,11 @@ class CategoryTest extends CatalogTest
         $categories = $this->sdk->getCatalogService()->getCategories();
 
         // CleanUp
-        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY,
-            $this->getCategoryCodes($sampleCategories));
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_CATEGORY,
+            $this->getCategoryCodes($sampleCategories)
+        );
 
         // Assert
         /** @noinspection PhpParamsInspection */
@@ -220,23 +242,26 @@ class CategoryTest extends CatalogTest
     }
 
     /**
-     * @param array $categoryData
+     * @param array            $categoryData
      * @param RequestException $expectedException
      *
      * @throws Exception
      *
-     * @dataProvider provideCreateCategory_MissingRequiredFields
+     * @dataProvider provideCreateCategoryWithMissingRequiredFields
      */
-    public function testCreateCategoryDirect_MissingRequiredFields(array $categoryData, $expectedException)
+    public function testCreateCategoryDirectWithMissingRequiredFields(array $categoryData, $expectedException)
     {
         // Arrange
         $category = new Category\Create($categoryData);
 
         // Act
         try {
-            $this->createCategories([$category], [
-                'requestType' => 'direct'
-            ]);
+            $this->createCategories(
+                [$category],
+                [
+                    'requestType' => 'direct'
+                ]
+            );
         } catch (RequestException $exception) {
             // Assert
             $this->assertInstanceOf(get_class($expectedException), $exception);
@@ -251,25 +276,25 @@ class CategoryTest extends CatalogTest
     /**
      * @return array
      */
-    public function provideCreateCategory_MissingRequiredFields()
+    public function provideCreateCategoryWithMissingRequiredFields()
     {
         return [
-            'missing name' => [
-                'categoryData' => [
-                    'code' => 'category-test-code',
+            'missing name'       => [
+                'categoryData'      => [
+                    'code'       => 'category-test-code',
                     'sequenceId' => 1006
                 ],
                 'expectedException' => new RequestException(400)
             ],
-            'missing code' => [
-                'categoryData' => [
-                    'name' => 'Test Category',
+            'missing code'       => [
+                'categoryData'      => [
+                    'name'       => 'Test Category',
                     'sequenceId' => 1006
                 ],
                 'expectedException' => new RequestException(400)
             ],
             'missing sequenceId' => [
-                'categoryData' => [
+                'categoryData'      => [
                     'name' => 'Test Category',
                     'code' => 'category-test-code',
                 ],
@@ -279,23 +304,26 @@ class CategoryTest extends CatalogTest
     }
 
     /**
-     * @param array $categoryData
+     * @param array            $categoryData
      * @param RequestException $expectedException
      *
      * @throws Exception
      *
-     * @dataProvider provideCreateCategory_InvalidDataTypes
+     * @dataProvider provideCreateCategoryWithInvalidDataTypes
      */
-    public function testCreateCategoryDirect_InvalidDataTypes($categoryData, $expectedException)
+    public function testCreateCategoryDirectWithInvalidDataTypes($categoryData, $expectedException)
     {
         // Arrange
         $category = new Category\Create($categoryData);
 
         // Act
         try {
-            $this->createCategories([$category], [
-                'requestType' => 'direct'
-            ]);
+            $this->createCategories(
+                [$category],
+                [
+                    'requestType' => 'direct'
+                ]
+            );
         } catch (RequestException $exception) {
             // Assert
             $this->assertInstanceOf(get_class($expectedException), $exception);
@@ -310,65 +338,65 @@ class CategoryTest extends CatalogTest
     /**
      * @return array
      */
-    public function provideCreateCategory_InvalidDataTypes()
+    public function provideCreateCategoryWithInvalidDataTypes()
     {
         return [
-            'wrong name data type' => [
-                'categoryData' => [
-                    'name' => 12345,
-                    'code' => 'category-test-code',
+            'wrong name data type'               => [
+                'categoryData'      => [
+                    'name'       => 12345,
+                    'code'       => 'category-test-code',
                     'sequenceId' => 1006
                 ],
                 'expectedException' => new RequestException(400)
             ],
-            'wrong code data type' => [
-                'categoryData' => [
-                    'name' => 'Test Category',
-                    'code' => 123456,
+            'wrong code data type'               => [
+                'categoryData'      => [
+                    'name'       => 'Test Category',
+                    'code'       => 123456,
                     'sequenceId' => 1006
                 ],
                 'expectedException' => new RequestException(400)
             ],
-            'wrong sequenceId data type' => [
-                'categoryData' => [
-                    'name' => 'Test Category',
-                    'code' => 'category-test-code',
+            'wrong sequenceId data type'         => [
+                'categoryData'      => [
+                    'name'       => 'Test Category',
+                    'code'       => 'category-test-code',
                     'sequenceId' => '1006'
                 ],
                 'expectedException' => new RequestException(400)
             ],
             'wrong parentCategoryCode data type' => [
-                'categoryData' => [
-                    'name' => 'Test Category',
-                    'code' => 'category-test-code',
-                    'sequenceId' => 1006,
+                'categoryData'      => [
+                    'name'               => 'Test Category',
+                    'code'               => 'category-test-code',
+                    'sequenceId'         => 1006,
                     'parentCategoryCode' => 12345
                 ],
                 'expectedException' => new RequestException(400)
             ],
-            'wrong image data type' => [
-                'categoryData' => [
-                    'name' => 'Test Category',
-                    'code' => 'category-test-code',
+            'wrong image data type'              => [
+                'categoryData'      => [
+                    'name'       => 'Test Category',
+                    'code'       => 'category-test-code',
                     'sequenceId' => 1006,
-                    'image' => 12345
+                    'image'      => 12345
                 ],
                 'expectedException' => new RequestException(400)
             ],
-            'wrong url type' => [
-                'categoryData' => [
-                    'name' => 'Test Category',
-                    'code' => 'category-test-code',
+            'wrong url type'                     => [
+                'categoryData'      => [
+                    'name'       => 'Test Category',
+                    'code'       => 'category-test-code',
                     'sequenceId' => 1006,
-                    'url' => 123456
+                    'url'        => 123456
                 ],
                 'expectedException' => new RequestException(400)
             ],
-            'wrong description type' => [
-                'categoryData' => [
-                    'name' => 'Test Category',
-                    'code' => 'category-test-code',
-                    'sequenceId' => 1006,
+            'wrong description type'             => [
+                'categoryData'      => [
+                    'name'        => 'Test Category',
+                    'code'        => 'category-test-code',
+                    'sequenceId'  => 1006,
                     'description' => new Category\Dto\Description(['en-US' => 12345])
                 ],
                 'expectedException' => new RequestException(400)
@@ -379,10 +407,10 @@ class CategoryTest extends CatalogTest
     /**
      * @throws Exception
      */
-    public function testUpdateCategory_WithoutAnyDataGiven()
+    public function testUpdateCategoryWithoutAnyDataGiven()
     {
         // Arrange
-        $categoryCode = 'example-code';
+        $categoryCode     = 'example-code';
         $existingCategory = $this->provideSampleCreateCategory(
             $categoryCode,
             'test category',
@@ -391,15 +419,22 @@ class CategoryTest extends CatalogTest
             'test description',
             '12345'
         );
-        $this->sdk->getCatalogService()->addCategories([$existingCategory], [
-            'requestType' => 'direct'
-        ]);
+        $this->sdk->getCatalogService()->addCategories(
+            [$existingCategory],
+            [
+                'requestType' => 'direct'
+            ]
+        );
         $updateCategory = new Category\Update();
 
         // Act
-        $response = $this->sdk->getCatalogService()->updateCategory($categoryCode, $updateCategory, [
-            'requestType' => 'direct'
-        ]);
+        $response = $this->sdk->getCatalogService()->updateCategory(
+            $categoryCode,
+            $updateCategory,
+            [
+                'requestType' => 'direct'
+            ]
+        );
 
         // Assert
         $this->assertEquals(204, $response->getStatusCode());
@@ -411,17 +446,21 @@ class CategoryTest extends CatalogTest
     /**
      * @throws Exception
      */
-    public function testUpdateCategory_NonExistingCategory()
+    public function testUpdateCategoryWithNonExistingCategory()
     {
         // Arrange
         $nonExistentCategoryCode = 'non-existent';
-        $category = $this->provideSampleUpdateCategory('test non existent category');
+        $category                = $this->provideSampleUpdateCategory('test non existent category');
 
         // Act
         try {
-            $this->sdk->getCatalogService()->updateCategory($nonExistentCategoryCode, $category, [
-                'requestType' => 'direct'
-            ]);
+            $this->sdk->getCatalogService()->updateCategory(
+                $nonExistentCategoryCode,
+                $category,
+                [
+                    'requestType' => 'direct'
+                ]
+            );
         } catch (RequestException $exception) {
             // Assert
             $this->assertEquals(404, $exception->getStatusCode());
@@ -444,7 +483,7 @@ class CategoryTest extends CatalogTest
         $this->markTestSkipped('Skipped due to bug in worker service');
 
         // Arrange
-        $sampleCategories = $this->provideSampleCategories();
+        $sampleCategories    = $this->provideSampleCategories();
         $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
 
         // Act
@@ -473,7 +512,7 @@ class CategoryTest extends CatalogTest
             ],
             ['requestType' => 'direct']
         );
-        $newName = 'Renamed Product (Event)';
+        $newName         = 'Renamed Product (Event)';
         $updatedCategory = new Category\Update(['name' => new Name(['en-us' => $newName])]);
 
         // Act
@@ -484,7 +523,7 @@ class CategoryTest extends CatalogTest
         $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, [self::CATEGORY_CODE]);
 
         // Assert
-        $categories = $this->getCategories([self::CATEGORY_CODE]);
+        $categories      = $this->getCategories([self::CATEGORY_CODE]);
         $updatedCategory = $categories->getCategories()[0];
         $this->assertEquals(202, $response->getStatusCode());
         $this->assertEquals($newName, $updatedCategory->getName());
@@ -503,7 +542,7 @@ class CategoryTest extends CatalogTest
         // Act
         foreach ($this->getCategoryCodes($sampleCategories) as $categoryCode) {
             $responses[] = $this->sdk->getCatalogService()->deleteCategory($categoryCode);
-            // should be moved out of loop once the omni-worker service is released with a version higher worker:v1.0.0-beta.10d
+            // todo-sg: move out of loop once the omni-worker service is release version > worker:v1.0.0-beta.10d
             sleep(self::SLEEP_TIME_AFTER_EVENT);
         }
 
@@ -518,7 +557,7 @@ class CategoryTest extends CatalogTest
     }
 
     /**
-     * @param array $categoryData
+     * @param array  $categoryData
      * @param string $expectedException
      *
      * @throws Exception
@@ -526,22 +565,22 @@ class CategoryTest extends CatalogTest
      * @dataProvider provideCreateCategory_MissingRequiredFields
      * TODO: Currently there is no validation for events! Waiting for the implementation in service
      */
-//    public function testCreateCategoryEvent_MissingRequiredFields(array $categoryData, $expectedException)
-//    {
-//        // Arrange
-//        $category = new Category\Create($categoryData);
-//
-//        // Assert
-//        $this->expectException($expectedException);
-//
-//        // Act
-//        $this->createCategories([$category], [
-//            'requestType' => 'direct'
-//        ]);
-//    }
+    //    public function testCreateCategoryEvent_MissingRequiredFields(array $categoryData, $expectedException)
+    //    {
+    //        // Arrange
+    //        $category = new Category\Create($categoryData);
+    //
+    //        // Assert
+    //        $this->expectException($expectedException);
+    //
+    //        // Act
+    //        $this->createCategories([$category], [
+    //            'requestType' => 'direct'
+    //        ]);
+    //    }
 
     /**
-     * @param array $categoryData
+     * @param array  $categoryData
      * @param string $expectedException
      *
      * @throws Exception
@@ -549,17 +588,17 @@ class CategoryTest extends CatalogTest
      * @dataProvider provideCreateCategory_InvalidDataTypes
      * TODO: Currently there is no validation for events! Waiting for the implementation in service
      */
-//    public function testCreateCategoryEvent_InvalidDataTypes($categoryData, $expectedException)
-//    {
-//        // Arrange
-//        $category = new Category\Create($categoryData);
-//
-//        // Assert
-//        $this->expectException($expectedException);
-//
-//        // Act
-//        $this->createCategories([$category]);
-//    }
+    //    public function testCreateCategoryEvent_InvalidDataTypes($categoryData, $expectedException)
+    //    {
+    //        // Arrange
+    //        $category = new Category\Create($categoryData);
+    //
+    //        // Assert
+    //        $this->expectException($expectedException);
+    //
+    //        // Act
+    //        $this->createCategories([$category]);
+    //    }
 
     /**
      * @param array $categoryCodes
@@ -571,13 +610,17 @@ class CategoryTest extends CatalogTest
      */
     private function getCategories($categoryCodes = [], $meta = [])
     {
-        return $this->sdk->getCatalogService()->getCategories(array_merge(['filters' => ['code' => ['$in' => $categoryCodes]]],
-            $meta));
+        return $this->sdk->getCatalogService()->getCategories(
+            array_merge(
+                ['filters' => ['code' => ['$in' => $categoryCodes]]],
+                $meta
+            )
+        );
     }
 
     /**
      * @param Category\Create[] $sampleCategories
-     * @param array $meta
+     * @param array             $meta
      *
      * @return ResponseInterface
      * @throws RequestException
@@ -595,6 +638,7 @@ class CategoryTest extends CatalogTest
      * @param string $url
      * @param string $description
      * @param string $parentCategoryCode
+     *
      * @return Category\Update
      */
     private function provideSampleUpdateCategory(

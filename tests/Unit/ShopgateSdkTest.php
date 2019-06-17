@@ -117,7 +117,11 @@ class ShopgateSdkTest extends TestCase
             ]
         );
 
-        $subjectUnderTest->getCatalogService()->updateCategory($entityId, new CategoryUpdate(), ['requestType' => 'direct']);
+        $subjectUnderTest->getCatalogService()->updateCategory(
+            $entityId,
+            new CategoryUpdate(),
+            ['requestType' => 'direct']
+        );
         $subjectUnderTest->getCatalogService()->deleteCategory($entityId, ['requestType' => 'direct']);
         $subjectUnderTest->getCatalogService()->addCategories([new CategoryCreate()], ['requestType' => 'direct']);
     }
@@ -157,7 +161,11 @@ class ShopgateSdkTest extends TestCase
             ]
         );
 
-        $subjectUnderTest->getCatalogService()->updateProduct($entityId, new ProductUpdate(), ['requestType' => 'direct']);
+        $subjectUnderTest->getCatalogService()->updateProduct(
+            $entityId,
+            new ProductUpdate(),
+            ['requestType' => 'direct']
+        );
         $subjectUnderTest->getCatalogService()->deleteProduct($entityId, ['requestType' => 'direct']);
         $subjectUnderTest->getCatalogService()->addProducts([new ProductCreate()], ['requestType' => 'direct']);
     }

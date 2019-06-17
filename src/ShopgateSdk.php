@@ -24,14 +24,14 @@ namespace Shopgate\ConnectSdk;
 
 use GuzzleHttp\HandlerStack;
 use kamermans\OAuth2\Persistence\TokenPersistenceInterface;
+use Shopgate\ConnectSdk\Http;
 use Shopgate\ConnectSdk\Service\BulkImport;
 use Shopgate\ConnectSdk\Service\Catalog;
-use Shopgate\ConnectSdk\Http;
 
 class ShopgateSdk
 {
-    const REQUEST_TYPE_DIRECT = "direct";
-    const REQUEST_TYPE_EVENT  = "event";
+    const REQUEST_TYPE_DIRECT = 'direct';
+    const REQUEST_TYPE_EVENT  = 'event';
 
     /** @var Catalog */
     private $catalog;
@@ -60,7 +60,7 @@ class ShopgateSdk
             ? $options['http_client']
             : new Http\GuzzleClient($options);
         $this->client     = new Client($this->httpClient);
-        $this->catalog    = is_null($catalog)
+        $this->catalog    = $catalog === null
             ? $this->instantiateClass('catalog')
             : $catalog;
     }
@@ -78,7 +78,7 @@ class ShopgateSdk
      */
     public function getBulkImportService()
     {
-        if (is_null($this->bulkImport)) {
+        if ($this->bulkImport === null) {
             $this->bulkImport = new Service\BulkImport($this->client);
         }
 
@@ -100,8 +100,6 @@ class ShopgateSdk
     }
 
     /**
-     * @todo-sg: test external setter
-     *
      * @param TokenPersistenceInterface $storage
      */
     public function setStorage(TokenPersistenceInterface $storage)

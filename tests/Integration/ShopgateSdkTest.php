@@ -24,7 +24,6 @@ namespace Shopgate\ConnectSdk\Tests\Integration;
 
 use Dotenv\Dotenv;
 use PHPUnit\Framework\TestCase;
-use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\ShopgateSdk;
 
 abstract class ShopgateSdkTest extends TestCase
@@ -55,8 +54,8 @@ abstract class ShopgateSdkTest extends TestCase
     }
 
     /**
-     * @param string $serviceKey
-     * @param $service
+     * @param string   $serviceKey
+     * @param          $service
      * @param string[] $deleteMethods
      */
     protected function registerForCleanUp($serviceKey, $service, $deleteMethods)
@@ -68,8 +67,8 @@ abstract class ShopgateSdkTest extends TestCase
     }
 
     /**
-     * @param string $service
-     * @param string $deleteMethod
+     * @param string   $service
+     * @param string   $deleteMethod
      * @param string[] $entityIds
      */
     protected function deleteEntitiesAfterTestRun($service, $deleteMethod, $entityIds)
@@ -83,10 +82,10 @@ abstract class ShopgateSdkTest extends TestCase
     public function setUp()
     {
         $this->sdkConfig = [
-            'clientId' => getenv('clientId'),
+            'clientId'     => getenv('clientId'),
             'clientSecret' => getenv('clientSecret'),
             'merchantCode' => getenv('merchantCode'),
-            'env' => getenv('env'),
+            'env'          => getenv('env'),
         ];
 
         if ($baseUri = getenv('baseUri')) {

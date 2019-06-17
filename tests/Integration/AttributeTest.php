@@ -23,10 +23,11 @@ namespace Shopgate\ConnectSdk\Tests\Integration;
 
 use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
-use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute\Dto\Name;
+use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\RequestException;
+use Shopgate\ConnectSdk\Exception\UnknownException;
 
 class AttributeTest extends ShopgateSdkTest
 {
@@ -123,7 +124,7 @@ class AttributeTest extends ShopgateSdkTest
     /**
      * @throws Exception
      */
-    public function testGetAttribute_NonExistingAttribute()
+    public function testGetAttributeWithoutExistingAttribute()
     {
         // Act
         try {
@@ -231,7 +232,7 @@ class AttributeTest extends ShopgateSdkTest
     /**
      * @throws Exception
      */
-    public function testUpdateAttribute_NonExistingAttribute()
+    public function testUpdateAttributeWithoutExistingAttribute()
     {
         // Act
         try {
@@ -321,9 +322,9 @@ class AttributeTest extends ShopgateSdkTest
      *
      * @throws Exception
      *
-     * @dataProvider provideCreateAttribute_MissingRequiredFields
+     * @dataProvider provideCreateAttributeWithMissingRequiredFields
      */
-    public function testCreateAttributeDirect_MissingRequiredFields(
+    public function testCreateAttributeDirectWithMissingRequiredFields(
         array $attributeData,
         $expectedException,
         $missingItem
@@ -341,7 +342,7 @@ class AttributeTest extends ShopgateSdkTest
             );
         } catch (RequestException $exception) {
             // Assert
-            $errors  = \GuzzleHttp\json_decode($exception->getMessage());
+            $errors  = \GuzzleHttp\json_decode($exception->getMessage(), false);
             $message = $errors->error->results->errors[0]->message;
             $this->assertInstanceOf(get_class($expectedException), $exception);
             $this->assertEquals('Missing required property: ' . $missingItem, $message);
@@ -360,11 +361,11 @@ class AttributeTest extends ShopgateSdkTest
      *
      * @throws Exception
      *
-     * @dataProvider provideCreateAttribute_InvalidFields
+     * @dataProvider provideCreateAttributeWithInvalidFields
      */
-    public function testCreateAttributeDirect_InvalidFields(
+    public function testCreateAttributeDirectWithInvalidFields(
         array $attributeData,
-        $expectedException,
+        RequestException $expectedException,
         $expectedMessage
     ) {
         // Arrange
@@ -380,7 +381,7 @@ class AttributeTest extends ShopgateSdkTest
             );
         } catch (RequestException $exception) {
             // Assert
-            $errors  = \GuzzleHttp\json_decode($exception->getMessage());
+            $errors  = \GuzzleHttp\json_decode($exception->getMessage(), false);
             $message = $errors->error->results->errors[0]->message;
             $this->assertInstanceOf(get_class($expectedException), $exception);
             $this->assertEquals($expectedMessage, $message);
@@ -395,7 +396,7 @@ class AttributeTest extends ShopgateSdkTest
     /**
      * @return array
      */
-    public function provideCreateAttribute_MissingRequiredFields()
+    public function provideCreateAttributeWithMissingRequiredFields()
     {
         $name = new Attribute\Dto\Name();
         $name->add('de-de', 'Example');
@@ -462,7 +463,7 @@ class AttributeTest extends ShopgateSdkTest
     /**
      * @return array
      */
-    public function provideCreateAttribute_InvalidFields()
+    public function provideCreateAttributeWithInvalidFields()
     {
         $name = new Attribute\Dto\Name();
         $name->add('de-de', 'Example');
@@ -546,13 +547,12 @@ class AttributeTest extends ShopgateSdkTest
     private function provideSampleAttributes($itemCount = 2, $removeOnTearDown = true)
     {
         $result = [];
-
         for ($count = 1; $count < ($itemCount + 1); $count++) {
             $attribute = new Attribute\Create();
             $attribute->setCode('code_' . $count)
-                ->setType(Attribute\Create::TYPE_TEXT)
-                ->setUse(Attribute\Create::USE_OPTION)
-                ->setExternalUpdateDate('2018-12-15T00:00:23.114Z');
+                      ->setType(Attribute\Create::TYPE_TEXT)
+                      ->setUse(Attribute\Create::USE_OPTION)
+                      ->setExternalUpdateDate('2018-12-15T00:00:23.114Z');
 
             $attributeName = new Name();
             $attributeName->add('de-de', 'Attribute ' . $count . ' de');
@@ -573,7 +573,7 @@ class AttributeTest extends ShopgateSdkTest
             $attributeValueSwatch->setValue('https://www.google.de/image');
             $attributeValue->setSwatch($attributeValueSwatch);
 
-            $attribute->setValues([$attributeValue]);
+            $attribute->setValues([$attributeValue]); //todo-alexander: an array is passed despite string requirement?
 
             if ($removeOnTearDown) {
                 $this->cleanUpAttributeCodes[] = 'code_' . $count;
@@ -590,6 +590,8 @@ class AttributeTest extends ShopgateSdkTest
      * @param array              $meta
      *
      * @return ResponseInterface
+     * @throws RequestException
+     * @throws UnknownException
      */
     private function createAttributes(array $sampleAttributes, array $meta = [])
     {

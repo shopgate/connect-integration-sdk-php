@@ -26,21 +26,22 @@ use Shopgate\ConnectSdk\Dto\Catalog\Category;
 
 class CatalogTest extends ShopgateSdkTest
 {
-    const CATALOG_SERVICE = 'catalog';
+    const CATALOG_SERVICE        = 'catalog';
     const METHOD_DELETE_CATEGORY = 'deleteCategory';
-    const METHOD_DELETE_PRODUCT = 'deleteProduct';
+    const METHOD_DELETE_PRODUCT  = 'deleteProduct';
 
-    const PRODUCT_CODE = 'integration-test';
+    const PRODUCT_CODE         = 'integration-test';
     const PARENT_CATEGORY_CODE = 'parent-integration-test';
-    const CATEGORY_CODE = 'integration-test';
+    const CATEGORY_CODE        = 'integration-test';
     const CATEGORY_CODE_SECOND = 'integration-test-2';
-
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->registerForCleanUp(self::CATALOG_SERVICE, $this->sdk->getCatalogService(),
+        $this->registerForCleanUp(
+            self::CATALOG_SERVICE,
+            $this->sdk->getCatalogService(),
             [
                 self::METHOD_DELETE_CATEGORY,
                 self::METHOD_DELETE_PRODUCT
@@ -62,11 +63,12 @@ class CatalogTest extends ShopgateSdkTest
     /**
      * @param string $code
      * @param string $name
-     * @param int $sequenceId
+     * @param int    $sequenceId
      * @param string $image
      * @param string $url
      * @param string $description
      * @param string $parentCategoryCode
+     *
      * @return Category\Create
      */
     protected function provideSampleCreateCategory(
@@ -81,8 +83,8 @@ class CatalogTest extends ShopgateSdkTest
     ) {
         $category = new Category\Create();
         $category->setCode($code)
-            ->setName(new Category\Dto\Name(['en-us' => $name]))
-            ->setSequenceId($sequenceId);
+                 ->setName(new Category\Dto\Name(['en-us' => $name]))
+                 ->setSequenceId($sequenceId);
         if ($url) {
             $category->setUrl($url);
         }

@@ -169,33 +169,4 @@ class ShopgateSdkTest extends TestCase
         $subjectUnderTest->getCatalogService()->deleteProduct($entityId, ['requestType' => 'direct']);
         $subjectUnderTest->getCatalogService()->addProducts([new ProductCreate()], ['requestType' => 'direct']);
     }
-
-    public function testSettingCustomPersistence()
-    {
-        /** @var MockObject|GuzzleClient $mock */
-        $mock             = new GuzzleClient(
-            [
-                'clientSecret' => '',
-                'clientId'     => '',
-                'merchantCode' => 'x',
-                'oauth'        => ['base_uri' => '', 'storage_path' => '']
-            ]
-        );
-        $subjectUnderTest = new ShopgateSdk(
-            [
-                'http_client'  => $mock,
-                'clientSecret' => '',
-                'clientId'     => '',
-                'merchantCode' => 'x'
-            ]
-        );
-        /** @var HandlerStack $handler */
-        $handler = $mock->getConfig('handler');
-        $out     = (string) $handler;
-        $this->assertNotFalse(strpos($out, "> 1) Name: 'OAuth2'"));
-        $subjectUnderTest->setStorage(new NullTokenPersistence());
-        $out2 = (string) $handler;
-        $this->assertFalse(strpos($out2, "> 1) Name: 'OAuth2'"));
-        $this->assertNotFalse(strpos($out2, "> 1) Name: 'OAuth2.custom'"));
-    }
 }

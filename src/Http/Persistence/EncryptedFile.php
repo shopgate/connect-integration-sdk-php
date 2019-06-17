@@ -28,13 +28,11 @@ use Defuse\Crypto\Exception\WrongKeyOrModifiedCiphertextException;
 use kamermans\OAuth2\Persistence\TokenPersistenceInterface;
 use kamermans\OAuth2\Token\TokenInterface;
 
-/**
- * @codeCoverageIgnore
- */
-class FileTokenPersistence implements TokenPersistenceInterface
+class EncryptedFile implements TokenPersistenceInterface
 {
     /** @var string */
     private $filepath;
+
     /** @var string */
     private $secretKey;
 

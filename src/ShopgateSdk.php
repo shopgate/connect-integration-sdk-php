@@ -22,9 +22,6 @@
 
 namespace Shopgate\ConnectSdk;
 
-use GuzzleHttp\HandlerStack;
-use kamermans\OAuth2\Persistence\TokenPersistenceInterface;
-use Shopgate\ConnectSdk\Http;
 use Shopgate\ConnectSdk\Service\BulkImport;
 use Shopgate\ConnectSdk\Service\Catalog;
 
@@ -33,36 +30,25 @@ class ShopgateSdk
     const REQUEST_TYPE_DIRECT = 'direct';
     const REQUEST_TYPE_EVENT  = 'event';
 
-    /** @var Catalog */
-    private $catalog;
-
-    /** @var  BulkImport */
-    private $bulkImport;
-
-    /** @var Http\ClientInterface */
-    private $httpClient;
-
     /** @var ClientInterface */
     private $client;
 
+    /** @var Catalog */
+    private $catalog;
+
+    /** @var BulkImport */
+    private $bulkImport;
+
     /**
-     * @param array   $config
-     * @param Catalog $catalog
-     *
-     * @codeCoverageIgnore
+     * @param array $config
      */
-    public function __construct(array $config, Catalog $catalog = null)
+    public function __construct(array $config)
     {
-        $configResolver   = new Config();
-        $options          = $configResolver->resolveMainOptions($config);
-        $options['oauth'] = $configResolver->resolveOauthOptions($options['oauth']);
-        $this->httpClient = isset($options['http_client'])
-            ? $options['http_client']
-            : new Http\GuzzleClient($options);
-        $this->client     = new Client($this->httpClient);
-        $this->catalog    = $catalog === null
-            ? $this->instantiateClass('catalog')
-            : $catalog;
+        $this->client = isset($config['client'])
+            ? $config['client']
+            : Client::createInstance($config['merchantCode'], $config['apiKey']);
+
+        $this->setServices(isset($config['services']) ? $config['services'] : []);
     }
 
     /**
@@ -74,22 +60,27 @@ class ShopgateSdk
     }
 
     /**
-     * @return Service\BulkImport
+     * @return BulkImport
      */
     public function getBulkImportService()
     {
-        if ($this->bulkImport === null) {
-            $this->bulkImport = new Service\BulkImport($this->client);
-        }
-
         return $this->bulkImport;
     }
 
     /**
-     * A factory for connector classes
-     *
+     * @param object[] $serviceArgs [string, object]
+     */
+    private function setServices($serviceArgs)
+    {
+        foreach (['catalog', 'bulkImport'] as $service) {
+            $this->$service = isset($serviceArgs[$service])
+                ? $serviceArgs[$service]
+                : $this->instantiateClass($service);
+        }
+    }
+
+    /**
      * @param string $name
-     *
      * @return mixed
      */
     private function instantiateClass($name)
@@ -97,19 +88,5 @@ class ShopgateSdk
         $class = 'Shopgate\ConnectSdk\Service\\' . ucfirst($name);
 
         return new $class($this->client);
-    }
-
-    /**
-     * @param TokenPersistenceInterface $storage
-     */
-    public function setStorage(TokenPersistenceInterface $storage)
-    {
-        /** @var HandlerStack $handler */
-        $handler = $this->httpClient->getConfig('handler');
-        $handler->remove('OAuth2');
-        $oauth      = new Http\OAuth($this->httpClient->getConfig('oauth'));
-        $middleware = $oauth->getOauthMiddleware();
-        $middleware->setTokenPersistence($storage);
-        $handler->push($middleware, 'OAuth2.custom');
     }
 }

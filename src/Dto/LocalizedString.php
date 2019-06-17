@@ -22,7 +22,6 @@
 
 namespace Shopgate\ConnectSdk\Dto;
 
-use Dto\Exceptions\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Dto\Base as DtoBase;
 
 /**
@@ -36,7 +35,7 @@ class LocalizedString extends DtoBase
      * @var array
      */
     protected $schema = [
-        'type'                 => 'object',
+        'type' => 'object',
         'additionalProperties' => true,
     ];
 
@@ -44,10 +43,12 @@ class LocalizedString extends DtoBase
      * @param string $locale
      * @param string $string
      *
-     * @throws InvalidDataTypeException
+     * @return $this
      */
     public function add($locale, $string)
     {
-        $this->set((string) $locale, (string) $string);
+        $this->set((string)$locale, (string)$string);
+
+        return $this;
     }
 }

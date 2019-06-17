@@ -22,8 +22,6 @@
 
 namespace Shopgate\ConnectSdk\Dto;
 
-use Dto\Exceptions\InvalidDataTypeException;
-
 /**
  * Default class that handles localized arrays in Dtos
  *
@@ -43,10 +41,12 @@ class LocalizedArray extends Base
      * @param string $locale
      * @param string[] $array
      *
-     * @throws InvalidDataTypeException
+     * @return LocalizedArray
      */
     public function add($locale, $array)
     {
         $this->set((string) $locale, (array) $array);
+
+        return $this;
     }
 }

@@ -28,39 +28,8 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Name;
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\RequestException;
 
-class CategoryTest extends ShopgateSdkTest
+class CategoryTest extends CatalogTest
 {
-    const PARENT_CATEGORY_CODE = 'parent-integration-test';
-    const CATEGORY_CODE = 'integration-test';
-
-    private $cleanUpCategoryCodes = [];
-
-    /**
-     * Runs before every test
-     */
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->cleanUpCategoryCodes = [];
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function tearDown()
-    {
-        parent::tearDown();
-
-        foreach ($this->cleanUpCategoryCodes as $categoryCode) {
-            $this->sdk->getCatalogService()->deleteCategory(
-                $categoryCode, [
-                    'requestType' => 'direct'
-                ]
-            );
-        }
-    }
-
     /**
      * @throws Exception
      */
@@ -76,7 +45,7 @@ class CategoryTest extends ShopgateSdkTest
         ]);
 
         // CleanUp
-        $this->cleanUpCategoryCodes = array_merge($this->cleanUpCategoryCodes, $sampleCategoryCodes);
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, $sampleCategoryCodes);
 
         // Assert
         $categories = $this->getCategories($sampleCategoryCodes);
@@ -109,7 +78,7 @@ class CategoryTest extends ShopgateSdkTest
         ]);
 
         // CleanUp
-        $this->cleanUpCategoryCodes[] = self::CATEGORY_CODE;
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, [self::CATEGORY_CODE]);
 
         // Assert
         $categories = $this->getCategories([self::CATEGORY_CODE]);
@@ -156,8 +125,10 @@ class CategoryTest extends ShopgateSdkTest
         ]);
 
         // CleanUp
-        $this->cleanUpCategoryCodes[] = self::CATEGORY_CODE;
-        $this->cleanUpCategoryCodes[] = self::PARENT_CATEGORY_CODE;
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, [
+            self::CATEGORY_CODE,
+            self::PARENT_CATEGORY_CODE
+        ]);
 
         // Assert
         $categories = $this->getCategories([self::CATEGORY_CODE], ['getOriginalImageUrls' => true]);
@@ -240,9 +211,8 @@ class CategoryTest extends ShopgateSdkTest
         $categories = $this->sdk->getCatalogService()->getCategories();
 
         // CleanUp
-        $this->cleanUpCategoryCodes = array_merge($this->cleanUpCategoryCodes,
-            $this->getCategoryCodes($sampleCategories)
-        );
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY,
+            $this->getCategoryCodes($sampleCategories));
 
         // Assert
         /** @noinspection PhpParamsInspection */
@@ -435,7 +405,7 @@ class CategoryTest extends ShopgateSdkTest
         $this->assertEquals(204, $response->getStatusCode());
 
         // Cleanup
-        $this->cleanUpCategoryCodes[] = $categoryCode;
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, [$categoryCode]);
     }
 
     /**
@@ -482,7 +452,7 @@ class CategoryTest extends ShopgateSdkTest
         sleep(self::SLEEP_TIME_AFTER_EVENT);
 
         // CleanUp
-        $this->cleanUpCategoryCodes = array_merge($this->cleanUpCategoryCodes, $sampleCategoryCodes);
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, $sampleCategoryCodes);
 
         // Assert
         $categories = $this->getCategories($sampleCategoryCodes);
@@ -511,7 +481,7 @@ class CategoryTest extends ShopgateSdkTest
         sleep(self::SLEEP_TIME_AFTER_EVENT);
 
         // CleanUp
-        $this->cleanUpCategoryCodes[] = self::CATEGORY_CODE;
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, [self::CATEGORY_CODE]);
 
         // Assert
         $categories = $this->getCategories([self::CATEGORY_CODE]);
@@ -620,17 +590,6 @@ class CategoryTest extends ShopgateSdkTest
     }
 
     /**
-     * @return Category\Create[]
-     */
-    private function provideSampleCategories()
-    {
-        return [
-            $this->provideSampleCreateCategory(self::CATEGORY_CODE, 'Integration Test Category 1', 1),
-            $this->provideSampleCreateCategory(self::CATEGORY_CODE . '_2', 'Integration Test Category 2', 2)
-        ];
-    }
-
-    /**
      * @param string $name
      * @param string $image
      * @param string $url
@@ -667,61 +626,5 @@ class CategoryTest extends ShopgateSdkTest
         }
 
         return $category;
-    }
-
-    /**
-     * @param string $code
-     * @param string $name
-     * @param int $sequenceId
-     * @param string $image
-     * @param string $url
-     * @param string $description
-     * @param string $parentCategoryCode
-     * @return Category\Create
-     */
-    private function provideSampleCreateCategory(
-        $code,
-        $name,
-        $sequenceId,
-        $image = null,
-        $url = null,
-        $description = null,
-        $parentCategoryCode = null
-
-    ) {
-        $category = new Category\Create();
-        $category->setCode($code)
-            ->setName(new Category\Dto\Name(['en-us' => $name]))
-            ->setSequenceId($sequenceId);
-        if ($url) {
-            $category->setUrl($url);
-        }
-        if ($description) {
-            $translatedDescription = new Category\Dto\Description(['en-us' => $description]);
-            $category->setDescription($translatedDescription);
-        }
-        if ($image) {
-            $category->setImage($image);
-        }
-        if ($parentCategoryCode) {
-            $category->setParentCategoryCode($parentCategoryCode);
-        }
-
-        return $category;
-    }
-
-    /**
-     * @param Category\Create[] $categories
-     *
-     * @return string[]
-     */
-    private function getCategoryCodes($categories)
-    {
-        $categoryCodes = [];
-        foreach ($categories as $category) {
-            $categoryCodes[] = $category->code;
-        }
-
-        return $categoryCodes;
     }
 }

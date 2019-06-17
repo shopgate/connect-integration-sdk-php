@@ -24,6 +24,7 @@ namespace Shopgate\ConnectSdk\Tests\Integration;
 
 use Dotenv\Dotenv;
 use PHPUnit\Framework\TestCase;
+use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\ShopgateSdk;
 
 abstract class ShopgateSdkTest extends TestCase
@@ -33,6 +34,8 @@ abstract class ShopgateSdkTest extends TestCase
     protected $sdkConfig = [];
     /** @var ShopgateSdk */
     protected $sdk;
+    /** @var ['$service' => ['$delete_method' => [string, string...]]] */
+    protected $services = [];
 
     /**
      * Main setup before any tests are ran, runs once
@@ -52,15 +55,25 @@ abstract class ShopgateSdkTest extends TestCase
     }
 
     /**
+     * @param string $service
+     * @param string $deleteMethod
+     * @param string[] $entityIds
+     */
+    protected function deleteEntitiesAfterTestRun($service, $deleteMethod, $entityIds)
+    {
+        $this->services[$service][$deleteMethod] = array_merge($this->services[$service][$deleteMethod], $entityIds);
+    }
+
+    /**
      * Runs before every test
      */
     public function setUp()
     {
         $this->sdkConfig = [
-            'clientId'     => getenv('clientId'),
+            'clientId' => getenv('clientId'),
             'clientSecret' => getenv('clientSecret'),
             'merchantCode' => getenv('merchantCode'),
-            'env'          => getenv('env'),
+            'env' => getenv('env'),
         ];
 
         if ($baseUri = getenv('baseUri')) {
@@ -73,5 +86,18 @@ abstract class ShopgateSdkTest extends TestCase
             $this->sdkConfig['oauth']['storage_path'] = $oauthStorage;
         }
         $this->sdk = new ShopgateSdk($this->sdkConfig);
+    }
+
+    public function tearDown()
+    {
+        parent::tearDown();
+
+        foreach ($this->services as $service) {
+            foreach ($service as $deleteMethod => $entityIds) {
+                foreach ($entityIds as $entityId) {
+                    $service['service']->{$deleteMethod}($entityId, ['requestType' => 'direct', 'force' => true]);
+                }
+            }
+        }
     }
 }

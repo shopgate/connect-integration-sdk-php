@@ -127,6 +127,7 @@ class Catalog
                 'entity'      => 'category',
                 'action'      => 'delete',
                 'entityId'    => $code,
+                'query'       => $meta,
             ]
         );
     }

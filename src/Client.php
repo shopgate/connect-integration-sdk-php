@@ -30,6 +30,7 @@ use Shopgate\ConnectSdk\Dto\Async\Factory;
 use Shopgate\ConnectSdk\Dto\Base;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
+use Exception;
 
 class Client implements ClientInterface
 {
@@ -85,7 +86,7 @@ class Client implements ClientInterface
             );
         } catch (GuzzleException $e) {
             throw new UnknownException($e->getMessage());
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new UnknownException($e->getMessage());
         }
 
@@ -136,7 +137,7 @@ class Client implements ClientInterface
             );
         } catch (GuzzleException $e) {
             throw new UnknownException($e->getMessage());
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new UnknownException($e->getMessage());
         }
     }

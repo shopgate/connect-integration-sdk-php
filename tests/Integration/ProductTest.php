@@ -24,38 +24,80 @@ namespace Shopgate\ConnectSdk\Tests\Integration;
 
 use Dto\Exceptions\InvalidDataTypeException;
 use Shopgate\ConnectSdk\DTO\Catalog\Product;
+use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Media;
+use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
+use Shopgate\ConnectSdk\Exception\Exception;
 
 class ProductTest extends ShopgateSdkTest
 {
-    public function testCreateProductMinimumDirect()
+    const PRODUCT_CODE = 'integration-test';
+
+    private $cleanUpProductCodes = [];
+
+    /**
+     * Runs before every test
+     */
+    public function setUp()
     {
-        $this->markTestSkipped('Skipped due to being unfinished');
-        $productPayload = $this->prepareProductMinimum();
-        $this->sdk->getCatalogService()->createProduct($productPayload, ['requestType' => 'direct']);
-        $product = $this->sdk->getCatalogService()->getProduct($productPayload->code);
-        $this->assertEquals($product->getCode(), $productPayload->code);
+        parent::setUp();
+
+        $this->cleanUpProductCodes = [];
     }
 
     /**
+     * @throws Exception
+     */
+    public function tearDown()
+    {
+        parent::tearDown();
+
+        foreach ($this->cleanUpProductCodes as $productCode) {
+            $this->sdk->getCatalogService()->deleteProduct(
+                $productCode, [
+                    'requestType' => 'direct'
+                ]
+            );
+        }
+    }
+    /**
+     * @throws Exception
+     */
+    public function testCreateProductMinimumDirect()
+    {
+        $this->markTestSkipped('Skipped due to catalog http code 500 issue when price tag isn\'t part of the product - the product is created even though');
+
+        // Arrange
+        $product = $this->prepareProductMinimum();
+
+        // Act
+        $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
+
+        // CleanUp
+        $this->cleanUpProductCodes[] = $product->code;
+
+        // Assert
+        $product = $this->sdk->getCatalogService()->getProduct($product->code);
+        $this->assertEquals($product->getCode(), $product->code);
+    }
+
+    /**‚
      * Retrieves the default product with minimum details needed
      *
      * @return Product\Create
      */
     private function prepareProductMinimum()
     {
-        $price = new Product\Price();
+        $price = new Product\Dto\Price();
         $price->setPrice(90)
-              ->setSalePrice(84.99)
-              ->setCurrencyCode(Product\Price::CURRENCY_CODE_USD);
+            ->setSalePrice(84.99)
+            ->setCurrencyCode(Product\Dto\Price::CURRENCY_CODE_USD);
         $productPayload = new Product\Create();
 
-        return $productPayload->setCode('integration-test-product')
-                              ->setCatalogCode('PNW Retail')
-                              ->setName(new Product\Name(['en-us' => 'Blue Jeans regular']))
-                              ->setStatus(Product\Create::STATUS_ACTIVE)
-                              ->setModelType(Product\Create::MODEL_TYPE_STANDARD)
-                              ->setPrice($price)
-                              ->setIsInventoryManaged(true);
+        return $productPayload
+            ->setCode('integration-test-product')
+            ->setModelType(Product\Create::MODEL_TYPE_STANDARD)
+            ->setIsInventoryManaged(true)
+        ;
     }
 
     /**
@@ -64,196 +106,197 @@ class ProductTest extends ShopgateSdkTest
      */
     private function prepareProductMaximum()
     {
-        $category1 = new Product\CategoryMapping();
-        $category1->setCategoryCode('code_1')
-                  ->setIsPrimary(true);
+        $categoryMapping = new Product\Dto\Categories();
+        $categoryMapping->setCode('code_1')
+            ->setIsPrimary(true);
 
-        $category2 = new Product\CategoryMapping();
-        $category2->setCategoryCode('code_2')
-                  ->setIsPrimary(false);
-        $categories = [$category1, $category2];
+        $categoryMapping2 = new Product\Dto\Categories();
+        $categoryMapping2->setCode('code_2')
+            ->setIsPrimary(false);
+        $categories = [$categoryMapping, $categoryMapping2];
 
-        $identifiers = new Product\Identifiers();
+        $identifiers = new Product\Dto\Identifiers();
         $identifiers->setMfgPartNum('someMfgPartNum')
-                    ->setUpc('Universal-Product-Code')
-                    ->setEan('European Article Number')
-                    ->setIsbn('978-3-16-148410-0')
-                    ->setSku('stock_keeping_unit');
+            ->setUpc('Universal-Product-Code')
+            ->setEan('European Article Number')
+            ->setIsbn('978-3-16-148410-0')
+            ->setSku('stock_keeping_unit');
 
-        $volumePricing1 = new Product\VolumePricing();
+        $volumePricing1 = new Product\Dto\Price\VolumePricing();
         $volumePricing1->setMinQty(5)
-                       ->setMaxQty(20)
-                       ->setPrice(84.99)
-                       ->setSalePrice(83.99)
-                       ->setUnit('kg')
-                       ->setPriceType(Product\VolumePricing::PRICE_TYPE_FIXED);
+            ->setMaxQty(20)
+            ->setPrice(84.99)
+            ->setSalePrice(83.99)
+            ->setUnit('kg')
+            ->setPriceType(Product\Dto\Price\VolumePricing::PRICE_TYPE_FIXED);
 
-        $volumePricing2 = new Product\VolumePricing();
+        $volumePricing2 = new Product\Dto\Price\VolumePricing();
         $volumePricing2->setMinQty(21)
-                       ->setMaxQty(100)
-                       ->setPrice(84.99)
-                       ->setSalePrice(-2)
-                       ->setUnit('kg')
-                       ->setPriceType(Product\VolumePricing::PRICE_TYPE_RELATIVE);
+            ->setMaxQty(100)
+            ->setPrice(84.99)
+            ->setSalePrice(-2)
+            ->setUnit('kg')
+            ->setPriceType(Product\Dto\Price\VolumePricing::PRICE_TYPE_RELATIVE);
         $volumePricing = [$volumePricing1, $volumePricing2];
 
-        $mapPricing1 = new Product\MapPricing();
+        $mapPricing1 = new Product\Dto\Price\MapPricing();
         $mapPricing1->setStartDate('2019-06-01T00:00:00.000Z')
-                    ->setEndDate('2019-09-01T00:00:00.000Z')
-                    ->setPrice(84.49);
+            ->setEndDate('2019-09-01T00:00:00.000Z')
+            ->setPrice(84.49);
 
-        $mapPricing2 = new Product\MapPricing();
+        $mapPricing2 = new Product\Dto\Price\MapPricing();
         $mapPricing2->setStartDate('2019-06-01T00:00:00.000Z')
-                    ->setEndDate('2019-09-01T00:00:00.000Z')
-                    ->setPrice(84.49);
+            ->setEndDate('2019-09-01T00:00:00.000Z')
+            ->setPrice(84.49);
         $mapPricing = [$mapPricing1, $mapPricing2];
 
-        $price = new Product\Price();
-        $price->setCurrencyCode(Product\Price::CURRENCY_CODE_USD)
-              ->setCost(50)
-              ->setPrice(90)
-              ->setSalePrice(84.99)
-              ->setVolumePricing($volumePricing)
-              ->setUnit('kg')
-              ->setMsrp(100)
-              ->setMinPrice(80)
-              ->setMaxPrice(90)
-              ->setMapPricing($mapPricing);
+        $price = new Product\Dto\Price();
+        $price->setCurrencyCode(Product\Dto\Price::CURRENCY_CODE_USD)
+            ->setCost(50)
+            ->setPrice(90)
+            ->setSalePrice(84.99)
+            ->setVolumePricing($volumePricing)
+            ->setUnit('kg')
+            ->setMsrp(100)
+            ->setMinPrice(80)
+            ->setMaxPrice(90)
+            ->setMapPricing($mapPricing);
 
         $propertyValue1 =
-            new Product\LocalizationValue(['stuff' => 'stuff value', 'other stuff' => 'other stuff value']);
+            new Properties\Value(['stuff' => 'stuff value', 'other stuff' => 'other stuff value']);
 
-        $subDisplayGroup = new Product\LocalizationSubDisplayGroup();
+        $subDisplayGroup = new Properties\SubDisplayGroup();
         $subDisplayGroup->add('de-de', 'deutsch');
         $subDisplayGroup->add('en-en', 'english');
 
-        $property1 = new Product\Property();
+        $property1 = new Product\Dto\Properties\Input();
         $property1->setCode('property_code_1')
-                  ->setName('Property 1')
-                  ->setValue($propertyValue1)
-                  ->setType(Product\Property::TYPE_INPUT)
-                  ->setDisplayGroup(Product\Property::DISPLAY_GROUP_GENERAL)
-                  ->setSubDisplayGroup($subDisplayGroup);
+            ->setName(new Properties\Name(['en-us' => 'product name in englisch', 'de-de' => 'Produktname in deutsch']))
+            ->setValue($propertyValue1)
+            ->setDisplayGroup(Properties::DISPLAY_GROUP_FEATURES)
+            ->setSubDisplayGroup($subDisplayGroup);
 
-        $propertyValue2 = new Product\LocalizationValue();
+        $propertyValue2 = new Properties\Value();
 
-        $property2 = new Product\Property();
+        $property2 = new Product\Dto\Properties\Simple();
         $property2->setCode('property_code_2')
-                  ->setName('Property 2')
-                  ->setValue($propertyValue2)
-                  ->setType(Product\Property::TYPE_OPTION)
-                  ->setDisplayGroup(Property\Create::DISPLAY_GROUP_FEATURES)
-                  ->setSubDisplayGroup($subDisplayGroup);
+            ->setName(new Properties\Name('Property 2'))
+            ->setValue($propertyValue2)
+            ->setDisplayGroup('features')
+            ->setSubDisplayGroup($subDisplayGroup);
         $properties = [$property1, $property2];
 
-        $shippingInformation = new Product\ShippingInformation();
+        $shippingInformation = new Product\Dto\ShippingInformation();
         $shippingInformation->setIsShippedAlone(false)
-                            ->setHeight(0.5)
-                            ->setHeightUnit('m')
-                            ->setWidth(10)
-                            ->setWidthUnit('cm')
-                            ->setLength(5)
-                            ->setLengthUnit('dm')
-                            ->setWeight(5)
-                            ->setWeightUnit('kg');
+            ->setHeight(0.5)
+            ->setHeightUnit('m')
+            ->setWidth(10)
+            ->setWidthUnit('cm')
+            ->setLength(5)
+            ->setLengthUnit('dm')
+            ->setWeight(5)
+            ->setWeightUnit('kg');
 
-        $media1 = new Product\Media();
+        $media1 = new Product\Dto\Media\Media();
         $media1->setCode('media_code_1')
-               ->setType(Product\Media::TYPE_IMAGE)
-               ->setUrl('example.com/media1.jpg')
-               ->setAltText('alt text 1')
-               ->setSubTitle('Title Media 1')
-               ->setSequenceId(0);
+            ->setType(Product\Dto\Media\Media::TYPE_IMAGE)
+            ->setUrl('example.com/media1.jpg')
+            ->setAltText('alt text 1')
+            ->setSubTitle('Title Media 1')
+            ->setSequenceId(0);
 
-        $media2 = new Product\Media();
+        $media2 = new Product\Dto\Media\Media();
         $media2->setCode('media_code_2')
-               ->setType(Product\Media::TYPE_VIDEO)
-               ->setUrl('example.com/media2.mov')
-               ->setAltText('alt text 2')
-               ->setSubTitle('Title Media 2')
-               ->setSequenceId(5);
+            ->setType(Product\Dto\Media\Media::TYPE_VIDEO)
+            ->setUrl('example.com/media2.mov')
+            ->setAltText('alt text 2')
+            ->setSubTitle('Title Media 2')
+            ->setSequenceId(5);
 
-        $media = [$media1, $media2];
+        $media = new Media();
+        $media->add('en-us', [$media1, $media2]);
 
-        $value1 = new Product\Value();
+        $value1 = new Product\Dto\Options\Values();
         $value1->setCode('code_value_1')
-               ->setAdditionalPrice(5);
-        $value2 = new Product\Value();
+            ->setAdditionalPrice(5);
+        $value2 = new Product\Dto\Options\Values();
         $value2->setCode('code_value_2')
-               ->setAdditionalPrice(10);
-        $value3 = new Product\Value();
+            ->setAdditionalPrice(10);
+        $value3 = new Product\Dto\Options\Values();
         $value3->setCode('code_value_3')
-               ->setAdditionalPrice(50);
+            ->setAdditionalPrice(50);
 
-        $option1 = new Product\Option();
+        $option1 = new Product\Dto\Options();
         $option1->setCode('option_1')
-                ->setValues(
-                    [
-                        $value1
-                        //                     , $value2
-                    ]
-                );
+            ->setValues(
+                [
+                    $value1
+                    //                     , $value2
+                ]
+            );
 
-        $option2 = new Product\Option();
+        $option2 = new Product\Dto\Options();
         $option2->setCode('option_2')
-                ->setValues([$value3]);
+            ->setValues([$value3]);
         //$options = [$option1, $option2];
         $options = [$option1];
 
-        $extra1 = new Product\Extra();
+        $extra1 = new Product\Dto\Extras();
         $extra1->setCode('extra_1')
-               ->setValues([$value1, $value2]);
+            ->setValues([$value1, $value2]);
 
-        $extra2 = new Product\Extra();
+        $extra2 = new Product\Dto\Extras();
         $extra2->setCode('extra_2')
-               ->setValues([$value3]);
+            ->setValues([$value3]);
         $extras = [$extra1, $extra2];
 
         $categories = []; // not working, categories have to be set up first
-        $options    = []; // not working, categories have to be set up first
-        $extras     = []; // not working, categories have to be set up first
+        $options = []; // not working, categories have to be set up first
+        $extras = []; // not working, categories have to be set up first
 
-        $name = new Product\Name();
+        $name = new Product\Dto\Name();
         $name->add('', 'abc');
         $name->add('abc', '');
         $name->add('asdfghi', 'asdfghi');
         $name->add('de-de', 'deutsch');
 
-        $longName = new Product\LongName();
+        $longName = new Product\Dto\LongName();
 
         $productId = 'dfsdf25';
 
         $productPayload = new Product\Create();
-        $productPayload->setCode($productId)                                             // required
-                       ->setParentProductCode('dfsdf7')
-                       ->setModelType(Product\Create::MODEL_TYPE_STANDARD)                   // required
-                       ->setFulfillmentMethods(['one method', 'another method'])
-                       ->setUnit('kg')
-                       ->setStatus(Product\Create::STATUS_ACTIVE)                            // required
-                       ->setStartDate('2018-12-01T00:00:00.000Z')
-                       ->setEndDate('2020-12-01T00:00:00.000Z')
-                       ->setEolDate('2030-01-01T00:00:00.000Z')
-                       ->setMinQty(1)
-                       ->setMaxQty(100)
-                       ->setIsInventoryManaged(true)                                     // required
-                       ->setInventoryTreatment(Product\Create::INVENTORY_TREATMENT_PRE_ORDER)
-                       ->setRating(3.5)
-                       ->setUrl('test.com')
-                       ->setFirstAvailableDate('2019-06-03T00:00:00.000Z')
-                       ->setIsTaxed(true)
-                       ->setTaxClass('f8c5c2e9')
-                       ->setExternalUpdateDate('2019-06-01T00:00:00.000Z')
+        $productPayload->setCode($productId)// required
+        ->setParentProductCode('dfsdf7')
+            ->setCategories($categories)
+            ->setMedia($media)
+            ->setModelType(Product\Create::MODEL_TYPE_STANDARD)// required
+            ->setFulfillmentMethods(['one method', 'another method'])
+            ->setUnit('kg')
+            ->setStatus(Product\Create::STATUS_ACTIVE)// required
+            ->setStartDate('2018-12-01T00:00:00.000Z')
+            ->setEndDate('2020-12-01T00:00:00.000Z')
+            ->setEolDate('2030-01-01T00:00:00.000Z')
+            ->setMinQty(1)
+            ->setMaxQty(100)
+            ->setIsInventoryManaged(true)// required
+            ->setInventoryTreatment(Product\Create::INVENTORY_TREATMENT_PRE_ORDER)
+            ->setRating(3.5)
+            ->setUrl('test.com')
+            ->setFirstAvailableDate('2019-06-03T00:00:00.000Z')
+            ->setIsTaxed(true)
+            ->setTaxClass('f8c5c2e9')
+            ->setExternalUpdateDate('2019-06-01T00:00:00.000Z')
             //               ->setName($name)
             //               ->setLongName($longName)
-                       ->setShippingInformation($shippingInformation)
-                       ->setIdentifiers($identifiers)
-                       ->setCatalogCode('PNW Retail')                                    // required
-                       ->setCategories($categories)
-                       ->setPrice($price)                                                // required
+            ->setShippingInformation($shippingInformation)
+            ->setIdentifiers($identifiers)
+            ->setCatalogCode('PNW Retail')// required
+            ->setCategories($categories)
+            ->setPrice($price)// required
             //               ->setMedia($media)
-                       ->setProperties($properties)
-                       ->setOptions($options)
-                       ->setExtras($extras)
-                       ->setIsSerialized(false);
+            ->setProperties($properties)
+            ->setOptions($options)
+            ->setExtras($extras)
+            ->setIsSerialized(false);
     }
 }

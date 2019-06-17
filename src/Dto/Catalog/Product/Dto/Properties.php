@@ -23,21 +23,27 @@
 namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto;
 
 use Shopgate\ConnectSdk\Dto\Base;
-use Shopgate\ConnectSdk\Dto\LocalizedArray;
-use Shopgate\ConnectSdk\Dto\LocalizedString;
+use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties\SubDisplayGroup;
+use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties\Name;
+use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties\Value;
 
 /**
- * @method Base setCode(string $code)
- * @method Base setName(LocalizedString $name)
- * @method Base setValue(LocalizedArray $value)
- * @method Base setDisplayGroup(string $displayGroup)
- * @method Base setSubDisplayGroup(LocalizedString $subDisplayGroup)
- * @method Base setIsPriced(boolean $isPriced)
- * @method Base setAttributePrice(float $attributePrice)
- * @method Base setUnit(string $unit)
+ * @method Properties setCode(string $code)
+ * @method Properties setName(Name $name)
+ * @method Properties setValue(Value $value)
+ * @method Properties setDisplayGroup(string $displayGroup)
+ * @method Properties setSubDisplayGroup(SubDisplayGroup $subDisplayGroup)
+ * @method Properties setIsPriced(boolean $isPriced)
+ * @method Properties setAttributePrice(float $attributePrice)
+ * @method Properties setUnit(string $unit)
  */
 class Properties extends Base
 {
+    const DISPLAY_GROUP_PROPERTIES = 'properties';
+    const DISPLAY_GROUP_FEATURES = 'features';
+    const DISPLAY_GROUP_GENERAL = 'general';
+    const DISPLAY_GROUP_PRICING = 'pricing';
+
     /**
      * @var array
      * @codeCoverageIgnore

@@ -24,40 +24,18 @@ namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 
 use Dto\RegulatorInterface;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
-use Shopgate\ConnectSdk\Dto\LocalizedString;
 
 /**
- * @method Attribute setCode(string $code)
- * @method Attribute setValue(array $value)
- * @method Attribute setDisplayGroup(SubDisplayGroup $displayGroup)
- * @method Attribute setSubDisplayGroup(LocalizedString $subDisplayGroup)
+ * @package Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties
  */
-class Attribute extends Properties
+class Input extends Properties
 {
-    /**
-     * @var array
-     * @codeCoverageIgnore
-     */
-    protected $schema = [
-        'type'                 => 'object',
-        'properties'           => [
-            'code'            => ['type' => 'string'],
-            'value'           => ['type' => 'array'],
-            'type'            => ['type' => 'string'],
-            'displayGroup'    => ['type' => 'string'],
-            'subDisplayGroup' => ['type' => 'object'],
-        ],
-        'default' => [
-            'type' => 'attribute',
-        ],
-        'additionalProperties' => true,
-    ];
-
     /**
      * @inheritdoc
      */
     public function __construct($input = null, $schema = null, RegulatorInterface $regulator = null)
     {
-        parent::__construct($input, $schema ? $schema : $this->schema, $regulator);
+        $this->schema['default']['type'] = 'input';
+        parent::__construct($input, $schema, $regulator);
     }
 }

@@ -160,7 +160,7 @@ class CategoryTest extends ShopgateSdkTest
         $this->cleanUpCategoryCodes[] = self::PARENT_CATEGORY_CODE;
 
         // Assert
-        $categories = $this->getCategories([self::CATEGORY_CODE], ['getOriginalImageUrls' => 'true']);
+        $categories = $this->getCategories([self::CATEGORY_CODE], ['getOriginalImageUrls' => true]);
         $updatedCategory = $categories->getCategories()[0];
         $updatedKey = array_keys($updateCategoryData)[0];
         $this->assertEquals($expectedValue, $updatedCategory->get($updatedKey));

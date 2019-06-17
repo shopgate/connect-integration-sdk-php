@@ -60,7 +60,8 @@ class ProductTest extends CatalogTest
     /**
      * @throws Exception
      */
-    public function testCreateProductMaximumDirect() {
+    public function testCreateProductMaximumDirect()
+    {
         // Arrange
         $product = $this->prepareProductMaximum();
 
@@ -166,7 +167,8 @@ class ProductTest extends CatalogTest
     /**
      * @return Price
      */
-    private function providePricing() {
+    private function providePricing()
+    {
         $volumePricing = $this->provideVolumePricing();
         $mapPricing = $this->provideMapPricing();
 
@@ -185,7 +187,8 @@ class ProductTest extends CatalogTest
     /**
      * @return Properties\SubDisplayGroup
      */
-    private function provideSubDisplayGroup() {
+    private function provideSubDisplayGroup()
+    {
         return (new Properties\SubDisplayGroup())
             ->add('de-de', 'deutsch')
             ->add('en-en', 'english');
@@ -374,6 +377,6 @@ class ProductTest extends CatalogTest
         $value3 = new Product\Dto\Options\Values();
         $value3->setCode('code_value_3')
             ->setAdditionalPrice(50);
-        return array($value1, $value2, $value3);
+        return [$value1, $value2, $value3];
     }
 }

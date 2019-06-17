@@ -26,13 +26,17 @@ use Shopgate\ConnectSdk\DTO\Catalog\Product;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Categories;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Extras;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\LongDescription;
+use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\LongName;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Media;
+use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Name;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Price;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Price\MapPricing;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Price\VolumePricing;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\ShortDescription;
+use Shopgate\ConnectSdk\Dto\Catalog\Product\Update;
 use Shopgate\ConnectSdk\Exception\Exception;
+use Shopgate\ConnectSdk\Exception\RequestException;
 
 class ProductTest extends CatalogTest
 {
@@ -71,6 +75,266 @@ class ProductTest extends CatalogTest
 
         // Act
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [$product->code]);
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, $sampleCategoryCodes);
+
+        // Assert
+        $product = $this->sdk->getCatalogService()->getProduct($product->code);
+        $this->assertEquals($product->getCode(), $product->code);
+    }
+
+    public function testProductAlreadyUpdatedDirect()
+    {
+        // Arrange
+        $productMaximum = $this->prepareProductMaximum(new Update());
+        $productMaximum->setExternalUpdateDate('2019-01-01T00:00:00.000Z');
+        $this->sdk->getCatalogService()->addProducts(
+            [
+                $productMaximum
+            ],
+            ['requestType' => 'direct']
+        );
+
+        $sampleCategories = $this->provideSampleCategories();
+        $this->sdk->getCatalogService()->addCategories($sampleCategories, ['requestType' => 'direct']);
+        $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
+
+        $product = new Product\Update([
+            'externalUpdateDate' => '2018-12-31T23:59:59.000Z',
+        ]);
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [
+            $productMaximum->code
+        ]);
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, $sampleCategoryCodes);
+
+        // Act
+        try {
+            $this->sdk->getCatalogService()->updateProduct($productMaximum->code, $product, [
+                'requestType' => 'direct'
+            ]);
+        } catch (RequestException $exception) {
+            // Assert
+            $this->assertEquals(409, $exception->getStatusCode());
+
+            return;
+        }
+
+        $this->fail('Expected RequestException but wasn\'t thrown');
+    }
+
+    /**
+     * @param array $updateProductData
+     * @param string $expectedValue
+     * @throws Exception
+     *
+     * @dataProvider provideUpdateProductData
+     */
+    public function testUpdateProductPropertyDirect(array $updateProductData, $expectedValue)
+    {
+        // Arrange
+        $productMaximum = $this->prepareProductMaximum(new Update());
+        $this->sdk->getCatalogService()->addProducts(
+            [
+                $productMaximum
+            ],
+            ['requestType' => 'direct']
+        );
+
+        $sampleCategories = $this->provideSampleCategories();
+        $this->sdk->getCatalogService()->addCategories($sampleCategories, ['requestType' => 'direct']);
+        $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
+
+        $product = new Product\Update($updateProductData);
+
+        // Act
+        $this->sdk->getCatalogService()->updateProduct($productMaximum->code, $product, [
+            'requestType' => 'direct'
+        ]);
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [
+            $productMaximum->code
+        ]);
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, $sampleCategoryCodes);
+
+        // Assert
+        $product = $this->sdk->getCatalogService()->getProduct($productMaximum->code);
+        $updatedKey = array_keys($updateProductData)[0];
+        $this->assertEquals($expectedValue, $product->get($updatedKey));
+    }
+
+    /**
+     * TODO: Missing:
+     * ->setCategories($categories)
+     * ->setProperties($properties)
+     * ->setMedia($media)
+     * ->setOptions($options)
+     * ->setExtras($extras)
+     * ->setCode($productId)// required
+     * ->setParentProductCode('dfsdf7')
+     * ->setCatalogCode('PNW Retail')// required
+     * ->setModelType(Product\Create::MODEL_TYPE_STANDARD)// required
+     * ->setIdentifiers($identifiers)
+     * ->setPrice($price)// required
+     * ->setFulfillmentMethods(['one method', 'another method'])
+     * ->setIsSerialized(false)
+     * ->setStatus(Product\Create::STATUS_ACTIVE)// required
+     * ->setInventoryTreatment(Product\Create::INVENTORY_TREATMENT_PRE_ORDER)
+     * ->setShippingInformation($shippingInformation)
+     *
+     * short/long description
+     *
+     * @return array
+     */
+    public function provideUpdateProductData()
+    {
+        return [
+            'externalUpdateDate' => [
+                'updateProductData' => [
+                    'externalUpdateDate' => '2020-02-04T00:00:00.000Z',
+                ],
+                'expectedValue' => '2020-02-04T00:00:00.000Z'
+            ],
+            'name' => [
+                'updateProductData' => [
+                    'name' => new Name(['en-us' => 'Updated Name']),
+                ],
+                'expectedValue' => 'Updated Name'
+            ],
+            'longName' => [
+                'updateProductData' => [
+                    'longName' => new LongName(['en-us' => 'Updated Long Name']),
+                ],
+                'expectedValue' => 'Updated Long Name'
+            ],
+//            'shortDescription' => [
+//                'updateProductData' => [
+//                    'description' => new Product\Dto\ShortDescription(['en-us' => 'Updated Short Description']),
+//                ],
+//                'expectedValue' => 'Updated Short Description\''
+//            ],
+//            'longDescription' => [
+//                'updateProductData' => [
+//                    'longDescription+' => new Product\Dto\LongDescription(['en-us' => 'Updated Long Description']),
+//                ],
+//                'expectedValue' => 'Updated Long Description\''
+//            ],
+            'unit' => [
+                'updateProductData' => [
+                    'unit' => 'm',
+                ],
+                'expectedValue' => 'm'
+            ],
+            'url' => [
+                'updateProductData' => [
+                    'url' => 'http://updated.url.com',
+                ],
+                'expectedValue' => 'http://updated.url.com'
+            ],
+            'rating' => [
+                'updateProductData' => [
+                    'rating' => 2.5,
+                ],
+                'expectedValue' => 2.5
+            ],
+            'isTaxed' => [
+                'updateProductData' => [
+                    'isTaxed' => false,
+                ],
+                'expectedValue' => false
+            ],
+            'taxClass' => [
+                'updateProductData' => [
+                    'taxClass' => 'a123456',
+                ],
+                'expectedValue' => 'a123456'
+            ],
+            'minQty' => [
+                'updateProductData' => [
+                    'minQty' => 12,
+                ],
+                'expectedValue' => 12
+            ],
+            'maxQty' => [
+                'updateProductData' => [
+                    'maxQty' => 122,
+                ],
+                'expectedValue' => 122
+            ],
+            'isInventoryManaged' => [
+                'updateProductData' => [
+                    'isInventoryManaged' => false,
+                ],
+                'expectedValue' => false
+            ],
+            'startDate' => [
+                'updateProductData' => [
+                    'startDate' => '2019-12-12T00:00:00.000Z',
+                ],
+                'expectedValue' => '2019-12-12T00:00:00.000Z'
+            ],
+            'endDate' => [
+                'updateProductData' => [
+                    'endDate' => '2016-02-03T00:00:00.000Z',
+                ],
+                'expectedValue' => '2016-02-03T00:00:00.000Z'
+            ],
+            'firstAvailableDate' => [
+                'updateProductData' => [
+                    'firstAvailableDate' => '2019-05-07T00:00:00.000Z',
+                ],
+                'expectedValue' => '2019-05-07T00:00:00.000Z'
+            ],
+            'eolDate' => [
+                'updateProductData' => [
+                    'eolDate' => '2032-11-11T00:00:00.000Z',
+                ],
+                'expectedValue' => '2032-11-11T00:00:00.000Z'
+            ],
+        ];
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testCreateProductMinimumEvent()
+    {
+        $this->markTestSkipped('Skipped due to catalog http code 500 issue when price tag isn\'t part of the product - the product is created even though');
+
+        // Arrange
+        $product = $this->prepareProductMinimum();
+
+        // Act
+        $this->sdk->getCatalogService()->addProducts([$product]);
+        sleep(self::SLEEP_TIME_AFTER_EVENT);
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [$product->code]);
+
+        // Assert
+        $product = $this->sdk->getCatalogService()->getProduct($product->code);
+        $this->assertEquals($product->getCode(), $product->code);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testCreateProductMaximumEvent()
+    {
+        // Arrange
+        $product = $this->prepareProductMaximum();
+
+        $sampleCategories = $this->provideSampleCategories();
+        $this->sdk->getCatalogService()->addCategories($sampleCategories, ['requestType' => 'direct']);
+        $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
+
+        // Act
+        $this->sdk->getCatalogService()->addProducts([$product]);
+        sleep(self::SLEEP_TIME_AFTER_EVENT);
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [$product->code]);
@@ -195,10 +459,15 @@ class ProductTest extends CatalogTest
     }
 
     /**
-     * @todo-sg: unfinished
+     * @param Product $product
+     * @return Update
      */
-    private function prepareProductMaximum()
+    private function prepareProductMaximum($product = null)
     {
+        if (empty($product)) {
+           $product = new Product\Create();
+        }
+
         $categories = $this->provideCategoryMapping();
         $identifiers = $this->provideIdentifiers();
         $price = $this->providePricing();
@@ -219,9 +488,7 @@ class ProductTest extends CatalogTest
         $longName->add('en-us', 'Long Productname in english');
         $longName->add('de-de', 'Long Produktname in deutsch');
 
-        $productId = 'dfsdf25';
-
-        return (new Product\Create())
+        return $product
             ->setName($name)
             ->setLongName($longName)
             ->setShortDescription(new ShortDescription(['en-us' => 'short description', 'de-de' => 'Kurzbeschreibung']))
@@ -231,7 +498,7 @@ class ProductTest extends CatalogTest
             ->setMedia($media)
             ->setOptions($options)
             ->setExtras($extras)
-            ->setCode($productId)// required
+            ->setCode(self::PRODUCT_CODE)// required
             ->setParentProductCode('dfsdf7')
             ->setCatalogCode('PNW Retail')// required
             ->setModelType(Product\Create::MODEL_TYPE_STANDARD)// required

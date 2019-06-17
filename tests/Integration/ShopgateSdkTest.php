@@ -55,6 +55,19 @@ abstract class ShopgateSdkTest extends TestCase
     }
 
     /**
+     * @param string $serviceKey
+     * @param $service
+     * @param string[] $deleteMethods
+     */
+    protected function registerForCleanUp($serviceKey, $service, $deleteMethods)
+    {
+        $this->services[$serviceKey]['service'] = $service;
+        foreach ($deleteMethods as $deleteMethod) {
+            $this->services[$serviceKey][$deleteMethod] = [];
+        }
+    }
+
+    /**
      * @param string $service
      * @param string $deleteMethod
      * @param string[] $entityIds

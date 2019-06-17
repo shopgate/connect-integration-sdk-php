@@ -40,9 +40,12 @@ class CatalogTest extends ShopgateSdkTest
     {
         parent::setUp();
 
-        $this->services[self::CATALOG_SERVICE]['service'] = $this->sdk->getCatalogService();
-        $this->services[self::CATALOG_SERVICE][self::METHOD_DELETE_CATEGORY] = [];
-        $this->services[self::CATALOG_SERVICE][self::METHOD_DELETE_PRODUCT] = [];
+        $this->registerForCleanUp(self::CATALOG_SERVICE, $this->sdk->getCatalogService(),
+            [
+                self::METHOD_DELETE_CATEGORY,
+                self::METHOD_DELETE_PRODUCT
+            ]
+        );
     }
 
     /**

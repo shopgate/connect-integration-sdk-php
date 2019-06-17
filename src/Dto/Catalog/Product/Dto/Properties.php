@@ -24,12 +24,12 @@ namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto;
 
 use Shopgate\ConnectSdk\Dto\Base;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties\SubDisplayGroup;
-use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties\Name;
+use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties\Name as PropertyName;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties\Value;
 
 /**
  * @method Properties setCode(string $code)
- * @method Properties setName(Name $name)
+ * @method Properties setName(PropertyName $name)
  * @method Properties setValue(Value $value)
  * @method Properties setDisplayGroup(string $displayGroup)
  * @method Properties setSubDisplayGroup(SubDisplayGroup $subDisplayGroup)

@@ -142,7 +142,7 @@ class AttributeTest extends ShopgateSdkTest
     /**
      * @throws Exception
      */
-    public function testGetAttributeLocaleDirect()
+    public function testGetAttributeByLocaleDirect()
     {
         // Arrange
         $createdItemCount = 1;

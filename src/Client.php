@@ -133,7 +133,7 @@ class Client implements ClientInterface
         }
 
         if (isset($params['query']) && isset($params['query']['requestType'])) {
-            unset($params['query']);
+            unset($params['query']['requestType']);
         }
 
         $response = null;

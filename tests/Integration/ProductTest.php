@@ -22,7 +22,7 @@
 
 namespace Shopgate\ConnectSdk\Tests\Integration;
 
-use Shopgate\ConnectSdk\DTO\Catalog\Product;
+use Shopgate\ConnectSdk\Dto\Catalog\Product;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Categories;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Extras;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\LongDescription;

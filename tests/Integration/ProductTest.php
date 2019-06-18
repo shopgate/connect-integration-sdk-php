@@ -87,6 +87,9 @@ class ProductTest extends CatalogTest
         $this->assertEquals($product->getCode(), $product->code);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testProductAlreadyUpdatedDirect()
     {
         // Arrange
@@ -139,6 +142,91 @@ class ProductTest extends CatalogTest
     }
 
     /**
+     * @throws Exception
+     */
+    public function testUpdateProductPricingDirect()
+    {
+        // Arrange
+        $sampleCategories = $this->provideSampleCategories();
+        $this->sdk->getCatalogService()->addCategories($sampleCategories, ['requestType' => 'direct']);
+        $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
+
+        $productMaximum = $this->prepareProductMaximum(new Update());
+        $productMaximum->setModelType(Product::MODEL_TYPE_CONFIGURABLE);
+        $this->sdk->getCatalogService()->addProducts(
+            [
+                $productMaximum
+            ],
+            ['requestType' => 'direct']
+        );
+
+        $volumePricing = new Product\Dto\Price\VolumePricing();
+        $volumePricing->setMinQty(5)
+            ->setMaxQty(6)
+            ->setPrice(7.7)
+            ->setSalePrice(8.8)
+            ->setUnit('m')
+            ->setPriceType(Product\Dto\Price\VolumePricing::PRICE_TYPE_FIXED);
+
+        $mapPricing = new Product\Dto\Price\MapPricing();
+        $mapPricing->setStartDate('2019-06-01T00:00:00.000Z')
+            ->setEndDate('2019-09-01T00:00:00.000Z')
+            ->setPrice(9.9);
+
+        $price = (new Product\Dto\Price())
+            ->setCurrencyCode(Product\Dto\Price::CURRENCY_CODE_USD)
+            ->setCost(12.12)
+            ->setPrice(13.13)
+            ->setSalePrice(14.14)
+            ->setVolumePricing([$volumePricing])
+            // currently buggy in catalog service
+//            ->setUnit('m')
+//            ->setMsrp(15.15)
+            ->setMapPricing([$mapPricing]);
+        $product = new Product\Update();
+        $product->setPrice($price);
+
+        // Act
+        $this->sdk->getCatalogService()->updateProduct(
+            $productMaximum->code,
+            $product,
+            [
+                'requestType' => 'direct'
+            ]
+        );
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_PRODUCT,
+            [
+                $productMaximum->code
+            ]
+        );
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, $sampleCategoryCodes);
+
+        // Assert
+        $product    = $this->sdk->getCatalogService()->getProduct($productMaximum->code);
+        $updatedProductPrice = $product->getPrice();
+        $this->assertEquals($price->getCurrencyCode(), $updatedProductPrice->getCurrencyCode());
+        $this->assertEquals($price->getCost(), $updatedProductPrice->getCost());
+        $this->assertEquals($price->getPrice(), $updatedProductPrice->getPrice());
+        $this->assertEquals($price->getSalePrice(), $updatedProductPrice->getSalePrice());
+
+        $updatedVolumePrice = $updatedProductPrice->getVolumePricing()[0];
+        $this->assertEquals($volumePricing->getPrice(), $updatedVolumePrice->getPrice());
+        $this->assertEquals($volumePricing->getSalePrice(), $updatedVolumePrice->getSalePrice());
+        $this->assertEquals($volumePricing->getMinQty(), $updatedVolumePrice->getMinQty());
+        $this->assertEquals($volumePricing->getMaxQty(), $updatedVolumePrice->getMaxQty());
+        $this->assertEquals($volumePricing->getUnit(), $updatedVolumePrice->getUnit());
+
+        $updatedMapPricing = $updatedProductPrice->getMapPricing()[0];
+        $this->assertEquals($mapPricing->getPrice(), $updatedMapPricing->getPrice());
+        $this->assertEquals($mapPricing->getStartDate(), $updatedMapPricing->getStartDate());
+        $this->assertEquals($mapPricing->getEndDate(), $updatedMapPricing->getEndDate());
+    }
+
+    /**
      * @param array  $updateProductData
      * @param string $expectedValue
      *
@@ -149,6 +237,10 @@ class ProductTest extends CatalogTest
     public function testUpdateProductPropertyDirect(array $updateProductData, $expectedValue)
     {
         // Arrange
+        $sampleCategories = $this->provideSampleCategories();
+        $this->sdk->getCatalogService()->addCategories($sampleCategories, ['requestType' => 'direct']);
+        $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
+
         $productMaximum = $this->prepareProductMaximum(new Update());
         $this->sdk->getCatalogService()->addProducts(
             [
@@ -156,10 +248,6 @@ class ProductTest extends CatalogTest
             ],
             ['requestType' => 'direct']
         );
-
-        $sampleCategories = $this->provideSampleCategories();
-        $this->sdk->getCatalogService()->addCategories($sampleCategories, ['requestType' => 'direct']);
-        $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
 
         $product = new Product\Update($updateProductData);
 
@@ -195,19 +283,17 @@ class ProductTest extends CatalogTest
      * ->setMedia($media)
      * ->setOptions($options)
      * ->setExtras($extras)
-     * ->setCode($productId)// required
      * ->setParentProductCode('dfsdf7')
      * ->setCatalogCode('PNW Retail')// required
-     * ->setModelType(Product\Create::MODEL_TYPE_STANDARD)// required
      * ->setIdentifiers($identifiers)
      * ->setPrice($price)// required
      * ->setFulfillmentMethods(['one method', 'another method'])
-     * ->setIsSerialized(false)
-     * ->setStatus(Product\Create::STATUS_ACTIVE)// required
-     * ->setInventoryTreatment(Product\Create::INVENTORY_TREATMENT_PRE_ORDER)
      * ->setShippingInformation($shippingInformation)
      *
-     * short/long description
+     * short/long description => special
+     * code => special
+     * setParentProductCode
+     * isSerialized is not part of the getProduct response
      *
      * @return array
      */
@@ -232,18 +318,6 @@ class ProductTest extends CatalogTest
                 ],
                 'expectedValue'     => 'Updated Long Name'
             ],
-            //            'shortDescription' => [
-            //                'updateProductData' => [
-            //                    'description' => new Product\Dto\ShortDescription(['en-us' => 'Updated Short Description']),
-            //                ],
-            //                'expectedValue' => 'Updated Short Description\''
-            //            ],
-            //            'longDescription' => [
-            //                'updateProductData' => [
-            //                    'longDescription+' => new Product\Dto\LongDescription(['en-us' => 'Updated Long Description']),
-            //                ],
-            //                'expectedValue' => 'Updated Long Description\''
-            //            ],
             'unit'               => [
                 'updateProductData' => [
                     'unit' => 'm',
@@ -315,6 +389,72 @@ class ProductTest extends CatalogTest
                     'eolDate' => '2032-11-11T00:00:00.000Z',
                 ],
                 'expectedValue'     => '2032-11-11T00:00:00.000Z'
+            ],
+            'status scheduled'            => [
+                'updateProductData' => [
+                    'status' => Product::STATUS_SCHEDULED,
+                ],
+                'expectedValue'     => Product::STATUS_SCHEDULED
+            ],
+            'status inactive'            => [
+                'updateProductData' => [
+                    'status' => Product::STATUS_INACTIVE,
+                ],
+                'expectedValue'     => Product::STATUS_INACTIVE
+            ],
+            'status active'            => [
+                'updateProductData' => [
+                    'status' => Product::STATUS_ACTIVE,
+                ],
+                'expectedValue'     => Product::STATUS_ACTIVE
+            ],
+            'inventoryTreatment allow backorders'            => [
+                'updateProductData' => [
+                    'inventoryTreatment' => Product::INVENTORY_TREATMENT_ALLOW_BACK_ORDERS,
+                ],
+                'expectedValue'     => Product::INVENTORY_TREATMENT_ALLOW_BACK_ORDERS
+            ],
+            'inventoryTreatment pre order'            => [
+                'updateProductData' => [
+                    'inventoryTreatment' => Product::INVENTORY_TREATMENT_PRE_ORDER,
+                ],
+                'expectedValue'     => Product::INVENTORY_TREATMENT_PRE_ORDER
+            ],
+            'inventoryTreatment show out of stock'            => [
+                'updateProductData' => [
+                    'inventoryTreatment' => Product::INVENTORY_TREATMENT_SHOW_OUT_OF_STOCK,
+                ],
+                'expectedValue'     => Product::INVENTORY_TREATMENT_SHOW_OUT_OF_STOCK
+            ],
+            'modelType bundle'            => [
+                'updateProductData' => [
+                    'modelType' => Product::MODEL_TYPE_BUNDLE,
+                ],
+                'expectedValue'     => Product::MODEL_TYPE_BUNDLE
+            ],
+            'modelType bundle item'            => [
+                'updateProductData' => [
+                    'modelType' => Product::MODEL_TYPE_BUNDLE_ITEM,
+                ],
+                'expectedValue'     => Product::MODEL_TYPE_BUNDLE_ITEM
+            ],
+            'modelType configurable'            => [
+                'updateProductData' => [
+                    'modelType' => Product::MODEL_TYPE_CONFIGURABLE,
+                ],
+                'expectedValue'     => Product::MODEL_TYPE_CONFIGURABLE
+            ],
+            'modelType standard'            => [
+                'updateProductData' => [
+                    'modelType' => Product::MODEL_TYPE_STANDARD,
+                ],
+                'expectedValue'     => Product::MODEL_TYPE_STANDARD
+            ],
+            'modelType variant'            => [
+                'updateProductData' => [
+                    'modelType' => Product::MODEL_TYPE_VARIANT,
+                ],
+                'expectedValue'     => Product::MODEL_TYPE_VARIANT
             ],
         ];
     }

@@ -550,14 +550,13 @@ class AttributeTest extends ShopgateSdkTest
             $attribute = new Attribute\Create();
             $attribute->setCode('code_' . $count)
                 ->setType(Attribute\Create::TYPE_TEXT)
-                ->setUse(Attribute\Create::USE_OPTION);
+                ->setUse(Attribute\Create::USE_OPTION)
+                ->setExternalUpdateDate('2018-12-15T00:00:23.114Z');
 
             $attributeName = new Name();
             $attributeName->add('de-de', 'Attribute ' . $count . ' de');
             $attributeName->add('en-us', 'Attribute ' . $count . ' en');
             $attribute->setName($attributeName);
-
-            $attribute->setExternalUpdateDate('2018-12-15T00:00:23.114Z');
 
             $attributeValue = new AttributeValue\Create();
             $attributeValue->setCode('red');
@@ -574,13 +573,13 @@ class AttributeTest extends ShopgateSdkTest
             $attributeValue->setSwatch($attributeValueSwatch);
 
             $attribute->setValues([$attributeValue]);
-        }
 
-        if ($removeOnTearDown) {
-            $this->cleanUpAttributeCodes[] = 'code_' . $count;
-        }
+            if ($removeOnTearDown) {
+                $this->cleanUpAttributeCodes[] = 'code_' . $count;
+            }
 
-        $result[] = $attribute;
+            $result[] = $attribute;
+        }
 
         return $result;
     }

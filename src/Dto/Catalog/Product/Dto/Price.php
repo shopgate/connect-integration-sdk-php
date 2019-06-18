@@ -35,6 +35,17 @@ use Shopgate\ConnectSdk\Dto\Base;
  * @method Price setVolumePricing(Price\VolumePricing[] $volumePricing)
  * @method Price setMapPricing(Price\MapPricing[] $mapPricing)
  * @method Price setCurrencyCode(string $currencyCode)
+ *
+ * @method number getCost()
+ * @method number getPrice()
+ * @method string getUnit()
+ * @method number getSalePrice()
+ * @method number getMsrp()
+ * @method number getMinPrice()
+ * @method number getMaxPrice()
+ * @method Price\VolumePricing[] getVolumePricing()
+ * @method Price\MapPricing[] getMapPricing()
+ * @method string getCurrencyCode()
  */
 class Price extends Base
 {

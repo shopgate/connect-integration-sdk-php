@@ -27,6 +27,9 @@ use Shopgate\ConnectSdk\Dto\Base as DtoBase;
 /**
  * @method Categories setCode(string $code)
  * @method Categories setIsPrimary(boolean $isPrimary)
+ *
+ * @method string getCode()
+ * @method boolean getIsPrimary()
  */
 class Categories extends DtoBase
 {

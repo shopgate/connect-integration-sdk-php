@@ -31,6 +31,13 @@ use Shopgate\ConnectSdk\Dto\Base;
  * @method VolumePricing setSalePrice(number $salePrice)
  * @method VolumePricing setUnit(string $unit)
  * @method VolumePricing setPriceType(string $priceType)
+ *
+ * @method number getMinQty(number $minQty)
+ * @method number getMaxQty(number $maxQty)
+ * @method number getPrice(number $price)
+ * @method number getSalePrice(number $salePrice)
+ * @method string getUnit(string $unit)
+ * @method string getPriceType(string $priceType)
  */
 class VolumePricing extends Base
 {

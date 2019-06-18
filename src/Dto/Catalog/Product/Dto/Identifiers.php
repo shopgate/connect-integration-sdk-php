@@ -30,6 +30,12 @@ use Shopgate\ConnectSdk\Dto\Base as DtoBase;
  * @method Identifiers setEan(string $ean)
  * @method Identifiers setIsbn(string $isbn)
  * @method Identifiers setSku(string $sku)
+ *
+ * @method string getMfgPartNum()
+ * @method string getUpc()
+ * @method string getEan()
+ * @method string getIsbn()
+ * @method string getSku()
  */
 class Identifiers extends DtoBase
 {

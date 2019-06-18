@@ -33,8 +33,19 @@ use Shopgate\ConnectSdk\Dto\Base;
  * @method Inventory setAvailable(number $available)
  * @method Inventory setVisible(number $visible)
  * @method Inventory setBin(string $bin)
- * @method Inventory setBinLocation(string $binLocation) *
- * @method Inventory setExternalUpdateDte(string $externalUpdateDate) *
+ * @method Inventory setBinLocation(string $binLocation)
+ * @method Inventory setExternalUpdateDte(string $externalUpdateDate)
+ *
+ * @method string getLocationCode()
+ * @method string getSku()
+ * @method number getOnHand()
+ * @method number getOnReserve()
+ * @method number getSafetyStock()
+ * @method number getAvailable()
+ * @method number getVisible()
+ * @method string getBin()
+ * @method string getBinLocation()
+ * @method string getExternalUpdateDte()
  */
 class Inventory extends Base
 {

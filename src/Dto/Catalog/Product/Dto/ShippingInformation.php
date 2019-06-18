@@ -34,6 +34,16 @@ use Shopgate\ConnectSdk\Dto\Base as DtoBase;
  * @method ShippingInformation setLengthUnit(string $lengthUnit)
  * @method ShippingInformation setWeight(number $weight)
  * @method ShippingInformation setWeightUnit(string $weightUnit)
+ *
+ * @method boolean getIsShippedAlone()
+ * @method number getHeight()
+ * @method string getHeightUnit()
+ * @method number getWidth()
+ * @method string getWidthUnit()
+ * @method number getLength()
+ * @method string getLengthUnit()
+ * @method number getWeight()
+ * @method string getWeightUnit()
  */
 class ShippingInformation extends DtoBase
 {

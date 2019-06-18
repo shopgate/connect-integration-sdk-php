@@ -28,9 +28,14 @@ use Shopgate\ConnectSdk\Dto\LocalizedString;
 
 /**
  * @method Attribute setCode(string $code)
- * @method Attribute setValue(array $value)
- * @method Attribute setDisplayGroup(SubDisplayGroup $displayGroup)
- * @method Attribute setSubDisplayGroup(LocalizedString $subDisplayGroup)
+ * @method Attribute setValue(Value $value)
+ * @method Attribute setDisplayGroup(string $displayGroup)
+ * @method Attribute setSubDisplayGroup(SubDisplayGroup $subDisplayGroup)
+ *
+ * @method string getCode()
+ * @method Value getValue()
+ * @method string getDisplayGroup()
+ * @method SubDisplayGroup getSubDisplayGroup()
  */
 class Attribute extends Properties
 {

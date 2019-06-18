@@ -36,6 +36,15 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties\Value;
  * @method Properties setIsPriced(boolean $isPriced)
  * @method Properties setAttributePrice(float $attributePrice)
  * @method Properties setUnit(string $unit)
+ *
+ * @method string getCode()
+ * @method PropertyName getName()
+ * @method Value getValue()
+ * @method string getDisplayGroup()
+ * @method SubDisplayGroup getSubDisplayGroup()
+ * @method boolean getIsPriced()
+ * @method float getAttributePrice()
+ * @method string getUnit()
  */
 class Properties extends Base
 {

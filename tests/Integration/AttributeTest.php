@@ -29,27 +29,10 @@ use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
 
-class AttributeTest extends ShopgateSdkTest
+class AttributeTest extends CatalogTest
 {
     /** @var array */
     protected $cleanUpAttributeCodes = [];
-
-    /**
-     * @throws Exception
-     */
-    public function tearDown()
-    {
-        parent::tearDown();
-
-        foreach ($this->cleanUpAttributeCodes as $attributeCode) {
-            $this->sdk->getCatalogService()->deleteAttribute(
-                $attributeCode,
-                [
-                    'requestType' => 'direct',
-                ]
-            );
-        }
-    }
 
     /**
      * @throws Exception
@@ -71,6 +54,17 @@ class AttributeTest extends ShopgateSdkTest
         // Assert
         $attributes = $this->getAttributes();
 
+        // Prepare delete
+        $deleteCodes = [];
+        foreach ($attributes->getAttributes() as $attribute) {
+            $deleteCodes[] = $attribute->getCode();
+        }
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_ATTRIBUTE,
+            $deleteCodes
+        );
+
         /** @noinspection PhpParamsInspection */
         $this->assertCount($createdItemCount, $attributes->getAttributes());
     }
@@ -90,9 +84,20 @@ class AttributeTest extends ShopgateSdkTest
         $this->createAttributes($sampleAttributes);
         sleep(self::SLEEP_TIME_AFTER_EVENT);
 
-        // Assert
         $attributes = $this->getAttributes();
 
+        // Prepare delete
+        $deleteCodes = [];
+        foreach ($attributes->getAttributes() as $attribute) {
+            $deleteCodes[] = $attribute->getCode();
+        }
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_ATTRIBUTE,
+            $deleteCodes
+        );
+
+        // Assert
         /** @noinspection PhpParamsInspection */
         $this->assertCount($createdItemCount, $attributes->getAttributes());
     }
@@ -112,6 +117,13 @@ class AttributeTest extends ShopgateSdkTest
             [
                 'requestType' => 'direct',
             ]
+        );
+
+        // Prepare delete
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_ATTRIBUTE,
+            ['code_1']
         );
 
         // Assert
@@ -157,6 +169,13 @@ class AttributeTest extends ShopgateSdkTest
             ]
         );
 
+        // Prepare delete
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_ATTRIBUTE,
+            ['code_1']
+        );
+
         // Assert
         $attribute = $this->getAttribute('code_1', 'de-de');
 
@@ -181,14 +200,19 @@ class AttributeTest extends ShopgateSdkTest
         // Act
         $newName         = 'Renamed Attribute (Direct)';
         $attributeUpdate = new Attribute\Update(['name' => new Name(['en-us' => $newName])]);
-
-        // Act
         $this->sdk->getCatalogService()->updateAttribute(
             'code_1',
             $attributeUpdate,
             [
                 'requestType' => 'direct',
             ]
+        );
+
+        // Prepare delete
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_ATTRIBUTE,
+            ['code_1']
         );
 
         // Assert
@@ -221,6 +245,13 @@ class AttributeTest extends ShopgateSdkTest
         );
 
         sleep(self::SLEEP_TIME_AFTER_EVENT);
+
+        // Prepare delete
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_ATTRIBUTE,
+            ['code_1']
+        );
 
         // Assert
         $updatedAttribute = $this->getAttribute('code_1');
@@ -398,7 +429,7 @@ class AttributeTest extends ShopgateSdkTest
         $name->add('de-de', 'Example');
 
         return [
-            'missing name'   => [
+            'missing name' => [
                 'attributeData'     => [
                     'values'     => [],
                     'use'        => Attribute\Create::USE_OPTION,
@@ -409,18 +440,7 @@ class AttributeTest extends ShopgateSdkTest
                 'expectedException' => new RequestException(400),
                 'missingItem'       => 'name',
             ],
-            'missing values' => [
-                'attributeData'     => [
-                    'name'       => $name,
-                    'use'        => Attribute\Create::USE_OPTION,
-                    'type'       => Attribute\Create::TYPE_TEXT,
-                    'code'       => 'code',
-                    'sequenceId' => 1006,
-                ],
-                'expectedException' => new RequestException(400),
-                'missingItem'       => 'values',
-            ],
-            'missing use'    => [
+            'missing use'  => [
                 'attributeData'     => [
                     'name'       => $name,
                     'values'     => [],
@@ -431,7 +451,7 @@ class AttributeTest extends ShopgateSdkTest
                 'expectedException' => new RequestException(400),
                 'missingItem'       => 'use',
             ],
-            'missing type'   => [
+            'missing type' => [
                 'attributeData'     => [
                     'name'       => $name,
                     'values'     => [],
@@ -442,7 +462,7 @@ class AttributeTest extends ShopgateSdkTest
                 'expectedException' => new RequestException(400),
                 'missingItem'       => 'type',
             ],
-            'missing code'   => [
+            'missing code' => [
                 'attributeData'     => [
                     'name'       => $name,
                     'values'     => [],
@@ -465,8 +485,6 @@ class AttributeTest extends ShopgateSdkTest
         $name->add('de-de', 'Example');
 
         return [
-            /*
-             * @todo check - currently not working
             'invalid name' => [
                 'attributeData'     => [
                     'name'       => 'INVALID',
@@ -479,22 +497,6 @@ class AttributeTest extends ShopgateSdkTest
                 'expectedException' => new RequestException(400),
                 'message'           => 'Expected type object but found type array',
             ],
-            */
-            /*
-             * @todo check - currently not working
-            'invalid values' => [
-                'attributeData'     => [
-                    'name'       => $name,
-                    'values'     => 'invalid',
-                    'use'        => Attribute\Create::USE_OPTION,
-                    'type'       => Attribute\Create::TYPE_TEXT,
-                    'code'       => 'code',
-                    'sequenceId' => 1006,
-                ],
-                'expectedException' => new RequestException(400),
-                'expected'       => 'array',
-            ],
-            */
             'invalid use'  => [
                 'attributeData'     => [
                     'name'       => $name,

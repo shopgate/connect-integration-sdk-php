@@ -27,6 +27,9 @@ use Shopgate\ConnectSdk\Dto\Base as DtoBase;
 /**
  * @method Options setCode(string $code)
  * @method Options setValues(Options\Values[] $values)
+ *
+ * @method string getCode()
+ * @method Options\Values[] getValues()
  */
 class Options extends DtoBase
 {

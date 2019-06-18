@@ -210,7 +210,7 @@ class Client implements ClientInterface
         try {
             return $this->guzzleClient->request(
                 'post',
-                $this->buildServiceUrl($params['service'], 'events'),
+                $this->buildServiceUrl('omni-event-receiver', 'events'),
                 [
                     'json'        => $factory->getRequest()->toJson(),
                     'http_errors' => false,

@@ -28,7 +28,7 @@ use Shopgate\ConnectSdk\Service\Catalog;
 class ShopgateSdk
 {
     const REQUEST_TYPE_DIRECT = 'direct';
-    const REQUEST_TYPE_EVENT  = 'event';
+    const REQUEST_TYPE_EVENT = 'event';
 
     /** @var ClientInterface */
     private $client;
@@ -40,15 +40,23 @@ class ShopgateSdk
     private $bulkImport;
 
     /**
+     * The $config argument is a list of key-value pairs:
+     *
+     * clientId     => your app's client ID for authentication
+     * clientSecret => your app's client secret for authentication
+     * merchantCode => the merchant code at Shopgate that you want to sync to/from
+     *
      * @param array $config
      */
     public function __construct(array $config)
     {
         $this->client = isset($config['client'])
             ? $config['client']
-            : Client::createInstance($config['merchantCode'], $config['apiKey']);
+            : Client::createInstance($config['clientId'], $config['clientSecret'], $config['merchantCode']);
 
-        $this->setServices(isset($config['services']) ? $config['services'] : []);
+        if (isset($config['services'])) {
+            $this->setServices($config['services']);
+        }
     }
 
     /**
@@ -56,6 +64,10 @@ class ShopgateSdk
      */
     public function getCatalogService()
     {
+        if (!$this->catalog) {
+            $this->catalog = new Catalog($this->client);
+        }
+
         return $this->catalog;
     }
 
@@ -64,7 +76,19 @@ class ShopgateSdk
      */
     public function getBulkImportService()
     {
+        if (!$this->bulkImport) {
+            $this->bulkImport = new BulkImport($this->client);
+        }
+
         return $this->bulkImport;
+    }
+
+    /**
+     * @return ClientInterface
+     */
+    public function getClient()
+    {
+        return $this->client;
     }
 
     /**
@@ -73,20 +97,11 @@ class ShopgateSdk
     private function setServices($serviceArgs)
     {
         foreach (['catalog', 'bulkImport'] as $service) {
-            $this->$service = isset($serviceArgs[$service])
-                ? $serviceArgs[$service]
-                : $this->instantiateClass($service);
+            if (!isset($serviceArgs[$service])) {
+                continue;
+            }
+
+            $this->$service = $serviceArgs[$service];
         }
-    }
-
-    /**
-     * @param string $name
-     * @return mixed
-     */
-    private function instantiateClass($name)
-    {
-        $class = 'Shopgate\ConnectSdk\Service\\' . ucfirst($name);
-
-        return new $class($this->client);
     }
 }

@@ -68,7 +68,15 @@ class Client implements ClientInterface
         $this->merchantCode    = $merchantCode;
     }
 
-    public static function createInstance($clientId, $clientSecret, $baseUri = '', $accessTokenPath = '')
+    /**
+     * @param string $clientId
+     * @param string $clientSecret
+     * @param string $merchantCode
+     * @param string $baseUri
+     * @param string $accessTokenPath
+     * @return Client
+     */
+    public static function createInstance($clientId, $clientSecret, $merchantCode, $baseUri = '', $accessTokenPath = '')
     {
         if (empty($baseUri)) {
             $baseUri = 'https://{service}.shopgate.services/v1';
@@ -95,7 +103,7 @@ class Client implements ClientInterface
             'handler' => $handlerStack
         ]);
 
-        return new self($client, $oauth, $baseUri, $clientId);
+        return new self($client, $oauth, $baseUri, $merchantCode);
     }
 
     /**

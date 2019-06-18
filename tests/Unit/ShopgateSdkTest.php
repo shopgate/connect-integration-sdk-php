@@ -108,7 +108,7 @@ class ShopgateSdkTest extends TestCase
             [
                 $this->equalTo('delete'),
                 $this->equalTo('categories/' . $entityId),
-                ['query' => $defaultMeta, 'json' => '[]']
+                ['query' => $defaultMeta + ['requestType' => 'direct'], 'json' => '[]']
             ],
             [
                 $this->equalTo('post'),

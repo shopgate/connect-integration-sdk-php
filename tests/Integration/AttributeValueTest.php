@@ -11,6 +11,8 @@ namespace Shopgate\ConnectSdk\Tests\Integration;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute\Dto\Name;
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
+use Shopgate\ConnectSdk\Exception\Exception;
+use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 
 class AttributeValueTest extends ShopgateSdkTest
@@ -271,13 +273,12 @@ class AttributeValueTest extends ShopgateSdkTest
                 $updateAttributeValue,
                 ['requestType' => 'direct']
             );
-        } catch (RequestException $exception) {
+        } catch (NotFoundException $exception) {
             // Assert
             $this->assertEquals(
                 '{"code":"NotFound","message":"Attribute value not found."}',
                 $exception->getMessage()
             );
-            $this->assertEquals(404, $exception->getStatusCode());
 
             return;
         }

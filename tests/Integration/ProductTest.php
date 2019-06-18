@@ -36,6 +36,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\ShortDescription;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Update;
 use Shopgate\ConnectSdk\Exception\Exception;
+use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 
 class ProductTest extends CatalogTest
@@ -506,6 +507,50 @@ class ProductTest extends CatalogTest
         // Assert
         $product = $this->sdk->getCatalogService()->getProduct($product->code);
         $this->assertEquals($product->getCode(), $product->code);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testProductNotFoundExceptionDirect()
+    {
+        $this->markTestSkipped(
+            'Skipped due to catalog http code 500 is sent instead of 404'
+        );
+
+        // Assert
+        $this->expectException(NotFoundException::class);
+
+        // Act
+        $this->sdk->getCatalogService()->getProduct('not existent code');
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testDeleteProductDirect()
+    {
+        $this->markTestSkipped(
+            'Skipped due to catalog http code 500 is sent instead of 404'
+        );
+
+        // Arrange
+        $product = $this->prepareProductMaximum();
+
+        $sampleCategories = $this->provideSampleCategories();
+        $this->sdk->getCatalogService()->addCategories($sampleCategories, ['requestType' => 'direct']);
+        $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
+        $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
+
+        // Act
+        $this->sdk->getCatalogService()->deleteProduct($product->code, ['requestType' => 'direct']);
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, $sampleCategoryCodes);
+
+        // Assert
+        $this->expectException(NotFoundException::class);
+        $this->sdk->getCatalogService()->getProduct($product->code);
     }
 
     /**‚

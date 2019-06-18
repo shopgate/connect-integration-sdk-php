@@ -26,6 +26,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute\Dto\Name;
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 use Shopgate\ConnectSdk\Exception\Exception;
+use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
 
@@ -131,10 +132,7 @@ class AttributeTest extends ShopgateSdkTest
             $this->sdk->getCatalogService()->getAttribute(
                 'non_existing'
             );
-        } catch (RequestException $exception) {
-            // Assert
-            $this->assertEquals(404, $exception->getStatusCode());
-
+        } catch (NotFoundException $exception) {
             return;
         }
         $this->fail('Expected RequestException but wasn\'t thrown');
@@ -277,7 +275,7 @@ class AttributeTest extends ShopgateSdkTest
         // Assert
         try {
             $this->getAttribute('code_1');
-        } catch (RequestException $e) {
+        } catch (NotFoundException $e) {
             unset($this->cleanUpAttributeCodes['code_1']);
             $this->assertEquals($e->getMessage(), '{"code":"NotFound","message":"Attribute not found"}');
         }
@@ -305,7 +303,7 @@ class AttributeTest extends ShopgateSdkTest
         // Assert
         try {
             $this->getAttribute('code_1');
-        } catch (RequestException $e) {
+        } catch (NotFoundException $e) {
             unset($this->cleanUpAttributeCodes['code_1']);
             $this->assertEquals($e->getMessage(), '{"code":"NotFound","message":"Attribute not found"}');
         }
@@ -590,6 +588,7 @@ class AttributeTest extends ShopgateSdkTest
      *
      * @return ResponseInterface
      * @throws RequestException
+     * @throws NotFoundException
      * @throws UnknownException
      */
     private function createAttributes(array $sampleAttributes, array $meta = [])
@@ -614,7 +613,9 @@ class AttributeTest extends ShopgateSdkTest
      * @param string $localeCode
      *
      * @return Attribute\Get
-     * @throws Exception
+     * @throws RequestException
+     * @throws NotFoundException
+     * @throws UnknownException
      *
      */
     private function getAttribute($attributeCode, $localeCode = '')

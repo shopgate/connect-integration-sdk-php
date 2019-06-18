@@ -16,3 +16,4 @@ access_token.txt
 .php_cs.cache
 build
 !*/.gitkeep
+tools/docker-compose.yml.tmp

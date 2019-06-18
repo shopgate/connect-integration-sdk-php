@@ -32,6 +32,7 @@ use kamermans\OAuth2\OAuth2Middleware;
 use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Dto\Async\Factory;
 use Shopgate\ConnectSdk\Dto\Base;
+use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Http\Persistence\EncryptedFile;
@@ -124,6 +125,7 @@ class Client implements ClientInterface
      *
      * @return ResponseInterface
      * @throws RequestException
+     * @throws NotFoundException
      * @throws UnknownException
      */
     public function doRequest(array $params)
@@ -153,6 +155,14 @@ class Client implements ClientInterface
             );
         } catch (GuzzleRequestException $e) {
             $statusCode = $e->getResponse() ? $e->getResponse()->getStatusCode() : 0;
+
+            if ($statusCode == 404) {
+                throw new NotFoundException(
+                    $e->getResponse() && $e->getResponse()->getBody() ? $e->getResponse()->getBody()->getContents()
+                        : $e->getMessage()
+                );
+            }
+
             throw new RequestException(
                 $statusCode,
                 $e->getResponse() && $e->getResponse()->getBody() ? $e->getResponse()->getBody()->getContents()

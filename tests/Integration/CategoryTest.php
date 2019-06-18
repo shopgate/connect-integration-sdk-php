@@ -26,6 +26,7 @@ use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Name;
 use Shopgate\ConnectSdk\Exception\Exception;
+use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 
 class CategoryTest extends CatalogTest
@@ -461,13 +462,11 @@ class CategoryTest extends CatalogTest
                     'requestType' => 'direct'
                 ]
             );
-        } catch (RequestException $exception) {
-            // Assert
-            $this->assertEquals(404, $exception->getStatusCode());
-
+        } catch (NotFoundException $exception) {
             return;
         }
 
+        // Assert
         $this->fail('Expected RequestException but wasn\'t thrown');
     }
 

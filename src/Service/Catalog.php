@@ -26,6 +26,7 @@ use Dto\Exceptions\InvalidDataTypeException;
 use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\ClientInterface;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
+use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
 use Shopgate\ConnectSdk\Dto\Meta;
@@ -382,21 +383,21 @@ class Catalog
     }
 
     /**
-     * @param string $code
+     * @param string $attributeCode
      * @param string $localeCode
      *
      * @return Attribute\Get
      * @throws Exception\RequestException
      * @throws Exception\UnknownException
      */
-    public function getAttribute($code, $localeCode = '')
+    public function getAttribute($attributeCode, $localeCode = '')
     {
         $response = $this->client->doRequest(
             [
                 // direct only
                 'service' => 'catalog',
                 'method'  => 'get',
-                'path'    => 'attributes/' . $code,
+                'path'    => 'attributes/' . $attributeCode,
                 'query'   => [
                     'localeCode' => $localeCode,
                 ],
@@ -409,7 +410,7 @@ class Catalog
     }
 
     /**
-     * @param string           $code
+     * @param string           $attributeCode
      * @param Attribute\Update $payload
      * @param array            $meta
      *
@@ -417,7 +418,7 @@ class Catalog
      * @throws Exception\RequestException
      * @throws Exception\UnknownException
      */
-    public function updateAttribute($code, Attribute\Update $payload, array $meta = [])
+    public function updateAttribute($attributeCode, Attribute\Update $payload, array $meta = [])
     {
         //todo-sg: test
         return $this->client->doRequest(
@@ -425,7 +426,7 @@ class Catalog
                 // general
                 'service'     => 'catalog',
                 'method'      => 'post',
-                'path'        => 'attributes/' . $code,
+                'path'        => 'attributes/' . $attributeCode,
                 'entity'      => 'attribute',
                 // direct only
                 'action'      => 'update',
@@ -436,27 +437,27 @@ class Catalog
                 // async
                 'entity'      => 'attribute',
                 'action'      => 'update',
-                'entityId'    => $code,
+                'entityId'    => $attributeCode,
             ]
         );
     }
 
     /**
-     * @param string $code
+     * @param string $attributeCode
      * @param array  $meta
      *
      * @return ResponseInterface
      * @throws Exception\RequestException
      * @throws Exception\UnknownException
      */
-    public function deleteAttribute($code, array $meta = [])
+    public function deleteAttribute($attributeCode, array $meta = [])
     {
         //todo-sg: test
         return $this->client->doRequest(
             [
                 'service'     => 'catalog',
                 'method'      => 'delete',
-                'path'        => 'attributes/' . $code,
+                'path'        => 'attributes/' . $attributeCode,
                 'entity'      => 'attribute',
                 'action'      => 'delete',
                 'requestType' => isset($meta['requestType'])
@@ -465,26 +466,24 @@ class Catalog
                 // async
                 'entity'      => 'attribute',
                 'action'      => 'delete',
-                'entityId'    => $code,
+                'entityId'    => $attributeCode,
                 'query'       => $meta,
             ]
         );
     }
 
     /**
-     * @param string           $code
-     * @param string           $valueCode
-     * @param Attribute\Update $payload
-     * @param array            $meta
+     * @param string                  $attributeCode
+     * @param AttributeValue\Create[] $attributeValues
+     * @param array                   $meta
      *
      * @return ResponseInterface
      * @throws Exception\RequestException
      * @throws Exception\UnknownException
      */
-    public function updateAttributeValue(
-        $code,
-        $valueCode,
-        Attribute\Update $payload,
+    public function addAttributeValue(
+        $attributeCode,
+        array $attributeValues,
         array $meta = []
     ) {
         //todo-sg: test
@@ -492,10 +491,10 @@ class Catalog
             [
                 'service'     => 'catalog',
                 'method'      => 'post',
-                'path'        => 'attributes/' . $code . '/values/' . $valueCode,
-                'entity'      => 'attribute',
-                'action'      => 'update',
-                'body'        => $payload,
+                'path'        => 'attributes/' . $attributeCode . '/values/',
+                'entity'      => 'attributes',
+                'action'      => 'create',
+                'body'        => ['values' => $attributeValues],
                 'requestType' => isset($meta['requestType'])
                     ? $meta['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
@@ -504,7 +503,40 @@ class Catalog
     }
 
     /**
-     * @param string $code
+     * @param string                $attributeCode
+     * @param string                $attributeValueCode
+     * @param AttributeValue\Update $payload
+     * @param array                 $meta
+     *
+     * @return ResponseInterface
+     * @throws Exception\RequestException
+     * @throws Exception\UnknownException
+     */
+    public function updateAttributeValue(
+        $attributeCode,
+        $attributeValueCode,
+        AttributeValue\Update $payload,
+        array $meta = []
+    ) {
+        //todo-sg: test
+        return $this->client->doRequest(
+            [
+                'service'     => 'catalog',
+                'method'      => 'post',
+                'path'        => 'attributes/' . $attributeCode . '/values/' . $attributeValueCode,
+                'entity'      => 'attribute',
+                'action'      => 'update',
+                'body'        => $payload,
+                'requestType' => isset($meta['requestType'])
+                    ? $meta['requestType']
+                    : ShopgateSdk::REQUEST_TYPE_EVENT,
+                'entityId'    => $attributeCode,
+            ]
+        );
+    }
+
+    /**
+     * @param string $attributeCode
      * @param string $attributeValueCode
      * @param array  $meta
      *
@@ -512,14 +544,14 @@ class Catalog
      * @throws Exception\RequestException
      * @throws Exception\UnknownException
      */
-    public function deleteAttributeValue($code, $attributeValueCode, array $meta = [])
+    public function deleteAttributeValue($attributeCode, $attributeValueCode, array $meta = [])
     {
         //todo-sg: test
         return $this->client->doRequest(
             [
                 'service'     => 'catalog',
                 'method'      => 'delete',
-                'path'        => 'attributes/' . $code . '/values/' . $attributeValueCode,
+                'path'        => 'attributes/' . $attributeCode . '/values/' . $attributeValueCode,
                 'entity'      => 'attribute',
                 'action'      => 'delete',
                 'requestType' => isset($meta['requestType'])

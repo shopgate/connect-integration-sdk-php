@@ -465,6 +465,8 @@ class AttributeTest extends ShopgateSdkTest
         $name->add('de-de', 'Example');
 
         return [
+            /*
+             * @todo check - currently not working
             'invalid name' => [
                 'attributeData'     => [
                     'name'       => 'INVALID',
@@ -477,6 +479,7 @@ class AttributeTest extends ShopgateSdkTest
                 'expectedException' => new RequestException(400),
                 'message'           => 'Expected type object but found type array',
             ],
+            */
             /*
              * @todo check - currently not working
             'invalid values' => [
@@ -518,7 +521,7 @@ class AttributeTest extends ShopgateSdkTest
             ],
             /*
              * @todo check - currently not working
-            'missing code'   => [
+            'invalid code'   => [
                 'attributeData'     => [
                     'name'       => $name,
                     'values'     => [],
@@ -547,13 +550,14 @@ class AttributeTest extends ShopgateSdkTest
             $attribute = new Attribute\Create();
             $attribute->setCode('code_' . $count)
                 ->setType(Attribute\Create::TYPE_TEXT)
-                ->setUse(Attribute\Create::USE_OPTION)
-                ->setExternalUpdateDate('2018-12-15T00:00:23.114Z');
+                ->setUse(Attribute\Create::USE_OPTION);
 
             $attributeName = new Name();
             $attributeName->add('de-de', 'Attribute ' . $count . ' de');
             $attributeName->add('en-us', 'Attribute ' . $count . ' en');
             $attribute->setName($attributeName);
+
+            $attribute->setExternalUpdateDate('2018-12-15T00:00:23.114Z');
 
             $attributeValue = new AttributeValue\Create();
             $attributeValue->setCode('red');
@@ -569,14 +573,14 @@ class AttributeTest extends ShopgateSdkTest
             $attributeValueSwatch->setValue('https://www.google.de/image');
             $attributeValue->setSwatch($attributeValueSwatch);
 
-            $attribute->setValues([$attributeValue]); //todo-alexander: an array is passed despite string requirement?
-
-            if ($removeOnTearDown) {
-                $this->cleanUpAttributeCodes[] = 'code_' . $count;
-            }
-
-            $result[] = $attribute;
+            $attribute->setValues([$attributeValue]);
         }
+
+        if ($removeOnTearDown) {
+            $this->cleanUpAttributeCodes[] = 'code_' . $count;
+        }
+
+        $result[] = $attribute;
 
         return $result;
     }

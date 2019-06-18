@@ -32,7 +32,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
  * @method Create setUse(string $use)
  * @method Create setName(dto\Name $name)
  * @method Create setExternalUpdateDate(string $externalUpdateDate)
- * @method Create setValues(string $values)
+ * @method Create setValues(array $values)
  */
 class Create extends Attribute
 {

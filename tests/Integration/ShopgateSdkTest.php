@@ -23,6 +23,8 @@
 namespace Shopgate\ConnectSdk\Tests\Integration;
 
 use Dotenv\Dotenv;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 use Shopgate\ConnectSdk\Client;
 use Shopgate\ConnectSdk\ShopgateSdk;
@@ -86,7 +88,10 @@ abstract class ShopgateSdkTest extends TestCase
             getenv('clientSecret'),
             getenv('merchantCode'),
             getenv('baseUri') ?: '',
-            getenv('accessTokenPath') ?: ''
+            getenv('accessTokenPath') ?: '',
+            (int)getenv('requestLogging')
+                ? new Logger('request_logger_integration_tests', [new StreamHandler('php://stdout')])
+                : null
         );
 
         // var_dump($this->sdkConfig);

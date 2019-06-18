@@ -557,32 +557,30 @@ class AttributeTest extends ShopgateSdkTest
             $attributeName->add('en-us', 'Attribute ' . $count . ' en');
             $attribute->setName($attributeName);
 
-            if (!$minimal) {
-                $attribute->setExternalUpdateDate('2018-12-15T00:00:23.114Z');
+            $attribute->setExternalUpdateDate('2018-12-15T00:00:23.114Z');
 
-                $attributeValue = new AttributeValue\Create();
-                $attributeValue->setCode('red');
-                $attributeValue->setSequenceId($count);
+            $attributeValue = new AttributeValue\Create();
+            $attributeValue->setCode('red');
+            $attributeValue->setSequenceId($count);
 
-                $attributeValueName = new AttributeValue\Dto\Name();
-                $attributeValueName->add('de-de', 'Attribute Value ' . $count . ' de');
-                $attributeValueName->add('en-us', 'Attribute Value ' . $count . ' en');
-                $attributeValue->setName($attributeValueName);
+            $attributeValueName = new AttributeValue\Dto\Name();
+            $attributeValueName->add('de-de', 'Attribute Value ' . $count . ' de');
+            $attributeValueName->add('en-us', 'Attribute Value ' . $count . ' en');
+            $attributeValue->setName($attributeValueName);
 
-                $attributeValueSwatch = new AttributeValue\Dto\Swatch();
-                $attributeValueSwatch->setType(AttributeValue::SWATCH_TYPE_IMAGE);
-                $attributeValueSwatch->setValue('https://www.google.de/image');
-                $attributeValue->setSwatch($attributeValueSwatch);
+            $attributeValueSwatch = new AttributeValue\Dto\Swatch();
+            $attributeValueSwatch->setType(AttributeValue::SWATCH_TYPE_IMAGE);
+            $attributeValueSwatch->setValue('https://www.google.de/image');
+            $attributeValue->setSwatch($attributeValueSwatch);
 
-                $attribute->setValues([$attributeValue]);
-            }
-
-            if ($removeOnTearDown) {
-                $this->cleanUpAttributeCodes[] = 'code_' . $count;
-            }
-
-            $result[] = $attribute;
+            $attribute->setValues([$attributeValue]);
         }
+
+        if ($removeOnTearDown) {
+            $this->cleanUpAttributeCodes[] = 'code_' . $count;
+        }
+
+        $result[] = $attribute;
 
         return $result;
     }

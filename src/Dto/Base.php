@@ -115,6 +115,18 @@ class Base extends Dto
     }
 
     /**
+     * @return array
+     */
+    public function toArray()
+    {
+        try {
+            return parent::toArray();
+        } catch (Exception $exception) {
+            return [];
+        }
+    }
+
+    /**
      * @inheritDoc
      *
      * @return Base

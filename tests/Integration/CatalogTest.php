@@ -24,7 +24,7 @@ namespace Shopgate\ConnectSdk\Tests\Integration;
 
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
 
-class CatalogTest extends ShopgateSdkTest
+abstract class CatalogTest extends ShopgateSdkTest
 {
     const CATALOG_SERVICE        = 'catalog';
     const METHOD_DELETE_CATEGORY = 'deleteCategory';

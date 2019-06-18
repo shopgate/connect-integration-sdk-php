@@ -121,9 +121,7 @@ class Client implements ClientInterface
         }
 
         $response = null;
-        $body     = isset($params['body'])
-            ? $params['body']
-            : [];
+        $body     = isset($params['body']) ? $params['body'] : [];
         try {
             $response = $this->guzzleClient->request(
                 $params['method'],
@@ -141,7 +139,8 @@ class Client implements ClientInterface
             $statusCode = $e->getResponse() ? $e->getResponse()->getStatusCode() : 0;
             throw new RequestException(
                 $statusCode,
-                $e->getResponse() && $e->getResponse()->getBody() ? $e->getResponse()->getBody()->getContents() : $e->getMessage()
+                $e->getResponse() && $e->getResponse()->getBody() ? $e->getResponse()->getBody()->getContents()
+                    : $e->getMessage()
             );
         } catch (GuzzleException $e) {
             throw new UnknownException($e->getMessage());
@@ -179,9 +178,7 @@ class Client implements ClientInterface
     private function triggerEvent(array $params)
     {
         $values = [
-            isset($params['body'])
-                ? $params['body']
-                : new Base(),
+            isset($params['body']) ? $params['body'] : new Base(),
         ];
         if ($params['action'] === 'create') {
             $key    = array_keys($params['body'])[0];
@@ -190,9 +187,7 @@ class Client implements ClientInterface
 
         $factory = new Factory();
         foreach ($values as $payload) {
-            $entityId = isset($params['entityId'])
-                ? $params['entityId']
-                : null;
+            $entityId = isset($params['entityId']) ? $params['entityId'] : null;
             $factory->addEvent($params['action'], $params['entity'], $payload, $entityId);
         }
 
@@ -209,7 +204,8 @@ class Client implements ClientInterface
             $statusCode = $e->getResponse() ? $e->getResponse()->getStatusCode() : 0;
             throw new RequestException(
                 $statusCode,
-                $e->getResponse() && $e->getResponse()->getBody() ? $e->getResponse()->getBody()->getContents() : $e->getMessage()
+                $e->getResponse() && $e->getResponse()->getBody() ? $e->getResponse()->getBody()->getContents()
+                    : $e->getMessage()
             );
         } catch (GuzzleException $e) {
             throw new UnknownException($e->getMessage());
@@ -226,6 +222,7 @@ class Client implements ClientInterface
      */
     public function isDirect(array $params)
     {
-        return (!isset($params['requestType']) && $params['method'] === 'get') || $params['requestType'] === ShopgateSdk::REQUEST_TYPE_DIRECT;
+        return (!isset($params['requestType']) && $params['method'] === 'get')
+            || $params['requestType'] === ShopgateSdk::REQUEST_TYPE_DIRECT;
     }
 }

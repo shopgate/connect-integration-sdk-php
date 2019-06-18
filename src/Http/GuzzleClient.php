@@ -59,6 +59,7 @@ class GuzzleClient extends Client implements ClientInterface
     {
         $baseUri          = $this->resolveUri($uri, isset($options['query']) ? $options['query'] : []);
         $options['query'] = $this->cleanInternalMeta(isset($options['query']) ? $options['query'] : []);
+        $options['query'] = $this->fixBoolValuesInQuery($options['query']);
 
         return parent::request($method, $baseUri, $options);
     }
@@ -127,5 +128,23 @@ class GuzzleClient extends Client implements ClientInterface
             },
             ARRAY_FILTER_USE_KEY
         );
+    }
+
+    /**
+     * This method will convert true (bool) values to 'true' (string) and false (bool) to 'false' (string).
+     *
+     * @param array $query
+     *
+     * @return array
+     */
+    private function fixBoolValuesInQuery($query)
+    {
+        foreach ($query as $key => $value) {
+            if (is_bool($value)) {
+                $query[$key] = empty($value) ? 'false' : 'true';
+            }
+        }
+
+        return $query;
     }
 }

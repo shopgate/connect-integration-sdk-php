@@ -24,6 +24,7 @@ namespace Shopgate\ConnectSdk\Tests\Integration;
 
 use Dotenv\Dotenv;
 use PHPUnit\Framework\TestCase;
+use Shopgate\ConnectSdk\Client;
 use Shopgate\ConnectSdk\ShopgateSdk;
 
 abstract class ShopgateSdkTest extends TestCase
@@ -47,8 +48,7 @@ abstract class ShopgateSdkTest extends TestCase
             [
                 'clientId',
                 'clientSecret',
-                'merchantCode',
-                'env'
+                'merchantCode'
             ]
         );
     }
@@ -81,23 +81,16 @@ abstract class ShopgateSdkTest extends TestCase
      */
     public function setUp()
     {
-        $this->sdkConfig = [
-            'clientId'     => getenv('clientId'),
-            'clientSecret' => getenv('clientSecret'),
-            'merchantCode' => getenv('merchantCode'),
-            'env'          => getenv('env'),
-        ];
+        $client = Client::createInstance(
+            getenv('clientId'),
+            getenv('clientSecret'),
+            getenv('merchantCode'),
+            getenv('baseUri') ?: '',
+            getenv('accessTokenPath') ?: ''
+        );
 
-        if ($baseUri = getenv('baseUri')) {
-            $this->sdkConfig['base_uri'] = $baseUri;
-        }
-        if ($oauthBaseUri = getenv('oauthBaseUri')) {
-            $this->sdkConfig['oauth']['base_uri'] = $oauthBaseUri;
-        }
-        if ($oauthStorage = getenv('oauthStoragePath')) {
-            $this->sdkConfig['oauth']['storage_path'] = $oauthStorage;
-        }
-        $this->sdk = new ShopgateSdk($this->sdkConfig);
+        // var_dump($this->sdkConfig);
+        $this->sdk = new ShopgateSdk(['client' => $client]);
     }
 
     public function tearDown()

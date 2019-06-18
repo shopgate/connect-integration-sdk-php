@@ -63,13 +63,11 @@ them in the local stack. The down-side is you have to have PHP and all required 
 #### Prerequisites
 Create the file `tests/Integration/.env` and put the following into it:
 
-    oauthBaseUri="http://auth.shopgatedev.services:8080/oauth/token"
-    oauthStoragePath="./access_token.txt"
-    baseUri="http://{service}.shopgatedev.services:8080/v{ver}/merchants/{merchantCode}/"
+    accessTokenPath="./access_token.txt"
+    baseUri="http://{service}.shopgatedev.services:8080"
     clientId="integration-tests"
     clientSecret="integration-tests"
     merchantCode="TM2"
-    env="dev"
 
 In your `/etc/hosts` file (usually `C:\Windows\System32\Drivers\etc\hosts` on Windows) add the following entries:
 

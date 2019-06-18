@@ -52,9 +52,9 @@ class Client implements ClientInterface
 
     /**
      * @param GuzzleClientInterface $guzzleClient
-     * @param OAuth2Middleware $oAuthMiddleware
-     * @param string $baseUri
-     * @param string $merchantCode
+     * @param OAuth2Middleware      $oAuthMiddleware
+     * @param string                $baseUri
+     * @param string                $merchantCode
      */
     public function __construct(
         GuzzleClientInterface $guzzleClient,
@@ -64,7 +64,7 @@ class Client implements ClientInterface
     ) {
         $this->guzzleClient    = $guzzleClient;
         $this->oAuthMiddleware = $oAuthMiddleware;
-        $this->baseUri         = $baseUri;
+        $this->baseUri         = rtrim($baseUri, '/');
         $this->merchantCode    = $merchantCode;
     }
 
@@ -79,7 +79,7 @@ class Client implements ClientInterface
     public static function createInstance($clientId, $clientSecret, $merchantCode, $baseUri = '', $accessTokenPath = '')
     {
         if (empty($baseUri)) {
-            $baseUri = 'https://{service}.shopgate.services/v1';
+            $baseUri = 'https://{service}.shopgate.services';
         }
 
         if (empty($accessTokenPath)) {
@@ -87,19 +87,19 @@ class Client implements ClientInterface
         }
 
         $reauthClient = new \GuzzleHttp\Client([
-            'base_uri' => str_replace('{service}', 'auth', $baseUri) . '/oauth/token'
+            'base_uri' => rtrim(str_replace('{service}', 'auth', $baseUri), '/') . '/oauth/token'
         ]);
 
-        $oauth  = new OAuth2Middleware(new ClientCredentials($reauthClient, [
-            'client_id'      => $clientId,
-            'client_secrect' => $clientSecret
+        $oauth = new OAuth2Middleware(new ClientCredentials($reauthClient, [
+            'client_id'     => $clientId,
+            'client_secret' => $clientSecret
         ]));
         $oauth->setTokenPersistence(new EncryptedFile($accessTokenPath, $clientSecret));
 
         $handlerStack = HandlerStack::create();
         $handlerStack->push($oauth);
         $client = new \GuzzleHttp\Client([
-            'auth' => 'oauth',
+            'auth'    => 'oauth',
             'handler' => $handlerStack
         ]);
 
@@ -108,11 +108,15 @@ class Client implements ClientInterface
 
     /**
      * @param string $serviceName
+     * @param string $path
      * @return string
      */
-    public function buildServiceUrl($serviceName)
+    public function buildServiceUrl($serviceName, $path = '')
     {
-        return str_replace('{service}', $serviceName, $this->baseUri);
+        return str_replace('{service}', $serviceName, $this->baseUri)
+            . '/v1'
+            . "/merchants/{$this->merchantCode}"
+            . '/' . ltrim($path, '/');
     }
 
     /**
@@ -128,16 +132,20 @@ class Client implements ClientInterface
             return $this->triggerEvent($params);
         }
 
+        if (isset($params['query']) && isset($params['query']['requestType'])) {
+            unset($params['query']);
+        }
+
         $response = null;
         $body     = isset($params['body']) ? $params['body'] : [];
         try {
             $response = $this->guzzleClient->request(
                 $params['method'],
-                $params['path'],
+                $this->buildServiceUrl($params['service'], $params['path']),
                 [
-                    'query' => ['service' => $params['service']] + (isset($params['query'])
+                    'query' => isset($params['query'])
                             ? $this->fixBoolValuesInQuery($params['query'])
-                            : []),
+                            : [],
                     'json'  => $body instanceof Base
                         ? $body->toJson()
                         : (new Base($body))->toJson(),
@@ -202,7 +210,7 @@ class Client implements ClientInterface
         try {
             return $this->guzzleClient->request(
                 'post',
-                'events',
+                $this->buildServiceUrl($params['service'], 'events'),
                 [
                     'json'        => $factory->getRequest()->toJson(),
                     'http_errors' => false,
@@ -230,7 +238,8 @@ class Client implements ClientInterface
      */
     public function isDirect(array $params)
     {
-        return (!isset($params['requestType']) && $params['method'] === 'get')
-            || $params['requestType'] === ShopgateSdk::REQUEST_TYPE_DIRECT;
+        return
+            (!isset($params['requestType']) && $params['method'] === 'get') ||
+            $params['requestType'] === ShopgateSdk::REQUEST_TYPE_DIRECT;
     }
 }

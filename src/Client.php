@@ -68,9 +68,7 @@ class Client implements ClientInterface
                 $params['method'],
                 $params['path'],
                 [
-                    'query' => ['service' => $params['service']] + (isset($params['query'])
-                            ? $this->fixBoolValuesInQuery($params['query'])
-                            : []),
+                    'query' => ['service' => $params['service']] + (isset($params['query']) ? $params['query'] : []),
                     'json'  => $body instanceof Base ? $body->toJson() : (new Base($body))->toJson(),
                 ]
             );
@@ -88,25 +86,6 @@ class Client implements ClientInterface
         }
 
         return $response;
-    }
-
-    /**
-     * This method will convert true (bool) values to 'true' (string) and false (bool) to 'false' (string).
-     *
-     * @param array $queryParameters
-     *
-     * @return array
-     */
-    private function fixBoolValuesInQuery($queryParameters)
-    {
-        foreach ($queryParameters as $queryParameterKey => $queryParameterValue) {
-            if (!is_bool($queryParameterValue)) {
-                continue;
-            }
-            $queryParameters[$queryParameterKey] = !empty($queryParameterValue) ? 'true' : 'false';
-        }
-
-        return $queryParameters;
     }
 
     /**

@@ -114,4 +114,34 @@ class GuzzleClientTest extends TestCase
             ['dev.shopgate', '%7Bservice%7D.shopgate', ['service' => 'dev'], []]
         ];
     }
+
+    /**
+     * @param array $expected
+     * @param array $query
+     *
+     * @dataProvider getFixBoolValuesProvider
+     * @throws ReflectionException
+     */
+    public function testFixBoolValuesInQuery($expected, $query)
+    {
+        $method = self::getMethod(GuzzleClient::class, 'fixBoolValuesInQuery');
+        $client = new GuzzleClient(
+            ['clientId' => '', 'clientSecret' => '', 'oauth' => ['base_uri' => '', 'storage_path' => '']]
+        );
+        $return = $method->invokeArgs($client, [$query]);
+        $this->assertEquals($expected, $return);
+    }
+
+    /**
+     * @return array
+     */
+    public function getFixBoolValuesProvider()
+    {
+        return [
+            [['la' => 'true'], ['la' => true]],
+            [['la' => 'false'], ['la' => false]],
+            [['prep' => 'hello', 'la' => 'false'], ['prep' => 'hello', 'la' => false]],
+            [['la' => 'false', 'prep' => 'hello'], ['la' => false, 'prep' => 'hello']]
+        ];
+    }
 }

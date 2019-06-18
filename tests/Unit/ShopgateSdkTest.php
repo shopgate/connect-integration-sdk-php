@@ -94,6 +94,20 @@ class ShopgateSdkTest extends TestCase
         $this->assertInstanceOf(BulkImport::class, $subjectUnderTest->getBulkImportService());
     }
 
+    public function testShouldConstructWithNewInstancesOfServicesNotPassed()
+    {
+        $catalog          = $this->getMockBuilder(Catalog::class)->disableOriginalConstructor()->getMock();
+        $subjectUnderTest = new ShopgateSdk([
+            'client'   => $this->client,
+            'services' => [                'catalog'    => $catalog            ]
+        ]);
+
+        $this->assertSame($catalog, $subjectUnderTest->getCatalogService());
+
+        /** @noinspection PhpParamsInspection */
+        $this->assertInstanceOf(BulkImport::class, $subjectUnderTest->getBulkImportService());
+    }
+
 
     /********************************************************************************************
      * Keeping the below for peeking; tests should be moved to their respective service classes

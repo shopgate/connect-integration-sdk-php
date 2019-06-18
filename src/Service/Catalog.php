@@ -422,15 +422,21 @@ class Catalog
         //todo-sg: test
         return $this->client->doRequest(
             [
+                // general
                 'service'     => 'catalog',
                 'method'      => 'post',
                 'path'        => 'attributes/' . $code,
                 'entity'      => 'attribute',
+                // direct only
                 'action'      => 'update',
                 'body'        => $payload,
                 'requestType' => isset($meta['requestType'])
                     ? $meta['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
+                // async
+                'entity'      => 'attribute',
+                'action'      => 'update',
+                'entityId'    => $code,
             ]
         );
     }
@@ -456,6 +462,11 @@ class Catalog
                 'requestType' => isset($meta['requestType'])
                     ? $meta['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
+                // async
+                'entity'      => 'attribute',
+                'action'      => 'delete',
+                'entityId'    => $code,
+                'query'       => $meta,
             ]
         );
     }

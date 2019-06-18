@@ -201,8 +201,6 @@ class AttributeTest extends ShopgateSdkTest
      */
     public function testUpdateAttributeEvent()
     {
-        $this->markTestSkipped('Skipped due to bug in worker service');
-
         // Arrange
         $sampleAttributes = $this->provideSampleAttributes(1);
         $this->createAttributes(
@@ -290,8 +288,6 @@ class AttributeTest extends ShopgateSdkTest
      */
     public function testDeleteAttributeEvent()
     {
-        $this->markTestSkipped('Skipped due to bug in worker service');
-
         // Arrange
         $sampleAttributes = $this->provideSampleAttributes(1, false);
         $this->createAttributes(
@@ -302,9 +298,9 @@ class AttributeTest extends ShopgateSdkTest
         );
 
         // Act
-        $this->sdk->getCatalogService()->deleteAttribute(
-            'code_1'
-        );
+        $this->sdk->getCatalogService()->deleteAttribute('code_1');
+
+        sleep(self::SLEEP_TIME_AFTER_EVENT);
 
         // Assert
         try {
@@ -550,9 +546,9 @@ class AttributeTest extends ShopgateSdkTest
         for ($count = 1; $count < ($itemCount + 1); $count++) {
             $attribute = new Attribute\Create();
             $attribute->setCode('code_' . $count)
-                      ->setType(Attribute\Create::TYPE_TEXT)
-                      ->setUse(Attribute\Create::USE_OPTION)
-                      ->setExternalUpdateDate('2018-12-15T00:00:23.114Z');
+                ->setType(Attribute\Create::TYPE_TEXT)
+                ->setUse(Attribute\Create::USE_OPTION)
+                ->setExternalUpdateDate('2018-12-15T00:00:23.114Z');
 
             $attributeName = new Name();
             $attributeName->add('de-de', 'Attribute ' . $count . ' de');

@@ -23,6 +23,8 @@
 namespace Shopgate\ConnectSdk\Service;
 
 use Shopgate\ConnectSdk\ClientInterface;
+use Shopgate\ConnectSdk\Exception\RequestException;
+use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Service\BulkImport\Handler\File;
 use Shopgate\ConnectSdk\Service\BulkImport\Handler\Stream;
 
@@ -31,22 +33,18 @@ class BulkImport
     /** @var ClientInterface */
     private $client;
 
-    /** @var  string */
-    private $importReference;
-
     /**
-     * BulkImport constructor.
-     *
      * @param ClientInterface $client
      */
     public function __construct(ClientInterface $client)
     {
-        $this->client          = $client;
-        $this->importReference = $this->getImportReference();
+        $this->client = $client;
     }
 
     /**
      * @return mixed
+     * @throws RequestException
+     * @throws UnknownException
      */
     protected function getImportReference()
     {
@@ -67,17 +65,21 @@ class BulkImport
 
     /**
      * @return File
+     * @throws RequestException
+     * @throws UnknownException
      */
     public function createFileImport()
     {
-        return new File($this->client, $this->importReference);
+        return new File($this->client, $this->getImportReference());
     }
 
     /**
      * @return Stream
+     * @throws RequestException
+     * @throws UnknownException
      */
     public function createStreamImport()
     {
-        return new Stream($this->client, $this->importReference);
+        return new Stream($this->client, $this->getImportReference());
     }
 }

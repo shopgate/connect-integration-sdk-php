@@ -29,19 +29,10 @@ use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 
-class AttributeValueTest extends ShopgateSdkTest
+class AttributeValueTest extends CatalogTest
 {
     const SAMPLE_ATTRIBUTE_CODE       = 'attribute_code_1';
     const SAMPLE_ATTRIBUTE_VALUE_CODE = 'attribute_value_code_1';
-
-    /**
-     * @throws Exception
-     */
-    public function tearDown()
-    {
-        $this->sdk->getCatalogService()->deleteAttribute(self::SAMPLE_ATTRIBUTE_CODE, ['requestType' => 'direct']);
-        parent::tearDown();
-    }
 
     /**
      * @throws Exception
@@ -72,11 +63,18 @@ class AttributeValueTest extends ShopgateSdkTest
             ['requestType' => 'direct']
         );
 
-        // Assert
         $addedAttributeValues = $this->sdk->getCatalogService()->getAttribute(self::SAMPLE_ATTRIBUTE_CODE)->getValues();
         /** @var AttributeValue\Get $addedAttributeValue */
-        $addedAttributeValue  = $addedAttributeValues[1];
+        $addedAttributeValue = $addedAttributeValues[1];
 
+        // Prepare delete
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_ATTRIBUTE,
+            [self::SAMPLE_ATTRIBUTE_CODE]
+        );
+
+        // Assert
         /** @noinspection PhpParamsInspection */
         $this->assertCount(2, $addedAttributeValues);
         $this->assertEquals('Attribute Value 2 en', $addedAttributeValue->getName());
@@ -115,6 +113,13 @@ class AttributeValueTest extends ShopgateSdkTest
         );
 
         sleep(self::SLEEP_TIME_AFTER_EVENT);
+
+        // Prepare delete
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_ATTRIBUTE,
+            [self::SAMPLE_ATTRIBUTE_CODE]
+        );
 
         // Assert
         $addedAttributeValues = $this->sdk->getCatalogService()->getAttribute(self::SAMPLE_ATTRIBUTE_CODE)->getValues();
@@ -155,6 +160,13 @@ class AttributeValueTest extends ShopgateSdkTest
             self::SAMPLE_ATTRIBUTE_VALUE_CODE,
             $updateAttributeValue,
             ['requestType' => 'direct']
+        );
+
+        // Prepare delete
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_ATTRIBUTE,
+            [self::SAMPLE_ATTRIBUTE_CODE]
         );
 
         // Assert
@@ -200,6 +212,13 @@ class AttributeValueTest extends ShopgateSdkTest
         );
 
         sleep(self::SLEEP_TIME_AFTER_EVENT);
+
+        // Prepare delete
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_ATTRIBUTE,
+            [self::SAMPLE_ATTRIBUTE_CODE]
+        );
 
         // Assert
         $updatedAttributeValues = $this->sdk->getCatalogService()
@@ -318,6 +337,13 @@ class AttributeValueTest extends ShopgateSdkTest
         $this->createSampleAttribute();
         $attributeValue = new AttributeValue\Create($attributeValueData);
 
+        // Prepare delete
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_ATTRIBUTE,
+            [self::SAMPLE_ATTRIBUTE_CODE]
+        );
+
         // Act
         try {
             $this->sdk->getCatalogService()->addAttributeValue(
@@ -358,6 +384,13 @@ class AttributeValueTest extends ShopgateSdkTest
         // Arrange
         $this->createSampleAttribute();
         $attributeValue = new AttributeValue\Create($attributeValueData);
+
+        // Prepare delete
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_ATTRIBUTE,
+            [self::SAMPLE_ATTRIBUTE_CODE]
+        );
 
         // Act
         try {

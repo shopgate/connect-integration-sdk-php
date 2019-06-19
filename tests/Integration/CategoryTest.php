@@ -35,7 +35,7 @@ class CategoryTest extends CatalogTest
      * @param int $limit
      * @param int $offset
      * @param int $expectedCategoryCount
-     * @param string $expectedCategoryCodes
+     * @param string[] $expectedCategoryCodes
      * @throws Exception
      *
      * @dataProvider provideCategoryLimitCases
@@ -90,27 +90,27 @@ class CategoryTest extends CatalogTest
     public function provideCategoryLimitCases()
     {
         return [
-            'get the second category' => [
+            'get the second' => [
                 'limit' => 1,
                 'offset' => 1,
-                'expectedCategoryCount' => 1,
+                'expectedCount' => 1,
                 'expectedCategoryCodes' => [
                     self::CATEGORY_CODE_SECOND
                 ],
             ],
-            'get the first category' => [
+            'get the first' => [
                 'limit' => 1,
                 'offset' => 0,
-                'expectedCategoryCount' => 1,
-                'expectedCategoryCodes' => [
+                'expectedCount' => 1,
+                'expectedCodes' => [
                     self::CATEGORY_CODE
                 ],
             ],
-            'get two categories' => [
+            'get two' => [
                 'limit' => 2,
                 'offset' => 0,
-                'expectedCategoryCount' => 2,
-                'expectedCategoryCodes' => [
+                'expectedCount' => 2,
+                'expectedCodes' => [
                     self::CATEGORY_CODE,
                     self::CATEGORY_CODE_SECOND
                 ],
@@ -118,16 +118,16 @@ class CategoryTest extends CatalogTest
             'limit 1' => [
                 'limit' => 1,
                 'offset' => null,
-                'expectedCategoryCount' => 1,
-                'expectedCategoryCodes' => [
+                'expectedCount' => 1,
+                'expectedCodes' => [
                     self::CATEGORY_CODE
                 ],
             ],
             'limit 2' => [
                 'limit' => 2,
                 'offset' => null,
-                'expectedCategoryCount' => 2,
-                'expectedCategoryCodes' => [
+                'expectedCount' => 2,
+                'expectedCodes' => [
                     self::CATEGORY_CODE,
                     self::CATEGORY_CODE_SECOND
                 ],
@@ -135,22 +135,22 @@ class CategoryTest extends CatalogTest
             'offset 1' => [
                 'limit' => null,
                 'offset' => 1,
-                'expectedCategoryCount' => 1,
-                'expectedCategoryCodes' => [
+                'expectedCount' => 1,
+                'expectedCodes' => [
                     self::CATEGORY_CODE_SECOND
                 ],
             ],
             'offset 2' => [
                 'limit' => null,
                 'offset' => 2,
-                'expectedCategoryCount' => 0,
-                'expectedCategoryCodes' => [],
+                'expectedCount' => 0,
+                'expectedCodes' => [],
             ],
-            'no categories found' => [
+            'no entities found' => [
                 'limit' => 1,
                 'offset' => 2,
-                'expectedCategoryCount' => 0,
-                'expectedCategoryCodes' => [],
+                'expectedCount' => 0,
+                'expectedCodes' => [],
             ]
         ];
     }

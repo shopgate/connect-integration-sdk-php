@@ -22,12 +22,12 @@ class ClientTest extends TestCase
 
     public function setUp()
     {
-        $this->guzzleClient     = $this
+        $this->guzzleClient = $this
             ->getMockBuilder(GuzzleClientInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->oAuthMiddleware  = $this
+        $this->oAuthMiddleware = $this
             ->getMockBuilder(OAuth2Middleware::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -35,7 +35,7 @@ class ClientTest extends TestCase
         $this->subjectUnderTest = new Client(
             $this->guzzleClient,
             $this->oAuthMiddleware,
-           'http://{service}.local',
+            'http://{service}.local',
             'TM2'
         );
     }
@@ -65,15 +65,15 @@ class ClientTest extends TestCase
     public function provideBuildServiceUrlFixtures()
     {
         return [
-            'should replace {service} with service name' => [
+            'should replace {service} with service name'       => [
                 'expectedUrl' => 'http://catalog.local/v1/merchants/TM2/',
                 'serviceName' => 'catalog',
-                'path' => ''
+                'path'        => ''
             ],
             'should left-trim slashes from path and append it' => [
                 'expectedUrl' => 'http://catalog.local/v1/merchants/TM2/products/prod1',
                 'serviceName' => 'catalog',
-                'path' => '///products/prod1'
+                'path'        => '///products/prod1'
             ]
         ];
     }
@@ -83,8 +83,8 @@ class ClientTest extends TestCase
         return [
             'should call requested service directly for GET calls' => [
                 'expectedUrl' => '',
-                'service' => 'catalog',
-                'env' => ''
+                'service'     => 'catalog',
+                'env'         => ''
             ]
         ];
     }

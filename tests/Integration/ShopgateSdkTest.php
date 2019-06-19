@@ -23,6 +23,8 @@
 namespace Shopgate\ConnectSdk\Tests\Integration;
 
 use Dotenv\Dotenv;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 use Shopgate\ConnectSdk\Client;
 use Shopgate\ConnectSdk\ShopgateSdk;
@@ -30,10 +32,13 @@ use Shopgate\ConnectSdk\ShopgateSdk;
 abstract class ShopgateSdkTest extends TestCase
 {
     const SLEEP_TIME_AFTER_EVENT = 2;
+
     /** @var array */
     protected $sdkConfig = [];
+
     /** @var ShopgateSdk */
     protected $sdk;
+
     /** @var ['$service' => ['$delete_method' => [string, string...]]] */
     protected $services = [];
 
@@ -48,7 +53,7 @@ abstract class ShopgateSdkTest extends TestCase
             [
                 'clientId',
                 'clientSecret',
-                'merchantCode'
+                'merchantCode',
             ]
         );
     }
@@ -85,8 +90,13 @@ abstract class ShopgateSdkTest extends TestCase
             getenv('clientId'),
             getenv('clientSecret'),
             getenv('merchantCode'),
-            getenv('baseUri') ?: '',
-            getenv('accessTokenPath') ?: ''
+            getenv('baseUri')
+                ?: '',
+            getenv('accessTokenPath')
+                ?: '',
+            (int)getenv('requestLogging')
+                ? new Logger('request_logger_integration_tests', [new StreamHandler('php://stdout')])
+                : null
         );
 
         // var_dump($this->sdkConfig);
@@ -100,7 +110,10 @@ abstract class ShopgateSdkTest extends TestCase
         foreach ($this->services as $service) {
             foreach ($service as $deleteMethod => $entityIds) {
                 foreach ($entityIds as $entityId) {
-                    $service['service']->{$deleteMethod}($entityId, ['requestType' => 'direct', 'force' => true]);
+                    $service['service']->{$deleteMethod}(
+                        $entityId,
+                        array_merge(['requestType' => 'direct'], CatalogTest::METHOD_DELETE_REQUEST_META[$deleteMethod])
+                    );
                 }
             }
         }

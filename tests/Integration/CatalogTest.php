@@ -26,14 +26,19 @@ use Shopgate\ConnectSdk\Dto\Catalog\Category;
 
 abstract class CatalogTest extends ShopgateSdkTest
 {
-    const CATALOG_SERVICE        = 'catalog';
-    const METHOD_DELETE_CATEGORY = 'deleteCategory';
-    const METHOD_DELETE_PRODUCT  = 'deleteProduct';
-
-    const PRODUCT_CODE         = 'integration-test';
-    const PARENT_CATEGORY_CODE = 'parent-integration-test';
-    const CATEGORY_CODE        = 'integration-test';
-    const CATEGORY_CODE_SECOND = 'integration-test-2';
+    const CATALOG_SERVICE            = 'catalog';
+    const METHOD_DELETE_CATEGORY     = 'deleteCategory';
+    const METHOD_DELETE_PRODUCT      = 'deleteProduct';
+    const METHOD_DELETE_ATTRIBUTE    = 'deleteAttribute';
+    const METHOD_DELETE_REQUEST_META = [
+        self::METHOD_DELETE_CATEGORY  => ['force' => true],
+        self::METHOD_DELETE_PRODUCT   => ['force' => true],
+        self::METHOD_DELETE_ATTRIBUTE => [],
+    ];
+    const PRODUCT_CODE               = 'integration-test';
+    const PARENT_CATEGORY_CODE       = 'parent-integration-test';
+    const CATEGORY_CODE              = 'integration-test';
+    const CATEGORY_CODE_SECOND       = 'integration-test-2';
 
     public function setUp()
     {
@@ -44,7 +49,8 @@ abstract class CatalogTest extends ShopgateSdkTest
             $this->sdk->getCatalogService(),
             [
                 self::METHOD_DELETE_CATEGORY,
-                self::METHOD_DELETE_PRODUCT
+                self::METHOD_DELETE_PRODUCT,
+                self::METHOD_DELETE_ATTRIBUTE,
             ]
         );
     }
@@ -56,7 +62,7 @@ abstract class CatalogTest extends ShopgateSdkTest
     {
         return [
             $this->provideSampleCreateCategory(self::CATEGORY_CODE, 'Integration Test Category 1', 1),
-            $this->provideSampleCreateCategory(self::CATEGORY_CODE_SECOND, 'Integration Test Category 2', 2)
+            $this->provideSampleCreateCategory(self::CATEGORY_CODE_SECOND, 'Integration Test Category 2', 2),
         ];
     }
 
@@ -83,8 +89,8 @@ abstract class CatalogTest extends ShopgateSdkTest
     ) {
         $category = new Category\Create();
         $category->setCode($code)
-                 ->setName(new Category\Dto\Name(['en-us' => $name]))
-                 ->setSequenceId($sequenceId);
+            ->setName(new Category\Dto\Name(['en-us' => $name]))
+            ->setSequenceId($sequenceId);
         if ($url) {
             $category->setUrl($url);
         }

@@ -27,9 +27,12 @@ use GuzzleHttp\ClientInterface as GuzzleClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException as GuzzleRequestException;
 use GuzzleHttp\HandlerStack;
+use GuzzleHttp\MessageFormatter;
+use GuzzleHttp\Middleware;
 use kamermans\OAuth2\GrantType\ClientCredentials;
 use kamermans\OAuth2\OAuth2Middleware;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerInterface;
 use Shopgate\ConnectSdk\Dto\Async\Factory;
 use Shopgate\ConnectSdk\Dto\Base;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
@@ -70,15 +73,22 @@ class Client implements ClientInterface
     }
 
     /**
-     * @param string $clientId
-     * @param string $clientSecret
-     * @param string $merchantCode
-     * @param string $baseUri
-     * @param string $accessTokenPath
+     * @param string               $clientId
+     * @param string               $clientSecret
+     * @param string               $merchantCode
+     * @param string               $baseUri
+     * @param string               $accessTokenPath
+     * @param LoggerInterface|null $logger
      * @return Client
      */
-    public static function createInstance($clientId, $clientSecret, $merchantCode, $baseUri = '', $accessTokenPath = '')
-    {
+    public static function createInstance(
+        $clientId,
+        $clientSecret,
+        $merchantCode,
+        $baseUri = '',
+        $accessTokenPath = '',
+        $logger = null
+    ) {
         if (empty($baseUri)) {
             $baseUri = 'https://{service}.shopgate.services';
         }
@@ -103,6 +113,10 @@ class Client implements ClientInterface
             'auth'    => 'oauth',
             'handler' => $handlerStack
         ]);
+
+        if ($logger) {
+            $handlerStack->push(Middleware::log($logger, new MessageFormatter(MessageFormatter::DEBUG)));
+        }
 
         return new self($client, $oauth, $baseUri, $merchantCode);
     }
@@ -146,8 +160,8 @@ class Client implements ClientInterface
                 $this->buildServiceUrl($params['service'], $params['path']),
                 [
                     'query' => isset($params['query'])
-                            ? $this->fixBoolValuesInQuery($params['query'])
-                            : [],
+                        ? $this->fixBoolValuesInQuery($params['query'])
+                        : [],
                     'json'  => $body instanceof Base
                         ? $body->toJson()
                         : (new Base($body))->toJson(),

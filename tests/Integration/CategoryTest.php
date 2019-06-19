@@ -681,22 +681,20 @@ class CategoryTest extends CatalogTest
      *
      * @throws Exception
      *
-     * @dataProvider provideCreateCategory_MissingRequiredFields
+     * @dataProvider provideCreateCategoryWithMissingRequiredFields
      * TODO: Currently there is no validation for events! Waiting for the implementation in service
      */
-    //    public function testCreateCategoryEvent_MissingRequiredFields(array $categoryData, $expectedException)
-    //    {
-    //        // Arrange
-    //        $category = new Category\Create($categoryData);
-    //
-    //        // Assert
-    //        $this->expectException($expectedException);
-    //
-    //        // Act
-    //        $this->createCategories([$category], [
-    //            'requestType' => 'direct'
-    //        ]);
-    //    }
+//    public function testCreateCategoryEventWithMissingRequiredFields(array $categoryData, $expectedException)
+//    {
+//        // Arrange
+//        $category = new Category\Create($categoryData);
+//
+//        // Assert
+//        $this->expectException(get_class($expectedException));
+//
+//        // Act
+//        $this->createCategories([$category]);
+//    }
 
     /**
      * @param array  $categoryData
@@ -704,20 +702,20 @@ class CategoryTest extends CatalogTest
      *
      * @throws Exception
      *
-     * @dataProvider provideCreateCategory_InvalidDataTypes
+     * @dataProvider provideCreateCategoryWithInvalidDataTypes
      * TODO: Currently there is no validation for events! Waiting for the implementation in service
      */
-    //    public function testCreateCategoryEvent_InvalidDataTypes($categoryData, $expectedException)
-    //    {
-    //        // Arrange
-    //        $category = new Category\Create($categoryData);
-    //
-    //        // Assert
-    //        $this->expectException($expectedException);
-    //
-    //        // Act
-    //        $this->createCategories([$category]);
-    //    }
+//    public function testCreateCategoryEventInvalidDataTypes($categoryData, $expectedException)
+//    {
+//        // Arrange
+//        $category = new Category\Create($categoryData);
+//
+//        // Assert
+//        $this->expectException(get_class($expectedException));
+//
+//        // Act
+//        $this->createCategories([$category]);
+//    }
 
     /**
      * @param array $categoryCodes

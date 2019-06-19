@@ -32,7 +32,7 @@ abstract class CatalogTest extends ShopgateSdkTest
     const METHOD_DELETE_ATTRIBUTE    = 'deleteAttribute';
     const METHOD_DELETE_REQUEST_META = [
         self::METHOD_DELETE_CATEGORY  => ['force' => true],
-        self::METHOD_DELETE_PRODUCT   => ['force' => true],
+        self::METHOD_DELETE_PRODUCT   => [],
         self::METHOD_DELETE_ATTRIBUTE => [],
     ];
     const PRODUCT_CODE               = 'integration-test';

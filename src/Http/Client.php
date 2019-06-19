@@ -123,7 +123,7 @@ class Client implements ClientInterface
         ]);
 
         if ($logger) {
-            $handlerStack->push(Middleware::log($logger, new MessageFormatter(MessageFormatter::DEBUG)));
+            $handlerStack->push(Middleware::log($logger, new MessageFormatter('URL: {hostname}/{target} Method: {method} RequestBody: {req_body} ResponseBody: {res_body}')));
         }
 
         return new self($client, $oauth, $baseUri, $merchantCode);

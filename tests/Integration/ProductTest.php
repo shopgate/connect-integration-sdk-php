@@ -46,10 +46,6 @@ class ProductTest extends CatalogTest
      */
     public function testCreateProductMinimumDirect()
     {
-        $this->markTestSkipped(
-            'Skipped due to catalog http code 500 issue when price tag isn\'t part of the product - the product is created even though'
-        );
-
         // Arrange
         $product = $this->prepareProductMinimum();
 
@@ -180,9 +176,8 @@ class ProductTest extends CatalogTest
             ->setPrice(13.13)
             ->setSalePrice(14.14)
             ->setVolumePricing([$volumePricing])
-            // currently buggy in catalog service
-//            ->setUnit('m')
-//            ->setMsrp(15.15)
+            ->setUnit('m')
+            ->setMsrp(15.15)
             ->setMapPricing([$mapPricing]);
         $product = new Product\Update();
         $product->setPrice($price);
@@ -213,6 +208,8 @@ class ProductTest extends CatalogTest
         $this->assertEquals($price->getCost(), $updatedProductPrice->getCost());
         $this->assertEquals($price->getPrice(), $updatedProductPrice->getPrice());
         $this->assertEquals($price->getSalePrice(), $updatedProductPrice->getSalePrice());
+        $this->assertEquals($price->getUnit(), $updatedProductPrice->getUnit());
+        $this->assertEquals($price->getMsrp(), $updatedProductPrice->getMsrp());
 
         $updatedVolumePrice = $updatedProductPrice->getVolumePricing()[0];
         $this->assertEquals($volumePricing->getPrice(), $updatedVolumePrice->getPrice());
@@ -465,10 +462,6 @@ class ProductTest extends CatalogTest
      */
     public function testCreateProductMinimumEvent()
     {
-        $this->markTestSkipped(
-            'Skipped due to catalog http code 500 issue when price tag isn\'t part of the product - the product is created even though'
-        );
-
         // Arrange
         $product = $this->prepareProductMinimum();
 

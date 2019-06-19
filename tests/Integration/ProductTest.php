@@ -43,128 +43,6 @@ class ProductTest extends CatalogTest
 {
 
     /**
-     * @param int $limit
-     * @param int $offset
-     * @param int $expectedProductCount
-     * @param string[] $expectedProductCodes
-     * @throws Exception
-     *
-     * @dataProvider provideProductLimitCases
-     */
-    public function testProductLimit($limit, $offset, $expectedProductCount, $expectedProductCodes)
-    {
-        // Arrange
-        $productMinimum = $this->prepareProductMinimum();
-        $productMaximum = $this->prepareProductMaximum();
-        $this->sdk->getCatalogService()->addProducts([$productMinimum, $productMaximum], ['requestType' => 'direct']);
-
-        $parameters = [];
-        if (isset($limit)) {
-            $parameters['limit'] = $limit;
-        }
-        if (isset($offset)) {
-            $parameters['offset'] = $offset;
-        }
-
-        // Act
-        $products = $this->sdk->getCatalogService()->getProducts(
-            $parameters
-        );
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [
-            $productMaximum->code,
-            $productMinimum->code
-        ]);
-
-        // Assert
-        $productCodes = [];
-        foreach ($products->getProducts() as $product) {
-            $productCodes[] = $product->getCode();
-        }
-
-        $this->assertCount($expectedProductCount, $products->getProducts());
-        $this->assertEquals($expectedProductCodes, $productCodes);
-        if (isset($limit)) {
-            $this->assertEquals($limit, $products->getMeta()->getLimit());
-        }
-        if (isset($offset)) {
-            $this->assertEquals($offset, $products->getMeta()->getOffset());
-        }
-    }
-
-    /**
-     * @return array
-     */
-    public function provideProductLimitCases()
-    {
-        return [
-            'get the second' => [
-                'limit' => 1,
-                'offset' => 1,
-                'expectedCount' => 1,
-                'expectedCodes' => [
-                    self::PRODUCT_CODE_SECOND
-                ],
-            ],
-            'get the first' => [
-                'limit' => 1,
-                'offset' => 0,
-                'expectedCount' => 1,
-                'expectedCodes' => [
-                    self::PRODUCT_CODE
-                ],
-            ],
-            'get two' => [
-                'limit' => 2,
-                'offset' => 0,
-                'expectedCount' => 2,
-                'expectedCodes' => [
-                    self::PRODUCT_CODE,
-                    self::PRODUCT_CODE_SECOND
-                ],
-            ],
-            'limit 1' => [
-                'limit' => 1,
-                'offset' => null,
-                'expectedCount' => 1,
-                'expectedCodes' => [
-                    self::PRODUCT_CODE
-                ],
-            ],
-            'limit 2' => [
-                'limit' => 2,
-                'offset' => null,
-                'expectedCount' => 2,
-                'expectedCodes' => [
-                    self::PRODUCT_CODE,
-                    self::PRODUCT_CODE_SECOND
-                ],
-            ],
-            'offset 1' => [
-                'limit' => null,
-                'offset' => 1,
-                'expectedCount' => 1,
-                'expectedCodes' => [
-                    self::PRODUCT_CODE_SECOND
-                ],
-            ],
-            'offset 2' => [
-                'limit' => null,
-                'offset' => 2,
-                'expectedCount' => 0,
-                'expectedCodes' => [],
-            ],
-            'no entities found' => [
-                'limit' => 1,
-                'offset' => 2,
-                'expectedCount' => 0,
-                'expectedCodes' => [],
-            ]
-        ];
-    }
-
-    /**
      * @throws Exception
      */
     public function testCreateProductMinimumDirect()
@@ -684,6 +562,182 @@ class ProductTest extends CatalogTest
         // Assert
         $this->expectException(NotFoundException::class);
         $this->sdk->getCatalogService()->getProduct($product->code);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testGetProduct()
+    {
+        // Arrange
+        $productMinimum = $this->prepareProductMinimum();
+        $this->sdk->getCatalogService()->addProducts([$productMinimum], ['requestType' => 'direct']);
+
+        // Act
+        $product = $this->sdk->getCatalogService()->getProduct($productMinimum->code);
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [
+            $productMinimum->code
+        ]);
+
+        // Assert
+        $this->assertEquals($productMinimum->code, $product->getCode());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testGetProducts()
+    {
+        // Arrange
+        $productMinimum = $this->prepareProductMinimum();
+        $productMaximum = $this->prepareProductMaximum();
+        $this->sdk->getCatalogService()->addProducts([$productMinimum, $productMaximum], ['requestType' => 'direct']);
+
+        // Act
+        $products = $this->sdk->getCatalogService()->getProducts();
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [
+            $productMaximum->code,
+            $productMinimum->code
+        ]);
+
+        // Assert
+        $productCodes = [];
+        foreach ($products->getProducts() as $product) {
+            $productCodes[] = $product->getCode();
+        }
+
+        $this->assertCount(2, $products->getProducts());
+        $this->assertEquals([
+            self::PRODUCT_CODE,
+            self::PRODUCT_CODE_SECOND,
+        ], $productCodes);
+    }
+
+
+    /**
+     * @param int $limit
+     * @param int $offset
+     * @param int $expectedProductCount
+     * @param string[] $expectedProductCodes
+     * @throws Exception
+     *
+     * @dataProvider provideProductLimitCases
+     */
+    public function testProductLimit($limit, $offset, $expectedProductCount, $expectedProductCodes)
+    {
+        // Arrange
+        $productMinimum = $this->prepareProductMinimum();
+        $productMaximum = $this->prepareProductMaximum();
+        $this->sdk->getCatalogService()->addProducts([$productMinimum, $productMaximum], ['requestType' => 'direct']);
+
+        $parameters = [];
+        if (isset($limit)) {
+            $parameters['limit'] = $limit;
+        }
+        if (isset($offset)) {
+            $parameters['offset'] = $offset;
+        }
+
+        // Act
+        $products = $this->sdk->getCatalogService()->getProducts(
+            $parameters
+        );
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [
+            $productMaximum->code,
+            $productMinimum->code
+        ]);
+
+        // Assert
+        $productCodes = [];
+        foreach ($products->getProducts() as $product) {
+            $productCodes[] = $product->getCode();
+        }
+
+        $this->assertCount($expectedProductCount, $products->getProducts());
+        $this->assertEquals($expectedProductCodes, $productCodes);
+        if (isset($limit)) {
+            $this->assertEquals($limit, $products->getMeta()->getLimit());
+        }
+        if (isset($offset)) {
+            $this->assertEquals($offset, $products->getMeta()->getOffset());
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function provideProductLimitCases()
+    {
+        return [
+            'get the second' => [
+                'limit' => 1,
+                'offset' => 1,
+                'expectedCount' => 1,
+                'expectedCodes' => [
+                    self::PRODUCT_CODE_SECOND
+                ],
+            ],
+            'get the first' => [
+                'limit' => 1,
+                'offset' => 0,
+                'expectedCount' => 1,
+                'expectedCodes' => [
+                    self::PRODUCT_CODE
+                ],
+            ],
+            'get two' => [
+                'limit' => 2,
+                'offset' => 0,
+                'expectedCount' => 2,
+                'expectedCodes' => [
+                    self::PRODUCT_CODE,
+                    self::PRODUCT_CODE_SECOND
+                ],
+            ],
+            'limit 1' => [
+                'limit' => 1,
+                'offset' => null,
+                'expectedCount' => 1,
+                'expectedCodes' => [
+                    self::PRODUCT_CODE
+                ],
+            ],
+            'limit 2' => [
+                'limit' => 2,
+                'offset' => null,
+                'expectedCount' => 2,
+                'expectedCodes' => [
+                    self::PRODUCT_CODE,
+                    self::PRODUCT_CODE_SECOND
+                ],
+            ],
+            'offset 1' => [
+                'limit' => null,
+                'offset' => 1,
+                'expectedCount' => 1,
+                'expectedCodes' => [
+                    self::PRODUCT_CODE_SECOND
+                ],
+            ],
+            'offset 2' => [
+                'limit' => null,
+                'offset' => 2,
+                'expectedCount' => 0,
+                'expectedCodes' => [],
+            ],
+            'no entities found' => [
+                'limit' => 1,
+                'offset' => 2,
+                'expectedCount' => 0,
+                'expectedCodes' => [],
+            ]
+        ];
     }
 
     /**‚

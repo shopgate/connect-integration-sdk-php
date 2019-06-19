@@ -230,22 +230,17 @@ class AttributeTest extends ShopgateSdkTest
      */
     public function testUpdateAttributeWithoutExistingAttribute()
     {
-        // Act
-        try {
-            $this->sdk->getCatalogService()->updateAttribute(
-                'non_existing',
-                new Attribute\Update(),
-                [
-                    'requestType' => 'direct',
-                ]
-            );
-        } catch (RequestException $exception) {
-            // Assert
-            $this->assertEquals(404, $exception->getStatusCode());
+        // Assert
+        $this->expectException(NotFoundException::class);
 
-            return;
-        }
-        $this->fail('Expected RequestException but wasn\'t thrown');
+        // Act
+        $this->sdk->getCatalogService()->updateAttribute(
+            'non_existing',
+            new Attribute\Update(),
+            [
+                'requestType' => 'direct',
+            ]
+        );
     }
 
     /**

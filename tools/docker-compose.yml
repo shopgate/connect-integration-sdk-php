@@ -101,7 +101,7 @@ services:
       - LOG_TO_SYSLOG=false
 
   catalog:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/catalog:v1.0.0-alpha.60-development
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/catalog:v1.0.0-alpha.62
     restart: always
     links:
       - etcd

@@ -51,6 +51,10 @@ check_code_style:
 run_unit_tests:
   image: composer:1.8.0
   stage: test
+  before_script:
+    - apk add --no-cache bash curl python3 jq python make g++
+    - pip3 install docker-compose==1.23.2 awscli
+    - $(aws ecr get-login --region=us-east-1 --no-include-email --registry-ids 602824140852)
   script:
     - docker-compose up -d php56
     - docker-compose up -d php73
@@ -66,6 +70,7 @@ run_unit_tests:
       - vendor
   tags:
     - docker
+    - ecr
 
 run_integration_tests:
   stage: test

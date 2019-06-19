@@ -32,6 +32,130 @@ use Shopgate\ConnectSdk\Exception\RequestException;
 class CategoryTest extends CatalogTest
 {
     /**
+     * @param int $limit
+     * @param int $offset
+     * @param int $expectedCategoryCount
+     * @param string $expectedCategoryCodes
+     * @throws Exception
+     *
+     * @dataProvider provideCategoryLimitCases
+     */
+    public function testCategoryLimit($limit, $offset, $expectedCategoryCount, $expectedCategoryCodes)
+    {
+        // Arrange
+        $sampleCategories    = $this->provideSampleCategories();
+        $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
+        $this->createCategories(
+            $sampleCategories,
+            [
+                'requestType' => 'direct'
+            ]
+        );
+
+        $parameters = [];
+        if (isset($limit)) {
+            $parameters['limit'] = $limit;
+        }
+        if (isset($offset)) {
+            $parameters['offset'] = $offset;
+        }
+
+        // Act
+        $categories = $this->getCategories($sampleCategoryCodes, $parameters);
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, $sampleCategoryCodes);
+
+        // Assert
+        /** @noinspection PhpParamsInspection */
+
+        $categoryCodes = [];
+        foreach ($categories->getCategories() as $category) {
+            $categoryCodes[] = $category->getCode();
+        }
+
+        $this->assertCount($expectedCategoryCount, $categories->getCategories());
+        $this->assertEquals($expectedCategoryCodes, $categoryCodes);
+        if (isset($limit)) {
+            $this->assertEquals($limit, $categories->getMeta()->getLimit());
+        }
+        if (isset($offset)) {
+            $this->assertEquals($offset, $categories->getMeta()->getOffset());
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function provideCategoryLimitCases()
+    {
+        return [
+            'get the second category' => [
+                'limit' => 1,
+                'offset' => 1,
+                'expectedCategoryCount' => 1,
+                'expectedCategoryCodes' => [
+                    self::CATEGORY_CODE_SECOND
+                ],
+            ],
+            'get the first category' => [
+                'limit' => 1,
+                'offset' => 0,
+                'expectedCategoryCount' => 1,
+                'expectedCategoryCodes' => [
+                    self::CATEGORY_CODE
+                ],
+            ],
+            'get two categories' => [
+                'limit' => 2,
+                'offset' => 0,
+                'expectedCategoryCount' => 2,
+                'expectedCategoryCodes' => [
+                    self::CATEGORY_CODE,
+                    self::CATEGORY_CODE_SECOND
+                ],
+            ],
+            'limit 1' => [
+                'limit' => 1,
+                'offset' => null,
+                'expectedCategoryCount' => 1,
+                'expectedCategoryCodes' => [
+                    self::CATEGORY_CODE
+                ],
+            ],
+            'limit 2' => [
+                'limit' => 2,
+                'offset' => null,
+                'expectedCategoryCount' => 2,
+                'expectedCategoryCodes' => [
+                    self::CATEGORY_CODE,
+                    self::CATEGORY_CODE_SECOND
+                ],
+            ],
+            'offset 1' => [
+                'limit' => null,
+                'offset' => 1,
+                'expectedCategoryCount' => 1,
+                'expectedCategoryCodes' => [
+                    self::CATEGORY_CODE_SECOND
+                ],
+            ],
+            'offset 2' => [
+                'limit' => null,
+                'offset' => 2,
+                'expectedCategoryCount' => 0,
+                'expectedCategoryCodes' => [],
+            ],
+            'no categories found' => [
+                'limit' => 1,
+                'offset' => 2,
+                'expectedCategoryCount' => 0,
+                'expectedCategoryCodes' => [],
+            ]
+        ];
+    }
+
+    /**
      * @throws Exception
      */
     public function testCreateCategoryDirect()
@@ -453,21 +577,17 @@ class CategoryTest extends CatalogTest
         $nonExistentCategoryCode = 'non-existent';
         $category                = $this->provideSampleUpdateCategory('test non existent category');
 
-        // Act
-        try {
-            $this->sdk->getCatalogService()->updateCategory(
-                $nonExistentCategoryCode,
-                $category,
-                [
-                    'requestType' => 'direct'
-                ]
-            );
-        } catch (NotFoundException $exception) {
-            return;
-        }
-
         // Assert
-        $this->fail('Expected RequestException but wasn\'t thrown');
+        $this->expectException(NotFoundException::class);
+
+        // Act
+        $this->sdk->getCatalogService()->updateCategory(
+            $nonExistentCategoryCode,
+            $category,
+            [
+                'requestType' => 'direct'
+            ]
+        );
     }
 
     // TODO: It seems only one category is created in the service. Cause of this bug:

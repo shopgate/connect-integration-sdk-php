@@ -538,6 +538,31 @@ class ProductTest extends CatalogTest
         $this->sdk->getCatalogService()->getProduct($product->code);
     }
 
+    /**
+     * @throws Exception
+     */
+    public function testDeleteProductEvent()
+    {
+        // Arrange
+        $product = $this->prepareProductMaximum();
+
+        $sampleCategories = $this->provideSampleCategories();
+        $this->sdk->getCatalogService()->addCategories($sampleCategories, ['requestType' => 'direct']);
+        $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
+        $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
+
+        // Act
+        $this->sdk->getCatalogService()->deleteProduct($product->code);
+        sleep(self::SLEEP_TIME_AFTER_EVENT);
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, $sampleCategoryCodes);
+
+        // Assert
+        $this->expectException(NotFoundException::class);
+        $this->sdk->getCatalogService()->getProduct($product->code);
+    }
+
     /**‚
      * Retrieves the default product with minimum details needed
      *

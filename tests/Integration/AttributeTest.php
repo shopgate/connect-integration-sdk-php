@@ -140,15 +140,12 @@ class AttributeTest extends CatalogTest
      */
     public function testGetAttributeWithoutExistingAttribute()
     {
+        $this->expectException(NotFoundException::class);
+
         // Act
-        try {
-            $this->sdk->getCatalogService()->getAttribute(
-                'non_existing'
-            );
-        } catch (NotFoundException $exception) {
-            return;
-        }
-        $this->fail('Expected RequestException but wasn\'t thrown');
+        $this->sdk->getCatalogService()->getAttribute(
+            'non_existing'
+        );
     }
 
     /**

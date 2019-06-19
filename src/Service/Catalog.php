@@ -22,7 +22,6 @@
 
 namespace Shopgate\ConnectSdk\Service;
 
-use Dto\Exceptions\InvalidDataTypeException;
 use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\ClientInterface;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
@@ -342,11 +341,7 @@ class Catalog
     {
         $requestAttributes = [];
         foreach ($attributes as $attribute) {
-            try {
-                $requestAttributes[] = $attribute->toArray();
-            } catch (InvalidDataTypeException $e) {
-                // TODO: handle exception
-            }
+            $requestAttributes[] = $attribute->toArray();
         }
 
         return $this->client->doRequest(
@@ -461,8 +456,6 @@ class Catalog
                     ? $meta['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
                 // async
-                'entity'      => 'attribute',
-                'action'      => 'update',
                 'entityId'    => $attributeCode,
             ]
         );
@@ -492,8 +485,6 @@ class Catalog
                     ? $meta['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
                 // async
-                'entity'      => 'attribute',
-                'action'      => 'delete',
                 'entityId'    => $attributeCode,
                 'query'       => $meta,
             ]
@@ -507,6 +498,7 @@ class Catalog
      *
      * @return ResponseInterface
      * @throws Exception\RequestException
+     * @throws Exception\NotFoundException
      * @throws Exception\UnknownException
      */
     public function addAttributeValue(

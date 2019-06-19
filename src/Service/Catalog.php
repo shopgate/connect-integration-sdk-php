@@ -187,7 +187,6 @@ class Catalog
      */
     public function addProducts(array $products, array $meta = [])
     {
-        //todo-sg: test
         return $this->client->doRequest(
             [
                 'service'     => 'catalog',
@@ -216,7 +215,6 @@ class Catalog
      */
     public function updateProduct($code, Product\Update $payload, array $meta = [])
     {
-        //todo-sg: test
         return $this->client->doRequest(
             [
                 'service'     => 'catalog',
@@ -245,7 +243,6 @@ class Catalog
      */
     public function deleteProduct($code, array $meta = [])
     {
-        //todo-sg: test
         return $this->client->doRequest(
             [
                 'service'     => 'catalog',
@@ -441,7 +438,6 @@ class Catalog
      */
     public function updateAttribute($attributeCode, Attribute\Update $payload, array $meta = [])
     {
-        //todo-sg: test
         return $this->client->doRequest(
             [
                 // general
@@ -473,7 +469,6 @@ class Catalog
      */
     public function deleteAttribute($attributeCode, array $meta = [])
     {
-        //todo-sg: test
         return $this->client->doRequest(
             [
                 'service'     => 'catalog',
@@ -506,7 +501,6 @@ class Catalog
         array $attributeValues,
         array $meta = []
     ) {
-        //todo-sg: test
         return $this->client->doRequest(
             [
                 'service'     => 'catalog',
@@ -540,7 +534,6 @@ class Catalog
         AttributeValue\Update $payload,
         array $meta = []
     ) {
-        //todo-sg: test
         return $this->client->doRequest(
             [
                 'service'     => 'catalog',
@@ -570,7 +563,6 @@ class Catalog
      */
     public function deleteAttributeValue($attributeCode, $attributeValueCode, array $meta = [])
     {
-        //todo-sg: test
         return $this->client->doRequest(
             [
                 'service'     => 'catalog',

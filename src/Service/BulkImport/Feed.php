@@ -22,7 +22,7 @@
 
 namespace Shopgate\ConnectSdk\Service\BulkImport;
 
-use Shopgate\ConnectSdk\ClientInterface;
+use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\Service\BulkImport\Handler\File;
 use Shopgate\ConnectSdk\Service\BulkImport\Handler\Stream;
 use GuzzleHttp\Exception\RequestException as GuzzleRequestException;

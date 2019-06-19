@@ -22,7 +22,7 @@
 
 namespace Shopgate\ConnectSdk\Service\BulkImport;
 
-use Shopgate\ConnectSdk\ClientInterface;
+use Shopgate\ConnectSdk\Http\ClientInterface;
 
 class Handler
 {

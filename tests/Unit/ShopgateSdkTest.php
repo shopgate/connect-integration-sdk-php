@@ -24,7 +24,7 @@ namespace Shopgate\ConnectSdk\Tests\Unit;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Shopgate\ConnectSdk\ClientInterface;
+use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\Dto\Catalog\Category\Create as CategoryCreate;
 use Shopgate\ConnectSdk\Dto\Catalog\Category\Update as CategoryUpdate;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Create as ProductCreate;

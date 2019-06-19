@@ -22,6 +22,8 @@
 
 namespace Shopgate\ConnectSdk;
 
+use Shopgate\ConnectSdk\Http\Client;
+use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\Service\BulkImport;
 use Shopgate\ConnectSdk\Service\Catalog;
 

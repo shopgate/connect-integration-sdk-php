@@ -20,7 +20,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk;
+namespace Shopgate\ConnectSdk\Http;
 
 use Exception;
 use GuzzleHttp\ClientInterface as GuzzleClientInterface;
@@ -31,6 +31,7 @@ use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
 use kamermans\OAuth2\GrantType\ClientCredentials;
 use kamermans\OAuth2\OAuth2Middleware;
+use kamermans\OAuth2\Persistence\TokenPersistenceInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Shopgate\ConnectSdk\Dto\Async\Factory;
@@ -39,6 +40,7 @@ use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Http\Persistence\EncryptedFile;
+use Shopgate\ConnectSdk\ShopgateSdk;
 
 class Client implements ClientInterface
 {
@@ -73,12 +75,13 @@ class Client implements ClientInterface
     }
 
     /**
-     * @param string               $clientId
-     * @param string               $clientSecret
-     * @param string               $merchantCode
-     * @param string               $baseUri
-     * @param string               $accessTokenPath
-     * @param LoggerInterface|null $logger
+     * @param string                         $clientId
+     * @param string                         $clientSecret
+     * @param string                         $merchantCode
+     * @param string                         $baseUri
+     * @param string                         $accessTokenPath
+     * @param TokenPersistenceInterface|null $tokenPersistence
+     * @param LoggerInterface|null           $logger
      * @return Client
      */
     public static function createInstance(
@@ -87,7 +90,8 @@ class Client implements ClientInterface
         $merchantCode,
         $baseUri = '',
         $accessTokenPath = '',
-        $logger = null
+        TokenPersistenceInterface $tokenPersistence = null,
+        LoggerInterface $logger = null
     ) {
         if (empty($baseUri)) {
             $baseUri = 'https://{service}.shopgate.services';
@@ -105,7 +109,11 @@ class Client implements ClientInterface
             'client_id'     => $clientId,
             'client_secret' => $clientSecret
         ]));
-        $oauth->setTokenPersistence(new EncryptedFile($accessTokenPath, $clientSecret));
+
+        if (empty($tokenPersistence)) {
+            $tokenPersistence = new EncryptedFile($accessTokenPath, $clientSecret);
+        }
+        $oauth->setTokenPersistence($tokenPersistence);
 
         $handlerStack = HandlerStack::create();
         $handlerStack->push($oauth);

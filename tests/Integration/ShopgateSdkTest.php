@@ -26,7 +26,7 @@ use Dotenv\Dotenv;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
-use Shopgate\ConnectSdk\Client;
+use Shopgate\ConnectSdk\Http\Client;
 use Shopgate\ConnectSdk\ShopgateSdk;
 
 abstract class ShopgateSdkTest extends TestCase

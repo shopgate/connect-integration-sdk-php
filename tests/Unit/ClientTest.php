@@ -6,8 +6,8 @@ use GuzzleHttp\ClientInterface as GuzzleClientInterface;
 use kamermans\OAuth2\OAuth2Middleware;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Shopgate\ConnectSdk\Client;
-use Shopgate\ConnectSdk\ClientInterface;
+use Shopgate\ConnectSdk\Http\Client;
+use Shopgate\ConnectSdk\Http\ClientInterface;
 
 class ClientTest extends TestCase
 {

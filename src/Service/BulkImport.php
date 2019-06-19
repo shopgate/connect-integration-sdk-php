@@ -22,7 +22,7 @@
 
 namespace Shopgate\ConnectSdk\Service;
 
-use Shopgate\ConnectSdk\ClientInterface;
+use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Service\BulkImport\Handler\File;

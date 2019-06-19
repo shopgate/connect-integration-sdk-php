@@ -23,7 +23,7 @@
 namespace Shopgate\ConnectSdk\Service;
 
 use Psr\Http\Message\ResponseInterface;
-use Shopgate\ConnectSdk\ClientInterface;
+use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;

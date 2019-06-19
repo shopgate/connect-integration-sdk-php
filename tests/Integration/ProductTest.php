@@ -578,7 +578,7 @@ class ProductTest extends CatalogTest
         $this->sdk->getCatalogService()->addProducts([$productMinimum], ['requestType' => 'direct']);
 
         // Act
-        $product = $this->sdk->getCatalogService()->getProduct($productMinimum->code, 'code');
+        $product = $this->sdk->getCatalogService()->getProduct($productMinimum->code, ['fields' => 'code']);
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [

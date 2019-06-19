@@ -741,6 +741,8 @@ class AttributeTest extends CatalogTest
      */
     private function getAttribute($attributeCode, $localeCode = '')
     {
-        return $this->sdk->getCatalogService()->getAttribute($attributeCode, $localeCode);
+        return $this->sdk->getCatalogService()->getAttribute($attributeCode, [
+            'localeCode' => $localeCode
+        ]);
     }
 }

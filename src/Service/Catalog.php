@@ -47,7 +47,7 @@ class Catalog
 
     /**
      * @param Category\Create[] $categories
-     * @param array             $meta
+     * @param array             $query
      *
      * @return ResponseInterface
      *
@@ -55,16 +55,17 @@ class Catalog
      * @throws Exception\NotFoundException
      * @throws Exception\UnknownException
      */
-    public function addCategories(array $categories, array $meta = [])
+    public function addCategories(array $categories, array $query = [])
     {
         return $this->client->doRequest(
             [
                 // general
                 'method'      => 'post',
-                'requestType' => isset($meta['requestType'])
-                    ? $meta['requestType']
+                'requestType' => isset($query['requestType'])
+                    ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
                 'body'        => ['categories' => $categories],
+                'query'       => $query,
                 // direct
                 'service'     => 'catalog',
                 'path'        => 'categories',
@@ -77,8 +78,8 @@ class Catalog
 
     /**
      * @param string          $code
-     * @param Category\Update $payload
-     * @param array           $meta
+     * @param Category\Update $category
+     * @param array           $query
      *
      * @return ResponseInterface
      *
@@ -86,15 +87,16 @@ class Catalog
      * @throws Exception\NotFoundException
      * @throws Exception\UnknownException
      */
-    public function updateCategory($code, Category\Update $payload, array $meta = [])
+    public function updateCategory($code, Category\Update $category, array $query = [])
     {
         return $this->client->doRequest(
             [
                 // general
-                'requestType' => isset($meta['requestType'])
-                    ? $meta['requestType']
+                'requestType' => isset($query['requestType'])
+                    ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
-                'body'        => $payload,
+                'body'        => $category,
+                'query'       => $query,
                 // direct
                 'method'      => 'post',
                 'service'     => 'catalog',
@@ -109,7 +111,7 @@ class Catalog
 
     /**
      * @param string $code
-     * @param array  $meta
+     * @param array  $query
      *
      * @return ResponseInterface
      *
@@ -117,14 +119,15 @@ class Catalog
      * @throws Exception\NotFoundException
      * @throws Exception\UnknownException
      */
-    public function deleteCategory($code, array $meta = [])
+    public function deleteCategory($code, array $query = [])
     {
         return $this->client->doRequest(
             [
                 // general
-                'requestType' => isset($meta['requestType'])
-                    ? $meta['requestType']
+                'requestType' => isset($query['requestType'])
+                    ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
+                'query'       => $query,
                 // direct
                 'method'      => 'delete',
                 'service'     => 'catalog',
@@ -133,25 +136,23 @@ class Catalog
                 'entity'      => 'category',
                 'action'      => 'delete',
                 'entityId'    => $code,
-                'query'       => $meta,
             ]
         );
     }
 
     /**
-     * @param array $meta
+     * @param array $query
      *
-     * @todo-sg: supposedly needs more than just limit/offset as there are many query methods defined, ask Pascal
      * @return Category\GetList
      *
      * @throws Exception\RequestException
      * @throws Exception\NotFoundException
      * @throws Exception\UnknownException
      */
-    public function getCategories(array $meta = [])
+    public function getCategories(array $query = [])
     {
-        if (isset($meta['filters'])) {
-            $meta['filters'] = \GuzzleHttp\json_encode($meta['filters']);
+        if (isset($query['filters'])) {
+            $query['filters'] = \GuzzleHttp\json_encode($query['filters']);
         }
 
         $response = $this->client->doRequest(
@@ -160,7 +161,7 @@ class Catalog
                 'service' => 'catalog',
                 'method'  => 'get',
                 'path'    => 'categories',
-                'query'   => $meta,
+                'query'   => $query,
             ]
         );
         $response = json_decode($response->getBody(), true);
@@ -177,7 +178,7 @@ class Catalog
 
     /**
      * @param Product\Create[] $products
-     * @param array            $meta
+     * @param array            $query
      *
      * @return ResponseInterface
      *
@@ -185,7 +186,7 @@ class Catalog
      * @throws Exception\NotFoundException
      * @throws Exception\UnknownException
      */
-    public function addProducts(array $products, array $meta = [])
+    public function addProducts(array $products, array $query = [])
     {
         return $this->client->doRequest(
             [
@@ -195,17 +196,18 @@ class Catalog
                 'entity'      => 'product',
                 'action'      => 'create',
                 'body'        => ['products' => $products],
-                'requestType' => isset($meta['requestType'])
-                    ? $meta['requestType']
+                'requestType' => isset($query['requestType'])
+                    ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
+                'query'       => $query,
             ]
         );
     }
 
     /**
      * @param string         $code
-     * @param Product\Update $payload
-     * @param array          $meta
+     * @param Product\Update $product
+     * @param array          $query
      *
      * @return ResponseInterface
      *
@@ -213,7 +215,7 @@ class Catalog
      * @throws Exception\NotFoundException
      * @throws Exception\UnknownException
      */
-    public function updateProduct($code, Product\Update $payload, array $meta = [])
+    public function updateProduct($code, Product\Update $product, array $query = [])
     {
         return $this->client->doRequest(
             [
@@ -223,17 +225,18 @@ class Catalog
                 'entityId'    => $code,
                 'entity'      => 'product',
                 'action'      => 'update',
-                'body'        => $payload,
-                'requestType' => isset($meta['requestType'])
-                    ? $meta['requestType']
+                'body'        => $product,
+                'requestType' => isset($query['requestType'])
+                    ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
+                'query'       => $query,
             ]
         );
     }
 
     /**
      * @param string $code
-     * @param array  $meta
+     * @param array  $query
      *
      * @return ResponseInterface
      *
@@ -241,7 +244,7 @@ class Catalog
      * @throws Exception\NotFoundException
      * @throws Exception\UnknownException
      */
-    public function deleteProduct($code, array $meta = [])
+    public function deleteProduct($code, array $query = [])
     {
         return $this->client->doRequest(
             [
@@ -251,15 +254,16 @@ class Catalog
                 'entity'      => 'product',
                 'action'      => 'delete',
                 'entityId'    => $code,
-                'requestType' => isset($meta['requestType'])
-                    ? $meta['requestType']
+                'requestType' => isset($query['requestType'])
+                    ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
+                'query'       => $query,
             ]
         );
     }
 
     /**
-     * @param array $meta
+     * @param array $query
      *
      * @return Product\GetList
      *
@@ -267,10 +271,10 @@ class Catalog
      * @throws Exception\NotFoundException
      * @throws Exception\UnknownException
      */
-    public function getProducts(array $meta = [])
+    public function getProducts(array $query = [])
     {
-        if (isset($meta['filters'])) {
-            $meta['filters'] = \GuzzleHttp\json_encode($meta['filters']);
+        if (isset($query['filters'])) {
+            $query['filters'] = \GuzzleHttp\json_encode($query['filters']);
         }
 
         $response = $this->client->doRequest(
@@ -279,7 +283,7 @@ class Catalog
                 'service' => 'catalog',
                 'method'  => 'get',
                 'path'    => 'products',
-                'query'   => $meta,
+                'query'   => $query,
             ]
         );
         $response = json_decode($response->getBody(), true);
@@ -296,8 +300,7 @@ class Catalog
 
     /**
      * @param string  $code
-     * @param string  $fields
-     * @param boolean $getOriginalImageUrls
+     * @param array  $query
      *
      * @return Product\Get
      *
@@ -305,7 +308,7 @@ class Catalog
      * @throws Exception\NotFoundException
      * @throws Exception\UnknownException
      */
-    public function getProduct($code, $fields = '', $getOriginalImageUrls = false)
+    public function getProduct($code, array $query = [])
     {
         $response = $this->client->doRequest(
             [
@@ -313,10 +316,7 @@ class Catalog
                 'service' => 'catalog',
                 'method'  => 'get',
                 'path'    => 'products/' . $code,
-                'query'   => [
-                    'fields'               => $fields,
-                    'getOriginalImageUrls' => json_encode($getOriginalImageUrls),
-                ],
+                'query'   => $query
             ]
         );
         $response = json_decode($response->getBody(), true);
@@ -326,7 +326,7 @@ class Catalog
 
     /**
      * @param Attribute\Create[] $attributes
-     * @param array              $meta
+     * @param array              $query
      *
      * @return ResponseInterface
      *
@@ -334,7 +334,7 @@ class Catalog
      * @throws Exception\NotFoundException
      * @throws Exception\UnknownException
      */
-    public function addAttributes(array $attributes, array $meta = [])
+    public function addAttributes(array $attributes, array $query = [])
     {
         $requestAttributes = [];
         foreach ($attributes as $attribute) {
@@ -345,10 +345,11 @@ class Catalog
             [
                 // general
                 'method'      => 'post',
-                'requestType' => isset($meta['requestType'])
-                    ? $meta['requestType']
+                'requestType' => isset($query['requestType'])
+                    ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
                 'body'        => ['attributes' => $requestAttributes],
+                'query'       => $query,
                 // direct
                 'service'     => 'catalog',
                 'path'        => 'attributes',
@@ -360,19 +361,18 @@ class Catalog
     }
 
     /**
-     * @param array $meta
+     * @param array $query
      *
-     * @todo-sg: supposedly needs more than just limit/offset as there are many query methods defined, ask Pascal
      * @return Attribute\GetList
      *
      * @throws Exception\RequestException
      * @throws Exception\NotFoundException
      * @throws Exception\UnknownException
      */
-    public function getAttributes(array $meta = [])
+    public function getAttributes(array $query = [])
     {
-        if (isset($meta['filters'])) {
-            $meta['filters'] = \GuzzleHttp\json_encode($meta['filters']);
+        if (isset($query['filters'])) {
+            $query['filters'] = \GuzzleHttp\json_encode($query['filters']);
         }
 
         $response = $this->client->doRequest(
@@ -381,7 +381,7 @@ class Catalog
                 'service' => 'catalog',
                 'method'  => 'get',
                 'path'    => 'attributes',
-                'query'   => $meta,
+                'query'   => $query,
             ]
         );
         $response = json_decode($response->getBody(), true);
@@ -398,7 +398,7 @@ class Catalog
 
     /**
      * @param string $attributeCode
-     * @param string $localeCode
+     * @param array $query
      *
      * @return Attribute\Get
      *
@@ -406,7 +406,7 @@ class Catalog
      * @throws Exception\NotFoundException
      * @throws Exception\UnknownException
      */
-    public function getAttribute($attributeCode, $localeCode = '')
+    public function getAttribute($attributeCode, array $query = [])
     {
         $response = $this->client->doRequest(
             [
@@ -414,9 +414,7 @@ class Catalog
                 'service' => 'catalog',
                 'method'  => 'get',
                 'path'    => 'attributes/' . $attributeCode,
-                'query'   => [
-                    'localeCode' => $localeCode,
-                ],
+                'query'   => $query,
             ]
         );
 
@@ -427,8 +425,8 @@ class Catalog
 
     /**
      * @param string           $attributeCode
-     * @param Attribute\Update $payload
-     * @param array            $meta
+     * @param Attribute\Update $attribute
+     * @param array            $query
      *
      * @return ResponseInterface
      *
@@ -436,7 +434,7 @@ class Catalog
      * @throws Exception\NotFoundException
      * @throws Exception\UnknownException
      */
-    public function updateAttribute($attributeCode, Attribute\Update $payload, array $meta = [])
+    public function updateAttribute($attributeCode, Attribute\Update $attribute, array $query = [])
     {
         return $this->client->doRequest(
             [
@@ -445,11 +443,12 @@ class Catalog
                 'method'      => 'post',
                 'path'        => 'attributes/' . $attributeCode,
                 'entity'      => 'attribute',
+                'query'       => $query,
                 // direct only
                 'action'      => 'update',
-                'body'        => $payload,
-                'requestType' => isset($meta['requestType'])
-                    ? $meta['requestType']
+                'body'        => $attribute,
+                'requestType' => isset($query['requestType'])
+                    ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
                 // async
                 'entityId'    => $attributeCode,
@@ -459,7 +458,7 @@ class Catalog
 
     /**
      * @param string $attributeCode
-     * @param array  $meta
+     * @param array  $query
      *
      * @return ResponseInterface
      *
@@ -467,7 +466,7 @@ class Catalog
      * @throws Exception\NotFoundException
      * @throws Exception\UnknownException
      */
-    public function deleteAttribute($attributeCode, array $meta = [])
+    public function deleteAttribute($attributeCode, array $query = [])
     {
         return $this->client->doRequest(
             [
@@ -476,12 +475,12 @@ class Catalog
                 'path'        => 'attributes/' . $attributeCode,
                 'entity'      => 'attribute',
                 'action'      => 'delete',
-                'requestType' => isset($meta['requestType'])
-                    ? $meta['requestType']
+                'requestType' => isset($query['requestType'])
+                    ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
                 // async
                 'entityId'    => $attributeCode,
-                'query'       => $meta,
+                'query'       => $query,
             ]
         );
     }
@@ -489,7 +488,7 @@ class Catalog
     /**
      * @param string                  $attributeCode
      * @param AttributeValue\Create[] $attributeValues
-     * @param array                   $meta
+     * @param array                   $query
      *
      * @return ResponseInterface
      * @throws Exception\RequestException
@@ -499,7 +498,7 @@ class Catalog
     public function addAttributeValue(
         $attributeCode,
         array $attributeValues,
-        array $meta = []
+        array $query = []
     ) {
         return $this->client->doRequest(
             [
@@ -509,9 +508,10 @@ class Catalog
                 'entity'      => 'attributes',
                 'action'      => 'create',
                 'body'        => ['values' => $attributeValues],
-                'requestType' => isset($meta['requestType'])
-                    ? $meta['requestType']
+                'requestType' => isset($query['requestType'])
+                    ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
+                'query'       => $query,
             ]
         );
     }
@@ -519,8 +519,8 @@ class Catalog
     /**
      * @param string                $attributeCode
      * @param string                $attributeValueCode
-     * @param AttributeValue\Update $payload
-     * @param array                 $meta
+     * @param AttributeValue\Update $attributeValue
+     * @param array                 $query
      *
      * @return ResponseInterface
      *
@@ -531,8 +531,8 @@ class Catalog
     public function updateAttributeValue(
         $attributeCode,
         $attributeValueCode,
-        AttributeValue\Update $payload,
-        array $meta = []
+        AttributeValue\Update $attributeValue,
+        array $query = []
     ) {
         return $this->client->doRequest(
             [
@@ -541,11 +541,12 @@ class Catalog
                 'path'        => 'attributes/' . $attributeCode . '/values/' . $attributeValueCode,
                 'entity'      => 'attribute',
                 'action'      => 'update',
-                'body'        => $payload,
-                'requestType' => isset($meta['requestType'])
-                    ? $meta['requestType']
+                'body'        => $attributeValue,
+                'requestType' => isset($query['requestType'])
+                    ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
                 'entityId'    => $attributeCode,
+                'query'       => $query,
             ]
         );
     }
@@ -553,7 +554,7 @@ class Catalog
     /**
      * @param string $attributeCode
      * @param string $attributeValueCode
-     * @param array  $meta
+     * @param array  $query
      *
      * @return ResponseInterface
      *
@@ -561,7 +562,7 @@ class Catalog
      * @throws Exception\NotFoundException
      * @throws Exception\UnknownException
      */
-    public function deleteAttributeValue($attributeCode, $attributeValueCode, array $meta = [])
+    public function deleteAttributeValue($attributeCode, $attributeValueCode, array $query = [])
     {
         return $this->client->doRequest(
             [
@@ -570,9 +571,10 @@ class Catalog
                 'path'        => 'attributes/' . $attributeCode . '/values/' . $attributeValueCode,
                 'entity'      => 'attribute',
                 'action'      => 'delete',
-                'requestType' => isset($meta['requestType'])
-                    ? $meta['requestType']
+                'requestType' => isset($query['requestType'])
+                    ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
+                'query'       => $query,
             ]
         );
     }

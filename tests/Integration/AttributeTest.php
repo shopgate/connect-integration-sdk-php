@@ -33,9 +33,6 @@ use Shopgate\ConnectSdk\Exception\UnknownException;
 
 class AttributeTest extends CatalogTest
 {
-    /** @var array */
-    protected $cleanUpAttributeCodes = [];
-
     /**
      * @throws Exception
      */
@@ -300,7 +297,6 @@ class AttributeTest extends CatalogTest
         try {
             $this->getAttribute('code_1');
         } catch (NotFoundException $e) {
-            unset($this->cleanUpAttributeCodes['code_1']);
             $this->assertEquals($e->getMessage(), '{"code":"NotFound","message":"Attribute not found"}');
         }
     }
@@ -328,7 +324,6 @@ class AttributeTest extends CatalogTest
         try {
             $this->getAttribute('code_1');
         } catch (NotFoundException $e) {
-            unset($this->cleanUpAttributeCodes['code_1']);
             $this->assertEquals($e->getMessage(), '{"code":"NotFound","message":"Attribute not found"}');
         }
     }
@@ -566,10 +561,6 @@ class AttributeTest extends CatalogTest
             $attributeValue->setSwatch($attributeValueSwatch);
 
             $attribute->setValues([$attributeValue]);
-
-            if ($removeOnTearDown) {
-                $this->cleanUpAttributeCodes[] = 'code_' . $count;
-            }
 
             $result[] = $attribute;
         }

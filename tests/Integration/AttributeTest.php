@@ -329,6 +329,62 @@ class AttributeTest extends CatalogTest
     }
 
     /**
+     * @param int      $limit
+     * @param int      $offset
+     * @param int      $expectedAttributeCount
+     * @param string[] $expectedAttributeCodes
+     *
+     * @throws Exception
+     *
+     * @dataProvider provideAttributeGetListLimitCases
+     */
+    public function testAttributeGetListLimit($limit, $offset, $expectedAttributeCount, $expectedAttributeCodes)
+    {
+        // Arrange
+        $createdItemCount = 10;
+        $sampleAttributes = $this->provideSampleAttributes($createdItemCount);
+
+        // Act
+        $this->createAttributes(
+            $sampleAttributes,
+            [
+                'requestType' => 'direct',
+            ]
+        );
+
+        $parameters = [];
+        if (isset($limit)) {
+            $parameters['limit'] = $limit;
+        }
+        if (isset($offset)) {
+            $parameters['offset'] = $offset;
+        }
+
+        // Assert
+        $attributes = $this->getAttributes($parameters);
+
+        // Prepare delete
+        $deleteCodes = [];
+        foreach ($attributes->getAttributes() as $attribute) {
+            $deleteCodes[] = $attribute->getCode();
+        }
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_ATTRIBUTE,
+            $deleteCodes
+        );
+
+        $this->assertCount($expectedAttributeCount, $attributes->getAttributes());
+        $this->assertEquals($expectedAttributeCodes, $deleteCodes);
+        if (isset($limit)) {
+            $this->assertEquals($limit, $attributes->getMeta()->getLimit());
+        }
+        if (isset($offset)) {
+            $this->assertEquals($offset, $attributes->getMeta()->getOffset());
+        }
+    }
+
+    /**
      * @param array            $attributeData
      * @param RequestException $expectedException
      * @param string           $missingItem
@@ -522,6 +578,85 @@ class AttributeTest extends CatalogTest
                 'message'       => null,
             ],
             */
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function provideAttributeGetListLimitCases()
+    {
+        return [
+            'get the second'    => [
+                'limit'                  => 1,
+                'offset'                 => 1,
+                'expectedCount'          => 1,
+                'expectedAttributeCodes' => [
+                    'code_10',
+                ],
+            ],
+            'get the first'     => [
+                'limit'                  => 1,
+                'offset'                 => 0,
+                'expectedCount'          => 1,
+                'expectedAttributeCodes' => [
+                    'code_1',
+                ],
+            ],
+            'get two'           => [
+                'limit'                  => 2,
+                'offset'                 => 0,
+                'expectedCount'          => 2,
+                'expectedAttributeCodes' => [
+                    'code_1',
+                    'code_10',
+                ],
+            ],
+            'limit 1'           => [
+                'limit'                  => 1,
+                'offset'                 => null,
+                'expectedCount'          => 1,
+                'expectedAttributeCodes' => [
+                    'code_1',
+                ],
+            ],
+            'limit 2'           => [
+                'limit'                  => 2,
+                'offset'                 => null,
+                'expectedCount'          => 2,
+                'expectedAttributeCodes' => [
+                    'code_1',
+                    'code_10',
+                ],
+            ],
+            'offset 1'          => [
+                'limit'                  => null,
+                'offset'                 => 1,
+                'expectedCount'          => 9,
+                'expectedAttributeCodes' => [
+                    'code_10',
+                    'code_2',
+                    'code_3',
+                    'code_4',
+                    'code_5',
+                    'code_6',
+                    'code_7',
+                    'code_8',
+                    'code_9',
+                ],
+            ],
+            'offset 2'          => [
+                'limit'                  => null,
+                'offset'                 => 10,
+                'expectedCount'          => 0,
+                'expectedAttributeCodes' => [],
+            ],
+            'no entities found' => [
+                'limit'                  => 1,
+                'offset'                 => 10,
+                'expectedCount'          => 0,
+                'expectedAttributeCodes' => [],
+            ],
         ];
     }
 

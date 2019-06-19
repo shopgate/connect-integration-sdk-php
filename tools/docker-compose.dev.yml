@@ -1,12 +1,33 @@
 version: '2.1'
 services:
-  php:
+  php56:
     build:
       context: ../
-      dockerfile: tools/dockerfiles/Php7
+      dockerfile: tools/dockerfiles/Php56
+      args:
+        - ENABLE_XDEBUG=1
+    environment:
+      - XDEBUG_CONNECT_TO_PORT=${XDEBUG_CONNECT_TO_PORT}
+      - PHP_IDE_CONFIG=serverName=integration-sdk-php-56
+    volumes:
+      - ../composer.json:/sdk/composer.json
+      - ../phpunit.xml.dist:/sdk/phpunit.xml.dist
+      - ../src:/sdk/src
+      - ../tests:/sdk/tests
+      - ../tools:/sdk/tools
+      - ../tools/fixtures/env:/sdk/tests/Integration/.env
+    tty: true
+
+  php73:
+    build:
+      context: ../
+      dockerfile: tools/dockerfiles/Php73
+      args:
+        - ENABLE_XDEBUG=1
     environment:
       - ETCD_HOST=http://etcd:2379
       - PUBSUB_EMULATOR_HOST=googlepubsub-emulator:8085
+      - XDEBUG_CONNECT_TO_PORT=${XDEBUG_CONNECT_TO_PORT}
     volumes:
       - ../composer.json:/sdk/composer.json
       - ../phpunit.xml.dist:/sdk/phpunit.xml.dist

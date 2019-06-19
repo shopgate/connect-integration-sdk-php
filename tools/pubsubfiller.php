@@ -5,7 +5,6 @@ require(__DIR__ . '/../vendor/autoload.php');
 use Google\Cloud\PubSub\PubSubClient;
 
 if (!getenv('PUBSUB_EMULATOR_HOST')) {
-    echo 'GOT NO EMULATOR!!!111!1!11!!!';
     putenv('PUBSUB_EMULATOR_HOST=localhost:8085');
 }
 

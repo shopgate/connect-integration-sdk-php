@@ -13,7 +13,7 @@ stability. Following documentation is meant for internal use.
 
 ## Requirements
 Following software components should be installed on your system for everything below to work:
-* PHP >= 5.6 (>= 7.0 for dependency checking / audit)
+* PHP >= 5.6
 * [Composer](https://getcomposer.org) >= 1.7.0 (1.8.x will work)
 * [Docker](https://docs.docker.com/install/) >= 18.09
 * [Docker Compose](https://docs.docker.com/compose/install/) >= 1.22
@@ -54,9 +54,14 @@ To run the integration tests on the local stack, log in to ECR, then:
     composer start
     composer integration-tests
 
+The second command defaults to execution on the PHP 5.6 container. If you need to run them on PHP 7.3 instead, execute:
+
+    PHP=73 composer integration-tests
+
+By default, Xdebug is enabled and connects to the default port (9000), so debugging in PHPStorm should be as easy as
+clicking the `Start Listening for PHP Debug Connections` icon and setting up path mappings.
+
 ### On Your Machine
-Running tests on your machine directly offers debugging options that are currently not supported when running within
-them in the local stack. The down-side is you have to have PHP and all required extensions installed locally.
 
 **Note:** Tests will still run against the local stack, so it has to be boot up either way.
 
@@ -87,13 +92,19 @@ On the first boot-up or upon updates you'll need to log in to ECR in your prefer
 ### Composer Commands
 Composer commands are available for the most commonly used actions:
 * ```composer unit-tests``` - run unit tests
+* ```composer integration-tests``` - run integration tests within the local stack
 * ```composer integration-tests-local``` run integration tests - needs setup, see below
 * ```composer start``` - boot up the local stack
 * ```composer ps``` - show a list of all services and their current status
 * ```composer logs [service name]``` - show (and follow) logs of the specified service
 * ```composer reset-db``` - reset the database within the local stack
-* ```composer integration-tests``` - run integration tests within the local stack
 * ```composer shutdown``` - shut down the local stack
+
+### Environment Variables
+The following environment variables are available on the `composer start` command:
+* `EXPOSED_PORT_AUTH` - the port that the auth service will expose on your localhost (defaults to 8080)
+* `EXPOSED_PORT_MYSQL` - the port that the MySQL container will expose on your localhost (defaults to 3306)
+* `XDEBUG_CONNECT_TO` - the port on your localhost that Xdebug will try to connect to (defaults to 9000)
 
 ### Inspecting the Stack
 The stack configuration and all fixtures are located in the `tools` folder. Use `docker-compose` to view logs or open

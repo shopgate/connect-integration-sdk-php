@@ -3,3 +3,4 @@ baseUri="http://{service}.shopgatedev.services"
 clientId="integration-tests"
 clientSecret="integration-tests"
 merchantCode="TM2"
+requestLogging=0

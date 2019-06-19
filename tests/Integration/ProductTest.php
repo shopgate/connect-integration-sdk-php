@@ -276,23 +276,6 @@ class ProductTest extends CatalogTest
     }
 
     /**
-     * TODO: Missing:
-     * ->setCategories($categories)
-     * ->setProperties($properties)
-     * ->setMedia($media)
-     * ->setOptions($options)
-     * ->setExtras($extras)
-     * ->setParentProductCode('dfsdf7')
-     * ->setCatalogCode('PNW Retail')// required
-     * ->setIdentifiers($identifiers)
-     * ->setPrice($price)// required
-     * ->setFulfillmentMethods(['one method', 'another method'])
-     * ->setShippingInformation($shippingInformation)
-     *
-     * short/long description => special
-     * code => special
-     * setParentProductCode
-     * isSerialized is not part of the getProduct response
      *
      * @return array
      */
@@ -583,6 +566,28 @@ class ProductTest extends CatalogTest
 
         // Assert
         $this->assertEquals($productMinimum->code, $product->getCode());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testGetProductWithSingleFieldCode()
+    {
+        // Arrange
+        $productMinimum = $this->prepareProductMinimum();
+        $this->sdk->getCatalogService()->addProducts([$productMinimum], ['requestType' => 'direct']);
+
+        // Act
+        $product = $this->sdk->getCatalogService()->getProduct($productMinimum->code, 'code');
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [
+            $productMinimum->code
+        ]);
+
+        // Assert
+        $this->assertEquals($productMinimum->code, $product->getCode());
+        $this->assertEquals(json_encode(['code' => $productMinimum->code],true), $product->toJson());
     }
 
     /**

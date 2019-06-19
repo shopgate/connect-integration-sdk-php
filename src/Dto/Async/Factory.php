@@ -23,7 +23,7 @@
 namespace Shopgate\ConnectSdk\Dto\Async;
 
 use Shopgate\ConnectSdk\Dto\Base as Payload;
-use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
+use Exception;
 
 class Factory
 {
@@ -57,9 +57,8 @@ class Factory
         }
         try {
             $this->request->getEvents()->append($event);
-        } catch (\Exception $exception) {
-            // TODO: do we need any handling here?
-            // Since events will be an array it shouln't throw an "InvalidDataTypeException"
+        } catch (Exception $exception) {
+            // Since events will be an "array" it shouldn't throw an "InvalidDataTypeException"
         }
 
         return $this;

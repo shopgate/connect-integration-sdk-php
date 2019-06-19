@@ -36,6 +36,7 @@ abstract class CatalogTest extends ShopgateSdkTest
         self::METHOD_DELETE_ATTRIBUTE => [],
     ];
     const PRODUCT_CODE               = 'integration-test';
+    const PRODUCT_CODE_SECOND        = 'integration-test-2';
     const PARENT_CATEGORY_CODE       = 'parent-integration-test';
     const CATEGORY_CODE              = 'integration-test';
     const CATEGORY_CODE_SECOND       = 'integration-test-2';

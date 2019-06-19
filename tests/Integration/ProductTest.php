@@ -41,6 +41,129 @@ use Shopgate\ConnectSdk\Exception\RequestException;
 
 class ProductTest extends CatalogTest
 {
+
+    /**
+     * @param int $limit
+     * @param int $offset
+     * @param int $expectedProductCount
+     * @param string[] $expectedProductCodes
+     * @throws Exception
+     *
+     * @dataProvider provideProductLimitCases
+     */
+    public function testProductLimit($limit, $offset, $expectedProductCount, $expectedProductCodes)
+    {
+        // Arrange
+        $productMinimum = $this->prepareProductMinimum();
+        $productMaximum = $this->prepareProductMaximum();
+        $this->sdk->getCatalogService()->addProducts([$productMinimum, $productMaximum], ['requestType' => 'direct']);
+
+        $parameters = [];
+        if (isset($limit)) {
+            $parameters['limit'] = $limit;
+        }
+        if (isset($offset)) {
+            $parameters['offset'] = $offset;
+        }
+
+        // Act
+        $products = $this->sdk->getCatalogService()->getProducts(
+            $parameters
+        );
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [
+            $productMaximum->code,
+            $productMinimum->code
+        ]);
+
+        // Assert
+        $productCodes = [];
+        foreach ($products->getProducts() as $product) {
+            $productCodes[] = $product->getCode();
+        }
+
+        $this->assertCount($expectedProductCount, $products->getProducts());
+        $this->assertEquals($expectedProductCodes, $productCodes);
+        if (isset($limit)) {
+            $this->assertEquals($limit, $products->getMeta()->getLimit());
+        }
+        if (isset($offset)) {
+            $this->assertEquals($offset, $products->getMeta()->getOffset());
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function provideProductLimitCases()
+    {
+        return [
+            'get the second' => [
+                'limit' => 1,
+                'offset' => 1,
+                'expectedCount' => 1,
+                'expectedCodes' => [
+                    self::PRODUCT_CODE_SECOND
+                ],
+            ],
+            'get the first' => [
+                'limit' => 1,
+                'offset' => 0,
+                'expectedCount' => 1,
+                'expectedCodes' => [
+                    self::PRODUCT_CODE
+                ],
+            ],
+            'get two' => [
+                'limit' => 2,
+                'offset' => 0,
+                'expectedCount' => 2,
+                'expectedCodes' => [
+                    self::PRODUCT_CODE,
+                    self::PRODUCT_CODE_SECOND
+                ],
+            ],
+            'limit 1' => [
+                'limit' => 1,
+                'offset' => null,
+                'expectedCount' => 1,
+                'expectedCodes' => [
+                    self::PRODUCT_CODE
+                ],
+            ],
+            'limit 2' => [
+                'limit' => 2,
+                'offset' => null,
+                'expectedCount' => 2,
+                'expectedCodes' => [
+                    self::PRODUCT_CODE,
+                    self::PRODUCT_CODE_SECOND
+                ],
+            ],
+            'offset 1' => [
+                'limit' => null,
+                'offset' => 1,
+                'expectedCount' => 1,
+                'expectedCodes' => [
+                    self::PRODUCT_CODE_SECOND
+                ],
+            ],
+            'offset 2' => [
+                'limit' => null,
+                'offset' => 2,
+                'expectedCount' => 0,
+                'expectedCodes' => [],
+            ],
+            'no entities found' => [
+                'limit' => 1,
+                'offset' => 2,
+                'expectedCount' => 0,
+                'expectedCodes' => [],
+            ]
+        ];
+    }
+
     /**
      * @throws Exception
      */
@@ -577,7 +700,7 @@ class ProductTest extends CatalogTest
         $productPayload = new Product\Create();
 
         return $productPayload
-            ->setCode('integration-test-product')
+            ->setCode(self::PRODUCT_CODE)
             ->setModelType(Product\Create::MODEL_TYPE_STANDARD)
             ->setIsInventoryManaged(true);
     }
@@ -720,7 +843,7 @@ class ProductTest extends CatalogTest
             ->setMedia($media)
             ->setOptions($options)
             ->setExtras($extras)
-            ->setCode(self::PRODUCT_CODE)// required
+            ->setCode(self::PRODUCT_CODE_SECOND)// required
             ->setParentProductCode('dfsdf7')
             ->setCatalogCode('PNW Retail')// required
             ->setModelType(Product\Create::MODEL_TYPE_STANDARD)// required

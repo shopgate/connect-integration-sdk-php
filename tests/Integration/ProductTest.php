@@ -514,10 +514,6 @@ class ProductTest extends CatalogTest
      */
     public function testProductNotFoundExceptionDirect()
     {
-        $this->markTestSkipped(
-            'Skipped due to catalog http code 500 is sent instead of 404'
-        );
-
         // Assert
         $this->expectException(NotFoundException::class);
 
@@ -530,10 +526,6 @@ class ProductTest extends CatalogTest
      */
     public function testDeleteProductDirect()
     {
-        $this->markTestSkipped(
-            'Skipped due to catalog http code 500 is sent instead of 404'
-        );
-
         // Arrange
         $product = $this->prepareProductMaximum();
 

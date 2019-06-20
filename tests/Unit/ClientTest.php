@@ -24,8 +24,8 @@ namespace Shopgate\ConnectSdk\Tests\Unit;
 
 use GuzzleHttp\ClientInterface as GuzzleClientInterface;
 use kamermans\OAuth2\OAuth2Middleware;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 use Shopgate\ConnectSdk\Http\Client;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 
@@ -34,7 +34,7 @@ class ClientTest extends TestCase
     /** @var Client */
     private $subjectUnderTest;
 
-    /** @var GuzzleClientInterface|MockObject */
+    /** @var GuzzleClientInterface|PHPUnit_Framework_MockObject_MockObject */
     private $guzzleClient;
 
     /** @var OAuth2Middleware */

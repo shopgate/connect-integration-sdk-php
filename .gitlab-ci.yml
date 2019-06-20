@@ -11,7 +11,7 @@ download_prerequisites:
   image: composer:1.8.0
   stage: prepare
   script:
-    - if [ ! -d vendor ] || [ ! -f composer.lock ]; then composer install --ignore-platform-reqs; fi
+    - if [ ! -d vendor ] || [ ! -f composer.lock ]; then composer update; fi
   cache:
     key: $BUILD_PREREQUISITES_CACHE_KEY
     paths:

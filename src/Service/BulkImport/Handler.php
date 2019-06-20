@@ -77,6 +77,32 @@ class Handler
         );
     }
 
+    /**
+     * @return Feed\Attribute
+     */
+    public function createAttributeFeed()
+    {
+        return new Feed\Attribute(
+            $this->client,
+            $this->importReference,
+            $this::HANDLER_TYPE,
+            array_merge(['entity' => 'attribute'])
+        );
+    }
+
+    /**
+     * @return Feed\AttributeValue
+     */
+    public function createAttributeValueFeed()
+    {
+        return new Feed\AttributeValue(
+            $this->client,
+            $this->importReference,
+            $this::HANDLER_TYPE,
+            array_merge(['entity' => 'attribute'])
+        );
+    }
+
     public function trigger()
     {
         $response = $this->client->doRequest(
@@ -90,8 +116,6 @@ class Handler
             ]
         );
 
-        print_r($response->getStatusCode());
         $response = json_decode($response->getBody(), true);
-        print_r($response);
     }
 }

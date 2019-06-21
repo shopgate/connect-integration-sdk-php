@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- bulkImport for attributes
+- bulkImport for categories
+- bulkImport for products
 ## [0.4.0]- 2019-06-13
 ### Added
 - getProduct direct logic

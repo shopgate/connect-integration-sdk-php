@@ -25,9 +25,9 @@ namespace Shopgate\ConnectSdk\Service\BulkImport\Feed;
 use Shopgate\ConnectSdk\Service\BulkImport\Feed;
 use Shopgate\ConnectSdk\Service\BulkImport\Handler\Stream;
 use Shopgate\ConnectSdk\Service\BulkImport\Handler\File;
-use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue\Create;
+use Shopgate\ConnectSdk\Dto\Catalog\Attribute\Create;
 
-class AttributeValue extends Feed
+class Attribute extends Feed
 {
     /**
      * @param Create $attribute

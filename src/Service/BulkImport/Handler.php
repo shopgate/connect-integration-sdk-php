@@ -78,28 +78,17 @@ class Handler
     }
 
     /**
+     * @param string $catalogCode
+     *
      * @return Feed\Attribute
      */
-    public function createAttributeFeed()
+    public function createAttributeFeed($catalogCode)
     {
         return new Feed\Attribute(
             $this->client,
             $this->importReference,
             $this::HANDLER_TYPE,
-            array_merge(['entity' => 'attribute'])
-        );
-    }
-
-    /**
-     * @return Feed\AttributeValue
-     */
-    public function createAttributeValueFeed()
-    {
-        return new Feed\AttributeValue(
-            $this->client,
-            $this->importReference,
-            $this::HANDLER_TYPE,
-            array_merge(['entity' => 'attribute'])
+            array_merge(['entity' => 'attribute'], ['catalogCode' => $catalogCode])
         );
     }
 

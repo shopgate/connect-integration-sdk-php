@@ -95,7 +95,6 @@ class Client implements ClientInterface
         TokenPersistenceInterface $tokenPersistence = null,
         LoggerInterface $logger = null
     ) {
-
         $env = $env === 'live' ? '' : $env;
 
         if (empty($baseUri)) {

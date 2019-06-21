@@ -79,6 +79,7 @@ class Client implements ClientInterface
      * @param string                         $clientSecret
      * @param string                         $merchantCode
      * @param string                         $baseUri
+     * @param string                         $env
      * @param string                         $accessTokenPath
      * @param TokenPersistenceInterface|null $tokenPersistence
      * @param LoggerInterface|null           $logger
@@ -89,12 +90,13 @@ class Client implements ClientInterface
         $clientSecret,
         $merchantCode,
         $baseUri = '',
+        $env = '',
         $accessTokenPath = '',
         TokenPersistenceInterface $tokenPersistence = null,
         LoggerInterface $logger = null
     ) {
         if (empty($baseUri)) {
-            $baseUri = 'https://{service}.shopgate.services';
+            $baseUri = str_replace('{env}', $env,'https://{service}.shopgate{env}.services');
         }
 
         if (empty($accessTokenPath)) {

@@ -30,7 +30,7 @@ use Shopgate\ConnectSdk\Service\Catalog;
 class ShopgateSdk
 {
     const REQUEST_TYPE_DIRECT = 'direct';
-    const REQUEST_TYPE_EVENT = 'event';
+    const REQUEST_TYPE_EVENT  = 'event';
 
     /** @var ClientInterface */
     private $client;
@@ -54,7 +54,14 @@ class ShopgateSdk
     {
         $this->client = isset($config['client'])
             ? $config['client']
-            : Client::createInstance($config['clientId'], $config['clientSecret'], $config['merchantCode']);
+            : Client::createInstance(
+                $config['clientId'],
+                $config['clientSecret'],
+                $config['merchantCode'],
+                null,
+                $config['env'],
+                $config['accessTokenPath']
+            );
 
         if (isset($config['services'])) {
             $this->setServices($config['services']);

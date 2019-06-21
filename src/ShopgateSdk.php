@@ -59,8 +59,7 @@ class ShopgateSdk
                 $config['clientSecret'],
                 $config['merchantCode'],
                 null,
-                $config['env'],
-                $config['accessTokenPath']
+                $config['env']
             );
 
         if (isset($config['services'])) {

@@ -92,6 +92,8 @@ abstract class ShopgateSdkTest extends TestCase
             getenv('merchantCode'),
             getenv('baseUri')
                 ?: '',
+            getenv('env')
+                ?: '',
             getenv('accessTokenPath')
                 ?: '',
             (int)getenv('requestLogging')

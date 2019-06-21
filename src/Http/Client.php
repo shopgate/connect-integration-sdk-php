@@ -95,12 +95,15 @@ class Client implements ClientInterface
         TokenPersistenceInterface $tokenPersistence = null,
         LoggerInterface $logger = null
     ) {
+
+        $env = $env === 'live' ? '' : $env;
+
         if (empty($baseUri)) {
             $baseUri = str_replace('{env}', $env,'https://{service}.shopgate{env}.services');
         }
 
         if (empty($accessTokenPath)) {
-            $accessTokenPath = __DIR__ . '/../access_token';
+            $accessTokenPath = __DIR__ . ($env !== '' ? '/../access_token_' . $env : '/../access_token');
         }
 
         $reauthClient = new \GuzzleHttp\Client([

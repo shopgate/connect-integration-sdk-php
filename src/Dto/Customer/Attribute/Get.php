@@ -23,6 +23,7 @@
 namespace Shopgate\ConnectSdk\Dto\Customer\Attribute;
 
 use Shopgate\ConnectSdk\Dto\Customer\Attribute;
+use Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
 
 /**
  * Dto for attribute response.
@@ -31,7 +32,7 @@ use Shopgate\ConnectSdk\Dto\Customer\Attribute;
  * @method string getType()
  * @method string getName()
  * @method string getIsRequired()
- * @method AttributeValues[] getValues()
+ * @method AttributeValue[] getValues()
  *
  */
 class Get extends Attribute

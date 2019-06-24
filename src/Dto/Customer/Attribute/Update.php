@@ -23,14 +23,15 @@
 namespace Shopgate\ConnectSdk\Dto\Customer\Attribute;
 
 use Shopgate\ConnectSdk\Dto\Customer\Attribute;
+use Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
 
 /**
  * Default class that handles validation for attribute Update payloads.
  *
  * @method string setType(string $type)
  * @method string setIsRequired(string $isRequired)
- * @method string setName(dto\Name $name)
- * @method string setValues(AttributeValues[] $values)
+ * @method string setName(string $name)
+ * @method string setValues(AttributeValue[] $values)
  */
 class Update extends Attribute
 {
@@ -43,7 +44,7 @@ class Update extends Attribute
         'properties'           => [
             'type'       => ['type' => 'string'],
             'isRequired' => ['type' => 'boolean'],
-            'name'       => ['type' => 'object'],
+            'name'       => ['type' => 'string'],
             'values'     => ['type' => 'array'],
         ],
         'additionalProperties' => true,

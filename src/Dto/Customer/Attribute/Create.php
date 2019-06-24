@@ -29,7 +29,7 @@ use Shopgate\ConnectSdk\Dto\Customer\Attribute;
  *
  * @method Create setType(string $type)
  * @method Create setIsRequired(boolean $isRequired)
- * @method Create setName(dto\Name $name)
+ * @method Create setName(string $name)
  * @method Create setCode(string $code)
  * @method Create setValues(AttributeValues[] $values)
  */
@@ -44,7 +44,7 @@ class Create extends Attribute
         'properties'           => [
             'type'       => ['type' => 'string'],
             'isRequired' => ['type' => 'boolean'],
-            'name'       => ['type' => 'object'],
+            'name'       => ['type' => 'string'],
             'code'       => ['type' => 'string'],
             'values'     => ['type' => 'array'],
         ],

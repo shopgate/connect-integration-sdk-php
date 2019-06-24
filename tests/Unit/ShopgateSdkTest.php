@@ -60,7 +60,8 @@ class ShopgateSdkTest extends TestCase
     {
         $subjectUnderTest = new ShopgateSdk(['clientId'     => 'test',
                                              'clientSecret' => 'secret',
-                                             'merchantCode' => 'TM2'
+                                             'merchantCode' => 'TM2',
+                                             'env'          => 'dev',
         ]);
 
         /** @noinspection PhpParamsInspection */

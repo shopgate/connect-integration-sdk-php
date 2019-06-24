@@ -29,4 +29,9 @@ use Shopgate\ConnectSdk\Dto\Base;
  */
 class Attribute extends Base
 {
+    const TYPE_TEXT                 = 'text';
+    const TYPE_NUMBER               = 'number';
+    const TYPE_BOOLEAN              = 'boolean';
+    const TYPE_DATE                 = 'date';
+    const TYPE_COLLECTION_OF_VALUES = 'collectionOfValues';
 }

@@ -26,17 +26,22 @@ use Shopgate\ConnectSdk\Http\Client;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\Service\BulkImport;
 use Shopgate\ConnectSdk\Service\Catalog;
+use Shopgate\ConnectSdk\Service\Customer;
 
 class ShopgateSdk
 {
     const REQUEST_TYPE_DIRECT = 'direct';
     const REQUEST_TYPE_EVENT  = 'event';
+    const REGISTERED_SERVICES = ['catalog', 'customer', 'bulkImport'];
 
     /** @var ClientInterface */
     private $client;
 
     /** @var Catalog */
     private $catalog;
+
+    /** @var Customer */
+    private $customer;
 
     /** @var BulkImport */
     private $bulkImport;
@@ -80,6 +85,18 @@ class ShopgateSdk
     }
 
     /**
+     * @return Customer
+     */
+    public function getCustomerService()
+    {
+        if (!$this->customer) {
+            $this->customer = new Customer($this->client);
+        }
+
+        return $this->customer;
+    }
+
+    /**
      * @return BulkImport
      */
     public function getBulkImportService()
@@ -104,7 +121,7 @@ class ShopgateSdk
      */
     private function setServices($serviceArgs)
     {
-        foreach (['catalog', 'bulkImport'] as $service) {
+        foreach (self::REGISTERED_SERVICES as $service) {
             if (!isset($serviceArgs[$service])) {
                 continue;
             }

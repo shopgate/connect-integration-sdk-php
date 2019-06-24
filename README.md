@@ -37,11 +37,14 @@ $categoryPayload = new Category\Create();
 $name            = new Category\Dto\Name(['en-us' => 'Denim Pants']);
 $categoryPayload->setCode('pants')->setName($name)->setSequenceId(1);
 $sgSdk->getCatalogService()->addCategories([$categoryPayload]);
+
 // update category with constructor input example
 $updateDto = new Category\Update(['name' => 'Skirts']);
 $sgSdk->getCatalogService()->updateCategory('pants', $updateDto);
+
 // delete category
 $sgSdk->getCatalogService()->deleteCategory('pants');
+
 // get categories
 $categories = $sgSdk->getCatalogService()->getCategories(['limit' => 5]);
 
@@ -61,13 +64,15 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Price as PriceDto;
 $config = [
     'merchantCode'  => 'EE1',
     'clientId'      => 'xxx',
-    'clientSecret'  => 'xxx'
+    'clientSecret'  => 'xxx',
 ];
 
 $sgSdk = new ShopgateSdk($config);
+
 // create new price
 $price = new PriceDto();
 $price->setPrice(90)->setSalePrice(84.99)->setCurrencyCode(PriceDto::CURRENCY_CODE_EUR);
+
 // create new product
 $productPayload = new Product\Create();
 $name = new Product\Dto\Name(['en-us' => 'Blue Jeans regular']);
@@ -79,9 +84,11 @@ $productPayload->setCode('42')
                ->setIsInventoryManaged(true)
                ->setPrice($price);
 $sgSdk->getCatalogService()->addProducts([$productPayload]);
+
 // update product with constructor input example
 $updateDto = new Product\Update(['name' => new Product\Dto\Name(['en-us' => 'Blue Jeans regular'])]);
 $sgSdk->getCatalogService()->updateProduct('42', $updateDto);
+
 // delete product
 $sgSdk->getCatalogService()->deleteProduct('42');
 
@@ -100,7 +107,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Category;
 $config = [
     'merchantCode'  => 'EE1',
     'clientId'      => 'xxx',
-    'clientSecret'  => 'xxx'
+    'clientSecret'  => 'xxx',
 ];
 
 $sgSdk = new ShopgateSdk($config);
@@ -119,7 +126,7 @@ $categoryPayload2->setCode('shirts')->setName($name1)->setSequenceId(1);
 //$handler = $sgSdk->getBulkImportService()->createStreamImport();
 
 // init file import
-$handler = $sdk->getBulkImportService()->createFileImport();
+$handler = $sgSdk->getBulkImportService()->createFileImport();
 
 // create product feed
 // $productHandler = $handler->createProductFeed('8000');

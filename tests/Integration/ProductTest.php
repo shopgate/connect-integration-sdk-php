@@ -752,10 +752,6 @@ class ProductTest extends CatalogTest
      */
     private function prepareProductMinimum()
     {
-        $price = new Product\Dto\Price();
-        $price->setPrice(90)
-              ->setSalePrice(84.99)
-              ->setCurrencyCode(Product\Dto\Price::CURRENCY_CODE_USD);
         $productPayload = new Product\Create();
 
         return $productPayload

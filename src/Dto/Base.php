@@ -34,6 +34,8 @@ use Exception;
  */
 class Base extends Dto
 {
+    const STORAGE_TYPE_SCALAR = 'scalar';
+
     /**
      * Rewritten to provide inheritance of payload structure
      *
@@ -104,7 +106,7 @@ class Base extends Dto
             /** @var Dto $result */
             $result = parent::get($key);
 
-            if ($result->getStorageType() === 'scalar') {
+            if ($result->getStorageType() === self::STORAGE_TYPE_SCALAR) {
                 return $result->toScalar();
             }
 

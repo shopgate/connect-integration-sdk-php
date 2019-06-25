@@ -35,6 +35,13 @@ use Shopgate\ConnectSdk\Dto\Base;
  */
 class Event extends Base
 {
+    const UPDATE           = 'entityUpdated';
+    const CREATE           = 'entityCreated';
+    const DELETE           = 'entityDeleted';
+    const ENTITY_CATEGORY  = 'category';
+    const ENTITY_PRODUCT   = 'product';
+    const ENTITY_ATTRIBUTE = 'attribute';
+
     /**
      * @return array
      * @codeCoverageIgnore
@@ -46,14 +53,14 @@ class Event extends Base
             'properties'           => [
                 'event'    => [
                     'type' => 'string',
-                    'enum' => ['entityUpdated', 'entityCreated', 'entityDeleted']
+                    'enum' => [self::UPDATE, self::CREATE, self::DELETE]
                 ],
                 'entity'   => [
                     'type' => 'string',
                     'enum' => [
-                        'category',
-                        'product',
-                        'attribute'
+                        self::ENTITY_CATEGORY,
+                        self::ENTITY_PRODUCT,
+                        self::ENTITY_ATTRIBUTE
                     ]
                 ],
                 'entityId' => ['type' => 'string'],

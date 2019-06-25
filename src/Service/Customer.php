@@ -24,6 +24,7 @@ namespace Shopgate\ConnectSdk\Service;
 use Shopgate\ConnectSdk\Exception;
 use Shopgate\ConnectSdk\Dto\Customer\Attribute;
 use Shopgate\ConnectSdk\Http\ClientInterface;
+use Shopgate\ConnectSdk\ShopgateSdk;
 
 class Customer
 {
@@ -72,5 +73,130 @@ class Customer
         $response['attributes'] = $attributes;
 
         return new Attribute\GetList($response);
+    }
+
+    /**
+     * @param string $attributeCode
+     * @param array $query
+     *
+     * @return Attribute\Get
+     *
+     * @throws Exception\RequestException
+     * @throws Exception\NotFoundException
+     * @throws Exception\UnknownException
+     */
+    public function getAttribute($attributeCode, array $query = [])
+    {
+        $response = $this->client->doRequest(
+            [
+                // direct only
+                'service' => 'customer',
+                'method'  => 'get',
+                'path'    => 'attributes/' . $attributeCode,
+                'query'   => $query,
+            ]
+        );
+
+        $response = json_decode($response->getBody(), true);
+
+        return new Attribute\Get($response['attribute']);
+    }
+
+    /**
+     * @param Attribute\Create[] $attributes
+     * @param array              $query
+     *
+     * @return ResponseInterface
+     *
+     * @throws Exception\RequestException
+     * @throws Exception\NotFoundException
+     * @throws Exception\UnknownException
+     */
+    public function addAttributes(array $attributes, array $query = [])
+    {
+        $requestAttributes = [];
+        foreach ($attributes as $attribute) {
+            $requestAttributes[] = $attribute->toArray();
+        }
+
+        return $this->client->doRequest(
+            [
+                // general
+                'method'      => 'post',
+                'requestType' => isset($query['requestType'])
+                    ? $query['requestType']
+                    : ShopgateSdk::REQUEST_TYPE_EVENT,
+                'body'        => ['attributes' => $requestAttributes],
+                'query'       => $query,
+                // direct
+                'service'     => 'customer',
+                'path'        => 'attributes',
+                // async
+                'entity'      => 'attribute',
+                'action'      => 'create',
+            ]
+        );
+    }
+
+    /**
+     * @param string           $attributeCode
+     * @param Attribute\Update $attribute
+     * @param array            $query
+     *
+     * @return ResponseInterface
+     *
+     * @throws Exception\RequestException
+     * @throws Exception\NotFoundException
+     * @throws Exception\UnknownException
+     */
+    public function updateAttribute($attributeCode, Attribute\Update $attribute, array $query = [])
+    {
+        return $this->client->doRequest(
+            [
+                // general
+                'service'     => 'customer',
+                'method'      => 'post',
+                'path'        => 'attributes/' . $attributeCode,
+                'entity'      => 'attribute',
+                'query'       => $query,
+                // direct only
+                'action'      => 'update',
+                'body'        => $attribute,
+                'requestType' => isset($query['requestType'])
+                    ? $query['requestType']
+                    : ShopgateSdk::REQUEST_TYPE_EVENT,
+                // async
+                'entityId'    => $attributeCode,
+            ]
+        );
+    }
+
+    /**
+     * @param string $attributeCode
+     * @param array  $query
+     *
+     * @return ResponseInterface
+     *
+     * @throws Exception\RequestException
+     * @throws Exception\NotFoundException
+     * @throws Exception\UnknownException
+     */
+    public function deleteAttribute($attributeCode, array $query = [])
+    {
+        return $this->client->doRequest(
+            [
+                'service'     => 'customer',
+                'method'      => 'delete',
+                'path'        => 'attributes/' . $attributeCode,
+                'entity'      => 'attribute',
+                'action'      => 'delete',
+                'requestType' => isset($query['requestType'])
+                    ? $query['requestType']
+                    : ShopgateSdk::REQUEST_TYPE_EVENT,
+                // async
+                'entityId'    => $attributeCode,
+                'query'       => $query,
+            ]
+        );
     }
 }

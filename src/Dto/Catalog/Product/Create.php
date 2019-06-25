@@ -53,12 +53,12 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product;
  * @method Create setIsInventoryManaged(boolean $isInventoryManaged)
  * @method Create setInventoryTreatment(string $inventoryTreatment)
  * @method Create setShippingInformation(Dto\ShippingInformation $shippingInformation)
- * @method Create setRating(number $rating)
+ * @method Create setRating(float $rating)
  * @method Create setUrl(string $url)
  * @method Create setIsTaxed(boolean $isTaxed)
  * @method Create setTaxClass(string $taxClass)
- * @method Create setMinQty(number $minQty)
- * @method Create setMaxQty(number $maxQty)
+ * @method Create setMinQty(float $minQty)
+ * @method Create setMaxQty(float $maxQty)
  * @method Create setExternalUpdateDate(string $externalUpdateDate)
  */
 class Create extends Product

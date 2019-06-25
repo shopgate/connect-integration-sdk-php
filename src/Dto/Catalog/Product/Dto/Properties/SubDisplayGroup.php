@@ -22,9 +22,6 @@
 
 namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 
-use Dto\RegulatorInterface;
-use Shopgate\ConnectSdk\Dto\Base;
-use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 use Shopgate\ConnectSdk\Dto\LocalizedString;
 
 /**

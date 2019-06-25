@@ -128,10 +128,10 @@ $categoryPayload2->setCode('shirts')->setName($name1)->setSequenceId(1);
 // init file import
 $handler = $sgSdk->getBulkImportService()->createFileImport();
 
-// create product feed
+// create product feed for catalog
 // $productHandler = $handler->createProductFeed('8000');
 
-// create category feed
+// create category feed for catalog
 $categoryHandler = $handler->createCategoryFeed('8000');
 
 // add payloads

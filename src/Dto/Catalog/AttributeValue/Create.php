@@ -27,10 +27,10 @@ use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 /**
  * Default class that handles validation for attribute values Create payloads.
  *
- * @method string setCode(string $code)
- * @method string setSequenceId(int $sequenceId)
- * @method string setName(dto\Name $name)
- * @method string setSwatch(dto\Swatch $swatch)
+ * @method Create setCode(string $code)
+ * @method Create setSequenceId(int $sequenceId)
+ * @method Create setName(dto\Name $name)
+ * @method Create setSwatch(dto\Swatch $swatch)
  */
 class Create extends AttributeValue
 {

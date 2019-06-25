@@ -5,6 +5,7 @@ development:
       omni-event-receiver: "http://omni-event-receiver/"
       omni-merchant: "http://omni-merchant/"
       omni-location: "http://omni-location/"
+      omni-customer: "http://omni-customer/"
       omni-product: "http://catalog/"
       catalog: "http://catalog/"
 
@@ -47,6 +48,15 @@ development:
         password: secret
         port: 3306
         user: root
+
+    OmniCustomerService:
+      mysql:
+        connectionLimit: 1
+        database: customer
+        host: mysql
+        user: root
+        password: secret
+        port: 3306
 
     CatalogService:
       mysql:

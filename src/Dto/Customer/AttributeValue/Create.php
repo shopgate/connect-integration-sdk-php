@@ -20,18 +20,18 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
+namespace Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
 
-use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
+use Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
 
 /**
- * Default class that handles validation for attribute values Update payloads.
+ * Default class that handles validation for attribute values Create payloads.
  *
- * @method Update setSequenceId(int $sequenceId)
- * @method Update setName(dto\Name $name)
- * @method Update setSwatch(dto\Swatch $swatch)
+ * @method string setCode(string $code)
+ * @method string setSequenceId(int $sequenceId)
+ * @method string setName(string $name)
  */
-class Update extends AttributeValue
+class Create extends AttributeValue
 {
     /**
      * @var array
@@ -40,9 +40,9 @@ class Update extends AttributeValue
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
+            'code'       => ['type' => 'string'],
             'sequenceId' => ['type' => 'integer'],
-            'name'       => ['type' => 'object'],
-            'swatch'     => ['type' => 'object'],
+            'name'       => ['type' => 'string'],
         ],
         'additionalProperties' => true,
     ];

@@ -596,6 +596,9 @@ class ProductTest extends CatalogTest
     public function testGetProducts()
     {
         // Arrange
+        $sampleCategories = $this->provideSampleCategories();
+        $this->sdk->getCatalogService()->addCategories($sampleCategories, ['requestType' => 'direct']);
+        $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
         $productMinimum = $this->prepareProductMinimum();
         $productMaximum = $this->prepareProductMaximum();
         $this->sdk->getCatalogService()->addProducts([$productMinimum, $productMaximum], ['requestType' => 'direct']);
@@ -608,6 +611,7 @@ class ProductTest extends CatalogTest
             $productMaximum->code,
             $productMinimum->code
         ]);
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, $sampleCategoryCodes);
 
         // Assert
         $productCodes = [];

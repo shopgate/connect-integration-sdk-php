@@ -56,7 +56,7 @@ class Customer
         $response = $this->client->doRequest(
             [
                 // direct only
-                'service' => 'customer',
+                'service' => 'omni-customer',
                 'method'  => 'get',
                 'path'    => 'attributes',
                 'query'   => $query,

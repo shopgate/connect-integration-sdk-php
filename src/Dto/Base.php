@@ -23,9 +23,7 @@
 namespace Shopgate\ConnectSdk\Dto;
 
 use Dto\Dto;
-use Dto\Exceptions\InvalidDataTypeException;
 use Dto\Exceptions\InvalidIndexException;
-use Dto\Exceptions\InvalidKeyException;
 use Dto\RegulatorInterface;
 use Exception;
 
@@ -140,6 +138,9 @@ class Base extends Dto
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return parent::toJson(true);

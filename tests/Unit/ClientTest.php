@@ -23,9 +23,8 @@
 namespace Shopgate\ConnectSdk\Tests\Unit;
 
 use GuzzleHttp\ClientInterface as GuzzleClientInterface;
-use kamermans\OAuth2\OAuth2Middleware;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use Shopgate\ConnectSdk\Http\Client;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 
@@ -34,12 +33,12 @@ class ClientTest extends TestCase
     /** @var Client */
     private $subjectUnderTest;
 
-    /** @var GuzzleClientInterface|PHPUnit_Framework_MockObject_MockObject */
+    /** @var GuzzleClientInterface|MockObject */
     private $guzzleClient;
 
-    /** @var OAuth2Middleware */
-    private $oAuthMiddleware;
-
+    /**
+     * @inheritDoc
+     */
     public function setUp()
     {
         $this->guzzleClient = $this
@@ -47,19 +46,16 @@ class ClientTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->oAuthMiddleware = $this
-            ->getMockBuilder(OAuth2Middleware::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $this->subjectUnderTest = new Client(
             $this->guzzleClient,
-            $this->oAuthMiddleware,
             'http://{service}.local',
             'TM2'
         );
     }
 
+    /**
+     * Test case where it should return the default client
+     */
     public function testCreateInstanceShouldReturnAClient()
     {
         /** @noinspection PhpParamsInspection */
@@ -82,6 +78,9 @@ class ClientTest extends TestCase
         $this->assertEquals($expectedUrl, $this->subjectUnderTest->buildServiceUrl($serviceName, $path));
     }
 
+    /**
+     * @return array
+     */
     public function provideBuildServiceUrlFixtures()
     {
         return [
@@ -98,6 +97,9 @@ class ClientTest extends TestCase
         ];
     }
 
+    /**
+     * @return array
+     */
     public function doRequestFixtures()
     {
         return [

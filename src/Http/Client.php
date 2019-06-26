@@ -47,9 +47,6 @@ class Client implements ClientInterface
     /** @var GuzzleClientInterface */
     private $guzzleClient;
 
-    /** @var OAuth2Middleware */
-    private $oAuthMiddleware;
-
     /** @var string */
     private $baseUri;
 
@@ -58,20 +55,14 @@ class Client implements ClientInterface
 
     /**
      * @param GuzzleClientInterface $guzzleClient
-     * @param OAuth2Middleware      $oAuthMiddleware
      * @param string                $baseUri
      * @param string                $merchantCode
      */
-    public function __construct(
-        GuzzleClientInterface $guzzleClient,
-        OAuth2Middleware $oAuthMiddleware,
-        $baseUri,
-        $merchantCode
-    ) {
-        $this->guzzleClient    = $guzzleClient;
-        $this->oAuthMiddleware = $oAuthMiddleware;
-        $this->baseUri         = rtrim($baseUri, '/');
-        $this->merchantCode    = $merchantCode;
+    public function __construct(GuzzleClientInterface $guzzleClient, $baseUri, $merchantCode)
+    {
+        $this->guzzleClient = $guzzleClient;
+        $this->baseUri      = rtrim($baseUri, '/');
+        $this->merchantCode = $merchantCode;
     }
 
     /**
@@ -83,6 +74,7 @@ class Client implements ClientInterface
      * @param string                         $accessTokenPath
      * @param TokenPersistenceInterface|null $tokenPersistence
      * @param LoggerInterface|null           $logger
+     *
      * @return Client
      */
     public static function createInstance(
@@ -98,44 +90,61 @@ class Client implements ClientInterface
         $env = $env === 'live' ? '' : $env;
 
         if (empty($baseUri)) {
-            $baseUri = str_replace('{env}', $env,'https://{service}.shopgate{env}.services');
+            $baseUri = str_replace('{env}', $env, 'https://{service}.shopgate{env}.services');
         }
 
         if (empty($accessTokenPath)) {
-            $accessTokenPath = __DIR__ . ($env !== '' ? '/../access_token_' . $env : '/../access_token');
+            $accessTokenPath = __DIR__ . ($env !== '' ? '/../access_token_' . $env : '/../access_token.txt');
         }
 
-        $reauthClient = new \GuzzleHttp\Client([
-            'base_uri' => rtrim(str_replace('{service}', 'auth', $baseUri), '/') . '/oauth/token'
-        ]);
+        $reauthClient = new \GuzzleHttp\Client(
+            [
+                'base_uri' => rtrim(str_replace('{service}', 'auth', $baseUri), '/') . '/oauth/token'
+            ]
+        );
 
-        $oauth = new OAuth2Middleware(new ClientCredentials($reauthClient, [
-            'client_id'     => $clientId,
-            'client_secret' => $clientSecret
-        ]));
+        $oauth = new OAuth2Middleware(
+            new ClientCredentials(
+                $reauthClient,
+                [
+                    'client_id'     => $clientId,
+                    'client_secret' => $clientSecret
+                ]
+            )
+        );
 
-        if (empty($tokenPersistence)) {
+        if ($tokenPersistence === null) {
             $tokenPersistence = new EncryptedFile($accessTokenPath, $clientSecret);
         }
         $oauth->setTokenPersistence($tokenPersistence);
 
         $handlerStack = HandlerStack::create();
         $handlerStack->push($oauth);
-        $client = new \GuzzleHttp\Client([
-            'auth'    => 'oauth',
-            'handler' => $handlerStack
-        ]);
+        $client = new \GuzzleHttp\Client(
+            [
+                'auth'    => 'oauth',
+                'handler' => $handlerStack
+            ]
+        );
 
         if ($logger) {
-            $handlerStack->push(Middleware::log($logger, new MessageFormatter('URL: {hostname}/{target} Method: {method} RequestBody: {req_body} ResponseBody: {res_body}')));
+            $handlerStack->push(
+                Middleware::log(
+                    $logger,
+                    new MessageFormatter(
+                        'URL: {hostname}/{target} Method: {method} RequestBody: {req_body} ResponseBody: {res_body}'
+                    )
+                )
+            );
         }
 
-        return new self($client, $oauth, $baseUri, $merchantCode);
+        return new self($client, $baseUri, $merchantCode);
     }
 
     /**
      * @param string $serviceName
      * @param string $path
+     *
      * @return string
      */
     public function buildServiceUrl($serviceName, $path = '')
@@ -160,7 +169,7 @@ class Client implements ClientInterface
             return $this->triggerEvent($params);
         }
 
-        if (isset($params['query']) && isset($params['query']['requestType'])) {
+        if (isset($params['query'], $params['query']['requestType'])) {
             unset($params['query']['requestType']);
         }
 
@@ -205,7 +214,9 @@ class Client implements ClientInterface
 
     /**
      * This method will convert true (bool) values to 'true' (string) and false (bool) to 'false' (string).
+     *
      * @param array $queryParameters
+     *
      * @return array
      */
     private function fixBoolValuesInQuery($queryParameters)
@@ -275,7 +286,7 @@ class Client implements ClientInterface
     public function isDirect(array $params)
     {
         return
-            (!isset($params['requestType']) && $params['method'] === 'get') ||
-            $params['requestType'] === ShopgateSdk::REQUEST_TYPE_DIRECT;
+            (!isset($params['requestType']) && $params['method'] === 'get')
+            || $params['requestType'] === ShopgateSdk::REQUEST_TYPE_DIRECT;
     }
 }

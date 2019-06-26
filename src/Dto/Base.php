@@ -23,7 +23,6 @@
 namespace Shopgate\ConnectSdk\Dto;
 
 use Dto\Dto;
-use Dto\Exceptions\InvalidIndexException;
 use Dto\RegulatorInterface;
 use Exception;
 
@@ -54,31 +53,26 @@ class Base extends Dto
 
     /**
      * @param string $method
-     * @param array $args
+     * @param array  $args
      *
      * @return  mixed
-     * @throws InvalidIndexException
      */
     public function __call($method, $args)
     {
+        $key = lcfirst(substr($method, 3));
         switch (substr($method, 0, 3)) {
             case 'get':
-                $key = lcfirst(substr($method, 3));
-
                 return $this->get($key);
             case 'set':
-                $key = lcfirst(substr($method, 3));
-
+            default:
                 return $this->set($key, isset($args[0]) ? $args[0] : null);
         }
-        $error = 'Invalid method ' . get_class($this) . '::' . $method . '(' . print_r($args, 1) . ')';
-        throw new InvalidIndexException($error);
     }
 
     /**
      * Rewritten to return the object for chaining purposes
      *
-     * @param $key mixed
+     * @param $key   mixed
      * @param $value mixed
      *
      * @return Base

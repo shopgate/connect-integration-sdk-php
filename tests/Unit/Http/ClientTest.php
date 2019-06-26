@@ -20,12 +20,16 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Tests\Unit;
+namespace Shopgate\ConnectSdk\Tests\Unit\Http;
 
 use GuzzleHttp\ClientInterface as GuzzleClientInterface;
-use kamermans\OAuth2\OAuth2Middleware;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
+use Psr\Log\LoggerInterface;
 use Shopgate\ConnectSdk\Http\Client;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 
@@ -35,32 +39,40 @@ class ClientTest extends TestCase
     private $subjectUnderTest;
 
     /** @var GuzzleClientInterface|PHPUnit_Framework_MockObject_MockObject */
-    private $guzzleClient;
+    private $client;
 
-    /** @var OAuth2Middleware */
-    private $oAuthMiddleware;
+    /** @var HandlerStack */
+    private $handlerStack;
+
+    /** @var MockHandler */
+    private $mockHandler;
+
+    /** @var LoggerInterface|PHPUnit_Framework_MockObject_MockObject */
+    private $logger;
 
     public function setUp()
     {
-        $this->guzzleClient = $this
-            ->getMockBuilder(GuzzleClientInterface::class)
-            ->disableOriginalConstructor()
+        $this->mockHandler = new MockHandler([]);
+        $this->handlerStack = HandlerStack::create($this->mockHandler);
+
+        $this->client = $this
+            ->getMockBuilder(\GuzzleHttp\Client::class)
+            ->setConstructorArgs([['handler' => $this->handlerStack]])
+            ->setMethods(null)
             ->getMock();
 
-        $this->oAuthMiddleware = $this
-            ->getMockBuilder(OAuth2Middleware::class)
-            ->disableOriginalConstructor()
+        $this->logger = $this
+            ->getMockBuilder(LoggerInterface::class)
             ->getMock();
 
         $this->subjectUnderTest = new Client(
-            $this->guzzleClient,
-            $this->oAuthMiddleware,
+            $this->client,
             'http://{service}.local',
             'TM2'
         );
     }
 
-    public function testCreateInstanceShouldReturnAClient()
+    public function testCreateInstanceShouldReturnClient()
     {
         /** @noinspection PhpParamsInspection */
         $this->assertInstanceOf(ClientInterface::class, Client::createInstance(
@@ -68,6 +80,42 @@ class ClientTest extends TestCase
             'secret',
             'TM2'
         ));
+    }
+
+    public function testGetClientShouldReturnInjectedClient()
+    {
+        $this->assertSame($this->client, $this->subjectUnderTest->getClient());
+    }
+
+    /**
+     * @throws GuzzleException
+     * @throws \Exception
+     */
+    public function testEnableRequestLoggingShouldInjectTheLoggerAndTemplate()
+    {
+        /** @var LoggerInterface|PHPUnit_Framework_MockObject_MockObject $logger */
+        $logger = $this
+            ->getMockBuilder(LoggerInterface::class)
+            ->getMock();
+
+        $logger
+            ->expects($this->once())
+            ->method('log')
+            ->with('info', 'log template');
+
+        $this->mockHandler->append(new Response(200));
+
+        $this->subjectUnderTest->enableRequestLogging($logger, 'log template');
+        $this->client->request('GET', 'things');
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testEnableRequestLoggingShouldNotFailIfNothingWasPassed()
+    {
+        $subjectUnderTest = Client::createInstance('123', '123', '123');
+        $subjectUnderTest->enableRequestLogging();
     }
 
     /**
@@ -98,14 +146,9 @@ class ClientTest extends TestCase
         ];
     }
 
-    public function doRequestFixtures()
-    {
-        return [
-            'should call requested service directly for GET calls' => [
-                'expectedUrl' => '',
-                'service'     => 'catalog',
-                'env'         => ''
-            ]
-        ];
-    }
+//    public function testDoRequestShouldMakeDirectCallOnGet($expectedMethod, $expectedUri, $request)
+//    {
+//        $this->mockHandler->append(function ($response, $request, $options) {
+//        });
+//    }
 }

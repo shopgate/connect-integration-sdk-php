@@ -234,7 +234,6 @@ abstract class CatalogTest extends ShopgateSdkTest
 
         $extraSecond->setValues([$extraSecondValue]);
 
-
         return [$extra, $extraSecond];
     }
 

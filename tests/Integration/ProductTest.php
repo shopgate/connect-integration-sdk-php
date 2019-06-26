@@ -886,7 +886,6 @@ class ProductTest extends CatalogTest
         $media = $this->provideMedia();
         $options = $this->provideOptions();
         $extras = $this->provideExtras();
-        $extras = [];
         $name = new Product\Dto\Name();
         $name->add('en-us', 'Productname in english');
         $name->add('de-de', 'Produktname in deutsch');
@@ -1016,10 +1015,6 @@ class ProductTest extends CatalogTest
         $option1->setCode(self::SAMPLE_ATTRIBUTE_CODE)
             ->setValues([$value1]);
 
-//        $option2 = new Product\Dto\Options();
-//        $option2->setCode('option_2')
-//            ->setValues([$value3]);
-
         return [$option1];
     }
 
@@ -1028,14 +1023,14 @@ class ProductTest extends CatalogTest
      */
     private function provideExtras()
     {
-        list($value1, $value2, $value3) = $this->provideOptionsValues();
+        list($value1, $value2) = $this->provideExtraValues();
         $extra1 = new Product\Dto\Extras();
         $extra1->setCode(self::SAMPLE_EXTRA_CODE)
             ->setValues([$value1, $value2]);
 
         $extra2 = new Product\Dto\Extras();
         $extra2->setCode(self::SAMPLE_EXTRA_CODE_2)
-            ->setValues([$value3]);
+            ->setValues([$value2]);
 
         return [$extra1, $extra2];
     }
@@ -1048,13 +1043,22 @@ class ProductTest extends CatalogTest
         $value1 = new Product\Dto\Options\Values();
         $value1->setCode(self::SAMPLE_ATTRIBUTE_VALUE_CODE)
             ->setAdditionalPrice(5);
-        $value2 = new Product\Dto\Options\Values();
-        $value2->setCode(self::SAMPLE_EXTRA_VALUE_CODE)
-            ->setAdditionalPrice(10);
-        $value3 = new Product\Dto\Options\Values();
-        $value3->setCode(self::SAMPLE_EXTRA_VALUE_CODE_2)
-            ->setAdditionalPrice(50);
 
-        return [$value1, $value2, $value3];
+        return [$value1];
+    }
+
+    /**
+     * @return array
+     */
+    private function provideExtraValues()
+    {
+        $value1 = new Product\Dto\Options\Values();
+        $value1->setCode(self::SAMPLE_EXTRA_VALUE_CODE)
+            ->setAdditionalPrice(5);
+        $value2 = new Product\Dto\Options\Values();
+        $value2->setCode(self::SAMPLE_EXTRA_VALUE_CODE_2)
+            ->setAdditionalPrice(10);
+
+        return [$value1, $value2];
     }
 }

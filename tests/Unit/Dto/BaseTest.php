@@ -20,7 +20,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Tests\Unit\Http;
+namespace Shopgate\ConnectSdk\Tests\Unit\Dto;
 
 use PHPUnit\Framework\TestCase;
 use Shopgate\ConnectSdk\Dto\Base;

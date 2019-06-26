@@ -46,7 +46,7 @@ class PersistenceChain implements TokenPersistenceInterface
         }
 
         if (!empty($exceptions) && count($exceptions) === count($this->storages)) {
-            throw new TokenPersistenceException('Unable to restore token.', 0, $exceptions);
+            throw new TokenPersistenceException('Unable to restore token.', $exceptions);
         }
 
         return null;
@@ -70,7 +70,7 @@ class PersistenceChain implements TokenPersistenceInterface
             }
         }
 
-        throw new TokenPersistenceException('Unable to save token.', 0, $exceptions);
+        throw new TokenPersistenceException('Unable to save token.', $exceptions);
     }
 
     /**
@@ -89,7 +89,7 @@ class PersistenceChain implements TokenPersistenceInterface
             }
         }
 
-        throw new TokenPersistenceException('Unable to delete token.', 0, $exceptions);
+        throw new TokenPersistenceException('Unable to delete token.', $exceptions);
     }
 
     /**
@@ -110,6 +110,6 @@ class PersistenceChain implements TokenPersistenceInterface
             }
         }
 
-        throw new TokenPersistenceException('Unable to determine if a token exists.', 0, $exceptions);
+        throw new TokenPersistenceException('Unable to determine if a token exists.', $exceptions);
     }
 }

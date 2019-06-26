@@ -85,56 +85,6 @@ class AttributeValueTest extends CatalogTest
     /**
      * @throws Exception
      */
-    public function testAddAttributeValueEvent()
-    {
-        $this->markTestSkipped('Skipped due to bug in worker service');
-
-        // Arrange
-        $this->createSampleAttribute();
-
-        $newAttributeValue = new AttributeValue\Create();
-        $newAttributeValue->setCode('color');
-        $newAttributeValue->setSequenceId(2);
-
-        $newAttributeValueName = new AttributeValue\Dto\Name();
-        $newAttributeValueName->add('de-de', 'Attribute Value 2 de');
-        $newAttributeValueName->add('en-us', 'Attribute Value 2 en');
-        $newAttributeValue->setName($newAttributeValueName);
-
-        $newAttributeValueSwatch = new AttributeValue\Dto\Swatch();
-        $newAttributeValueSwatch->setType(AttributeValue::SWATCH_TYPE_COLOR);
-        $newAttributeValueSwatch->setValue('blue');
-        $newAttributeValue->setSwatch($newAttributeValueSwatch);
-
-        // Act
-        $this->sdk->getCatalogService()->addAttributeValue(
-            self::SAMPLE_ATTRIBUTE_CODE,
-            [$newAttributeValue]
-        );
-
-        sleep(self::SLEEP_TIME_AFTER_EVENT);
-
-        // Prepare delete
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_ATTRIBUTE,
-            [self::SAMPLE_ATTRIBUTE_CODE]
-        );
-
-        // Assert
-        $addedAttributeValues = $this->sdk->getCatalogService()->getAttribute(self::SAMPLE_ATTRIBUTE_CODE)->getValues();
-        $addedAttributeValue  = $addedAttributeValues[1];
-
-        /** @noinspection PhpParamsInspection */
-        $this->assertCount(2, $addedAttributeValues);
-        $this->assertEquals('Attribute Value 2 en', $addedAttributeValue->getName());
-        $this->assertEquals('color', $addedAttributeValue->getSwatch()->getType());
-        $this->assertEquals('blue', $addedAttributeValue->getSwatch()->getValue());
-    }
-
-    /**
-     * @throws Exception
-     */
     public function testUpdateAttributeValueDirect()
     {
         // Arrange
@@ -180,56 +130,6 @@ class AttributeValueTest extends CatalogTest
         $this->assertEquals('http://shopgate/image', $updatedAttributeValue->getSwatch()->getValue());
     }
 
-    /**
-     * @throws Exception
-     */
-    public function testUpdateAttributeValueEvent()
-    {
-        $this->markTestSkipped('Skipped due to bug in worker service');
-
-        // Arrange
-        $this->createSampleAttribute();
-
-        $updateAttributeValue = new AttributeValue\Update();
-        $updateAttributeValue->setCode('color_update');
-        $updateAttributeValue->setSequenceId(2);
-
-        $updateAttributeValueName = new AttributeValue\Dto\Name();
-        $updateAttributeValueName->add('de-de', 'Attribute Value 2 de update');
-        $updateAttributeValueName->add('en-us', 'Attribute Value 2 en update');
-        $updateAttributeValue->setName($updateAttributeValueName);
-
-        $updateAttributeValueSwatch = new AttributeValue\Dto\Swatch();
-        $updateAttributeValueSwatch->setType(AttributeValue::SWATCH_TYPE_IMAGE);
-        $updateAttributeValueSwatch->setValue('http://shopgate/image');
-        $updateAttributeValue->setSwatch($updateAttributeValueSwatch);
-
-        // Act
-        $this->sdk->getCatalogService()->updateAttributeValue(
-            self::SAMPLE_ATTRIBUTE_CODE,
-            self::SAMPLE_ATTRIBUTE_VALUE_CODE,
-            $updateAttributeValue
-        );
-
-        sleep(self::SLEEP_TIME_AFTER_EVENT);
-
-        // Prepare delete
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_ATTRIBUTE,
-            [self::SAMPLE_ATTRIBUTE_CODE]
-        );
-
-        // Assert
-        $updatedAttributeValues = $this->sdk->getCatalogService()
-            ->getAttribute(self::SAMPLE_ATTRIBUTE_CODE)->getValues();
-        $updatedAttributeValue  = $updatedAttributeValues[0];
-
-        $this->assertCount(1, $updatedAttributeValues);
-        $this->assertEquals('Attribute Value 2 en update', $updatedAttributeValue->getName());
-        $this->assertEquals('image', $updatedAttributeValue->getSwatch()->getType());
-        $this->assertEquals('http://shopgate/image', $updatedAttributeValue->getSwatch()->getValue());
-    }
 
     /**
      * @throws Exception
@@ -257,8 +157,6 @@ class AttributeValueTest extends CatalogTest
      */
     public function testDeleteAttributeValueEvent()
     {
-        $this->markTestSkipped('Skipped due to bug in worker service');
-
         // Arrange
         $this->createSampleAttribute();
 
@@ -502,8 +400,7 @@ class AttributeValueTest extends CatalogTest
         $swatch = new AttributeValue\Dto\Swatch();
 
         return [
-            /*
-             * @todo check - currently not working
+
             'invalid code' => [
                 'attributeValueData' => [
                     'code'       => 1234,
@@ -514,9 +411,6 @@ class AttributeValueTest extends CatalogTest
                 'expectedException'  => new RequestException(400),
                 'message'            => 'Expected type object but found type array',
             ],
-            */
-            /*
-             * @todo check - currently not working
             'invalid sequenceId' => [
                 'attributeValueData' => [
                     'code'       => 'code',
@@ -527,9 +421,6 @@ class AttributeValueTest extends CatalogTest
                 'expectedException'  => new RequestException(400),
                 'message'            => 'Expected type object but found type array',
             ],
-            */
-            /*
-             * @todo check - currently not working
             'invalid name' => [
                 'attributeValueData' => [
                     'code'       => 'code',
@@ -540,9 +431,6 @@ class AttributeValueTest extends CatalogTest
                 'expectedException'  => new RequestException(400),
                 'message'            => 'Expected type object but found type array',
             ],
-            */
-            /*
-             * @todo check - currently not working
             'invalid swatch' => [
                 'attributeValueData' => [
                     'code'       => 'code',
@@ -553,7 +441,6 @@ class AttributeValueTest extends CatalogTest
                 'expectedException'  => new RequestException(400),
                 'message'            => 'Expected type object but found type array',
             ],
-            */
         ];
     }
 }

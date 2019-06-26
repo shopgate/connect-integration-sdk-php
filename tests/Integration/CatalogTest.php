@@ -30,26 +30,26 @@ use Shopgate\ConnectSdk\Exception\Exception;
 
 abstract class CatalogTest extends ShopgateSdkTest
 {
-    const CATALOG_SERVICE            = 'catalog';
-    const METHOD_DELETE_CATEGORY     = 'deleteCategory';
-    const METHOD_DELETE_PRODUCT      = 'deleteProduct';
-    const METHOD_DELETE_ATTRIBUTE    = 'deleteAttribute';
+    const CATALOG_SERVICE = 'catalog';
+    const METHOD_DELETE_CATEGORY = 'deleteCategory';
+    const METHOD_DELETE_PRODUCT = 'deleteProduct';
+    const METHOD_DELETE_ATTRIBUTE = 'deleteAttribute';
     const METHOD_DELETE_REQUEST_META = [
-        self::METHOD_DELETE_CATEGORY  => ['force' => true],
-        self::METHOD_DELETE_PRODUCT   => [],
+        self::METHOD_DELETE_CATEGORY => ['force' => true],
+        self::METHOD_DELETE_PRODUCT => [],
         self::METHOD_DELETE_ATTRIBUTE => [],
     ];
-    const PRODUCT_CODE                = 'integration-test';
-    const PRODUCT_CODE_SECOND         = 'integration-test-2';
-    const PARENT_CATEGORY_CODE        = 'parent-integration-test';
-    const CATEGORY_CODE               = 'integration-test';
-    const CATEGORY_CODE_SECOND        = 'integration-test-2';
-    const SAMPLE_ATTRIBUTE_CODE       = 'attribute_code_1';
+    const PRODUCT_CODE = 'integration-test';
+    const PRODUCT_CODE_SECOND = 'integration-test-2';
+    const PARENT_CATEGORY_CODE = 'parent-integration-test';
+    const CATEGORY_CODE = 'integration-test';
+    const CATEGORY_CODE_SECOND = 'integration-test-2';
+    const SAMPLE_ATTRIBUTE_CODE = 'attribute_code_1';
     const SAMPLE_ATTRIBUTE_VALUE_CODE = 'attribute_value_code_1';
-    const SAMPLE_EXTRA_CODE           = 'extra_code_1';
-    const SAMPLE_EXTRA_CODE_2         = 'extra_code_2';
-    const SAMPLE_EXTRA_VALUE_CODE     = 'extra_value_code_1';
-    const SAMPLE_EXTRA_VALUE_CODE_2   = 'extra_value_code_2';
+    const SAMPLE_EXTRA_CODE = 'extra_code_1';
+    const SAMPLE_EXTRA_CODE_2 = 'extra_code_2';
+    const SAMPLE_EXTRA_VALUE_CODE = 'extra_value_code_1';
+    const SAMPLE_EXTRA_VALUE_CODE_2 = 'extra_value_code_2';
 
     public function setUp()
     {
@@ -165,7 +165,8 @@ abstract class CatalogTest extends ShopgateSdkTest
     /**
      * @return AttributeValue\Create
      */
-    protected function provideSampleAttributeValue() {
+    protected function provideSampleAttributeValue()
+    {
         $attributeValue = new AttributeValue\Create();
         $attributeValue->setCode(self::SAMPLE_ATTRIBUTE_VALUE_CODE);
         $attributeValue->setSequenceId(1);
@@ -186,7 +187,8 @@ abstract class CatalogTest extends ShopgateSdkTest
     /**
      * @return array
      */
-    protected function provideSampleExtras() {
+    protected function provideSampleExtras()
+    {
         $extra = new Attribute\Create;
         $extra->setCode(self::SAMPLE_EXTRA_CODE)
             ->setType(Attribute\Create::TYPE_TEXT)

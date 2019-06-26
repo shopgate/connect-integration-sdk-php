@@ -23,9 +23,6 @@
 namespace Shopgate\ConnectSdk\Dto;
 
 use Dto\Dto;
-use Dto\Exceptions\InvalidDataTypeException;
-use Dto\Exceptions\InvalidIndexException;
-use Dto\Exceptions\InvalidKeyException;
 use Dto\RegulatorInterface;
 use Exception;
 
@@ -60,8 +57,7 @@ class Base extends Dto
      * @param string $method
      * @param array $args
      *
-     * @return  mixed
-     * @throws InvalidIndexException
+     * @return mixed
      */
     public function __call($method, $args)
     {
@@ -75,6 +71,8 @@ class Base extends Dto
 
                 return $this->set($key, isset($args[0]) ? $args[0] : null);
         }
+
+        return null;
     }
 
     /**

@@ -145,10 +145,6 @@ class ProductTest extends CatalogTest
     public function testUpdateProductPricingDirect()
     {
         // Arrange
-        $sampleCategories = $this->provideSampleCategories();
-        $this->sdk->getCatalogService()->addCategories($sampleCategories, ['requestType' => 'direct']);
-        $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
-
         $productMaximum = $this->prepareProductMaximum(new Update());
         $productMaximum->setModelType(Product::MODEL_TYPE_CONFIGURABLE);
         $this->sdk->getCatalogService()->addProducts(
@@ -200,10 +196,9 @@ class ProductTest extends CatalogTest
                 $productMaximum->code
             ]
         );
-        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, $sampleCategoryCodes);
 
         // Assert
-        $product    = $this->sdk->getCatalogService()->getProduct($productMaximum->code);
+        $product = $this->sdk->getCatalogService()->getProduct($productMaximum->code);
         $updatedProductPrice = $product->getPrice();
         $this->assertEquals($price->getCurrencyCode(), $updatedProductPrice->getCurrencyCode());
         $this->assertEquals($price->getCost(), $updatedProductPrice->getCost());
@@ -270,7 +265,7 @@ class ProductTest extends CatalogTest
         $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, $sampleCategoryCodes);
 
         // Assert
-        $product    = $this->sdk->getCatalogService()->getProduct($productMaximum->code);
+        $product = $this->sdk->getCatalogService()->getProduct($productMaximum->code);
         $updatedKey = array_keys($updateProductData)[0];
         $this->assertEquals($expectedValue, $product->get($updatedKey));
     }
@@ -286,157 +281,157 @@ class ProductTest extends CatalogTest
                 'updateProductData' => [
                     'externalUpdateDate' => '2020-02-04T00:00:00.000Z',
                 ],
-                'expectedValue'     => '2020-02-04T00:00:00.000Z'
+                'expectedValue' => '2020-02-04T00:00:00.000Z'
             ],
-            'name'               => [
+            'name' => [
                 'updateProductData' => [
                     'name' => new Name(['en-us' => 'Updated Name']),
                 ],
-                'expectedValue'     => 'Updated Name'
+                'expectedValue' => 'Updated Name'
             ],
-            'longName'           => [
+            'longName' => [
                 'updateProductData' => [
                     'longName' => new LongName(['en-us' => 'Updated Long Name']),
                 ],
-                'expectedValue'     => 'Updated Long Name'
+                'expectedValue' => 'Updated Long Name'
             ],
-            'unit'               => [
+            'unit' => [
                 'updateProductData' => [
                     'unit' => 'm',
                 ],
-                'expectedValue'     => 'm'
+                'expectedValue' => 'm'
             ],
-            'url'                => [
+            'url' => [
                 'updateProductData' => [
                     'url' => 'http://updated.url.com',
                 ],
-                'expectedValue'     => 'http://updated.url.com'
+                'expectedValue' => 'http://updated.url.com'
             ],
-            'rating'             => [
+            'rating' => [
                 'updateProductData' => [
                     'rating' => 2.5,
                 ],
-                'expectedValue'     => 2.5
+                'expectedValue' => 2.5
             ],
-            'isTaxed'            => [
+            'isTaxed' => [
                 'updateProductData' => [
                     'isTaxed' => false,
                 ],
-                'expectedValue'     => false
+                'expectedValue' => false
             ],
-            'taxClass'           => [
+            'taxClass' => [
                 'updateProductData' => [
                     'taxClass' => 'a123456',
                 ],
-                'expectedValue'     => 'a123456'
+                'expectedValue' => 'a123456'
             ],
-            'minQty'             => [
+            'minQty' => [
                 'updateProductData' => [
                     'minQty' => 12,
                 ],
-                'expectedValue'     => 12
+                'expectedValue' => 12
             ],
-            'maxQty'             => [
+            'maxQty' => [
                 'updateProductData' => [
                     'maxQty' => 122,
                 ],
-                'expectedValue'     => 122
+                'expectedValue' => 122
             ],
             'isInventoryManaged' => [
                 'updateProductData' => [
                     'isInventoryManaged' => false,
                 ],
-                'expectedValue'     => false
+                'expectedValue' => false
             ],
-            'startDate'          => [
+            'startDate' => [
                 'updateProductData' => [
                     'startDate' => '2019-12-12T00:00:00.000Z',
                 ],
-                'expectedValue'     => '2019-12-12T00:00:00.000Z'
+                'expectedValue' => '2019-12-12T00:00:00.000Z'
             ],
-            'endDate'            => [
+            'endDate' => [
                 'updateProductData' => [
                     'endDate' => '2016-02-03T00:00:00.000Z',
                 ],
-                'expectedValue'     => '2016-02-03T00:00:00.000Z'
+                'expectedValue' => '2016-02-03T00:00:00.000Z'
             ],
             'firstAvailableDate' => [
                 'updateProductData' => [
                     'firstAvailableDate' => '2019-05-07T00:00:00.000Z',
                 ],
-                'expectedValue'     => '2019-05-07T00:00:00.000Z'
+                'expectedValue' => '2019-05-07T00:00:00.000Z'
             ],
-            'eolDate'            => [
+            'eolDate' => [
                 'updateProductData' => [
                     'eolDate' => '2032-11-11T00:00:00.000Z',
                 ],
-                'expectedValue'     => '2032-11-11T00:00:00.000Z'
+                'expectedValue' => '2032-11-11T00:00:00.000Z'
             ],
-            'status scheduled'            => [
+            'status scheduled' => [
                 'updateProductData' => [
                     'status' => Product::STATUS_SCHEDULED,
                 ],
-                'expectedValue'     => Product::STATUS_SCHEDULED
+                'expectedValue' => Product::STATUS_SCHEDULED
             ],
-            'status inactive'            => [
+            'status inactive' => [
                 'updateProductData' => [
                     'status' => Product::STATUS_INACTIVE,
                 ],
-                'expectedValue'     => Product::STATUS_INACTIVE
+                'expectedValue' => Product::STATUS_INACTIVE
             ],
-            'status active'            => [
+            'status active' => [
                 'updateProductData' => [
                     'status' => Product::STATUS_ACTIVE,
                 ],
-                'expectedValue'     => Product::STATUS_ACTIVE
+                'expectedValue' => Product::STATUS_ACTIVE
             ],
-            'inventoryTreatment allow backorders'            => [
+            'inventoryTreatment allow backorders' => [
                 'updateProductData' => [
                     'inventoryTreatment' => Product::INVENTORY_TREATMENT_ALLOW_BACK_ORDERS,
                 ],
-                'expectedValue'     => Product::INVENTORY_TREATMENT_ALLOW_BACK_ORDERS
+                'expectedValue' => Product::INVENTORY_TREATMENT_ALLOW_BACK_ORDERS
             ],
-            'inventoryTreatment pre order'            => [
+            'inventoryTreatment pre order' => [
                 'updateProductData' => [
                     'inventoryTreatment' => Product::INVENTORY_TREATMENT_PRE_ORDER,
                 ],
-                'expectedValue'     => Product::INVENTORY_TREATMENT_PRE_ORDER
+                'expectedValue' => Product::INVENTORY_TREATMENT_PRE_ORDER
             ],
-            'inventoryTreatment show out of stock'            => [
+            'inventoryTreatment show out of stock' => [
                 'updateProductData' => [
                     'inventoryTreatment' => Product::INVENTORY_TREATMENT_SHOW_OUT_OF_STOCK,
                 ],
-                'expectedValue'     => Product::INVENTORY_TREATMENT_SHOW_OUT_OF_STOCK
+                'expectedValue' => Product::INVENTORY_TREATMENT_SHOW_OUT_OF_STOCK
             ],
-            'modelType bundle'            => [
+            'modelType bundle' => [
                 'updateProductData' => [
                     'modelType' => Product::MODEL_TYPE_BUNDLE,
                 ],
-                'expectedValue'     => Product::MODEL_TYPE_BUNDLE
+                'expectedValue' => Product::MODEL_TYPE_BUNDLE
             ],
-            'modelType bundle item'            => [
+            'modelType bundle item' => [
                 'updateProductData' => [
                     'modelType' => Product::MODEL_TYPE_BUNDLE_ITEM,
                 ],
-                'expectedValue'     => Product::MODEL_TYPE_BUNDLE_ITEM
+                'expectedValue' => Product::MODEL_TYPE_BUNDLE_ITEM
             ],
-            'modelType configurable'            => [
+            'modelType configurable' => [
                 'updateProductData' => [
                     'modelType' => Product::MODEL_TYPE_CONFIGURABLE,
                 ],
-                'expectedValue'     => Product::MODEL_TYPE_CONFIGURABLE
+                'expectedValue' => Product::MODEL_TYPE_CONFIGURABLE
             ],
-            'modelType standard'            => [
+            'modelType standard' => [
                 'updateProductData' => [
                     'modelType' => Product::MODEL_TYPE_STANDARD,
                 ],
-                'expectedValue'     => Product::MODEL_TYPE_STANDARD
+                'expectedValue' => Product::MODEL_TYPE_STANDARD
             ],
-            'modelType variant'            => [
+            'modelType variant' => [
                 'updateProductData' => [
                     'modelType' => Product::MODEL_TYPE_VARIANT,
                 ],
-                'expectedValue'     => Product::MODEL_TYPE_VARIANT
+                'expectedValue' => Product::MODEL_TYPE_VARIANT
             ],
         ];
     }
@@ -587,7 +582,7 @@ class ProductTest extends CatalogTest
 
         // Assert
         $this->assertEquals($productMinimum->code, $product->getCode());
-        $this->assertEquals(json_encode(['code' => $productMinimum->code],true), $product->toJson());
+        $this->assertEquals(json_encode(['code' => $productMinimum->code], true), $product->toJson());
     }
 
     /**
@@ -628,10 +623,11 @@ class ProductTest extends CatalogTest
 
 
     /**
-     * @param int $limit
-     * @param int $offset
-     * @param int $expectedProductCount
+     * @param int      $limit
+     * @param int      $offset
+     * @param int      $expectedProductCount
      * @param string[] $expectedProductCodes
+     *
      * @throws Exception
      *
      * @dataProvider provideProductLimitCases
@@ -771,11 +767,11 @@ class ProductTest extends CatalogTest
     {
         $categoryMapping = new Product\Dto\Categories();
         $categoryMapping->setCode(self::CATEGORY_CODE)
-                        ->setIsPrimary(true);
+            ->setIsPrimary(true);
 
         $categoryMapping2 = new Product\Dto\Categories();
         $categoryMapping2->setCode(self::CATEGORY_CODE_SECOND)
-                         ->setIsPrimary(false);
+            ->setIsPrimary(false);
 
         return [$categoryMapping, $categoryMapping2];
     }
@@ -783,10 +779,10 @@ class ProductTest extends CatalogTest
     private function provideIdentifiers()
     {
         return (new Product\Dto\Identifiers())->setMfgPartNum('someMfgPartNum')
-                                              ->setUpc('Universal-Product-Code')
-                                              ->setEan('European Article Number')
-                                              ->setIsbn('978-3-16-148410-0')
-                                              ->setSku('stock_keeping_unit');
+            ->setUpc('Universal-Product-Code')
+            ->setEan('European Article Number')
+            ->setIsbn('978-3-16-148410-0')
+            ->setSku('stock_keeping_unit');
     }
 
     /**
@@ -796,19 +792,19 @@ class ProductTest extends CatalogTest
     {
         $volumePricing1 = new Product\Dto\Price\VolumePricing();
         $volumePricing1->setMinQty(5)
-                       ->setMaxQty(20)
-                       ->setPrice(84.99)
-                       ->setSalePrice(83.99)
-                       ->setUnit('kg')
-                       ->setPriceType(Product\Dto\Price\VolumePricing::PRICE_TYPE_FIXED);
+            ->setMaxQty(20)
+            ->setPrice(84.99)
+            ->setSalePrice(83.99)
+            ->setUnit('kg')
+            ->setPriceType(Product\Dto\Price\VolumePricing::PRICE_TYPE_FIXED);
 
         $volumePricing2 = new Product\Dto\Price\VolumePricing();
         $volumePricing2->setMinQty(21)
-                       ->setMaxQty(100)
-                       ->setPrice(84.99)
-                       ->setSalePrice(-2)
-                       ->setUnit('kg')
-                       ->setPriceType(Product\Dto\Price\VolumePricing::PRICE_TYPE_RELATIVE);
+            ->setMaxQty(100)
+            ->setPrice(84.99)
+            ->setSalePrice(-2)
+            ->setUnit('kg')
+            ->setPriceType(Product\Dto\Price\VolumePricing::PRICE_TYPE_RELATIVE);
 
         return [$volumePricing1, $volumePricing2];
     }
@@ -820,13 +816,13 @@ class ProductTest extends CatalogTest
     {
         $mapPricing1 = new Product\Dto\Price\MapPricing();
         $mapPricing1->setStartDate('2019-06-01T00:00:00.000Z')
-                    ->setEndDate('2019-09-01T00:00:00.000Z')
-                    ->setPrice(84.49);
+            ->setEndDate('2019-09-01T00:00:00.000Z')
+            ->setPrice(84.49);
 
         $mapPricing2 = new Product\Dto\Price\MapPricing();
         $mapPricing2->setStartDate('2019-06-01T00:00:00.000Z')
-                    ->setEndDate('2019-09-01T00:00:00.000Z')
-                    ->setPrice(84.49);
+            ->setEndDate('2019-09-01T00:00:00.000Z')
+            ->setPrice(84.49);
 
         return [$mapPricing1, $mapPricing2];
     }
@@ -837,18 +833,18 @@ class ProductTest extends CatalogTest
     private function providePricing()
     {
         $volumePricing = $this->provideVolumePricing();
-        $mapPricing    = $this->provideMapPricing();
+        $mapPricing = $this->provideMapPricing();
 
         return (new Product\Dto\Price())->setCurrencyCode(Product\Dto\Price::CURRENCY_CODE_USD)
-                                        ->setCost(50)
-                                        ->setPrice(90)
-                                        ->setSalePrice(84.99)
-                                        ->setVolumePricing($volumePricing)
-                                        ->setUnit('kg')
-                                        ->setMsrp(100)
-                                        ->setMinPrice(80)
-                                        ->setMaxPrice(90)
-                                        ->setMapPricing($mapPricing);
+            ->setCost(50)
+            ->setPrice(90)
+            ->setSalePrice(84.99)
+            ->setVolumePricing($volumePricing)
+            ->setUnit('kg')
+            ->setMsrp(100)
+            ->setMinPrice(80)
+            ->setMaxPrice(90)
+            ->setMapPricing($mapPricing);
     }
 
     /**
@@ -865,6 +861,8 @@ class ProductTest extends CatalogTest
      * @param Product $product
      *
      * @return Update
+     *
+     * @throws Exception
      */
     private function prepareProductMaximum($product = null)
     {
@@ -872,18 +870,23 @@ class ProductTest extends CatalogTest
             $product = new Product\Create();
         }
 
-        $categories          = $this->provideCategoryMapping();
-        $identifiers         = $this->provideIdentifiers();
-        $price               = $this->providePricing();
-        $properties          = $this->provideProperties();
+        $sampleCategories = $this->provideSampleCategories();
+        $this->sdk->getCatalogService()->addCategories($sampleCategories, ['requestType' => 'direct']);
+        $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, $sampleCategoryCodes);
+
+        $this->createSampleAttribute();
+        $this->createSampleExtras();
+
+        $categories = $this->provideCategoryMapping();
+        $identifiers = $this->provideIdentifiers();
+        $price = $this->providePricing();
+        $properties = $this->provideProperties();
         $shippingInformation = $this->provideShippingInformation();
-        $media               = $this->provideMedia();
-        $options             = $this->provideOptions();
-        $extras              = $this->provideExtras();
-
-        $options = []; // not working, categories have to be set up first
-        $extras  = []; // not working, categories have to be set up first
-
+        $media = $this->provideMedia();
+        $options = $this->provideOptions();
+        $extras = $this->provideExtras();
+        $extras = [];
         $name = new Product\Dto\Name();
         $name->add('en-us', 'Productname in english');
         $name->add('de-de', 'Produktname in deutsch');
@@ -937,23 +940,23 @@ class ProductTest extends CatalogTest
 
         $property1 = new Product\Dto\Properties\Product();
         $property1->setCode('property_code_1')
-                  ->setName(new Properties\Name(['en-us' => 'property 1 english', 'de-de' => 'property 1 deutsch']))
-                  ->setValue(new Properties\Value(['stuff' => 'stuff value', 'other stuff' => 'other stuff value']))
-                  ->setDisplayGroup(Properties::DISPLAY_GROUP_FEATURES)
-                  ->setSubDisplayGroup($subDisplayGroup);
+            ->setName(new Properties\Name(['en-us' => 'property 1 english', 'de-de' => 'property 1 deutsch']))
+            ->setValue(new Properties\Value(['stuff' => 'stuff value', 'other stuff' => 'other stuff value']))
+            ->setDisplayGroup(Properties::DISPLAY_GROUP_FEATURES)
+            ->setSubDisplayGroup($subDisplayGroup);
 
         $property2 = (new Product\Dto\Properties\Simple())->setCode('property_code_2')
-                                                          ->setName(
-                                                              new Properties\Name(
-                                                                  [
-                                                                      'en-us' => 'property 2 english',
-                                                                      'de-de' => 'property 2 deutsch'
-                                                                  ]
-                                                              )
-                                                          )
-                                                          ->setValue(new Properties\Value())
-                                                          ->setDisplayGroup('features')
-                                                          ->setSubDisplayGroup($subDisplayGroup);
+            ->setName(
+                new Properties\Name(
+                    [
+                        'en-us' => 'property 2 english',
+                        'de-de' => 'property 2 deutsch'
+                    ]
+                )
+            )
+            ->setValue(new Properties\Value())
+            ->setDisplayGroup('features')
+            ->setSubDisplayGroup($subDisplayGroup);
 
         return [$property1, $property2];
     }
@@ -982,19 +985,19 @@ class ProductTest extends CatalogTest
     {
         $media1 = new Product\Dto\Media\Media();
         $media1->setCode('media_code_1')
-               ->setType(Product\Dto\Media\Media::TYPE_IMAGE)
-               ->setUrl('example.com/media1.jpg')
-               ->setAltText('alt text 1')
-               ->setSubTitle('Title Media 1')
-               ->setSequenceId(0);
+            ->setType(Product\Dto\Media\Media::TYPE_IMAGE)
+            ->setUrl('example.com/media1.jpg')
+            ->setAltText('alt text 1')
+            ->setSubTitle('Title Media 1')
+            ->setSequenceId(0);
 
         $media2 = new Product\Dto\Media\Media();
         $media2->setCode('media_code_2')
-               ->setType(Product\Dto\Media\Media::TYPE_VIDEO)
-               ->setUrl('example.com/media2.mov')
-               ->setAltText('alt text 2')
-               ->setSubTitle('Title Media 2')
-               ->setSequenceId(5);
+            ->setType(Product\Dto\Media\Media::TYPE_VIDEO)
+            ->setUrl('example.com/media2.mov')
+            ->setAltText('alt text 2')
+            ->setSubTitle('Title Media 2')
+            ->setSequenceId(5);
 
         $media = new Media();
         $media->add('en-us', [$media1, $media2]);
@@ -1007,17 +1010,15 @@ class ProductTest extends CatalogTest
      */
     private function provideOptions()
     {
-        list($value1, $value3) = $this->provideOptionsValues();
+        list($value1) = $this->provideOptionsValues();
 
         $option1 = new Product\Dto\Options();
-        $option1->setCode('option_1')
-                ->setValues([$value1]);
+        $option1->setCode(self::SAMPLE_ATTRIBUTE_CODE)
+            ->setValues([$value1]);
 
-        $option2 = new Product\Dto\Options();
-        $option2->setCode('option_2')
-                ->setValues([$value3]);
-
-        //$options = [$option1, $option2];
+//        $option2 = new Product\Dto\Options();
+//        $option2->setCode('option_2')
+//            ->setValues([$value3]);
 
         return [$option1];
     }
@@ -1029,12 +1030,12 @@ class ProductTest extends CatalogTest
     {
         list($value1, $value2, $value3) = $this->provideOptionsValues();
         $extra1 = new Product\Dto\Extras();
-        $extra1->setCode('extra_1')
-               ->setValues([$value1, $value2]);
+        $extra1->setCode(self::SAMPLE_EXTRA_CODE)
+            ->setValues([$value1, $value2]);
 
         $extra2 = new Product\Dto\Extras();
-        $extra2->setCode('extra_2')
-               ->setValues([$value3]);
+        $extra2->setCode(self::SAMPLE_EXTRA_CODE_2)
+            ->setValues([$value3]);
 
         return [$extra1, $extra2];
     }
@@ -1045,14 +1046,14 @@ class ProductTest extends CatalogTest
     private function provideOptionsValues()
     {
         $value1 = new Product\Dto\Options\Values();
-        $value1->setCode('code_value_1')
-               ->setAdditionalPrice(5);
+        $value1->setCode(self::SAMPLE_ATTRIBUTE_VALUE_CODE)
+            ->setAdditionalPrice(5);
         $value2 = new Product\Dto\Options\Values();
-        $value2->setCode('code_value_2')
-               ->setAdditionalPrice(10);
+        $value2->setCode(self::SAMPLE_EXTRA_VALUE_CODE)
+            ->setAdditionalPrice(10);
         $value3 = new Product\Dto\Options\Values();
-        $value3->setCode('code_value_3')
-               ->setAdditionalPrice(50);
+        $value3->setCode(self::SAMPLE_EXTRA_VALUE_CODE_2)
+            ->setAdditionalPrice(50);
 
         return [$value1, $value2, $value3];
     }

@@ -44,6 +44,7 @@ class BaseTest extends TestCase
         $base   = new Base(null, $schema);
 
         // Act
+        /**  */
         $result = $base->getTest();
 
         // Assert

@@ -22,6 +22,7 @@
 
 namespace Shopgate\ConnectSdk\Service;
 
+use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
@@ -42,9 +43,10 @@ class BulkImport
     }
 
     /**
-     * @return mixed
+     * @return string
      * @throws RequestException
      * @throws UnknownException
+     * @throws NotFoundException
      */
     protected function getImportReference()
     {
@@ -67,6 +69,7 @@ class BulkImport
      * @return File
      * @throws RequestException
      * @throws UnknownException
+     * @throws NotFoundException
      */
     public function createFileImport()
     {
@@ -77,6 +80,7 @@ class BulkImport
      * @return Stream
      * @throws RequestException
      * @throws UnknownException
+     * @throws NotFoundException
      */
     public function createStreamImport()
     {

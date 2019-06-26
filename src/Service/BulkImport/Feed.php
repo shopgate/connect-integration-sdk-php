@@ -22,6 +22,10 @@
 
 namespace Shopgate\ConnectSdk\Service\BulkImport;
 
+use function GuzzleHttp\Psr7\stream_for;
+use Exception;
+use Psr\Http\Message\StreamInterface;
+use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\Service\BulkImport\Handler\File;
 use Shopgate\ConnectSdk\Service\BulkImport\Handler\Stream;
@@ -42,7 +46,7 @@ class Feed
     /** @var  string */
     private $url;
 
-    /** @var \Psr\Http\Message\StreamInterface | resource */
+    /** @var StreamInterface | resource */
     protected $stream;
 
     /** @var string */
@@ -58,12 +62,14 @@ class Feed
     protected $isFirstItem = true;
 
     /**
-     * Feed constructor.
-     *
      * @param ClientInterface $client
      * @param string          $importReference
      * @param string          $handlerType
      * @param array           $requestBodyOptions
+     *
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
      */
     public function __construct(
         ClientInterface $client,
@@ -71,18 +77,18 @@ class Feed
         $handlerType,
         $requestBodyOptions = []
     ) {
-        $this->client             = $client;
-        $this->importReference    = $importReference;
-        $this->handlerType        = $handlerType;
+        $this->client = $client;
+        $this->importReference = $importReference;
+        $this->handlerType = $handlerType;
         $this->requestBodyOptions = $requestBodyOptions;
 
-        $this->client       = $client;
+        $this->client = $client;
         $this->importClient = new Client();
-        $this->url          = $this->getUrl();
+        $this->url = $this->getUrl();
 
         switch ($this->handlerType) {
             case Stream::HANDLER_TYPE:
-                $this->stream = \GuzzleHttp\Psr7\stream_for();
+                $this->stream = stream_for();
                 $this->stream->write('[');
                 break;
             case File::HANDLER_TYPE:
@@ -93,17 +99,21 @@ class Feed
     }
 
     /**
-     * @return mixed
+     * @return string
+     *
+     * @throws RequestException
+     * @throws UnknownException
+     * @throws NotFoundException
      */
     protected function getUrl()
     {
         $response = $this->client->doRequest(
             [
-                'method'      => 'post',
-                'body'        => $this->requestBodyOptions,
+                'method' => 'post',
+                'body' => $this->requestBodyOptions,
                 'requestType' => 'direct',
-                'service'     => 'import',
-                'path'        => 'imports/' . $this->importReference . '/' . 'urls',
+                'service' => 'import',
+                'path' => 'imports/' . $this->importReference . '/' . 'urls',
             ]
         );
 
@@ -123,39 +133,42 @@ class Feed
     }
 
     /**
-     * Upload content or finish stream to S3
+     * @throws RequestException
+     * @throws UnknownException
      */
     public function end()
     {
-        $requestOption = [];
-        switch ($this->handlerType) {
-            case Stream::HANDLER_TYPE:
-                $this->stream->write(']');
-                $requestOption = ['body' => $this->stream];
-                $this->importClient->request(
-                    'PUT',
-                    $this->url,
-                    ['body' => $this->stream]
-                );;
-                break;
-            case File::HANDLER_TYPE:
-                fwrite($this->stream, ']');
-                fseek($this->stream, 0);
-                $requestOption = ['body' => fread($this->stream, filesize(stream_get_meta_data($this->stream)['uri']))];
-                fclose($this->stream);
-                break;
-        }
-
-        if (count($requestOption)) {
-            try {
-                $this->importClient->request('PUT', $this->url, $requestOption);
-            } catch (GuzzleRequestException $e) {
-                throw new RequestException($e->getResponse()->getBody()->getContents());
-            } catch (GuzzleException $e) {
-                throw new UnknownException($e->getMessage());
-            } catch (\Exception $e) {
-                throw new UnknownException($e->getMessage());
+        try {
+            $requestOption = [];
+            switch ($this->handlerType) {
+                case Stream::HANDLER_TYPE:
+                    $this->stream->write(']');
+                    $requestOption = ['body' => $this->stream];
+                    $this->importClient->request(
+                        'PUT',
+                        $this->url,
+                        ['body' => $this->stream]
+                    );;
+                    break;
+                case File::HANDLER_TYPE:
+                    fwrite($this->stream, ']');
+                    fseek($this->stream, 0);
+                    $requestOption = [
+                        'body' => fread($this->stream, filesize(stream_get_meta_data($this->stream)['uri']))
+                    ];
+                    fclose($this->stream);
+                    break;
             }
+
+            if (count($requestOption)) {
+                $this->importClient->request('PUT', $this->url, $requestOption);
+            }
+        } catch (GuzzleRequestException $e) {
+            throw new RequestException($e->getResponse()->getBody()->getContents());
+        } catch (GuzzleException $e) {
+            throw new UnknownException($e->getMessage());
+        } catch (Exception $e) {
+            throw new UnknownException($e->getMessage());
         }
     }
 }

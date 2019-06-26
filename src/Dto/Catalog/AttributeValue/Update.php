@@ -27,6 +27,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 /**
  * Default class that handles validation for attribute values Update payloads.
  *
+ * @method Update setCode(string $code)
  * @method Update setSequenceId(int $sequenceId)
  * @method Update setName(dto\Name $name)
  * @method Update setSwatch(dto\Swatch $swatch)

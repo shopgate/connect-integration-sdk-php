@@ -53,7 +53,7 @@ class AttributeTest extends CatalogTest
         // Assert
         $attributes = $this->getAttributes();
 
-        // Prepare delete
+        // CleanUp
         $deleteCodes = [];
         foreach ($attributes->getAttributes() as $attribute) {
             $deleteCodes[] = $attribute->getCode();
@@ -85,7 +85,7 @@ class AttributeTest extends CatalogTest
 
         $attributes = $this->getAttributes();
 
-        // Prepare delete
+        // CleanUp
         $deleteCodes = [];
         foreach ($attributes->getAttributes() as $attribute) {
             $deleteCodes[] = $attribute->getCode();
@@ -118,7 +118,7 @@ class AttributeTest extends CatalogTest
             ]
         );
 
-        // Prepare delete
+        // CleanUp
         $this->deleteEntitiesAfterTestRun(
             self::CATALOG_SERVICE,
             self::METHOD_DELETE_ATTRIBUTE,
@@ -162,7 +162,7 @@ class AttributeTest extends CatalogTest
             ]
         );
 
-        // Prepare delete
+        // CleanUp
         $this->deleteEntitiesAfterTestRun(
             self::CATALOG_SERVICE,
             self::METHOD_DELETE_ATTRIBUTE,
@@ -201,7 +201,7 @@ class AttributeTest extends CatalogTest
             ]
         );
 
-        // Prepare delete
+        // CleanUp
         $this->deleteEntitiesAfterTestRun(
             self::CATALOG_SERVICE,
             self::METHOD_DELETE_ATTRIBUTE,
@@ -239,7 +239,7 @@ class AttributeTest extends CatalogTest
 
         sleep(self::SLEEP_TIME_AFTER_EVENT);
 
-        // Prepare delete
+        // CleanUp
         $this->deleteEntitiesAfterTestRun(
             self::CATALOG_SERVICE,
             self::METHOD_DELETE_ATTRIBUTE,
@@ -275,7 +275,7 @@ class AttributeTest extends CatalogTest
     public function testDeleteAttributeDirect()
     {
         // Arrange
-        $sampleAttributes = $this->provideSampleAttributes(1, false);
+        $sampleAttributes = $this->provideSampleAttributes(1);
         $this->createAttributes(
             $sampleAttributes,
             [
@@ -307,7 +307,7 @@ class AttributeTest extends CatalogTest
     public function testDeleteAttributeEvent()
     {
         // Arrange
-        $sampleAttributes = $this->provideSampleAttributes(1, false);
+        $sampleAttributes = $this->provideSampleAttributes(1);
         $this->createAttributes(
             $sampleAttributes,
             [
@@ -363,7 +363,7 @@ class AttributeTest extends CatalogTest
         // Assert
         $attributes = $this->getAttributes($parameters);
 
-        // Prepare delete
+        // CleanUp
         $deleteCodes = [];
         foreach ($attributes->getAttributes() as $attribute) {
             $deleteCodes[] = $attribute->getCode();
@@ -662,11 +662,10 @@ class AttributeTest extends CatalogTest
 
     /**
      * @param int  $itemCount
-     * @param bool $removeOnTearDown
      *
      * @return Attribute\Create[]
      */
-    private function provideSampleAttributes($itemCount = 2, $removeOnTearDown = true)
+    private function provideSampleAttributes($itemCount = 2)
     {
         $result = [];
         for ($count = 1; $count < ($itemCount + 1); $count++) {

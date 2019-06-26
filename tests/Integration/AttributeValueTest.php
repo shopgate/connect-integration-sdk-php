@@ -22,8 +22,6 @@
 
 namespace Shopgate\ConnectSdk\Tests\Integration;
 
-use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
-use Shopgate\ConnectSdk\Dto\Catalog\Attribute\Dto\Name;
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
@@ -31,8 +29,6 @@ use Shopgate\ConnectSdk\Exception\RequestException;
 
 class AttributeValueTest extends CatalogTest
 {
-    const SAMPLE_ATTRIBUTE_CODE       = 'attribute_code_1';
-    const SAMPLE_ATTRIBUTE_VALUE_CODE = 'attribute_value_code_1';
 
     /**
      * @throws Exception
@@ -66,13 +62,6 @@ class AttributeValueTest extends CatalogTest
         $addedAttributeValues = $this->sdk->getCatalogService()->getAttribute(self::SAMPLE_ATTRIBUTE_CODE)->getValues();
         /** @var AttributeValue\Get $addedAttributeValue */
         $addedAttributeValue = $addedAttributeValues[1];
-
-        // Prepare delete
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_ATTRIBUTE,
-            [self::SAMPLE_ATTRIBUTE_CODE]
-        );
 
         // Assert
         /** @noinspection PhpParamsInspection */
@@ -110,13 +99,6 @@ class AttributeValueTest extends CatalogTest
             self::SAMPLE_ATTRIBUTE_VALUE_CODE,
             $updateAttributeValue,
             ['requestType' => 'direct']
-        );
-
-        // Prepare delete
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_ATTRIBUTE,
-            [self::SAMPLE_ATTRIBUTE_CODE]
         );
 
         // Assert
@@ -157,6 +139,8 @@ class AttributeValueTest extends CatalogTest
      */
     public function testDeleteAttributeValueEvent()
     {
+        $this->markTestSkipped('Skipped due to bug in worker service');
+
         // Arrange
         $this->createSampleAttribute();
 
@@ -235,13 +219,6 @@ class AttributeValueTest extends CatalogTest
         $this->createSampleAttribute();
         $attributeValue = new AttributeValue\Create($attributeValueData);
 
-        // Prepare delete
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_ATTRIBUTE,
-            [self::SAMPLE_ATTRIBUTE_CODE]
-        );
-
         // Act
         try {
             $this->sdk->getCatalogService()->addAttributeValue(
@@ -283,13 +260,6 @@ class AttributeValueTest extends CatalogTest
         $this->createSampleAttribute();
         $attributeValue = new AttributeValue\Create($attributeValueData);
 
-        // Prepare delete
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_ATTRIBUTE,
-            [self::SAMPLE_ATTRIBUTE_CODE]
-        );
-
         // Act
         try {
             $this->sdk->getCatalogService()->addAttributeValue(
@@ -311,41 +281,6 @@ class AttributeValueTest extends CatalogTest
         }
 
         $this->fail('Expected ' . get_class($expectedException) . ' but wasn\'t thrown');
-    }
-
-    /**
-     * Create an attribute
-     */
-    public function createSampleAttribute()
-    {
-        $attribute = new Attribute\Create();
-        $attribute->setCode(self::SAMPLE_ATTRIBUTE_CODE)
-            ->setType(Attribute\Create::TYPE_TEXT)
-            ->setUse(Attribute\Create::USE_OPTION)
-            ->setExternalUpdateDate('2018-12-15T00:00:23.114Z');
-
-        $attributeName = new Name();
-        $attributeName->add('de-de', 'Attribute de');
-        $attributeName->add('en-us', 'Attribute en');
-        $attribute->setName($attributeName);
-
-        $attributeValue = new AttributeValue\Create();
-        $attributeValue->setCode(self::SAMPLE_ATTRIBUTE_VALUE_CODE);
-        $attributeValue->setSequenceId(1);
-
-        $attributeValueName = new AttributeValue\Dto\Name();
-        $attributeValueName->add('de-de', 'Attribute Value 1 de');
-        $attributeValueName->add('en-us', 'Attribute Value 1 en');
-        $attributeValue->setName($attributeValueName);
-
-        $attributeValueSwatch = new AttributeValue\Dto\Swatch();
-        $attributeValueSwatch->setType(AttributeValue::SWATCH_TYPE_IMAGE);
-        $attributeValueSwatch->setValue('https://www.google.de/image');
-        $attributeValue->setSwatch($attributeValueSwatch);
-
-        $attribute->setValues([$attributeValue]);
-
-        $this->sdk->getCatalogService()->addAttributes([$attribute], ['requestType' => 'direct']);
     }
 
     /**

@@ -27,6 +27,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Category;
 abstract class CatalogTest extends ShopgateSdkTest
 {
     const CATALOG_SERVICE            = 'catalog';
+    const CUSTOMER_SERVICE           = 'customer';
     const METHOD_DELETE_CATEGORY     = 'deleteCategory';
     const METHOD_DELETE_PRODUCT      = 'deleteProduct';
     const METHOD_DELETE_ATTRIBUTE    = 'deleteAttribute';

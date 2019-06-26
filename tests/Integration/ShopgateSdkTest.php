@@ -96,6 +96,7 @@ abstract class ShopgateSdkTest extends TestCase
                 ?: '',
             getenv('accessTokenPath')
                 ?: '',
+            null,
             (int)getenv('requestLogging')
                 ? new Logger('request_logger_integration_tests', [new StreamHandler('php://stdout')])
                 : null

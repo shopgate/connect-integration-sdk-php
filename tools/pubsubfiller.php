@@ -20,6 +20,7 @@ while (!$topic && !$subscriptionCreated && $tries < 10) {
         $topicCreated = true;
         echo "[OK]\n";
     } catch (Exception $e) {
+        var_dump($e->getMessage());
         if ($e->getCode() === 409) {
             echo "[OK] Already exists.\n";
             $topic = $pubSub->topic('entityChanged');
@@ -40,6 +41,7 @@ while (!$topic && !$subscriptionCreated && $tries < 10) {
         echo "[OK]\n";
         continue;
     } catch (Exception $e) {
+        var_dump($e->getMessage());
         if ($e->getCode() === 409) {
             echo "[OK] Already exists.\n";
             $subscriptionCreated = true;

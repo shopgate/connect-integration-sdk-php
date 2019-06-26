@@ -249,4 +249,107 @@ VALUES
     ('0b5754b4-f378-410b-968f-69aa578cffe3', '991782a7-1ce4-494e-8a69-b8ac1791cae8', '0a24780a-fba6-4db4-a5ee-d81a41607165', 'dabbe084-062d-457b-9251-41f1f95a9574', 0, 'Konstantin Tsabolov', '2019-03-26 16:15:00', '', NULL, '', NULL),
     ('2830d541-86b6-4eb2-a101-74324b6f7515', '991782a7-1ce4-494e-8a69-b8ac1791cae8', '0a24780a-fba6-4db4-a5ee-d81a41607165', '532fd039-c576-4a7b-9b93-f45513e5c3e3', 0, 'Konstantin Tsabolov', '2019-03-26 16:15:00', '', NULL, '', NULL),
     -- -- Custom player name
-    ('d2c804e1-f75a-416f-81dc-710075302428', '991782a7-1ce4-494e-8a69-b8ac1791cae8', '09d4ee4d-73ab-4a7d-b005-875f4821adfe', '0ecde677-8937-4a31-a68f-eec0a8545555', 0, 'Konstantin Tsabolov', '2019-03-26 16:15:00', '', NULL, '', NULL)
+    ('d2c804e1-f75a-416f-81dc-710075302428', '991782a7-1ce4-494e-8a69-b8ac1791cae8', '09d4ee4d-73ab-4a7d-b005-875f4821adfe', '0ecde677-8937-4a31-a68f-eec0a8545555', 0, 'Konstantin Tsabolov', '2019-03-26 16:15:00', '', NULL, '', NULL);
+
+
+
+INSERT IGNORE INTO customer.`Customer` (`CustomerID`,`MerchantID`,`CustomerNumber`,`Status`,`FirstName`,`MiddleName`,`LastName`,`EmailAddress`,`CreateBy`,`CreateDate`,`UpdateBy`,`UpdateDate`,`DeleteBy`,`DeleteDate`)
+VALUES
+    ('007375f9-4756-470f-a3c7-bad402aa9306','1','10001','active','Bob',NULL,'Diamond','bobby@shopgate.com','','2018-12-07 08:25:43',NULL,NULL,NULL,NULL),
+    ('008f62dd-f65b-41f8-9650-5c014ae71035','1',NULL,'active','Jay',NULL,'Mewes','jay.mewes@shopgate.com','','2018-11-30 11:00:53',NULL,NULL,NULL,NULL),
+    ('00d05244-b9da-42b0-b1a8-c558241fb257','1',NULL,'active','Thomson',NULL,'City','thomson.city@shopgate.com','','2018-11-29 08:37:15',NULL,NULL,NULL,NULL),
+    ('01cdb8d6-d4aa-4108-bf37-22670cc580a3','1','4d','deleted','Downtown','Funky Stuff','Malone','downtown.funkystuff.malone@shopgate.com','','2018-12-18 11:23:16',NULL,NULL,NULL,NULL),
+    ('02387646-cdfe-4a12-b8d5-491c3d9aa30c','1',NULL,'active','Richard',NULL,'Grayson','dick.grayson@shopgate.com','','2018-12-04 10:09:14',NULL,NULL,NULL,NULL);
+
+INSERT IGNORE INTO customer.`Attribute` (`AttributeID`,`MerchantID`,`AttributeCode`,`AttributeType`,`IsRequired`,`CreateBy`,`CreateDate`,`UpdateBy`,`UpdateDate`,`DeleteBy`,`DeleteDate`)
+VALUES
+    ('56166d66-3c34-11e9-a392-07a413d253ed','1','preferredCrisps','Text',1,'Unkown','2019-03-01 15:15:12',NULL,NULL,NULL,NULL),
+    ('08cb912c-5083-4ac2-a1f2-2445a775d00d','1','preferredDrink','Text',1,'Unkown','2019-03-01 15:15:12',NULL,NULL,NULL,NULL),
+    ('fedd3eab-b506-423e-a28e-b3540517b353','1','charLvl','Number',0,'Unkown','2019-03-01 15:15:12',NULL,NULL,NULL,NULL),
+    ('f56be0a4-4a43-11e9-806a-67edcce8f28e','1','motto','Text',0,'Unkown','2019-03-01 15:15:12',NULL,NULL,NULL,NULL),
+    ('3c3e4036-560a-11e9-b720-f73b50b891ff','1','yearsPlaying','Number',0,'Unkown','2019-03-01 15:15:12',NULL,NULL,NULL,NULL),
+    ('bccad9de-56ec-11e9-9275-a77f2f0e21fe','1','genres','CollectionOfValues',0,'Unkown','2019-03-01 15:15:12',NULL,NULL,NULL,NULL),
+    ('eadec5a8-56ef-11e9-becb-4ff6cca39794','1','schoolbus_bool','Boolean',0,'Unkown','2019-03-01 15:15:12',NULL,NULL,NULL,NULL);
+
+INSERT IGNORE INTO customer.`AttributeContent` (`AttributeContentID`,`AttributeID`,`LocaleCode`,`Name`,`CreateBy`,`CreateDate`,`UpdateBy`,`UpdateDate`,`DeleteBy`,`DeleteDate`)
+VALUES
+    ('f2a95832-3c34-11e9-8f00-fbc1ff9c5296','56166d66-3c34-11e9-a392-07a413d253ed','en-us','Preferred brand of crisps','Unknown','2019-03-01 15:16:48',NULL,NULL,NULL,NULL),
+    ('99b68080-a9f5-4bcd-9a5f-1a9c27ccc311','08cb912c-5083-4ac2-a1f2-2445a775d00d','en-us','Preferred drink','Unknown','2019-03-01 15:16:48',NULL,NULL,NULL,NULL),
+    ('1e680a58-9218-477d-90f5-24a36a46eaef','fedd3eab-b506-423e-a28e-b3540517b353','en-us','Player character level','Unknown','2019-03-01 15:16:48',NULL,NULL,NULL,NULL),
+    ('154d5cfe-4a44-11e9-9a30-5fe285280914','f56be0a4-4a43-11e9-806a-67edcce8f28e','en-us','Player motto','Unknown','2019-03-01 15:16:48',NULL,NULL,NULL,NULL),
+    ('4ecb3ea2-560a-11e9-9fb5-cb662c502d61','3c3e4036-560a-11e9-b720-f73b50b891ff','en-us','Years playing','Unknown','2019-03-01 15:16:48',NULL,NULL,NULL,NULL),
+    ('d65ad25a-56ec-11e9-a9d0-bf56c0e68195','bccad9de-56ec-11e9-9275-a77f2f0e21fe','en-us','Preferred genres','Unknown','2019-03-01 15:16:48',NULL,NULL,NULL,NULL),
+    ('0b5fff22-56f0-11e9-96e2-874a6009a9c8','eadec5a8-56ef-11e9-becb-4ff6cca39794','en-us','Goes by school bus','Unknown','2019-03-01 15:16:48',NULL,NULL,NULL,NULL),
+
+    ('cf801f22-4bd3-11e9-a1b5-cfb1a20b71ef','56166d66-3c34-11e9-a392-07a413d253ed','de-de','Lieblings-Chipsmarke','Unknown','2019-03-21 12:22:14',NULL,NULL,NULL,NULL),
+    ('b7f6d170-4bd3-11e9-84b0-8f7edbcc4e40','08cb912c-5083-4ac2-a1f2-2445a775d00d','de-de','Lieblingsgetränk','Unknown','2019-03-21 12:22:14',NULL,NULL,NULL,NULL),
+    ('95f4b7fe-4bd3-11e9-acbf-bf37889df77f','fedd3eab-b506-423e-a28e-b3540517b353','de-de','Spieler-Level','Unknown','2019-03-21 12:22:14',NULL,NULL,NULL,NULL),
+    ('83e9d1fc-4bd3-11e9-9bd6-ef29aed67665','f56be0a4-4a43-11e9-806a-67edcce8f28e','de-de','Spieler-Motto','Unknown','2019-03-21 12:22:14',NULL,NULL,NULL,NULL),
+    ('4f284e9e-560a-11e9-9fb2-7fefe657aa22','3c3e4036-560a-11e9-b720-f73b50b891ff','de-de','Spieljahre','Unknown','2019-03-21 12:22:14',NULL,NULL,NULL,NULL),
+    ('e9d53cf8-56ec-11e9-80e5-d75299b01825','bccad9de-56ec-11e9-9275-a77f2f0e21fe','de-de','Lieblingsgenres','Unknown','2019-03-21 12:22:14',NULL,NULL,NULL,NULL),
+    ('103ea494-56f0-11e9-8933-4b1e1b22a03b','eadec5a8-56ef-11e9-becb-4ff6cca39794','de-de','Nimmt den Schulbus','Unknown','2019-03-21 12:22:14',NULL,NULL,NULL,NULL);
+
+INSERT IGNORE INTO customer.`AttributeValue` (`AttributeValueID`,`AttributeID`,`AttributeValue`,`SequenceId`,`CreateBy`,`CreateDate`,`UpdateBy`,`UpdateDate`,`DeleteBy`,`DeleteDate`)
+VALUES
+    ('5fbbf584-3c34-11e9-acb5-f796e8c4def3','56166d66-3c34-11e9-a392-07a413d253ed','dor',1,'Unknown','2019-03-01 15:21:35',NULL,NULL,NULL,NULL),
+    ('c76ddccc-4a41-11e9-8d5b-afaa49c5a531','56166d66-3c34-11e9-a392-07a413d253ed','chee',2,'Unknown','2019-03-01 15:21:35',NULL,NULL,NULL,NULL),
+    ('cdec74dc-4a41-11e9-957a-2fde90eab985','56166d66-3c34-11e9-a392-07a413d253ed','lays',3,'Unknown','2019-03-01 15:21:35',NULL,NULL,NULL,NULL),
+
+    ('b57cc55a-e313-4af7-b345-901e92b374f3','08cb912c-5083-4ac2-a1f2-2445a775d00d','beer', 1,'Unknown','2019-03-01 15:21:35',NULL,NULL,NULL,NULL),
+    ('eeca80d2-a0fc-4cf0-9a69-2f477b51ab25','08cb912c-5083-4ac2-a1f2-2445a775d00d','scotch', 2,'Unknown','2019-03-01 15:21:35',NULL,NULL,NULL,NULL),
+
+    ('5543a301-e6bc-4cd3-a0de-955dccd96b5c','fedd3eab-b506-423e-a28e-b3540517b353','14',3,'Unknown','2019-03-01 15:21:35',NULL,NULL,NULL,NULL),
+    ('99b68080-a9f5-4bcd-9a5f-1a9c27ccc311','fedd3eab-b506-423e-a28e-b3540517b353','15',4,'Unknown','2019-03-01 15:21:35',NULL,NULL,NULL,NULL),
+    ('c1fd3d91-75d6-4b2c-a4a1-aaaaaaaaaaaa','fedd3eab-b506-423e-a28e-b3540517b353','16',5,'Unknown','2019-03-01 15:21:35',NULL,NULL,NULL,NULL),
+
+    ('57951204-56ed-11e9-be21-6bc66acb5b0e','bccad9de-56ec-11e9-9275-a77f2f0e21fe','jar',1,'Unknown','2019-03-01 15:21:35',NULL,NULL,NULL,NULL),
+    ('5c896c4c-56ed-11e9-8116-1b77789a82a0','bccad9de-56ec-11e9-9275-a77f2f0e21fe','rts',2,'Unknown','2019-03-01 15:21:35',NULL,NULL,NULL,NULL),
+    ('606764d6-56ed-11e9-8622-1be936319335','bccad9de-56ec-11e9-9275-a77f2f0e21fe','fps',3,'Unknown','2019-03-01 15:21:35',NULL,NULL,NULL,NULL),
+    ('64f3ddc2-56ed-11e9-82de-bb24afb1e2f4','bccad9de-56ec-11e9-9275-a77f2f0e21fe','rpg',4,'Unknown','2019-03-01 15:21:35',NULL,NULL,NULL,NULL),
+    ('69b3ae14-56ed-11e9-80fe-b35b98dc2c75','bccad9de-56ec-11e9-9275-a77f2f0e21fe','mmo',5,'Unknown','2019-03-01 15:21:35',NULL,NULL,NULL,NULL);
+
+INSERT IGNORE INTO customer.`AttributeValueContent` (`AttributeValueContentID`,`AttributeValueID`,`LocaleCode`,`AttributeValueName`,`CreateBy`,`CreateDate`,`UpdateBy`,`UpdateDate`,`DeleteBy`,`DeleteDate`)
+VALUES
+    ('f993256e-3c35-11e9-ba8f-0f61e335233f','5fbbf584-3c34-11e9-acb5-f796e8c4def3','en-us','Doritos','Unknown','2019-03-01 15:23:55',NULL,NULL,NULL,NULL),
+    ('002d3e7b-ba52-4bbc-9a4d-e094498b5674','c76ddccc-4a41-11e9-8d5b-afaa49c5a531','en-us','Cheetos','Unknown','2019-03-01 15:23:55',NULL,NULL,NULL,NULL),
+    ('c729a986-c11f-4988-b89f-fc2b4828841e','cdec74dc-4a41-11e9-957a-2fde90eab985','en-us','Lays','Unknown','2019-03-01 15:23:55',NULL,NULL,NULL,NULL),
+    ('993edf7b-3460-47ae-a486-06aaa6e19f3f','b57cc55a-e313-4af7-b345-901e92b374f3','en-us','Beer','Unknown','2019-03-01 15:23:55',NULL,NULL,NULL,NULL),
+    ('2eb0d1f8-202f-461d-b846-21e209aba887','eeca80d2-a0fc-4cf0-9a69-2f477b51ab25','en-us','Scotch','Unknown','2019-03-01 15:23:55',NULL,NULL,NULL,NULL),
+    ('f0f7235a-a209-4685-9679-04c89fc5ca28','5543a301-e6bc-4cd3-a0de-955dccd96b5c','en-us','14','Unknown','2019-03-01 15:23:55',NULL,NULL,NULL,NULL),
+    ('842e8800-26b5-490a-9f12-0eda787a6294','99b68080-a9f5-4bcd-9a5f-1a9c27ccc311','en-us','15','Unknown','2019-03-01 15:23:55',NULL,NULL,NULL,NULL),
+    ('811c5355-1a94-4c47-bfd4-b6886ba51e3c','c1fd3d91-75d6-4b2c-a4a1-aaaaaaaaaaaa','en-us','16','Unknown','2019-03-01 15:23:55',NULL,NULL,NULL,NULL),
+    ('3488d9de-56ee-11e9-9e47-5b9accd3b5c6','57951204-56ed-11e9-be21-6bc66acb5b0e','en-us','Jump & Run','Unknown','2019-03-01 15:23:55',NULL,NULL,NULL,NULL),
+    ('34dcd5fc-56ee-11e9-b07d-83311c4ff7b1','5c896c4c-56ed-11e9-8116-1b77789a82a0','en-us','Real time strategy','Unknown','2019-03-01 15:23:55',NULL,NULL,NULL,NULL),
+    ('3531226a-56ee-11e9-8431-33d1c581fe7c','606764d6-56ed-11e9-8622-1be936319335','en-us','First person shooters','Unknown','2019-03-01 15:23:55',NULL,NULL,NULL,NULL),
+    ('35730e50-56ee-11e9-a77a-8f252d27fad5','64f3ddc2-56ed-11e9-82de-bb24afb1e2f4','en-us','Role play games','Unknown','2019-03-01 15:23:55',NULL,NULL,NULL,NULL),
+    ('35aeed12-56ee-11e9-bf18-ef3ae7ea2125','69b3ae14-56ed-11e9-80fe-b35b98dc2c75','en-us','Mass multi player online games','Unknown','2019-03-01 15:23:55',NULL,NULL,NULL,NULL),
+
+    ('f524191c-4bd4-11e9-8ba7-5703aa1143e9','5fbbf584-3c34-11e9-acb5-f796e8c4def3','de-de','Doritos','Unknown',now(),NULL,NULL,NULL,NULL),
+    ('e9ef8144-4bd4-11e9-a94b-dbd0674b1e76','c76ddccc-4a41-11e9-8d5b-afaa49c5a531','de-de','Cheetos','Unknown',now(),NULL,NULL,NULL,NULL),
+    ('f4869f3e-4bd4-11e9-af16-ff49f09c62ba','cdec74dc-4a41-11e9-957a-2fde90eab985','de-de','Lays','Unknown',now(),NULL,NULL,NULL,NULL),
+    ('f4326ed2-4bd4-11e9-8ddc-13ad3681fa6f','b57cc55a-e313-4af7-b345-901e92b374f3','de-de','Bier','Unknown',now(),NULL,NULL,NULL,NULL),
+    ('f2d432be-4bd4-11e9-beaf-6bd63ae80c65','eeca80d2-a0fc-4cf0-9a69-2f477b51ab25','de-de','Scotch','Unknown',now(),NULL,NULL,NULL,NULL),
+    ('f4deb390-4bd4-11e9-8421-3bf0e319afb2','5543a301-e6bc-4cd3-a0de-955dccd96b5c','de-de','14','Unknown',now(),NULL,NULL,NULL,NULL),
+    ('f3d3332c-4bd4-11e9-8524-67af6832cc58','99b68080-a9f5-4bcd-9a5f-1a9c27ccc311','de-de','15','Unknown',now(),NULL,NULL,NULL,NULL),
+    ('f36debd4-4bd4-11e9-ba37-ab0cb7e4ca8d','c1fd3d91-75d6-4b2c-a4a1-aaaaaaaaaaaa','de-de','16','Unknown',now(),NULL,NULL,NULL,NULL),
+    ('49b97052-56ee-11e9-a427-0b0d6519e299','57951204-56ed-11e9-be21-6bc66acb5b0e','de-de','Hüpp & Renn','Unknown','2019-03-01 15:23:55',NULL,NULL,NULL,NULL),
+    ('4a2eb09c-56ee-11e9-a74a-778b252de223','5c896c4c-56ed-11e9-8116-1b77789a82a0','de-de','Echtzeitstrategie','Unknown','2019-03-01 15:23:55',NULL,NULL,NULL,NULL),
+    ('4a709142-56ee-11e9-a971-7b7d00d7220d','606764d6-56ed-11e9-8622-1be936319335','de-de','Krach Bumm Rattazäng','Unknown','2019-03-01 15:23:55',NULL,NULL,NULL,NULL),
+    ('4ab74fd8-56ee-11e9-8679-c766ffc5fe98','64f3ddc2-56ed-11e9-82de-bb24afb1e2f4','de-de','Rollenspiele','Unknown','2019-03-01 15:23:55',NULL,NULL,NULL,NULL),
+    ('4af0bcd2-56ee-11e9-92ae-4bc6e5feb9f5','69b3ae14-56ed-11e9-80fe-b35b98dc2c75','de-de','Sowas wie WoW','Unknown','2019-03-01 15:23:55',NULL,NULL,NULL,NULL);
+
+INSERT IGNORE INTO customer.`CustomerAttribute` (`CustomerAttributeID`,`CustomerID`,`AttributeID`,`AttributeValueID`,`Value`,`CreateBy`,`CreateDate`,`UpdateBy`,`UpdateDate`,`DeleteBy`,`DeleteDate`)
+VALUES
+    ('fbbb66be-3c33-11e9-9c62-c752d1b46358','007375f9-4756-470f-a3c7-bad402aa9306','56166d66-3c34-11e9-a392-07a413d253ed','c76ddccc-4a41-11e9-8d5b-afaa49c5a531',NULL,'Unknown','2019-03-01 15:25:16','',NULL,'',NULL),
+    ('35af11ef-04a6-44b2-8042-bbbbbbbbbbbb','007375f9-4756-470f-a3c7-bad402aa9306','08cb912c-5083-4ac2-a1f2-2445a775d00d','eeca80d2-a0fc-4cf0-9a69-2f477b51ab25',NULL,'Unknown','2019-03-01 15:25:16','',NULL,'',NULL),
+    ('35af11ef-04a6-44b2-8042-b09b920e139a','007375f9-4756-470f-a3c7-bad402aa9306','fedd3eab-b506-423e-a28e-b3540517b353','99b68080-a9f5-4bcd-9a5f-1a9c27ccc311',NULL,'Unknown','2019-03-01 15:25:16','',NULL,'',NULL),
+
+    ('2ce661ad-1b74-4e6a-8069-cccccccccccc','008f62dd-f65b-41f8-9650-5c014ae71035','56166d66-3c34-11e9-a392-07a413d253ed','cdec74dc-4a41-11e9-957a-2fde90eab985',NULL,'Unknown','2019-03-01 15:25:16','',NULL,'',NULL),
+    ('2ce661ad-1b74-4e6a-8069-588305fd208d','008f62dd-f65b-41f8-9650-5c014ae71035','08cb912c-5083-4ac2-a1f2-2445a775d00d','b57cc55a-e313-4af7-b345-901e92b374f3',NULL,'Unknown','2019-03-01 15:25:16','',NULL,'',NULL),
+    ('84b57cfc-4a44-11e9-b77b-2395a65be0ca','008f62dd-f65b-41f8-9650-5c014ae71035','f56be0a4-4a43-11e9-806a-67edcce8f28e',NULL,'Roses are red / Bacon is also red / Poems are hard / Bacon.','Unknown','2019-03-01 15:25:16','',NULL,'',NULL);
+
+
+
+
+
+

@@ -25,6 +25,7 @@ use Shopgate\ConnectSdk\Exception;
 use Shopgate\ConnectSdk\Dto\Customer\Attribute;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\ShopgateSdk;
+use Shopgate\ConnectSdk\Dto\Meta;
 
 class Customer
 {
@@ -57,7 +58,7 @@ class Customer
         $response = $this->client->doRequest(
             [
                 // direct only
-                'service' => 'customer',
+                'service' => 'omni-customer',
                 'method'  => 'get',
                 'path'    => 'attributes',
                 'query'   => $query,
@@ -90,7 +91,7 @@ class Customer
         $response = $this->client->doRequest(
             [
                 // direct only
-                'service' => 'customer',
+                'service' => 'omni-customer',
                 'method'  => 'get',
                 'path'    => 'attributes/' . $attributeCode,
                 'query'   => $query,
@@ -129,7 +130,7 @@ class Customer
                 'body'        => ['attributes' => $requestAttributes],
                 'query'       => $query,
                 // direct
-                'service'     => 'customer',
+                'service'     => 'omni-customer',
                 'path'        => 'attributes',
                 // async
                 'entity'      => 'attribute',
@@ -154,7 +155,7 @@ class Customer
         return $this->client->doRequest(
             [
                 // general
-                'service'     => 'customer',
+                'service'     => 'omni-customer',
                 'method'      => 'post',
                 'path'        => 'attributes/' . $attributeCode,
                 'entity'      => 'attribute',
@@ -185,7 +186,7 @@ class Customer
     {
         return $this->client->doRequest(
             [
-                'service'     => 'customer',
+                'service'     => 'omni-customer',
                 'method'      => 'delete',
                 'path'        => 'attributes/' . $attributeCode,
                 'entity'      => 'attribute',

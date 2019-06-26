@@ -3,9 +3,9 @@
 
 namespace Shopgate\ConnectSdk\Http\Persistence;
 
+use Exception;
 use kamermans\OAuth2\Persistence\TokenPersistenceInterface;
 use kamermans\OAuth2\Token\TokenInterface;
-use splitbrain\phpcli\Exception;
 
 class PersistenceChain implements TokenPersistenceInterface
 {
@@ -40,7 +40,7 @@ class PersistenceChain implements TokenPersistenceInterface
                 }
 
                 return $restoredToken;
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $exceptions[] = $e;
             }
         }
@@ -65,7 +65,7 @@ class PersistenceChain implements TokenPersistenceInterface
         foreach ($this->storages as $storage) {
             try {
                 return $storage->saveToken($token);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $exceptions[] = $e;
             }
         }
@@ -84,7 +84,7 @@ class PersistenceChain implements TokenPersistenceInterface
         foreach ($this->storages as $storage) {
             try {
                 return $storage->deleteToken();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $exceptions[] = $e;
             }
         }
@@ -105,7 +105,7 @@ class PersistenceChain implements TokenPersistenceInterface
         foreach ($this->storages as $storage) {
             try {
                 return $storage->hasToken();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $exceptions[] = $e;
             }
         }

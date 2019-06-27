@@ -35,6 +35,62 @@ use Shopgate\ConnectSdk\Tests\Integration\CustomerTest;
 class AttributeTest extends CustomerTest
 {
     /**
+     * @param int      $limit
+     * @param int      $offset
+     * @param int      $expectedAttributeCount
+     * @param string[] $expectedAttributeCodes
+     *
+     * @throws Exception
+     *
+     * @dataProvider provideAttributeGetListLimitCases
+     */
+    public function testAttributeGetListLimit($limit, $offset, $expectedAttributeCount, $expectedAttributeCodes)
+    {
+        // Arrange
+        $createdItemCount = 10;
+        $sampleAttributes = $this->provideSampleAttributes($createdItemCount);
+
+        // Act
+        $this->createAttributes(
+            $sampleAttributes,
+            [
+                'requestType' => 'direct',
+            ]
+        );
+
+        $parameters = [];
+        if (isset($limit)) {
+            $parameters['limit'] = $limit;
+        }
+        if (isset($offset)) {
+            $parameters['offset'] = $offset;
+        }
+
+        // Assert
+        $attributes = $this->getAttributes($parameters);
+
+        // Prepare delete
+        $deleteCodes = [];
+        foreach ($attributes->getAttributes() as $attribute) {
+            $deleteCodes[] = $attribute->getCode();
+        }
+        $this->deleteEntitiesAfterTestRun(
+            self::CUSTOMER_SERVICE,
+            self::METHOD_DELETE_ATTRIBUTE,
+            $deleteCodes
+        );
+
+        $this->assertCount($expectedAttributeCount, $attributes->getAttributes());
+        $this->assertEquals($expectedAttributeCodes, $deleteCodes);
+        if (isset($limit)) {
+            $this->assertEquals($limit, $attributes->getMeta()->getLimit());
+        }
+        if (isset($offset)) {
+            $this->assertEquals($offset, $attributes->getMeta()->getOffset());
+        }
+    }
+
+    /**
      * @throws Exception
      */
     public function testCreateAttributesDirect()
@@ -278,7 +334,7 @@ class AttributeTest extends CustomerTest
     public function testDeleteAttributeDirect()
     {
         // Arrange
-        $sampleAttributes = $this->provideSampleAttributes(1, false);
+        $sampleAttributes = $this->provideSampleAttributes(1);
         $this->createAttributes(
             $sampleAttributes,
             [
@@ -330,62 +386,6 @@ class AttributeTest extends CustomerTest
             $this->getAttribute('code_1');
         } catch (NotFoundException $e) {
             $this->assertEquals($e->getMessage(), '{"code":"NotFound","message":"Attribute not found"}');
-        }
-    }
-
-    /**
-     * @param int      $limit
-     * @param int      $offset
-     * @param int      $expectedAttributeCount
-     * @param string[] $expectedAttributeCodes
-     *
-     * @throws Exception
-     *
-     * @dataProvider provideAttributeGetListLimitCases
-     */
-    public function testAttributeGetListLimit($limit, $offset, $expectedAttributeCount, $expectedAttributeCodes)
-    {
-        // Arrange
-        $createdItemCount = 10;
-        $sampleAttributes = $this->provideSampleAttributes($createdItemCount);
-
-        // Act
-        $this->createAttributes(
-            $sampleAttributes,
-            [
-                'requestType' => 'direct',
-            ]
-        );
-
-        $parameters = [];
-        if (isset($limit)) {
-            $parameters['limit'] = $limit;
-        }
-        if (isset($offset)) {
-            $parameters['offset'] = $offset;
-        }
-
-        // Assert
-        $attributes = $this->getAttributes($parameters);
-
-        // Prepare delete
-        $deleteCodes = [];
-        foreach ($attributes->getAttributes() as $attribute) {
-            $deleteCodes[] = $attribute->getCode();
-        }
-        $this->deleteEntitiesAfterTestRun(
-            self::CUSTOMER_SERVICE,
-            self::METHOD_DELETE_ATTRIBUTE,
-            $deleteCodes
-        );
-
-        $this->assertCount($expectedAttributeCount, $attributes->getAttributes());
-        $this->assertEquals($expectedAttributeCodes, $deleteCodes);
-        if (isset($limit)) {
-            $this->assertEquals($limit, $attributes->getMeta()->getLimit());
-        }
-        if (isset($offset)) {
-            $this->assertEquals($offset, $attributes->getMeta()->getOffset());
         }
     }
 

@@ -23,6 +23,7 @@ namespace Shopgate\ConnectSdk\Service;
 
 use Shopgate\ConnectSdk\Exception;
 use Shopgate\ConnectSdk\Dto\Customer\Attribute;
+use Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\ShopgateSdk;
 use Shopgate\ConnectSdk\Dto\Meta;
@@ -196,6 +197,100 @@ class Customer
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
                 // async
                 'entityId'    => $attributeCode,
+                'query'       => $query,
+            ]
+        );
+    }
+
+    /**
+     * @param string                  $attributeCode
+     * @param AttributeValue\Create[] $attributeValues
+     * @param array                   $query
+     *
+     * @return ResponseInterface
+     * @throws Exception\RequestException
+     * @throws Exception\NotFoundException
+     * @throws Exception\UnknownException
+     */
+    public function addAttributeValue(
+        $attributeCode,
+        array $attributeValues,
+        array $query = []
+    ) {
+        return $this->client->doRequest(
+            [
+                'service'     => 'omni-customer',
+                'method'      => 'post',
+                'path'        => 'attributes/' . $attributeCode . '/values/',
+                'entity'      => 'attributes',
+                'action'      => 'create',
+                'body'        => ['values' => $attributeValues],
+                'requestType' => isset($query['requestType'])
+                    ? $query['requestType']
+                    : ShopgateSdk::REQUEST_TYPE_EVENT,
+                'query'       => $query,
+            ]
+        );
+    }
+
+    /**
+     * @param string                $attributeCode
+     * @param string                $attributeValueCode
+     * @param AttributeValue\Update $attributeValue
+     * @param array                 $query
+     *
+     * @return ResponseInterface
+     *
+     * @throws Exception\RequestException
+     * @throws Exception\NotFoundException
+     * @throws Exception\UnknownException
+     */
+    public function updateAttributeValue(
+        $attributeCode,
+        $attributeValueCode,
+        AttributeValue\Update $attributeValue,
+        array $query = []
+    ) {
+        return $this->client->doRequest(
+            [
+                'service'     => 'omni-customer',
+                'method'      => 'post',
+                'path'        => 'attributes/' . $attributeCode . '/values/' . $attributeValueCode,
+                'entity'      => 'attribute',
+                'action'      => 'update',
+                'body'        => $attributeValue,
+                'requestType' => isset($query['requestType'])
+                    ? $query['requestType']
+                    : ShopgateSdk::REQUEST_TYPE_EVENT,
+                'entityId'    => $attributeCode,
+                'query'       => $query,
+            ]
+        );
+    }
+
+    /**
+     * @param string $attributeCode
+     * @param string $attributeValueCode
+     * @param array  $query
+     *
+     * @return ResponseInterface
+     *
+     * @throws Exception\RequestException
+     * @throws Exception\NotFoundException
+     * @throws Exception\UnknownException
+     */
+    public function deleteAttributeValue($attributeCode, $attributeValueCode, array $query = [])
+    {
+        return $this->client->doRequest(
+            [
+                'service'     => 'omni-customer',
+                'method'      => 'delete',
+                'path'        => 'attributes/' . $attributeCode . '/values/' . $attributeValueCode,
+                'entity'      => 'attribute',
+                'action'      => 'delete',
+                'requestType' => isset($query['requestType'])
+                    ? $query['requestType']
+                    : ShopgateSdk::REQUEST_TYPE_EVENT,
                 'query'       => $query,
             ]
         );

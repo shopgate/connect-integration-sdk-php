@@ -15,4 +15,6 @@ COPY ./tools/fixtures/env /sdk/tests/Integration/.env
 COPY ./tools/config/setup.sh /setup.sh
 COPY ./tools/config/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
+RUN composer update
+
 CMD ["/setup.sh"]

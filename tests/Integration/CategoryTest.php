@@ -590,15 +590,15 @@ class CategoryTest extends CatalogTest
         );
     }
 
-    // TODO: It seems only one category is created in the service. Cause of this bug:
-    // https://gitlab.localdev.cc/omnichannel/services/worker/blob/v1.0.0-beta.10c/app/EventController.js#L37
-    // the return will interrupt the execution of following events
-    // will be fixed once we can use something later than omni-worker: v1.0.0-beta.10c
     /**
      * @throws Exception
      */
     public function testCreateCategoryEvent()
     {
+        // It seems only one category is created in the service. Cause of this bug:
+        // https://gitlab.localdev.cc/omnichannel/services/worker/blob/v1.0.0-beta.10c/app/EventController.js#L37
+        // the return will interrupt the execution of following events
+        // will be fixed once we can use something later than omni-worker: v1.0.0-beta.10c
         $this->markTestSkipped('Skipped due to bug in worker service');
 
         // Arrange
@@ -682,19 +682,20 @@ class CategoryTest extends CatalogTest
      * @throws Exception
      *
      * @dataProvider provideCreateCategoryWithMissingRequiredFields
-     * TODO: Currently there is no validation for events! Waiting for the implementation in service
      */
-//    public function testCreateCategoryEventWithMissingRequiredFields(array $categoryData, $expectedException)
-//    {
-//        // Arrange
-//        $category = new Category\Create($categoryData);
-//
-//        // Assert
-//        $this->expectException(get_class($expectedException));
-//
-//        // Act
-//        $this->createCategories([$category]);
-//    }
+    public function testCreateCategoryEventWithMissingRequiredFields(array $categoryData, $expectedException)
+    {
+        $this->markTestSkipped('Currently there is no validation for events! Waiting for the implementation in service');
+
+        // Arrange
+        $category = new Category\Create($categoryData);
+
+        // Assert
+        $this->expectException(get_class($expectedException));
+
+        // Act
+        $this->createCategories([$category]);
+    }
 
     /**
      * @param array  $categoryData
@@ -703,19 +704,20 @@ class CategoryTest extends CatalogTest
      * @throws Exception
      *
      * @dataProvider provideCreateCategoryWithInvalidDataTypes
-     * TODO: Currently there is no validation for events! Waiting for the implementation in service
      */
-//    public function testCreateCategoryEventInvalidDataTypes($categoryData, $expectedException)
-//    {
-//        // Arrange
-//        $category = new Category\Create($categoryData);
-//
-//        // Assert
-//        $this->expectException(get_class($expectedException));
-//
-//        // Act
-//        $this->createCategories([$category]);
-//    }
+    public function testCreateCategoryEventInvalidDataTypes($categoryData, $expectedException)
+    {
+        $this->markTestSkipped('Currently there is no validation for events! Waiting for the implementation in service');
+
+        // Arrange
+        $category = new Category\Create($categoryData);
+
+        // Assert
+        $this->expectException(get_class($expectedException));
+
+        // Act
+        $this->createCategories([$category]);
+    }
 
     /**
      * @param array $categoryCodes

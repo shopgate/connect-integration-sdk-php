@@ -22,6 +22,7 @@
 
 namespace Shopgate\ConnectSdk\Service\BulkImport;
 
+use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
@@ -110,6 +111,8 @@ class Handler
     }
 
     /**
+     * @return ResponseInterface
+     *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
@@ -128,6 +131,6 @@ class Handler
             ]
         );
 
-        $response = json_decode($response->getBody(), true);
+        return $response;
     }
 }

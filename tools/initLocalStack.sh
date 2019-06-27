@@ -43,10 +43,8 @@ docker-compose $DOCKER_COMPOSE_FILES up -d googlepubsub-emulator
 if [[ -n "$CI_STACK" ]]; then
     docker-compose $DOCKER_COMPOSE_FILES build php73
     docker-compose $DOCKER_COMPOSE_FILES up -d php73
-    docker-compose exec -T php73 composer update
 fi
 
-docker-compose exec -T php56 composer update
 docker-compose exec -T php56 php ./tools/pubsubfiller.php
 docker-compose exec -T php56 php ./tools/etcdfiller.php
 

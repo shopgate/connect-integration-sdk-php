@@ -429,8 +429,6 @@ class AttributeTest extends CatalogTest
      * @param RequestException $expectedException
      * @param string           $expectedMessage
      *
-     * @throws Exception
-     *
      * @dataProvider provideCreateAttributeWithInvalidFields
      */
     public function testCreateAttributeDirectWithInvalidFields(
@@ -461,7 +459,6 @@ class AttributeTest extends CatalogTest
 
             return;
         } catch (Exception $exception) {
-            echo $exception->getStatusCode();
             echo $exception->getMessage();
         }
 

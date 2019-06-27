@@ -22,8 +22,8 @@
 
 namespace Shopgate\ConnectSdk\Tests\Unit;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\Service\BulkImport;
 use Shopgate\ConnectSdk\Service\Catalog;
@@ -31,7 +31,7 @@ use Shopgate\ConnectSdk\ShopgateSdk;
 
 class ShopgateSdkTest extends TestCase
 {
-    /** @var ClientInterface|MockObject */
+    /** @var ClientInterface|PHPUnit_Framework_MockObject_MockObject */
     private $client;
 
     /**

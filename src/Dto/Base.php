@@ -69,8 +69,6 @@ class Base extends Dto
             default:
                 return $this->set($key, isset($args[0]) ? $args[0] : null);
         }
-
-        return null;
     }
 
     /**

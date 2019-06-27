@@ -31,7 +31,7 @@ use Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
  * @method string setType(string $type)
  * @method string setIsRequired(string $isRequired)
  * @method string setName(string $name)
- * @method string setValues(AttributeValue[] $values)
+ * @method string setValues(AttributeValue\Update[] $values)
  */
 class Update extends Attribute
 {

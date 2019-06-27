@@ -32,7 +32,7 @@ use Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
  * @method string getType()
  * @method string getName()
  * @method string getIsRequired()
- * @method AttributeValue[] getValues()
+ * @method AttributeValue\Get[] getValues()
  *
  */
 class Get extends Attribute

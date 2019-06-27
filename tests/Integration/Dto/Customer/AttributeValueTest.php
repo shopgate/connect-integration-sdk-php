@@ -21,10 +21,10 @@
 
 namespace Shopgate\ConnectSdk\Tests\Integration\Dto\Customer;
 
-use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Dto\Customer\Attribute;
 use Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
 
+use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
@@ -77,6 +77,9 @@ class AttributeValueTest extends CustomerTest
         $this->assertEquals(2, $addedAttributeValue->getSequenceId());
     }
 
+    /**
+     * @throws Exception
+     */
     public function testUpdateAttributeValueDirect()
     {
         // Arrange
@@ -235,8 +238,10 @@ class AttributeValueTest extends CustomerTest
     }
 
     /**
-     *
-     * @return Attribute\Create[]
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
      */
     private function createSampleAttribute()
     {

@@ -21,9 +21,13 @@
 
 namespace Shopgate\ConnectSdk\Service;
 
-use Shopgate\ConnectSdk\Exception;
+use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Dto\Customer\Attribute;
 use Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
+use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
+use Shopgate\ConnectSdk\Exception\NotFoundException;
+use Shopgate\ConnectSdk\Exception\RequestException;
+use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\ShopgateSdk;
 use Shopgate\ConnectSdk\Dto\Meta;
@@ -46,9 +50,10 @@ class Customer
      *
      * @return Attribute\GetList
      *
-     * @throws Exception\RequestException
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnknownException
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
      */
     public function getAttributes(array $query = [])
     {
@@ -83,9 +88,10 @@ class Customer
      *
      * @return Attribute\Get
      *
-     * @throws Exception\RequestException
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnknownException
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
      */
     public function getAttribute($attributeCode, array $query = [])
     {
@@ -110,9 +116,10 @@ class Customer
      *
      * @return ResponseInterface
      *
-     * @throws Exception\RequestException
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnknownException
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
      */
     public function addAttributes(array $attributes, array $query = [])
     {
@@ -147,9 +154,10 @@ class Customer
      *
      * @return ResponseInterface
      *
-     * @throws Exception\RequestException
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnknownException
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
      */
     public function updateAttribute($attributeCode, Attribute\Update $attribute, array $query = [])
     {
@@ -179,9 +187,10 @@ class Customer
      *
      * @return ResponseInterface
      *
-     * @throws Exception\RequestException
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnknownException
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
      */
     public function deleteAttribute($attributeCode, array $query = [])
     {
@@ -208,9 +217,11 @@ class Customer
      * @param array                   $query
      *
      * @return ResponseInterface
-     * @throws Exception\RequestException
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnknownException
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
      */
     public function addAttributeValue(
         $attributeCode,
@@ -241,9 +252,10 @@ class Customer
      *
      * @return ResponseInterface
      *
-     * @throws Exception\RequestException
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnknownException
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
      */
     public function updateAttributeValue(
         $attributeCode,
@@ -275,9 +287,10 @@ class Customer
      *
      * @return ResponseInterface
      *
-     * @throws Exception\RequestException
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnknownException
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
      */
     public function deleteAttributeValue($attributeCode, $attributeValueCode, array $query = [])
     {

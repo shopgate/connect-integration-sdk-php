@@ -23,13 +23,16 @@
 namespace Shopgate\ConnectSdk\Service;
 
 use Psr\Http\Message\ResponseInterface;
+use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
+use Shopgate\ConnectSdk\Exception\NotFoundException;
+use Shopgate\ConnectSdk\Exception\RequestException;
+use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
 use Shopgate\ConnectSdk\Dto\Meta;
-use Shopgate\ConnectSdk\Exception;
 use Shopgate\ConnectSdk\ShopgateSdk;
 
 class Catalog
@@ -51,9 +54,10 @@ class Catalog
      *
      * @return ResponseInterface
      *
-     * @throws Exception\RequestException
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnknownException
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
      */
     public function addCategories(array $categories, array $query = [])
     {
@@ -83,9 +87,10 @@ class Catalog
      *
      * @return ResponseInterface
      *
-     * @throws Exception\RequestException
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnknownException
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
      */
     public function updateCategory($code, Category\Update $category, array $query = [])
     {
@@ -115,9 +120,10 @@ class Catalog
      *
      * @return ResponseInterface
      *
-     * @throws Exception\RequestException
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnknownException
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
      */
     public function deleteCategory($code, array $query = [])
     {
@@ -145,9 +151,10 @@ class Catalog
      *
      * @return Category\GetList
      *
-     * @throws Exception\RequestException
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnknownException
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
      */
     public function getCategories(array $query = [])
     {
@@ -182,9 +189,10 @@ class Catalog
      *
      * @return ResponseInterface
      *
-     * @throws Exception\RequestException
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnknownException
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
      */
     public function addProducts(array $products, array $query = [])
     {
@@ -211,9 +219,10 @@ class Catalog
      *
      * @return ResponseInterface
      *
-     * @throws Exception\RequestException
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnknownException
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
      */
     public function updateProduct($code, Product\Update $product, array $query = [])
     {
@@ -240,9 +249,10 @@ class Catalog
      *
      * @return ResponseInterface
      *
-     * @throws Exception\RequestException
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnknownException
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
      */
     public function deleteProduct($code, array $query = [])
     {
@@ -267,9 +277,10 @@ class Catalog
      *
      * @return Product\GetList
      *
-     * @throws Exception\RequestException
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnknownException
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
      */
     public function getProducts(array $query = [])
     {
@@ -304,9 +315,10 @@ class Catalog
      *
      * @return Product\Get
      *
-     * @throws Exception\RequestException
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnknownException
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
      */
     public function getProduct($code, array $query = [])
     {
@@ -330,9 +342,10 @@ class Catalog
      *
      * @return ResponseInterface
      *
-     * @throws Exception\RequestException
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnknownException
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
      */
     public function addAttributes(array $attributes, array $query = [])
     {
@@ -365,9 +378,10 @@ class Catalog
      *
      * @return Attribute\GetList
      *
-     * @throws Exception\RequestException
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnknownException
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
      */
     public function getAttributes(array $query = [])
     {
@@ -402,9 +416,10 @@ class Catalog
      *
      * @return Attribute\Get
      *
-     * @throws Exception\RequestException
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnknownException
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
      */
     public function getAttribute($attributeCode, array $query = [])
     {
@@ -430,9 +445,10 @@ class Catalog
      *
      * @return ResponseInterface
      *
-     * @throws Exception\RequestException
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnknownException
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
      */
     public function updateAttribute($attributeCode, Attribute\Update $attribute, array $query = [])
     {
@@ -462,9 +478,10 @@ class Catalog
      *
      * @return ResponseInterface
      *
-     * @throws Exception\RequestException
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnknownException
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
      */
     public function deleteAttribute($attributeCode, array $query = [])
     {
@@ -491,9 +508,11 @@ class Catalog
      * @param array                   $query
      *
      * @return ResponseInterface
-     * @throws Exception\RequestException
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnknownException
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
      */
     public function addAttributeValue(
         $attributeCode,
@@ -524,9 +543,10 @@ class Catalog
      *
      * @return ResponseInterface
      *
-     * @throws Exception\RequestException
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnknownException
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
      */
     public function updateAttributeValue(
         $attributeCode,
@@ -558,9 +578,10 @@ class Catalog
      *
      * @return ResponseInterface
      *
-     * @throws Exception\RequestException
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnknownException
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
      */
     public function deleteAttributeValue($attributeCode, $attributeValueCode, array $query = [])
     {

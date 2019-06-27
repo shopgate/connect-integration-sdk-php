@@ -22,6 +22,7 @@
 
 namespace Shopgate\ConnectSdk\Service\BulkImport;
 
+use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
@@ -53,6 +54,7 @@ class Handler
      *
      * @return Feed\Category
      *
+     * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
@@ -72,6 +74,7 @@ class Handler
      *
      * @return Feed\Product
      *
+     * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
@@ -91,6 +94,7 @@ class Handler
      *
      * @return Feed\Attribute
      *
+     * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
@@ -106,6 +110,7 @@ class Handler
     }
 
     /**
+     * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException

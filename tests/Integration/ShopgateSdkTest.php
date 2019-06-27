@@ -22,6 +22,7 @@
 
 namespace Shopgate\ConnectSdk\Tests\Integration;
 
+use Exception;
 use Dotenv\Dotenv;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -83,7 +84,7 @@ abstract class ShopgateSdkTest extends TestCase
 
     /**
      * Runs before every test
-     * @throws \Exception
+     * @throws Exception
      */
     public function setUp()
     {
@@ -103,7 +104,6 @@ abstract class ShopgateSdkTest extends TestCase
             $client->enableRequestLogging(new Logger('request_logger_integration_tests', [new StreamHandler('php://stdout')]));
         }
 
-        // var_dump($this->sdkConfig);
         $this->sdk = new ShopgateSdk(['client' => $client]);
     }
 

@@ -25,6 +25,7 @@ namespace Shopgate\ConnectSdk\Service\BulkImport;
 use function GuzzleHttp\Psr7\stream_for;
 use Exception;
 use Psr\Http\Message\StreamInterface;
+use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\Service\BulkImport\Handler\File;
@@ -67,6 +68,7 @@ class Feed
      * @param string          $handlerType
      * @param array           $requestBodyOptions
      *
+     * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
@@ -101,9 +103,10 @@ class Feed
     /**
      * @return string
      *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
-     * @throws NotFoundException
      */
     protected function getUrl()
     {

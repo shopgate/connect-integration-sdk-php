@@ -23,6 +23,8 @@
 namespace Shopgate\ConnectSdk\Tests\Unit\Http;
 
 use GuzzleHttp\ClientInterface as GuzzleClientInterface;
+
+use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -30,8 +32,10 @@ use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 use Psr\Log\LoggerInterface;
+use Shopgate\ConnectSdk\Exception\Exception as ShopgateSdkException;
 use Shopgate\ConnectSdk\Http\Client;
 use Shopgate\ConnectSdk\Http\ClientInterface;
+use Shopgate\ConnectSdk\ShopgateSdk;
 
 class ClientTest extends TestCase
 {
@@ -89,7 +93,7 @@ class ClientTest extends TestCase
 
     /**
      * @throws GuzzleException
-     * @throws \Exception
+     * @throws Exception
      */
     public function testEnableRequestLoggingShouldInjectTheLoggerAndTemplate()
     {
@@ -110,7 +114,7 @@ class ClientTest extends TestCase
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function testEnableRequestLoggingShouldNotFailIfNothingWasPassed()
     {

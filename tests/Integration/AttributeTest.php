@@ -26,6 +26,7 @@ use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute\Dto\Name;
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
+use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
@@ -707,8 +708,10 @@ class AttributeTest extends CatalogTest
      * @param array              $meta
      *
      * @return ResponseInterface
-     * @throws RequestException
+     *
+     * @throws AuthenticationInvalidException
      * @throws NotFoundException
+     * @throws RequestException
      * @throws UnknownException
      */
     private function createAttributes(array $sampleAttributes, array $meta = [])
@@ -733,8 +736,10 @@ class AttributeTest extends CatalogTest
      * @param string $localeCode
      *
      * @return Attribute\Get
-     * @throws RequestException
+     *
+     * @throws AuthenticationInvalidException
      * @throws NotFoundException
+     * @throws RequestException
      * @throws UnknownException
      *
      */

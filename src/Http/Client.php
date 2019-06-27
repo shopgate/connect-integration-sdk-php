@@ -29,6 +29,7 @@ use GuzzleHttp\Exception\RequestException as GuzzleRequestException;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
+use kamermans\OAuth2\Exception\AccessTokenRequestException;
 use kamermans\OAuth2\GrantType\ClientCredentials;
 use kamermans\OAuth2\OAuth2Middleware;
 use Monolog\Handler\StreamHandler;
@@ -37,6 +38,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Shopgate\ConnectSdk\Dto\Async\Factory;
 use Shopgate\ConnectSdk\Dto\Base;
+use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
@@ -131,6 +133,7 @@ class Client implements ClientInterface
     /**
      * @param LoggerInterface $logger
      * @param string          $template
+     *
      * @throws Exception
      */
     public function enableRequestLogging(LoggerInterface $logger = null, $template = '')
@@ -151,6 +154,7 @@ class Client implements ClientInterface
     /**
      * @param string $serviceName
      * @param string $path
+     *
      * @return string
      */
     public function buildServiceUrl($serviceName, $path = '')
@@ -165,8 +169,10 @@ class Client implements ClientInterface
      * @param array $params
      *
      * @return ResponseInterface
-     * @throws RequestException
+     *
+     * @throws AuthenticationInvalidException
      * @throws NotFoundException
+     * @throws RequestException
      * @throws UnknownException
      */
     public function doRequest(array $params)
@@ -211,6 +217,8 @@ class Client implements ClientInterface
             );
         } catch (GuzzleException $e) {
             throw new UnknownException($e->getMessage());
+        } catch (AccessTokenRequestException $e) {
+            throw new AuthenticationInvalidException($e->getMessage());
         } catch (Exception $e) {
             throw new UnknownException($e->getMessage());
         }
@@ -239,6 +247,8 @@ class Client implements ClientInterface
      * @param array $params
      *
      * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
      * @throws RequestException
      * @throws UnknownException
      */
@@ -274,6 +284,8 @@ class Client implements ClientInterface
                 $e->getResponse() && $e->getResponse()->getBody() ? $e->getResponse()->getBody()->getContents()
                     : $e->getMessage()
             );
+        } catch (AccessTokenRequestException $e) {
+            throw new AuthenticationInvalidException($e->getMessage());
         } catch (GuzzleException $e) {
             throw new UnknownException($e->getMessage());
         } catch (Exception $e) {

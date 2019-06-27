@@ -22,6 +22,7 @@
 
 namespace Shopgate\ConnectSdk\Service;
 
+use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\Exception\RequestException;
@@ -44,6 +45,8 @@ class BulkImport
 
     /**
      * @return string
+     *
+     * @throws AuthenticationInvalidException
      * @throws RequestException
      * @throws UnknownException
      * @throws NotFoundException
@@ -67,6 +70,8 @@ class BulkImport
 
     /**
      * @return File
+     *
+     * @throws AuthenticationInvalidException
      * @throws RequestException
      * @throws UnknownException
      * @throws NotFoundException
@@ -78,6 +83,8 @@ class BulkImport
 
     /**
      * @return Stream
+     *
+     * @throws AuthenticationInvalidException
      * @throws RequestException
      * @throws UnknownException
      * @throws NotFoundException

@@ -58,7 +58,7 @@ docker-compose exec -T mysql mysql -u root -psecret < ./fixtures/schema.sql
 docker-compose $DOCKER_COMPOSE_FILES up -d omni-event-receiver
 retry "EventReceiver" "docker-compose exec -T omni-event-receiver curl http://localhost/health -o /dev/null 2>&1"
 
-docker-compose $DOCKER_COMPOSE_FILES up -d catalog
+docker-compose stop catalog && docker-compose $DOCKER_COMPOSE_FILES up -d catalog
 retry "CatalogService" "docker-compose exec -T catalog curl http://localhost/health -o /dev/null 2>&1"
 
 docker-compose $DOCKER_COMPOSE_FILES up -d

@@ -20,7 +20,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Tests\Integration;
+namespace Shopgate\ConnectSdk\Tests\Integration\Dto\Catalog;
 
 use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
@@ -31,6 +31,7 @@ use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
+use Shopgate\ConnectSdk\Tests\Integration\CatalogTest;
 
 class AttributeTest extends CatalogTest
 {

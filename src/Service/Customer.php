@@ -83,8 +83,8 @@ class Customer
     }
 
     /**
-     * @param string $attributeCode
-     * @param array $query
+     * @param string $code attribute code
+     * @param array  $query
      *
      * @return Attribute\Get
      *
@@ -93,14 +93,14 @@ class Customer
      * @throws RequestException
      * @throws UnknownException
      */
-    public function getAttribute($attributeCode, array $query = [])
+    public function getAttribute($code, array $query = [])
     {
         $response = $this->client->doRequest(
             [
                 // direct only
                 'service' => 'omni-customer',
                 'method'  => 'get',
-                'path'    => 'attributes/' . $attributeCode,
+                'path'    => 'attributes/' . $code,
                 'query'   => $query,
             ]
         );
@@ -148,7 +148,7 @@ class Customer
     }
 
     /**
-     * @param string           $attributeCode
+     * @param string           $code attribute code
      * @param Attribute\Update $attribute
      * @param array            $query
      *
@@ -159,14 +159,14 @@ class Customer
      * @throws RequestException
      * @throws UnknownException
      */
-    public function updateAttribute($attributeCode, Attribute\Update $attribute, array $query = [])
+    public function updateAttribute($code, Attribute\Update $attribute, array $query = [])
     {
         return $this->client->doRequest(
             [
                 // general
                 'service'     => 'omni-customer',
                 'method'      => 'post',
-                'path'        => 'attributes/' . $attributeCode,
+                'path'        => 'attributes/' . $code,
                 'entity'      => 'attribute',
                 'query'       => $query,
                 // direct only
@@ -176,13 +176,13 @@ class Customer
                     ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
                 // async
-                'entityId'    => $attributeCode,
+                'entityId'    => $code,
             ]
         );
     }
 
     /**
-     * @param string $attributeCode
+     * @param string $code attribute code
      * @param array  $query
      *
      * @return ResponseInterface
@@ -192,27 +192,27 @@ class Customer
      * @throws RequestException
      * @throws UnknownException
      */
-    public function deleteAttribute($attributeCode, array $query = [])
+    public function deleteAttribute($code, array $query = [])
     {
         return $this->client->doRequest(
             [
                 'service'     => 'omni-customer',
                 'method'      => 'delete',
-                'path'        => 'attributes/' . $attributeCode,
+                'path'        => 'attributes/' . $code,
                 'entity'      => 'attribute',
                 'action'      => 'delete',
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
                 // async
-                'entityId'    => $attributeCode,
+                'entityId'    => $code,
                 'query'       => $query,
             ]
         );
     }
 
     /**
-     * @param string                  $attributeCode
+     * @param string                  $code attribute code
      * @param AttributeValue\Create[] $attributeValues
      * @param array                   $query
      *
@@ -224,7 +224,7 @@ class Customer
      * @throws UnknownException
      */
     public function addAttributeValue(
-        $attributeCode,
+        $code,
         array $attributeValues,
         array $query = []
     ) {
@@ -232,7 +232,7 @@ class Customer
             [
                 'service'     => 'omni-customer',
                 'method'      => 'post',
-                'path'        => 'attributes/' . $attributeCode . '/values/',
+                'path'        => 'attributes/' . $code . '/values/',
                 'entity'      => 'attributes',
                 'action'      => 'create',
                 'body'        => ['values' => $attributeValues],
@@ -245,8 +245,8 @@ class Customer
     }
 
     /**
-     * @param string                $attributeCode
-     * @param string                $attributeValueCode
+     * @param string                $code      attribute code
+     * @param string                $valueCode attribute value code
      * @param AttributeValue\Update $attributeValue
      * @param array                 $query
      *
@@ -258,8 +258,8 @@ class Customer
      * @throws UnknownException
      */
     public function updateAttributeValue(
-        $attributeCode,
-        $attributeValueCode,
+        $code,
+        $valueCode,
         AttributeValue\Update $attributeValue,
         array $query = []
     ) {
@@ -267,22 +267,22 @@ class Customer
             [
                 'service'     => 'omni-customer',
                 'method'      => 'post',
-                'path'        => 'attributes/' . $attributeCode . '/values/' . $attributeValueCode,
+                'path'        => 'attributes/' . $code . '/values/' . $valueCode,
                 'entity'      => 'attribute',
                 'action'      => 'update',
                 'body'        => $attributeValue,
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
-                'entityId'    => $attributeCode,
+                'entityId'    => $code,
                 'query'       => $query,
             ]
         );
     }
 
     /**
-     * @param string $attributeCode
-     * @param string $attributeValueCode
+     * @param string $code      attribute code
+     * @param string $valueCode attribute value code
      * @param array  $query
      *
      * @return ResponseInterface
@@ -292,13 +292,13 @@ class Customer
      * @throws RequestException
      * @throws UnknownException
      */
-    public function deleteAttributeValue($attributeCode, $attributeValueCode, array $query = [])
+    public function deleteAttributeValue($code, $valueCode, array $query = [])
     {
         return $this->client->doRequest(
             [
                 'service'     => 'omni-customer',
                 'method'      => 'delete',
-                'path'        => 'attributes/' . $attributeCode . '/values/' . $attributeValueCode,
+                'path'        => 'attributes/' . $code . '/values/' . $valueCode,
                 'entity'      => 'attribute',
                 'action'      => 'delete',
                 'requestType' => isset($query['requestType'])

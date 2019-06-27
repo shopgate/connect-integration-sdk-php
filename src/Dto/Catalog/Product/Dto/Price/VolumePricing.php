@@ -25,17 +25,17 @@ namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Price;
 use Shopgate\ConnectSdk\Dto\Base;
 
 /**
- * @method VolumePricing setMinQty(number $minQty)
- * @method VolumePricing setMaxQty(number $maxQty)
- * @method VolumePricing setPrice(number $price)
- * @method VolumePricing setSalePrice(number $salePrice)
+ * @method VolumePricing setMinQty(float $minQty)
+ * @method VolumePricing setMaxQty(float $maxQty)
+ * @method VolumePricing setPrice(float $price)
+ * @method VolumePricing setSalePrice(float $salePrice)
  * @method VolumePricing setUnit(string $unit)
  * @method VolumePricing setPriceType(string $priceType)
  *
- * @method number getMinQty()
- * @method number getMaxQty()
- * @method number getPrice()
- * @method number getSalePrice()
+ * @method float getMinQty()
+ * @method float getMaxQty()
+ * @method float getPrice()
+ * @method float getSalePrice()
  * @method string getUnit()
  * @method string getPriceType()
  */

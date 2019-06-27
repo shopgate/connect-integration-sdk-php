@@ -29,26 +29,27 @@ use GuzzleHttp\Exception\RequestException as GuzzleRequestException;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
+use kamermans\OAuth2\Exception\AccessTokenRequestException;
 use kamermans\OAuth2\GrantType\ClientCredentials;
 use kamermans\OAuth2\OAuth2Middleware;
-use kamermans\OAuth2\Persistence\TokenPersistenceInterface;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Shopgate\ConnectSdk\Dto\Async\Factory;
 use Shopgate\ConnectSdk\Dto\Base;
+use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Http\Persistence\EncryptedFile;
+use Shopgate\ConnectSdk\Http\Persistence\PersistenceChain;
 use Shopgate\ConnectSdk\ShopgateSdk;
 
 class Client implements ClientInterface
 {
     /** @var GuzzleClientInterface */
-    private $guzzleClient;
-
-    /** @var OAuth2Middleware */
-    private $oAuthMiddleware;
+    private $client;
 
     /** @var string */
     private $baseUri;
@@ -57,21 +58,18 @@ class Client implements ClientInterface
     private $merchantCode;
 
     /**
-     * @param GuzzleClientInterface $guzzleClient
-     * @param OAuth2Middleware      $oAuthMiddleware
+     * @param GuzzleClientInterface $client
      * @param string                $baseUri
      * @param string                $merchantCode
      */
     public function __construct(
-        GuzzleClientInterface $guzzleClient,
-        OAuth2Middleware $oAuthMiddleware,
+        GuzzleClientInterface $client,
         $baseUri,
         $merchantCode
     ) {
-        $this->guzzleClient    = $guzzleClient;
-        $this->oAuthMiddleware = $oAuthMiddleware;
-        $this->baseUri         = rtrim($baseUri, '/');
-        $this->merchantCode    = $merchantCode;
+        $this->client       = $client;
+        $this->baseUri      = rtrim($baseUri, '/');
+        $this->merchantCode = $merchantCode;
     }
 
     /**
@@ -81,8 +79,6 @@ class Client implements ClientInterface
      * @param string                         $baseUri
      * @param string                         $env
      * @param string                         $accessTokenPath
-     * @param TokenPersistenceInterface|null $tokenPersistence
-     * @param LoggerInterface|null           $logger
      * @return Client
      */
     public static function createInstance(
@@ -91,51 +87,83 @@ class Client implements ClientInterface
         $merchantCode,
         $baseUri = '',
         $env = '',
-        $accessTokenPath = '',
-        TokenPersistenceInterface $tokenPersistence = null,
-        LoggerInterface $logger = null
+        $accessTokenPath = ''
     ) {
         $env = $env === 'live' ? '' : $env;
 
         if (empty($baseUri)) {
-            $baseUri = str_replace('{env}', $env,'https://{service}.shopgate{env}.services');
+            $baseUri = str_replace('{env}', $env, 'https://{service}.shopgate{env}.services');
         }
 
         if (empty($accessTokenPath)) {
-            $accessTokenPath = __DIR__ . ($env !== '' ? '/../access_token_' . $env : '/../access_token');
+            $accessTokenPath = __DIR__ . ($env !== '' ? '/../access_token_' . $env : '/../access_token.txt');
         }
 
-        $reauthClient = new \GuzzleHttp\Client([
-            'base_uri' => rtrim(str_replace('{service}', 'auth', $baseUri), '/') . '/oauth/token'
-        ]);
+        $reauthClient = new \GuzzleHttp\Client(
+            [
+                'base_uri' => rtrim(str_replace('{service}', 'auth', $baseUri), '/') . '/oauth/token'
+            ]
+        );
 
-        $oauth = new OAuth2Middleware(new ClientCredentials($reauthClient, [
-            'client_id'     => $clientId,
-            'client_secret' => $clientSecret
+        $oauth = new OAuth2Middleware(
+            new ClientCredentials(
+                $reauthClient,
+                [
+                    'client_id'     => $clientId,
+                    'client_secret' => $clientSecret
+                ]
+            )
+        );
+
+        $oauth->setTokenPersistence(new PersistenceChain([
+            new EncryptedFile($accessTokenPath, $clientSecret)
         ]));
-
-        if (empty($tokenPersistence)) {
-            $tokenPersistence = new EncryptedFile($accessTokenPath, $clientSecret);
-        }
-        $oauth->setTokenPersistence($tokenPersistence);
 
         $handlerStack = HandlerStack::create();
         $handlerStack->push($oauth);
-        $client = new \GuzzleHttp\Client([
-            'auth'    => 'oauth',
-            'handler' => $handlerStack
-        ]);
+        $client = new \GuzzleHttp\Client(
+            [
+                'auth'    => 'oauth',
+                'handler' => $handlerStack
+            ]
+        );
 
-        if ($logger) {
-            $handlerStack->push(Middleware::log($logger, new MessageFormatter('URL: {hostname}/{target} Method: {method} RequestBody: {req_body} ResponseBody: {res_body}')));
+        return new self($client, $baseUri, $merchantCode);
+    }
+
+    /**
+     * @return GuzzleClientInterface
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
+     * @param LoggerInterface $logger
+     * @param string          $template
+     *
+     * @throws Exception
+     */
+    public function enableRequestLogging(LoggerInterface $logger = null, $template = '')
+    {
+        $handler = $this->client->getConfig('handler');
+
+        if (!$logger) {
+            $logger = new Logger(new StreamHandler('php://out'));
         }
 
-        return new self($client, $oauth, $baseUri, $merchantCode);
+        if (!$template) {
+            $template = 'URL: {hostname}/{target} Method: {method} RequestBody: {req_body} ResponseBody: {res_body}';
+        }
+
+        $handler->push(Middleware::log($logger, new MessageFormatter($template)));
     }
 
     /**
      * @param string $serviceName
      * @param string $path
+     *
      * @return string
      */
     public function buildServiceUrl($serviceName, $path = '')
@@ -150,8 +178,10 @@ class Client implements ClientInterface
      * @param array $params
      *
      * @return ResponseInterface
-     * @throws RequestException
+     *
+     * @throws AuthenticationInvalidException
      * @throws NotFoundException
+     * @throws RequestException
      * @throws UnknownException
      */
     public function doRequest(array $params)
@@ -160,14 +190,14 @@ class Client implements ClientInterface
             return $this->triggerEvent($params);
         }
 
-        if (isset($params['query']) && isset($params['query']['requestType'])) {
+        if (isset($params['query'], $params['query']['requestType'])) {
             unset($params['query']['requestType']);
         }
 
         $response = null;
         $body     = isset($params['body']) ? $params['body'] : [];
         try {
-            $response = $this->guzzleClient->request(
+            $response = $this->client->request(
                 $params['method'],
                 $this->buildServiceUrl($params['service'], $params['path']),
                 [
@@ -196,6 +226,8 @@ class Client implements ClientInterface
             );
         } catch (GuzzleException $e) {
             throw new UnknownException($e->getMessage());
+        } catch (AccessTokenRequestException $e) {
+            throw new AuthenticationInvalidException($e->getMessage());
         } catch (Exception $e) {
             throw new UnknownException($e->getMessage());
         }
@@ -205,7 +237,9 @@ class Client implements ClientInterface
 
     /**
      * This method will convert true (bool) values to 'true' (string) and false (bool) to 'false' (string).
+     *
      * @param array $queryParameters
+     *
      * @return array
      */
     private function fixBoolValuesInQuery($queryParameters)
@@ -224,6 +258,8 @@ class Client implements ClientInterface
      * @param array $params
      *
      * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
      * @throws RequestException
      * @throws UnknownException
      */
@@ -244,7 +280,7 @@ class Client implements ClientInterface
         }
 
         try {
-            return $this->guzzleClient->request(
+            return $this->client->request(
                 'post',
                 $this->buildServiceUrl('omni-event-receiver', 'events'),
                 [
@@ -259,6 +295,8 @@ class Client implements ClientInterface
                 $e->getResponse() && $e->getResponse()->getBody() ? $e->getResponse()->getBody()->getContents()
                     : $e->getMessage()
             );
+        } catch (AccessTokenRequestException $e) {
+            throw new AuthenticationInvalidException($e->getMessage());
         } catch (GuzzleException $e) {
             throw new UnknownException($e->getMessage());
         } catch (Exception $e) {
@@ -275,7 +313,7 @@ class Client implements ClientInterface
     public function isDirect(array $params)
     {
         return
-            (!isset($params['requestType']) && $params['method'] === 'get') ||
-            $params['requestType'] === ShopgateSdk::REQUEST_TYPE_DIRECT;
+            (!isset($params['requestType']) && $params['method'] === 'get')
+            || $params['requestType'] === ShopgateSdk::REQUEST_TYPE_DIRECT;
     }
 }

@@ -23,9 +23,6 @@
 namespace Shopgate\ConnectSdk\Dto;
 
 use Dto\Dto;
-use Dto\Exceptions\InvalidDataTypeException;
-use Dto\Exceptions\InvalidIndexException;
-use Dto\Exceptions\InvalidKeyException;
 use Dto\RegulatorInterface;
 use Exception;
 
@@ -34,6 +31,8 @@ use Exception;
  */
 class Base extends Dto
 {
+    const STORAGE_TYPE_SCALAR = 'scalar';
+
     /**
      * Rewritten to provide inheritance of payload structure
      *
@@ -56,29 +55,28 @@ class Base extends Dto
 
     /**
      * @param string $method
-     * @param array $args
+     * @param array  $args
      *
-     * @return  mixed
-     * @throws InvalidIndexException
+     * @return mixed
      */
     public function __call($method, $args)
     {
+        $key = lcfirst(substr($method, 3));
         switch (substr($method, 0, 3)) {
             case 'get':
-                $key = lcfirst(substr($method, 3));
-
                 return $this->get($key);
             case 'set':
-                $key = lcfirst(substr($method, 3));
-
+            default:
                 return $this->set($key, isset($args[0]) ? $args[0] : null);
         }
+
+        return null;
     }
 
     /**
      * Rewritten to return the object for chaining purposes
      *
-     * @param $key mixed
+     * @param $key   mixed
      * @param $value mixed
      *
      * @return Base
@@ -104,7 +102,7 @@ class Base extends Dto
             /** @var Dto $result */
             $result = parent::get($key);
 
-            if ($result->getStorageType() === 'scalar') {
+            if ($result->getStorageType() === self::STORAGE_TYPE_SCALAR) {
                 return $result->toScalar();
             }
 
@@ -138,6 +136,9 @@ class Base extends Dto
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return parent::toJson(true);

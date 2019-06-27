@@ -20,7 +20,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Tests\Unit\Http;
+namespace Shopgate\ConnectSdk\Tests\Unit\Dto;
 
 use PHPUnit\Framework\TestCase;
 use Shopgate\ConnectSdk\Dto\Base;
@@ -44,6 +44,7 @@ class BaseTest extends TestCase
         $base   = new Base(null, $schema);
 
         // Act
+        /** @noinspection PhpUndefinedMethodInspection */
         $result = $base->getTest();
 
         // Assert
@@ -60,6 +61,7 @@ class BaseTest extends TestCase
         $base = new Base();
 
         // Act
+        /** @noinspection PhpUndefinedMethodInspection */
         $result = $base->getNonExistentValue();
 
         // Assert
@@ -99,7 +101,11 @@ class BaseTest extends TestCase
         $base   = new Base(null, $schema);
 
         // Act
+        /** @noinspection PhpUndefinedMethodInspection */
         $base->setTest('test');
+
+        // assert making here without exception
+        $this->assertTrue(true);
     }
 
     /**
@@ -111,7 +117,11 @@ class BaseTest extends TestCase
         $base = new Base();
 
         // Act
+        /** @noinspection PhpUndefinedMethodInspection */
         $base->setNonExistent('1234');
+
+        // assert making here without exception
+        $this->assertTrue(true);
     }
 
     /**
@@ -123,6 +133,10 @@ class BaseTest extends TestCase
         $base = new Base();
 
         // Act
+        /** @noinspection PhpUndefinedMethodInspection */
         $base->nonExistentMethod('1234');
+
+        // assert making here without exception
+        $this->assertTrue(true);
     }
 }

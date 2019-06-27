@@ -22,6 +22,7 @@
 
 namespace Shopgate\ConnectSdk\Http;
 
+use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
@@ -32,6 +33,7 @@ interface ClientInterface
      * @param array $params
      *
      * @return mixed
+     * @throws AuthenticationInvalidException
      * @throws UnknownException
      * @throws NotFoundException
      * @throws RequestException

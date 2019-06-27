@@ -44,20 +44,37 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product;
  * @method boolean getIsInventoryManaged()
  * @method string getInventoryTreatment()
  * @method Dto\ShippingInformation getShippingInformation()
- * @method number getRating()
+ * @method float getRating()
  * @method string getUrl()
  * @method boolean getTaxClass()
- * @method number getMinQty()
- * @method number getMaxQty()
+ * @method float getMinQty()
+ * @method float getMaxQty()
  * @method string getName()
  * @method string getLongName()
- * @method Dto\Categories getCategories()
+ * @method Dto\Categories[] getCategories()
  * @method Dto\Properties[] getProperties()
- * @method Dto\Media getMedia()
+ * @method Dto\Media\Media[] getMedia()
  * @method Dto\Inventory[] getInventories()
  * @method Dto\Options[] getOptions()
  * @method Dto\Extras[] getExtras()
  */
 class Get extends Product
 {
+    /**
+     * @var array
+     * @codeCoverageIgnore
+     * @todo-sg: Alexander, finish this with all properties
+     */
+    protected $schema = [
+        'type'                 => 'object',
+        'properties'           => [
+            'identifiers' => ['$ref' => Dto\Identifiers::class],
+            'price'       => ['$ref' => Dto\Price::class],
+            'categories'  => [
+                'type'  => 'array',
+                'items' => ['$ref' => Dto\Categories::class]
+            ]
+        ],
+        'additionalProperties' => true
+    ];
 }

@@ -27,8 +27,11 @@ use Shopgate\ConnectSdk\Dto\Base;
 /**
  * Default class that handles swatches in Dtos
  *
- * @method string setType(string $type)
- * @method string setValue(int $value)
+ * @method Swatch setType(string $type)
+ * @method Swatch setValue(string $value)
+ *
+ * @method string getType()
+ * @method string getValue()
  */
 class Swatch extends Base
 {

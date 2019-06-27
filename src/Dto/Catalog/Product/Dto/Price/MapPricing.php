@@ -27,11 +27,11 @@ use Shopgate\ConnectSdk\Dto\Base;
 /**
  * @method MapPricing setStartDate(string $startDate)
  * @method MapPricing setEndDate(string $endDate)
- * @method MapPricing setPrice(number $price)
+ * @method MapPricing setPrice(float $price)
  *
  * @method string getStartDate()
  * @method string getEndDate()
- * @method number getPrice()
+ * @method float getPrice()
  */
 class MapPricing extends Base
 {

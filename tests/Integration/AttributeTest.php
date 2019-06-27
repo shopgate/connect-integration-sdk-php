@@ -450,6 +450,8 @@ class AttributeTest extends CatalogTest
             );
         } catch (RequestException $exception) {
             // Assert
+            echo $exception->getStatusCode();
+            echo $exception->getMessage();
             $errors  = \GuzzleHttp\json_decode($exception->getMessage(), false);
             $message = $errors->error->results->errors[0]->message;
             $this->assertInstanceOf(get_class($expectedException), $exception);
@@ -457,6 +459,9 @@ class AttributeTest extends CatalogTest
             $this->assertEquals($expectedException->getStatusCode(), $exception->getStatusCode());
 
             return;
+        } catch (Exception $exception) {
+            echo $exception->getStatusCode();
+            echo $exception->getMessage();
         }
 
         $this->fail('Expected ' . get_class($expectedException) . ' but wasn\'t thrown');
@@ -562,22 +567,7 @@ class AttributeTest extends CatalogTest
                 ],
                 'expectedException' => new RequestException(400),
                 'message'           => 'No enum match for: INVALID',
-            ],
-            /*
-             * @todo check - currently not working
-            'invalid code'   => [
-                'attributeData'     => [
-                    'name'       => $name,
-                    'values'     => [],
-                    'use'        => Attribute\Create::USE_OPTION,
-                    'type'       => Attribute\Create::TYPE_TEXT,
-                    'code'       => [],
-                    'sequenceId' => 1006,
-                ],
-                'expectedException' => new RequestException(400),
-                'message'       => null,
-            ],
-            */
+            ]
         ];
     }
 

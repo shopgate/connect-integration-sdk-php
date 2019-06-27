@@ -20,7 +20,7 @@ use Shopgate\ConnectSdk\Tests\Integration\CustomerTest;
 
 class AttributeValueTest extends CustomerTest
 {
-    const SAMPLE_ATTRIBUTE_CODE = 'attribute_code_1';
+    const SAMPLE_ATTRIBUTE_CODE       = 'attribute_code_1';
     const SAMPLE_ATTRIBUTE_VALUE_CODE = 'attribute_value_code_1';
 
     /**
@@ -88,7 +88,6 @@ class AttributeValueTest extends CustomerTest
             [self::SAMPLE_ATTRIBUTE_CODE]
         );
 
-
         $addedAttributeValues = $this->sdk->getCustomerService()
             ->getAttribute(self::SAMPLE_ATTRIBUTE_CODE)->getValues();
 
@@ -140,6 +139,87 @@ class AttributeValueTest extends CustomerTest
             ->getAttribute(self::SAMPLE_ATTRIBUTE_CODE)->getValues();
 
         $this->assertCount(1, $removedAttributeValues);
+    }
+
+    /**
+     * @param array            $attributeValueData
+     * @param RequestException $expectedException
+     * @param string           $missingItem
+     *
+     * @throws Exception
+     *
+     * @dataProvider provideCreateAttributeValuesWithMissingRequiredFields
+     */
+    public function testCreateAttributeValuesDirectWithMissingRequiredFields(
+        array $attributeValueData,
+        $expectedException,
+        $missingItem
+    ) {
+        // Arrange
+        // Arrange
+        $this->createSampleAttribute();
+        $attributeValue = new AttributeValue\Create($attributeValueData);
+
+        // Prepare delete
+        $this->deleteEntitiesAfterTestRun(
+            self::CUSTOMER_SERVICE,
+            self::METHOD_DELETE_ATTRIBUTE,
+            [self::SAMPLE_ATTRIBUTE_CODE]
+        );
+
+        // Act
+        try {
+            // Act
+            $this->sdk->getCustomerService()->addAttributeValue(
+                self::SAMPLE_ATTRIBUTE_CODE,
+                [$attributeValue],
+                ['requestType' => 'direct']
+            );
+        } catch (RequestException $exception) {
+            // Assert
+            $errors  = \GuzzleHttp\json_decode($exception->getMessage(), false);
+            $message = $errors->error->results->errors[0]->message;
+            $this->assertInstanceOf(get_class($expectedException), $exception);
+            $this->assertEquals('Missing required property: ' . $missingItem, $message);
+            $this->assertEquals($expectedException->getStatusCode(), $exception->getStatusCode());
+
+            return;
+        }
+
+        $this->fail('Expected ' . get_class($expectedException) . ' but wasn\'t thrown');
+    }
+
+    /**
+     * @return array
+     */
+    public function provideCreateAttributeValuesWithMissingRequiredFields()
+    {
+        return [
+            'missing name'       => [
+                'attributeValueData' => [
+                    'sequenceId' => 1,
+                    'code'       => 'code',
+                ],
+                'expectedException'  => new RequestException(400),
+                'missingItem'        => 'name',
+            ],
+            'missing sequenceId' => [
+                'attributeValueData' => [
+                    'name' => 'name',
+                    'code' => 'code',
+                ],
+                'expectedException'  => new RequestException(400),
+                'missingItem'        => 'sequenceId',
+            ],
+            'missing code'       => [
+                'attributeValueData' => [
+                    'name'       => 'name',
+                    'sequenceId' => 1,
+                ],
+                'expectedException'  => new RequestException(400),
+                'missingItem'        => 'code',
+            ],
+        ];
     }
 
     /**

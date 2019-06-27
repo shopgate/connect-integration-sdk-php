@@ -29,23 +29,27 @@ use GuzzleHttp\Exception\RequestException as GuzzleRequestException;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
+use kamermans\OAuth2\Exception\AccessTokenRequestException;
 use kamermans\OAuth2\GrantType\ClientCredentials;
 use kamermans\OAuth2\OAuth2Middleware;
-use kamermans\OAuth2\Persistence\TokenPersistenceInterface;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Shopgate\ConnectSdk\Dto\Async\Factory;
 use Shopgate\ConnectSdk\Dto\Base;
+use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Http\Persistence\EncryptedFile;
+use Shopgate\ConnectSdk\Http\Persistence\PersistenceChain;
 use Shopgate\ConnectSdk\ShopgateSdk;
 
 class Client implements ClientInterface
 {
     /** @var GuzzleClientInterface */
-    private $guzzleClient;
+    private $client;
 
     /** @var string */
     private $baseUri;
@@ -54,13 +58,16 @@ class Client implements ClientInterface
     private $merchantCode;
 
     /**
-     * @param GuzzleClientInterface $guzzleClient
+     * @param GuzzleClientInterface $client
      * @param string                $baseUri
      * @param string                $merchantCode
      */
-    public function __construct(GuzzleClientInterface $guzzleClient, $baseUri, $merchantCode)
-    {
-        $this->guzzleClient = $guzzleClient;
+    public function __construct(
+        GuzzleClientInterface $client,
+        $baseUri,
+        $merchantCode
+    ) {
+        $this->client       = $client;
         $this->baseUri      = rtrim($baseUri, '/');
         $this->merchantCode = $merchantCode;
     }
@@ -72,9 +79,6 @@ class Client implements ClientInterface
      * @param string                         $baseUri
      * @param string                         $env
      * @param string                         $accessTokenPath
-     * @param TokenPersistenceInterface|null $tokenPersistence
-     * @param LoggerInterface|null           $logger
-     *
      * @return Client
      */
     public static function createInstance(
@@ -83,9 +87,7 @@ class Client implements ClientInterface
         $merchantCode,
         $baseUri = '',
         $env = '',
-        $accessTokenPath = '',
-        TokenPersistenceInterface $tokenPersistence = null,
-        LoggerInterface $logger = null
+        $accessTokenPath = ''
     ) {
         $env = $env === 'live' ? '' : $env;
 
@@ -113,10 +115,9 @@ class Client implements ClientInterface
             )
         );
 
-        if ($tokenPersistence === null) {
-            $tokenPersistence = new EncryptedFile($accessTokenPath, $clientSecret);
-        }
-        $oauth->setTokenPersistence($tokenPersistence);
+        $oauth->setTokenPersistence(new PersistenceChain([
+            new EncryptedFile($accessTokenPath, $clientSecret)
+        ]));
 
         $handlerStack = HandlerStack::create();
         $handlerStack->push($oauth);
@@ -127,18 +128,36 @@ class Client implements ClientInterface
             ]
         );
 
-        if ($logger) {
-            $handlerStack->push(
-                Middleware::log(
-                    $logger,
-                    new MessageFormatter(
-                        'URL: {hostname}/{target} Method: {method} RequestBody: {req_body} ResponseBody: {res_body}'
-                    )
-                )
-            );
+        return new self($client, $baseUri, $merchantCode);
+    }
+
+    /**
+     * @return GuzzleClientInterface
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
+     * @param LoggerInterface $logger
+     * @param string          $template
+     *
+     * @throws Exception
+     */
+    public function enableRequestLogging(LoggerInterface $logger = null, $template = '')
+    {
+        $handler = $this->client->getConfig('handler');
+
+        if (!$logger) {
+            $logger = new Logger(new StreamHandler('php://out'));
         }
 
-        return new self($client, $baseUri, $merchantCode);
+        if (!$template) {
+            $template = 'URL: {hostname}/{target} Method: {method} RequestBody: {req_body} ResponseBody: {res_body}';
+        }
+
+        $handler->push(Middleware::log($logger, new MessageFormatter($template)));
     }
 
     /**
@@ -159,8 +178,10 @@ class Client implements ClientInterface
      * @param array $params
      *
      * @return ResponseInterface
-     * @throws RequestException
+     *
+     * @throws AuthenticationInvalidException
      * @throws NotFoundException
+     * @throws RequestException
      * @throws UnknownException
      */
     public function doRequest(array $params)
@@ -176,7 +197,7 @@ class Client implements ClientInterface
         $response = null;
         $body     = isset($params['body']) ? $params['body'] : [];
         try {
-            $response = $this->guzzleClient->request(
+            $response = $this->client->request(
                 $params['method'],
                 $this->buildServiceUrl($params['service'], $params['path']),
                 [
@@ -205,6 +226,8 @@ class Client implements ClientInterface
             );
         } catch (GuzzleException $e) {
             throw new UnknownException($e->getMessage());
+        } catch (AccessTokenRequestException $e) {
+            throw new AuthenticationInvalidException($e->getMessage());
         } catch (Exception $e) {
             throw new UnknownException($e->getMessage());
         }
@@ -235,6 +258,8 @@ class Client implements ClientInterface
      * @param array $params
      *
      * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
      * @throws RequestException
      * @throws UnknownException
      */
@@ -255,7 +280,7 @@ class Client implements ClientInterface
         }
 
         try {
-            return $this->guzzleClient->request(
+            return $this->client->request(
                 'post',
                 $this->buildServiceUrl('omni-event-receiver', 'events'),
                 [
@@ -270,6 +295,8 @@ class Client implements ClientInterface
                 $e->getResponse() && $e->getResponse()->getBody() ? $e->getResponse()->getBody()->getContents()
                     : $e->getMessage()
             );
+        } catch (AccessTokenRequestException $e) {
+            throw new AuthenticationInvalidException($e->getMessage());
         } catch (GuzzleException $e) {
             throw new UnknownException($e->getMessage());
         } catch (Exception $e) {

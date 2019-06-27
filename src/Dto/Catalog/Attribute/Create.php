@@ -23,6 +23,7 @@
 namespace Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
+use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 
 /**
  * Default class that handles validation for attribute Create payloads.
@@ -32,7 +33,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
  * @method Create setUse(string $use)
  * @method Create setName(dto\Name $name)
  * @method Create setExternalUpdateDate(string $externalUpdateDate)
- * @method Create setValues(array $values)
+ * @method Create setValues(AttributeValue\Create[] $values)
  */
 class Create extends Attribute
 {

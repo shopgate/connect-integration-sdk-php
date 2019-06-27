@@ -32,7 +32,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Category;
  * @method Create setImage(string $image)
  * @method Create setName(dto\Name $name)
  * @method Create setUrl(string $url)
- * @method Create setSequenceId(integer $sequenceId)
+ * @method Create setSequenceId(int $sequenceId)
  * @method Create setDescription(dto\Description $description)
  * @method Create setExternalUpdateDate(string $externalUpdateDate)
  */

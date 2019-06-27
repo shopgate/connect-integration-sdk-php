@@ -26,10 +26,10 @@ use Shopgate\ConnectSdk\Dto\Base;
 
 /**
  * @method Values setCode(string $code)
- * @method Values setAdditionalPrice(number $additionalPrice)
+ * @method Values setAdditionalPrice(float $additionalPrice)
  *
  * @method string getCode()
- * @method number getAdditionalPrice()
+ * @method float getAdditionalPrice()
  */
 class Values extends Base
 {

@@ -25,7 +25,7 @@ namespace Shopgate\ConnectSdk\Dto\Catalog;
 use Shopgate\ConnectSdk\Dto\Base;
 
 /**
- * * @package Shopgate\ConnectSdk\Dto\Catalog
+ * @package Shopgate\ConnectSdk\Dto\Catalog
  */
 class AttributeValue extends Base
 {

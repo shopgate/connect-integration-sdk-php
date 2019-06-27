@@ -26,23 +26,23 @@ use Shopgate\ConnectSdk\Dto\Base as DtoBase;
 
 /**
  * @method ShippingInformation setIsShippedAlone(boolean $isShippedAlone)
- * @method ShippingInformation setHeight(number $height)
+ * @method ShippingInformation setHeight(float $height)
  * @method ShippingInformation setHeightUnit(string $heightUnit)
- * @method ShippingInformation setWidth(number $width)
+ * @method ShippingInformation setWidth(float $width)
  * @method ShippingInformation setWidthUnit(string $widthUnit)
- * @method ShippingInformation setLength(number $length)
+ * @method ShippingInformation setLength(float $length)
  * @method ShippingInformation setLengthUnit(string $lengthUnit)
- * @method ShippingInformation setWeight(number $weight)
+ * @method ShippingInformation setWeight(float $weight)
  * @method ShippingInformation setWeightUnit(string $weightUnit)
  *
  * @method boolean getIsShippedAlone()
- * @method number getHeight()
+ * @method float getHeight()
  * @method string getHeightUnit()
- * @method number getWidth()
+ * @method float getWidth()
  * @method string getWidthUnit()
- * @method number getLength()
+ * @method float getLength()
  * @method string getLengthUnit()
- * @method number getWeight()
+ * @method float getWeight()
  * @method string getWeightUnit()
  */
 class ShippingInformation extends DtoBase

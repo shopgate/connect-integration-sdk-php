@@ -22,6 +22,11 @@
 
 namespace Shopgate\ConnectSdk\Service\BulkImport;
 
+use Psr\Http\Message\ResponseInterface;
+use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
+use Shopgate\ConnectSdk\Exception\NotFoundException;
+use Shopgate\ConnectSdk\Exception\RequestException;
+use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 
 class Handler
@@ -36,14 +41,12 @@ class Handler
     protected $importReference;
 
     /**
-     * Stream constructor.
-     *
      * @param ClientInterface $client
      * @param string          $importReference
      */
     public function __construct(ClientInterface $client, $importReference)
     {
-        $this->client          = $client;
+        $this->client = $client;
         $this->importReference = $importReference;
     }
 
@@ -51,6 +54,11 @@ class Handler
      * @param string $catalogCode
      *
      * @return Feed\Category
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
      */
     public function createCategoryFeed($catalogCode)
     {
@@ -66,6 +74,11 @@ class Handler
      * @param string $catalogCode
      *
      * @return Feed\Product
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
      */
     public function createProductFeed($catalogCode)
     {
@@ -81,6 +94,11 @@ class Handler
      * @param string $catalogCode
      *
      * @return Feed\Attribute
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
      */
     public function createAttributeFeed($catalogCode)
     {
@@ -92,19 +110,27 @@ class Handler
         );
     }
 
+    /**
+     * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
     public function trigger()
     {
         $response = $this->client->doRequest(
             [
                 // general
-                'method'      => 'post',
-                'body'        => [],
+                'method' => 'post',
+                'body' => [],
                 'requestType' => 'direct',
-                'service'     => 'import',
-                'path'        => 'imports/' . $this->importReference,
+                'service' => 'import',
+                'path' => 'imports/' . $this->importReference,
             ]
         );
 
-        $response = json_decode($response->getBody(), true);
+        return $response;
     }
 }

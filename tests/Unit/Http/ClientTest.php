@@ -137,22 +137,126 @@ class ClientTest extends TestCase
     public function provideBuildServiceUrlFixtures()
     {
         return [
-            'should replace {service} with service name'       => [
+            'should replace {service} with service name' => [
                 'expectedUrl' => 'http://catalog.local/v1/merchants/TM2/',
                 'serviceName' => 'catalog',
-                'path'        => ''
+                'path' => ''
             ],
             'should left-trim slashes from path and append it' => [
                 'expectedUrl' => 'http://catalog.local/v1/merchants/TM2/products/prod1',
                 'serviceName' => 'catalog',
-                'path'        => '///products/prod1'
+                'path' => '///products/prod1'
             ]
         ];
     }
 
-//    public function testDoRequestShouldMakeDirectCallOnGet($expectedMethod, $expectedUri, $request)
-//    {
-//        $this->mockHandler->append(function ($response, $request, $options) {
-//        });
-//    }
+    /**
+     * @throws ShopgateSdkException
+     */
+    public function testRequestShouldBeSentAsEvent()
+    {
+        // Arrange
+        $this->client = $this
+            ->getMockBuilder(\GuzzleHttp\Client::class)
+            ->setConstructorArgs([['handler' => $this->handlerStack]])
+            ->setMethods(['request'])
+            ->getMock();
+        $this->client
+            ->expects($this->once())
+            ->method('request')->with(
+                'post',
+                'http://omni-event-receiver.local/v1/merchants/TM2/events',
+                [
+                    'json' => '{"events":[{"event":"entityUpdated","entity":"category","payload":{}}]}',
+                    'http_errors' => false,
+                ]
+            )->willReturn([]);
+
+        $this->subjectUnderTest = new Client(
+            $this->client,
+            'http://{service}.local',
+            'TM2'
+        );
+
+        // Act
+        $this->subjectUnderTest->doRequest([
+            'action' => 'update',
+            'method' => 'post',
+            'entity' => 'category',
+            'requestType' => ShopgateSdk::REQUEST_TYPE_EVENT
+        ]);
+    }
+
+    /**
+     * @throws ShopgateSdkException
+     */
+    public function testRequestShouldBeSentAsDirectRequest()
+    {
+        // Arrange
+        $this->client = $this
+            ->getMockBuilder(\GuzzleHttp\Client::class)
+            ->setConstructorArgs([['handler' => $this->handlerStack]])
+            ->setMethods(['request'])
+            ->getMock();
+        $this->client
+            ->expects($this->once())
+            ->method('request')->with(
+                $this->equalTo('post'),
+                $this->equalTo('http://catalog.local/v1/merchants/TM2/categories/'),
+                $this->equalTo([
+                    'query' => [],
+                    'json' => "[]",
+                ])
+            )->willReturn([]);
+
+        $this->subjectUnderTest = new Client(
+            $this->client,
+            'http://{service}.local',
+            'TM2'
+        );
+
+        // Act
+        $this->subjectUnderTest->doRequest([
+            'action' => 'update',
+            'method' => 'post',
+            'entity' => 'category',
+            'service'     => 'catalog',
+            'path'        => 'categories/',
+            'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT
+        ]);
+    }
+
+    /**
+     * @throws ShopgateSdkException
+     */
+    public function testDoRequestShouldMakeDirectCallOnGet()
+    {
+        // Arrange
+        $this->client = $this
+            ->getMockBuilder(\GuzzleHttp\Client::class)
+            ->setConstructorArgs([['handler' => $this->handlerStack]])
+            ->setMethods(['request'])
+            ->getMock();
+
+        $this->client
+            ->expects($this->once())
+            ->method('request')->with(
+                $this->equalTo('get'),
+                $this->equalTo('http://catalog.local/v1/merchants/TM2/categories'),
+                $this->anything()
+            )->willReturn([]);
+
+        $this->subjectUnderTest = new Client(
+            $this->client,
+            'http://{service}.local',
+            'TM2'
+        );
+
+        // Act
+        $this->subjectUnderTest->doRequest([
+            'service' => 'catalog',
+            'method'  => 'get',
+            'path'    => 'categories'
+        ]);
+    }
 }

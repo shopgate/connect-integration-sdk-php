@@ -62,7 +62,7 @@ class AttributeValueTest extends CustomerTest
         /** @var AttributeValue\Get $addedAttributeValue */
         $addedAttributeValue = $addedAttributeValues[1];
 
-        // Prepare delete
+        // CleanUp
         $this->deleteEntitiesAfterTestRun(
             self::CUSTOMER_SERVICE,
             self::METHOD_DELETE_ATTRIBUTE,
@@ -97,7 +97,7 @@ class AttributeValueTest extends CustomerTest
             ['requestType' => 'direct']
         );
 
-        // Prepare delete
+        // CleanUp
         $this->deleteEntitiesAfterTestRun(
             self::CUSTOMER_SERVICE,
             self::METHOD_DELETE_ATTRIBUTE,
@@ -143,7 +143,7 @@ class AttributeValueTest extends CustomerTest
             ['requestType' => 'direct']
         );
 
-        // Prepare delete
+        // CleanUp
         $this->deleteEntitiesAfterTestRun(
             self::CUSTOMER_SERVICE,
             self::METHOD_DELETE_ATTRIBUTE,
@@ -175,7 +175,7 @@ class AttributeValueTest extends CustomerTest
         $this->createSampleAttribute();
         $attributeValue = new AttributeValue\Create($attributeValueData);
 
-        // Prepare delete
+        // CleanUp
         $this->deleteEntitiesAfterTestRun(
             self::CUSTOMER_SERVICE,
             self::METHOD_DELETE_ATTRIBUTE,

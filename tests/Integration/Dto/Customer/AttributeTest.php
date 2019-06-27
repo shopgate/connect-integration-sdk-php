@@ -71,7 +71,7 @@ class AttributeTest extends CustomerTest
         // Assert
         $attributes = $this->getAttributes($parameters);
 
-        // Prepare delete
+        // CleanUp
         $deleteCodes = [];
         foreach ($attributes->getAttributes() as $attribute) {
             $deleteCodes[] = $attribute->getCode();
@@ -109,7 +109,7 @@ class AttributeTest extends CustomerTest
             ]
         );
 
-        // Prepare delete
+        // CleanUp
         $deleteCodes = [];
         $attributes  = $this->getAttributes();
         foreach ($attributes->getAttributes() as $attribute) {
@@ -143,7 +143,7 @@ class AttributeTest extends CustomerTest
 
         $attributes = $this->getAttributes();
 
-        // Prepare delete
+        // CleanUp
         $deleteCodes = [];
         foreach ($attributes->getAttributes() as $attribute) {
             $deleteCodes[] = $attribute->getCode();
@@ -176,7 +176,7 @@ class AttributeTest extends CustomerTest
             ]
         );
 
-        // Prepare delete
+        // CleanUp
         $this->deleteEntitiesAfterTestRun(
             self::CUSTOMER_SERVICE,
             self::METHOD_DELETE_ATTRIBUTE,
@@ -221,7 +221,7 @@ class AttributeTest extends CustomerTest
             ]
         );
 
-        // Prepare delete
+        // CleanUp
         $this->deleteEntitiesAfterTestRun(
             self::CUSTOMER_SERVICE,
             self::METHOD_DELETE_ATTRIBUTE,
@@ -260,7 +260,7 @@ class AttributeTest extends CustomerTest
             ]
         );
 
-        // Prepare delete
+        // CleanUp
         $this->deleteEntitiesAfterTestRun(
             self::CUSTOMER_SERVICE,
             self::METHOD_DELETE_ATTRIBUTE,
@@ -300,7 +300,7 @@ class AttributeTest extends CustomerTest
 
         sleep(self::SLEEP_TIME_AFTER_EVENT);
 
-        // Prepare delete
+        // CleanUp
         $this->deleteEntitiesAfterTestRun(
             self::CUSTOMER_SERVICE,
             self::METHOD_DELETE_ATTRIBUTE,

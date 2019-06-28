@@ -45,8 +45,8 @@ use Shopgate\ConnectSdk\Dto\Customer\Contact;
  * @method Create setFax(string $fax)
  * @method Create setMobile(string $mobile)
  * @method Create setEmailAddress(string $emailAddress)
- * @method Create setIsDefaultShipping(string $isDefaultShipping)
- * @method Create setIsDefaultBilling(string $isDefaultBilling)
+ * @method Create setIsDefaultShipping(boolean $isDefaultShipping)
+ * @method Create setIsDefaultBilling(boolean $isDefaultBilling)
  */
 class Create extends Contact
 {

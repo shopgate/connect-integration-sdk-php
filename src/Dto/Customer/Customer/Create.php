@@ -23,7 +23,7 @@ namespace Shopgate\ConnectSdk\Dto\Customer\Customer;
 
 use Shopgate\ConnectSdk\Dto\Customer\Customer;
 use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Attribute;
-use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Setting;
+use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Settings;
 
 /**
  * Dto for customer response.
@@ -37,7 +37,7 @@ use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Setting;
  * @method setIsAnonymous(string $isAnonymous)
  * @method @todo Create setContacts(array $contacts)
  * @method Create setAttributes(Attribute [] $attributes)
- * @method Create setSetting(Setting $settings)
+ * @method Create setSettings(Settings $settings)
  */
 class Create extends Customer
 {
@@ -57,7 +57,7 @@ class Create extends Customer
             'isAnonymous'            => ['type' => 'boolean'],
             'contacts'               => ['type' => 'array'],
             'attributes'             => ['type' => 'array'],
-            'settings'               => ['type' => 'array'],
+            'settings'               => ['type' => 'object'],
         ],
         'additionalProperties' => true,
     ];

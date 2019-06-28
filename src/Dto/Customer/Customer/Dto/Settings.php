@@ -24,7 +24,7 @@ namespace Shopgate\ConnectSdk\Dto\Customer\Customer\Dto;
 use Shopgate\ConnectSdk\Dto\Base;
 
 /**
- * Dto for customer setting.
+ * Dto for customer settings.
  *
  * @method setDefaultLocale(string $defaultLocale)
  * @method setDefaultCurrency(string $defaultCurrency)
@@ -37,7 +37,7 @@ use Shopgate\ConnectSdk\Dto\Base;
  * @method string getDefaultLocationCode()
  * @method string getMarketingOptIn()
  */
-class Setting extends Base
+class Settings extends Base
 {
     /**
      * @var array

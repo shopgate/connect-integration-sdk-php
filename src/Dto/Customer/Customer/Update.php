@@ -28,16 +28,16 @@ use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Setting;
 /**
  * Dto for customer response.
  *
- * @method setExternalCustomerNumber(string $externalCustomerNumber)
- * @method setFirstName(string $firstName)
- * @method setMiddleName(string $middleName)
- * @method setLastName(string $lastName)
- * @method setEmailAddress(string $emailAddress)
- * @method setStatus(string $status)
- * @method setIsAnonymous(string $isAnonymous)
- * @method @todo setContacts(array $contacts)
- * @method setAttributes(Attribute [] $attributes)
- * @method setSettings(Setting[] $settings)
+ * @method Update setExternalCustomerNumber(string $externalCustomerNumber)
+ * @method Update setFirstName(string $firstName)
+ * @method Update setMiddleName(string $middleName)
+ * @method Update setLastName(string $lastName)
+ * @method Update setEmailAddress(string $emailAddress)
+ * @method Update setStatus(string $status)
+ * @method Update setIsAnonymous(string $isAnonymous)
+ * @method @todo Update setContacts(array $contacts)
+ * @method Update setAttributes(Attribute [] $attributes)
+ * @method Update setSettings(Setting[] $settings)
  */
 class Update extends Customer
 {

@@ -53,7 +53,14 @@ class Create extends Customer
             'middleName'             => ['type' => 'string'],
             'lastName'               => ['type' => 'string'],
             'emailAddress'           => ['type' => 'string'],
-            'status'                 => ['type' => 'string'],
+            'status'                 => [
+                'type' => 'string',
+                'enum' => [
+                    self::STATUS_ACTIVE,
+                    self::STATUS_INACTIVE,
+                    self::STATUS_DELETED,
+                ],
+            ],
             'isAnonymous'            => ['type' => 'boolean'],
             'contacts'               => ['type' => 'array'],
             'attributes'             => ['type' => 'array'],

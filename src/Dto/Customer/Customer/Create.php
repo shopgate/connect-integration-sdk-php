@@ -37,7 +37,7 @@ use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Setting;
  * @method setIsAnonymous(string $isAnonymous)
  * @method @todo Create setContacts(array $contacts)
  * @method Create setAttributes(Attribute [] $attributes)
- * @method Create setSettings(Setting[] $settings)
+ * @method Create setSetting(Setting $settings)
  */
 class Create extends Customer
 {

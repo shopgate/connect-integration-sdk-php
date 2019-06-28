@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright Shopgate Inc.
  *
@@ -20,21 +19,26 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Customer\Attribute;
+namespace Shopgate\ConnectSdk\Tests\Integration;
 
-use Shopgate\ConnectSdk\Dto\Customer\Attribute;
-use Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
-
-/**
- * Dto for attribute response.
- *
- * @method string getCode()
- * @method string getType()
- * @method string getName()
- * @method string getIsRequired()
- * @method AttributeValue\Get[] getValues()
- *
- */
-class Get extends Attribute
+abstract class CustomerTest extends ShopgateSdkTest
 {
+    const CUSTOMER_SERVICE           = 'omni-customer';
+    const METHOD_DELETE_ATTRIBUTE    = 'deleteAttribute';
+    const METHOD_DELETE_REQUEST_META = [
+        self::METHOD_DELETE_ATTRIBUTE => [],
+    ];
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->registerForCleanUp(
+            self::CUSTOMER_SERVICE,
+            $this->sdk->getCustomerService(),
+            [
+                self::METHOD_DELETE_ATTRIBUTE,
+            ]
+        );
+    }
 }

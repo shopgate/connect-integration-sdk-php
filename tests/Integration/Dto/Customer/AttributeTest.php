@@ -20,315 +20,22 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Tests\Integration;
+namespace Shopgate\ConnectSdk\Tests\Integration\Dto\Customer;
 
 use Psr\Http\Message\ResponseInterface;
-use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute\Dto\Name;
-use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
+use Shopgate\ConnectSdk\Dto\Customer\Attribute;
+use Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
+
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
+use Shopgate\ConnectSdk\Tests\Integration\CustomerTest;
 
-class AttributeTest extends CatalogTest
+class AttributeTest extends CustomerTest
 {
-    /**
-     * @throws Exception
-     */
-    public function testCreateAttributesDirect()
-    {
-        // Arrange
-        $createdItemCount = 10;
-        $sampleAttributes = $this->provideSampleAttributes($createdItemCount);
-
-        // Act
-        $this->createAttributes(
-            $sampleAttributes,
-            [
-                'requestType' => 'direct',
-            ]
-        );
-
-        // Assert
-        $attributes = $this->getAttributes();
-
-        // CleanUp
-        $deleteCodes = [];
-        foreach ($attributes->getAttributes() as $attribute) {
-            $deleteCodes[] = $attribute->getCode();
-        }
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_ATTRIBUTE,
-            $deleteCodes
-        );
-
-        /** @noinspection PhpParamsInspection */
-        $this->assertCount($createdItemCount, $attributes->getAttributes());
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function testCreateAttributesEvent()
-    {
-        $this->markTestSkipped('Skipped due to bug in worker service');
-
-        // Arrange
-        $createdItemCount = 10;
-        $sampleAttributes = $this->provideSampleAttributes($createdItemCount);
-
-        // Act
-        $this->createAttributes($sampleAttributes);
-        sleep(self::SLEEP_TIME_AFTER_EVENT);
-
-        $attributes = $this->getAttributes();
-
-        // CleanUp
-        $deleteCodes = [];
-        foreach ($attributes->getAttributes() as $attribute) {
-            $deleteCodes[] = $attribute->getCode();
-        }
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_ATTRIBUTE,
-            $deleteCodes
-        );
-
-        // Assert
-        /** @noinspection PhpParamsInspection */
-        $this->assertCount($createdItemCount, $attributes->getAttributes());
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function testGetAttributeDirect()
-    {
-        // Arrange
-        $createdItemCount = 1;
-        $sampleAttributes = $this->provideSampleAttributes($createdItemCount);
-
-        // Act
-        $this->createAttributes(
-            $sampleAttributes,
-            [
-                'requestType' => 'direct',
-            ]
-        );
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_ATTRIBUTE,
-            ['code_1']
-        );
-
-        // Assert
-        $attribute = $this->getAttribute('code_1');
-
-        /** @noinspection PhpParamsInspection */
-        $this->assertEquals('Attribute 1 en', $attribute->getName());
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function testGetAttributeWithoutExistingAttribute()
-    {
-        $this->expectException(NotFoundException::class);
-
-        // Act
-        $this->sdk->getCatalogService()->getAttribute(
-            'non_existing'
-        );
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function testGetAttributeByLocaleDirect()
-    {
-        // Arrange
-        $createdItemCount = 1;
-        $sampleAttributes = $this->provideSampleAttributes($createdItemCount);
-
-        // Act
-        $this->createAttributes(
-            $sampleAttributes,
-            [
-                'requestType' => 'direct',
-            ]
-        );
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_ATTRIBUTE,
-            ['code_1']
-        );
-
-        // Assert
-        $attribute = $this->getAttribute('code_1', 'de-de');
-
-        /** @noinspection PhpParamsInspection */
-        $this->assertEquals('Attribute 1 de', $attribute->getName());
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function testUpdateAttributeDirect()
-    {
-        // Arrange
-        $sampleAttributes = $this->provideSampleAttributes(1);
-        $this->createAttributes(
-            $sampleAttributes,
-            [
-                'requestType' => 'direct',
-            ]
-        );
-
-        // Act
-        $newName         = 'Renamed Attribute (Direct)';
-        $attributeUpdate = new Attribute\Update(['name' => new Name(['en-us' => $newName])]);
-        $this->sdk->getCatalogService()->updateAttribute(
-            'code_1',
-            $attributeUpdate,
-            [
-                'requestType' => 'direct',
-            ]
-        );
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_ATTRIBUTE,
-            ['code_1']
-        );
-
-        // Assert
-        $updatedAttribute = $this->getAttribute('code_1');
-        $this->assertEquals($newName, $updatedAttribute->getName());
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function testUpdateAttributeEvent()
-    {
-        // Arrange
-        $sampleAttributes = $this->provideSampleAttributes(1);
-        $this->createAttributes(
-            $sampleAttributes,
-            [
-                'requestType' => 'direct',
-            ]
-        );
-
-        // Act
-        $newName         = 'Renamed Attribute (Event)';
-        $attributeUpdate = new Attribute\Update(['name' => new Name(['en-us' => $newName])]);
-
-        // Act
-        $this->sdk->getCatalogService()->updateAttribute(
-            'code_1',
-            $attributeUpdate
-        );
-
-        sleep(self::SLEEP_TIME_AFTER_EVENT);
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_ATTRIBUTE,
-            ['code_1']
-        );
-
-        // Assert
-        $updatedAttribute = $this->getAttribute('code_1');
-        $this->assertEquals($newName, $updatedAttribute->getName());
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function testUpdateAttributeWithoutExistingAttribute()
-    {
-        // Assert
-        $this->expectException(NotFoundException::class);
-
-        // Act
-        $this->sdk->getCatalogService()->updateAttribute(
-            'non_existing',
-            new Attribute\Update(),
-            [
-                'requestType' => 'direct',
-            ]
-        );
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function testDeleteAttributeDirect()
-    {
-        // Arrange
-        $sampleAttributes = $this->provideSampleAttributes(1);
-        $this->createAttributes(
-            $sampleAttributes,
-            [
-                'requestType' => 'direct',
-            ]
-        );
-
-        // Act
-        $this->sdk->getCatalogService()->deleteAttribute(
-            'code_1',
-            [
-                'requestType' => 'direct',
-            ]
-        );
-
-        sleep(self::SLEEP_TIME_AFTER_EVENT);
-
-        // Assert
-        try {
-            $this->getAttribute('code_1');
-        } catch (NotFoundException $e) {
-            $this->assertEquals($e->getMessage(), '{"code":"NotFound","message":"Attribute not found"}');
-        }
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function testDeleteAttributeEvent()
-    {
-        // Arrange
-        $sampleAttributes = $this->provideSampleAttributes(1);
-        $this->createAttributes(
-            $sampleAttributes,
-            [
-                'requestType' => 'direct',
-            ]
-        );
-
-        // Act
-        $this->sdk->getCatalogService()->deleteAttribute('code_1');
-
-        sleep(self::SLEEP_TIME_AFTER_EVENT);
-
-        // Assert
-        try {
-            $this->getAttribute('code_1');
-        } catch (NotFoundException $e) {
-            $this->assertEquals($e->getMessage(), '{"code":"NotFound","message":"Attribute not found"}');
-        }
-    }
-
     /**
      * @param int      $limit
      * @param int      $offset
@@ -370,7 +77,7 @@ class AttributeTest extends CatalogTest
             $deleteCodes[] = $attribute->getCode();
         }
         $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
+            self::CUSTOMER_SERVICE,
             self::METHOD_DELETE_ATTRIBUTE,
             $deleteCodes
         );
@@ -382,6 +89,305 @@ class AttributeTest extends CatalogTest
         }
         if (isset($offset)) {
             $this->assertEquals($offset, $attributes->getMeta()->getOffset());
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testCreateAttributesDirect()
+    {
+        // Arrange
+        $createdItemCount = 10;
+        $sampleAttributes = $this->provideSampleAttributes($createdItemCount);
+
+        // Act
+        $this->createAttributes(
+            $sampleAttributes,
+            [
+                'requestType' => 'direct',
+            ]
+        );
+
+        // CleanUp
+        $deleteCodes = [];
+        $attributes  = $this->getAttributes();
+        foreach ($attributes->getAttributes() as $attribute) {
+            $deleteCodes[] = $attribute->getCode();
+        }
+
+        $this->deleteEntitiesAfterTestRun(
+            self::CUSTOMER_SERVICE,
+            self::METHOD_DELETE_ATTRIBUTE,
+            $deleteCodes
+        );
+        // Assert
+        /** @noinspection PhpParamsInspection */
+        $this->assertCount($createdItemCount, $attributes->getAttributes());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testCreateAttributesEvent()
+    {
+        $this->markTestSkipped('Skipped - not working yet');
+
+        // Arrange
+        $createdItemCount = 10;
+        $sampleAttributes = $this->provideSampleAttributes($createdItemCount);
+
+        // Act
+        $this->createAttributes($sampleAttributes);
+        sleep(self::SLEEP_TIME_AFTER_EVENT);
+
+        $attributes = $this->getAttributes();
+
+        // CleanUp
+        $deleteCodes = [];
+        foreach ($attributes->getAttributes() as $attribute) {
+            $deleteCodes[] = $attribute->getCode();
+        }
+        $this->deleteEntitiesAfterTestRun(
+            self::CUSTOMER_SERVICE,
+            self::METHOD_DELETE_ATTRIBUTE,
+            $deleteCodes
+        );
+
+        // Assert
+        /** @noinspection PhpParamsInspection */
+        $this->assertCount($createdItemCount, $attributes->getAttributes());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testGetAttributeDirect()
+    {
+        // Arrange
+        $createdItemCount = 1;
+        $sampleAttributes = $this->provideSampleAttributes($createdItemCount);
+
+        // Act
+        $this->createAttributes(
+            $sampleAttributes,
+            [
+                'requestType' => 'direct',
+            ]
+        );
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(
+            self::CUSTOMER_SERVICE,
+            self::METHOD_DELETE_ATTRIBUTE,
+            ['code_1']
+        );
+
+        // Assert
+        $attribute = $this->getAttribute('code_1');
+
+        /** @noinspection PhpParamsInspection */
+        $this->assertEquals('Attribute Name 1', $attribute->getName());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testGetAttributeWithoutExistingAttribute()
+    {
+        $this->expectException(NotFoundException::class);
+
+        // Act
+        $this->sdk->getCustomerService()->getAttribute(
+            'non_existing'
+        );
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testGetAttributeByLocaleDirect()
+    {
+        // Arrange
+        $createdItemCount = 1;
+        $sampleAttributes = $this->provideSampleAttributes($createdItemCount);
+
+        // Act
+        $this->createAttributes(
+            $sampleAttributes,
+            [
+                'requestType' => 'direct',
+                'localeCode'  => 'en-us',
+            ]
+        );
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(
+            self::CUSTOMER_SERVICE,
+            self::METHOD_DELETE_ATTRIBUTE,
+            ['code_1']
+        );
+
+        // Assert
+        $attribute = $this->getAttribute('code_1', 'en-us');
+
+        /** @noinspection PhpParamsInspection */
+        $this->assertEquals('Attribute Name 1', $attribute->getName());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testUpdateAttributeDirect()
+    {
+        // Arrange
+        $sampleAttributes = $this->provideSampleAttributes(1);
+        $this->createAttributes(
+            $sampleAttributes,
+            [
+                'requestType' => 'direct',
+            ]
+        );
+
+        // Act
+        $newName         = 'Renamed Attribute (Direct)';
+        $attributeUpdate = new Attribute\Update(['name' => $newName]);
+        $this->sdk->getCustomerService()->updateAttribute(
+            'code_1',
+            $attributeUpdate,
+            [
+                'requestType' => 'direct',
+            ]
+        );
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(
+            self::CUSTOMER_SERVICE,
+            self::METHOD_DELETE_ATTRIBUTE,
+            ['code_1']
+        );
+
+        // Assert
+        $updatedAttribute = $this->getAttribute('code_1');
+        $this->assertEquals($newName, $updatedAttribute->getName());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testUpdateAttributeEvent()
+    {
+        $this->markTestSkipped('Skipped - not working yet');
+
+        // Arrange
+        $sampleAttributes = $this->provideSampleAttributes(1);
+        $this->createAttributes(
+            $sampleAttributes,
+            [
+                'requestType' => 'direct',
+            ]
+        );
+
+        // Act
+        $newName         = 'Renamed Attribute (Event)';
+        $attributeUpdate = new Attribute\Update(['name' => new Name(['en-us' => $newName])]);
+
+        // Act
+        $this->sdk->getCustomerService()->updateAttribute(
+            'code_1',
+            $attributeUpdate
+        );
+
+        sleep(self::SLEEP_TIME_AFTER_EVENT);
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(
+            self::CUSTOMER_SERVICE,
+            self::METHOD_DELETE_ATTRIBUTE,
+            ['code_1']
+        );
+
+        // Assert
+        $updatedAttribute = $this->getAttribute('code_1');
+        $this->assertEquals($newName, $updatedAttribute->getName());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testUpdateAttributeWithoutExistingAttribute()
+    {
+        // Assert
+        $this->expectException(NotFoundException::class);
+
+        // Act
+        $this->sdk->getCustomerService()->updateAttribute(
+            'non_existing',
+            new Attribute\Update(),
+            [
+                'requestType' => 'direct',
+            ]
+        );
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testDeleteAttributeDirect()
+    {
+        // Arrange
+        $sampleAttributes = $this->provideSampleAttributes(1);
+        $this->createAttributes(
+            $sampleAttributes,
+            [
+                'requestType' => 'direct',
+            ]
+        );
+
+        // Act
+        $this->sdk->getCustomerService()->deleteAttribute(
+            'code_1',
+            [
+                'requestType' => 'direct',
+            ]
+        );
+
+        sleep(self::SLEEP_TIME_AFTER_EVENT);
+
+        // Assert
+        try {
+            $this->getAttribute('code_1');
+        } catch (NotFoundException $e) {
+            $this->assertEquals($e->getMessage(), '{"code":"NotFound","message":"Attribute not found"}');
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testDeleteAttributeEvent()
+    {
+        $this->markTestSkipped('Skipped - not working yet');
+
+        // Arrange
+        $sampleAttributes = $this->provideSampleAttributes(1);
+        $this->createAttributes(
+            $sampleAttributes,
+            [
+                'requestType' => 'direct',
+            ]
+        );
+
+        // Act
+        $this->sdk->getCustomerService()->deleteAttribute('code_1');
+
+        sleep(self::SLEEP_TIME_AFTER_EVENT);
+
+        // Assert
+        try {
+            $this->getAttribute('code_1');
+        } catch (NotFoundException $e) {
+            $this->assertEquals($e->getMessage(), '{"code":"NotFound","message":"Attribute not found"}');
         }
     }
 
@@ -425,147 +431,31 @@ class AttributeTest extends CatalogTest
     }
 
     /**
-     * @param array            $attributeData
-     * @param RequestException $expectedException
-     * @param string           $expectedMessage
-     *
-     * @dataProvider provideCreateAttributeWithInvalidFields
-     */
-    public function testCreateAttributeDirectWithInvalidFields(
-        array $attributeData,
-        RequestException $expectedException,
-        $expectedMessage
-    ) {
-        // Arrange
-        $attribute = new Attribute\Create($attributeData);
-
-        // Act
-        try {
-            $this->createAttributes(
-                [$attribute],
-                [
-                    'requestType' => 'direct',
-                ]
-            );
-        } catch (RequestException $exception) {
-            // Assert
-            echo $exception->getStatusCode();
-            echo $exception->getMessage();
-            $errors  = \GuzzleHttp\json_decode($exception->getMessage(), false);
-            $message = $errors->error->results->errors[0]->message;
-            $this->assertInstanceOf(get_class($expectedException), $exception);
-            $this->assertEquals($expectedMessage, $message);
-            $this->assertEquals($expectedException->getStatusCode(), $exception->getStatusCode());
-
-            return;
-        } catch (Exception $exception) {
-            echo $exception->getMessage();
-        }
-
-        $this->fail('Expected ' . get_class($expectedException) . ' but wasn\'t thrown');
-    }
-
-    /**
      * @return array
      */
     public function provideCreateAttributeWithMissingRequiredFields()
     {
-        $name = new Attribute\Dto\Name();
-        $name->add('de-de', 'Example');
-
         return [
             'missing name' => [
                 'attributeData'     => [
-                    'values'     => [],
-                    'use'        => Attribute\Create::USE_OPTION,
                     'type'       => Attribute\Create::TYPE_TEXT,
+                    'isRequired' => true,
                     'code'       => 'code',
-                    'sequenceId' => 1006,
+                    'values'     => [],
                 ],
                 'expectedException' => new RequestException(400),
                 'missingItem'       => 'name',
             ],
-            'missing use'  => [
-                'attributeData'     => [
-                    'name'       => $name,
-                    'values'     => [],
-                    'type'       => Attribute\Create::TYPE_TEXT,
-                    'code'       => 'code',
-                    'sequenceId' => 1006,
-                ],
-                'expectedException' => new RequestException(400),
-                'missingItem'       => 'use',
-            ],
             'missing type' => [
                 'attributeData'     => [
-                    'name'       => $name,
-                    'values'     => [],
-                    'use'        => Attribute\Create::USE_OPTION,
+                    'isRequired' => true,
+                    'name'       => 'Name',
                     'code'       => 'code',
-                    'sequenceId' => 1006,
+                    'values'     => [],
                 ],
                 'expectedException' => new RequestException(400),
                 'missingItem'       => 'type',
             ],
-            'missing code' => [
-                'attributeData'     => [
-                    'name'       => $name,
-                    'values'     => [],
-                    'use'        => Attribute\Create::USE_OPTION,
-                    'type'       => Attribute\Create::TYPE_TEXT,
-                    'sequenceId' => 1006,
-                ],
-                'expectedException' => new RequestException(400),
-                'missingItem'       => 'code',
-            ],
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    public function provideCreateAttributeWithInvalidFields()
-    {
-        $name = new Attribute\Dto\Name();
-        $name->add('de-de', 'Example');
-
-        return [
-            'invalid name' => [
-                'attributeData'     => [
-                    'name'       => 'INVALID',
-                    'values'     => [],
-                    'use'        => Attribute\Create::USE_OPTION,
-                    'type'       => Attribute\Create::TYPE_TEXT,
-                    'code'       => 'code',
-                    'sequenceId' => 1006,
-                ],
-                'expectedException' => new RequestException(400),
-                'message'           => 'Expected type object but found type array',
-            ],
-            'invalid use'  => [
-                'attributeData'     => [
-                    'name'       => $name,
-                    'values'     => [],
-                    'use'        => 'INVALID',
-                    'type'       => Attribute\Create::TYPE_TEXT,
-                    'code'       => 'code',
-                    'sequenceId' => 1006,
-                ],
-                'expectedException' => new RequestException(400),
-                'message'           => 'No enum match for: INVALID',
-            ],
-            'invalid type' => [
-                'attributeData'     => [
-                    'name'       => $name,
-                    'values'     => [],
-                    'use'        => Attribute\Create::USE_OPTION,
-                    'type'       => 'INVALID',
-                    'code'       => 'code',
-                    'sequenceId' => 1006,
-                ],
-                'expectedException' => new RequestException(400),
-                'message'           => 'No enum match for: INVALID',
-            ]
         ];
     }
 
@@ -649,7 +539,7 @@ class AttributeTest extends CatalogTest
     }
 
     /**
-     * @param int  $itemCount
+     * @param int $itemCount
      *
      * @return Attribute\Create[]
      */
@@ -660,27 +550,13 @@ class AttributeTest extends CatalogTest
             $attribute = new Attribute\Create();
             $attribute->setCode('code_' . $count)
                 ->setType(Attribute\Create::TYPE_TEXT)
-                ->setUse(Attribute\Create::USE_OPTION)
-                ->setExternalUpdateDate('2018-12-15T00:00:23.114Z');
-
-            $attributeName = new Name();
-            $attributeName->add('de-de', 'Attribute ' . $count . ' de');
-            $attributeName->add('en-us', 'Attribute ' . $count . ' en');
-            $attribute->setName($attributeName);
+                ->setIsRequired(true)
+                ->setName('Attribute Name ' . $count);
 
             $attributeValue = new AttributeValue\Create();
-            $attributeValue->setCode('red');
+            $attributeValue->setCode('red_' . $count);
             $attributeValue->setSequenceId($count);
-
-            $attributeValueName = new AttributeValue\Dto\Name();
-            $attributeValueName->add('de-de', 'Attribute Value ' . $count . ' de');
-            $attributeValueName->add('en-us', 'Attribute Value ' . $count . ' en');
-            $attributeValue->setName($attributeValueName);
-
-            $attributeValueSwatch = new AttributeValue\Dto\Swatch();
-            $attributeValueSwatch->setType(AttributeValue::SWATCH_TYPE_IMAGE);
-            $attributeValueSwatch->setValue('https://www.google.de/image');
-            $attributeValue->setSwatch($attributeValueSwatch);
+            $attributeValue->setName('Attribute Value Name' . $count);
 
             $attribute->setValues([$attributeValue]);
 
@@ -703,7 +579,7 @@ class AttributeTest extends CatalogTest
      */
     private function createAttributes(array $sampleAttributes, array $meta = [])
     {
-        return $this->sdk->getCatalogService()->addAttributes($sampleAttributes, $meta);
+        return $this->sdk->getCustomerService()->addAttributes($sampleAttributes, $meta);
     }
 
     /**
@@ -715,7 +591,7 @@ class AttributeTest extends CatalogTest
      */
     private function getAttributes($meta = [])
     {
-        return $this->sdk->getCatalogService()->getAttributes($meta);
+        return $this->sdk->getCustomerService()->getAttributes($meta);
     }
 
     /**
@@ -728,12 +604,14 @@ class AttributeTest extends CatalogTest
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
-     *
      */
     private function getAttribute($attributeCode, $localeCode = '')
     {
-        return $this->sdk->getCatalogService()->getAttribute($attributeCode, [
-            'localeCode' => $localeCode
-        ]);
+        return $this->sdk->getCustomerService()->getAttribute(
+            $attributeCode,
+            [
+                'localeCode' => $localeCode,
+            ]
+        );
     }
 }

@@ -22,30 +22,21 @@
 
 namespace Shopgate\ConnectSdk\Http;
 
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\UriInterface;
+use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
+use Shopgate\ConnectSdk\Exception\NotFoundException;
+use Shopgate\ConnectSdk\Exception\RequestException;
+use Shopgate\ConnectSdk\Exception\UnknownException;
 
 interface ClientInterface
 {
     /**
-     * Create and send an HTTP request.
-     *
-     * Use an absolute path to override the base path of the client, or a
-     * relative path to append to the base path of the client. The URL can
-     * contain the query string as well.
-     *
-     * @param string              $method  HTTP method.
-     * @param string|UriInterface $uri     URI object or string.
-     * @param array               $options Request options to apply.
-     *
-     * @return ResponseInterface
-     */
-    public function request($method, $uri = '', array $options = []);
-
-    /**
-     * @param string|null $option
+     * @param array $params
      *
      * @return mixed
+     * @throws AuthenticationInvalidException
+     * @throws UnknownException
+     * @throws NotFoundException
+     * @throws RequestException
      */
-    public function getConfig($option = null);
+    public function doRequest(array $params);
 }

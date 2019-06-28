@@ -11,27 +11,13 @@ script:
 
 jobs:
   include:
-  - stage: Unit Tests + Code Style Fixing + Code Coverage
+  - stage: Unit Tests + Code Coverage
     php: '7.3'
     before_script:
     - composer install
     script:
-    - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
-    - curl -L http://files.shopgate.com/travis-ci/php-cs-fixer-v2.phar -o php-cs-fixer
-    - chmod a+x php-cs-fixer
     - git checkout -B $TRAVIS_BRANCH
-    - ./php-cs-fixer fix --config=.php-cs.dist --cache-file=.php-cs.cache --diff --dry-run --verbose .
-    - rm php-cs-fixer
-    after_success:
-    - travis_retry php vendor/bin/php-coveralls -v
-  - stage: Unit Tests
-    php: '5.6'
-  - stage: Unit Tests
-    php: '7.0'
-  - stage: Unit Tests
-    php: '7.1'
-  - stage: Unit Tests
-    php: '7.2'
+    - travis_retry composer coveralls
   - stage: deploy
     php: '5.6'
     before_script: skip
@@ -40,8 +26,8 @@ jobs:
     deploy:
       provider: releases
       api_key:
-        secure: mT4wgnW0coSA6WFcL6wx7BV6hHn+NOeAF+mWAooyaNHwXAHK4x2y/GVtz4tVZ6QqjGyDYyswWHq0wUt6UWruahX4O59a7X3olECow7aMdt4WsqqzCyAb9uIFr5ELAFvOu8TLNELXIzibkSRckcAWmObtnGg3FpAieOWUBl7IIzR2mGdanYePyjbf3XyoHVuwrBRpdSyMkaduYSE3UwECQp6KglXkxPNKrcgfgOS1Q3ZH6J9PKTiGFe9az5wAoGvbTJyS2AQGf+eHTF2IG4nR1EasUkBLZuEowc3yyJYmyOQb/uupIuI90zFu61+46NY+UjVJvN7rqmZoQ/K9gr2E+nst6kOKbHFLg4unNfOazAd2KSqR8PFaopNThuqd6tKikn7PxcJMDtib2JCLiCZPVno2IEI2nRneKx9E7ii4mTNhOIg3PCJex3SNlj18UGhQyy3Tc1N349M8dsPTpXQlLAIXKIlpDpI+LbMgY7SpqBtrswnZKTIjTQbyipg3vgjxEaOG+fnefRCF+1ZJ/JSl2qfkCWoYaLeCMK6keljVv0DVKZjmOEHvaI24lukpIkBKKhduHuEbfsqWGu5VxFKg6clvJIG0d1TLOjPVW4TWNMAqky6ACrwlVYqSPPgQKVGchkS+l/HzROG3SrhLDeYZCMPnWZHJ9BzgAdxiot8qWyw=
-      file: shopgate-cloud-integration-sdk-php.zip
+        secure: "cJT+4K8obPbAssLQ9AgRr/5gCdQ+ifsGvzsQFG01vKY0sMNAVk3x41fNeN6TNqchnahzzR/nHsoEZ4qFoHluC1GEKkAv1geIOajPA0wiSUPUfOMXry/187rDGqW2oYe4mAnFUuf+E1K1B6OEdbFBJlNLWAOL9Z+G6xomHNiKyZnjfSuSwe8GgI6fJvSZ56RX1+BfHX27uxHkHhge99t1qKJUI85PsVyljLGQjGfEFy53HifyBS5wlMHvsqT7BG2w1D4GXjzGzGDTyKiOhKTbIrOZqkT5EaU0C3nUeF3eq71Uo/ct0Xd9fe53i2qSh6wLKDP09h5roh2xh5RR6+7pg6YzlxALRNAS3QjKSnStFWr7dhelAsy8vcWTZePmLpzQrqbGxY6W7nwFBNOZHJ/Dy7yVoM1hG6JfOhJjxRgELg9NVfuRL24zkznHO4pjaqgknlJSWR4ntpwrvVciem7hXMOkdS9V9MBBJlHCd+Z416yYrBrSM/JhLjXprVY1mGaITM8865N2SRMx5N0We/SzCiQ60SRnbyLuSXZWJL5ZSYm24ZbzIPm6jGVObzE7pU3ER17XY5Tir119CcMeJ0ZEVv4mnoo6oS1aGxiJnczpRBqi/lXcR1gkvho3iyzMT3f7mTkxt4d+jTX6Z6Q0YY9FRCsVJ/X8MKp7nZ9wdlDyC+s="
+      file: shopgate-connect-integration-sdk-php.zip
       skip_cleanup: true
       on:
         tags: true

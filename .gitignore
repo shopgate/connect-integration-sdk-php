@@ -11,3 +11,10 @@ composer.lock
 /.php-cs.cache
 test.php
 access_token.txt
+src/access_token*
+.env
+!tools/.env
+.php_cs.cache
+build
+!*/.gitkeep
+tools/docker-compose.yml.tmp

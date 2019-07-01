@@ -24,6 +24,7 @@ namespace Shopgate\ConnectSdk\Dto\Customer\Customer;
 use Shopgate\ConnectSdk\Dto\Customer\Customer;
 use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Attribute;
 use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Settings;
+use Shopgate\ConnectSdk\Dto\Customer\Contact;
 
 /**
  * Dto for customer response.
@@ -34,8 +35,8 @@ use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Settings;
  * @method Update setLastName(string $lastName)
  * @method Update setEmailAddress(string $emailAddress)
  * @method Update setStatus(string $status)
- * @method Update setIsAnonymous(string $isAnonymous)
- * @method @todo Update setContacts(array $contacts)
+ * @method Update setIsAnonymous(boolean $isAnonymous)
+ * @method Update setContacts(Contact [] $contacts)
  * @method Update setAttributes(Attribute [] $attributes)
  * @method Update setSettings(Settings $settings)
  */

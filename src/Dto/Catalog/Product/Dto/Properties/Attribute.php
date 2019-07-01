@@ -54,5 +54,4 @@ class Attribute extends Properties
         ],
         'additionalProperties' => true
     ];
-
 }

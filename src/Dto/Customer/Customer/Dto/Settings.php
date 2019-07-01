@@ -33,7 +33,7 @@ use Shopgate\ConnectSdk\Dto\Base;
  * @method setMarketingOptIn(boolean $marketingOptIn)
  * @method string getDefaultLocale()
  * @method string getDefaultCurrency()
- * @method string getCommunicationPreferences()
+ * @method array getCommunicationPreferences()
  * @method string getDefaultLocationCode()
  * @method string getMarketingOptIn()
  */

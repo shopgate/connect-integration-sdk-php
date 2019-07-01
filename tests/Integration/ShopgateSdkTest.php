@@ -106,20 +106,4 @@ abstract class ShopgateSdkTest extends TestCase
 
         $this->sdk = new ShopgateSdk(['client' => $client]);
     }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-
-        foreach ($this->services as $service) {
-            foreach ($service as $deleteMethod => $entityIds) {
-                foreach ($entityIds as $entityId) {
-                    $service['service']->{$deleteMethod}(
-                        $entityId,
-                        array_merge(['requestType' => 'direct'], CatalogTest::METHOD_DELETE_REQUEST_META[$deleteMethod])
-                    );
-                }
-            }
-        }
-    }
 }

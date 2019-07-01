@@ -19,8 +19,7 @@ class BulkImportTest extends CatalogTest
         $categoryPayload1 = new Category\Create();
         $name1            = new Category\Dto\Name(['en-us' => 'Denim Pants']);
         $categoryPayload1->setCode('pants')->setName($name1)->setSequenceId(1);
-
-
+        
         $categoryPayload2 = new Category\Create();
         $name2            = new Category\Dto\Name(['en-us' => 'Denim Shirts']);
         $categoryPayload2->setCode('shirts')->setName($name2)->setSequenceId(1);

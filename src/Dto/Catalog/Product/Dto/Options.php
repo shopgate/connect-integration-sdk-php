@@ -23,6 +23,7 @@
 namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto;
 
 use Shopgate\ConnectSdk\Dto\Base as DtoBase;
+use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Options\Values;
 
 /**
  * @method Options setCode(string $code)
@@ -43,9 +44,7 @@ class Options extends DtoBase
             'code'   => ['type' => 'string'],
             'values' => [
                 'type'  => 'array',
-                'items' => [
-                    'type' => 'object'
-                ]
+                'items' => ['$ref' => Values::class]
             ]
         ],
         'additionalProperties' => true

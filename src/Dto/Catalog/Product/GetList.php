@@ -30,7 +30,6 @@ use Shopgate\ConnectSdk\Dto\Meta;
  *
  * @method Meta getMeta()
  * @method Get[] getProducts()
- *
  */
 class GetList extends Product
 {

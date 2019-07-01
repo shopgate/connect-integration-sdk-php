@@ -22,7 +22,6 @@
 
 namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 
-use Dto\RegulatorInterface;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 
 /**
@@ -38,6 +37,8 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
  */
 class Attribute extends Properties
 {
+    const TYPE = 'attribute';
+
     /**
      * @var array
      * @codeCoverageIgnore
@@ -51,17 +52,7 @@ class Attribute extends Properties
             'displayGroup'    => ['type' => 'string'],
             'subDisplayGroup' => ['type' => 'object'],
         ],
-        'default' => [
-            'type' => 'attribute',
-        ],
-        'additionalProperties' => true,
+        'additionalProperties' => true
     ];
 
-    /**
-     * @inheritdoc
-     */
-    public function __construct($input = null, $schema = null, RegulatorInterface $regulator = null)
-    {
-        parent::__construct($input, $schema ? $schema : $this->schema, $regulator);
-    }
 }

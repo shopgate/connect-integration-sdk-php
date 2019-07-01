@@ -45,6 +45,7 @@ class GetListTest extends TestCase
         ];
         $getList = new GetList($entry);
         $this->assertInstanceOf(Meta::class, $getList->getMeta());
+        $this->assertEquals(1, $getList->getMeta()->getLimit());
 
         $products = $getList->getProducts();
         $this->assertCount(2, $products);

@@ -22,7 +22,6 @@
 
 namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 
-use Dto\RegulatorInterface;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 
 /**
@@ -30,12 +29,5 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
  */
 class Product extends Properties
 {
-    /**
-     * @inheritdoc
-     */
-    public function __construct($input = null, $schema = null, RegulatorInterface $regulator = null)
-    {
-        $this->schema['default']['type'] = 'product';
-        parent::__construct($input, $schema, $regulator);
-    }
+    const TYPE = 'product';
 }

@@ -29,9 +29,9 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Get;
 class GetTest extends TestCase
 {
     /**
-     * Tests basic DTO structure return
+     * Tests minimal DTO structure return
      */
-    public function testGetDtoClass()
+    public function testBasicProperties()
     {
         $entry = [
             'identifiers' => [
@@ -39,26 +39,154 @@ class GetTest extends TestCase
             ],
             'price'       => [
                 'price' => 50.01
-            ],
-            'categories'  => [
-                ['code' => 'la'],
-                ['code' => 'la2']
             ]
         ];
         $get   = new Get($entry);
         $ids   = $get->getIdentifiers();
+        $price = $get->getPrice();
+
         $this->assertInstanceOf(Dto\Identifiers::class, $ids);
         $this->assertEquals('UPC123', $ids->getUpc());
 
-        $price = $get->getPrice();
         $this->assertInstanceOf(Dto\Price::class, $price);
         $this->assertEquals(50.01, $price->getPrice());
+    }
 
+    /**
+     * Test category DTO reference
+     */
+    public function testGetCategories()
+    {
+        $entry      = [
+            'categories' => [
+                ['code' => 'la'],
+                ['isPrimary' => true]
+            ],
+        ];
+        $get        = new Get($entry);
         $categories = $get->getCategories();
+
         $this->assertCount(2, $categories);
         $this->assertInstanceOf(Dto\Categories::class, $categories[0]);
         $this->assertInstanceOf(Dto\Categories::class, $categories[1]);
+
         $this->assertEquals('la', $categories[0]->getCode());
-        $this->assertEquals('la2', $categories[1]->getCode());
+        $this->assertEquals(true, $categories[1]->getIsPrimary());
+    }
+
+    /**
+     * Test Properties DTO references
+     *
+     * @todo-sg: should test the property->type(s)
+     */
+    public function testGetProperties()
+    {
+        $entry = [
+            'properties' => [
+                [
+                    'value' => ['en-us' => 'test']
+                ],
+                [
+                    'name' => ['en-us' => 'Some name']
+                ]
+            ]
+        ];
+
+        $get        = new Get($entry);
+        $properties = $get->getProperties();
+        $value      = $properties[0]->getValue();
+        $name       = $properties[1]->getName();
+
+        $this->assertCount(2, $properties);
+        $this->assertInstanceOf(Dto\Properties::class, $properties[0]);
+        $this->assertInstanceOf(Dto\Properties::class, $properties[1]);
+
+        $this->assertEquals('test', $value->{'en-us'});
+        $this->assertEquals('Some name', $name->{'en-us'});
+    }
+
+    /**
+     * Test inventories DTO references
+     */
+    public function testInventories()
+    {
+        $entry       = [
+            'inventories' => [
+                [
+                    'sku' => 'SKU-123'
+                ],
+                [
+                    'available' => 5
+                ]
+            ]
+        ];
+        $get         = new Get($entry);
+        $inventories = $get->getInventories();
+
+        $this->assertCount(2, $inventories);
+        $this->assertInstanceOf(Dto\Inventory::class, $inventories[0]);
+        $this->assertInstanceOf(Dto\Inventory::class, $inventories[1]);
+        $this->assertEquals('SKU-123', $inventories[0]->getSku());
+        $this->assertEquals(5, $inventories[1]->getAvailable());
+    }
+
+    /**
+     * Test options DTO references
+     */
+    public function testOptions()
+    {
+        $entry   = [
+            'options' => [
+                [
+                    'code' => 'someCode'
+                ],
+                [
+                    'values' => [['additionalPrice' => 5.5], ['code' => 'testCode']]
+                ]
+            ],
+        ];
+        $get     = new Get($entry);
+        $options = $get->getOptions();
+        $values  = $options[1]->getValues();
+
+        $this->assertCount(2, $options);
+        $this->assertInstanceOf(Dto\Options::class, $options[0]);
+        $this->assertInstanceOf(Dto\Options::class, $options[1]);
+        $this->assertEquals('someCode', $options[0]->getCode());
+
+        $this->assertCount(2, $values);
+        $this->assertInstanceOf(Dto\Options\Values::class, $values);
+        $this->assertEquals(5.5, $values[0]->getAdditionalPrice());
+        $this->assertEquals('testCode', $values[1]->getCode());
+    }
+
+    /**
+     * Test extras DTO references
+     */
+    public function testExtras()
+    {
+        $entry        = [
+            'extras' => [
+                [
+                    'code' => 'someCode2'
+                ],
+                [
+                    'values' => [['additionalPrice' => 5.6], ['code' => 'testCode2']]
+                ]
+            ]
+        ];
+        $get          = new Get($entry);
+        $extras       = $get->getExtras();
+        $extrasValues = $extras[1]->getValues();
+
+        $this->assertCount(2, $extras);
+        $this->assertInstanceOf(Dto\Extras::class, $extras[0]);
+        $this->assertInstanceOf(Dto\Extras::class, $extras[1]);
+        $this->assertEquals('someCode2', $extras[0]->getCode());
+
+        $this->assertCount(2, $extrasValues);
+        $this->assertInstanceOf(Dto\Extras\Values::class, $extrasValues);
+        $this->assertEquals(5.6, $extrasValues[0]->getAdditionalPrice());
+        $this->assertEquals('testCode2', $extrasValues[1]->getCode());
     }
 }

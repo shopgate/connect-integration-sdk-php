@@ -22,9 +22,10 @@
 
 namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto;
 
+use Dto\RegulatorInterface;
 use Shopgate\ConnectSdk\Dto\Base;
-use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties\SubDisplayGroup;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties\Name as PropertyName;
+use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties\SubDisplayGroup;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties\Value;
 
 /**
@@ -45,17 +46,28 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties\Value;
  * @method boolean getIsPriced()
  * @method float getAttributePrice()
  * @method string getUnit()
+ *
+ * @codeCoverageIgnore
  */
 class Properties extends Base
 {
+    const TYPE                     = 'simple';
     const DISPLAY_GROUP_PROPERTIES = 'properties';
-    const DISPLAY_GROUP_FEATURES = 'features';
-    const DISPLAY_GROUP_GENERAL = 'general';
-    const DISPLAY_GROUP_PRICING = 'pricing';
+    const DISPLAY_GROUP_FEATURES   = 'features';
+    const DISPLAY_GROUP_GENERAL    = 'general';
+    const DISPLAY_GROUP_PRICING    = 'pricing';
+
+    /**
+     * @inheritdoc
+     */
+    public function __construct($input = null, $schema = null, RegulatorInterface $regulator = null)
+    {
+        $this->schema['default']['type'] = $this::TYPE;
+        parent::__construct($input, $schema, $regulator);
+    }
 
     /**
      * @var array
-     * @codeCoverageIgnore
      */
     protected $schema = [
         'type'                 => 'object',
@@ -69,9 +81,6 @@ class Properties extends Base
             'isPriced'        => ['type' => 'boolean'],
             'attributePrice'  => ['type' => 'number'],
             'unit'            => ['type' => 'string'],
-        ],
-        'default'              => [
-            'type' => 'base',
         ],
         'additionalProperties' => true,
     ];

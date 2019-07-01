@@ -22,7 +22,6 @@
 
 namespace Shopgate\ConnectSdk\Dto;
 
-use Dto\Exceptions\InvalidKeyException;
 use Dto\JsonSchemaRegulator;
 
 class SchemaRegulator extends JsonSchemaRegulator
@@ -35,19 +34,12 @@ class SchemaRegulator extends JsonSchemaRegulator
      * @param array  $schema
      *
      * @return mixed
-     * @throws InvalidKeyException
      */
     public function getFilteredValueForKey($value, $key, array $schema)
     {
-        $schemaAccessor    = $this->schemaAccessor->factory($schema);
         $this->calledClass = $this->extractReference($key, $schema) ? : $this->calledClass;
 
-        /** @noinspection PhpUndefinedMethodInspection */
-        return new $this->calledClass(
-            $value,
-            $schemaAccessor->mergeMetaData($this->getSchemaAtKey($key, $schema)),
-            $this
-        );
+        return parent::getFilteredValueForKey($value, $key, $schema);
     }
 
     /**

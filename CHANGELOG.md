@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## [Unreleased]
 ## [0.5.0]- 2019-06-28
 ### Added
+- DTOs for customers
+- DTOs for customers / contact 
 - bulkImport for attributes
 - bulkImport for categories
 - bulkImport for products

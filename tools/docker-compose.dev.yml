@@ -66,3 +66,4 @@ services:
           - omni-location.shopgatedev.services
           - omni-event-receiver.shopgatedev.services
           - catalog.shopgatedev.services
+          - import.shopgatedev.services

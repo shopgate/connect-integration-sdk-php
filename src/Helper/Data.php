@@ -49,7 +49,7 @@ class Data
      * @return mixed
      * @throws \InvalidArgumentException if the JSON cannot be decoded.
      */
-    function jsonDecode($json, $assoc = false, $depth = 512, $options = 0)
+    public static function jsonDecode($json, $assoc = false, $depth = 512, $options = 0)
     {
         return GuzzleHttp\json_decode($json, $assoc, $depth, $options);
     }

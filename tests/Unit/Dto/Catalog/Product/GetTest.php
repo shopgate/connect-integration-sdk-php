@@ -76,8 +76,6 @@ class GetTest extends TestCase
 
     /**
      * Test Properties DTO references
-     *
-     * @todo-sg: should test the property->type(s)
      */
     public function testGetProperties()
     {
@@ -88,6 +86,9 @@ class GetTest extends TestCase
                 ],
                 [
                     'name' => ['en-us' => 'Some name']
+                ],
+                [
+                    'subDisplayGroup' => ['en-us' => 'Some subgroup']
                 ]
             ]
         ];
@@ -96,13 +97,19 @@ class GetTest extends TestCase
         $properties = $get->getProperties();
         $value      = $properties[0]->getValue();
         $name       = $properties[1]->getName();
+        $subGroup   = $properties[2]->getSubDisplayGroup();
 
-        $this->assertCount(2, $properties);
+        $this->assertCount(3, $properties);
         $this->assertInstanceOf(Dto\Properties::class, $properties[0]);
         $this->assertInstanceOf(Dto\Properties::class, $properties[1]);
+        $this->assertInstanceOf(Dto\Properties::class, $properties[2]);
+        $this->assertInstanceOf(Dto\Properties\Value::class, $value);
+        $this->assertInstanceOf(Dto\Properties\Name::class, $name);
+        $this->assertInstanceOf(Dto\Properties\SubDisplayGroup::class, $subGroup);
 
         $this->assertEquals('test', $value->{'en-us'});
         $this->assertEquals('Some name', $name->{'en-us'});
+        $this->assertEquals('Some subgroup', $subGroup->{'en-us'});
     }
 
     /**

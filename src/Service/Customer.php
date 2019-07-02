@@ -32,6 +32,7 @@ use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\ShopgateSdk;
 use Shopgate\ConnectSdk\Dto\Meta;
+use Shopgate\ConnectSdk\Helper\Data;
 
 class Customer
 {
@@ -59,7 +60,7 @@ class Customer
     public function getAttributes(array $query = [])
     {
         if (isset($query['filters'])) {
-            $query['filters'] = \GuzzleHttp\json_encode($query['filters']);
+            $query['filters'] = Data::jsonEncode($query['filters']);
         }
 
         $response = $this->client->doRequest(
@@ -71,7 +72,7 @@ class Customer
                 'query'   => $query,
             ]
         );
-        $response = json_decode($response->getBody(), true);
+        $response = Data::jsonDecode($response->getBody(), true);
 
         $attributes = [];
         foreach ($response['attributes'] as $attribute) {
@@ -106,7 +107,7 @@ class Customer
             ]
         );
 
-        $response = json_decode($response->getBody(), true);
+        $response = Data::jsonDecode($response->getBody(), true);
 
         return new Attribute\Get($response['attribute']);
     }
@@ -323,7 +324,7 @@ class Customer
     public function getCustomers(array $query = [])
     {
         if (isset($query['filters'])) {
-            $query['filters'] = \GuzzleHttp\json_encode($query['filters']);
+            $query['filters'] = Data::jsonEncode($query['filters']);
         }
 
         $response = $this->client->doRequest(
@@ -335,7 +336,7 @@ class Customer
                 'query'   => $query,
             ]
         );
-        $response = json_decode($response->getBody(), true);
+        $response = Data::jsonDecode($response->getBody(), true);
 
         $customers = [];
         foreach ($response['customers'] as $attribute) {
@@ -370,7 +371,7 @@ class Customer
             ]
         );
 
-        $response = json_decode($response->getBody(), true);
+        $response = Data::jsonDecode($response->getBody(), true);
 
         return new CustomerDto\Get($response['customer']);
     }
@@ -411,7 +412,7 @@ class Customer
             ]
         );
 
-        $response = json_decode($response->getBody(), true);
+        $response = Data::jsonDecode($response->getBody(), true);
 
         return $response;
     }

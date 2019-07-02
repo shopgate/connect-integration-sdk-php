@@ -64,7 +64,7 @@ class GetTest extends TestCase
                     ['price' => 4.50],
                     ['startDate' => '2019-12-04']
                 ]
-            ],
+            ]
         ];
         $get    = new Get($entry);
         $price  = $get->getPrice();
@@ -95,17 +95,40 @@ class GetTest extends TestCase
             'categories' => [
                 ['code' => 'la'],
                 ['isPrimary' => true]
-            ],
+            ]
         ];
         $get        = new Get($entry);
         $categories = $get->getCategories();
 
         $this->assertCount(2, $categories);
+        $this->assertInstanceOf(Dto\Categories::class, $categories);
         $this->assertInstanceOf(Dto\Categories::class, $categories[0]);
         $this->assertInstanceOf(Dto\Categories::class, $categories[1]);
 
         $this->assertEquals('la', $categories[0]->getCode());
         $this->assertEquals(true, $categories[1]->getIsPrimary());
+    }
+
+    /**
+     * Test media DTO reference
+     */
+    public function testGetMedia()
+    {
+        $entry = [
+            'media' => [
+                ['code' => 'la24'],
+                ['url' => 'http://test.url']
+            ]
+        ];
+        $get   = new Get($entry);
+        $media = $get->getMedia();
+        $this->assertCount(2, $media);
+        $this->assertInstanceOf(Dto\MediaList\Media::class, $media);
+        $this->assertInstanceOf(Dto\MediaList\Media::class, $media[0]);
+        $this->assertInstanceOf(Dto\MediaList\Media::class, $media[1]);
+
+        $this->assertEquals('la24', $media[0]->getCode());
+        $this->assertEquals('http://test.url', $media[1]->getUrl());
     }
 
     /**
@@ -128,6 +151,7 @@ class GetTest extends TestCase
         $subGroup   = $properties[2]->getSubDisplayGroup();
 
         $this->assertCount(3, $properties);
+        $this->assertInstanceOf(Dto\Properties::class, $properties);
         $this->assertInstanceOf(Dto\Properties::class, $properties[0]);
         $this->assertInstanceOf(Dto\Properties::class, $properties[1]);
         $this->assertInstanceOf(Dto\Properties::class, $properties[2]);
@@ -155,8 +179,10 @@ class GetTest extends TestCase
         $inventories = $get->getInventories();
 
         $this->assertCount(2, $inventories);
+        $this->assertInstanceOf(Dto\Inventory::class, $inventories);
         $this->assertInstanceOf(Dto\Inventory::class, $inventories[0]);
         $this->assertInstanceOf(Dto\Inventory::class, $inventories[1]);
+
         $this->assertEquals('SKU-123', $inventories[0]->getSku());
         $this->assertEquals(5, $inventories[1]->getAvailable());
     }
@@ -170,13 +196,14 @@ class GetTest extends TestCase
             'options' => [
                 ['code' => 'someCode'],
                 ['values' => [['additionalPrice' => 5.5], ['code' => 'testCode']]]
-            ],
+            ]
         ];
         $get     = new Get($entry);
         $options = $get->getOptions();
         $values  = $options[1]->getValues();
 
         $this->assertCount(2, $options);
+        $this->assertInstanceOf(Dto\Options::class, $options);
         $this->assertInstanceOf(Dto\Options::class, $options[0]);
         $this->assertInstanceOf(Dto\Options::class, $options[1]);
         $this->assertEquals('someCode', $options[0]->getCode());
@@ -203,6 +230,7 @@ class GetTest extends TestCase
         $extrasValues = $extras[1]->getValues();
 
         $this->assertCount(2, $extras);
+        $this->assertInstanceOf(Dto\Extras::class, $extras);
         $this->assertInstanceOf(Dto\Extras::class, $extras[0]);
         $this->assertInstanceOf(Dto\Extras::class, $extras[1]);
         $this->assertEquals('someCode2', $extras[0]->getCode());

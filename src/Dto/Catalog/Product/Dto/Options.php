@@ -31,12 +31,13 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Options\Values;
  *
  * @method string getCode()
  * @method Options\Values[] getValues()
+ *
+ * @codeCoverageIgnore
  */
 class Options extends DtoBase
 {
     /**
      * @var array
-     * @codeCoverageIgnore
      */
     protected $schema = [
         'type'                 => 'object',

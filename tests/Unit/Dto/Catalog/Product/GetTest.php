@@ -34,12 +34,8 @@ class GetTest extends TestCase
     public function testBasicProperties()
     {
         $entry = [
-            'identifiers' => [
-                'upc' => 'UPC123'
-            ],
-            'price'       => [
-                'price' => 50.01
-            ]
+            'identifiers' => ['upc' => 'UPC123'],
+            'price'       => ['price' => 50.01]
         ];
         $get   = new Get($entry);
         $ids   = $get->getIdentifiers();
@@ -50,6 +46,44 @@ class GetTest extends TestCase
 
         $this->assertInstanceOf(Dto\Price::class, $price);
         $this->assertEquals(50.01, $price->getPrice());
+    }
+
+    /**
+     * Tests price DTO structure return
+     */
+    public function testGetPrice()
+    {
+        $entry  = [
+            'price' => [
+                'salePrice'     => 5.51,
+                'volumePricing' => [
+                    ['minQty' => 1],
+                    ['priceType' => Dto\Price\VolumePricing::PRICE_TYPE_FIXED]
+                ],
+                'mapPricing'    => [
+                    ['price' => 4.50],
+                    ['startDate' => '2019-12-04']
+                ]
+            ],
+        ];
+        $get    = new Get($entry);
+        $price  = $get->getPrice();
+        $volume = $price->getVolumePricing();
+        $map    = $price->getMapPricing();
+
+        $this->assertInstanceOf(Dto\Price::class, $price);
+        $this->assertInstanceOf(Dto\Price\VolumePricing::class, $volume);
+        $this->assertInstanceOf(Dto\Price\VolumePricing::class, $volume[0]);
+        $this->assertInstanceOf(Dto\Price\VolumePricing::class, $volume[1]);
+        $this->assertInstanceOf(Dto\Price\MapPricing::class, $map);
+        $this->assertInstanceOf(Dto\Price\MapPricing::class, $map[0]);
+        $this->assertInstanceOf(Dto\Price\MapPricing::class, $map[1]);
+
+        $this->assertEquals(5.51, $price->getSalePrice());
+        $this->assertEquals(1, $volume[0]->getMinQty());
+        $this->assertEquals(Dto\Price\VolumePricing::PRICE_TYPE_FIXED, $volume[1]->getPriceType());
+        $this->assertEquals(4.50, $map[0]->getPrice());
+        $this->assertEquals('2019-12-04', $map[1]->getStartDate());
     }
 
     /**
@@ -81,15 +115,9 @@ class GetTest extends TestCase
     {
         $entry = [
             'properties' => [
-                [
-                    'value' => ['en-us' => 'test']
-                ],
-                [
-                    'name' => ['en-us' => 'Some name']
-                ],
-                [
-                    'subDisplayGroup' => ['en-us' => 'Some subgroup']
-                ]
+                ['value' => ['en-us' => 'test']],
+                ['name' => ['en-us' => 'Some name']],
+                ['subDisplayGroup' => ['en-us' => 'Some subgroup']]
             ]
         ];
 
@@ -119,12 +147,8 @@ class GetTest extends TestCase
     {
         $entry       = [
             'inventories' => [
-                [
-                    'sku' => 'SKU-123'
-                ],
-                [
-                    'available' => 5
-                ]
+                ['sku' => 'SKU-123'],
+                ['available' => 5]
             ]
         ];
         $get         = new Get($entry);
@@ -144,12 +168,8 @@ class GetTest extends TestCase
     {
         $entry   = [
             'options' => [
-                [
-                    'code' => 'someCode'
-                ],
-                [
-                    'values' => [['additionalPrice' => 5.5], ['code' => 'testCode']]
-                ]
+                ['code' => 'someCode'],
+                ['values' => [['additionalPrice' => 5.5], ['code' => 'testCode']]]
             ],
         ];
         $get     = new Get($entry);
@@ -174,12 +194,8 @@ class GetTest extends TestCase
     {
         $entry        = [
             'extras' => [
-                [
-                    'code' => 'someCode2'
-                ],
-                [
-                    'values' => [['additionalPrice' => 5.6], ['code' => 'testCode2']]
-                ]
+                ['code' => 'someCode2'],
+                ['values' => [['additionalPrice' => 5.6], ['code' => 'testCode2']]]
             ]
         ];
         $get          = new Get($entry);

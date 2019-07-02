@@ -313,7 +313,7 @@ class Customer
     /**
      * @param array $query
      *
-     * @return Attribute\GetList
+     * @return CustomerDto\GetList
      *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException

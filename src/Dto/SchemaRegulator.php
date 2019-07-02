@@ -67,10 +67,6 @@ class SchemaRegulator extends JsonSchemaRegulator
             return $schema['properties'][$key]['items']['$ref'];
         }
 
-        if (isset($schema['items']['$ref'])) {
-            return $schema['items']['$ref'];
-        }
-
         return false;
     }
 

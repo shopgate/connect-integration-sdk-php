@@ -42,6 +42,12 @@ class SchemaRegulator extends JsonSchemaRegulator
         return parent::getFilteredValueForKey($value, $key, $schema);
     }
 
+    public function getFilteredValueForIndex($v, $index, array $schema) {
+        $this->calledClass = $this->extractReference($index, $schema) ? : $this->calledClass;
+
+        return parent::getFilteredValueForIndex($v, $index, $schema);
+    }
+
     /**
      * Retrieves the correct reference of the called object
      *
@@ -58,6 +64,10 @@ class SchemaRegulator extends JsonSchemaRegulator
 
         if (isset($schema['properties'][$key]['items']['$ref'])) {
             return $schema['properties'][$key]['items']['$ref'];
+        }
+
+        if (isset($schema['items']['$ref'])) {
+            return $schema['items']['$ref'];
         }
 
         return false;

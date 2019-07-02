@@ -24,9 +24,6 @@ namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 
-/**
- * @package Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties
- */
 class Simple extends Properties
 {
     const TYPE = 'simple';

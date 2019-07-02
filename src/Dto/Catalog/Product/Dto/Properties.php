@@ -73,14 +73,14 @@ class Properties extends Base
         'type'                 => 'object',
         'properties'           => [
             'code'            => ['type' => 'string'],
-            'name'            => ['type' => 'object'],
-            'value'           => ['type' => 'object'],
+            'name'            => ['$ref' => PropertyName::class],
+            'value'           => ['$ref' => Value::class],
             'type'            => ['type' => 'string'],
             'displayGroup'    => ['type' => 'string'],
-            'subDisplayGroup' => ['type' => 'object'],
+            'subDisplayGroup' => ['$ref' => SubDisplayGroup::class],
             'isPriced'        => ['type' => 'boolean'],
             'attributePrice'  => ['type' => 'number'],
-            'unit'            => ['type' => 'string'],
+            'unit'            => ['type' => 'string']
         ],
         'additionalProperties' => true,
     ];

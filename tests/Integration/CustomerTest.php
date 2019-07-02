@@ -25,11 +25,15 @@ abstract class CustomerTest extends ShopgateSdkTest
 {
     const CUSTOMER_SERVICE           = 'omni-customer';
     const METHOD_DELETE_ATTRIBUTE    = 'deleteAttribute';
+    const METHOD_DELETE_CONTACT      = 'deleteContact';
     const METHOD_DELETE_CUSTOMER     = 'deleteCustomer';
     const METHOD_DELETE_REQUEST_META = [
         self::METHOD_DELETE_ATTRIBUTE => [],
-        self::METHOD_DELETE_CUSTOMER => [],
+        self::METHOD_DELETE_CONTACT   => [],
+        self::METHOD_DELETE_CUSTOMER  => [],
     ];
+    const CUSTOMER_ID = 'b6b32b9a-aaaa-4568-8f95-9b8feea96568';
+    const CONTACT_CODE = 'integration-test';
 
     public function setUp()
     {
@@ -40,6 +44,7 @@ abstract class CustomerTest extends ShopgateSdkTest
             $this->sdk->getCustomerService(),
             [
                 self::METHOD_DELETE_ATTRIBUTE,
+                self::METHOD_DELETE_CONTACT,
                 self::METHOD_DELETE_CUSTOMER
             ]
         );
@@ -52,13 +57,13 @@ abstract class CustomerTest extends ShopgateSdkTest
         foreach ($this->services as $service) {
             foreach ($service as $deleteMethod => $entityIds) {
                 foreach ($entityIds as $entityId) {
-                    $service['service']->{$deleteMethod}(
-                        $entityId,
-                        array_merge(
-                            ['requestType' => 'direct'],
-                            self::METHOD_DELETE_REQUEST_META[$deleteMethod]
-                        )
+                    $parameters = is_array($entityId) ? $entityId : [$entityId];
+                    $parameters[] = array_merge(
+                        ['requestType' => 'direct'],
+                        self::METHOD_DELETE_REQUEST_META[$deleteMethod]
                     );
+
+                    call_user_func_array([$service['service'], $deleteMethod], $parameters);
                 }
             }
         }

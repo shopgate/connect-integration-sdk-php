@@ -23,6 +23,7 @@ namespace Shopgate\ConnectSdk\Dto\Customer\Customer;
 
 use Shopgate\ConnectSdk\Dto\Customer\Customer;
 use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Attribute;
+use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Contact;
 use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Settings;
 
 /**
@@ -35,7 +36,7 @@ use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Settings;
  * @method string getEmailAddress()
  * @method string getStatus()
  * @method boolean getIsAnonymous()
- * @method @todo array getContacts()
+ * @method Contact[] getContacts()
  * @method Attribute[] getAttributes()
  * @method Settings getSettings()
  */

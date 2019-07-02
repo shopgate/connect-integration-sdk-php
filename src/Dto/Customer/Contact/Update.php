@@ -58,7 +58,14 @@ class Update extends Contact
         'type'                 => 'object',
         'properties'           => [
             'externalContactCode' => ['type' => 'string'],
-            'status'              => ['type' => 'string'],
+            'status'                 => [
+                'type' => 'string',
+                'enum' => [
+                    self::STATUS_ACTIVE,
+                    self::STATUS_INACTIVE,
+                    self::STATUS_DELETED,
+                ],
+            ],
             'firstName'           => ['type' => 'string'],
             'middleName'          => ['type' => 'string'],
             'lastName'            => ['type' => 'string'],

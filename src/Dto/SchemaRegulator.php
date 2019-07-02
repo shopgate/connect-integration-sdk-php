@@ -37,13 +37,14 @@ class SchemaRegulator extends JsonSchemaRegulator
      */
     public function getFilteredValueForKey($value, $key, array $schema)
     {
-        $this->calledClass = $this->extractReference($key, $schema) ? : $this->calledClass;
+        $this->calledClass = $this->extractReferenceBy($key, $schema) ? : $this->calledClass;
 
         return parent::getFilteredValueForKey($value, $key, $schema);
     }
 
-    public function getFilteredValueForIndex($v, $index, array $schema) {
-        $this->calledClass = $this->extractReference($index, $schema) ? : $this->calledClass;
+    public function getFilteredValueForIndex($v, $index, array $schema)
+    {
+        $this->calledClass = $this->extractReferenceForArray($schema) ? : $this->calledClass;
 
         return parent::getFilteredValueForIndex($v, $index, $schema);
     }
@@ -56,7 +57,7 @@ class SchemaRegulator extends JsonSchemaRegulator
      *
      * @return false|string
      */
-    private function extractReference($key, array $schema)
+    private function extractReferenceBy($key, array $schema)
     {
         if (isset($schema['properties'][$key]['$ref'])) {
             return $schema['properties'][$key]['$ref'];
@@ -66,6 +67,22 @@ class SchemaRegulator extends JsonSchemaRegulator
             return $schema['properties'][$key]['items']['$ref'];
         }
 
+        if (isset($schema['items']['$ref'])) {
+            return $schema['items']['$ref'];
+        }
+
+        return false;
+    }
+
+    /**
+     * Retrieves the correct reference of the called object
+     *
+     * @param array  $schema
+     *
+     * @return false|string
+     */
+    private function extractReferenceForArray(array $schema)
+    {
         if (isset($schema['items']['$ref'])) {
             return $schema['items']['$ref'];
         }

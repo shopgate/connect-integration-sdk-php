@@ -135,7 +135,7 @@ services:
       - AWS_BUCKET_NAME=shopgate-import
       - AWS_REGION=eu-central-1
       - AWS_S3_ENDPOINT=http://s3:4569
-      - GITLAB_IMPORT_WEBHOOK_URL=https://webhook.site/476d03a0-882a-469c-9189-0168aa55617f
+      - GITLAB_IMPORT_WEBHOOK_URL=http://import-script:8079/
       - GITLAB_TOKEN=bar
       - SYSLOG_LOG_LEVEL=debug
       - NODE_ENV=development
@@ -143,3 +143,24 @@ services:
       - LOG_TO_SYSLOG=false
     links:
       - etcd
+
+  import-script:
+    build:
+      context: ../
+      dockerfile: tools/dockerfiles/ImportScript
+    environment:
+      - APP_PORT=8079
+      - S3_SECRET_ACCESS_KEY_ID=foo
+      - S3_SECRET_ACCESS_KEY=bar
+      - S3_BUCKET=shopgate-import
+      - S3_REGION=eu-central-1
+      - S3_ENDPOINT=http://s3:4569
+      - PUBSUB_EMULATOR_HOST=googlepubsub-emulator:8085
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=secret
+      - MYSQL_DATABASE=import
+      - GOOGLE_APPLICATION_CREDENTIALS=tools/dockerfiles/credentials-dev.json.js
+    ports:
+      - '8079:8079'
+    tty: true

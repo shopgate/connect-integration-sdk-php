@@ -18,3 +18,5 @@ src/access_token*
 build
 !*/.gitkeep
 tools/docker-compose.yml.tmp
+tools/import/node_modules
+tools/import/credentials-dev.json.js

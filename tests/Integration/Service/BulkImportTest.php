@@ -27,7 +27,7 @@ class BulkImportTest extends CatalogTest
 
         // Act
         $handler = $this->sdk->getBulkImportService()->createFileImport();
-        $categoryHandler = $handler->createCategoryFeed('8000');
+        $categoryHandler = $handler->createCategoryFeed('NA Wholesale');
         $categoryHandler->add($categoryPayload1);
         $categoryHandler->add($categoryPayload2);
         $categoryHandler->end();

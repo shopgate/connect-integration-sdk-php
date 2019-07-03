@@ -39,21 +39,25 @@ class SchemaRegulator extends JsonSchemaRegulator
      */
     public function getFilteredValueForKey($value, $key, array $schema)
     {
-        // check if product properties to be sure
-        $this->calledClass = $this->extractReferenceBy($key, $schema) ? : $this->calledClass;
+        $this->calledClass = $this->extractReference($schema, $key) ? : $this->calledClass;
 
         return parent::getFilteredValueForKey($value, $key, $schema);
     }
 
+    /**
+     * @param mixed $v
+     * @param int   $index
+     * @param array $schema
+     *
+     * @return mixed
+     */
     public function getFilteredValueForIndex($v, $index, array $schema)
     {
-        if (isset($v['type'], $schema['items']['$ref'])
-            && $v['type'] === Attribute::TYPE
-            && $schema['items']['$ref'] === Properties::class
-        ) {
+        // product property type specific check
+        if ($this->isAttribute($v) && $this->extractReference($schema) === Properties::class) {
             $schema['items']['$ref'] = Attribute::class;
         }
-        $this->calledClass = $this->extractReferenceForArray($schema) ? : $this->calledClass;
+        $this->calledClass = $this->extractReference($schema) ? : $this->calledClass;
 
         return parent::getFilteredValueForIndex($v, $index, $schema);
     }
@@ -61,13 +65,17 @@ class SchemaRegulator extends JsonSchemaRegulator
     /**
      * Retrieves the correct reference of the called object
      *
-     * @param string $key - property name
-     * @param array  $schema
+     * @param array       $schema
+     * @param string|null $key - property name
      *
      * @return false|string
      */
-    private function extractReferenceBy($key, array $schema)
+    private function extractReference(array $schema, $key = null)
     {
+        if (isset($schema['items']['$ref'])) {
+            return $schema['items']['$ref'];
+        }
+
         if (isset($schema['properties'][$key]['$ref'])) {
             return $schema['properties'][$key]['$ref'];
         }
@@ -80,18 +88,14 @@ class SchemaRegulator extends JsonSchemaRegulator
     }
 
     /**
-     * Retrieves the correct reference of the called object
+     * Checks value type, specific check for Product->Property->Type = attribute
      *
-     * @param array $schema
+     * @param mixed $value
      *
-     * @return false|string
+     * @return bool
      */
-    private function extractReferenceForArray(array $schema)
+    private function isAttribute($value)
     {
-        if (isset($schema['items']['$ref'])) {
-            return $schema['items']['$ref'];
-        }
-
-        return false;
+        return isset($value['type']) && $value['type'] === Attribute::TYPE;
     }
 }

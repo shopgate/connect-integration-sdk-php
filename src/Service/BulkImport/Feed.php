@@ -23,18 +23,15 @@
 namespace Shopgate\ConnectSdk\Service\BulkImport;
 
 use function GuzzleHttp\Psr7\stream_for;
-use Exception;
 use Psr\Http\Message\StreamInterface;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\Service\BulkImport\Handler\File;
 use Shopgate\ConnectSdk\Service\BulkImport\Handler\Stream;
-use GuzzleHttp\Exception\RequestException as GuzzleRequestException;
-use GuzzleHttp\Client;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
-use GuzzleHttp\Exception\GuzzleException;
+use Shopgate\ConnectSdk\ShopgateSdk;
 
 class Feed
 {
@@ -55,9 +52,6 @@ class Feed
 
     /** @var array */
     protected $requestBodyOptions;
-
-    /** @var */
-    protected $importClient;
 
     /** @var bool */
     protected $isFirstItem = true;
@@ -85,7 +79,6 @@ class Feed
         $this->requestBodyOptions = $requestBodyOptions;
 
         $this->client = $client;
-        $this->importClient = new Client();
         $this->url = $this->getUrl();
 
         switch ($this->handlerType) {
@@ -136,42 +129,33 @@ class Feed
     }
 
     /**
-     * @throws RequestException
+     * @throws AuthenticationInvalidException
      * @throws UnknownException
+     * @throws NotFoundException
+     * @throws RequestException
      */
     public function end()
     {
-        try {
-            $requestOption = [];
-            switch ($this->handlerType) {
-                case Stream::HANDLER_TYPE:
-                    $this->stream->write(']');
-                    $requestOption = ['body' => $this->stream];
-                    $this->importClient->request(
-                        'PUT',
-                        $this->url,
-                        ['body' => $this->stream]
-                    );
-                    break;
-                case File::HANDLER_TYPE:
-                    fwrite($this->stream, ']');
-                    fseek($this->stream, 0);
-                    $requestOption = [
-                        'body' => fread($this->stream, filesize(stream_get_meta_data($this->stream)['uri']))
-                    ];
-                    fclose($this->stream);
-                    break;
-            }
+        $requestOption = [];
+        $requestOption['method'] = 'PUT';
+        $requestOption['url'] = $this->url;
+        $requestOption['requestType'] = ShopgateSdk::REQUEST_TYPE_DIRECT;
 
-            if (count($requestOption)) {
-                $this->importClient->request('PUT', $this->url, $requestOption);
-            }
-        } catch (GuzzleRequestException $e) {
-            throw new RequestException($e->getResponse()->getBody()->getContents());
-        } catch (GuzzleException $e) {
-            throw new UnknownException($e->getMessage());
-        } catch (Exception $e) {
-            throw new UnknownException($e->getMessage());
+        switch ($this->handlerType) {
+            case Stream::HANDLER_TYPE:
+                $this->stream->write(']');
+                $this->client->doRequest($requestOption + ['body' => $this->stream]);
+                break;
+            case File::HANDLER_TYPE:
+                fwrite($this->stream, ']');
+                fseek($this->stream, 0);
+                $requestOption['body'] = fread($this->stream, filesize(stream_get_meta_data($this->stream)['uri']));
+                fclose($this->stream);
+                break;
+        }
+
+        if (isset($requestOption['body'])) {
+            $this->client->doRequest($requestOption);
         }
     }
 }

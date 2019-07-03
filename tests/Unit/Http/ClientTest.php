@@ -25,6 +25,7 @@ namespace Shopgate\ConnectSdk\Tests\Unit\Http;
 use GuzzleHttp\ClientInterface as GuzzleClientInterface;
 
 use Exception;
+use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -60,7 +61,7 @@ class ClientTest extends TestCase
         $this->handlerStack = HandlerStack::create($this->mockHandler);
 
         $this->client = $this
-            ->getMockBuilder(\GuzzleHttp\Client::class)
+            ->getMockBuilder(GuzzleClient::class)
             ->setConstructorArgs([['handler' => $this->handlerStack]])
             ->setMethods(null)
             ->getMock();
@@ -157,7 +158,7 @@ class ClientTest extends TestCase
     {
         // Arrange
         $this->client = $this
-            ->getMockBuilder(\GuzzleHttp\Client::class)
+            ->getMockBuilder(GuzzleClient::class)
             ->setConstructorArgs([['handler' => $this->handlerStack]])
             ->setMethods(['request'])
             ->getMock();
@@ -194,7 +195,7 @@ class ClientTest extends TestCase
     {
         // Arrange
         $this->client = $this
-            ->getMockBuilder(\GuzzleHttp\Client::class)
+            ->getMockBuilder(GuzzleClient::class)
             ->setConstructorArgs([['handler' => $this->handlerStack]])
             ->setMethods(['request'])
             ->getMock();
@@ -233,7 +234,7 @@ class ClientTest extends TestCase
     {
         // Arrange
         $this->client = $this
-            ->getMockBuilder(\GuzzleHttp\Client::class)
+            ->getMockBuilder(GuzzleClient::class)
             ->setConstructorArgs([['handler' => $this->handlerStack]])
             ->setMethods(['request'])
             ->getMock();

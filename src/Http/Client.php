@@ -166,7 +166,7 @@ class Client implements ClientInterface
     }
 
     /**
-     * @param array $params
+     * @param array $params ['url' => .., 'query' => .., 'body' => .., 'method' => .., 'service' => .., 'path' => ..]
      *
      * @return ResponseInterface
      *
@@ -190,7 +190,7 @@ class Client implements ClientInterface
         try {
             $response = $this->client->request(
                 $params['method'],
-                $this->buildServiceUrl($params['service'], $params['path']),
+                isset($params['url']) ? $params['url'] : $this->buildServiceUrl($params['service'], $params['path']),
                 [
                     'query' => isset($params['query'])
                         ? $this->fixBoolValuesInQuery($params['query'])
@@ -297,7 +297,6 @@ class Client implements ClientInterface
      * @param array $params
      *
      * @return bool
-     * @todo-sg: unit tests
      */
     public function isDirect(array $params)
     {

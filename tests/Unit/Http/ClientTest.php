@@ -22,9 +22,8 @@
 
 namespace Shopgate\ConnectSdk\Tests\Unit\Http;
 
-use GuzzleHttp\ClientInterface as GuzzleClientInterface;
-
 use Exception;
+use GuzzleHttp\ClientInterface as GuzzleClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -117,6 +116,7 @@ class ClientTest extends TestCase
     }
 
     /**
+     * @doesNotPerformAssertions
      * @throws Exception
      */
     public function testEnableRequestLoggingShouldNotFailIfNothingWasPassed()

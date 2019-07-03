@@ -22,29 +22,11 @@
 
 namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto;
 
-use Shopgate\ConnectSdk\Dto\Base;
+use Shopgate\ConnectSdk\Dto\LocalizedArray;
 
 /**
  * Localized Media Entities
  */
-class Media extends Base
+class MediaList extends LocalizedArray
 {
-    /**
-     * @var array
-     * @codeCoverageIgnore
-     */
-    protected $schema = [
-        'type'                 => 'object',
-        'additionalProperties' => true,
-    ];
-
-    /**
-     * @param string        $locale
-     * @param Media\Media[] $media
-     */
-    public function add($locale, array $media)
-    {
-        // TODO logic to "add" additional media entities to an existing localization index?!
-        $this->set((string)$locale, $media);
-    }
 }

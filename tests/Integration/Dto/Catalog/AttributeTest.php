@@ -450,8 +450,6 @@ class AttributeTest extends CatalogTest
             );
         } catch (RequestException $exception) {
             // Assert
-            echo $exception->getStatusCode();
-            echo $exception->getMessage();
             $errors  = \GuzzleHttp\json_decode($exception->getMessage(), false);
             $message = $errors->error->results->errors[0]->message;
             $this->assertInstanceOf(get_class($expectedException), $exception);

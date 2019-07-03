@@ -23,6 +23,7 @@ namespace Shopgate\ConnectSdk\Service;
 
 use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Dto\Customer\Attribute;
+use Shopgate\ConnectSdk\Dto\Customer\Customer as CustomerDto;
 use Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
@@ -31,18 +32,24 @@ use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\ShopgateSdk;
 use Shopgate\ConnectSdk\Dto\Meta;
+use Shopgate\ConnectSdk\Helper\Json;
 
 class Customer
 {
     /** @var ClientInterface */
     private $client;
 
+    /** @var Json */
+    private $jsonHelper;
+
     /**
      * @param ClientInterface $client
+     * @param Json $jsonHelper
      */
-    public function __construct(ClientInterface $client)
+    public function __construct(ClientInterface $client, Json $jsonHelper)
     {
         $this->client = $client;
+        $this->jsonHelper = $jsonHelper;
     }
 
     /**
@@ -58,7 +65,7 @@ class Customer
     public function getAttributes(array $query = [])
     {
         if (isset($query['filters'])) {
-            $query['filters'] = \GuzzleHttp\json_encode($query['filters']);
+            $query['filters'] = $this->jsonHelper->encode($query['filters']);
         }
 
         $response = $this->client->doRequest(
@@ -70,7 +77,7 @@ class Customer
                 'query'   => $query,
             ]
         );
-        $response = json_decode($response->getBody(), true);
+        $response = $this->jsonHelper->decode($response->getBody(), true);
 
         $attributes = [];
         foreach ($response['attributes'] as $attribute) {
@@ -105,7 +112,7 @@ class Customer
             ]
         );
 
-        $response = json_decode($response->getBody(), true);
+        $response = $this->jsonHelper->decode($response->getBody(), true);
 
         return new Attribute\Get($response['attribute']);
     }
@@ -304,6 +311,176 @@ class Customer
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
+                'query'       => $query,
+            ]
+        );
+    }
+
+    /**
+     * @param array $query
+     *
+     * @return CustomerDto\GetList
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function getCustomers(array $query = [])
+    {
+        if (isset($query['filters'])) {
+            $query['filters'] = $this->jsonHelper->encode($query['filters']);
+        }
+
+        $response = $this->client->doRequest(
+            [
+                // direct only
+                'service' => 'omni-customer',
+                'method'  => 'get',
+                'path'    => 'customers',
+                'query'   => $query,
+            ]
+        );
+        $response = $this->jsonHelper->decode($response->getBody(), true);
+
+        $customers = [];
+        foreach ($response['customers'] as $attribute) {
+            $customers[] = new CustomerDto\Get($attribute);
+        }
+        $response['meta']       = new Meta($response['meta']);
+        $response['attributes'] = $customers;
+
+        return new CustomerDto\GetList($response);
+    }
+
+    /**
+     * @param string $id customer id
+     * @param array  $query
+     *
+     * @return CustomerDto\Get
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function getCustomer($id, array $query = [])
+    {
+        $response = $this->client->doRequest(
+            [
+                // direct only
+                'service' => 'omni-customer',
+                'method'  => 'get',
+                'path'    => 'customers/' . $id,
+                'query'   => $query,
+            ]
+        );
+
+        $response = $this->jsonHelper->decode($response->getBody(), true);
+
+        return new CustomerDto\Get($response['customer']);
+    }
+
+    /**
+     * @param CustomerDto\Create[] $customers
+     * @param array                $query
+     *
+     * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function addCustomers(array $customers, array $query = [])
+    {
+        $requestCustomers = [];
+        foreach ($customers as $customer) {
+            $requestCustomers[] = $customer->toArray();
+        }
+
+        $response = $this->client->doRequest(
+            [
+                // general
+                'method'      => 'post',
+                'requestType' => isset($query['requestType'])
+                    ? $query['requestType']
+                    : ShopgateSdk::REQUEST_TYPE_EVENT,
+                'body'        => ['customers' => $requestCustomers],
+                'query'       => $query,
+                // direct
+                'service'     => 'omni-customer',
+                'path'        => 'customers',
+                // async
+                'entity'      => 'customer',
+                'action'      => 'create',
+            ]
+        );
+
+        $response = $this->jsonHelper->decode($response->getBody(), true);
+
+        return $response;
+    }
+
+    /**
+     * @param string             $id customer id
+     * @param CustomerDto\Update $customer
+     * @param array              $query
+     *
+     * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function updateCustomer($id, CustomerDto\Update $customer, array $query = [])
+    {
+        return $this->client->doRequest(
+            [
+                // general
+                'service'     => 'omni-customer',
+                'method'      => 'post',
+                'path'        => 'customers/' . $id,
+                'entity'      => 'customer',
+                'query'       => $query,
+                // direct only
+                'action'      => 'update',
+                'body'        => $customer,
+                'requestType' => isset($query['requestType'])
+                    ? $query['requestType']
+                    : ShopgateSdk::REQUEST_TYPE_EVENT,
+                // async
+                'entityId'    => $id,
+            ]
+        );
+    }
+
+    /**
+     * @param string $id customer id
+     * @param array  $query
+     *
+     * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function deleteCustomer($id, array $query = [])
+    {
+        return $this->client->doRequest(
+            [
+                'service'     => 'omni-customer',
+                'method'      => 'delete',
+                'path'        => 'customers/' . $id,
+                'entity'      => 'customer',
+                'action'      => 'delete',
+                'requestType' => isset($query['requestType'])
+                    ? $query['requestType']
+                    : ShopgateSdk::REQUEST_TYPE_EVENT,
+                // async
+                'entityId'    => $id,
                 'query'       => $query,
             ]
         );

@@ -68,19 +68,13 @@ class Price extends Base
             'maxPrice'      => ['type' => 'number'],
             'volumePricing' => [
                 'type'  => 'array',
-                'items' => [
-                    'type' => 'object'
-                ]
+                'items' => ['$ref' => Price\VolumePricing::class]
             ],
             'mapPricing'    => [
                 'type'  => 'array',
-                'items' => [
-                    'type' => 'object'
-                ]
+                'items' => ['$ref' => Price\MapPricing::class]
             ],
-            'currencyCode'  => [
-                'type' => 'string'
-            ]
+            'currencyCode'  => ['type' => 'string']
         ],
         'additionalProperties' => true
     ];

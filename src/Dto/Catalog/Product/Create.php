@@ -33,7 +33,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product;
  * @method Create setLongDescription(Dto\LongDescription $longName)
  * @method Create setCategories(Dto\Categories[] $categories)
  * @method Create setProperties(Dto\Properties[] $properties)
- * @method Create setMedia(Dto\Media $media)
+ * @method Create setMedia(Dto\MediaList $media)
  * @method Create setOptions(Dto\Options[] $options)
  * @method Create setExtras(Dto\Extras[] $extras)
  * @method Create setCode(string $code)

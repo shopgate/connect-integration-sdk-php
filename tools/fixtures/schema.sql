@@ -377,7 +377,6 @@ CREATE TABLE customer.`Customer` (
   `DeleteBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `DeleteDate` datetime DEFAULT NULL,
   PRIMARY KEY (`CustomerID`),
-  UNIQUE KEY `MerchantID` (`MerchantID`,`CustomerNumber`),
   FULLTEXT KEY `FirstName` (`FirstName`,`MiddleName`,`LastName`),
   FULLTEXT KEY `EmailAddress` (`EmailAddress`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

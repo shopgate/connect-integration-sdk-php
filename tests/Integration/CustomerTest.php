@@ -26,10 +26,6 @@ abstract class CustomerTest extends ShopgateSdkTest
     const CUSTOMER_SERVICE           = 'omni-customer';
     const METHOD_DELETE_ATTRIBUTE    = 'deleteAttribute';
     const METHOD_DELETE_CUSTOMER     = 'deleteCustomer';
-    const METHOD_DELETE_REQUEST_META = [
-        self::METHOD_DELETE_ATTRIBUTE => [],
-        self::METHOD_DELETE_CUSTOMER => [],
-    ];
 
     public function setUp()
     {
@@ -39,8 +35,8 @@ abstract class CustomerTest extends ShopgateSdkTest
             self::CUSTOMER_SERVICE,
             $this->sdk->getCustomerService(),
             [
-                self::METHOD_DELETE_ATTRIBUTE,
-                self::METHOD_DELETE_CUSTOMER
+                self::METHOD_DELETE_ATTRIBUTE => [],
+                self::METHOD_DELETE_CUSTOMER => []
             ]
         );
     }

@@ -24,9 +24,6 @@ namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 
 use Shopgate\ConnectSdk\Dto\LocalizedArray;
 
-/**
- * @package Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties
- */
 class Value extends LocalizedArray
 {
 }

@@ -68,8 +68,10 @@ abstract class ShopgateSdkTest extends TestCase
     protected function registerForCleanUp($serviceKey, $service, $deleteMethods)
     {
         $this->services[$serviceKey]['service'] = $service;
-        foreach ($deleteMethods as $deleteMethod) {
+        foreach ($deleteMethods as $deleteMethod => $parameters) {
             $this->services[$serviceKey][$deleteMethod] = [];
+            $this->services[$serviceKey][$deleteMethod]['ids'] = [];
+            $this->services[$serviceKey][$deleteMethod]['parameters'] = $parameters;
         }
     }
 
@@ -80,7 +82,7 @@ abstract class ShopgateSdkTest extends TestCase
      */
     protected function deleteEntitiesAfterTestRun($service, $deleteMethod, $entityIds)
     {
-        $this->services[$service][$deleteMethod] = array_merge($this->services[$service][$deleteMethod], $entityIds);
+        $this->services[$service][$deleteMethod]['ids'] = array_merge($this->services[$service][$deleteMethod]['ids'], $entityIds);
     }
 
     /**
@@ -117,12 +119,15 @@ abstract class ShopgateSdkTest extends TestCase
 
         foreach ($this->services as $service) {
             foreach ($service as $deleteMethod => $entityIds) {
-                foreach ($entityIds as $entityId) {
+                if (!is_array($entityIds)) {
+                    continue;
+                }
+                foreach ($entityIds['ids'] as $entityId) {
                     $service['service']->{$deleteMethod}(
                         $entityId,
                         array_merge(
                             ['requestType' => 'direct'],
-                            $this::METHOD_DELETE_REQUEST_META[$deleteMethod]
+                            $entityIds['parameters']
                         )
                     );
                 }

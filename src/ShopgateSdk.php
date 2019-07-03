@@ -22,6 +22,7 @@
 
 namespace Shopgate\ConnectSdk;
 
+use Shopgate\ConnectSdk\Helper\Json;
 use Shopgate\ConnectSdk\Http\Client;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\Service\BulkImport;
@@ -46,6 +47,9 @@ class ShopgateSdk
     /** @var BulkImport */
     private $bulkImport;
 
+    /** @var Json */
+    private $jsonHelper;
+
     /**
      * The $config argument is a list of key-value pairs:
      *
@@ -66,6 +70,7 @@ class ShopgateSdk
                 null,
                 isset($config['env']) ? $config['env'] : ''
             );
+        $this->jsonHelper = new Json();
 
         if (isset($config['services'])) {
             $this->setServices($config['services']);
@@ -78,7 +83,7 @@ class ShopgateSdk
     public function getCatalogService()
     {
         if (!$this->catalog) {
-            $this->catalog = new Catalog($this->client);
+            $this->catalog = new Catalog($this->client, $this->jsonHelper);
         }
 
         return $this->catalog;
@@ -90,7 +95,7 @@ class ShopgateSdk
     public function getCustomerService()
     {
         if (!$this->customer) {
-            $this->customer = new Customer($this->client);
+            $this->customer = new Customer($this->client, $this->jsonHelper);
         }
 
         return $this->customer;

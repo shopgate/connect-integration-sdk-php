@@ -27,8 +27,6 @@ use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Settings;
 use Shopgate\ConnectSdk\Dto\Customer\Contact;
 
 /**
- * Dto for customer response.
- *
  * @method Create setExternalCustomerNumber(string $externalCustomerNumber)
  * @method Create setFirstName(string $firstName)
  * @method Create setMiddleName(string $middleName)
@@ -36,8 +34,8 @@ use Shopgate\ConnectSdk\Dto\Customer\Contact;
  * @method Create setEmailAddress(string $emailAddress)
  * @method Create setStatus(string $status)
  * @method Create setIsAnonymous(boolean $isAnonymous)
- * @method Create setContacts(Contact [] $contacts)
- * @method Create setAttributes(Attribute [] $attributes)
+ * @method Create setContacts(Contact[] $contacts)
+ * @method Create setAttributes(Attribute[] $attributes)
  * @method Create setSettings(Settings $settings)
  */
 class Create extends Customer

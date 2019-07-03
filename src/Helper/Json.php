@@ -24,7 +24,7 @@ namespace Shopgate\ConnectSdk\Helper;
 
 use GuzzleHttp;
 
-class Data
+class Json
 {
     /**
      * @param mixed $value   The value being encoded
@@ -34,7 +34,7 @@ class Data
      * @return string
      * @throws \InvalidArgumentException if the JSON cannot be encoded.
      */
-    public static function jsonEncode($value, $options = 0, $depth = 512)
+    public function encode($value, $options = 0, $depth = 512)
     {
         return GuzzleHttp\json_encode($value, $options, $depth);
     }
@@ -49,7 +49,7 @@ class Data
      * @return mixed
      * @throws \InvalidArgumentException if the JSON cannot be decoded.
      */
-    public static function jsonDecode($json, $assoc = false, $depth = 512, $options = 0)
+    public function decode($json, $assoc = false, $depth = 512, $options = 0)
     {
         return GuzzleHttp\json_decode($json, $assoc, $depth, $options);
     }

@@ -19,22 +19,15 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Customer\Customer\Dto;
+namespace Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Attribute;
 
 use Shopgate\ConnectSdk\Dto\Base;
-use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Attribute\Value;
 
 /**
- * Dto for customer attribute.
- *
- * @method setCode(string $code)
- * @method setValue(string|Value $value)
- * @method setName(string $name)
+ * @method setCode(string)
  * @method string getCode()
- * @method string|Value getValue()
- * @method string getName()
  */
-class Attribute extends Base
+class Value extends Base
 {
     /**
      * @var array
@@ -43,9 +36,7 @@ class Attribute extends Base
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'code'  => ['type' => 'string'],
-            'value' => ['type' => ['string', 'object']],
-            'name'  => ['type' => 'string'],
+            'code' => ['type' => 'string'],
         ],
         'additionalProperties' => true,
     ];

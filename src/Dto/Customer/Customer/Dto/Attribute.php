@@ -27,10 +27,10 @@ use Shopgate\ConnectSdk\Dto\Base;
  * Dto for customer attribute.
  *
  * @method setCode(string $code)
- * @method setValue(string $value)
+ * @method setValue(string|object $value)
  * @method setName(string $name)
  * @method string getCode()
- * @method object getValue()
+ * @method string|object getValue()
  * @method string getName()
  */
 class Attribute extends Base
@@ -43,7 +43,14 @@ class Attribute extends Base
         'type'                 => 'object',
         'properties'           => [
             'code'  => ['type' => 'string'],
-            'value' => ['type' => 'object'],
+            'value' => [
+                [
+                    'type' => 'string',
+                ],
+                [
+                    'type' => 'object',
+                ]
+            ],
             'name'  => ['type' => 'string'],
         ],
         'additionalProperties' => true,

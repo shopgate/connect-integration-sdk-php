@@ -44,23 +44,4 @@ abstract class CustomerTest extends ShopgateSdkTest
             ]
         );
     }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-
-        foreach ($this->services as $service) {
-            foreach ($service as $deleteMethod => $entityIds) {
-                foreach ($entityIds as $entityId) {
-                    $service['service']->{$deleteMethod}(
-                        $entityId,
-                        array_merge(
-                            ['requestType' => 'direct'],
-                            self::METHOD_DELETE_REQUEST_META[$deleteMethod]
-                        )
-                    );
-                }
-            }
-        }
-    }
 }

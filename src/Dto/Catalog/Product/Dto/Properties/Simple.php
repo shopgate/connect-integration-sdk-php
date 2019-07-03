@@ -22,20 +22,9 @@
 
 namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 
-use Dto\RegulatorInterface;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 
-/**
- * @package Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties
- */
 class Simple extends Properties
 {
-    /**
-     * @inheritdoc
-     */
-    public function __construct($input = null, $schema = null, RegulatorInterface $regulator = null)
-    {
-        $this->schema['default']['type'] = 'simple';
-        parent::__construct($input, $schema, $regulator);
-    }
+    const TYPE = 'simple';
 }

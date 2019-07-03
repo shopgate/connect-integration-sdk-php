@@ -20,7 +20,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Media;
+namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\MediaList;
 
 use Shopgate\ConnectSdk\Dto\Base;
 
@@ -38,6 +38,8 @@ use Shopgate\ConnectSdk\Dto\Base;
  * @method string getAltText()
  * @method string getSubTitle()
  * @method int getSequenceId()
+ *
+ * @codeCoverageIgnore
  */
 class Media extends Base
 {
@@ -47,7 +49,6 @@ class Media extends Base
 
     /**
      * @var array
-     * @codeCoverageIgnore
      */
     protected $schema = [
         'type'                 => 'object',

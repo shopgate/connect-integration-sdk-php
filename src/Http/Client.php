@@ -192,7 +192,7 @@ class Client implements ClientInterface
             return $this->triggerEvent($params);
         }
 
-        if (isset($params['query'], $params['query']['requestType'])) {
+        if (isset($params['query']['requestType'])) {
             unset($params['query']['requestType']);
         }
 
@@ -214,7 +214,7 @@ class Client implements ClientInterface
         } catch (GuzzleRequestException $e) {
             $statusCode = $e->getResponse() ? $e->getResponse()->getStatusCode() : 0;
 
-            if ($statusCode == 404) {
+            if ($statusCode === 404) {
                 throw new NotFoundException(
                     $e->getResponse() && $e->getResponse()->getBody() ? $e->getResponse()->getBody()->getContents()
                         : $e->getMessage()

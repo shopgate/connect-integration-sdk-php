@@ -22,22 +22,23 @@
 
 namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 
-use Dto\RegulatorInterface;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 
 /**
  * @method Attribute setCode(string $code)
- * @method Attribute setValue(Value $value)
+ * @method Attribute setValue(string[] $value)
  * @method Attribute setDisplayGroup(string $displayGroup)
  * @method Attribute setSubDisplayGroup(SubDisplayGroup $subDisplayGroup)
  *
  * @method string getCode()
- * @method Value getValue()
+ * @method string[] getValue()
  * @method string getDisplayGroup()
  * @method SubDisplayGroup getSubDisplayGroup()
  */
 class Attribute extends Properties
 {
+    const TYPE = 'attribute';
+
     /**
      * @var array
      * @codeCoverageIgnore
@@ -46,22 +47,14 @@ class Attribute extends Properties
         'type'                 => 'object',
         'properties'           => [
             'code'            => ['type' => 'string'],
-            'value'           => ['type' => 'array'],
+            'value'           => [
+                'type'  => 'array',
+                'items' => ['type' => 'string',]
+            ],
             'type'            => ['type' => 'string'],
             'displayGroup'    => ['type' => 'string'],
-            'subDisplayGroup' => ['type' => 'object'],
+            'subDisplayGroup' => ['type' => SubDisplayGroup::class],
         ],
-        'default' => [
-            'type' => 'attribute',
-        ],
-        'additionalProperties' => true,
+        'additionalProperties' => true
     ];
-
-    /**
-     * @inheritdoc
-     */
-    public function __construct($input = null, $schema = null, RegulatorInterface $regulator = null)
-    {
-        parent::__construct($input, $schema ? $schema : $this->schema, $regulator);
-    }
 }

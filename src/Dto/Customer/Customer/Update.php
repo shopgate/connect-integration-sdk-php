@@ -27,8 +27,6 @@ use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Settings;
 use Shopgate\ConnectSdk\Dto\Customer\Contact;
 
 /**
- * Dto for customer response.
- *
  * @method Update setExternalCustomerNumber(string $externalCustomerNumber)
  * @method Update setFirstName(string $firstName)
  * @method Update setMiddleName(string $middleName)

@@ -26,8 +26,6 @@ use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Attribute;
 use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Settings;
 
 /**
- * Dto for customer response.
- *
  * @method string getExternalCustomerNumber()
  * @method string getFirstName()
  * @method string getMiddleName()

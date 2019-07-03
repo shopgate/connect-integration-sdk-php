@@ -25,8 +25,6 @@ use Shopgate\ConnectSdk\Dto\Customer\Customer;
 use Shopgate\ConnectSdk\Dto\Meta;
 
 /**
- * Dto for customers list response.
- *
  * @method Meta getMeta()
  * @method Get[] getCustomers()
  *

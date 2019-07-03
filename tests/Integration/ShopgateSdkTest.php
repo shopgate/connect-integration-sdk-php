@@ -32,7 +32,7 @@ use Shopgate\ConnectSdk\ShopgateSdk;
 
 abstract class ShopgateSdkTest extends TestCase
 {
-    const SLEEP_TIME_AFTER_EVENT = 2;
+    const SLEEP_TIME_AFTER_EVENT     = 2;
     const METHOD_DELETE_REQUEST_META = [];
 
     /** @var array */
@@ -85,6 +85,7 @@ abstract class ShopgateSdkTest extends TestCase
 
     /**
      * Runs before every test
+     *
      * @throws Exception
      */
     public function setUp()
@@ -102,7 +103,9 @@ abstract class ShopgateSdkTest extends TestCase
         );
 
         if ((int)getenv('requestLogging')) {
-            $client->enableRequestLogging(new Logger('request_logger_integration_tests', [new StreamHandler('php://stdout')]));
+            $client->enableRequestLogging(
+                new Logger('request_logger_integration_tests', [new StreamHandler('php://stdout')])
+            );
         }
 
         $this->sdk = new ShopgateSdk(['client' => $client]);
@@ -115,7 +118,6 @@ abstract class ShopgateSdkTest extends TestCase
         foreach ($this->services as $service) {
             foreach ($service as $deleteMethod => $entityIds) {
                 foreach ($entityIds as $entityId) {
-
                     $service['service']->{$deleteMethod}(
                         $entityId,
                         array_merge(

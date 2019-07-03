@@ -36,8 +36,8 @@ use Shopgate\ConnectSdk\Dto\Customer\Contact;
  * @method Update setEmailAddress(string $emailAddress)
  * @method Update setStatus(string $status)
  * @method Update setIsAnonymous(boolean $isAnonymous)
- * @method Update setContacts(Contact [] $contacts)
- * @method Update setAttributes(Attribute [] $attributes)
+ * @method Update setContacts(Contact[] $contacts)
+ * @method Update setAttributes(Attribute[] $attributes)
  * @method Update setSettings(Settings $settings)
  */
 class Update extends Customer

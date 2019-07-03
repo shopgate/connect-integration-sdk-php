@@ -29,8 +29,8 @@ use Shopgate\ConnectSdk\Dto\Base;
  * @method setCode(string $code)
  * @method setValue(string $value)
  * @method setName(string $name)
- * @method object getCode()
- * @method string getValue()
+ * @method string getCode()
+ * @method object getValue()
  * @method string getName()
  */
 class Attribute extends Base

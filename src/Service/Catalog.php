@@ -34,6 +34,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
 use Shopgate\ConnectSdk\Dto\Meta;
 use Shopgate\ConnectSdk\ShopgateSdk;
+use Shopgate\ConnectSdk\Helper\Data;
 
 class Catalog
 {
@@ -159,7 +160,7 @@ class Catalog
     public function getCategories(array $query = [])
     {
         if (isset($query['filters'])) {
-            $query['filters'] = \GuzzleHttp\json_encode($query['filters']);
+            $query['filters'] = Data::jsonEncode($query['filters']);
         }
 
         $response = $this->client->doRequest(
@@ -171,7 +172,7 @@ class Catalog
                 'query'   => $query,
             ]
         );
-        $response = json_decode($response->getBody(), true);
+        $response = Data::jsonDecode($response->getBody(), true);
 
         $categories = [];
         foreach ($response['categories'] as $category) {
@@ -285,7 +286,7 @@ class Catalog
     public function getProducts(array $query = [])
     {
         if (isset($query['filters'])) {
-            $query['filters'] = \GuzzleHttp\json_encode($query['filters']);
+            $query['filters'] = Data::jsonEncode($query['filters']);
         }
 
         $response = $this->client->doRequest(
@@ -297,7 +298,7 @@ class Catalog
                 'query'   => $query,
             ]
         );
-        $response = json_decode($response->getBody(), true);
+        $response = Data::jsonDecode($response->getBody(), true);
 
         $products = [];
         foreach ($response['products'] as $product) {
@@ -331,7 +332,7 @@ class Catalog
                 'query'   => $query
             ]
         );
-        $response = json_decode($response->getBody(), true);
+        $response = Data::jsonDecode($response->getBody(), true);
 
         return new Product\Get($response['product']);
     }
@@ -386,7 +387,7 @@ class Catalog
     public function getAttributes(array $query = [])
     {
         if (isset($query['filters'])) {
-            $query['filters'] = \GuzzleHttp\json_encode($query['filters']);
+            $query['filters'] = Data::jsonEncode($query['filters']);
         }
 
         $response = $this->client->doRequest(
@@ -398,7 +399,7 @@ class Catalog
                 'query'   => $query,
             ]
         );
-        $response = json_decode($response->getBody(), true);
+        $response = Data::jsonDecode($response->getBody(), true);
 
         $attributes = [];
         foreach ($response['attributes'] as $attribute) {
@@ -433,7 +434,7 @@ class Catalog
             ]
         );
 
-        $response = json_decode($response->getBody(), true);
+        $response = Data::jsonDecode($response->getBody(), true);
 
         return new Attribute\Get($response['attribute']);
     }

@@ -42,6 +42,7 @@ use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
+use Shopgate\ConnectSdk\Helper\Json;
 use Shopgate\ConnectSdk\Http\Persistence\EncryptedFile;
 use Shopgate\ConnectSdk\Http\Persistence\PersistenceChain;
 use Shopgate\ConnectSdk\ShopgateSdk;
@@ -73,12 +74,13 @@ class Client implements ClientInterface
     }
 
     /**
-     * @param string                         $clientId
-     * @param string                         $clientSecret
-     * @param string                         $merchantCode
-     * @param string                         $baseUri
-     * @param string                         $env
-     * @param string                         $accessTokenPath
+     * @param string $clientId
+     * @param string $clientSecret
+     * @param string $merchantCode
+     * @param string $baseUri
+     * @param string $env
+     * @param string $accessTokenPath
+     *
      * @return Client
      */
     public static function createInstance(
@@ -116,7 +118,7 @@ class Client implements ClientInterface
         );
 
         $oauth->setTokenPersistence(new PersistenceChain([
-            new EncryptedFile($accessTokenPath, $clientSecret)
+            new EncryptedFile(new Json(), $accessTokenPath, $clientSecret)
         ]));
 
         $handlerStack = HandlerStack::create();

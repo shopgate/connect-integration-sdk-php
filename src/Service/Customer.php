@@ -32,19 +32,24 @@ use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\ShopgateSdk;
 use Shopgate\ConnectSdk\Dto\Meta;
-use Shopgate\ConnectSdk\Helper\Data;
+use Shopgate\ConnectSdk\Helper\Json;
 
 class Customer
 {
     /** @var ClientInterface */
     private $client;
 
+    /** @var Json */
+    private $jsonHelper;
+
     /**
      * @param ClientInterface $client
+     * @param Json $jsonHelper
      */
-    public function __construct(ClientInterface $client)
+    public function __construct(ClientInterface $client, Json $jsonHelper)
     {
         $this->client = $client;
+        $this->jsonHelper = $jsonHelper;
     }
 
     /**
@@ -60,7 +65,7 @@ class Customer
     public function getAttributes(array $query = [])
     {
         if (isset($query['filters'])) {
-            $query['filters'] = Data::jsonEncode($query['filters']);
+            $query['filters'] = $this->jsonHelper->encode($query['filters']);
         }
 
         $response = $this->client->doRequest(
@@ -72,7 +77,7 @@ class Customer
                 'query'   => $query,
             ]
         );
-        $response = Data::jsonDecode($response->getBody(), true);
+        $response = $this->jsonHelper->decode($response->getBody(), true);
 
         $attributes = [];
         foreach ($response['attributes'] as $attribute) {
@@ -107,7 +112,7 @@ class Customer
             ]
         );
 
-        $response = Data::jsonDecode($response->getBody(), true);
+        $response = $this->jsonHelper->decode($response->getBody(), true);
 
         return new Attribute\Get($response['attribute']);
     }
@@ -324,7 +329,7 @@ class Customer
     public function getCustomers(array $query = [])
     {
         if (isset($query['filters'])) {
-            $query['filters'] = Data::jsonEncode($query['filters']);
+            $query['filters'] = $this->jsonHelper->encode($query['filters']);
         }
 
         $response = $this->client->doRequest(
@@ -336,7 +341,7 @@ class Customer
                 'query'   => $query,
             ]
         );
-        $response = Data::jsonDecode($response->getBody(), true);
+        $response = $this->jsonHelper->decode($response->getBody(), true);
 
         $customers = [];
         foreach ($response['customers'] as $attribute) {
@@ -371,7 +376,7 @@ class Customer
             ]
         );
 
-        $response = Data::jsonDecode($response->getBody(), true);
+        $response = $this->jsonHelper->decode($response->getBody(), true);
 
         return new CustomerDto\Get($response['customer']);
     }
@@ -412,7 +417,7 @@ class Customer
             ]
         );
 
-        $response = Data::jsonDecode($response->getBody(), true);
+        $response = $this->jsonHelper->decode($response->getBody(), true);
 
         return $response;
     }

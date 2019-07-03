@@ -23,6 +23,9 @@
 namespace Shopgate\ConnectSdk\Tests\Unit\Dto\Catalog\Product;
 
 use PHPUnit\Framework\TestCase;
+use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
+use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties\Attribute;
+use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties\Simple;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Get;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\GetList;
 use Shopgate\ConnectSdk\Dto\Meta;
@@ -53,5 +56,36 @@ class GetListTest extends TestCase
         $this->assertInstanceOf(Get::class, $products[1]);
         $this->assertEquals('la', $products[0]->getCode());
         $this->assertEquals('la2', $products[1]->getCode());
+    }
+
+    /**
+     * Testing the difference between simple and attribute property types
+     */
+    public function testProductPropertyTypes()
+    {
+        $properties  = [
+            [
+                'type'  => Attribute::TYPE,
+                'value' => ['attr1', 'attr2']
+            ],
+            [
+                'type'  => Simple::TYPE,
+                'value' => ['en-us' => ['test1', 'test2']]
+            ]
+        ];
+        $entry       = ['products' => [['properties' => $properties]]];
+        $getList     = new GetList($entry);
+        $properties  = $getList->getProducts()[0]->getProperties();
+        $attrValue   = $properties[0]->getValue();
+        $simpleValue = $properties[1]->getValue();
+
+        $this->assertInstanceOf(Attribute::class, $properties[0]);
+        $this->assertInstanceOf(Attribute::class, $attrValue);
+        $this->assertEquals(['attr1', 'attr2'], $attrValue->toArray());
+
+        $this->assertInstanceOf(Properties::class, $properties);
+        $this->assertInstanceOf(Properties::class, $properties[1]);
+        $this->assertInstanceOf(Properties\Value::class, $simpleValue);
+        $this->assertEquals(['test1', 'test2'], $simpleValue->{'en-us'}->toArray());
     }
 }

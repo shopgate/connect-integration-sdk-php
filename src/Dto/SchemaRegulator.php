@@ -23,6 +23,8 @@
 namespace Shopgate\ConnectSdk\Dto;
 
 use Dto\JsonSchemaRegulator;
+use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
+use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties\Attribute;
 
 class SchemaRegulator extends JsonSchemaRegulator
 {
@@ -37,6 +39,7 @@ class SchemaRegulator extends JsonSchemaRegulator
      */
     public function getFilteredValueForKey($value, $key, array $schema)
     {
+        // check if product properties to be sure
         $this->calledClass = $this->extractReferenceBy($key, $schema) ? : $this->calledClass;
 
         return parent::getFilteredValueForKey($value, $key, $schema);
@@ -44,6 +47,12 @@ class SchemaRegulator extends JsonSchemaRegulator
 
     public function getFilteredValueForIndex($v, $index, array $schema)
     {
+        if (isset($v['type'], $schema['items']['$ref'])
+            && $v['type'] === Attribute::TYPE
+            && $schema['items']['$ref'] === Properties::class
+        ) {
+            $schema['items']['$ref'] = Attribute::class;
+        }
         $this->calledClass = $this->extractReferenceForArray($schema) ? : $this->calledClass;
 
         return parent::getFilteredValueForIndex($v, $index, $schema);
@@ -73,7 +82,7 @@ class SchemaRegulator extends JsonSchemaRegulator
     /**
      * Retrieves the correct reference of the called object
      *
-     * @param array  $schema
+     * @param array $schema
      *
      * @return false|string
      */

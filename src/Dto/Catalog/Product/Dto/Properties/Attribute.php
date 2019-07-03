@@ -49,10 +49,7 @@ class Attribute extends Properties
             'code'            => ['type' => 'string'],
             'value'           => [
                 'type'  => 'array',
-                'items' => [
-                    'type'  => 'array',
-                    'items' => ['type' => 'string']
-                ]
+                'items' => ['type' => 'string',]
             ],
             'type'            => ['type' => 'string'],
             'displayGroup'    => ['type' => 'string'],

@@ -40,7 +40,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties\Value;
  *
  * @method string getCode()
  * @method PropertyName getName()
- * @method Value getValue()
+ * @method Value|string[] getValue()
  * @method string getDisplayGroup()
  * @method SubDisplayGroup getSubDisplayGroup()
  * @method boolean getIsPriced()

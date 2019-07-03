@@ -30,12 +30,13 @@ use Shopgate\ConnectSdk\Dto\Meta;
  *
  * @method Meta getMeta()
  * @method Get[] getProducts()
+ *
+ * @codeCoverageIgnore
  */
 class GetList extends Product
 {
     /**
      * @var array
-     * @codeCoverageIgnore
      */
     protected $schema = [
         'type'                 => 'object',

@@ -35,8 +35,8 @@ abstract class CustomerTest extends ShopgateSdkTest
             self::CUSTOMER_SERVICE,
             $this->sdk->getCustomerService(),
             [
-                self::METHOD_DELETE_ATTRIBUTE => [],
-                self::METHOD_DELETE_CUSTOMER => []
+                self::METHOD_DELETE_CUSTOMER => [],
+                self::METHOD_DELETE_ATTRIBUTE => []
             ]
         );
     }

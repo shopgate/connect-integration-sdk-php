@@ -34,7 +34,7 @@ class GetListTest extends TestCase
     /**
      * Tests basic DTO structure return
      */
-    public function testCategorytDto()
+    public function testCategoryDto()
     {
         $entry   = [
             'meta'       => [

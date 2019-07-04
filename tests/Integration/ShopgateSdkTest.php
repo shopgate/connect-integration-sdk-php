@@ -126,7 +126,7 @@ abstract class ShopgateSdkTest extends TestCase
                     $parameters = is_array($entityId) ? $entityId : [$entityId];
                     $parameters[] = array_merge(
                         ['requestType' => 'direct'],
-                        self::METHOD_DELETE_REQUEST_META[$deleteMethod]
+                        $entityIds['parameters']
                     );
 
                     call_user_func_array([$service['service'], $deleteMethod], $parameters);

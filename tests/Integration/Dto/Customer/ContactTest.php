@@ -70,9 +70,9 @@ class ContactTest extends CustomerTest
     }
 
     /**
-     * @param array               $fieldset
-     * @param Exception\Exception $expectedException
-     * @param string              $missingField
+     * @param array                      $fieldset
+     * @param Exception\RequestException $expectedException
+     * @param string                     $missingField
      *
      * @dataProvider providerForMissingRequiredFields
      *
@@ -89,7 +89,7 @@ class ContactTest extends CustomerTest
             $this->sdk->getCustomerService()->addContacts($customerId, [$contact]);
 
             $this->fail('Expected ' . get_class($expectedException) . ' but wasn\'t thrown');
-        } catch (Exception\Exception $exception) {
+        } catch (Exception\RequestException $exception) {
             // Assert
             $errors  = \GuzzleHttp\json_decode($exception->getMessage(), false);
             $message = $errors->error->results->errors[0]->message;

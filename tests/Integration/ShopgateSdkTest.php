@@ -32,8 +32,7 @@ use Shopgate\ConnectSdk\ShopgateSdk;
 
 abstract class ShopgateSdkTest extends TestCase
 {
-    const SLEEP_TIME_AFTER_EVENT     = 2;
-    const METHOD_DELETE_REQUEST_META = [];
+    const SLEEP_TIME_AFTER_EVENT = 2;
 
     /** @var array */
     protected $sdkConfig = [];
@@ -122,14 +121,14 @@ abstract class ShopgateSdkTest extends TestCase
                 if (!is_array($entityIds)) {
                     continue;
                 }
-                foreach ($entityIds['ids'] as $entityId) {
-                    $service['service']->{$deleteMethod}(
-                        $entityId,
-                        array_merge(
-                            ['requestType' => 'direct'],
-                            $entityIds['parameters']
-                        )
+                foreach ($entityIds['ids'] as $entity) {
+                    $parameters = is_array($entity) ? $entity : [$entity];
+                    $parameters[] = array_merge(
+                        ['requestType' => 'direct'],
+                        $entityIds['parameters']
                     );
+
+                    call_user_func_array([$service['service'], $deleteMethod], $parameters);
                 }
             }
         }

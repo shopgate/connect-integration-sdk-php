@@ -53,12 +53,7 @@ class AttributeTest extends CustomerTest
         $sampleAttributes = $this->provideSampleAttributes($createdItemCount);
 
         // Act
-        $this->createAttributes(
-            $sampleAttributes,
-            [
-                'requestType' => 'direct',
-            ]
-        );
+        $this->createAttributes($sampleAttributes);
 
         $parameters = [];
         if (isset($limit)) {
@@ -102,12 +97,7 @@ class AttributeTest extends CustomerTest
         $sampleAttributes = $this->provideSampleAttributes($createdItemCount);
 
         // Act
-        $this->createAttributes(
-            $sampleAttributes,
-            [
-                'requestType' => 'direct',
-            ]
-        );
+        $this->createAttributes($sampleAttributes);
 
         // CleanUp
         $deleteCodes = [];
@@ -169,12 +159,7 @@ class AttributeTest extends CustomerTest
         $sampleAttributes = $this->provideSampleAttributes($createdItemCount);
 
         // Act
-        $this->createAttributes(
-            $sampleAttributes,
-            [
-                'requestType' => 'direct',
-            ]
-        );
+        $this->createAttributes($sampleAttributes);
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(
@@ -216,7 +201,6 @@ class AttributeTest extends CustomerTest
         $this->createAttributes(
             $sampleAttributes,
             [
-                'requestType' => 'direct',
                 'localeCode'  => 'en-us',
             ]
         );
@@ -242,22 +226,14 @@ class AttributeTest extends CustomerTest
     {
         // Arrange
         $sampleAttributes = $this->provideSampleAttributes(1);
-        $this->createAttributes(
-            $sampleAttributes,
-            [
-                'requestType' => 'direct',
-            ]
-        );
+        $this->createAttributes($sampleAttributes);
 
         // Act
         $newName         = 'Renamed Attribute (Direct)';
         $attributeUpdate = new Attribute\Update(['name' => $newName]);
         $this->sdk->getCustomerService()->updateAttribute(
             'code_1',
-            $attributeUpdate,
-            [
-                'requestType' => 'direct',
-            ]
+            $attributeUpdate
         );
 
         // CleanUp
@@ -281,12 +257,7 @@ class AttributeTest extends CustomerTest
 
         // Arrange
         $sampleAttributes = $this->provideSampleAttributes(1);
-        $this->createAttributes(
-            $sampleAttributes,
-            [
-                'requestType' => 'direct',
-            ]
-        );
+        $this->createAttributes($sampleAttributes);
 
         // Act
         $newName         = 'Renamed Attribute (Event)';
@@ -323,10 +294,7 @@ class AttributeTest extends CustomerTest
         // Act
         $this->sdk->getCustomerService()->updateAttribute(
             'non_existing',
-            new Attribute\Update(),
-            [
-                'requestType' => 'direct',
-            ]
+            new Attribute\Update()
         );
     }
 
@@ -337,20 +305,10 @@ class AttributeTest extends CustomerTest
     {
         // Arrange
         $sampleAttributes = $this->provideSampleAttributes(1);
-        $this->createAttributes(
-            $sampleAttributes,
-            [
-                'requestType' => 'direct',
-            ]
-        );
+        $this->createAttributes($sampleAttributes);
 
         // Act
-        $this->sdk->getCustomerService()->deleteAttribute(
-            'code_1',
-            [
-                'requestType' => 'direct',
-            ]
-        );
+        $this->sdk->getCustomerService()->deleteAttribute('code_1');
 
         sleep(self::SLEEP_TIME_AFTER_EVENT);
 
@@ -371,12 +329,7 @@ class AttributeTest extends CustomerTest
 
         // Arrange
         $sampleAttributes = $this->provideSampleAttributes(1);
-        $this->createAttributes(
-            $sampleAttributes,
-            [
-                'requestType' => 'direct',
-            ]
-        );
+        $this->createAttributes($sampleAttributes);
 
         // Act
         $this->sdk->getCustomerService()->deleteAttribute('code_1');
@@ -410,12 +363,7 @@ class AttributeTest extends CustomerTest
 
         // Act
         try {
-            $this->createAttributes(
-                [$attribute],
-                [
-                    'requestType' => 'direct',
-                ]
-            );
+            $this->createAttributes([$attribute]);
         } catch (RequestException $exception) {
             // Assert
             $errors  = \GuzzleHttp\json_decode($exception->getMessage(), false);

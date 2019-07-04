@@ -86,6 +86,8 @@ class BaseTest extends TestCase
     /**
      * Dto\Exceptions\InvalidKeyException : Key not allowed by "properties", "patternProperties", or
      * "additionalProperties": test
+     *
+     * @doesNotPerformAssertions
      */
     public function testInvalidKeyExceptionWithAdditionalPropertiesNotAllowed()
     {
@@ -103,13 +105,12 @@ class BaseTest extends TestCase
         // Act
         /** @noinspection PhpUndefinedMethodInspection */
         $base->setTest('test');
-
-        // assert making here without exception
-        $this->assertTrue(true);
     }
 
     /**
      * Dto\Exceptions\InvalidDataTypeException : Properties can only be set on objects.
+     *
+     * @doesNotPerformAssertions
      */
     public function testInvalidKeyExceptionWithSetValueOnScalarObject()
     {
@@ -119,13 +120,12 @@ class BaseTest extends TestCase
         // Act
         /** @noinspection PhpUndefinedMethodInspection */
         $base->setNonExistent('1234');
-
-        // assert making here without exception
-        $this->assertTrue(true);
     }
 
     /**
      * Should not throw an exception
+     *
+     * @doesNotPerformAssertions
      */
     public function testNonExistingMethodCall()
     {
@@ -135,8 +135,5 @@ class BaseTest extends TestCase
         // Act
         /** @noinspection PhpUndefinedMethodInspection */
         $base->nonExistentMethod('1234');
-
-        // assert making here without exception
-        $this->assertTrue(true);
     }
 }

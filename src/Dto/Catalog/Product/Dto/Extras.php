@@ -43,9 +43,7 @@ class Extras extends Base
             'code'   => ['type' => 'string'],
             'values' => [
                 'type'  => 'array',
-                'items' => [
-                    'type' => 'object'
-                ]
+                'items' => ['$ref' => Extras\Values::class]
             ]
         ],
         'additionalProperties' => true

@@ -32,7 +32,6 @@ abstract class CustomerTest extends ShopgateSdkTest
         self::METHOD_DELETE_CONTACT   => [],
         self::METHOD_DELETE_CUSTOMER  => [],
     ];
-    const CUSTOMER_ID = 'b6b32b9a-aaaa-4568-8f95-9b8feea96568';
     const CONTACT_CODE = 'integration-test';
 
     public function setUp()
@@ -48,24 +47,5 @@ abstract class CustomerTest extends ShopgateSdkTest
                 self::METHOD_DELETE_CUSTOMER
             ]
         );
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-
-        foreach ($this->services as $service) {
-            foreach ($service as $deleteMethod => $entityIds) {
-                foreach ($entityIds as $entityId) {
-                    $parameters = is_array($entityId) ? $entityId : [$entityId];
-                    $parameters[] = array_merge(
-                        ['requestType' => 'direct'],
-                        self::METHOD_DELETE_REQUEST_META[$deleteMethod]
-                    );
-
-                    call_user_func_array([$service['service'], $deleteMethod], $parameters);
-                }
-            }
-        }
     }
 }

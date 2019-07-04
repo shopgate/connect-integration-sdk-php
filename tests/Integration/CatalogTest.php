@@ -34,11 +34,6 @@ abstract class CatalogTest extends ShopgateSdkTest
     const METHOD_DELETE_CATEGORY  = 'deleteCategory';
     const METHOD_DELETE_PRODUCT   = 'deleteProduct';
     const METHOD_DELETE_ATTRIBUTE = 'deleteAttribute';
-    const METHOD_DELETE_REQUEST_META  = [
-        self::METHOD_DELETE_CATEGORY  => ['force' => true],
-        self::METHOD_DELETE_PRODUCT   => [],
-        self::METHOD_DELETE_ATTRIBUTE => [],
-    ];
     const PRODUCT_CODE                = 'integration-test';
     const PRODUCT_CODE_SECOND         = 'integration-test-2';
     const PARENT_CATEGORY_CODE        = 'parent-integration-test';
@@ -59,9 +54,9 @@ abstract class CatalogTest extends ShopgateSdkTest
             self::CATALOG_SERVICE,
             $this->sdk->getCatalogService(),
             [
-                self::METHOD_DELETE_CATEGORY,
-                self::METHOD_DELETE_PRODUCT,
-                self::METHOD_DELETE_ATTRIBUTE,
+                self::METHOD_DELETE_CATEGORY => ['force' => true],
+                self::METHOD_DELETE_PRODUCT => [],
+                self::METHOD_DELETE_ATTRIBUTE => [],
             ]
         );
     }
@@ -249,24 +244,5 @@ abstract class CatalogTest extends ShopgateSdkTest
         }
 
         return $categoryCodes;
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-
-        foreach ($this->services as $service) {
-            foreach ($service as $deleteMethod => $entityIds) {
-                foreach ($entityIds as $entityId) {
-                    $service['service']->{$deleteMethod}(
-                        $entityId,
-                        array_merge(
-                            ['requestType' => 'direct'],
-                            self::METHOD_DELETE_REQUEST_META[$deleteMethod]
-                        )
-                    );
-                }
-            }
-        }
     }
 }

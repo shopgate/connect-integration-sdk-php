@@ -32,7 +32,8 @@ use Shopgate\ConnectSdk\ShopgateSdk;
 
 abstract class ShopgateSdkTest extends TestCase
 {
-    const SLEEP_TIME_AFTER_EVENT = 2;
+    const SLEEP_TIME_AFTER_EVENT     = 2;
+    const METHOD_DELETE_REQUEST_META = [];
 
     /** @var array */
     protected $sdkConfig = [];
@@ -67,8 +68,10 @@ abstract class ShopgateSdkTest extends TestCase
     protected function registerForCleanUp($serviceKey, $service, $deleteMethods)
     {
         $this->services[$serviceKey]['service'] = $service;
-        foreach ($deleteMethods as $deleteMethod) {
+        foreach ($deleteMethods as $deleteMethod => $parameters) {
             $this->services[$serviceKey][$deleteMethod] = [];
+            $this->services[$serviceKey][$deleteMethod]['ids'] = [];
+            $this->services[$serviceKey][$deleteMethod]['parameters'] = $parameters;
         }
     }
 
@@ -79,11 +82,12 @@ abstract class ShopgateSdkTest extends TestCase
      */
     protected function deleteEntitiesAfterTestRun($service, $deleteMethod, $entityIds)
     {
-        $this->services[$service][$deleteMethod] = array_merge($this->services[$service][$deleteMethod], $entityIds);
+        $this->services[$service][$deleteMethod]['ids'] = array_merge($this->services[$service][$deleteMethod]['ids'], $entityIds);
     }
 
     /**
      * Runs before every test
+     *
      * @throws Exception
      */
     public function setUp()
@@ -101,9 +105,33 @@ abstract class ShopgateSdkTest extends TestCase
         );
 
         if ((int)getenv('requestLogging')) {
-            $client->enableRequestLogging(new Logger('request_logger_integration_tests', [new StreamHandler('php://stdout')]));
+            $client->enableRequestLogging(
+                new Logger('request_logger_integration_tests', [new StreamHandler('php://stdout')])
+            );
         }
 
         $this->sdk = new ShopgateSdk(['client' => $client]);
+    }
+
+    public function tearDown()
+    {
+        parent::tearDown();
+
+        foreach ($this->services as $service) {
+            foreach ($service as $deleteMethod => $entityIds) {
+                if (!is_array($entityIds)) {
+                    continue;
+                }
+                foreach ($entityIds['ids'] as $entityId) {
+                    $parameters = is_array($entityId) ? $entityId : [$entityId];
+                    $parameters[] = array_merge(
+                        ['requestType' => 'direct'],
+                        self::METHOD_DELETE_REQUEST_META[$deleteMethod]
+                    );
+
+                    call_user_func_array([$service['service'], $deleteMethod], $parameters);
+                }
+            }
+        }
     }
 }

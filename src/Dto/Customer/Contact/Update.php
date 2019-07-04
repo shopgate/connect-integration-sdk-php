@@ -25,8 +25,6 @@ namespace Shopgate\ConnectSdk\Dto\Customer\Contact;
 use Shopgate\ConnectSdk\Dto\Customer\Contact;
 
 /**
- * Default class that handles validation for contact Update payloads.
- *
  * @method Update setExternalContactCode(string $externalContactCode)
  * @method Update setStatus(string $status)
  * @method Update setFirstName(string $firstName)

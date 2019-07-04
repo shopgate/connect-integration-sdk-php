@@ -242,14 +242,14 @@ class ContactTest extends CustomerTest
     }
 
     /**
-     * @param int $amount
+     * @param int $count
      *
      * @return ContactDto\Create[]
      */
-    private function createSampleContacts($amount)
+    private function createSampleContacts($count)
     {
         $contacts = [];
-        for ($i = 1; $i <= $amount; $i++) {
+        for ($i = 1; $i <= $count; $i++) {
             $contact = new ContactDto\Create();
             $contact->setExternalContactCode(self::CONTACT_CODE . '-' . $i)
                 ->setStatus(ContactDto::STATUS_ACTIVE)

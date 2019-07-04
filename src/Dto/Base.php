@@ -24,6 +24,7 @@ namespace Shopgate\ConnectSdk\Dto;
 
 use Dto\Dto;
 use Dto\RegulatorInterface;
+use Dto\ServiceContainer;
 use Exception;
 
 /**
@@ -51,6 +52,20 @@ class Base extends Dto
     public function getDefaultSchema()
     {
         return null;
+    }
+
+    /**
+     * @param RegulatorInterface $regulator
+     *
+     * @return RegulatorInterface
+     */
+    protected function getDefaultRegulator($regulator)
+    {
+        if ($regulator === null) {
+            return new SchemaRegulator(new ServiceContainer(), static::class);
+        }
+
+        return $regulator;
     }
 
     /**

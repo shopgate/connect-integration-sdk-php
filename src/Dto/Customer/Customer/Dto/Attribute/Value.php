@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright Shopgate Inc.
  *
@@ -20,30 +19,16 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Price;
+namespace Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Attribute;
 
 use Shopgate\ConnectSdk\Dto\Base;
 
 /**
- * @method VolumePricing setMinQty(float $minQty)
- * @method VolumePricing setMaxQty(float $maxQty)
- * @method VolumePricing setPrice(float $price)
- * @method VolumePricing setSalePrice(float $salePrice)
- * @method VolumePricing setUnit(string $unit)
- * @method VolumePricing setPriceType(string $priceType)
- *
- * @method float getMinQty()
- * @method float getMaxQty()
- * @method float getPrice()
- * @method float getSalePrice()
- * @method string getUnit()
- * @method string getPriceType()
+ * @method setCode(string)
+ * @method string getCode()
  */
-class VolumePricing extends Base
+class Value extends Base
 {
-    const PRICE_TYPE_FIXED    = 'fixed';
-    const PRICE_TYPE_RELATIVE = 'relative';
-
     /**
      * @var array
      * @codeCoverageIgnore
@@ -51,13 +36,8 @@ class VolumePricing extends Base
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'minQty'    => ['type' => 'number'],
-            'maxQty'    => ['type' => 'number'],
-            'price'     => ['type' => 'number'],
-            'salePrice' => ['type' => 'number'],
-            'unit'      => ['type' => 'string'],
-            'priceType' => ['type' => 'string']
+            'code' => ['type' => 'string'],
         ],
-        'additionalProperties' => true
+        'additionalProperties' => true,
     ];
 }

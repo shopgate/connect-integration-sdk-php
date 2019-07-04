@@ -25,13 +25,12 @@ namespace Shopgate\ConnectSdk\Tests\Integration\Dto\Customer;
 use Shopgate\ConnectSdk\Dto\Customer\Contact as ContactDto;
 use Shopgate\ConnectSdk\Dto\Customer\Customer;
 use Shopgate\ConnectSdk\Exception;
-use Shopgate\ConnectSdk\ShopgateSdk;
 use Shopgate\ConnectSdk\Tests\Integration\CustomerTest;
 
 class ContactTest extends CustomerTest
 {
     /**
-     * @param ContactDto\Create $sampleContacts
+     * @param ContactDto\Create[] $sampleContacts
      *
      * @dataProvider providerCreateContactDirect
      *

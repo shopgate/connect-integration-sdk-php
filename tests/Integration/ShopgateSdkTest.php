@@ -121,8 +121,8 @@ abstract class ShopgateSdkTest extends TestCase
                 if (!is_array($entityIds)) {
                     continue;
                 }
-                foreach ($entityIds['ids'] as $entityId) {
-                    $parameters = is_array($entityId) ? $entityId : [$entityId];
+                foreach ($entityIds['ids'] as $entity) {
+                    $parameters = is_array($entity) ? $entity : [$entity];
                     $parameters[] = array_merge(
                         ['requestType' => 'direct'],
                         $entityIds['parameters']

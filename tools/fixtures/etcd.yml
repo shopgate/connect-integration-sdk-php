@@ -8,6 +8,7 @@ development:
       omni-customer: "http://omni-customer/"
       omni-product: "http://catalog/"
       catalog: "http://catalog/"
+      import: "http://import/"
 
   settings:
     auth2:
@@ -68,3 +69,12 @@ development:
         user: root
       googleCloud:
         projectId: test-project
+
+    ImportService:
+      mysql:
+        connectionLimit: 1
+        database: import
+        host: mysql
+        password: secret
+        port: 3306
+        user: root

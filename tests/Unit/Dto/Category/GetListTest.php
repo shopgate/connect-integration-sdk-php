@@ -27,13 +27,14 @@ use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Category\Get;
 use Shopgate\ConnectSdk\Dto\Catalog\Category\GetList;
 use Shopgate\ConnectSdk\Dto\Meta;
+use stdClass;
 
 class GetListTest extends TestCase
 {
     /**
      * Tests basic DTO structure return
      */
-    public function testGetListDto()
+    public function testCategorytDto()
     {
         $entry   = [
             'meta'       => [
@@ -74,5 +75,43 @@ class GetListTest extends TestCase
         $this->assertEquals('someDesc', $categories[2]->getDescription());
         $this->assertEquals('2019-12-31', $categories[2]->getExternalUpdateDate());
         $this->assertEquals(Category::STATUS_INACTIVE, $categories[2]->getStatus());
+    }
+
+    /**
+     * Checking typecasting if properties provided are of incorrect format or missing
+     */
+    public function testInvalidCategoryDto()
+    {
+        $entry = [
+            'meta'       => [
+                'limit' => '1'
+            ],
+            'categories' => [
+                [
+                    'status'             => 0,
+                    'code'               => 23.4,
+                    'parentCategoryCode' => 16,
+                    'catalogCode'        => false,
+                    'image'              => true,
+                    'name'               => ['test' => 't'],
+                    'description'        => [],
+                    'externalUpdateDate' => new stdClass(),
+                ]
+            ]
+        ];
+
+        $getList = new GetList($entry);
+        $this->assertInstanceOf(Meta::class, $getList->getMeta());
+        $this->assertEquals('1', $getList->getMeta()->getLimit());
+        $categories = $getList->getCategories()[0];
+        $this->assertEquals('0', $categories->getStatus());
+        $this->assertEquals('23.4', $categories->getCode());
+        $this->assertEquals('16', $categories->getParentCategoryCode());
+        $this->assertEquals('', $categories->getCatalogCode());
+        $this->assertEquals('1', $categories->getImage());
+        $this->assertEquals('', $categories->getName());
+        $this->assertEquals('', $categories->getDescription());
+        $this->assertEquals('', $categories->getExternalUpdateDate());
+        $this->assertNull($categories->getUrl());
     }
 }

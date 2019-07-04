@@ -23,24 +23,26 @@
 namespace Shopgate\ConnectSdk\Dto\Catalog\Category;
 
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
+use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Description;
+use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Name;
 
 /**
- * Default class that handles validation for category Create payloads.
- *
  * @method Create setCode(string $code)
  * @method Create setParentCategoryCode(string $parentCategoryCode)
  * @method Create setImage(string $image)
- * @method Create setName(dto\Name $name)
+ * @method Create setName(Name $name)
  * @method Create setUrl(string $url)
  * @method Create setSequenceId(int $sequenceId)
- * @method Create setDescription(dto\Description $description)
+ * @method Create setDescription(Description $description)
  * @method Create setExternalUpdateDate(string $externalUpdateDate)
+ * @method Update setStatus(string $status)
+ *
+ * @codeCoverageIgnore
  */
 class Create extends Category
 {
     /**
      * @var array
-     * @codeCoverageIgnore
      */
     protected $schema = [
         'type'                 => 'object',
@@ -53,6 +55,7 @@ class Create extends Category
             'sequenceId'         => ['type' => 'integer'],
             'description'        => ['type' => 'object'],
             'externalUpdateDate' => ['type' => 'string'],
+            'status'             => ['type' => 'string']
         ],
         'additionalProperties' => true
     ];

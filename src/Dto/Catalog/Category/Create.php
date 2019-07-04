@@ -35,7 +35,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Name;
  * @method Create setSequenceId(int $sequenceId)
  * @method Create setDescription(Description $description)
  * @method Create setExternalUpdateDate(string $externalUpdateDate)
- * @method Update setStatus(string $status)
+ * @method Create setStatus(string $status)
  *
  * @codeCoverageIgnore
  */

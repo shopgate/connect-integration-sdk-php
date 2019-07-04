@@ -10,6 +10,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - bulkImport for attributes
 - bulkImport for categories
 - bulkImport for products
+- addInventory direct logic
+- updateInventory direct logic
+- deleteInventory direct logic
 
 ## [0.4.0]- 2019-06-13
 ### Added

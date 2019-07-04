@@ -70,16 +70,11 @@ class ProductTest extends CatalogTest
         // Arrange
         $product = $this->prepareProductMaximum();
 
-        $sampleCategories = $this->provideSampleCategories();
-        $this->sdk->getCatalogService()->addCategories($sampleCategories, ['requestType' => 'direct']);
-        $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
-
         // Act
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [$product->code]);
-        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, $sampleCategoryCodes);
 
         // Assert
         $product = $this->sdk->getCatalogService()->getProduct($product->code);
@@ -101,10 +96,6 @@ class ProductTest extends CatalogTest
             ['requestType' => 'direct']
         );
 
-        $sampleCategories = $this->provideSampleCategories();
-        $this->sdk->getCatalogService()->addCategories($sampleCategories, ['requestType' => 'direct']);
-        $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
-
         $product = new Product\Update(
             [
                 'externalUpdateDate' => '2018-12-31T23:59:59.000Z',
@@ -119,7 +110,6 @@ class ProductTest extends CatalogTest
                 $productMaximum->code
             ]
         );
-        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, $sampleCategoryCodes);
 
         // Act
         try {
@@ -232,10 +222,6 @@ class ProductTest extends CatalogTest
     public function testUpdateProductPropertyDirect(array $updateProductData, $expectedValue)
     {
         // Arrange
-        $sampleCategories = $this->provideSampleCategories();
-        $this->sdk->getCatalogService()->addCategories($sampleCategories, ['requestType' => 'direct']);
-        $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
-
         $productMaximum = $this->prepareProductMaximum(new Update());
         $this->sdk->getCatalogService()->addProducts(
             [
@@ -263,7 +249,6 @@ class ProductTest extends CatalogTest
                 $productMaximum->code
             ]
         );
-        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, $sampleCategoryCodes);
 
         // Assert
         $product = $this->sdk->getCatalogService()->getProduct($productMaximum->code);
@@ -465,17 +450,12 @@ class ProductTest extends CatalogTest
         // Arrange
         $product = $this->prepareProductMaximum();
 
-        $sampleCategories = $this->provideSampleCategories();
-        $this->sdk->getCatalogService()->addCategories($sampleCategories, ['requestType' => 'direct']);
-        $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
-
         // Act
         $this->sdk->getCatalogService()->addProducts([$product]);
         sleep(self::SLEEP_TIME_AFTER_EVENT);
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [$product->code]);
-        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, $sampleCategoryCodes);
 
         // Assert
         $product = $this->sdk->getCatalogService()->getProduct($product->code);
@@ -502,16 +482,10 @@ class ProductTest extends CatalogTest
         // Arrange
         $product = $this->prepareProductMaximum();
 
-        $sampleCategories = $this->provideSampleCategories();
-        $this->sdk->getCatalogService()->addCategories($sampleCategories, ['requestType' => 'direct']);
-        $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
 
         // Act
         $this->sdk->getCatalogService()->deleteProduct($product->code, ['requestType' => 'direct']);
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, $sampleCategoryCodes);
 
         // Assert
         $this->expectException(NotFoundException::class);
@@ -525,18 +499,11 @@ class ProductTest extends CatalogTest
     {
         // Arrange
         $product = $this->prepareProductMaximum();
-
-        $sampleCategories = $this->provideSampleCategories();
-        $this->sdk->getCatalogService()->addCategories($sampleCategories, ['requestType' => 'direct']);
-        $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
 
         // Act
         $this->sdk->getCatalogService()->deleteProduct($product->code);
         sleep(self::SLEEP_TIME_AFTER_EVENT);
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, $sampleCategoryCodes);
 
         // Assert
         $this->expectException(NotFoundException::class);
@@ -592,9 +559,6 @@ class ProductTest extends CatalogTest
     public function testGetProducts()
     {
         // Arrange
-        $sampleCategories = $this->provideSampleCategories();
-        $this->sdk->getCatalogService()->addCategories($sampleCategories, ['requestType' => 'direct']);
-        $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
         $productMinimum = $this->prepareProductMinimum();
         $productMaximum = $this->prepareProductMaximum();
         $this->sdk->getCatalogService()->addProducts([$productMinimum, $productMaximum], ['requestType' => 'direct']);
@@ -607,7 +571,6 @@ class ProductTest extends CatalogTest
             $productMaximum->code,
             $productMinimum->code
         ]);
-        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, $sampleCategoryCodes);
 
         // Assert
         $productCodes = [];
@@ -756,6 +719,7 @@ class ProductTest extends CatalogTest
         $productPayload = new Product\Create();
 
         return $productPayload
+            ->setName(new Name(['en-us' => 'English Product name']))
             ->setCode(self::PRODUCT_CODE)
             ->setModelType(Product\Create::MODEL_TYPE_STANDARD)
             ->setIsInventoryManaged(true);
@@ -874,6 +838,8 @@ class ProductTest extends CatalogTest
         $sampleCategories = $this->provideSampleCategories();
         $this->sdk->getCatalogService()->addCategories($sampleCategories, ['requestType' => 'direct']);
         $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
+
+        // CleanUp
         $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, $sampleCategoryCodes);
 
         $this->createSampleAttribute();

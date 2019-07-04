@@ -101,8 +101,10 @@ class GetListTest extends TestCase
         ];
 
         $getList = new GetList($entry);
+        $limit   = $getList->getMeta()->getLimit();
         $this->assertInstanceOf(Meta::class, $getList->getMeta());
-        $this->assertEquals('1', $getList->getMeta()->getLimit());
+        $this->assertInternalType('int', $limit);
+        $this->assertEquals(1, $limit);
         $categories = $getList->getCategories()[0];
         $this->assertEquals('0', $categories->getStatus());
         $this->assertEquals('23.4', $categories->getCode());

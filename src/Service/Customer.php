@@ -23,6 +23,7 @@ namespace Shopgate\ConnectSdk\Service;
 
 use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Dto\Customer\Attribute;
+use Shopgate\ConnectSdk\Dto\Customer\Contact;
 use Shopgate\ConnectSdk\Dto\Customer\Customer as CustomerDto;
 use Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
@@ -137,19 +138,12 @@ class Customer
 
         return $this->client->doRequest(
             [
-                // general
                 'method'      => 'post',
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'body'        => ['attributes' => $requestAttributes],
                 'query'       => $query,
-                // direct
                 'service'     => 'omni-customer',
                 'path'        => 'attributes',
-                // async
-                'entity'      => 'attribute',
-                'action'      => 'create',
             ]
         );
     }
@@ -176,14 +170,9 @@ class Customer
                 'path'        => 'attributes/' . $code,
                 'entity'      => 'attribute',
                 'query'       => $query,
-                // direct only
                 'action'      => 'update',
                 'body'        => $attribute,
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
-                // async
-                'entityId'    => $code,
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
             ]
         );
     }
@@ -208,11 +197,7 @@ class Customer
                 'path'        => 'attributes/' . $code,
                 'entity'      => 'attribute',
                 'action'      => 'delete',
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
-                // async
-                'entityId'    => $code,
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'query'       => $query,
             ]
         );
@@ -243,9 +228,7 @@ class Customer
                 'entity'      => 'attributes',
                 'action'      => 'create',
                 'body'        => ['values' => $attributeValues],
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'query'       => $query,
             ]
         );
@@ -278,10 +261,7 @@ class Customer
                 'entity'      => 'attribute',
                 'action'      => 'update',
                 'body'        => $attributeValue,
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
-                'entityId'    => $code,
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'query'       => $query,
             ]
         );
@@ -308,9 +288,7 @@ class Customer
                 'path'        => 'attributes/' . $code . '/values/' . $valueCode,
                 'entity'      => 'attribute',
                 'action'      => 'delete',
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'query'       => $query,
             ]
         );
@@ -401,19 +379,12 @@ class Customer
 
         $response = $this->client->doRequest(
             [
-                // general
                 'method'      => 'post',
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'body'        => ['customers' => $requestCustomers],
                 'query'       => $query,
-                // direct
                 'service'     => 'omni-customer',
                 'path'        => 'customers',
-                // async
-                'entity'      => 'customer',
-                'action'      => 'create',
             ]
         );
 
@@ -438,20 +409,14 @@ class Customer
     {
         return $this->client->doRequest(
             [
-                // general
                 'service'     => 'omni-customer',
                 'method'      => 'post',
                 'path'        => 'customers/' . $id,
                 'entity'      => 'customer',
                 'query'       => $query,
-                // direct only
                 'action'      => 'update',
                 'body'        => $customer,
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
-                // async
-                'entityId'    => $id,
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
             ]
         );
     }
@@ -476,11 +441,92 @@ class Customer
                 'path'        => 'customers/' . $id,
                 'entity'      => 'customer',
                 'action'      => 'delete',
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
-                // async
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
+                'query'       => $query,
+            ]
+        );
+    }
+
+    /**
+     * @param string           $id        customer id
+     * @param Contact\Create[] $contacts
+     * @param array            $query
+     *
+     * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function addContacts($id, array $contacts, array $query = [])
+    {
+        return $this->client->doRequest(
+            [
+                'service'     => 'omni-customer',
+                'method'      => 'post',
+                'path'        => 'customers/' . $id . '/contacts',
+                'entity'      => 'contact',
+                'action'      => 'create',
+                'body'        => ['contacts' => $contacts],
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
+                'query'       => $query,
+            ]
+        );
+    }
+
+    /**
+     * @param string         $id         contact id
+     * @param string         $customerId
+     * @param Contact\Update $contact
+     * @param array          $query
+     *
+     * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function updateContact($id, $customerId, Contact\Update $contact, array $query = [])
+    {
+        return $this->client->doRequest(
+            [
+                'service'     => 'omni-customer',
+                'method'      => 'post',
+                'path'        => 'customers/' . $customerId . '/contacts/' . $id,
+                'entity'      => 'contact',
+                'action'      => 'update',
+                'body'        => $contact,
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'entityId'    => $id,
+                'query'       => $query,
+            ]
+        );
+    }
+
+    /**
+     * @param string $id          contact id
+     * @param string $customerId
+     * @param array  $query
+     *
+     * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function deleteContact($id, $customerId, array $query = [])
+    {
+        return $this->client->doRequest(
+            [
+                'service'     => 'omni-customer',
+                'method'      => 'delete',
+                'path'        => 'customers/' . $customerId . '/contacts/' . $id,
+                'entity'      => 'customer',
+                'action'      => 'delete',
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'query'       => $query,
             ]
         );

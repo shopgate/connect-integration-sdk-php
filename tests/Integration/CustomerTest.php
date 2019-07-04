@@ -25,7 +25,9 @@ abstract class CustomerTest extends ShopgateSdkTest
 {
     const CUSTOMER_SERVICE           = 'omni-customer';
     const METHOD_DELETE_ATTRIBUTE    = 'deleteAttribute';
+    const METHOD_DELETE_CONTACT      = 'deleteContact';
     const METHOD_DELETE_CUSTOMER     = 'deleteCustomer';
+    const CONTACT_CODE = 'integration-test';
 
     public function setUp()
     {
@@ -35,8 +37,14 @@ abstract class CustomerTest extends ShopgateSdkTest
             self::CUSTOMER_SERVICE,
             $this->sdk->getCustomerService(),
             [
+<<<<<<< HEAD
                 self::METHOD_DELETE_CUSTOMER => [],
                 self::METHOD_DELETE_ATTRIBUTE => []
+=======
+                self::METHOD_DELETE_ATTRIBUTE => [],
+                self::METHOD_DELETE_CONTACT => [],
+                self::METHOD_DELETE_CUSTOMER => [],
+>>>>>>> feature/MAGENTO2-304-customer-service-sdk
             ]
         );
     }

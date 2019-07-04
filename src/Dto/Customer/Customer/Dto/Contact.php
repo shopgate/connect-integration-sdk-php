@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright Shopgate Inc.
  *
@@ -20,33 +19,34 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Customer\Contact;
+namespace Shopgate\ConnectSdk\Dto\Customer\Customer\Dto;
 
-use Shopgate\ConnectSdk\Dto\Customer\Contact;
+use Shopgate\ConnectSdk\Dto\Customer\Contact as ContactBase;
 
 /**
- * @method Create setExternalContactCode(string $externalContactCode)
- * @method Create setStatus(string $status)
- * @method Create setFirstName(string $firstName)
- * @method Create setMiddleName(string $middleName)
- * @method Create setLastName(string $lastName)
- * @method Create setCompanyName(string $companyName)
- * @method Create setAddress1(string $address1)
- * @method Create setAddress2(string $address2)
- * @method Create setAddress3(string $address3)
- * @method Create setAddress4(string $address4)
- * @method Create setCity(string $city)
- * @method Create setPostalCode(string $postalCode)
- * @method Create setRegion(string $region)
- * @method Create setCountry(string $country)
- * @method Create setPhone(string $phone)
- * @method Create setFax(string $fax)
- * @method Create setMobile(string $mobile)
- * @method Create setEmailAddress(string $emailAddress)
- * @method Create setIsDefaultShipping(boolean $isDefaultShipping)
- * @method Create setIsDefaultBilling(boolean $isDefaultBilling)
+ * @method string getId()
+ * @method string getExternalContactCode()
+ * @method string getStatus()
+ * @method string getFirstName()
+ * @method string getMiddleName()
+ * @method string getLastName()
+ * @method string getCompanyName()
+ * @method string getAddress1()
+ * @method string getAddress2()
+ * @method string getAddress3()
+ * @method string getAddress4()
+ * @method string getCity()
+ * @method string getPostalCode()
+ * @method string getRegion()
+ * @method string getCountry()
+ * @method string getPhone()
+ * @method string getFax()
+ * @method string getMobile()
+ * @method string getEmailAddress()
+ * @method boolean getIsDefaultShipping()
+ * @method boolean getIsDefaultBilling()
  */
-class Create extends Contact
+class Contact extends ContactBase
 {
     /**
      * @var array
@@ -55,8 +55,9 @@ class Create extends Contact
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
+            'id'                  => ['type' => 'string'],
             'externalContactCode' => ['type' => 'string'],
-            'status'                 => [
+            'status'              => [
                 'type' => 'string',
                 'enum' => [
                     self::STATUS_ACTIVE,

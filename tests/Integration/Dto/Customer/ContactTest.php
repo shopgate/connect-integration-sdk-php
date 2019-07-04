@@ -34,6 +34,8 @@ class ContactTest extends CustomerTest
      * @param ContactDto\Create $sampleContacts
      *
      * @dataProvider providerCreateContactDirect
+     *
+     * @throws Exception\Exception
      */
     public function testCreateContactDirect($sampleContacts)
     {
@@ -74,6 +76,8 @@ class ContactTest extends CustomerTest
      * @param string              $missingField
      *
      * @dataProvider providerForMissingRequiredFields
+     *
+     * @throws Exception\Exception
      */
     public function testMissingRequiredFields($fieldset, $expectedException, $missingField)
     {
@@ -108,10 +112,7 @@ class ContactTest extends CustomerTest
      *
      * @return string customer id
      *
-     * @throws Exception\AuthenticationInvalidException
-     * @throws Exception\NotFoundException
-     * @throws Exception\RequestException
-     * @throws Exception\UnknownException
+     * @throws Exception\Exception
      */
     private function createCustomer($withContact = false)
     {
@@ -138,6 +139,8 @@ class ContactTest extends CustomerTest
 
     /**
      * Tests updating a contact
+     *
+     * @throws Exception\Exception
      */
     public function testUpdateContact()
     {
@@ -181,6 +184,8 @@ class ContactTest extends CustomerTest
 
     /**
      * Test deleting a contact
+     *
+     * @throws Exception\Exception
      */
     public function testDeleteContact()
     {

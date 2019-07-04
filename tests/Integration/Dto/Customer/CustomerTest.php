@@ -197,7 +197,7 @@ class CustomerTest extends CustomerBaseTest
         $sampleCustomers  = $this->provideSampleCustomers($createdItemCount);
 
         // Act
-        $response = $this->sdk->getCustomerService()->addCustomers($sampleCustomers, ['requestType' => 'direct']);
+        $response = $this->sdk->getCustomerService()->addCustomers($sampleCustomers);
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(
@@ -251,7 +251,7 @@ class CustomerTest extends CustomerBaseTest
 
         $createAttribute->setValues([$createAttributeValue]);
 
-        $this->sdk->getCustomerService()->addAttributes([$createAttribute], ['requestType' => 'direct']);
+        $this->sdk->getCustomerService()->addAttributes([$createAttribute]);
 
         $attribute = new Customer\Dto\Attribute();
         $attribute->setCode(self::CUSTOMER_ATTRIBUTE_CODE);
@@ -291,7 +291,7 @@ class CustomerTest extends CustomerBaseTest
         $customer->setContacts([$contact]);
 
         // Act
-        $response = $this->sdk->getCustomerService()->addCustomers([$customer], ['requestType' => 'direct']);
+        $response = $this->sdk->getCustomerService()->addCustomers([$customer]);
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(
@@ -375,7 +375,7 @@ class CustomerTest extends CustomerBaseTest
         $createdItemCount = 1;
         $sampleCustomers  = $this->provideSampleCustomers($createdItemCount);
 
-        $response = $this->sdk->getCustomerService()->addCustomers($sampleCustomers, ['requestType' => 'direct']);
+        $response = $this->sdk->getCustomerService()->addCustomers($sampleCustomers);
 
         // Act
         $this->sdk->getCustomerService()->deleteCustomer(
@@ -387,7 +387,7 @@ class CustomerTest extends CustomerBaseTest
 
         // Assert
         try {
-            $this->sdk->getCustomerService()->getCustomer($response['ids'], ['requestType' => 'direct']);
+            $this->sdk->getCustomerService()->getCustomer($response['ids']);
         } catch (Exception $e) {
             $this->assertEquals($e->getMessage(), '{"code":"NotFound","message":"Customer not found"}');
         }
@@ -402,7 +402,7 @@ class CustomerTest extends CustomerBaseTest
         $createdItemCount = 1;
         $sampleCustomers  = $this->provideSampleCustomers($createdItemCount);
 
-        $response = $this->sdk->getCustomerService()->addCustomers($sampleCustomers, ['requestType' => 'direct']);
+        $response = $this->sdk->getCustomerService()->addCustomers($sampleCustomers);
 
         $customerUpdate = new Customer\Update();
         $customerUpdate->setFirstName(self::CUSTOMER_CUSTOMER_FIRSTNAME . ' Update');
@@ -423,10 +423,7 @@ class CustomerTest extends CustomerBaseTest
         // Act
         $this->sdk->getCustomerService()->updateCustomer(
             $response['ids'][0],
-            $customerUpdate,
-            [
-                'requestType' => 'direct',
-            ]
+            $customerUpdate
         );
 
         // CleanUp
@@ -437,7 +434,7 @@ class CustomerTest extends CustomerBaseTest
         );
 
         // Assert
-        $customer = $this->sdk->getCustomerService()->getCustomer($response['ids'][0], ['requestType' => 'direct']);
+        $customer = $this->sdk->getCustomerService()->getCustomer($response['ids'][0]);
         $settings = $customer->getSettings();
 
         // General
@@ -477,7 +474,7 @@ class CustomerTest extends CustomerBaseTest
 
         // Act
         try {
-            $this->sdk->getCustomerService()->addCustomers([$customer], ['requestType' => 'direct']);
+            $this->sdk->getCustomerService()->addCustomers([$customer]);
         } catch (RequestException $exception) {
             // Assert
             $errors  = \GuzzleHttp\json_decode($exception->getMessage(), false);

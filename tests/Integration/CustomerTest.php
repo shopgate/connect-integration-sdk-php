@@ -27,11 +27,6 @@ abstract class CustomerTest extends ShopgateSdkTest
     const METHOD_DELETE_ATTRIBUTE    = 'deleteAttribute';
     const METHOD_DELETE_CONTACT      = 'deleteContact';
     const METHOD_DELETE_CUSTOMER     = 'deleteCustomer';
-    const METHOD_DELETE_REQUEST_META = [
-        self::METHOD_DELETE_ATTRIBUTE => [],
-        self::METHOD_DELETE_CONTACT   => [],
-        self::METHOD_DELETE_CUSTOMER  => [],
-    ];
     const CONTACT_CODE = 'integration-test';
 
     public function setUp()

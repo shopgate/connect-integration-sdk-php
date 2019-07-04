@@ -52,8 +52,7 @@ class AttributeValueTest extends CustomerTest
         // Act
         $this->sdk->getCustomerService()->addAttributeValue(
             self::SAMPLE_ATTRIBUTE_CODE,
-            [$newAttributeValue],
-            ['requestType' => 'direct']
+            [$newAttributeValue]
         );
 
         $addedAttributeValues = $this->sdk->getCustomerService()
@@ -93,8 +92,7 @@ class AttributeValueTest extends CustomerTest
         $this->sdk->getCustomerService()->updateAttributeValue(
             self::SAMPLE_ATTRIBUTE_CODE,
             self::SAMPLE_ATTRIBUTE_VALUE_CODE,
-            $updateAttributeValue,
-            ['requestType' => 'direct']
+            $updateAttributeValue
         );
 
         // CleanUp
@@ -132,15 +130,13 @@ class AttributeValueTest extends CustomerTest
 
         $this->sdk->getCustomerService()->addAttributeValue(
             self::SAMPLE_ATTRIBUTE_CODE,
-            [$newAttributeValue],
-            ['requestType' => 'direct']
+            [$newAttributeValue]
         );
 
         // Act
         $this->sdk->getCustomerService()->deleteAttributeValue(
             self::SAMPLE_ATTRIBUTE_CODE,
-            'to_delete',
-            ['requestType' => 'direct']
+            'to_delete'
         );
 
         // CleanUp
@@ -187,8 +183,7 @@ class AttributeValueTest extends CustomerTest
             // Act
             $this->sdk->getCustomerService()->addAttributeValue(
                 self::SAMPLE_ATTRIBUTE_CODE,
-                [$attributeValue],
-                ['requestType' => 'direct']
+                [$attributeValue]
             );
         } catch (RequestException $exception) {
             // Assert
@@ -258,6 +253,6 @@ class AttributeValueTest extends CustomerTest
 
         $attribute->setValues([$attributeValue]);
 
-        $this->sdk->getCustomerService()->addAttributes([$attribute], ['requestType' => 'direct']);
+        $this->sdk->getCustomerService()->addAttributes([$attribute]);
     }
 }

@@ -129,9 +129,7 @@ class ContactTest extends CustomerTest
             $customer->setContacts([$contact]);
         }
 
-        $response = $this->sdk->getCustomerService()->addCustomers(
-            [$customer], ['requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT]
-        );
+        $response = $this->sdk->getCustomerService()->addCustomers([$customer]);
 
         $id = array_pop($response['ids']);
 

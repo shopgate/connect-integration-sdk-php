@@ -138,19 +138,12 @@ class Customer
 
         return $this->client->doRequest(
             [
-                // general
                 'method'      => 'post',
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'body'        => ['attributes' => $requestAttributes],
                 'query'       => $query,
-                // direct
                 'service'     => 'omni-customer',
                 'path'        => 'attributes',
-                // async
-                'entity'      => 'attribute',
-                'action'      => 'create',
             ]
         );
     }
@@ -177,14 +170,9 @@ class Customer
                 'path'        => 'attributes/' . $code,
                 'entity'      => 'attribute',
                 'query'       => $query,
-                // direct only
                 'action'      => 'update',
                 'body'        => $attribute,
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
-                // async
-                'entityId'    => $code,
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
             ]
         );
     }
@@ -209,11 +197,7 @@ class Customer
                 'path'        => 'attributes/' . $code,
                 'entity'      => 'attribute',
                 'action'      => 'delete',
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
-                // async
-                'entityId'    => $code,
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'query'       => $query,
             ]
         );
@@ -244,9 +228,7 @@ class Customer
                 'entity'      => 'attributes',
                 'action'      => 'create',
                 'body'        => ['values' => $attributeValues],
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'query'       => $query,
             ]
         );
@@ -279,10 +261,7 @@ class Customer
                 'entity'      => 'attribute',
                 'action'      => 'update',
                 'body'        => $attributeValue,
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
-                'entityId'    => $code,
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'query'       => $query,
             ]
         );
@@ -309,9 +288,7 @@ class Customer
                 'path'        => 'attributes/' . $code . '/values/' . $valueCode,
                 'entity'      => 'attribute',
                 'action'      => 'delete',
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'query'       => $query,
             ]
         );
@@ -402,19 +379,12 @@ class Customer
 
         $response = $this->client->doRequest(
             [
-                // general
                 'method'      => 'post',
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'body'        => ['customers' => $requestCustomers],
                 'query'       => $query,
-                // direct
                 'service'     => 'omni-customer',
                 'path'        => 'customers',
-                // async
-                'entity'      => 'customer',
-                'action'      => 'create',
             ]
         );
 
@@ -439,20 +409,14 @@ class Customer
     {
         return $this->client->doRequest(
             [
-                // general
                 'service'     => 'omni-customer',
                 'method'      => 'post',
                 'path'        => 'customers/' . $id,
                 'entity'      => 'customer',
                 'query'       => $query,
-                // direct only
                 'action'      => 'update',
                 'body'        => $customer,
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
-                // async
-                'entityId'    => $id,
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
             ]
         );
     }
@@ -477,11 +441,7 @@ class Customer
                 'path'        => 'customers/' . $id,
                 'entity'      => 'customer',
                 'action'      => 'delete',
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
-                // async
-                'entityId'    => $id,
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'query'       => $query,
             ]
         );

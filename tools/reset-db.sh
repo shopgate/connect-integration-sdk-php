@@ -21,6 +21,7 @@ function retry {
 
 docker-compose exec -T mysql mysql -uroot -psecret < ./fixtures/schema.sql
 docker-compose stop catalog && docker-compose up -d catalog
+docker-compose stop import && docker-compose up -d import
 
 retry "CatalogService" "docker-compose exec -T catalog curl http://localhost/health -o /dev/null 2>&1"
 

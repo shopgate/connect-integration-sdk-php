@@ -33,10 +33,11 @@ use Shopgate\ConnectSdk\Tests\Integration\CatalogTest;
 class CategoryTest extends CatalogTest
 {
     /**
-     * @param int $limit
-     * @param int $offset
-     * @param int $expectedCategoryCount
+     * @param int      $limit
+     * @param int      $offset
+     * @param int      $expectedCategoryCount
      * @param string[] $expectedCategoryCodes
+     *
      * @throws Exception
      *
      * @dataProvider provideCategoryLimitCases
@@ -48,9 +49,7 @@ class CategoryTest extends CatalogTest
         $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
         $this->createCategories(
             $sampleCategories,
-            [
-                'requestType' => 'direct'
-            ]
+            ['requestType' => 'direct']
         );
 
         $parameters = [];
@@ -91,67 +90,65 @@ class CategoryTest extends CatalogTest
     public function provideCategoryLimitCases()
     {
         return [
-            'get the second' => [
-                'limit' => 1,
-                'offset' => 1,
-                'expectedCount' => 1,
+            'get the second'    => [
+                'limit'                 => 1,
+                'offset'                => 1,
+                'expectedCount'         => 1,
                 'expectedCategoryCodes' => [
                     self::CATEGORY_CODE_SECOND
-                ],
+                ]
             ],
-            'get the first' => [
-                'limit' => 1,
-                'offset' => 0,
+            'get the first'     => [
+                'limit'         => 1,
+                'offset'        => 0,
                 'expectedCount' => 1,
                 'expectedCodes' => [
                     self::CATEGORY_CODE
-                ],
+                ]
             ],
-            'get two' => [
-                'limit' => 2,
-                'offset' => 0,
+            'get two'           => [
+                'limit'         => 2,
+                'offset'        => 0,
                 'expectedCount' => 2,
                 'expectedCodes' => [
                     self::CATEGORY_CODE,
                     self::CATEGORY_CODE_SECOND
-                ],
+                ]
             ],
-            'limit 1' => [
-                'limit' => 1,
-                'offset' => null,
+            'limit 1'           => [
+                'limit'         => 1,
+                'offset'        => null,
                 'expectedCount' => 1,
                 'expectedCodes' => [
                     self::CATEGORY_CODE
-                ],
+                ]
             ],
-            'limit 2' => [
-                'limit' => 2,
-                'offset' => null,
+            'limit 2'           => [
+                'limit'         => 2,
+                'offset'        => null,
                 'expectedCount' => 2,
                 'expectedCodes' => [
                     self::CATEGORY_CODE,
                     self::CATEGORY_CODE_SECOND
-                ],
+                ]
             ],
-            'offset 1' => [
-                'limit' => null,
-                'offset' => 1,
+            'offset 1'          => [
+                'limit'         => null,
+                'offset'        => 1,
                 'expectedCount' => 1,
-                'expectedCodes' => [
-                    self::CATEGORY_CODE_SECOND
-                ],
+                'expectedCodes' => [self::CATEGORY_CODE_SECOND]
             ],
-            'offset 2' => [
-                'limit' => null,
-                'offset' => 2,
+            'offset 2'          => [
+                'limit'         => null,
+                'offset'        => 2,
                 'expectedCount' => 0,
-                'expectedCodes' => [],
+                'expectedCodes' => []
             ],
             'no entities found' => [
-                'limit' => 1,
-                'offset' => 2,
+                'limit'         => 1,
+                'offset'        => 2,
                 'expectedCount' => 0,
-                'expectedCodes' => [],
+                'expectedCodes' => []
             ]
         ];
     }
@@ -168,9 +165,7 @@ class CategoryTest extends CatalogTest
         // Act
         $this->createCategories(
             $sampleCategories,
-            [
-                'requestType' => 'direct'
-            ]
+            ['requestType' => 'direct']
         );
 
         // CleanUp
@@ -205,9 +200,7 @@ class CategoryTest extends CatalogTest
         $this->sdk->getCatalogService()->updateCategory(
             self::CATEGORY_CODE,
             $category,
-            [
-                'requestType' => 'direct'
-            ]
+            ['requestType' => 'direct']
         );
 
         // CleanUp
@@ -246,7 +239,10 @@ class CategoryTest extends CatalogTest
                     1,
                     'http://www.google.de/image.png',
                     'https://www.google.de',
-                    'test description'
+                    'test description',
+                    null,
+                    '2019-12-15T00:00:00.000Z',
+                    Category::STATUS_INACTIVE
                 )
             ],
             ['requestType' => 'direct']
@@ -257,9 +253,7 @@ class CategoryTest extends CatalogTest
         $this->sdk->getCatalogService()->updateCategory(
             self::CATEGORY_CODE,
             $category,
-            [
-                'requestType' => 'direct'
-            ]
+            ['requestType' => 'direct']
         );
 
         // CleanUp
@@ -315,6 +309,18 @@ class CategoryTest extends CatalogTest
                 ],
                 'expectedValue'      => self::PARENT_CATEGORY_CODE
             ],
+            'externalUpdateDate' => [
+                'updateCategoryData' => [
+                    'externalUpdateDate' => '2019-12-21T00:00:00.000Z',
+                ],
+                'expectedValue'      => '2019-12-21T00:00:00.000Z'
+            ],
+            'status'             => [
+                'updateCategoryData' => [
+                    'status' => Category::STATUS_ACTIVE,
+                ],
+                'expectedValue'      => Category::STATUS_ACTIVE
+            ]
         ];
     }
 
@@ -331,9 +337,7 @@ class CategoryTest extends CatalogTest
         foreach ($this->getCategoryCodes($sampleCategories) as $categoryCode) {
             $this->sdk->getCatalogService()->deleteCategory(
                 $categoryCode,
-                [
-                    'requestType' => 'direct'
-                ]
+                ['requestType' => 'direct']
             );
         }
 
@@ -384,9 +388,7 @@ class CategoryTest extends CatalogTest
         try {
             $this->createCategories(
                 [$category],
-                [
-                    'requestType' => 'direct'
-                ]
+                ['requestType' => 'direct']
             );
         } catch (RequestException $exception) {
             // Assert
@@ -446,9 +448,7 @@ class CategoryTest extends CatalogTest
         try {
             $this->createCategories(
                 [$category],
-                [
-                    'requestType' => 'direct'
-                ]
+                ['requestType' => 'direct']
             );
         } catch (RequestException $exception) {
             // Assert
@@ -547,9 +547,7 @@ class CategoryTest extends CatalogTest
         );
         $this->sdk->getCatalogService()->addCategories(
             [$existingCategory],
-            [
-                'requestType' => 'direct'
-            ]
+            ['requestType' => 'direct']
         );
         $updateCategory = new Category\Update();
 
@@ -557,9 +555,7 @@ class CategoryTest extends CatalogTest
         $response = $this->sdk->getCatalogService()->updateCategory(
             $categoryCode,
             $updateCategory,
-            [
-                'requestType' => 'direct'
-            ]
+            ['requestType' => 'direct']
         );
 
         // Assert
@@ -585,9 +581,7 @@ class CategoryTest extends CatalogTest
         $this->sdk->getCatalogService()->updateCategory(
             $nonExistentCategoryCode,
             $category,
-            [
-                'requestType' => 'direct'
-            ]
+            ['requestType' => 'direct']
         );
     }
 
@@ -686,7 +680,9 @@ class CategoryTest extends CatalogTest
      */
     public function testCreateCategoryEventWithMissingRequiredFields(array $categoryData, $expectedException)
     {
-        $this->markTestSkipped('Currently there is no validation for events! Waiting for the implementation in service');
+        $this->markTestSkipped(
+            'Currently there is no validation for events! Waiting for the implementation in service'
+        );
 
         // Arrange
         $category = new Category\Create($categoryData);
@@ -708,7 +704,9 @@ class CategoryTest extends CatalogTest
      */
     public function testCreateCategoryEventInvalidDataTypes($categoryData, $expectedException)
     {
-        $this->markTestSkipped('Currently there is no validation for events! Waiting for the implementation in service');
+        $this->markTestSkipped(
+            'Currently there is no validation for events! Waiting for the implementation in service'
+        );
 
         // Arrange
         $category = new Category\Create($categoryData);

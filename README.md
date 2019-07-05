@@ -120,7 +120,7 @@ $categoryPayload1->setCode('pants')->setName($name1)->setSequenceId(1);
 // create new category 2
 $categoryPayload2 = new Category\Create();
 $name2            = new Category\Dto\Name(['en-us' => 'Denim Shirts']);
-$categoryPayload2->setCode('shirts')->setName($name1)->setSequenceId(1);
+$categoryPayload2->setCode('shirts')->setName($name2)->setSequenceId(1);
 
 // init stream import
 //$handler = $sgSdk->getBulkImportService()->createStreamImport();

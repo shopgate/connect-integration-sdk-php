@@ -151,7 +151,7 @@ class Feed
                         'PUT',
                         $this->url,
                         ['body' => $this->stream]
-                    );;
+                    );
                     break;
                 case File::HANDLER_TYPE:
                     fwrite($this->stream, ']');

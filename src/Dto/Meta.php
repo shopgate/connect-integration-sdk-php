@@ -25,12 +25,22 @@ namespace Shopgate\ConnectSdk\Dto;
 use Shopgate\ConnectSdk\Dto\Base as DtoBase;
 
 /**
- * Default class that handles localized strings in Dtos
- *
  * @method int getLimit()
  * @method int getOffset()
  * @method int getTotalItemCount()
  */
 class Meta extends DtoBase
 {
+    /**
+     * @var array
+     */
+    protected $schema = [
+        'type'                 => 'object',
+        'properties'           => [
+            'limit'          => ['type' => 'integer'],
+            'offset'         => ['type' => 'integer'],
+            'totalItemCount' => ['type' => 'integer']
+        ],
+        'additionalProperties' => true
+    ];
 }

@@ -35,7 +35,6 @@ class InventoryTest extends CatalogTest
     const LOCATION_CODE = 'WHS1';
 
     /**
-     * @return mixed
      * @throws Exception
      */
     public function createLocation()
@@ -104,18 +103,18 @@ class InventoryTest extends CatalogTest
 
         // Assert
         $product          = $this->sdk->getCatalogService()->getProduct(self::PRODUCT_CODE, ['fields' => 'inventory']);
-        $inventory        = $product->getInventory();
+        $inventory        = $product->inventory;
         $currentInventory = new Inventory($inventory[0]);
 
-        $this->assertEquals(self::LOCATION_CODE, $currentInventory->getLocationCode());
-        $this->assertEquals('SKU_1', $currentInventory->getSku());
-        $this->assertEquals(11, $currentInventory->getOnHand());
-        $this->assertEquals(0, $currentInventory->getOnReserve());
-        $this->assertEquals(1, $currentInventory->getSafetyStock());
-        $this->assertEquals(11, $currentInventory->getAvailable());
-        $this->assertEquals(10, $currentInventory->getVisible());
-        $this->assertEquals('1', $currentInventory->getBin());
-        $this->assertEquals('DE-1', $currentInventory->getBinLocation());
+        $this->assertEquals(self::LOCATION_CODE, $currentInventory->locationCode);
+        $this->assertEquals('SKU_1', $currentInventory->sku);
+        $this->assertEquals(11, $currentInventory->onHand);
+        $this->assertEquals(0, $currentInventory->onReserve);
+        $this->assertEquals(1, $currentInventory->safetyStock);
+        $this->assertEquals(11, $currentInventory->available);
+        $this->assertEquals(10, $currentInventory->visible);
+        $this->assertEquals('1', $currentInventory->bin);
+        $this->assertEquals('DE-1', $currentInventory->binLocation);
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(
@@ -170,7 +169,7 @@ class InventoryTest extends CatalogTest
 
         // Assert
         $product = $this->sdk->getCatalogService()->getProduct(self::PRODUCT_CODE, ['fields' => 'inventory']);
-        $this->assertCount(0, $product->getInventory());
+        $this->assertCount(0, $product->inventory);
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(
@@ -206,18 +205,18 @@ class InventoryTest extends CatalogTest
         // Assert
         $product = $this->sdk->getCatalogService()->getProduct(self::PRODUCT_CODE, ['fields' => 'inventory']);
 
-        $inventory        = $product->getInventory();
+        $inventory        = $product->inventory;
         $currentInventory = new Inventory($inventory[0]);
 
-        $this->assertEquals(self::LOCATION_CODE, $currentInventory->getLocationCode());
-        $this->assertEquals('SKU_1', $currentInventory->getSku());
-        $this->assertEquals(21, $currentInventory->getOnHand());
-        $this->assertEquals(0, $currentInventory->getOnReserve());
-        $this->assertEquals(1, $currentInventory->getSafetyStock());
-        $this->assertEquals(21, $currentInventory->getAvailable());
-        $this->assertEquals(20, $currentInventory->getVisible());
-        $this->assertEquals('1', $currentInventory->getBin());
-        $this->assertEquals('DE-1', $currentInventory->getBinLocation());
+        $this->assertEquals(self::LOCATION_CODE, $currentInventory->locationCode);
+        $this->assertEquals('SKU_1', $currentInventory->sku);
+        $this->assertEquals(21, $currentInventory->onHand);
+        $this->assertEquals(0, $currentInventory->onReserve);
+        $this->assertEquals(1, $currentInventory->safetyStock);
+        $this->assertEquals(21, $currentInventory->available);
+        $this->assertEquals(20, $currentInventory->visible);
+        $this->assertEquals('1', $currentInventory->bin);
+        $this->assertEquals('DE-1', $currentInventory->binLocation);
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(
@@ -323,18 +322,18 @@ class InventoryTest extends CatalogTest
         // Assert
         $product = $this->sdk->getCatalogService()->getProduct(self::PRODUCT_CODE, ['fields' => 'inventory']);
 
-        $inventory        = $product->getInventory();
+        $inventory        = $product->inventory;
         $currentInventory = new Inventory($inventory[0]);
 
-        $this->assertEquals(self::LOCATION_CODE, $currentInventory->getLocationCode());
-        $this->assertEquals('SKU_1', $currentInventory->getSku());
-        $this->assertEquals(6, $currentInventory->getOnHand());
-        $this->assertEquals(0, $currentInventory->getOnReserve());
-        $this->assertEquals(1, $currentInventory->getSafetyStock());
-        $this->assertEquals(6, $currentInventory->getAvailable());
-        $this->assertEquals(5, $currentInventory->getVisible());
-        $this->assertEquals('1', $currentInventory->getBin());
-        $this->assertEquals('DE-1', $currentInventory->getBinLocation());
+        $this->assertEquals(self::LOCATION_CODE, $currentInventory->locationCode);
+        $this->assertEquals('SKU_1', $currentInventory->sku);
+        $this->assertEquals(6, $currentInventory->onHand);
+        $this->assertEquals(0, $currentInventory->onReserve);
+        $this->assertEquals(1, $currentInventory->safetyStock);
+        $this->assertEquals(6, $currentInventory->available);
+        $this->assertEquals(5, $currentInventory->visible);
+        $this->assertEquals('1', $currentInventory->bin);
+        $this->assertEquals('DE-1', $currentInventory->binLocation);
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(
@@ -431,13 +430,13 @@ class InventoryTest extends CatalogTest
         // Assert
         $product = $this->sdk->getCatalogService()->getProduct(self::PRODUCT_CODE, ['fields' => 'inventory']);
 
-        $inventory        = $product->getInventory();
+        $inventory        = $product->inventory;
         $currentInventory = new Inventory($inventory[0]);
 
-        $this->assertEquals($expectedOnHand, $currentInventory->getOnHand());
-        $this->assertEquals($expectedAvailable, $currentInventory->getAvailable());
-        $this->assertEquals($expectedSafetyStock, $currentInventory->getSafetyStock());
-        $this->assertEquals($expectedVisible, $currentInventory->getVisible());
+        $this->assertEquals($expectedOnHand, $currentInventory->onHand);
+        $this->assertEquals($expectedAvailable, $currentInventory->available);
+        $this->assertEquals($expectedSafetyStock, $currentInventory->safetyStock);
+        $this->assertEquals($expectedVisible, $currentInventory->visible);
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(
@@ -484,13 +483,13 @@ class InventoryTest extends CatalogTest
         // Assert
         $product = $this->sdk->getCatalogService()->getProduct(self::PRODUCT_CODE, ['fields' => 'inventory']);
 
-        $inventory        = $product->getInventory();
+        $inventory        = $product->inventory;
         $currentInventory = new Inventory($inventory[0]);
 
-        $this->assertEquals($expectedOnHand, $currentInventory->getOnHand());
-        $this->assertEquals($expectedAvailable, $currentInventory->getAvailable());
-        $this->assertEquals($expectedSafetyStock, $currentInventory->getSafetyStock());
-        $this->assertEquals($expectedVisible, $currentInventory->getVisible());
+        $this->assertEquals($expectedOnHand, $currentInventory->onHand);
+        $this->assertEquals($expectedAvailable, $currentInventory->available);
+        $this->assertEquals($expectedSafetyStock, $currentInventory->safetyStock);
+        $this->assertEquals($expectedVisible, $currentInventory->visible);
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(

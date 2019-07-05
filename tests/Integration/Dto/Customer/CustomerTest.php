@@ -369,8 +369,8 @@ class CustomerTest extends CustomerBaseTest
         // Assert
         try {
             $this->sdk->getCustomerService()->getCustomer($response['ids'][0]);
-        } catch (Exception $e) {
-            $this->assertEquals($e->getMessage(), '{"code":"NotFound","message":"Customer not found"}');
+        } catch (NotFoundException $exception) {
+            $this->assertEquals($exception->getMessage(), '{"code":"NotFound","message":"Customer not found"}');
         }
     }
 

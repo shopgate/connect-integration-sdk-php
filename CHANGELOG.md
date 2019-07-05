@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - addInventory direct logic
 - updateInventory direct logic
 - deleteInventory direct logic
+- bulkImport for inventory
 
 ## [0.5.0]- 2019-06-28
 ### Added

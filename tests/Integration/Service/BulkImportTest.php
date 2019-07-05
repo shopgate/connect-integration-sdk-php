@@ -3,7 +3,6 @@
 
 namespace Shopgate\ConnectSdk\Tests\Integration\Http;
 
-
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Tests\Integration\CatalogTest;
 

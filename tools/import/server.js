@@ -9,13 +9,11 @@ const HOST = '0.0.0.0';
 
 const app = express();
 
-app.use(express.json());
-
 app.post('/', (req, res) => {
     fork('/src/index.js', [
-        '--merchantCode', req.body.MERCHANT_CODE,
-        '--referenceId', req.body.REFERENCE_ID,
-        '--key', req.body.KEY
+        '--merchantCode', req.query.variables.MERCHANT_CODE,
+        '--referenceId', req.query.variables.REFERENCE_ID,
+        '--key', req.query.variables.KEY,
     ]);
     res.status(200).send();
 });

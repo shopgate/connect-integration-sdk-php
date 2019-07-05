@@ -29,6 +29,7 @@ use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
+use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;

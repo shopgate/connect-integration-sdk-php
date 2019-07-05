@@ -22,18 +22,13 @@
 
 namespace Shopgate\ConnectSdk\Tests\Integration\Dto\Customer;
 
-use Psr\Http\Message\ResponseInterface;
-use Shopgate\ConnectSdk\Dto\Catalog\Attribute\Dto\Name;
 use Shopgate\ConnectSdk\Dto\Customer\Attribute;
+use Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
 use Shopgate\ConnectSdk\Dto\Customer\Contact;
 use Shopgate\ConnectSdk\Dto\Customer\Customer;
-use Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
-
-use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
-use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Tests\Integration\CustomerTest as CustomerBaseTest;
 
 class CustomerTest extends CustomerBaseTest
@@ -77,10 +72,7 @@ class CustomerTest extends CustomerBaseTest
         // Arrange
         $createdItemCount = 10;
         $sampleCustomers  = $this->provideSampleCustomers($createdItemCount);
-        $response         = $this->sdk->getCustomerService()->addCustomers(
-            $sampleCustomers,
-            ['requestType' => 'direct']
-        );
+        $response         = $this->sdk->getCustomerService()->addCustomers($sampleCustomers);
 
         // Act
         $customers = $this->sdk->getCustomerService()->getCustomers()->getCustomers();
@@ -138,10 +130,7 @@ class CustomerTest extends CustomerBaseTest
         // Arrange
         $createdItemCount = 10;
         $sampleCustomers  = $this->provideSampleCustomers($createdItemCount);
-        $response         = $this->sdk->getCustomerService()->addCustomers(
-            $sampleCustomers,
-            ['requestType' => 'direct']
-        );
+        $response         = $this->sdk->getCustomerService()->addCustomers($sampleCustomers);
 
         // Act
         $meta = $this->sdk->getCustomerService()->getCustomers()->getMeta();
@@ -166,10 +155,7 @@ class CustomerTest extends CustomerBaseTest
         // Arrange
         $createdItemCount = 10;
         $sampleCustomers  = $this->provideSampleCustomers($createdItemCount);
-        $response         = $this->sdk->getCustomerService()->addCustomers(
-            $sampleCustomers,
-            ['requestType' => 'direct']
-        );
+        $response         = $this->sdk->getCustomerService()->addCustomers($sampleCustomers);
 
         // Act
         $customer = $this->sdk->getCustomerService()->getCustomer($response['ids'][1]);
@@ -378,16 +364,11 @@ class CustomerTest extends CustomerBaseTest
         $response = $this->sdk->getCustomerService()->addCustomers($sampleCustomers);
 
         // Act
-        $this->sdk->getCustomerService()->deleteCustomer(
-            $response['ids'][0],
-            [
-                'requestType' => 'direct',
-            ]
-        );
+        $this->sdk->getCustomerService()->deleteCustomer($response['ids'][0]);
 
         // Assert
         try {
-            $this->sdk->getCustomerService()->getCustomer($response['ids']);
+            $this->sdk->getCustomerService()->getCustomer($response['ids'][0]);
         } catch (Exception $e) {
             $this->assertEquals($e->getMessage(), '{"code":"NotFound","message":"Customer not found"}');
         }

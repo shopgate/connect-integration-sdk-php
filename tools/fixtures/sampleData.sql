@@ -26,13 +26,6 @@ INSERT IGNORE INTO location.`LocationType` (`LocationTypeID`, `LocationTypeCode`
 VALUES
 ('1', 'warehouse', 'Warehouse Location', 'Johnny Bravo', '2018-11-11 16:50:18', NULL, NULL, NULL, NULL);
 
-INSERT IGNORE INTO location.`Location` (`LocationID`, `MerchantID`, `LocationTypeID`, `LocationCode`, `LocationName`, `LocationStatus`, `Latitude`, `Longitude`, `CreateBy`, `IsDefault`)
-VALUES
-('1', '1', '1', 'WHS1', 'Test Merchant 1 Warehouse 1', 'active', '50.117330', '9.681810', 'Johnny Bravo', 1),
-('2', '1', '1', 'WHS2', 'Test Merchant 1 Warehouse 3', 'active', '45.117330', '19.681810', 'Johnny Bravo', 0),
-('3', '2', '1', 'WHS1', 'Test Merchant 2 Warehouse 1', 'active', '47.117330', '20.681810', 'Scooby Doo', 1),
-('4', '2', '1', 'WHS2', 'Test Merchant 2 Warehouse 2', 'active', '51.117330', '10.681810', 'Shaggy', 0);
-
 INSERT IGNORE INTO catalog.`ParentCatalog` (`ParentCatalogID`, `MerchantID`, `ParentCatalogCode`, `ParentCatalogName`, `DefaultLocaleCode`, `DefaultCurrencyCode`, `Status`, `isDefault`, `CreateBy`, `CreateDate`, `UpdateBy`, `UpdateDate`, `DeleteBy`, `DeleteDate`)
 VALUES
 (1, '1', 'TM1C', 'Test Merchant 1 Global Catalog', 'en-us', 'USD', 'Active', '1', 'Johnny', '2018-12-14 20:03:42', NULL, NULL, NULL, NULL),

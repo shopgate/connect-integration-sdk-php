@@ -77,8 +77,8 @@ CREATE TABLE location.`Location` (
   `LocationCode` varchar(45) CHARACTER SET utf8 NOT NULL,
   `LocationName` varchar(255) CHARACTER SET utf8 NOT NULL,
   `LocationStatus` enum('active','inactive','deleted','onhold') DEFAULT 'active',
-  `Latitude` varchar(50) DEFAULT NULL,
-  `Longitude` varchar(50) DEFAULT NULL,
+  `Latitude` float(10,6) DEFAULT NULL,
+  `Longitude` float(10,6) DEFAULT NULL,
   `TimeZone` varchar(40) DEFAULT NULL,
   `LocaleCode` varchar(5) DEFAULT NULL,
   `IsDefault` tinyint(1) DEFAULT '0',
@@ -90,7 +90,7 @@ CREATE TABLE location.`Location` (
   `DeleteBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `DeleteDate` datetime DEFAULT NULL,
   PRIMARY KEY (`LocationID`),
-  UNIQUE KEY `LocName` (`MerchantID`,`LocationCode`),
+  KEY `LocMerchant` (`MerchantID`),
   KEY `LocationTypeID_idx` (`LocationTypeID`),
   CONSTRAINT `LocationTypeID` FOREIGN KEY (`LocationTypeID`) REFERENCES `LocationType` (`LocationTypeID`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -98,7 +98,7 @@ CREATE TABLE location.`Location` (
 DROP TABLE IF EXISTS location.`LocationAddress`;
 
 CREATE TABLE location.`LocationAddress` (
-  `LocationAddressID` char(36) NOT NULL DEFAULT '',
+  `LocationAddressId` bigint(21) unsigned NOT NULL AUTO_INCREMENT,
   `LocationID` char(36) NOT NULL DEFAULT '',
   `AddressName` varchar(255) CHARACTER SET utf8 NOT NULL,
   `AddressCode` varchar(50) CHARACTER SET utf8 NOT NULL,
@@ -122,7 +122,7 @@ CREATE TABLE location.`LocationAddress` (
   `DeleteDate` datetime DEFAULT NULL,
   PRIMARY KEY (`LocationAddressID`),
   KEY `LocationID_idx` (`LocationID`),
-  CONSTRAINT `LocationID` FOREIGN KEY (`LocationID`) REFERENCES `Location` (`LocationID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `FKLocAddrLoc_idx` FOREIGN KEY (`LocationID`) REFERENCES `Location` (`LocationID`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS location.`LocationDetail`;
@@ -134,7 +134,7 @@ CREATE TABLE location.`LocationDetail` (
   `LocationImage` varchar(255) DEFAULT NULL,
   `LocationDepartments` json DEFAULT NULL,
   `LocationServices` json DEFAULT NULL,
-  `CreatedBy` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `CreateBy` varchar(255) CHARACTER SET utf8 NOT NULL,
   `CreateDate` datetime NOT NULL,
   `UpdateBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `UpdateDate` datetime DEFAULT NULL,
@@ -143,6 +143,45 @@ CREATE TABLE location.`LocationDetail` (
   PRIMARY KEY (`LocationDetailID`),
   KEY `FKLocDtlLoc_idx` (`LocationID`),
   CONSTRAINT `FKLocDtlLoc` FOREIGN KEY (`LocationID`) REFERENCES `Location` (`LocationID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS location.`LocationSetting`;
+
+CREATE TABLE location.`LocationSetting` (
+  `LocationSettingID` char(36) NOT NULL,
+  `LocationID` char(36) NOT NULL,
+  `SettingKey` varchar(255) DEFAULT NULL,
+  `SettingValue` varchar(255) DEFAULT NULL,
+  `SettingType` enum('string', 'boolean', 'number') DEFAULT 'string',
+  `CreateBy` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `CreateDate` datetime NOT NULL,
+  `UpdateBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL,
+  `DeleteBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `DeleteDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`LocationSettingID`),
+  UNIQUE KEY `idx_LocSet_Location_SettingKey` (`LocationID`, `SettingKey`),
+  CONSTRAINT `FKLocSetLoc` FOREIGN KEY (`LocationID`) REFERENCES `Location` (`LocationID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS location.`LocationInventorySetting`;
+
+CREATE TABLE location.`LocationInventorySetting` (
+  `LocationInventorySettingID` char(36) NOT NULL,
+  `LocationID` char(36) NOT NULL,
+  `IsManaged` tinyint(1) DEFAULT 0,
+  `Mode` enum('blind', 'integrated') DEFAULT 'blind',
+  `SafetyStockMode` enum('enabled', 'disabled') DEFAULT 'disabled',
+  `SafetyStock` int(11) DEFAULT 0,
+  `SafetyStockType` enum('percentage', 'count') DEFAULT 'count',
+  `CreateBy` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `CreateDate` datetime NOT NULL,
+  `UpdateBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL,
+  `DeleteBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `DeleteDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`LocationInventorySettingID`),
+  CONSTRAINT `FKLocInvLoc` FOREIGN KEY (`LocationID`) REFERENCES `Location` (`LocationID`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS location.`LocationGroup`;
@@ -162,7 +201,8 @@ CREATE TABLE location.`LocationGroup` (
   PRIMARY KEY (`LocationGroupID`),
   KEY `FK_LG_Merc` (`MerchantID`),
   KEY `FK_LG_LS` (`StatusID`),
-  CONSTRAINT `FK_LG_LS` FOREIGN KEY (`StatusID`) REFERENCES `LocationGroupStatus` (`StatusID`)
+  CONSTRAINT `FK_LG_LS` FOREIGN KEY (`StatusID`) REFERENCES `LocationGroupStatus` (`StatusID`),
+  CONSTRAINT `FK_LG_Merc` FOREIGN KEY (`MerchantID`) REFERENCES `Merchant` (`MerchantID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS location.`LocationGroupMember`;

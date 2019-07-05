@@ -22,15 +22,71 @@
 
 namespace Shopgate\ConnectSdk\Tests\Integration\Dto\Catalog;
 
+use Shopgate\ConnectSdk\Dto\Base;
 use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\Exception;
+use Shopgate\ConnectSdk\ShopgateSdk;
 use Shopgate\ConnectSdk\Tests\Integration\CatalogTest;
 
 class InventoryTest extends CatalogTest
 {
     const LOCATION_CODE = 'WHS1';
+
+    /**
+     * @return mixed
+     * @throws Exception
+     */
+    public function createLocation()
+    {
+        $locations = [
+            'locations' => [
+                new Base([
+                    'code'      => self::LOCATION_CODE,
+                    'name'      => 'Test Merchant 2 Warehouse 1',
+                    'status'    => 'active',
+                    'latitude'  => 47.117330,
+                    'longitude' => 20.681810,
+                    'type'      => [
+                        'code' => 'warehouse'
+                    ]
+                ])
+            ]
+        ];
+        $this->sdk->getClient()->doRequest(
+            [
+                // general
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
+                'body'        => $locations,
+                'query'       => [],
+                // direct
+                'method'      => 'post',
+                'service'     => 'omni-location',
+                'path'        => 'locations',
+            ]
+        );
+    }
+
+    /**
+     * @param $locationCode
+     *
+     * @throws Exception
+     */
+    public function deleteLocation($locationCode)
+    {
+        $this->sdk->getClient()->doRequest(
+            [
+                // general
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
+                'query'       => [],
+                // direct
+                'method'      => 'delete',
+                'service'     => 'omni-location',
+                'path'        => 'locations/' . $locationCode,
+            ]
+        );
+    }
 
     /**
      * @throws Exception
@@ -40,6 +96,7 @@ class InventoryTest extends CatalogTest
         // Arrange
         $product = $this->prepareProductMinimum();
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
+        $this->createLocation();
 
         // Act
         $inventories = $this->provideSampleInventories(1);
@@ -66,6 +123,7 @@ class InventoryTest extends CatalogTest
             self::METHOD_DELETE_PRODUCT,
             [self::PRODUCT_CODE]
         );
+        $this->deleteLocation(self::LOCATION_CODE);
     }
 
     /**
@@ -97,6 +155,7 @@ class InventoryTest extends CatalogTest
     public function testDeleteInventoryDirect()
     {
         // Arrange
+        $this->createLocation();
         $product = $this->prepareProductMinimum();
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
         $inventories = $this->provideSampleInventories(1);
@@ -119,6 +178,7 @@ class InventoryTest extends CatalogTest
             self::METHOD_DELETE_PRODUCT,
             [self::PRODUCT_CODE]
         );
+        $this->deleteLocation(self::LOCATION_CODE);
     }
 
     /**
@@ -127,6 +187,7 @@ class InventoryTest extends CatalogTest
     public function testUpdateInventoryIncrementDirect()
     {
         // Arrange
+        $this->createLocation();
         $product = $this->prepareProductMinimum();
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
         $inventories = $this->provideSampleInventories(1);
@@ -164,6 +225,7 @@ class InventoryTest extends CatalogTest
             self::METHOD_DELETE_PRODUCT,
             [self::PRODUCT_CODE]
         );
+        $this->deleteLocation(self::LOCATION_CODE);
     }
 
     /**
@@ -172,6 +234,7 @@ class InventoryTest extends CatalogTest
     public function testInvalidLocationCode()
     {
         // Arrange
+        $this->createLocation();
         $product = $this->prepareProductMinimum();
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
         $inventories = $this->provideSampleInventories(1);
@@ -194,6 +257,7 @@ class InventoryTest extends CatalogTest
                 self::METHOD_DELETE_PRODUCT,
                 [self::PRODUCT_CODE]
             );
+            $this->deleteLocation(self::LOCATION_CODE);
         }
 
         $this->fail('Expected NotFoundException but wasn\'t thrown');
@@ -205,6 +269,7 @@ class InventoryTest extends CatalogTest
     public function testInvalidProductCode()
     {
         // Arrange
+        $this->createLocation();
         $product = $this->prepareProductMinimum();
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
         $inventories = $this->provideSampleInventories(1);
@@ -227,6 +292,7 @@ class InventoryTest extends CatalogTest
                 self::METHOD_DELETE_PRODUCT,
                 [self::PRODUCT_CODE]
             );
+            $this->deleteLocation(self::LOCATION_CODE);
         }
 
         $this->fail('Expected NotFoundException but wasn\'t thrown');
@@ -238,6 +304,7 @@ class InventoryTest extends CatalogTest
     public function testUpdateInventoryDecrementDirect()
     {
         // Arrange
+        $this->createLocation();
         $product = $this->prepareProductMinimum();
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
         $inventories = $this->provideSampleInventories(1);
@@ -275,6 +342,7 @@ class InventoryTest extends CatalogTest
             self::METHOD_DELETE_PRODUCT,
             [self::PRODUCT_CODE]
         );
+        $this->deleteLocation(self::LOCATION_CODE);
     }
 
     /**
@@ -292,6 +360,7 @@ class InventoryTest extends CatalogTest
         $missingItem
     ) {
         // Arrange
+        $this->createLocation();
         $product = $this->prepareProductMinimum();
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
         $inventory = new Inventory\Create($inventoryData);
@@ -320,6 +389,7 @@ class InventoryTest extends CatalogTest
                 self::METHOD_DELETE_PRODUCT,
                 [self::PRODUCT_CODE]
             );
+            $this->deleteLocation(self::LOCATION_CODE);
         }
 
         $this->fail('Expected ' . get_class($expectedException) . ' but wasn\'t thrown');
@@ -344,6 +414,7 @@ class InventoryTest extends CatalogTest
         $expectedVisible
     ) {
         // Arrange
+        $this->createLocation();
         $product = $this->prepareProductMinimum();
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
         $inventories = $this->provideSampleInventories(1);
@@ -374,6 +445,7 @@ class InventoryTest extends CatalogTest
             self::METHOD_DELETE_PRODUCT,
             [self::PRODUCT_CODE]
         );
+        $this->deleteLocation(self::LOCATION_CODE);
     }
 
     /**
@@ -395,6 +467,7 @@ class InventoryTest extends CatalogTest
         $expectedVisible
     ) {
         // Arrange
+        $this->createLocation();
         $product = $this->prepareProductMinimum();
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
         $inventories = $this->provideSampleInventories(1);
@@ -425,6 +498,7 @@ class InventoryTest extends CatalogTest
             self::METHOD_DELETE_PRODUCT,
             [self::PRODUCT_CODE]
         );
+        $this->deleteLocation(self::LOCATION_CODE);
     }
 
     /**

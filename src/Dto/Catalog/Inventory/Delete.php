@@ -25,8 +25,6 @@ namespace Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 
 /**
- * Default class that handles validation for attribute Create payloads.
- *
  * @method Delete setProductCode(string $productCode)
  * @method Delete setLocationCode(string $locationCode)
  * @method Delete setSku(string $sku)

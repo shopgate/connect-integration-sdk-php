@@ -29,6 +29,7 @@ use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
+use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
@@ -592,6 +593,92 @@ class Catalog
                 'path'        => 'attributes/' . $attributeCode . '/values/' . $attributeValueCode,
                 'entity'      => 'attribute',
                 'action'      => 'delete',
+                'requestType' => isset($query['requestType'])
+                    ? $query['requestType']
+                    : ShopgateSdk::REQUEST_TYPE_EVENT,
+                'query'       => $query,
+            ]
+        );
+    }
+
+    /**
+     * @param Inventory\Create[] $inventories
+     * @param array              $query
+     *
+     * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function addInventories(array $inventories, array $query = [])
+    {
+        return $this->client->doRequest(
+            [
+                'service'     => 'catalog',
+                'method'      => 'post',
+                'path'        => 'inventories',
+                'entity'      => 'inventory',
+                'action'      => 'create',
+                'body'        => ['inventories' => $inventories],
+                'requestType' => isset($query['requestType'])
+                    ? $query['requestType']
+                    : ShopgateSdk::REQUEST_TYPE_EVENT,
+                'query'       => $query,
+            ]
+        );
+    }
+
+    /**
+     * @param Inventory\Delete[] $inventories
+     * @param array              $query
+     *
+     * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function deleteInventories(array $inventories, array $query = [])
+    {
+        return $this->client->doRequest(
+            [
+                'service'     => 'catalog',
+                'method'      => 'delete',
+                'path'        => 'inventories',
+                'entity'      => 'inventory',
+                'body'        => ['inventories' => $inventories],
+                'action'      => 'delete',
+                'requestType' => isset($query['requestType'])
+                    ? $query['requestType']
+                    : ShopgateSdk::REQUEST_TYPE_EVENT,
+                'query'       => $query,
+            ]
+        );
+    }
+
+    /**
+     * @param Inventory\Update[] $inventories
+     * @param array              $query
+     *
+     * @return ResponseInterface
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function updateInventories($inventories, array $query = [])
+    {
+        return $this->client->doRequest(
+            [
+                'service'     => 'catalog',
+                'method'      => 'patch',
+                'path'        => 'inventories',
+                'entity'      => 'inventory',
+                'body'        => ['inventories' => $inventories],
+                'action'      => 'update',
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,

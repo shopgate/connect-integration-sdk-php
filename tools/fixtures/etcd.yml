@@ -48,6 +48,8 @@ development:
         password: secret
         port: 3306
         user: root
+      elasticSearch:
+        url: http://elasticsearch:9200
 
     CatalogService:
       mysql:

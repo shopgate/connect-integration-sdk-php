@@ -709,22 +709,6 @@ class ProductTest extends CatalogTest
         ];
     }
 
-    /**‚
-     * Retrieves the default product with minimum details needed
-     *
-     * @return Product\Create
-     */
-    private function prepareProductMinimum()
-    {
-        $productPayload = new Product\Create();
-
-        return $productPayload
-            ->setName(new Name(['en-us' => 'English Product name']))
-            ->setCode(self::PRODUCT_CODE)
-            ->setModelType(Product\Create::MODEL_TYPE_STANDARD)
-            ->setIsInventoryManaged(true);
-    }
-
     /**
      * @return Categories[]
      */

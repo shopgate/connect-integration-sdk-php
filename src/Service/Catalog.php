@@ -606,6 +606,7 @@ class Catalog
      * @param array              $query
      *
      * @return ResponseInterface
+     *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
@@ -634,6 +635,7 @@ class Catalog
      * @param array              $query
      *
      * @return ResponseInterface
+     *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException

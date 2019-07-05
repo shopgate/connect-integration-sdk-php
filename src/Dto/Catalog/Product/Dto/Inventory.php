@@ -27,22 +27,22 @@ use Shopgate\ConnectSdk\Dto\Base;
 /**
  * @method Inventory setLocationCode(string $mfgPartNum)
  * @method Inventory setSku(string $sku)
- * @method Inventory setOnHand(float $onHand)
- * @method Inventory setOnReserve(float $onReserve)
- * @method Inventory setSafetyStock(float $safetyStock)
- * @method Inventory setAvailable(float $available)
- * @method Inventory setVisible(float $visible)
+ * @method Inventory setOnHand(integer $onHand)
+ * @method Inventory setOnReserve(integer $onReserve)
+ * @method Inventory setSafetyStock(integer $safetyStock)
+ * @method Inventory setAvailable(integer $available)
+ * @method Inventory setVisible(integer $visible)
  * @method Inventory setBin(string $bin)
  * @method Inventory setBinLocation(string $binLocation)
  * @method Inventory setExternalUpdateDte(string $externalUpdateDate)
  *
  * @method string getLocationCode()
  * @method string getSku()
- * @method float getOnHand()
- * @method float getOnReserve()
- * @method float getSafetyStock()
- * @method float getAvailable()
- * @method float getVisible()
+ * @method integer getOnHand()
+ * @method integer getOnReserve()
+ * @method integer getSafetyStock()
+ * @method integer getAvailable()
+ * @method integer getVisible()
  * @method string getBin()
  * @method string getBinLocation()
  * @method string getExternalUpdateDte()
@@ -58,11 +58,11 @@ class Inventory extends Base
         'properties'           => [
             'locationCode'       => ['type' => 'string'],
             'sku'                => ['type' => 'string'],
-            'onHand'             => ['type' => 'number'],
-            'onReserve'          => ['type' => 'number'],
-            'safetyStock'        => ['type' => 'number'],
-            'available'          => ['type' => 'number'],
-            'visible'            => ['type' => 'number'],
+            'onHand'             => ['type' => 'integer'],
+            'onReserve'          => ['type' => 'integer'],
+            'safetyStock'        => ['type' => 'integer'],
+            'available'          => ['type' => 'integer'],
+            'visible'            => ['type' => 'integer'],
             'bin'                => ['type' => 'string'],
             'binLocation'        => ['type' => 'string'],
             'externalUpdateDate' => ['type' => 'string'],

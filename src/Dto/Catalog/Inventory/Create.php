@@ -28,8 +28,8 @@ use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
  * @method Create setProductCode(string $productCode)
  * @method Create setLocationCode(string $locationCode)
  * @method Create setSku(string $sku)
- * @method Create setOnHand(number $onHand)
- * @method Create setSafetyStock(number $safetyStock)
+ * @method Create setOnHand(integer $onHand)
+ * @method Create setSafetyStock(integer $safetyStock)
  * @method Create setBin(string $bin)
  * @method Create setBinLocation(string $binLocation)
  */
@@ -45,8 +45,8 @@ class Create extends Inventory
             'productCode'  => ['type' => 'string'],
             'locationCode' => ['type' => 'string'],
             'sku'          => ['type' => 'string'],
-            'onHand'       => ['type' => 'number'],
-            'safetyStock'  => ['type' => 'number'],
+            'onHand'       => ['type' => 'integer'],
+            'safetyStock'  => ['type' => 'integer'],
             'bin'          => ['type' => 'string'],
             'binLocation'  => ['type' => 'string'],
         ],

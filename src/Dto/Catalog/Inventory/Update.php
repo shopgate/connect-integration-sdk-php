@@ -29,7 +29,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
  * @method Update setLocationCode(string $locationCode)
  * @method Update setSku(string $sku)
  * @method Update setOperationType(string $operationType)
- * @method Update setOnHand(number $onHand)
+ * @method Update setOnHand(integer $onHand)
  */
 class Update extends Inventory
 {
@@ -44,7 +44,7 @@ class Update extends Inventory
             'locationCode'  => ['type' => 'string'],
             'sku'           => ['type' => 'string'],
             'operationType' => ['type' => 'string'],
-            'onHand'        => ['type' => 'number'],
+            'onHand'        => ['type' => 'integer'],
 
         ],
         'additionalProperties' => true,

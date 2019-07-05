@@ -229,7 +229,8 @@ class ClientTest extends ShopgateSdkTest
     /**
      * @throws \Shopgate\ConnectSdk\Exception\Exception
      */
-    public function testClientThrowsRequestException() {
+    public function testClientThrowsRequestException()
+    {
         // Arrange
         $mockHandler = new MockHandler([]);
         $handlerStack = HandlerStack::create($mockHandler);
@@ -268,7 +269,8 @@ class ClientTest extends ShopgateSdkTest
     /**
      * @throws Exception
      */
-    public function testClientThrowsUnknownException() {
+    public function testClientThrowsUnknownException()
+    {
         // Arrange
         $mockHandler = new MockHandler([]);
         $handlerStack = HandlerStack::create($mockHandler);

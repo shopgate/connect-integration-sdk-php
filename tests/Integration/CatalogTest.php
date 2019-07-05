@@ -237,7 +237,7 @@ abstract class CatalogTest extends ShopgateSdkTest
         return [$extra, $extraSecond];
     }
 
-    /**‚
+    /**
      * Retrieves the default product with minimum details needed
      *
      * @return Product\Create

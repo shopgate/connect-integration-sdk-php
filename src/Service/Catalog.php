@@ -600,7 +600,6 @@ class Catalog
         );
     }
 
-
     /**
      * @param Inventory\Delete[] $inventories
      * @param array              $query

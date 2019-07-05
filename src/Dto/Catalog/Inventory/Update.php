@@ -25,13 +25,11 @@ namespace Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 
 /**
- * Default class that handles validation for attribute Create payloads.
- *
- * @method Create setProductCode(string $productCode)
- * @method Create setLocationCode(string $locationCode)
- * @method Create setSku(string $sku)
- * @method Create setOperationType(string $operationType)
- * @method Create setOnHand(number $onHand)
+ * @method Update setProductCode(string $productCode)
+ * @method Update setLocationCode(string $locationCode)
+ * @method Update setSku(string $sku)
+ * @method Update setOperationType(string $operationType)
+ * @method Update setOnHand(number $onHand)
  */
 class Update extends Inventory
 {

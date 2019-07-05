@@ -20,28 +20,29 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Catalog\Inventory;
+namespace Shopgate\ConnectSdk\Service\BulkImport\Feed;
 
-use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
+use Shopgate\ConnectSdk\Service\BulkImport\Feed;
+use Shopgate\ConnectSdk\Service\BulkImport\Handler\Stream;
+use Shopgate\ConnectSdk\Service\BulkImport\Handler\File;
+use Shopgate\ConnectSdk\Dto\Catalog\Inventory\Create;
 
-/**
- * @method Delete setProductCode(string $productCode)
- * @method Delete setLocationCode(string $locationCode)
- * @method Delete setSku(string $sku)
- */
-class Delete extends Inventory
+class Inventory extends Feed
 {
     /**
-     * @var array
-     * @codeCoverageIgnore
+     * @param Create $inventory
      */
-    protected $schema = [
-        'type'                 => 'object',
-        'properties'           => [
-            'productCode'  => ['type' => 'string'],
-            'locationCode' => ['type' => 'string'],
-            'sku'          => ['type' => 'string'],
-        ],
-        'additionalProperties' => true,
-    ];
+    public function add(Create $inventory)
+    {
+        switch ($this->handlerType) {
+            case Stream::HANDLER_TYPE:
+                $this->stream->write($this->getItemDivider() . $inventory->toJson());
+                break;
+            case File::HANDLER_TYPE:
+                fwrite($this->stream, $this->getItemDivider() . $inventory->toJson());
+                break;
+        }
+
+        $this->isFirstItem = false;
+    }
 }

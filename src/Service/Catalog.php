@@ -600,9 +600,8 @@ class Catalog
         );
     }
 
-
     /**
-     * @param Inventory\Delete[] $inventories
+     * @param Inventory\Create[] $inventories
      * @param array              $query
      *
      * @return ResponseInterface

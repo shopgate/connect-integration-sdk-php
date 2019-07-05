@@ -5,14 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- addInventory direct logic
+- updateInventory direct logic
+- deleteInventory direct logic
+- bulkImport for inventory
+
 ## [0.5.0]- 2019-06-28
 ### Added
 - bulkImport for attributes
 - bulkImport for categories
 - bulkImport for products
-- addInventory direct logic
-- updateInventory direct logic
-- deleteInventory direct logic
 
 ## [0.4.0]- 2019-06-13
 ### Added

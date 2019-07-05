@@ -1,4 +1,4 @@
-FROM registry.gitlab.localdev.cc/sgxs/tools/import-script:development
+FROM 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/import-script:development-v1.1.0-alpha.5
 
 WORKDIR /usr/src/app
 

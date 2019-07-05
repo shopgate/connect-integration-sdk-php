@@ -45,7 +45,7 @@ docker-compose $DOCKER_COMPOSE_FILES up -d googlepubsub-emulator
 docker-compose exec -T php73 php ./tools/pubsubfiller.php
 docker-compose exec -T php73 php ./tools/etcdfiller.php
 
-docker-compose $DOCKER_COMPOSE_FILES build
+docker-compose $DOCKER_COMPOSE_FILES build import-script
 retry "MySQL" "docker-compose exec -T mysql mysql -uroot -psecret -e \"select 1 from dual\" 2>&1"
 
 docker-compose exec -T mysql mysql -u root -psecret < ./fixtures/schema.sql

@@ -23,14 +23,15 @@
 namespace Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
+use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 
 /**
  * Default class that handles validation for attribute Update payloads.
  *
  * @method Update setType(string $type)
  * @method Update setUse(string $use)
- * @method Update setName(dto\Name $name)
- * @method Update setValues(string $values)
+ * @method Update setName(Dto\Name $name)
+ * @method Update setValues(AttributeValue\Update[] $values)
  */
 class Update extends Attribute
 {

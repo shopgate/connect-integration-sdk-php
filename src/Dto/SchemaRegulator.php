@@ -25,6 +25,7 @@ namespace Shopgate\ConnectSdk\Dto;
 use Dto\JsonSchemaRegulator;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties\Attribute;
+use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Attribute\Value;
 
 class SchemaRegulator extends JsonSchemaRegulator
 {
@@ -56,6 +57,12 @@ class SchemaRegulator extends JsonSchemaRegulator
         // product property type specific check
         if ($this->isAttribute($v) && $this->extractReference($schema) === Properties::class) {
             $schema['items']['$ref'] = Attribute::class;
+        }
+
+        // customer attribute type specific check
+        if ($this->isCustomerAttribute($v) && $this->extractReference($schema) === Customer\Customer\Dto\Attribute::class) {
+            $schema['items']['$ref'] = Customer\Customer\Dto\Attribute::class;
+
         }
         $this->calledClass = $this->extractReference($schema) ? : $this->calledClass;
 
@@ -97,5 +104,17 @@ class SchemaRegulator extends JsonSchemaRegulator
     private function isAttribute($value)
     {
         return isset($value['type']) && $value['type'] === Attribute::TYPE;
+    }
+
+    /**
+     * Checks value type, specific check for Customer->Attribute = attribute
+     *
+     * @param mixed $value
+     *
+     * @return bool
+     */
+    private function isCustomerAttribute($value)
+    {
+        return isset($value['type']) && $value['type'] === Customer\Customer\Dto\Attribute::TYPE;
     }
 }

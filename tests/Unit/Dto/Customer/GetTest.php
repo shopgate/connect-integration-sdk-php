@@ -77,9 +77,19 @@ class GetTest extends TestCase
         $attributes = $get->getAttributes();
         $settings   = $get->getSettings();
 
+        // Test sub DTOs
         $this->assertInstanceOf(Customer\Dto\Contact::class, $contacts);
         $this->assertInstanceOf(Attribute::class, $attributes);
         $this->assertInstanceOf(Settings::class, $settings);
+
+        // Test basic
+        $this->assertEquals(self::CUSTOMER_EXTERNAL_CUSTOMER_NUMBER, $get->getExternalCustomerNumber());
+        $this->assertEquals(self::CUSTOMER_FIRST_NAME, $get->getFirstName());
+        $this->assertEquals(self::CUSTOMER_MIDDLE_NAME, $get->getMiddleName());
+        $this->assertEquals(self::CUSTOMER_LAST_NAME, $get->getLastName());
+        $this->assertEquals(self::CUSTOMER_EMAIL_ADDRESS, $get->getEmailAddress());
+        $this->assertEquals(Customer::STATUS_ACTIVE, $get->getStatus());
+        $this->assertEquals(false, $get->getIsAnonymous());
     }
 
     /**
@@ -88,7 +98,16 @@ class GetTest extends TestCase
     protected function getValidEntry()
     {
         return [
-            'contacts'   => [
+            'id'                     => GetTest::CUSTOMER_ID,
+            'createDate'             => GetTest::CUSTOMER_CREATE_DATE,
+            'externalCustomerNumber' => GetTest::CUSTOMER_EXTERNAL_CUSTOMER_NUMBER,
+            'firstName'              => GetTest::CUSTOMER_FIRST_NAME,
+            'middleName'             => GetTest::CUSTOMER_MIDDLE_NAME,
+            'lastName'               => GetTest::CUSTOMER_LAST_NAME,
+            'emailAddress'           => GetTest::CUSTOMER_EMAIL_ADDRESS,
+            'status'                 => Customer::STATUS_ACTIVE,
+            'isAnonymous'            => false,
+            'contacts'               => [
                 [
                     'id'                  => self::CUSTOMER_CONTACT_ID,
                     'externalContactCode' => self::CUSTOMER_CONTACT_EXTERNAL_CUSTOMER_CODE,
@@ -113,7 +132,7 @@ class GetTest extends TestCase
                     'isDefaultShipping'   => true,
                 ],
             ],
-            'attributes' => [
+            'attributes'             => [
                 [
                     'code'  => self::CUSTOMER_ATTRIBUTE_CODE_1,
                     'name'  => self::CUSTOMER_ATTRIBUTE_NAME_1,
@@ -129,7 +148,7 @@ class GetTest extends TestCase
                     'value' => self::CUSTOMER_ATTRIBUTE_VALUE_2,
                 ],
             ],
-            'settings'   => [
+            'settings'               => [
                 'defaultLocale'            => self::CUSTOMER_SETTINGS_DEFAULT_LOCALE,
                 'defaultCurrency'          => self::CUSTOMER_SETTINGS_DEFAULT_CURRENCY,
                 'communicationPreferences' => self::CUSTOMER_SETTINGS_DEFAULT_COMMUNICATION_PREFERENCES,
@@ -141,14 +160,18 @@ class GetTest extends TestCase
     }
 
     /**
-     * Tests customers DTO structure return
+     * Tests contacts DTO structure return
      */
-    public function testGetCustomers()
+    public function testGetContacts()
     {
         $get      = new Get($this->getValidEntry());
         $contacts = $get->getContacts();
         $contact  = $contacts[0];
 
+        // Global
+        $this->assertCount(1, $contacts);
+
+        // Contact
         $this->assertInstanceOf(Customer\Dto\Contact::class, $contact);
         $this->assertEquals(self::CUSTOMER_CONTACT_ID, $contact->getId());
         $this->assertEquals(self::CUSTOMER_CONTACT_ID, $contact->getId());
@@ -187,8 +210,8 @@ class GetTest extends TestCase
         $attribute2 = $attributes[1];
         $value2     = $attribute1->getValue();
 
-        print_r($attribute1->toJson(1));
-        print_r($attribute2->toJson(1));
+        // Global
+        $this->assertCount(2, $attributes);
 
         // 1nd attribute
         $this->assertInstanceOf(Customer\Dto\Attribute::class, $attribute1);
@@ -203,5 +226,22 @@ class GetTest extends TestCase
         $this->assertEquals(self::CUSTOMER_ATTRIBUTE_NAME_2, $attribute2->getName());
         $this->assertInstanceOf(Attribute\Value::class, $value2);
         $this->assertEquals(self::CUSTOMER_ATTRIBUTE_VALUE_2, $value2);
+    }
+
+    /**
+     * Tests settings DTO structure return
+     */
+    public function testGetSettings()
+    {
+        $get      = new Get($this->getValidEntry());
+        $settings = $get->getSettings();
+
+        $this->assertInstanceOf(Customer\Dto\Settings::class, $settings);
+        $this->assertEquals(self::CUSTOMER_SETTINGS_DEFAULT_LOCALE, $settings->getDefaultLocale());
+        $this->assertEquals(self::CUSTOMER_SETTINGS_DEFAULT_CURRENCY, $settings->getDefaultCurrency());
+        $this->assertEquals(self::CUSTOMER_SETTINGS_DEFAULT_COMMUNICATION_PREFERENCES,
+            $settings->getCommunicationPreferences()->toArray());
+        $this->assertEquals(self::CUSTOMER_SETTINGS_DEFAULT_LOCATION_CODE, $settings->getDefaultLocationCode());
+        $this->assertEquals(true, $settings->getMarketingOptIn());
     }
 }

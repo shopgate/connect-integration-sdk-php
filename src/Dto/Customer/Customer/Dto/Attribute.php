@@ -21,6 +21,7 @@
 
 namespace Shopgate\ConnectSdk\Dto\Customer\Customer\Dto;
 
+use Dto\RegulatorInterface;
 use Shopgate\ConnectSdk\Dto\Base;
 use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Attribute\Value;
 
@@ -36,6 +37,8 @@ use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Attribute\Value;
  */
 class Attribute extends Base
 {
+    const TYPE = 'simple';
+
     /**
      * @var array
      * @codeCoverageIgnore
@@ -44,10 +47,19 @@ class Attribute extends Base
         'type'                 => 'object',
         'properties'           => [
             'code'  => ['type' => 'string'],
-            //'value' => ['type' => ['string', 'object']],
+            //'value' => ['type' => 'string'],
             'value' => ['$ref' => Value::class],
             'name'  => ['type' => 'string'],
         ],
         'additionalProperties' => true,
     ];
+
+    /**
+     * @inheritdoc
+     */
+    public function __construct($input = null, $schema = null, RegulatorInterface $regulator = null)
+    {
+        $this->schema['default']['type'] = $this::TYPE;
+        parent::__construct($input, $schema, $regulator);
+    }
 }

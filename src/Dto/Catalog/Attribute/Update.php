@@ -32,12 +32,13 @@ use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
  * @method Update setUse(string $use)
  * @method Update setName(Dto\Name $name)
  * @method Update setValues(AttributeValue\Update[] $values)
+ *
+ * @codeCoverageIgnore
  */
 class Update extends Attribute
 {
     /**
      * @var array
-     * @codeCoverageIgnore
      */
     protected $schema = [
         'type'                 => 'object',

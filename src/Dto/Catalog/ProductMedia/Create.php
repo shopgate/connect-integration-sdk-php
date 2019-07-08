@@ -49,16 +49,15 @@ class Create extends ProductMedia
 
     /**
      * @param string  $locale
-     * @param Media[] $array
+     * @param Media[] $media
      *
      * @return Create
      */
-    public function add($locale, array $array)
+    public function add($locale, array $media)
     {
-        $media     = $this->get('media');
-        $localized = new ProductMedia\Dto\MediaList([(string) $locale => $array]);
-        $media[]   = $localized;
-        $this->set('media', $media);
+        $mediaList   = $this->get('media');
+        $mediaList[] = new ProductMedia\Dto\MediaList([(string) $locale => $media]);
+        $this->set('media', $mediaList);
 
         return $this;
     }

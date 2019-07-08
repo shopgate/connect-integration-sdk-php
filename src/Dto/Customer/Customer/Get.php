@@ -40,4 +40,22 @@ use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Settings;
  */
 class Get extends Customer
 {
+    /**
+     * @var array
+     */
+    protected $schema = [
+        'type'                 => 'object',
+        'properties'           => [
+            'contacts'   => [
+                'type'  => 'array',
+                'items' => ['$ref' => Dto\Contact::class],
+            ],
+            'attributes' => [
+                'type'  => 'array',
+                'items' => ['$ref' => Dto\Attribute::class],
+            ],
+            'settings'   => ['$ref' => Dto\Settings::class],
+        ],
+        'additionalProperties' => true,
+    ];
 }

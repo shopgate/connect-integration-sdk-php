@@ -26,6 +26,8 @@ use Shopgate\ConnectSdk\Dto\Base;
 /**
  * @method setCode(string)
  * @method string getCode()
+ * @method setName(string)
+ * @method string getName()
  */
 class Value extends Base
 {
@@ -37,6 +39,7 @@ class Value extends Base
         'type'                 => 'object',
         'properties'           => [
             'code' => ['type' => 'string'],
+            'name' => ['type' => 'string'],
         ],
         'additionalProperties' => true,
     ];

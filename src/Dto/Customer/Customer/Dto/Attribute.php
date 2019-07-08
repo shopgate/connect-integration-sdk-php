@@ -44,7 +44,8 @@ class Attribute extends Base
         'type'                 => 'object',
         'properties'           => [
             'code'  => ['type' => 'string'],
-            'value' => ['type' => ['string', 'object']],
+            //'value' => ['type' => ['string', 'object']],
+            'value' => ['$ref' => Value::class],
             'name'  => ['type' => 'string'],
         ],
         'additionalProperties' => true,

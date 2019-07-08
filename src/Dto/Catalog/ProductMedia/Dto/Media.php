@@ -20,31 +20,42 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto;
+namespace Shopgate\ConnectSdk\Dto\Catalog\ProductMedia\Dto;
 
 use Shopgate\ConnectSdk\Dto\Base;
 
 /**
- * Localized Media Entities
+ * @method Media setCode(string $code)
+ * @method Media setUrl(string $url)
+ * @method Media setType(string $type)
+ * @method Media setAltText(string $altText)
+ * @method Media setTitle(string $title)
+ * @method Media setSequenceId(int $sequenceId)
+ *
+ * @method string getCode()
+ * @method string getUrl()
+ * @method string getType()
+ * @method string getAltText()
+ * @method string getTitle()
+ * @method int getSequenceId()
+ *
+ * @codeCoverageIgnore
  */
 class Media extends Base
 {
     /**
      * @var array
-     * @codeCoverageIgnore
      */
     protected $schema = [
         'type'                 => 'object',
-        'additionalProperties' => true,
+        'properties'           => [
+            'code'       => ['type' => 'string'],
+            'url'        => ['type' => 'string'],
+            'type'       => ['type' => 'string'],
+            'altText'    => ['type' => 'string'],
+            'title'      => ['type' => 'string'],
+            'sequenceId' => ['type' => 'integer']
+        ],
+        'additionalProperties' => true
     ];
-
-    /**
-     * @param string        $locale
-     * @param Media\Media[] $media
-     */
-    public function add($locale, array $media)
-    {
-        // TODO logic to "add" additional media entities to an existing localization index?!
-        $this->set((string)$locale, $media);
-    }
 }

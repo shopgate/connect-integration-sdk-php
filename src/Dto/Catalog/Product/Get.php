@@ -23,6 +23,7 @@
 namespace Shopgate\ConnectSdk\Dto\Catalog\Product;
 
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
+use Shopgate\ConnectSdk\Dto\Catalog\ProductMedia\Dto\Media;
 
 /**
  * Dto for product response.
@@ -53,7 +54,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product;
  * @method string getLongName()
  * @method Dto\Categories[] getCategories()
  * @method Dto\Properties[] getProperties()
- * @method Dto\Media\Media[] getMedia()
+ * @method Media[] getMedia()
  * @method Dto\Inventory[] getInventories()
  * @method Dto\Options[] getOptions()
  * @method Dto\Extras[] getExtras()

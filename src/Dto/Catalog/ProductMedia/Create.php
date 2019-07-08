@@ -20,31 +20,16 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Media;
+namespace Shopgate\ConnectSdk\Dto\Catalog\ProductMedia;
 
-use Shopgate\ConnectSdk\Dto\Base;
+use Shopgate\ConnectSdk\Dto\Catalog\ProductMedia;
+use Shopgate\ConnectSdk\Dto\Catalog\ProductMedia\Dto\Media;
 
 /**
- * @method Media setCode(string $code)
- * @method Media setUrl(string $url)
- * @method Media setType(string $type)
- * @method Media setAltText(string $altText)
- * @method Media setSubTitle(string $title)
- * @method Media setSequenceId(int $sequenceId)
- *
- * @method string getCode()
- * @method string getUrl()
- * @method string getType()
- * @method string getAltText()
- * @method string getSubTitle()
- * @method int getSequenceId()
+ * @method Create setMedia(ProductMedia\Dto\MediaList[] $media)
  */
-class Media extends Base
+class Create extends ProductMedia
 {
-    const TYPE_IMAGE = 'image';
-    const TYPE_VIDEO = 'video';
-    const TYPE_PDF   = 'pdf';
-
     /**
      * @var array
      * @codeCoverageIgnore
@@ -52,13 +37,28 @@ class Media extends Base
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'code'       => ['type' => 'string'],
-            'url'        => ['type' => 'string'],
-            'type'       => ['type' => 'string'],
-            'altText'    => ['type' => 'string'],
-            'title'      => ['type' => 'string'],
-            'sequenceId' => ['type' => 'number'],
+            'media' => [
+                'type'  => 'array',
+                'items' => [
+                    'type' => 'object'
+                ]
+            ]
         ],
-        'additionalProperties' => true,
+        'additionalProperties' => true
     ];
+
+    /**
+     * @param string  $locale
+     * @param Media[] $media
+     *
+     * @return Create
+     */
+    public function add($locale, array $media)
+    {
+        $mediaList   = $this->get('media');
+        $mediaList[] = new ProductMedia\Dto\MediaList([(string) $locale => $media]);
+        $this->set('media', $mediaList);
+
+        return $this;
+    }
 }

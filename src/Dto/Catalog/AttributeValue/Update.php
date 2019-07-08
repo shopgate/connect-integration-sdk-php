@@ -27,8 +27,8 @@ use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 /**
  * @method Update setCode(string $code)
  * @method Update setSequenceId(int $sequenceId)
- * @method Update setName(dto\Name $name)
- * @method Update setSwatch(dto\Swatch $swatch)
+ * @method Update setName(Dto\Name $name)
+ * @method Update setSwatch(Dto\Swatch $swatch)
  *
  * @codeCoverageIgnore
  */

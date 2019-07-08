@@ -25,18 +25,17 @@ namespace Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 
 /**
- * Default class that handles validation for attribute values Create payloads.
- *
  * @method Create setCode(string $code)
  * @method Create setSequenceId(int $sequenceId)
- * @method Create setName(dto\Name $name)
- * @method Create setSwatch(dto\Swatch $swatch)
+ * @method Create setName(Dto\Name $name)
+ * @method Create setSwatch(Dto\Swatch $swatch)
+ *
+ * @codeCoverageIgnore
  */
 class Create extends AttributeValue
 {
     /**
      * @var array
-     * @codeCoverageIgnore
      */
     protected $schema = [
         'type'                 => 'object',

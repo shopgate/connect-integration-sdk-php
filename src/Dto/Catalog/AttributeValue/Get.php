@@ -23,17 +23,27 @@
 namespace Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
-use Shopgate\ConnectSdk\Dto\LocalizedString;
 
 /**
  * Dto for attribute values response.
  *
  * @method string getCode()
  * @method int getSequenceId()
- * @method LocalizedString getName()
- * @method dto\Swatch getSwatch()
+ * @method Dto\Name getName()
+ * @method Dto\Swatch getSwatch()
  *
+ * @codeCoverageIgnore
  */
 class Get extends AttributeValue
 {
+    /**
+     * @var array
+     */
+    protected $schema = [
+        'type'                 => 'object',
+        'properties'           => [
+            'swatch' => ['$ref' => Dto\Swatch::class]
+        ],
+        'additionalProperties' => true,
+    ];
 }

@@ -20,31 +20,13 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto;
+namespace Shopgate\ConnectSdk\Dto\Catalog\ProductMedia\Dto;
 
-use Shopgate\ConnectSdk\Dto\Base;
+use Shopgate\ConnectSdk\Dto\LocalizedArray;
 
 /**
- * Localized Media Entities
+ * An internal class used to compose a list of localized media objects
  */
-class Media extends Base
+class MediaList extends LocalizedArray
 {
-    /**
-     * @var array
-     * @codeCoverageIgnore
-     */
-    protected $schema = [
-        'type'                 => 'object',
-        'additionalProperties' => true,
-    ];
-
-    /**
-     * @param string        $locale
-     * @param Media\Media[] $media
-     */
-    public function add($locale, array $media)
-    {
-        // TODO logic to "add" additional media entities to an existing localization index?!
-        $this->set((string)$locale, $media);
-    }
 }

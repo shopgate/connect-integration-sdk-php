@@ -20,20 +20,15 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Catalog\Media;
+namespace Shopgate\ConnectSdk\Dto\Catalog\ProductMedia;
 
-use Shopgate\ConnectSdk\Dto\Catalog\Media;
+use Shopgate\ConnectSdk\Dto\Catalog\ProductMedia;
+use Shopgate\ConnectSdk\Dto\Catalog\ProductMedia\Dto\Media;
 
 /**
- * @method Create setCode(string $code)
- * @method Create setUrl(string $url)
- * @method Create setType(string $type)
- * @method Create setAltText(string $altText)
- * @method Create setTitle(string $title)
- * @method Create setSequenceId(string $sequenceId)
- * @method Create setLocaleCode(string $localeCode)
+ * @method Create setMedia(ProductMedia\Dto\MediaList[] $media)
  */
-class Create extends Media
+class Create extends ProductMedia
 {
     /**
      * @var array
@@ -42,14 +37,29 @@ class Create extends Media
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'code'       => ['type' => 'string'],
-            'url'        => ['type' => 'string'],
-            'type'       => ['type' => 'string'],
-            'altText'    => ['type' => 'string'],
-            'title'      => ['type' => 'string'],
-            'sequenceId' => ['type' => 'integer'],
-            'localeCode' => ['type' => 'string'],
+            'media' => [
+                'type'  => 'array',
+                'items' => [
+                    'type' => 'object'
+                ]
+            ]
         ],
         'additionalProperties' => true
     ];
+
+    /**
+     * @param string  $locale
+     * @param Media[] $array
+     *
+     * @return Create
+     */
+    public function add($locale, array $array)
+    {
+        $media     = $this->get('media');
+        $localized = new ProductMedia\Dto\MediaList([(string) $locale => $array]);
+        $media[]   = $localized;
+        $this->set('media', $media);
+
+        return $this;
+    }
 }

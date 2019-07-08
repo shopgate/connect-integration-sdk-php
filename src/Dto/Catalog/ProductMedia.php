@@ -27,9 +27,9 @@ use Shopgate\ConnectSdk\Dto\Base;
 /**
  * @package Shopgate\ConnectSdk\Dto\Catalog
  */
-class Media extends Base
+class ProductMedia extends Base
 {
     const TYPE_IMAGE = 'image';
     const TYPE_VIDEO = 'video';
-    const TYPE_PDF = 'pdf';
+    const TYPE_PDF   = 'pdf';
 }

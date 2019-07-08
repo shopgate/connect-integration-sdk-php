@@ -49,5 +49,4 @@ class GetList extends Attribute
         ],
         'additionalProperties' => true
     ];
-
 }

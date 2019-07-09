@@ -169,8 +169,10 @@ class CustomerTest extends CustomerBaseTest
 
         // Assert
         /** @noinspection PhpParamsInspection */
-        $this->assertEquals(self::CUSTOMER_CUSTOMER_EXTERNAL_CUSTOMER_CODE . '2',
-            $customer->getExternalCustomerNumber());
+        $this->assertEquals(
+            self::CUSTOMER_CUSTOMER_EXTERNAL_CUSTOMER_CODE . '2',
+            $customer->getExternalCustomerNumber()
+        );
     }
 
     /**
@@ -225,9 +227,9 @@ class CustomerTest extends CustomerBaseTest
         // Create attribute
         $createAttribute = new Attribute\Create();
         $createAttribute->setCode(self::CUSTOMER_ATTRIBUTE_CODE)
-            ->setType(Attribute\Create::TYPE_TEXT)
-            ->setIsRequired(true)
-            ->setName(self::CUSTOMER_ATTRIBUTE_NAME);
+                        ->setType(Attribute\Create::TYPE_TEXT)
+                        ->setIsRequired(true)
+                        ->setName(self::CUSTOMER_ATTRIBUTE_NAME);
 
         // Create attribute value
         $createAttributeValue = new AttributeValue\Create();
@@ -239,14 +241,11 @@ class CustomerTest extends CustomerBaseTest
 
         $this->sdk->getCustomerService()->addAttributes([$createAttribute]);
 
-        $attribute = new Customer\Dto\Attribute();
-        $attribute->setCode(self::CUSTOMER_ATTRIBUTE_CODE);
-        $attribute->setName('Main color');
-
         $value = new Customer\Dto\Attribute\Value();
         $value->setCode(self::CUSTOMER_ATTRIBUTE_VALUE_CODE);
-
-        $attribute->setValue($value);
+        $attribute = new Customer\Dto\Attribute(
+            ['code' => self::CUSTOMER_ATTRIBUTE_CODE, 'name' => 'Main color', 'value' => $value]
+        );
 
         // Add attribute
         $customer->setAttributes([$attribute]);
@@ -311,13 +310,13 @@ class CustomerTest extends CustomerBaseTest
         $this->assertEquals(self::CUSTOMER_SETTINGS_DEFAULT_LOCALE, $settings->getDefaultLocale());
         $this->assertEquals(self::CUSTOMER_SETTINGS_DEFAULT_CURRENCY, $settings->getDefaultCurrency());
         $this->assertEquals(self::CUSTOMER_SETTINGS_DEFAULT_LOCATION_CODE, $settings->getDefaultLocationCode());
-        $this->assertCount(2, $settings->getCommunicationPreferences()->toArray());
-        $this->assertTrue(in_array('email', $settings->getCommunicationPreferences()->toArray()));
-        $this->assertTrue(in_array('sms', $settings->getCommunicationPreferences()->toArray()));
+        $this->assertCount(2, $settings->getCommunicationPreferences());
+        $this->assertContains('email', $settings->getCommunicationPreferences()->toArray());
+        $this->assertContains('sms', $settings->getCommunicationPreferences()->toArray());
         $this->assertEquals(true, $settings->getMarketingOptIn());
 
         //Contacts
-        $this->assertCount(1, $contacts->toArray());
+        $this->assertCount(1, $contacts);
         $contact = $contacts[0];
         $this->assertEquals(self::CUSTOMER_CONTACT_EXTERNAL_CUSTOMER_CODE, $contact->getExternalContactCode());
         $this->assertEquals(self::CUSTOMER_CONTACT_FIRSTNAME, $contact->getFirstName());
@@ -340,7 +339,7 @@ class CustomerTest extends CustomerBaseTest
         $this->assertEquals(true, $contact->getIsDefaultShipping());
 
         //Attributes
-        $this->assertCount(1, $attributes->toArray());
+        $this->assertCount(1, $attributes);
         $attribute = $attributes[0];
 
         $this->assertEquals(self::CUSTOMER_ATTRIBUTE_NAME, $attribute->getName());
@@ -430,9 +429,9 @@ class CustomerTest extends CustomerBaseTest
         $this->assertEquals('de-de', $settings->getDefaultLocale());
         $this->assertEquals('USD', $settings->getDefaultCurrency());
         $this->assertEquals('EUR', $settings->getDefaultLocationCode());
-        $this->assertCount(2, $settings->getCommunicationPreferences()->toArray());
-        $this->assertTrue(in_array('sms', $settings->getCommunicationPreferences()->toArray()));
-        $this->assertTrue(in_array('email', $settings->getCommunicationPreferences()->toArray()));
+        $this->assertCount(2, $settings->getCommunicationPreferences());
+        $this->assertContains('sms', $settings->getCommunicationPreferences()->toArray());
+        $this->assertContains('email', $settings->getCommunicationPreferences()->toArray());
         $this->assertEquals(false, $settings->getMarketingOptIn());
     }
 

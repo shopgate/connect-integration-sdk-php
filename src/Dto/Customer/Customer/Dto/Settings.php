@@ -28,20 +28,21 @@ use Shopgate\ConnectSdk\Dto\Base;
  *
  * @method setDefaultLocale(string $defaultLocale)
  * @method setDefaultCurrency(string $defaultCurrency)
- * @method setCommunicationPreferences([] $communicationPreferences)
+ * @method setCommunicationPreferences(string[] $communicationPreferences)
  * @method setDefaultLocationCode(string $defaultLocationCode)
  * @method setMarketingOptIn(boolean $marketingOptIn)
  * @method string getDefaultLocale()
  * @method string getDefaultCurrency()
- * @method array getCommunicationPreferences()
+ * @method string[] getCommunicationPreferences()
  * @method string getDefaultLocationCode()
  * @method string getMarketingOptIn()
+ *
+ * @codeCoverageIgnore
  */
 class Settings extends Base
 {
     /**
      * @var array
-     * @codeCoverageIgnore
      */
     protected $schema = [
         'type'                 => 'object',

@@ -24,16 +24,18 @@ namespace Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Attribute;
 use Shopgate\ConnectSdk\Dto\Base;
 
 /**
- * @method setCode(string)
+ * @method Value setCode(string $code)
+ * @method Value setName(string $name)
+ *
  * @method string getCode()
- * @method setName(string)
  * @method string getName()
+ *
+ * @codeCoverageIgnore
  */
 class Value extends Base
 {
     /**
      * @var array
-     * @codeCoverageIgnore
      */
     protected $schema = [
         'type'                 => 'object',

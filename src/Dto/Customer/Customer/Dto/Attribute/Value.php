@@ -36,19 +36,11 @@ class Value extends Base
      * @codeCoverageIgnore
      */
     protected $schema = [
-        'oneOf' =>
-            [
-                [
-                    'type'                 => 'object',
-                    'properties'           => [
-                        'code' => ['type' => 'string'],
-                        'name' => ['type' => 'string']
-                    ],
-                    'additionalProperties' => true
-                ],
-                [
-                    'type' => 'string'
-                ]
-            ]
+        'type'                 => 'object',
+        'properties'           => [
+            'code' => ['type' => 'string'],
+            'name' => ['type' => 'string'],
+        ],
+        'additionalProperties' => true,
     ];
 }

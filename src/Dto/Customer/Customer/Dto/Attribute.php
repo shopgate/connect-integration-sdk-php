@@ -44,13 +44,25 @@ class Attribute extends Base
      * @codeCoverageIgnore
      */
     protected $schema = [
-        'type'                 => 'object',
-        'properties'           => [
-            'code'  => ['type' => 'string'],
-            'value' => ['$ref' => Value::class],
-            'name'  => ['type' => 'string'],
+        'oneOf' =>
+            [
+                'type'                 => 'object',
+                'properties'           => [
+                    'code'  => ['type' => 'string'],
+                    'value' => ['$ref' => Value::class],
+                    'name'  => ['type' => 'string'],
+                ],
+                'additionalProperties' => true,
+            ],
+        [
+            'type'                 => 'object',
+            'properties'           => [
+                'code'  => ['type' => 'string'],
+                'value' => ['type' => 'string'],
+                'name'  => ['type' => 'string'],
+            ],
+            'additionalProperties' => true,
         ],
-        'additionalProperties' => true,
     ];
 
     /**

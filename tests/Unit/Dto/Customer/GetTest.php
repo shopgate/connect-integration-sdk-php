@@ -208,7 +208,7 @@ class GetTest extends TestCase
         $attribute1 = $attributes[0];
         $value1     = $attribute1->getValue();
         $attribute2 = $attributes[1];
-        $value2     = $attribute1->getValue();
+        $value2     = $attribute2->getValue();
 
         // Global
         $this->assertCount(2, $attributes);
@@ -224,7 +224,6 @@ class GetTest extends TestCase
         $this->assertInstanceOf(Customer\Dto\Attribute::class, $attribute2);
         $this->assertEquals(self::CUSTOMER_ATTRIBUTE_CODE_2, $attribute2->getCode());
         $this->assertEquals(self::CUSTOMER_ATTRIBUTE_NAME_2, $attribute2->getName());
-        $this->assertInstanceOf(Attribute\Value::class, $value2);
         $this->assertEquals(self::CUSTOMER_ATTRIBUTE_VALUE_2, $value2);
     }
 
@@ -239,8 +238,10 @@ class GetTest extends TestCase
         $this->assertInstanceOf(Customer\Dto\Settings::class, $settings);
         $this->assertEquals(self::CUSTOMER_SETTINGS_DEFAULT_LOCALE, $settings->getDefaultLocale());
         $this->assertEquals(self::CUSTOMER_SETTINGS_DEFAULT_CURRENCY, $settings->getDefaultCurrency());
-        $this->assertEquals(self::CUSTOMER_SETTINGS_DEFAULT_COMMUNICATION_PREFERENCES,
-            $settings->getCommunicationPreferences()->toArray());
+        $this->assertEquals(
+            self::CUSTOMER_SETTINGS_DEFAULT_COMMUNICATION_PREFERENCES,
+            $settings->getCommunicationPreferences()->toArray()
+        );
         $this->assertEquals(self::CUSTOMER_SETTINGS_DEFAULT_LOCATION_CODE, $settings->getDefaultLocationCode());
         $this->assertEquals(true, $settings->getMarketingOptIn());
     }

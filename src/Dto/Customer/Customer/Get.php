@@ -48,13 +48,13 @@ class Get extends Customer
         'properties'           => [
             'contacts'   => [
                 'type'  => 'array',
-                'items' => ['$ref' => Dto\Contact::class],
+                'items' => ['$ref' => Contact::class],
             ],
             'attributes' => [
                 'type'  => 'array',
-                'items' => ['$ref' => Dto\Attribute::class],
+                'items' => ['$ref' => Attribute::class],
             ],
-            'settings'   => ['$ref' => Dto\Settings::class],
+            'settings'   => ['$ref' => Settings::class],
         ],
         'additionalProperties' => true,
     ];

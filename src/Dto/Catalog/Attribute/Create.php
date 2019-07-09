@@ -26,20 +26,19 @@ use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 
 /**
- * Default class that handles validation for attribute Create payloads.
- *
  * @method Create setCode(string $code)
  * @method Create setType(string $type)
  * @method Create setUse(string $use)
- * @method Create setName(dto\Name $name)
+ * @method Create setName(Attribute\Dto\Name $name)
  * @method Create setExternalUpdateDate(string $externalUpdateDate)
  * @method Create setValues(AttributeValue\Create[] $values)
+ *
+ * @codeCoverageIgnore
  */
 class Create extends Attribute
 {
     /**
      * @var array
-     * @codeCoverageIgnore
      */
     protected $schema = [
         'type'                 => 'object',

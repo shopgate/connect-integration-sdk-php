@@ -204,27 +204,27 @@ class GetTest extends TestCase
     {
         $get = new Get($this->getValidEntry());
 
-        $attributes = $get->getAttributes();
-        $attribute1 = $attributes[0];
-        $value1     = $attribute1->getValue();
-        $attribute2 = $attributes[1];
-        $value2     = $attribute2->getValue();
+        $attributes        = $get->getAttributes();
+        $attributeOne      = $attributes[0];
+        $attributeValueOne = $attributeOne->getValue();
+        $attributeTwo      = $attributes[1];
+        $attributeValueTwo = $attributeTwo->getValue();
 
         // Global
         $this->assertCount(2, $attributes);
 
         // 1nd attribute
-        $this->assertInstanceOf(Customer\Dto\Attribute::class, $attribute1);
-        $this->assertEquals(self::CUSTOMER_ATTRIBUTE_CODE_1, $attribute1->getCode());
-        $this->assertEquals(self::CUSTOMER_ATTRIBUTE_NAME_1, $attribute1->getName());
-        $this->assertInstanceOf(Attribute\Value::class, $value1);
-        $this->assertEquals(self::CUSTOMER_ATTRIBUTE_VALUE_CODE_1, $value1->getCode());
-        $this->assertEquals(self::CUSTOMER_ATTRIBUTE_VALUE_NAME_1, $value1->getName());
+        $this->assertInstanceOf(Customer\Dto\Attribute::class, $attributeOne);
+        $this->assertEquals(self::CUSTOMER_ATTRIBUTE_CODE_1, $attributeOne->getCode());
+        $this->assertEquals(self::CUSTOMER_ATTRIBUTE_NAME_1, $attributeOne->getName());
+        $this->assertInstanceOf(Attribute\Value::class, $attributeValueOne);
+        $this->assertEquals(self::CUSTOMER_ATTRIBUTE_VALUE_CODE_1, $attributeValueOne->getCode());
+        $this->assertEquals(self::CUSTOMER_ATTRIBUTE_VALUE_NAME_1, $attributeValueOne->getName());
         // 2nd attribute
-        $this->assertInstanceOf(Customer\Dto\Attribute::class, $attribute2);
-        $this->assertEquals(self::CUSTOMER_ATTRIBUTE_CODE_2, $attribute2->getCode());
-        $this->assertEquals(self::CUSTOMER_ATTRIBUTE_NAME_2, $attribute2->getName());
-        $this->assertEquals(self::CUSTOMER_ATTRIBUTE_VALUE_2, $value2);
+        $this->assertInstanceOf(Customer\Dto\Attribute::class, $attributeTwo);
+        $this->assertEquals(self::CUSTOMER_ATTRIBUTE_CODE_2, $attributeTwo->getCode());
+        $this->assertEquals(self::CUSTOMER_ATTRIBUTE_NAME_2, $attributeTwo->getName());
+        $this->assertEquals(self::CUSTOMER_ATTRIBUTE_VALUE_2, $attributeValueTwo);
     }
 
     /**

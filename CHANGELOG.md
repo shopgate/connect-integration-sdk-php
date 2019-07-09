@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - DTOs for customers
 - DTOs for customers / contact 
+- DTOs for customers / attributes / attribute values
 - bulkImport for attributes
 - bulkImport for categories
 - bulkImport for products

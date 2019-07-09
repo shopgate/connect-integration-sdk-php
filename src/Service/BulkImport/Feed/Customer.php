@@ -31,7 +31,10 @@ class Customer extends Feed
 {
     public function add(Create $customer)
     {
-        print_r($customer->toJson(1));
+        /**
+         * Remove attributes: https://jira.shopgate.guru/browse/CIS-49
+         */
+        $customer->setAttributes([]);
 
         switch ($this->handlerType) {
             case Stream::HANDLER_TYPE:

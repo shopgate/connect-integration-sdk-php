@@ -217,7 +217,7 @@ class GetTest extends TestCase
         $this->assertInstanceOf(Customer\Dto\Attribute::class, $attributeOne);
         $this->assertEquals(self::CUSTOMER_ATTRIBUTE_CODE_1, $attributeOne->getCode());
         $this->assertEquals(self::CUSTOMER_ATTRIBUTE_NAME_1, $attributeOne->getName());
-        $this->assertInstanceOf(Attribute\Value::class, $attributeValueOne);
+        $this->assertInstanceOf(Attribute::class, $attributeValueOne);
         $this->assertEquals(self::CUSTOMER_ATTRIBUTE_VALUE_CODE_1, $attributeValueOne->getCode());
         $this->assertEquals(self::CUSTOMER_ATTRIBUTE_VALUE_NAME_1, $attributeValueOne->getName());
         // 2nd attribute

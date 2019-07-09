@@ -21,7 +21,6 @@
 
 namespace Shopgate\ConnectSdk\Dto\Customer\Customer\Dto;
 
-use Dto\RegulatorInterface;
 use Shopgate\ConnectSdk\Dto\Base;
 use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Attribute\Value;
 
@@ -34,43 +33,35 @@ use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Attribute\Value;
  * @method string getCode()
  * @method string|Value getValue()
  * @method string getName()
+ *
  * @codeCoverageIgnore
  */
 class Attribute extends Base
 {
-    const TYPE = 'simple';
-
     /**
      * @var array
      */
     protected $schema = [
-        'oneOf' =>
+        'anyOf' =>
             [
-                'type'                 => 'object',
-                'properties'           => [
-                    'code'  => ['type' => 'string'],
-                    'value' => ['$ref' => Value::class],
-                    'name'  => ['type' => 'string'],
+                [
+                    'type'                 => 'object',
+                    'properties'           => [
+                        'code'  => ['type' => 'string'],
+                        'value' => ['$ref' => Value::class],
+                        'name'  => ['type' => 'string'],
+                    ],
+                    'additionalProperties' => true,
                 ],
-                'additionalProperties' => true,
-            ],
-        [
-            'type'                 => 'object',
-            'properties'           => [
-                'code'  => ['type' => 'string'],
-                'value' => ['type' => 'string'],
-                'name'  => ['type' => 'string'],
-            ],
-            'additionalProperties' => true,
-        ],
+                [
+                    'type'                 => 'object',
+                    'properties'           => [
+                        'code'  => ['type' => 'string'],
+                        'value' => ['type' => 'string'],
+                        'name'  => ['type' => 'string'],
+                    ],
+                    'additionalProperties' => true,
+                ]
+            ]
     ];
-
-    /**
-     * @inheritdoc
-     */
-    public function __construct($input = null, $schema = null, RegulatorInterface $regulator = null)
-    {
-        $this->schema['default']['type'] = $this::TYPE;
-        parent::__construct($input, $schema, $regulator);
-    }
 }

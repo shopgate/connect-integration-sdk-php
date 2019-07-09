@@ -34,6 +34,7 @@ use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Attribute\Value;
  * @method string getCode()
  * @method string|Value getValue()
  * @method string getName()
+ * @codeCoverageIgnore
  */
 class Attribute extends Base
 {
@@ -41,7 +42,6 @@ class Attribute extends Base
 
     /**
      * @var array
-     * @codeCoverageIgnore
      */
     protected $schema = [
         'oneOf' =>

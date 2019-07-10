@@ -23,6 +23,7 @@
 namespace Shopgate\ConnectSdk\Tests\Unit\Dto\Customer;
 
 use PHPUnit\Framework\TestCase;
+use Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
 use Shopgate\ConnectSdk\Dto\Customer\Customer;
 use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Attribute;
 use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Settings;
@@ -217,13 +218,20 @@ class GetTest extends TestCase
         $this->assertInstanceOf(Customer\Dto\Attribute::class, $attributeOne);
         $this->assertEquals(self::CUSTOMER_ATTRIBUTE_CODE_1, $attributeOne->getCode());
         $this->assertEquals(self::CUSTOMER_ATTRIBUTE_NAME_1, $attributeOne->getName());
-        $this->assertInstanceOf(Attribute::class, $attributeValueOne);
-        $this->assertEquals(self::CUSTOMER_ATTRIBUTE_VALUE_CODE_1, $attributeValueOne->getCode());
-        $this->assertEquals(self::CUSTOMER_ATTRIBUTE_VALUE_NAME_1, $attributeValueOne->getName());
+
         // 2nd attribute
         $this->assertInstanceOf(Customer\Dto\Attribute::class, $attributeTwo);
         $this->assertEquals(self::CUSTOMER_ATTRIBUTE_CODE_2, $attributeTwo->getCode());
         $this->assertEquals(self::CUSTOMER_ATTRIBUTE_NAME_2, $attributeTwo->getName());
+
+        //1nd attributeValue
+        $this->assertInstanceOf(Customer\Dto\Attribute\Value::class, $attributeValueOne);
+        $this->assertEquals(self::CUSTOMER_ATTRIBUTE_VALUE_CODE_1, $attributeValueOne->getCode());
+        $this->assertEquals(self::CUSTOMER_ATTRIBUTE_VALUE_NAME_1, $attributeValueOne->getName());
+
+        //2nd attributeValue
+        $this->assertInstanceOf(Customer\Dto\Attribute::class, $attributeTwo);
+        $this->assertIsString($attributeValueTwo);
         $this->assertEquals(self::CUSTOMER_ATTRIBUTE_VALUE_2, $attributeValueTwo);
     }
 

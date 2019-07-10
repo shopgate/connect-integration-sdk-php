@@ -30,6 +30,8 @@ use Shopgate\ConnectSdk\Dto\Customer\Note;
  * @method string getNote()
  * @method string getDate()
  * @method string getCreator()
+ *
+ * @codeCoverageIgnore
  */
 class Get extends Note
 {
@@ -43,8 +45,8 @@ class Get extends Note
             'externalCode' => ['type' => 'string'],
             'note'         => ['type' => 'string'],
             'date'         => ['type' => 'string'],
-            'creator'      => ['type' => 'string'],
+            'creator'      => ['type' => 'string']
         ],
-        'additionalProperties' => true,
+        'additionalProperties' => true
     ];
 }

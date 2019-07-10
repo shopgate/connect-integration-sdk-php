@@ -28,7 +28,23 @@ use Shopgate\ConnectSdk\Dto\Meta;
 /**
  * @method Meta getMeta()
  * @method Get[] getNotes()
+ *
+ * @codeCoverageIgnore
  */
 class GetList extends Note
 {
+    /**
+     * @var array
+     */
+    protected $schema = [
+        'type'                 => 'object',
+        'properties'           => [
+            'meta'  => ['$ref' => Meta::class],
+            'notes' => [
+                'type'  => 'array',
+                'items' => ['$ref' => Get::class]
+            ]
+        ],
+        'additionalProperties' => true
+    ];
 }

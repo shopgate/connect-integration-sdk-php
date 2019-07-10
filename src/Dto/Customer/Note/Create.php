@@ -29,12 +29,13 @@ use Shopgate\ConnectSdk\Dto\Customer\Note;
  * @method Create setNote(string $note)
  * @method Create setDate(string $date)
  * @method Create setCreator(string $creator)
+ *
+ * @codeCoverageIgnore
  */
 class Create extends Note
 {
     /**
      * @var array
-     * @codeCoverageIgnore
      */
     protected $schema = [
         'type'                 => 'object',
@@ -42,8 +43,8 @@ class Create extends Note
             'externalCode' => ['type' => 'string'],
             'note'         => ['type' => 'string'],
             'date'         => ['type' => 'string'],
-            'creator'      => ['type' => 'string'],
+            'creator'      => ['type' => 'string']
         ],
-        'additionalProperties' => true,
+        'additionalProperties' => true
     ];
 }

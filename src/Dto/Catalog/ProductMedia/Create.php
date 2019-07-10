@@ -23,42 +23,19 @@
 namespace Shopgate\ConnectSdk\Dto\Catalog\ProductMedia;
 
 use Shopgate\ConnectSdk\Dto\Catalog\ProductMedia;
-use Shopgate\ConnectSdk\Dto\Catalog\ProductMedia\Dto\Media;
 
 /**
- * @method Create setMedia(ProductMedia\Dto\MediaList[] $media)
+ * @codeCoverageIgnore
  */
 class Create extends ProductMedia
 {
     /**
      * @var array
-     * @codeCoverageIgnore
      */
     protected $schema = [
-        'type'                 => 'object',
-        'properties'           => [
-            'media' => [
-                'type'  => 'array',
-                'items' => [
-                    'type' => 'object'
-                ]
-            ]
-        ],
-        'additionalProperties' => true
+        'type'  => 'array',
+        'items' => [
+            'type' => 'object'
+        ]
     ];
-
-    /**
-     * @param string  $locale
-     * @param Media[] $media
-     *
-     * @return Create
-     */
-    public function add($locale, array $media)
-    {
-        $mediaList   = $this->get('media');
-        $mediaList[] = new ProductMedia\Dto\MediaList([(string) $locale => $media]);
-        $this->set('media', $mediaList);
-
-        return $this;
-    }
 }

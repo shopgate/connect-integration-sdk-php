@@ -33,4 +33,18 @@ use Shopgate\ConnectSdk\Dto\Customer\Note;
  */
 class Get extends Note
 {
+    /**
+     * @var array
+     */
+    protected $schema = [
+        'type'                 => 'object',
+        'properties'           => [
+            'id'           => ['type' => 'string'],
+            'externalCode' => ['type' => 'string'],
+            'note'         => ['type' => 'string'],
+            'date'         => ['type' => 'string'],
+            'creator'      => ['type' => 'string'],
+        ],
+        'additionalProperties' => true,
+    ];
 }

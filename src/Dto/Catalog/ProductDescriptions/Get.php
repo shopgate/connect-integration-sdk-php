@@ -25,7 +25,7 @@ namespace Shopgate\ConnectSdk\Dto\Catalog\ProductDescriptions;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
 
 /**
- * Dto for product descriptions response
+ * DTO for product descriptions response
  *
  * @method string getShortDescription()
  * @method string getLongDescription()

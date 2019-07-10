@@ -28,8 +28,6 @@ use Shopgate\ConnectSdk\Dto\Meta;
 /**
  * @method Meta getMeta()
  * @method Get[] getNotes()
- *
- * @codeCoverageIgnore
  */
 class GetList extends Note
 {

@@ -30,8 +30,6 @@ use Shopgate\ConnectSdk\Dto\Customer\Note;
  * @method string getNote()
  * @method string getDate()
  * @method string getCreator()
- *
- * @codeCoverageIgnore
  */
 class Get extends Note
 {

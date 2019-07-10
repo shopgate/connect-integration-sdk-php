@@ -514,18 +514,24 @@ class CustomerTest extends CustomerBaseTest
      * @throws AuthenticationInvalidException
      * @throws UnknownException
      */
-    public function testNoteCreation()
+    public function testNoteCreationAndRetrieval()
     {
         // Arrange
-        $firstNote      = $this->createMinimumNote('My Note')
-                               ->setExternalCode('externalCode')
-                               ->setDate('2019-06-13T12:17:33.023Z')
-                               ->setCreator('Konstantin');
+        $firstNote      = (new Create())
+            ->setNote('First Note')
+            ->setExternalCode('firstNote')
+            ->setDate('2019-06-21T12:17:33.000Z')
+            ->setCreator('Konstantin');
+        $secondNote     = (new Create())
+            ->setNote('Second Note')
+            ->setExternalCode('secondNote')
+            ->setDate('2019-06-13T12:17:33.000Z')
+            ->setCreator('Other Creator');
         $sampleCustomer = $this->provideSampleCustomers(1);
         $customers      = $this->sdk->getCustomerService()->addCustomers($sampleCustomer);
         $this->assertArrayHasKey('ids', $customers);
 
-        // CleanUp
+        // Clean Up Customers
         $this->deleteEntitiesAfterTestRun(
             self::CUSTOMER_SERVICE,
             self::METHOD_DELETE_CUSTOMER,
@@ -533,17 +539,21 @@ class CustomerTest extends CustomerBaseTest
         );
 
         // Act
-        $noteResponse = $this->sdk->getCustomerService()->addNotes($customers['ids'][0], [$firstNote]);
+        $noteResponse = $this->sdk->getCustomerService()->addNotes($customers['ids'][0], [$firstNote, $secondNote]);
         $this->assertNotEmpty($noteResponse);
-    }
 
-    /**
-     * @param string $note
-     *
-     * @return Create
-     */
-    protected function createMinimumNote($note)
-    {
-        return (new Create())->setNote($note);
+        $noteList = $this->sdk->getCustomerService()->getNotes($customers['ids'][0]);
+
+        $this->assertEquals(2, $noteList->getMeta()->getTotalItemCount());
+
+        $notes = $noteList->getNotes();
+        $this->assertEquals('First Note', $notes[0]->getNote());
+        $this->assertEquals('firstNote', $notes[0]->getExternalCode());
+        $this->assertEquals('2019-06-21T12:17:33.000Z', $notes[0]->getDate());
+        $this->assertEquals('Konstantin', $notes[0]->getCreator());
+        $this->assertEquals('Second Note', $notes[1]->getNote());
+        $this->assertEquals('secondNote', $notes[1]->getExternalCode());
+        $this->assertEquals('2019-06-13T12:17:33.000Z', $notes[1]->getDate());
+        $this->assertEquals('Other Creator', $notes[1]->getCreator());
     }
 }

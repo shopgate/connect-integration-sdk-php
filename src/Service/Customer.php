@@ -26,7 +26,7 @@ use Shopgate\ConnectSdk\Dto\Customer\Attribute;
 use Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
 use Shopgate\ConnectSdk\Dto\Customer\Contact;
 use Shopgate\ConnectSdk\Dto\Customer\Customer as CustomerDto;
-use Shopgate\ConnectSdk\Dto\Customer\Note\Create;
+use Shopgate\ConnectSdk\Dto\Customer\Note;
 use Shopgate\ConnectSdk\Dto\Meta;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
@@ -534,9 +534,9 @@ class Customer
     }
 
     /**
-     * @param string   $customerId
-     * @param Create[] $notes
-     * @param array    $query
+     * @param string        $customerId
+     * @param Note\Create[] $notes
+     * @param array         $query
      *
      * @return string[]
      * @throws AuthenticationInvalidException
@@ -558,5 +558,32 @@ class Customer
         );
 
         return $this->jsonHelper->decode($response->getBody(), true)['ids'];
+    }
+
+    /**
+     * @param string $customerId
+     * @param array  $query
+     *
+     * @return Note\GetList
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function getNotes($customerId, array $query = [])
+    {
+        $response = $this->client->doRequest(
+            [
+                'service' => 'omni-customer',
+                'method'  => 'get',
+                'path'    => 'customers/' . $customerId . '/notes',
+                'query'   => $query,
+            ]
+        );
+
+        $response = $this->jsonHelper->decode($response->getBody(), true);
+
+        return new Note\GetList($response);
     }
 }

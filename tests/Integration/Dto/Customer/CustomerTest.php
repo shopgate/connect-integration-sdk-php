@@ -26,9 +26,12 @@ use Shopgate\ConnectSdk\Dto\Customer\Attribute;
 use Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
 use Shopgate\ConnectSdk\Dto\Customer\Contact;
 use Shopgate\ConnectSdk\Dto\Customer\Customer;
+use Shopgate\ConnectSdk\Dto\Customer\Note\Create;
+use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
+use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Tests\Integration\CustomerTest as CustomerBaseTest;
 
 class CustomerTest extends CustomerBaseTest
@@ -169,8 +172,10 @@ class CustomerTest extends CustomerBaseTest
 
         // Assert
         /** @noinspection PhpParamsInspection */
-        $this->assertEquals(self::CUSTOMER_CUSTOMER_EXTERNAL_CUSTOMER_CODE . '2',
-            $customer->getExternalCustomerNumber());
+        $this->assertEquals(
+            self::CUSTOMER_CUSTOMER_EXTERNAL_CUSTOMER_CODE . '2',
+            $customer->getExternalCustomerNumber()
+        );
     }
 
     /**
@@ -225,9 +230,9 @@ class CustomerTest extends CustomerBaseTest
         // Create attribute
         $createAttribute = new Attribute\Create();
         $createAttribute->setCode(self::CUSTOMER_ATTRIBUTE_CODE)
-            ->setType(Attribute\Create::TYPE_TEXT)
-            ->setIsRequired(true)
-            ->setName(self::CUSTOMER_ATTRIBUTE_NAME);
+                        ->setType(Attribute\Create::TYPE_TEXT)
+                        ->setIsRequired(true)
+                        ->setName(self::CUSTOMER_ATTRIBUTE_NAME);
 
         // Create attribute value
         $createAttributeValue = new AttributeValue\Create();
@@ -501,5 +506,44 @@ class CustomerTest extends CustomerBaseTest
                 'missingItem'       => 'lastName',
             ],
         ];
+    }
+
+    /**
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws AuthenticationInvalidException
+     * @throws UnknownException
+     */
+    public function testNoteCreation()
+    {
+        // Arrange
+        $firstNote      = $this->createMinimumNote('My Note')
+                               ->setExternalCode('externalCode')
+                               ->setDate('2019-06-13T12:17:33.023Z')
+                               ->setCreator('Konstantin');
+        $sampleCustomer = $this->provideSampleCustomers(1);
+        $customers      = $this->sdk->getCustomerService()->addCustomers($sampleCustomer);
+        $this->assertArrayHasKey('ids', $customers);
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(
+            self::CUSTOMER_SERVICE,
+            self::METHOD_DELETE_CUSTOMER,
+            $customers['ids']
+        );
+
+        // Act
+        $noteResponse = $this->sdk->getCustomerService()->addNotes($customers['ids'][0], [$firstNote]);
+        $this->assertNotEmpty($noteResponse);
+    }
+
+    /**
+     * @param string $note
+     *
+     * @return Create
+     */
+    protected function createMinimumNote($note)
+    {
+        return (new Create())->setNote($note);
     }
 }

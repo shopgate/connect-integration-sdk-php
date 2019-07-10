@@ -24,7 +24,7 @@ namespace Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Attribute;
 use Shopgate\ConnectSdk\Dto\Base;
 
 /**
- * @method setCode(string)
+ * @method Value setCode(string $code)
  * @method string getCode()
  */
 class Value extends Base

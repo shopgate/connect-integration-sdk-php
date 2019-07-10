@@ -37,18 +37,19 @@ class CreateTest extends TestCase
      */
     public function testDtoStructure()
     {
-        $media = (new Media())
+        $media     = (new Media())
             ->setCode('test1')
             ->setUrl('https://myAwesomeShop.com/image01.jpg')
             ->setType(ProductMedia::TYPE_PDF)
             ->setAltText('a translated string')
             ->setTitle('a translated string2')
             ->setSequenceId(1);
+        $mediaList = (new ProductMedia\Dto\MediaList())->add('en-us', [$media]);
 
-        $result   = (new Create())->add('en-us', [$media])->toJson();
-        $expected = '{"media":[{"en-us":[' .
+        $result   = (new Create([$mediaList]))->toJson();
+        $expected = '[{"en-us":[' .
             '{"code":"test1","url":"https:\/\/myAwesomeShop.com\/image01.jpg","type":"pdf",' .
-            '"altText":"a translated string","title":"a translated string2","sequenceId":1}]}]}';
+            '"altText":"a translated string","title":"a translated string2","sequenceId":1}]}]';
         $this->assertEquals($expected, $result);
     }
 
@@ -57,12 +58,19 @@ class CreateTest extends TestCase
      */
     public function testMultipleMediaDTOs()
     {
-        $media  = (new Media())->setCode('test1');
-        $media2 = (new Media())->setCode('test2');
-        $dto    = (new Create())->add('en-us', [$media, $media2])->add('en-gb', [$media]);
+        $media     = (new Media())->setCode('test1');
+        $media2    = (new Media())->setCode('test2');
+        $mediaList = (new ProductMedia\Dto\MediaList())
+            ->add('en-us', [$media, $media2])
+            ->add('en-gb', [$media]);
 
-        $expected = '{"media":[{"en-us":[{"code":"test1"},{"code":"test2"}]},{"en-gb":[{"code":"test1"}]}]}';
-        $this->assertEquals($expected, $dto->toJson());
+        $media3     = (new Media())->setCode('test3');
+        $mediaList2 = (new ProductMedia\Dto\MediaList())->add('es-es', [$media3]);
+        $result     = (new Create([$mediaList, $mediaList2]))->toJson();
+
+        $expected = '[{"en-us":[{"code":"test1"},{"code":"test2"}],"en-gb":[{"code":"test1"}]},'
+            . '{"es-es":[{"code":"test3"}]}]';
+        $this->assertEquals($expected, $result);
     }
 
     /**
@@ -77,11 +85,11 @@ class CreateTest extends TestCase
             ->setAltText('a translated string')
             ->setTitle('a translated string2')
             ->setSequenceId(1);
-        $localized = new ProductMedia\Dto\MediaList(['en-us' => [$media]]);
-        $dto       = (new Create())->setMedia([$localized]);
-        $expected  = '{"media":[{"en-us":[' .
+        $mediaList = new ProductMedia\Dto\MediaList(['en-us' => [$media]]);
+        $dto       = new Create([$mediaList]);
+        $expected  = '[{"en-us":[' .
             '{"code":"test1","url":"https:\/\/myAwesomeShop.com\/image01.jpg","type":"pdf",' .
-            '"altText":"a translated string","title":"a translated string2","sequenceId":1}]}]}';
+            '"altText":"a translated string","title":"a translated string2","sequenceId":1}]}]';
         $this->assertEquals($expected, $dto->toJson());
     }
 }

@@ -931,7 +931,7 @@ class ProductTest extends CatalogTest
     /**
      * @return ProductMedia\Dto\MediaList
      */
-    private function provideMedia()
+    protected function provideMedia()
     {
         $media1 = new ProductMedia\Dto\Media();
         $media1->setCode('media_code_1')

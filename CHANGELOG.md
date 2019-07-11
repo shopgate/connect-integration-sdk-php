@@ -8,10 +8,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - addNotes direct call
 - getNotes direct call
-- getProductDescriptions direct call
-- addInventory direct call
-- updateInventory direct call
-- deleteInventory direct call
 - getAttributes
 - getAttribute
 - addAttributes direct call
@@ -28,6 +24,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - addContacts direct call
 - updateContact direct call
 - deleteContact direct call
+- getProductDescriptions direct call
+- addInventory direct call
+- updateInventory direct call
+- deleteInventory direct call
 - bulkImport for inventory
 
 ## [0.5.0]- 2019-06-28

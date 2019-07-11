@@ -28,7 +28,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
-use Shopgate\ConnectSdk\Dto\Catalog\ProductMedia\Create;
+use Shopgate\ConnectSdk\Dto\Catalog\ProductDescriptions;
 use Shopgate\ConnectSdk\Dto\Meta;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
@@ -312,7 +312,7 @@ class Catalog
     }
 
     /**
-     * @param string $code
+     * @param string $code -  product code
      * @param array  $query
      *
      * @return Product\Get
@@ -336,6 +336,31 @@ class Catalog
         $response = json_decode($response->getBody(), true);
 
         return new Product\Get($response['product']);
+    }
+
+    /**
+     * @param string $code -  product code
+     * @param array  $query
+     *
+     * @return ProductDescriptions\Get
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function getProductDescriptions($code, array $query = [])
+    {
+        $response = $this->client->doRequest(
+            [
+                'service' => 'catalog',
+                'method'  => 'get',
+                'path'    => 'products/' . $code . '/descriptions',
+                'query'   => $query
+            ]
+        );
+        $response = json_decode($response->getBody(), true);
+
+        return new ProductDescriptions\Get($response);
     }
 
     /**

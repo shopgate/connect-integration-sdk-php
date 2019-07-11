@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright Shopgate Inc.
  *
@@ -19,30 +20,10 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Attribute;
+namespace Shopgate\ConnectSdk\Dto\Customer;
 
 use Shopgate\ConnectSdk\Dto\Base;
 
-/**
- * @method Value setCode(string $code)
- * @method Value setName(string $name)
- * 
- * @method string getCode()
- * @method string getName()
- *
- * @codeCoverageIgnore
- */
-class Value extends Base
+class Note extends Base
 {
-    /**
-     * @var array
-     */
-    protected $schema = [
-        'type'                 => 'object',
-        'properties'           => [
-            'code' => ['type' => 'string'],
-            'name' => ['type' => 'string'],
-        ],
-        'additionalProperties' => true,
-    ];
 }

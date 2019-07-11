@@ -50,7 +50,7 @@ class Attribute extends Base
     ];
 
     /**
-     * @param string|Value $value
+     * @param Value[string $value
      *
      * @return Base
      */
@@ -60,15 +60,15 @@ class Attribute extends Base
             return parent::set('value', new Value($value));
         }
 
-        return parent::set('value', $value);
+        return $this::set('value', $value);
     }
 
     /**
-     * @return Base|string|Value|null
+     * @return Value|string|null
      */
     public function getValue()
     {
-        $value = parent::get('value');
+        $value = $this::get('value');
         if (is_object($value)) {
             return new Value($value);
         }

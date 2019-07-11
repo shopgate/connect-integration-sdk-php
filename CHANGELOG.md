@@ -13,12 +13,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - updateInventory direct logic
 - deleteInventory direct logic
 - bulkImport for inventory
-
-## [0.5.0]- 2019-06-28
-### Added
 - DTOs for customers
 - DTOs for customers / contact 
 - DTOs for customers / attributes / attribute values
+
+## [0.5.0]- 2019-06-28
+### Added
 - bulkImport for attributes
 - bulkImport for categories
 - bulkImport for products

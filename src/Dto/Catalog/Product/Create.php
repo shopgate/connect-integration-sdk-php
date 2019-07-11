@@ -23,7 +23,6 @@
 namespace Shopgate\ConnectSdk\Dto\Catalog\Product;
 
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
-use Shopgate\ConnectSdk\Dto\Catalog\ProductMedia\Dto\MediaList;
 
 /**
  * Default class that handles validation for product Create payloads.
@@ -34,7 +33,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\ProductMedia\Dto\MediaList;
  * @method Create setLongDescription(Dto\LongDescription $longName)
  * @method Create setCategories(Dto\Categories[] $categories)
  * @method Create setProperties(Dto\Properties[] $properties)
- * @method Create setMedia(MediaList $media)
+ * @method Create setMedia(Dto\Media $media)
  * @method Create setOptions(Dto\Options[] $options)
  * @method Create setExtras(Dto\Extras[] $extras)
  * @method Create setCode(string $code)

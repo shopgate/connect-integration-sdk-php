@@ -20,7 +20,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Catalog\ProductMedia\Dto;
+namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Media;
 
 use Shopgate\ConnectSdk\Dto\Base;
 
@@ -29,22 +29,25 @@ use Shopgate\ConnectSdk\Dto\Base;
  * @method Media setUrl(string $url)
  * @method Media setType(string $type)
  * @method Media setAltText(string $altText)
- * @method Media setTitle(string $title)
+ * @method Media setSubTitle(string $title)
  * @method Media setSequenceId(int $sequenceId)
  *
  * @method string getCode()
  * @method string getUrl()
  * @method string getType()
  * @method string getAltText()
- * @method string getTitle()
+ * @method string getSubTitle()
  * @method int getSequenceId()
- *
- * @codeCoverageIgnore
  */
 class Media extends Base
 {
+    const TYPE_IMAGE = 'image';
+    const TYPE_VIDEO = 'video';
+    const TYPE_PDF   = 'pdf';
+
     /**
      * @var array
+     * @codeCoverageIgnore
      */
     protected $schema = [
         'type'                 => 'object',
@@ -54,8 +57,8 @@ class Media extends Base
             'type'       => ['type' => 'string'],
             'altText'    => ['type' => 'string'],
             'title'      => ['type' => 'string'],
-            'sequenceId' => ['type' => 'integer']
+            'sequenceId' => ['type' => 'number'],
         ],
-        'additionalProperties' => true
+        'additionalProperties' => true,
     ];
 }

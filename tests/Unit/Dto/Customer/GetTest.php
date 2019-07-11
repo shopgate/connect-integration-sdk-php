@@ -231,7 +231,6 @@ class GetTest extends TestCase
 
         //2nd attributeValue
         $this->assertInstanceOf(Customer\Dto\Attribute::class, $attributeTwo);
-        $this->assertIsString($attributeValueTwo);
         $this->assertEquals(self::CUSTOMER_ATTRIBUTE_VALUE_2, $attributeValueTwo);
     }
 

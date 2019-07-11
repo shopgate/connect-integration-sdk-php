@@ -28,8 +28,6 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties\Attribute;
 
 class SchemaRegulator extends JsonSchemaRegulator
 {
-    const SCHEMA_FUNCTIONS = ['oneOf', 'anyOf'];
-
     /**
      * Rewritten to instantiate referenced objects instead of parent DTOs
      *
@@ -65,27 +63,6 @@ class SchemaRegulator extends JsonSchemaRegulator
     }
 
     /**
-     * Retrieves the correct reference of the called object or function
-     *
-     * @param array       $schema
-     * @param string|null $key - property name
-     *
-     * @return false|string
-     */
-    private function extractReference(array $schema, $key = null)
-    {
-        foreach (self::SCHEMA_FUNCTIONS as $function) {
-            if (isset($schema[$function]) && is_array($schema[$function])) {
-                foreach ($schema[$function] as $functionItem) {
-                    return $this->extractPropertyReference($functionItem, $key);
-                }
-            }
-        }
-
-        return $this->extractPropertyReference($schema, $key);
-    }
-
-    /**
      * Retrieves the correct reference of the called object
      *
      * @param array $schema
@@ -93,7 +70,7 @@ class SchemaRegulator extends JsonSchemaRegulator
      *
      * @return false|string
      */
-    private function extractPropertyReference($schema, $key)
+    private function extractReference($schema, $key = null)
     {
         if (isset($schema['items']['$ref'])) {
             return $schema['items']['$ref'];

@@ -27,6 +27,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Categories;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Extras;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\LongDescription;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\LongName;
+use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Media;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Name;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Price;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Price\MapPricing;
@@ -34,7 +35,6 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Price\VolumePricing;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\ShortDescription;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Update;
-use Shopgate\ConnectSdk\Dto\Catalog\ProductMedia;
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
@@ -929,27 +929,27 @@ class ProductTest extends CatalogTest
     }
 
     /**
-     * @return ProductMedia\Dto\MediaList
+     * @return Media
      */
-    protected function provideMedia()
+    private function provideMedia()
     {
-        $media1 = new ProductMedia\Dto\Media();
+        $media1 = new Product\Dto\Media\Media();
         $media1->setCode('media_code_1')
-               ->setType(ProductMedia::TYPE_IMAGE)
-               ->setUrl('example.com/media1.jpg')
-               ->setAltText('alt text 1')
-               ->setTitle('Title Media 1')
-               ->setSequenceId(0);
+            ->setType(Product\Dto\Media\Media::TYPE_IMAGE)
+            ->setUrl('example.com/media1.jpg')
+            ->setAltText('alt text 1')
+            ->setSubTitle('Title Media 1')
+            ->setSequenceId(0);
 
-        $media2 = new ProductMedia\Dto\Media();
+        $media2 = new Product\Dto\Media\Media();
         $media2->setCode('media_code_2')
-               ->setType(ProductMedia::TYPE_VIDEO)
-               ->setUrl('example.com/media2.mov')
-               ->setAltText('alt text 2')
-               ->setTitle('Title Media 2')
-               ->setSequenceId(5);
+            ->setType(Product\Dto\Media\Media::TYPE_VIDEO)
+            ->setUrl('example.com/media2.mov')
+            ->setAltText('alt text 2')
+            ->setSubTitle('Title Media 2')
+            ->setSequenceId(5);
 
-        $media = new ProductMedia\Dto\MediaList();
+        $media = new Media();
         $media->add('en-us', [$media1, $media2]);
 
         return $media;

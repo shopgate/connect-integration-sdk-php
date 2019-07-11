@@ -52,12 +52,12 @@ class Attribute extends Base
     /**
      * @param Value|string $value
      *
-     * @return Base
+     * @return Attribute
      */
     public function setValue($value)
     {
         if (is_object($value)) {
-            return parent::set('value', new Value($value));
+            return $this::set('value', new Value($value));
         }
 
         return $this::set('value', $value);

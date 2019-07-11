@@ -66,7 +66,7 @@ class Attribute extends Base
     /**
      * @return Base|string|Value|null
      */
-    function getValue()
+    public function getValue()
     {
         $value = parent::get('value');
         if (is_object($value)) {

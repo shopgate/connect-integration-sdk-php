@@ -241,11 +241,13 @@ class CustomerTest extends CustomerBaseTest
 
         $this->sdk->getCustomerService()->addAttributes([$createAttribute]);
 
+        $attribute = new Customer\Dto\Attribute();
+        $attribute->setCode(self::CUSTOMER_ATTRIBUTE_CODE);
+        $attribute->setName('Attribute Name');
         $value = new Customer\Dto\Attribute\Value();
         $value->setCode(self::CUSTOMER_ATTRIBUTE_VALUE_CODE);
-        $attribute = new Customer\Dto\Attribute(
-            ['code' => self::CUSTOMER_ATTRIBUTE_CODE, 'name' => 'Main color', 'value' => $value]
-        );
+        $value->setName('Main color');
+        $attribute->setValue($value);
 
         // Add attribute
         $customer->setAttributes([$attribute]);

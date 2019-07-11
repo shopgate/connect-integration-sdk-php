@@ -28,10 +28,8 @@ use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Attribute\Value;
  * Dto for customer attribute.
  *
  * @method setCode(string $code)
- * @method setValue(string|Value $value)
  * @method setName(string $name)
  * @method string getCode()
- * @method string|Value getValue()
  * @method string getName()
  *
  * @codeCoverageIgnore
@@ -42,26 +40,39 @@ class Attribute extends Base
      * @var array
      */
     protected $schema = [
-        'anyOf' =>
-            [
-                [
-                    'type'                 => 'object',
-                    'properties'           => [
-                        'code'  => ['type' => 'string'],
-                        'value' => ['$ref' => Value::class],
-                        'name'  => ['type' => 'string'],
-                    ],
-                    'additionalProperties' => true,
-                ],
-                [
-                    'type'                 => 'object',
-                    'properties'           => [
-                        'code'  => ['type' => 'string'],
-                        'value' => ['type' => 'string'],
-                        'name'  => ['type' => 'string'],
-                    ],
-                    'additionalProperties' => true,
-                ]
-            ]
+        'type'                 => 'object',
+        'properties'           => [
+            'code'  => ['type' => 'string'],
+            'value' => ['type' => ['string', 'object']],
+            'name'  => ['type' => 'string'],
+        ],
+        'additionalProperties' => true,
     ];
+
+    /**
+     * @param string|Value $value
+     *
+     * @return Base
+     */
+    public function setValue($value)
+    {
+        if (is_object($value)) {
+            return parent::set('value', new Value($value));
+        }
+
+        return parent::set('value', $value);
+    }
+
+    /**
+     * @return Base|string|Value|null
+     */
+    function getValue()
+    {
+        $value = parent::get('value');
+        if (is_object($value)) {
+            return new Value($value);
+        }
+
+        return $value;
+    }
 }

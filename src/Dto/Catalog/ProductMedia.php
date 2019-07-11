@@ -20,31 +20,16 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto;
+namespace Shopgate\ConnectSdk\Dto\Catalog;
 
 use Shopgate\ConnectSdk\Dto\Base;
 
 /**
- * Localized Media Entities
+ * @package Shopgate\ConnectSdk\Dto\Catalog
  */
-class Media extends Base
+class ProductMedia extends Base
 {
-    /**
-     * @var array
-     * @codeCoverageIgnore
-     */
-    protected $schema = [
-        'type'                 => 'object',
-        'additionalProperties' => true,
-    ];
-
-    /**
-     * @param string        $locale
-     * @param Media\Media[] $media
-     */
-    public function add($locale, array $media)
-    {
-        // TODO logic to "add" additional media entities to an existing localization index?!
-        $this->set((string)$locale, $media);
-    }
+    const TYPE_IMAGE = 'image';
+    const TYPE_VIDEO = 'video';
+    const TYPE_PDF   = 'pdf';
 }

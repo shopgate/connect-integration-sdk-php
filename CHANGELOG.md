@@ -16,6 +16,24 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - DTOs for customers
 - DTOs for customers / contact 
 - DTOs for customers / attributes / attribute values
+- getAttributes
+- getAttribute
+- addAttributes direct logic
+- updateAttribute direct logic
+- deleteAttribute direct logic
+- addAttributeValue direct logic
+- updateAttributeValue direct logic
+- deleteAttributeValue direct logic
+- getCustomers
+- getCustomer
+- addCustomers direct logic
+- updateCustomer direct logic
+- deleteCustomer direct logic
+- addContacts direct logic
+- updateContact direct logic
+- deleteContact direct logic
+- addNotes direct logic
+- getNotes
 
 ## [0.5.0]- 2019-06-28
 ### Added

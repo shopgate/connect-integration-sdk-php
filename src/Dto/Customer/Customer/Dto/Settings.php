@@ -49,7 +49,7 @@ class Settings extends Base
         'properties'           => [
             'defaultLocale'            => ['type' => 'string'],
             'defaultCurrency'          => ['type' => 'string'],
-            'communicationPreferences' => ['type' => 'array'],
+            'communicationPreferences' => ['type' => 'array', 'items' => ['type' => 'string']],
             'defaultLocationCode'      => ['type' => 'string'],
             'marketingOptIn'           => ['type' => 'boolean'],
         ],

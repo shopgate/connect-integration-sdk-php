@@ -50,7 +50,7 @@ class Attribute extends Base
     ];
 
     /**
-     * @param Value[string $value
+     * @param Value|string $value
      *
      * @return Base
      */

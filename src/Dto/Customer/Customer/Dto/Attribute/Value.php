@@ -26,7 +26,7 @@ use Shopgate\ConnectSdk\Dto\Base;
 /**
  * @method Value setCode(string $code)
  * @method Value setName(string $name)
- * 
+ *
  * @method string getCode()
  * @method string getName()
  *

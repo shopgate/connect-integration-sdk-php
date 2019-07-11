@@ -23,17 +23,18 @@ namespace Shopgate\ConnectSdk\Service;
 
 use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Dto\Customer\Attribute;
+use Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
 use Shopgate\ConnectSdk\Dto\Customer\Contact;
 use Shopgate\ConnectSdk\Dto\Customer\Customer as CustomerDto;
-use Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
+use Shopgate\ConnectSdk\Dto\Customer\Note;
+use Shopgate\ConnectSdk\Dto\Meta;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
+use Shopgate\ConnectSdk\Helper\Json;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\ShopgateSdk;
-use Shopgate\ConnectSdk\Dto\Meta;
-use Shopgate\ConnectSdk\Helper\Json;
 
 class Customer
 {
@@ -45,11 +46,11 @@ class Customer
 
     /**
      * @param ClientInterface $client
-     * @param Json $jsonHelper
+     * @param Json            $jsonHelper
      */
     public function __construct(ClientInterface $client, Json $jsonHelper)
     {
-        $this->client = $client;
+        $this->client     = $client;
         $this->jsonHelper = $jsonHelper;
     }
 
@@ -363,7 +364,7 @@ class Customer
      * @param CustomerDto\Create[] $customers
      * @param array                $query
      *
-     * @return ResponseInterface
+     * @return array
      *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
@@ -448,7 +449,7 @@ class Customer
     }
 
     /**
-     * @param string           $id        customer id
+     * @param string           $id customer id
      * @param Contact\Create[] $contacts
      * @param array            $query
      *
@@ -476,7 +477,7 @@ class Customer
     }
 
     /**
-     * @param string         $id         contact id
+     * @param string         $id contact id
      * @param string         $customerId
      * @param Contact\Update $contact
      * @param array          $query
@@ -506,7 +507,7 @@ class Customer
     }
 
     /**
-     * @param string $id          contact id
+     * @param string $id contact id
      * @param string $customerId
      * @param array  $query
      *
@@ -530,5 +531,59 @@ class Customer
                 'query'       => $query,
             ]
         );
+    }
+
+    /**
+     * @param string        $customerId
+     * @param Note\Create[] $notes
+     * @param array         $query
+     *
+     * @return string[]
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function addNotes($customerId, array $notes, array $query = [])
+    {
+        $response = $this->client->doRequest(
+            [
+                'service'     => 'omni-customer',
+                'method'      => 'post',
+                'path'        => 'customers/' . $customerId . '/notes',
+                'body'        => ['notes' => $notes],
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
+                'query'       => $query
+            ]
+        );
+
+        return $this->jsonHelper->decode($response->getBody(), true)['ids'];
+    }
+
+    /**
+     * @param string $customerId
+     * @param array  $query
+     *
+     * @return Note\GetList
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function getNotes($customerId, array $query = [])
+    {
+        $response = $this->client->doRequest(
+            [
+                'service' => 'omni-customer',
+                'method'  => 'get',
+                'path'    => 'customers/' . $customerId . '/notes',
+                'query'   => $query,
+            ]
+        );
+
+        $response = $this->jsonHelper->decode($response->getBody(), true);
+
+        return new Note\GetList($response);
     }
 }

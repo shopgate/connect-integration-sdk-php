@@ -48,7 +48,6 @@ fi
 docker-compose exec -T php56 php ./tools/pubsubfiller.php
 docker-compose exec -T php56 php ./tools/etcdfiller.php
 
-docker-compose $DOCKER_COMPOSE_FILES build
 retry "MySQL" "docker-compose exec -T mysql mysql -uroot -psecret -e \"select 1 from dual\" 2>&1"
 
 docker-compose exec -T mysql mysql -u root -psecret < ./fixtures/schema.sql
@@ -59,7 +58,10 @@ retry "EventReceiver" "docker-compose exec -T omni-event-receiver curl http://lo
 docker-compose stop catalog && docker-compose $DOCKER_COMPOSE_FILES up -d catalog
 retry "CatalogService" "docker-compose exec -T catalog curl http://localhost/health -o /dev/null 2>&1"
 
-docker-compose $DOCKER_COMPOSE_FILES up -d
+docker-compose $DOCKER_COMPOSE_FILES up -d elasticsearch
+retry "elasticsearch" "docker-compose exec -T elasticsearch curl http://localhost:9200/_cluster/health?wait_for_status=yellow 2>&1"
+
+docker-compose $DOCKER_COMPOSE_FILES up -d mysql auth redis omni-worker omni-event-receiver omni-merchant omni-location s3 import
 
 retry "AuthService" "docker-compose exec -T auth curl http://localhost/health -o /dev/null 2>&1"
 retry "MerchantService" "docker-compose exec -T omni-merchant curl http://localhost/health -o /dev/null 2>&1"

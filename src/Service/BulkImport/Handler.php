@@ -111,6 +111,26 @@ class Handler
     }
 
     /**
+     * @param string $catalogCode
+     *
+     * @return Feed\Inventory
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function createInventoryFeed($catalogCode)
+    {
+        return new Feed\Inventory(
+            $this->client,
+            $this->importReference,
+            $this::HANDLER_TYPE,
+            array_merge(['entity' => 'inventory'], ['catalogCode' => $catalogCode])
+        );
+    }
+
+    /**
      * @return ResponseInterface
      *
      * @throws AuthenticationInvalidException

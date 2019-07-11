@@ -26,6 +26,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute\Dto\Name;
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
+use Shopgate\ConnectSdk\Dto\Catalog\Product;
 use Shopgate\ConnectSdk\Exception\Exception;
 
 abstract class CatalogTest extends ShopgateSdkTest
@@ -34,6 +35,13 @@ abstract class CatalogTest extends ShopgateSdkTest
     const METHOD_DELETE_CATEGORY      = 'deleteCategory';
     const METHOD_DELETE_PRODUCT       = 'deleteProduct';
     const METHOD_DELETE_ATTRIBUTE     = 'deleteAttribute';
+
+    const METHOD_DELETE_REQUEST_META  = [
+        self::METHOD_DELETE_CATEGORY  => ['force' => true],
+        self::METHOD_DELETE_PRODUCT   => [],
+        self::METHOD_DELETE_ATTRIBUTE => [],
+    ];
+
     const PRODUCT_CODE                = 'integration-test';
     const PRODUCT_CODE_SECOND         = 'integration-test-2';
     const PARENT_CATEGORY_CODE        = 'parent-integration-test';
@@ -142,21 +150,6 @@ abstract class CatalogTest extends ShopgateSdkTest
     }
 
     /**
-     * @throws Exception
-     */
-    protected function createSampleExtras()
-    {
-        $this->sdk->getCatalogService()->addAttributes($this->provideSampleExtras(), ['requestType' => 'direct']);
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_ATTRIBUTE,
-            [self::SAMPLE_EXTRA_CODE, self::SAMPLE_EXTRA_CODE_2]
-        );
-    }
-
-    /**
      * @return AttributeValue\Create
      */
     protected function provideSampleAttributeValue()
@@ -176,6 +169,21 @@ abstract class CatalogTest extends ShopgateSdkTest
         $attributeValue->setSwatch($attributeValueSwatch);
 
         return $attributeValue;
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function createSampleExtras()
+    {
+        $this->sdk->getCatalogService()->addAttributes($this->provideSampleExtras(), ['requestType' => 'direct']);
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_ATTRIBUTE,
+            [self::SAMPLE_EXTRA_CODE, self::SAMPLE_EXTRA_CODE_2]
+        );
     }
 
     /**
@@ -228,6 +236,22 @@ abstract class CatalogTest extends ShopgateSdkTest
         $extraSecond->setValues([$extraSecondValue]);
 
         return [$extra, $extraSecond];
+    }
+
+    /**
+     * Retrieves the default product with minimum details needed
+     *
+     * @return Product\Create
+     */
+    protected function prepareProductMinimum()
+    {
+        $productPayload = new Product\Create();
+
+        return $productPayload
+            ->setName(new \Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Name(['en-us' => 'English Product name']))
+            ->setCode(self::PRODUCT_CODE)
+            ->setModelType(Product\Create::MODEL_TYPE_STANDARD)
+            ->setIsInventoryManaged(true);
     }
 
     /**

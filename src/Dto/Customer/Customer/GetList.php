@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright Shopgate Inc.
  *
@@ -20,31 +19,30 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto;
+namespace Shopgate\ConnectSdk\Dto\Customer\Customer;
 
-use Shopgate\ConnectSdk\Dto\Base;
+use Shopgate\ConnectSdk\Dto\Customer\Customer;
+use Shopgate\ConnectSdk\Dto\Meta;
 
 /**
- * Localized Media Entities
+ * @method Meta getMeta()
+ * @method Get[] getCustomers()
+ *
  */
-class Media extends Base
+class GetList extends Customer
 {
     /**
      * @var array
-     * @codeCoverageIgnore
      */
     protected $schema = [
         'type'                 => 'object',
+        'properties'           => [
+            'meta'       => ['$ref' => Meta::class],
+            'customers' => [
+                'type'  => 'array',
+                'items' => ['$ref' => Get::class],
+            ],
+        ],
         'additionalProperties' => true,
     ];
-
-    /**
-     * @param string        $locale
-     * @param Media\Media[] $media
-     */
-    public function add($locale, array $media)
-    {
-        // TODO logic to "add" additional media entities to an existing localization index?!
-        $this->set((string)$locale, $media);
-    }
 }

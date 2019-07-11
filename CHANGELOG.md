@@ -5,12 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-
 ### Added
-- getProductDescriptions direct logic
-- addInventory direct logic
-- updateInventory direct logic
-- deleteInventory direct logic
+- addNotes direct call
+- getNotes direct call
+- getAttributes
+- getAttribute
+- addAttributes direct call
+- updateAttribute direct call
+- deleteAttribute direct call
+- addAttributeValue direct call
+- updateAttributeValue direct call
+- deleteAttributeValue direct call
+- getCustomers
+- getCustomer
+- addCustomers direct call
+- updateCustomer direct call
+- deleteCustomer direct call
+- addContacts direct call
+- updateContact direct call
+- deleteContact direct call
+- getProductDescriptions direct call
+- addInventory direct call
+- updateInventory direct call
+- deleteInventory direct call
 - bulkImport for inventory
 
 ## [0.5.0]- 2019-06-28
@@ -21,15 +38,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [0.4.0]- 2019-06-13
 ### Added
-- getProduct direct logic
-- getCategory direct logic
-- updateAttribute event & direct logic
-- createAttribute event & direct logic
-- deleteAttribute event & direct logic
-- updateAttributeValue event & direct logic
-- createAttributeValue event & direct logic
-- deleteAttributeValue event & direct logic
-- own client exceptions
+- getProduct direct call
+- getCategory direct call
+- updateAttribute event & direct call
+- createAttribute event & direct call
+- deleteAttribute event & direct call
+- updateAttributeValue event & direct call
+- createAttributeValue event & direct call
+- deleteAttributeValue event & direct call
+- SDK client exceptions
 
 ### Changed
 - SDK structure
@@ -49,10 +66,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [0.2.0] - 2019-05-23
 ### Added
-- updateProduct event & direct logic
-- createProduct event & direct logic
-- deleteProduct event & direct logic
-- getProduct direct logic
+- updateProduct event & direct call
+- createProduct event & direct call
+- deleteProduct event & direct call
+- getProduct direct call
 
 ### Fixed
 - direct call endpoint
@@ -60,9 +77,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 0.1.0 - 2019-05-10
 ### Added
-- updateCategory event & direct logic
-- createCategory event & direct logic
-- deleteCategory event & direct logic
+- updateCategory event & direct call
+- createCategory event & direct call
+- deleteCategory event & direct call
 
 [Unreleased]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.5.0...HEAD
 [0.5.0]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.4.0...0.5.0

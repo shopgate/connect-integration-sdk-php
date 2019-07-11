@@ -56,9 +56,7 @@ class VolumePricing extends Base
             'price'     => ['type' => 'number'],
             'salePrice' => ['type' => 'number'],
             'unit'      => ['type' => 'string'],
-            'priceType' => [
-                'type' => 'string'
-            ]
+            'priceType' => ['type' => 'string']
         ],
         'additionalProperties' => true
     ];

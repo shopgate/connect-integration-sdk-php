@@ -22,15 +22,18 @@
 
 namespace Shopgate\ConnectSdk;
 
+use Shopgate\ConnectSdk\Helper\Json;
 use Shopgate\ConnectSdk\Http\Client;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\Service\BulkImport;
 use Shopgate\ConnectSdk\Service\Catalog;
+use Shopgate\ConnectSdk\Service\Customer;
 
 class ShopgateSdk
 {
     const REQUEST_TYPE_DIRECT = 'direct';
     const REQUEST_TYPE_EVENT  = 'event';
+    const REGISTERED_SERVICES = ['catalog', 'customer', 'bulkImport'];
 
     /** @var ClientInterface */
     private $client;
@@ -38,8 +41,14 @@ class ShopgateSdk
     /** @var Catalog */
     private $catalog;
 
+    /** @var Customer */
+    private $customer;
+
     /** @var BulkImport */
     private $bulkImport;
+
+    /** @var Json */
+    private $jsonHelper;
 
     /**
      * The $config argument is a list of key-value pairs:
@@ -61,6 +70,7 @@ class ShopgateSdk
                 null,
                 isset($config['env']) ? $config['env'] : ''
             );
+        $this->jsonHelper = new Json();
 
         if (isset($config['services'])) {
             $this->setServices($config['services']);
@@ -73,10 +83,22 @@ class ShopgateSdk
     public function getCatalogService()
     {
         if (!$this->catalog) {
-            $this->catalog = new Catalog($this->client);
+            $this->catalog = new Catalog($this->client, $this->jsonHelper);
         }
 
         return $this->catalog;
+    }
+
+    /**
+     * @return Customer
+     */
+    public function getCustomerService()
+    {
+        if (!$this->customer) {
+            $this->customer = new Customer($this->client, $this->jsonHelper);
+        }
+
+        return $this->customer;
     }
 
     /**
@@ -104,7 +126,7 @@ class ShopgateSdk
      */
     private function setServices($serviceArgs)
     {
-        foreach (['catalog', 'bulkImport'] as $service) {
+        foreach (self::REGISTERED_SERVICES as $service) {
             if (!isset($serviceArgs[$service])) {
                 continue;
             }

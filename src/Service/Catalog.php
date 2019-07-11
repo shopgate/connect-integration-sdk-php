@@ -36,18 +36,24 @@ use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\ShopgateSdk;
+use Shopgate\ConnectSdk\Helper\Json;
 
 class Catalog
 {
     /** @var ClientInterface */
     private $client;
 
+    /** @var Json */
+    private $jsonHelper;
+
     /**
      * @param ClientInterface $client
+     * @param Json            $jsonHelper
      */
-    public function __construct(ClientInterface $client)
+    public function __construct(ClientInterface $client, Json $jsonHelper)
     {
         $this->client = $client;
+        $this->jsonHelper = $jsonHelper;
     }
 
     /**
@@ -161,7 +167,7 @@ class Catalog
     public function getCategories(array $query = [])
     {
         if (isset($query['filters'])) {
-            $query['filters'] = \GuzzleHttp\json_encode($query['filters']);
+            $query['filters'] = $this->jsonHelper->encode($query['filters']);
         }
 
         $response = $this->client->doRequest(
@@ -173,7 +179,7 @@ class Catalog
                 'query'   => $query,
             ]
         );
-        $response = json_decode($response->getBody(), true);
+        $response = $this->jsonHelper->decode($response->getBody(), true);
 
         $categories = [];
         foreach ($response['categories'] as $category) {
@@ -287,7 +293,7 @@ class Catalog
     public function getProducts(array $query = [])
     {
         if (isset($query['filters'])) {
-            $query['filters'] = \GuzzleHttp\json_encode($query['filters']);
+            $query['filters'] = $this->jsonHelper->encode($query['filters']);
         }
 
         $response = $this->client->doRequest(
@@ -299,7 +305,7 @@ class Catalog
                 'query'   => $query,
             ]
         );
-        $response = json_decode($response->getBody(), true);
+        $response = $this->jsonHelper->decode($response->getBody(), true);
 
         $products = [];
         foreach ($response['products'] as $product) {
@@ -333,7 +339,7 @@ class Catalog
                 'query'   => $query
             ]
         );
-        $response = json_decode($response->getBody(), true);
+        $response = $this->jsonHelper->decode($response->getBody(), true);
 
         return new Product\Get($response['product']);
     }
@@ -413,7 +419,7 @@ class Catalog
     public function getAttributes(array $query = [])
     {
         if (isset($query['filters'])) {
-            $query['filters'] = \GuzzleHttp\json_encode($query['filters']);
+            $query['filters'] = $this->jsonHelper->encode($query['filters']);
         }
 
         $response = $this->client->doRequest(
@@ -425,7 +431,7 @@ class Catalog
                 'query'   => $query,
             ]
         );
-        $response = json_decode($response->getBody(), true);
+        $response = $this->jsonHelper->decode($response->getBody(), true);
 
         $attributes = [];
         foreach ($response['attributes'] as $attribute) {
@@ -460,7 +466,7 @@ class Catalog
             ]
         );
 
-        $response = json_decode($response->getBody(), true);
+        $response = $this->jsonHelper->decode($response->getBody(), true);
 
         return new Attribute\Get($response['attribute']);
     }

@@ -7,6 +7,8 @@ services:
       args:
         - ENABLE_XDEBUG=1
     environment:
+      - ETCD_HOST=http://etcd:2379
+      - PUBSUB_EMULATOR_HOST=googlepubsub-emulator:8085
       - XDEBUG_CONNECT_TO_PORT=${XDEBUG_CONNECT_TO_PORT}
       - PHP_IDE_CONFIG=serverName=integration-sdk-php-56
     volumes:
@@ -25,8 +27,6 @@ services:
       args:
         - ENABLE_XDEBUG=1
     environment:
-      - ETCD_HOST=http://etcd:2379
-      - PUBSUB_EMULATOR_HOST=googlepubsub-emulator:8085
       - XDEBUG_CONNECT_TO_PORT=${XDEBUG_CONNECT_TO_PORT}
     volumes:
       - ../composer.json:/sdk/composer.json
@@ -63,6 +63,7 @@ services:
         aliases:
           - auth.shopgatedev.services
           - omni-merchant.shopgatedev.services
+          - omni-customer.shopgatedev.services
           - omni-location.shopgatedev.services
           - omni-event-receiver.shopgatedev.services
           - catalog.shopgatedev.services

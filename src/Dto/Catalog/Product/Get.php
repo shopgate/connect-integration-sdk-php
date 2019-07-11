@@ -23,6 +23,7 @@
 namespace Shopgate\ConnectSdk\Dto\Catalog\Product;
 
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
+use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto;
 
 /**
  * Dto for product response.
@@ -53,11 +54,49 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product;
  * @method string getLongName()
  * @method Dto\Categories[] getCategories()
  * @method Dto\Properties[] getProperties()
- * @method Dto\Media\Media[] getMedia()
+ * @method Dto\MediaList\Media[] getMedia()
  * @method Dto\Inventory[] getInventories()
  * @method Dto\Options[] getOptions()
  * @method Dto\Extras[] getExtras()
+ *
+ * @codeCoverageIgnore
  */
 class Get extends Product
 {
+    /**
+     * @var array
+     */
+    protected $schema = [
+        'type'                 => 'object',
+        'properties'           => [
+            'identifiers'         => ['$ref' => Dto\Identifiers::class],
+            'price'               => ['$ref' => Dto\Price::class],
+            'shippingInformation' => ['$ref' => Dto\ShippingInformation::class],
+            'categories'          => [
+                'type'  => 'array',
+                'items' => ['$ref' => Dto\Categories::class]
+            ],
+            'properties'          => [
+                'type'  => 'array',
+                'items' => ['$ref' => Dto\Properties::class]
+            ],
+            'media'               => [
+                'type'  => 'array',
+                'items' => ['$ref' => Dto\MediaList\Media::class]
+            ],
+            'inventories'         => [
+                'type'  => 'array',
+                'items' => ['$ref' => Dto\Inventory::class]
+            ],
+            'options'             => [
+                'type'  => 'array',
+                'items' => ['$ref' => Dto\Options::class]
+            ],
+            'extras'              => [
+                'type'  => 'array',
+                'items' => ['$ref' => Dto\Extras::class]
+            ],
+        ],
+        'additionalProperties' => true
+    ];
 }

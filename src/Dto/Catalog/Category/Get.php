@@ -25,16 +25,38 @@ namespace Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
 
 /**
- * Dto for category response.
+ * Dto for category response
  *
  * @method string getCode()
  * @method string getParentCategoryCode()
  * @method string getCatalogCode()
+ * @method string getImage()
  * @method string getName()
  * @method string getDescription()
  * @method string getUrl()
+ * @method string getExternalUpdateDate()
+ * @method string getStatus()
  *
+ * @codeCoverageIgnore
  */
 class Get extends Category
 {
+    /**
+     * @var array
+     */
+    protected $schema = [
+        'type'                 => 'object',
+        'properties'           => [
+            'code'               => ['type' => 'string'],
+            'parentCategoryCode' => ['type' => 'string'],
+            'catalogCode'        => ['type' => 'string'],
+            'image'              => ['type' => 'string'],
+            'name'               => ['type' => 'string'],
+            'description'        => ['type' => 'string'],
+            'url'                => ['type' => 'string'],
+            'externalUpdateDate' => ['type' => 'string'],
+            'status'             => ['type' => 'string']
+        ],
+        'additionalProperties' => true
+    ];
 }

@@ -22,9 +22,8 @@
 
 namespace Shopgate\ConnectSdk\Tests\Unit\Http;
 
-use GuzzleHttp\ClientInterface as GuzzleClientInterface;
-
 use Exception;
+use GuzzleHttp\ClientInterface as GuzzleClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -76,6 +75,9 @@ class ClientTest extends TestCase
         );
     }
 
+    /**
+     * Test case where it should return the default client
+     */
     public function testCreateInstanceShouldReturnClient()
     {
         /** @noinspection PhpParamsInspection */
@@ -114,6 +116,7 @@ class ClientTest extends TestCase
     }
 
     /**
+     * @doesNotPerformAssertions
      * @throws Exception
      */
     public function testEnableRequestLoggingShouldNotFailIfNothingWasPassed()
@@ -134,6 +137,9 @@ class ClientTest extends TestCase
         $this->assertEquals($expectedUrl, $this->subjectUnderTest->buildServiceUrl($serviceName, $path));
     }
 
+    /**
+     * @return array
+     */
     public function provideBuildServiceUrlFixtures()
     {
         return [

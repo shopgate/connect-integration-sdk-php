@@ -30,12 +30,13 @@ use Shopgate\ConnectSdk\Dto\Base;
  *
  * @method string getCode()
  * @method float getAdditionalPrice()
+ *
+ * @codeCoverageIgnore
  */
 class Values extends Base
 {
     /**
      * @var array
-     * @codeCoverageIgnore
      */
     protected $schema = [
         'type'                 => 'object',

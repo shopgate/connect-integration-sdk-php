@@ -42,6 +42,7 @@ use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
+use Shopgate\ConnectSdk\Helper\Json;
 use Shopgate\ConnectSdk\Http\Persistence\EncryptedFile;
 use Shopgate\ConnectSdk\Http\Persistence\PersistenceChain;
 use Shopgate\ConnectSdk\ShopgateSdk;
@@ -73,12 +74,13 @@ class Client implements ClientInterface
     }
 
     /**
-     * @param string                         $clientId
-     * @param string                         $clientSecret
-     * @param string                         $merchantCode
-     * @param string                         $baseUri
-     * @param string                         $env
-     * @param string                         $accessTokenPath
+     * @param string $clientId
+     * @param string $clientSecret
+     * @param string $merchantCode
+     * @param string $baseUri
+     * @param string $env
+     * @param string $accessTokenPath
+     *
      * @return Client
      */
     public static function createInstance(
@@ -92,32 +94,41 @@ class Client implements ClientInterface
         $env = $env === 'live' ? '' : $env;
 
         if (empty($baseUri)) {
-            $baseUri = str_replace('{env}', $env,'https://{service}.shopgate{env}.services');
+            $baseUri = str_replace('{env}', $env, 'https://{service}.shopgate{env}.services');
         }
 
         if (empty($accessTokenPath)) {
-            $accessTokenPath = __DIR__ . ($env !== '' ? '/../access_token_' . $env : '/../access_token');
+            $accessTokenPath = __DIR__ . ($env !== '' ? '/../access_token_' . $env : '/../access_token.txt');
         }
 
-        $reauthClient = new \GuzzleHttp\Client([
-            'base_uri' => rtrim(str_replace('{service}', 'auth', $baseUri), '/') . '/oauth/token'
-        ]);
+        $reauthClient = new \GuzzleHttp\Client(
+            [
+                'base_uri' => rtrim(str_replace('{service}', 'auth', $baseUri), '/') . '/oauth/token'
+            ]
+        );
 
-        $oauth = new OAuth2Middleware(new ClientCredentials($reauthClient, [
-            'client_id'     => $clientId,
-            'client_secret' => $clientSecret
-        ]));
+        $oauth = new OAuth2Middleware(
+            new ClientCredentials(
+                $reauthClient,
+                [
+                    'client_id'     => $clientId,
+                    'client_secret' => $clientSecret
+                ]
+            )
+        );
 
         $oauth->setTokenPersistence(new PersistenceChain([
-            new EncryptedFile($accessTokenPath, $clientSecret)
+            new EncryptedFile(new Json(), $accessTokenPath, $clientSecret)
         ]));
 
         $handlerStack = HandlerStack::create();
         $handlerStack->push($oauth);
-        $client = new \GuzzleHttp\Client([
-            'auth'    => 'oauth',
-            'handler' => $handlerStack
-        ]);
+        $client = new \GuzzleHttp\Client(
+            [
+                'auth'    => 'oauth',
+                'handler' => $handlerStack
+            ]
+        );
 
         return new self($client, $baseUri, $merchantCode);
     }
@@ -181,7 +192,7 @@ class Client implements ClientInterface
             return $this->triggerEvent($params);
         }
 
-        if (isset($params['query']) && isset($params['query']['requestType'])) {
+        if (isset($params['query']['requestType'])) {
             unset($params['query']['requestType']);
         }
 
@@ -203,7 +214,7 @@ class Client implements ClientInterface
         } catch (GuzzleRequestException $e) {
             $statusCode = $e->getResponse() ? $e->getResponse()->getStatusCode() : 0;
 
-            if ($statusCode == 404) {
+            if ($statusCode === 404) {
                 throw new NotFoundException(
                     $e->getResponse() && $e->getResponse()->getBody() ? $e->getResponse()->getBody()->getContents()
                         : $e->getMessage()
@@ -228,7 +239,9 @@ class Client implements ClientInterface
 
     /**
      * This method will convert true (bool) values to 'true' (string) and false (bool) to 'false' (string).
+     *
      * @param array $queryParameters
+     *
      * @return array
      */
     private function fixBoolValuesInQuery($queryParameters)
@@ -302,7 +315,7 @@ class Client implements ClientInterface
     public function isDirect(array $params)
     {
         return
-            (!isset($params['requestType']) && $params['method'] === 'get') ||
-            $params['requestType'] === ShopgateSdk::REQUEST_TYPE_DIRECT;
+            (!isset($params['requestType']) && $params['method'] === 'get')
+            || $params['requestType'] === ShopgateSdk::REQUEST_TYPE_DIRECT;
     }
 }

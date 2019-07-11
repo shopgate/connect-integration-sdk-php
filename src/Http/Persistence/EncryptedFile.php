@@ -27,6 +27,7 @@ use Defuse\Crypto\Exception\EnvironmentIsBrokenException;
 use Defuse\Crypto\Exception\WrongKeyOrModifiedCiphertextException;
 use kamermans\OAuth2\Persistence\TokenPersistenceInterface;
 use kamermans\OAuth2\Token\TokenInterface;
+use Shopgate\ConnectSdk\Helper\Json;
 
 class EncryptedFile implements TokenPersistenceInterface
 {
@@ -36,14 +37,19 @@ class EncryptedFile implements TokenPersistenceInterface
     /** @var string */
     private $secretKey;
 
+    /** @var Json */
+    private $jsonHelper;
+
     /**
+     * @param Json $jsonHelper
      * @param string $filepath
      * @param string $secretKey
      */
-    public function __construct($filepath, $secretKey)
+    public function __construct(Json $jsonHelper, $filepath, $secretKey)
     {
         $this->filepath  = $filepath;
         $this->secretKey = $secretKey;
+        $this->jsonHelper = $jsonHelper;
     }
 
     /**
@@ -54,7 +60,7 @@ class EncryptedFile implements TokenPersistenceInterface
     public function saveToken(TokenInterface $token)
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        $encode = json_encode($token->serialize());
+        $encode = $this->jsonHelper->encode($token->serialize());
         file_put_contents($this->filepath, Crypto::encryptWithPassword($encode, $this->secretKey), LOCK_EX);
     }
 

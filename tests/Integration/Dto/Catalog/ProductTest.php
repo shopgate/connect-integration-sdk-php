@@ -27,7 +27,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Categories;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Extras;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\LongDescription;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\LongName;
-use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Media;
+use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\MediaList;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Name;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Price;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Price\MapPricing;
@@ -42,7 +42,6 @@ use Shopgate\ConnectSdk\Tests\Integration\CatalogTest;
 
 class ProductTest extends CatalogTest
 {
-
     /**
      * @throws Exception
      */
@@ -91,7 +90,7 @@ class ProductTest extends CatalogTest
         $productMaximum->setExternalUpdateDate('2019-01-01T00:00:00.000Z');
         $this->sdk->getCatalogService()->addProducts(
             [
-                $productMaximum
+                $productMaximum,
             ],
             ['requestType' => 'direct']
         );
@@ -107,7 +106,7 @@ class ProductTest extends CatalogTest
             self::CATALOG_SERVICE,
             self::METHOD_DELETE_PRODUCT,
             [
-                $productMaximum->code
+                $productMaximum->code,
             ]
         );
 
@@ -117,7 +116,7 @@ class ProductTest extends CatalogTest
                 $productMaximum->code,
                 $product,
                 [
-                    'requestType' => 'direct'
+                    'requestType' => 'direct',
                 ]
             );
         } catch (RequestException $exception) {
@@ -140,7 +139,7 @@ class ProductTest extends CatalogTest
         $productMaximum->setModelType(Product::MODEL_TYPE_CONFIGURABLE);
         $this->sdk->getCatalogService()->addProducts(
             [
-                $productMaximum
+                $productMaximum,
             ],
             ['requestType' => 'direct']
         );
@@ -158,7 +157,7 @@ class ProductTest extends CatalogTest
             ->setEndDate('2019-09-01T00:00:00.000Z')
             ->setPrice(9.9);
 
-        $price = (new Product\Dto\Price())
+        $price   = (new Product\Dto\Price())
             ->setCurrencyCode(Product\Dto\Price::CURRENCY_CODE_USD)
             ->setCost(12.12)
             ->setPrice(13.13)
@@ -175,7 +174,7 @@ class ProductTest extends CatalogTest
             $productMaximum->code,
             $product,
             [
-                'requestType' => 'direct'
+                'requestType' => 'direct',
             ]
         );
 
@@ -184,12 +183,12 @@ class ProductTest extends CatalogTest
             self::CATALOG_SERVICE,
             self::METHOD_DELETE_PRODUCT,
             [
-                $productMaximum->code
+                $productMaximum->code,
             ]
         );
 
         // Assert
-        $product = $this->sdk->getCatalogService()->getProduct($productMaximum->code);
+        $product             = $this->sdk->getCatalogService()->getProduct($productMaximum->code);
         $updatedProductPrice = $product->getPrice();
         $this->assertEquals($price->getCurrencyCode(), $updatedProductPrice->getCurrencyCode());
         $this->assertEquals($price->getCost(), $updatedProductPrice->getCost());
@@ -225,7 +224,7 @@ class ProductTest extends CatalogTest
         $productMaximum = $this->prepareProductMaximum(new Update());
         $this->sdk->getCatalogService()->addProducts(
             [
-                $productMaximum
+                $productMaximum,
             ],
             ['requestType' => 'direct']
         );
@@ -237,7 +236,7 @@ class ProductTest extends CatalogTest
             $productMaximum->code,
             $product,
             [
-                'requestType' => 'direct'
+                'requestType' => 'direct',
             ]
         );
 
@@ -246,12 +245,12 @@ class ProductTest extends CatalogTest
             self::CATALOG_SERVICE,
             self::METHOD_DELETE_PRODUCT,
             [
-                $productMaximum->code
+                $productMaximum->code,
             ]
         );
 
         // Assert
-        $product = $this->sdk->getCatalogService()->getProduct($productMaximum->code);
+        $product    = $this->sdk->getCatalogService()->getProduct($productMaximum->code);
         $updatedKey = array_keys($updateProductData)[0];
         $this->assertEquals($expectedValue, $product->get($updatedKey));
     }
@@ -263,161 +262,161 @@ class ProductTest extends CatalogTest
     public function provideUpdateProductData()
     {
         return [
-            'externalUpdateDate' => [
+            'externalUpdateDate'                   => [
                 'updateProductData' => [
                     'externalUpdateDate' => '2020-02-04T00:00:00.000Z',
                 ],
-                'expectedValue' => '2020-02-04T00:00:00.000Z'
+                'expectedValue'     => '2020-02-04T00:00:00.000Z',
             ],
-            'name' => [
+            'name'                                 => [
                 'updateProductData' => [
                     'name' => new Name(['en-us' => 'Updated Name']),
                 ],
-                'expectedValue' => 'Updated Name'
+                'expectedValue'     => 'Updated Name',
             ],
-            'longName' => [
+            'longName'                             => [
                 'updateProductData' => [
                     'longName' => new LongName(['en-us' => 'Updated Long Name']),
                 ],
-                'expectedValue' => 'Updated Long Name'
+                'expectedValue'     => 'Updated Long Name',
             ],
-            'unit' => [
+            'unit'                                 => [
                 'updateProductData' => [
                     'unit' => 'm',
                 ],
-                'expectedValue' => 'm'
+                'expectedValue'     => 'm',
             ],
-            'url' => [
+            'url'                                  => [
                 'updateProductData' => [
                     'url' => 'http://updated.url.com',
                 ],
-                'expectedValue' => 'http://updated.url.com'
+                'expectedValue'     => 'http://updated.url.com',
             ],
-            'rating' => [
+            'rating'                               => [
                 'updateProductData' => [
                     'rating' => 2.5,
                 ],
-                'expectedValue' => 2.5
+                'expectedValue'     => 2.5,
             ],
-            'isTaxed' => [
+            'isTaxed'                              => [
                 'updateProductData' => [
                     'isTaxed' => false,
                 ],
-                'expectedValue' => false
+                'expectedValue'     => false,
             ],
-            'taxClass' => [
+            'taxClass'                             => [
                 'updateProductData' => [
                     'taxClass' => 'a123456',
                 ],
-                'expectedValue' => 'a123456'
+                'expectedValue'     => 'a123456',
             ],
-            'minQty' => [
+            'minQty'                               => [
                 'updateProductData' => [
                     'minQty' => 12,
                 ],
-                'expectedValue' => 12
+                'expectedValue'     => 12,
             ],
-            'maxQty' => [
+            'maxQty'                               => [
                 'updateProductData' => [
                     'maxQty' => 122,
                 ],
-                'expectedValue' => 122
+                'expectedValue'     => 122,
             ],
-            'isInventoryManaged' => [
+            'isInventoryManaged'                   => [
                 'updateProductData' => [
                     'isInventoryManaged' => false,
                 ],
-                'expectedValue' => false
+                'expectedValue'     => false,
             ],
-            'startDate' => [
+            'startDate'                            => [
                 'updateProductData' => [
                     'startDate' => '2019-12-12T00:00:00.000Z',
                 ],
-                'expectedValue' => '2019-12-12T00:00:00.000Z'
+                'expectedValue'     => '2019-12-12T00:00:00.000Z',
             ],
-            'endDate' => [
+            'endDate'                              => [
                 'updateProductData' => [
                     'endDate' => '2016-02-03T00:00:00.000Z',
                 ],
-                'expectedValue' => '2016-02-03T00:00:00.000Z'
+                'expectedValue'     => '2016-02-03T00:00:00.000Z',
             ],
-            'firstAvailableDate' => [
+            'firstAvailableDate'                   => [
                 'updateProductData' => [
                     'firstAvailableDate' => '2019-05-07T00:00:00.000Z',
                 ],
-                'expectedValue' => '2019-05-07T00:00:00.000Z'
+                'expectedValue'     => '2019-05-07T00:00:00.000Z',
             ],
-            'eolDate' => [
+            'eolDate'                              => [
                 'updateProductData' => [
                     'eolDate' => '2032-11-11T00:00:00.000Z',
                 ],
-                'expectedValue' => '2032-11-11T00:00:00.000Z'
+                'expectedValue'     => '2032-11-11T00:00:00.000Z',
             ],
-            'status scheduled' => [
+            'status scheduled'                     => [
                 'updateProductData' => [
                     'status' => Product::STATUS_SCHEDULED,
                 ],
-                'expectedValue' => Product::STATUS_SCHEDULED
+                'expectedValue'     => Product::STATUS_SCHEDULED,
             ],
-            'status inactive' => [
+            'status inactive'                      => [
                 'updateProductData' => [
                     'status' => Product::STATUS_INACTIVE,
                 ],
-                'expectedValue' => Product::STATUS_INACTIVE
+                'expectedValue'     => Product::STATUS_INACTIVE,
             ],
-            'status active' => [
+            'status active'                        => [
                 'updateProductData' => [
                     'status' => Product::STATUS_ACTIVE,
                 ],
-                'expectedValue' => Product::STATUS_ACTIVE
+                'expectedValue'     => Product::STATUS_ACTIVE,
             ],
-            'inventoryTreatment allow backorders' => [
+            'inventoryTreatment allow backorders'  => [
                 'updateProductData' => [
                     'inventoryTreatment' => Product::INVENTORY_TREATMENT_ALLOW_BACK_ORDERS,
                 ],
-                'expectedValue' => Product::INVENTORY_TREATMENT_ALLOW_BACK_ORDERS
+                'expectedValue'     => Product::INVENTORY_TREATMENT_ALLOW_BACK_ORDERS,
             ],
-            'inventoryTreatment pre order' => [
+            'inventoryTreatment pre order'         => [
                 'updateProductData' => [
                     'inventoryTreatment' => Product::INVENTORY_TREATMENT_PRE_ORDER,
                 ],
-                'expectedValue' => Product::INVENTORY_TREATMENT_PRE_ORDER
+                'expectedValue'     => Product::INVENTORY_TREATMENT_PRE_ORDER,
             ],
             'inventoryTreatment show out of stock' => [
                 'updateProductData' => [
                     'inventoryTreatment' => Product::INVENTORY_TREATMENT_SHOW_OUT_OF_STOCK,
                 ],
-                'expectedValue' => Product::INVENTORY_TREATMENT_SHOW_OUT_OF_STOCK
+                'expectedValue'     => Product::INVENTORY_TREATMENT_SHOW_OUT_OF_STOCK,
             ],
-            'modelType bundle' => [
+            'modelType bundle'                     => [
                 'updateProductData' => [
                     'modelType' => Product::MODEL_TYPE_BUNDLE,
                 ],
-                'expectedValue' => Product::MODEL_TYPE_BUNDLE
+                'expectedValue'     => Product::MODEL_TYPE_BUNDLE,
             ],
-            'modelType bundle item' => [
+            'modelType bundle item'                => [
                 'updateProductData' => [
                     'modelType' => Product::MODEL_TYPE_BUNDLE_ITEM,
                 ],
-                'expectedValue' => Product::MODEL_TYPE_BUNDLE_ITEM
+                'expectedValue'     => Product::MODEL_TYPE_BUNDLE_ITEM,
             ],
-            'modelType configurable' => [
+            'modelType configurable'               => [
                 'updateProductData' => [
                     'modelType' => Product::MODEL_TYPE_CONFIGURABLE,
                 ],
-                'expectedValue' => Product::MODEL_TYPE_CONFIGURABLE
+                'expectedValue'     => Product::MODEL_TYPE_CONFIGURABLE,
             ],
-            'modelType standard' => [
+            'modelType standard'                   => [
                 'updateProductData' => [
                     'modelType' => Product::MODEL_TYPE_STANDARD,
                 ],
-                'expectedValue' => Product::MODEL_TYPE_STANDARD
+                'expectedValue'     => Product::MODEL_TYPE_STANDARD,
             ],
-            'modelType variant' => [
+            'modelType variant'                    => [
                 'updateProductData' => [
                     'modelType' => Product::MODEL_TYPE_VARIANT,
                 ],
-                'expectedValue' => Product::MODEL_TYPE_VARIANT
+                'expectedValue'     => Product::MODEL_TYPE_VARIANT,
             ],
         ];
     }
@@ -523,9 +522,13 @@ class ProductTest extends CatalogTest
         $product = $this->sdk->getCatalogService()->getProduct($productMinimum->code);
 
         // CleanUp
-        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [
-            $productMinimum->code
-        ]);
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_PRODUCT,
+            [
+                $productMinimum->code,
+            ]
+        );
 
         // Assert
         $this->assertEquals($productMinimum->code, $product->getCode());
@@ -544,9 +547,13 @@ class ProductTest extends CatalogTest
         $product = $this->sdk->getCatalogService()->getProduct($productMinimum->code, ['fields' => 'code']);
 
         // CleanUp
-        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [
-            $productMinimum->code
-        ]);
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_PRODUCT,
+            [
+                $productMinimum->code,
+            ]
+        );
 
         // Assert
         $this->assertEquals($productMinimum->code, $product->getCode());
@@ -559,18 +566,22 @@ class ProductTest extends CatalogTest
     public function testGetProducts()
     {
         // Arrange
-        $productMinimum = $this->prepareProductMinimum();
-        $productMaximum = $this->prepareProductMaximum();
+        $productMinimum      = $this->prepareProductMinimum();
+        $productMaximum      = $this->prepareProductMaximum();
         $this->sdk->getCatalogService()->addProducts([$productMinimum, $productMaximum], ['requestType' => 'direct']);
 
         // Act
         $products = $this->sdk->getCatalogService()->getProducts();
 
         // CleanUp
-        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [
-            $productMaximum->code,
-            $productMinimum->code
-        ]);
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_PRODUCT,
+            [
+                $productMaximum->code,
+                $productMinimum->code,
+            ]
+        );
 
         // Assert
         $productCodes = [];
@@ -579,12 +590,14 @@ class ProductTest extends CatalogTest
         }
 
         $this->assertCount(2, $products->getProducts());
-        $this->assertEquals([
-            self::PRODUCT_CODE,
-            self::PRODUCT_CODE_SECOND,
-        ], $productCodes);
+        $this->assertEquals(
+            [
+                self::PRODUCT_CODE,
+                self::PRODUCT_CODE_SECOND,
+            ],
+            $productCodes
+        );
     }
-
 
     /**
      * @param int      $limit
@@ -617,10 +630,14 @@ class ProductTest extends CatalogTest
         );
 
         // CleanUp
-        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [
-            $productMaximum->code,
-            $productMinimum->code
-        ]);
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_PRODUCT,
+            [
+                $productMaximum->code,
+                $productMinimum->code,
+            ]
+        );
 
         // Assert
         $productCodes = [];
@@ -644,68 +661,68 @@ class ProductTest extends CatalogTest
     public function provideProductLimitCases()
     {
         return [
-            'get the second' => [
-                'limit' => 1,
-                'offset' => 1,
+            'get the second'    => [
+                'limit'         => 1,
+                'offset'        => 1,
                 'expectedCount' => 1,
                 'expectedCodes' => [
-                    self::PRODUCT_CODE_SECOND
+                    self::PRODUCT_CODE_SECOND,
                 ],
             ],
-            'get the first' => [
-                'limit' => 1,
-                'offset' => 0,
+            'get the first'     => [
+                'limit'         => 1,
+                'offset'        => 0,
                 'expectedCount' => 1,
                 'expectedCodes' => [
-                    self::PRODUCT_CODE
+                    self::PRODUCT_CODE,
                 ],
             ],
-            'get two' => [
-                'limit' => 2,
-                'offset' => 0,
+            'get two'           => [
+                'limit'         => 2,
+                'offset'        => 0,
                 'expectedCount' => 2,
                 'expectedCodes' => [
                     self::PRODUCT_CODE,
-                    self::PRODUCT_CODE_SECOND
+                    self::PRODUCT_CODE_SECOND,
                 ],
             ],
-            'limit 1' => [
-                'limit' => 1,
-                'offset' => null,
+            'limit 1'           => [
+                'limit'         => 1,
+                'offset'        => null,
                 'expectedCount' => 1,
                 'expectedCodes' => [
-                    self::PRODUCT_CODE
+                    self::PRODUCT_CODE,
                 ],
             ],
-            'limit 2' => [
-                'limit' => 2,
-                'offset' => null,
+            'limit 2'           => [
+                'limit'         => 2,
+                'offset'        => null,
                 'expectedCount' => 2,
                 'expectedCodes' => [
                     self::PRODUCT_CODE,
-                    self::PRODUCT_CODE_SECOND
+                    self::PRODUCT_CODE_SECOND,
                 ],
             ],
-            'offset 1' => [
-                'limit' => null,
-                'offset' => 1,
+            'offset 1'          => [
+                'limit'         => null,
+                'offset'        => 1,
                 'expectedCount' => 1,
                 'expectedCodes' => [
-                    self::PRODUCT_CODE_SECOND
+                    self::PRODUCT_CODE_SECOND,
                 ],
             ],
-            'offset 2' => [
-                'limit' => null,
-                'offset' => 2,
+            'offset 2'          => [
+                'limit'         => null,
+                'offset'        => 2,
                 'expectedCount' => 0,
                 'expectedCodes' => [],
             ],
             'no entities found' => [
-                'limit' => 1,
-                'offset' => 2,
+                'limit'         => 1,
+                'offset'        => 2,
                 'expectedCount' => 0,
                 'expectedCodes' => [],
-            ]
+            ],
         ];
     }
 
@@ -782,7 +799,7 @@ class ProductTest extends CatalogTest
     private function providePricing()
     {
         $volumePricing = $this->provideVolumePricing();
-        $mapPricing = $this->provideMapPricing();
+        $mapPricing    = $this->provideMapPricing();
 
         return (new Product\Dto\Price())->setCurrencyCode(Product\Dto\Price::CURRENCY_CODE_USD)
             ->setCost(50)
@@ -829,15 +846,15 @@ class ProductTest extends CatalogTest
         $this->createSampleAttribute();
         $this->createSampleExtras();
 
-        $categories = $this->provideCategoryMapping();
-        $identifiers = $this->provideIdentifiers();
-        $price = $this->providePricing();
-        $properties = $this->provideProperties();
+        $categories          = $this->provideCategoryMapping();
+        $identifiers         = $this->provideIdentifiers();
+        $price               = $this->providePricing();
+        $properties          = $this->provideProperties();
         $shippingInformation = $this->provideShippingInformation();
-        $media = $this->provideMedia();
-        $options = $this->provideOptions();
-        $extras = $this->provideExtras();
-        $name = new Product\Dto\Name();
+        $media               = $this->provideMedia();
+        $options             = $this->provideOptions();
+        $extras              = $this->provideExtras();
+        $name                = new Product\Dto\Name();
         $name->add('en-us', 'Productname in english');
         $name->add('de-de', 'Produktname in deutsch');
 
@@ -900,7 +917,7 @@ class ProductTest extends CatalogTest
                 new Properties\Name(
                     [
                         'en-us' => 'property 2 english',
-                        'de-de' => 'property 2 deutsch'
+                        'de-de' => 'property 2 deutsch',
                     ]
                 )
             )
@@ -929,27 +946,27 @@ class ProductTest extends CatalogTest
     }
 
     /**
-     * @return Media
+     * @return MediaList
      */
     private function provideMedia()
     {
-        $media1 = new Product\Dto\Media\Media();
+        $media1 = new Product\Dto\MediaList\Media();
         $media1->setCode('media_code_1')
-            ->setType(Product\Dto\Media\Media::TYPE_IMAGE)
-            ->setUrl('example.com/media1.jpg')
-            ->setAltText('alt text 1')
-            ->setSubTitle('Title Media 1')
-            ->setSequenceId(0);
+               ->setType(Product\Dto\MediaList\Media::TYPE_IMAGE)
+               ->setUrl('example.com/media1.jpg')
+               ->setAltText('alt text 1')
+               ->setSubTitle('Title Media 1')
+               ->setSequenceId(0);
 
-        $media2 = new Product\Dto\Media\Media();
+        $media2 = new Product\Dto\MediaList\Media();
         $media2->setCode('media_code_2')
-            ->setType(Product\Dto\Media\Media::TYPE_VIDEO)
-            ->setUrl('example.com/media2.mov')
-            ->setAltText('alt text 2')
-            ->setSubTitle('Title Media 2')
-            ->setSequenceId(5);
+               ->setType(Product\Dto\MediaList\Media::TYPE_VIDEO)
+               ->setUrl('example.com/media2.mov')
+               ->setAltText('alt text 2')
+               ->setSubTitle('Title Media 2')
+               ->setSequenceId(5);
 
-        $media = new Media();
+        $media = new MediaList();
         $media->add('en-us', [$media1, $media2]);
 
         return $media;

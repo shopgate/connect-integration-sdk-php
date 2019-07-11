@@ -24,12 +24,25 @@
 
 namespace Shopgate\ConnectSdk\Tests\Integration\Dto\Catalog;
 
+use Dto\Exceptions\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Dto\Catalog\ProductMedia;
+use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
+use Shopgate\ConnectSdk\Exception\NotFoundException;
+use Shopgate\ConnectSdk\Exception\RequestException;
+use Shopgate\ConnectSdk\Exception\UnknownException;
 
 class ProductMediaTest extends ProductTest
 {
+    /**
+     * @throws InvalidDataTypeException
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
     public function testMediaCreation()
     {
+        $this->markTestSkipped('This endpoint does not exist yet: POST product/{code}/media');
         // Arrange
         $prepared  = $this->prepareProductMinimum();
         $media     = $this->provideMedia();

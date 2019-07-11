@@ -29,6 +29,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
 use Shopgate\ConnectSdk\Dto\Catalog\ProductDescriptions;
+use Shopgate\ConnectSdk\Dto\Catalog\ProductMedia;
 use Shopgate\ConnectSdk\Dto\Meta;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
@@ -714,9 +715,12 @@ class Catalog
     }
 
     /**
-     * @param string $code
-     * @param Create $media
-     * @param array  $query
+     * @todo-sg: endpoint does not exist,
+     * please enable integration test once this is available
+     *
+     * @param string              $code
+     * @param ProductMedia\Create $media
+     * @param array               $query
      *
      * @return ResponseInterface
      * @throws AuthenticationInvalidException
@@ -724,7 +728,7 @@ class Catalog
      * @throws RequestException
      * @throws UnknownException
      */
-    public function addProductMedia($code, Create $media, array $query = [])
+    public function addProductMedia($code, ProductMedia\Create $media, array $query = [])
     {
         return $this->client->doRequest(
             [

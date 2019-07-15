@@ -41,26 +41,28 @@ use Shopgate\ConnectSdk\Exception\Exception;
 
 abstract class CatalogTest extends ShopgateSdkTest
 {
-    const CATALOG_SERVICE = 'catalog';
-    const METHOD_DELETE_CATEGORY = 'deleteCategory';
-    const METHOD_DELETE_PRODUCT = 'deleteProduct';
-    const METHOD_DELETE_ATTRIBUTE = 'deleteAttribute';
-    const METHOD_DELETE_REQUEST_META = [
-        self::METHOD_DELETE_CATEGORY => ['force' => true],
-        self::METHOD_DELETE_PRODUCT => [],
+    const CATALOG_SERVICE             = 'catalog';
+    const METHOD_DELETE_CATEGORY      = 'deleteCategory';
+    const METHOD_DELETE_PRODUCT       = 'deleteProduct';
+    const METHOD_DELETE_ATTRIBUTE     = 'deleteAttribute';
+
+    const METHOD_DELETE_REQUEST_META  = [
+        self::METHOD_DELETE_CATEGORY  => ['force' => true],
+        self::METHOD_DELETE_PRODUCT   => [],
         self::METHOD_DELETE_ATTRIBUTE => [],
     ];
-    const PRODUCT_CODE = 'integration-test';
-    const PRODUCT_CODE_SECOND = 'integration-test-2';
-    const PARENT_CATEGORY_CODE = 'parent-integration-test';
-    const CATEGORY_CODE = 'integration-test';
-    const CATEGORY_CODE_SECOND = 'integration-test-2';
-    const SAMPLE_ATTRIBUTE_CODE = 'attribute_code_1';
+
+    const PRODUCT_CODE                = 'integration-test';
+    const PRODUCT_CODE_SECOND         = 'integration-test-2';
+    const PARENT_CATEGORY_CODE        = 'parent-integration-test';
+    const CATEGORY_CODE               = 'integration-test';
+    const CATEGORY_CODE_SECOND        = 'integration-test-2';
+    const SAMPLE_ATTRIBUTE_CODE       = 'attribute_code_1';
     const SAMPLE_ATTRIBUTE_VALUE_CODE = 'attribute_value_code_1';
-    const SAMPLE_EXTRA_CODE = 'extra_code_1';
-    const SAMPLE_EXTRA_CODE_2 = 'extra_code_2';
-    const SAMPLE_EXTRA_VALUE_CODE = 'extra_value_code_1';
-    const SAMPLE_EXTRA_VALUE_CODE_2 = 'extra_value_code_2';
+    const SAMPLE_EXTRA_CODE           = 'extra_code_1';
+    const SAMPLE_EXTRA_CODE_2         = 'extra_code_2';
+    const SAMPLE_EXTRA_VALUE_CODE     = 'extra_value_code_1';
+    const SAMPLE_EXTRA_VALUE_CODE_2   = 'extra_value_code_2';
 
     const SAMPLE_CATALOG = 'NA Wholesale';
 
@@ -72,9 +74,9 @@ abstract class CatalogTest extends ShopgateSdkTest
             self::CATALOG_SERVICE,
             $this->sdk->getCatalogService(),
             [
-                self::METHOD_DELETE_CATEGORY,
-                self::METHOD_DELETE_PRODUCT,
-                self::METHOD_DELETE_ATTRIBUTE,
+                self::METHOD_DELETE_CATEGORY  => ['force' => true],
+                self::METHOD_DELETE_PRODUCT   => [],
+                self::METHOD_DELETE_ATTRIBUTE => [],
             ]
         );
     }
@@ -91,13 +93,15 @@ abstract class CatalogTest extends ShopgateSdkTest
     }
 
     /**
-     * @param string $code
-     * @param string $name
-     * @param int    $sequenceId
-     * @param string $image
-     * @param string $url
-     * @param string $description
-     * @param string $parentCategoryCode
+     * @param string      $code
+     * @param string      $name
+     * @param int         $sequenceId
+     * @param string|null $image
+     * @param string|null $url
+     * @param string|null $description
+     * @param string|null $parentCategoryCode
+     * @param string|null $externalUpdateDate
+     * @param string|null $status
      *
      * @return Category\Create
      */
@@ -108,26 +112,23 @@ abstract class CatalogTest extends ShopgateSdkTest
         $image = null,
         $url = null,
         $description = null,
-        $parentCategoryCode = null
-
+        $parentCategoryCode = null,
+        $externalUpdateDate = null,
+        $status = null
     ) {
         $category = new Category\Create();
         $category->setCode($code)
-            ->setName(new Category\Dto\Name(['en-us' => $name]))
-            ->setSequenceId($sequenceId);
-        if ($url) {
-            $category->setUrl($url);
-        }
+                 ->setName(new Category\Dto\Name(['en-us' => $name]))
+                 ->setSequenceId($sequenceId);
         if ($description) {
             $translatedDescription = new Category\Dto\Description(['en-us' => $description]);
             $category->setDescription($translatedDescription);
         }
-        if ($image) {
-            $category->setImage($image);
-        }
-        if ($parentCategoryCode) {
-            $category->setParentCategoryCode($parentCategoryCode);
-        }
+        $url ? $category->setUrl($url) : null;
+        $image ? $category->setImage($image) : null;
+        $parentCategoryCode ? $category->setParentCategoryCode($parentCategoryCode) : null;
+        $externalUpdateDate ? $category->setExternalUpdateDate($externalUpdateDate) : null;
+        $status ? $category->setStatus($status) : null;
 
         return $category;
     }
@@ -139,9 +140,9 @@ abstract class CatalogTest extends ShopgateSdkTest
     {
         $attribute = new Attribute\Create;
         $attribute->setCode(self::SAMPLE_ATTRIBUTE_CODE)
-            ->setType(Attribute\Create::TYPE_TEXT)
-            ->setUse(Attribute\Create::USE_OPTION)
-            ->setExternalUpdateDate('2018-12-15T00:00:23.114Z');
+                  ->setType(Attribute\Create::TYPE_TEXT)
+                  ->setUse(Attribute\Create::USE_OPTION)
+                  ->setExternalUpdateDate('2018-12-15T00:00:23.114Z');
 
         $attributeName = new Name();
         $attributeName->add('de-de', 'Attribute de');
@@ -521,9 +522,9 @@ abstract class CatalogTest extends ShopgateSdkTest
     {
         $extra = new Attribute\Create;
         $extra->setCode(self::SAMPLE_EXTRA_CODE)
-            ->setType(Attribute\Create::TYPE_TEXT)
-            ->setUse(Attribute\Create::USE_EXTRA)
-            ->setExternalUpdateDate('2018-12-15T00:00:23.114Z');
+              ->setType(Attribute\Create::TYPE_TEXT)
+              ->setUse(Attribute\Create::USE_EXTRA)
+              ->setExternalUpdateDate('2018-12-15T00:00:23.114Z');
 
         $extraName = new Name();
         $extraName->add('de-de', 'Extra 1 de');
@@ -541,12 +542,11 @@ abstract class CatalogTest extends ShopgateSdkTest
 
         $extra->setValues([$extraValue]);
 
-
         $extraSecond = new Attribute\Create;
         $extraSecond->setCode(self::SAMPLE_EXTRA_CODE_2)
-            ->setType(Attribute\Create::TYPE_TEXT)
-            ->setUse(Attribute\Create::USE_EXTRA)
-            ->setExternalUpdateDate('2018-12-15T00:00:23.114Z');
+                    ->setType(Attribute\Create::TYPE_TEXT)
+                    ->setUse(Attribute\Create::USE_EXTRA)
+                    ->setExternalUpdateDate('2018-12-15T00:00:23.114Z');
 
         $extraSecondName = new Name();
         $extraSecondName->add('de-de', 'Extra 2 de');

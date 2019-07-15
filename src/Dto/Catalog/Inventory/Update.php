@@ -20,14 +20,18 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto;
+namespace Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 
-use Shopgate\ConnectSdk\Dto\Base;
+use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 
 /**
- * Localized Media Entities
+ * @method Update setProductCode(string $productCode)
+ * @method Update setLocationCode(string $locationCode)
+ * @method Update setSku(string $sku)
+ * @method Update setOperationType(string $operationType)
+ * @method Update setOnHand(integer $onHand)
  */
-class Media extends Base
+class Update extends Inventory
 {
     /**
      * @var array
@@ -35,16 +39,14 @@ class Media extends Base
      */
     protected $schema = [
         'type'                 => 'object',
+        'properties'           => [
+            'productCode'   => ['type' => 'string'],
+            'locationCode'  => ['type' => 'string'],
+            'sku'           => ['type' => 'string'],
+            'operationType' => ['type' => 'string'],
+            'onHand'        => ['type' => 'integer'],
+
+        ],
         'additionalProperties' => true,
     ];
-
-    /**
-     * @param string        $locale
-     * @param Media\Media[] $media
-     */
-    public function add($locale, array $media)
-    {
-        // TODO logic to "add" additional media entities to an existing localization index?!
-        $this->set((string)$locale, $media);
-    }
 }

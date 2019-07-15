@@ -23,21 +23,24 @@
 namespace Shopgate\ConnectSdk\Dto\Catalog\Category;
 
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
+use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Description;
+use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Name;
 
 /**
- * Default class that handles validation for category Update payloads.
- *
  * @method Update setImage(string $image)
- * @method Update setName(dto\Name $name)
+ * @method Update setName(Name $name)
  * @method Update setParentCategoryCode(string $parentCategoryCode)
  * @method Update setUrl(string $url)
- * @method Update setDescription(dto\Description $description)
+ * @method Update setDescription(Description $description)
+ * @method Update setExternalUpdateDate(string $date)
+ * @method Update setStatus(string $status)
+ *
+ * @codeCoverageIgnore
  */
 class Update extends Category
 {
     /**
      * @var array
-     * @codeCoverageIgnore
      */
     protected $schema = [
         'type'                 => 'object',
@@ -47,6 +50,8 @@ class Update extends Category
             'parentCategoryCode' => ['type' => 'string'],
             'url'                => ['type' => 'string'],
             'description'        => ['type' => 'object'],
+            'externalUpdateDate' => ['type' => 'string'],
+            'status'             => ['type' => 'string']
         ],
         'additionalProperties' => true
     ];

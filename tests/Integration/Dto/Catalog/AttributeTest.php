@@ -430,8 +430,6 @@ class AttributeTest extends CatalogTest
      * @param RequestException $expectedException
      * @param string           $expectedMessage
      *
-     * @throws Exception
-     *
      * @dataProvider provideCreateAttributeWithInvalidFields
      */
     public function testCreateAttributeDirectWithInvalidFields(
@@ -459,6 +457,8 @@ class AttributeTest extends CatalogTest
             $this->assertEquals($expectedException->getStatusCode(), $exception->getStatusCode());
 
             return;
+        } catch (Exception $exception) {
+            echo $exception->getMessage();
         }
 
         $this->fail('Expected ' . get_class($expectedException) . ' but wasn\'t thrown');
@@ -564,22 +564,7 @@ class AttributeTest extends CatalogTest
                 ],
                 'expectedException' => new RequestException(400),
                 'message'           => 'No enum match for: INVALID',
-            ],
-            /*
-             * @todo check - currently not working
-            'invalid code'   => [
-                'attributeData'     => [
-                    'name'       => $name,
-                    'values'     => [],
-                    'use'        => Attribute\Create::USE_OPTION,
-                    'type'       => Attribute\Create::TYPE_TEXT,
-                    'code'       => [],
-                    'sequenceId' => 1006,
-                ],
-                'expectedException' => new RequestException(400),
-                'message'       => null,
-            ],
-            */
+            ]
         ];
     }
 

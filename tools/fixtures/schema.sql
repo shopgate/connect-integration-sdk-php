@@ -5,12 +5,14 @@ DROP DATABASE IF EXISTS authservice;
 DROP DATABASE IF EXISTS catalog;
 DROP DATABASE IF EXISTS location;
 DROP DATABASE IF EXISTS merchant;
+DROP DATABASE IF EXISTS customer;
 DROP DATABASE IF EXISTS import;
 
 CREATE DATABASE authservice;
 CREATE DATABASE catalog;
 CREATE DATABASE location;
 CREATE DATABASE merchant;
+CREATE DATABASE customer;
 CREATE DATABASE import;
 
 CREATE TABLE authservice.`access_tokens` (
@@ -77,9 +79,12 @@ CREATE TABLE location.`Location` (
   `LocationCode` varchar(45) CHARACTER SET utf8 NOT NULL,
   `LocationName` varchar(255) CHARACTER SET utf8 NOT NULL,
   `LocationStatus` enum('active','inactive','deleted','onhold') DEFAULT 'active',
-  `Latitude` varchar(50) DEFAULT NULL,
-  `Longitude` varchar(50) DEFAULT NULL,
-  `IsDefault` TINYINT(1) DEFAULT 0,
+  `Latitude` float(10,6) DEFAULT NULL,
+  `Longitude` float(10,6) DEFAULT NULL,
+  `TimeZone` varchar(40) DEFAULT NULL,
+  `LocaleCode` varchar(5) DEFAULT NULL,
+  `IsDefault` tinyint(1) DEFAULT '0',
+  `FulfillmentMethods` varchar(255) DEFAULT NULL,
   `CreateBy` varchar(255) CHARACTER SET utf8 NOT NULL,
   `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `UpdateBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
@@ -87,7 +92,7 @@ CREATE TABLE location.`Location` (
   `DeleteBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `DeleteDate` datetime DEFAULT NULL,
   PRIMARY KEY (`LocationID`),
-  UNIQUE KEY `LocName` (`MerchantID`,`LocationCode`),
+  KEY `LocMerchant` (`MerchantID`),
   KEY `LocationTypeID_idx` (`LocationTypeID`),
   CONSTRAINT `LocationTypeID` FOREIGN KEY (`LocationTypeID`) REFERENCES `LocationType` (`LocationTypeID`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -95,7 +100,7 @@ CREATE TABLE location.`Location` (
 DROP TABLE IF EXISTS location.`LocationAddress`;
 
 CREATE TABLE location.`LocationAddress` (
-  `LocationAddressID` char(36) NOT NULL DEFAULT '',
+  `LocationAddressId` bigint(21) unsigned NOT NULL AUTO_INCREMENT,
   `LocationID` char(36) NOT NULL DEFAULT '',
   `AddressName` varchar(255) CHARACTER SET utf8 NOT NULL,
   `AddressCode` varchar(50) CHARACTER SET utf8 NOT NULL,
@@ -119,7 +124,7 @@ CREATE TABLE location.`LocationAddress` (
   `DeleteDate` datetime DEFAULT NULL,
   PRIMARY KEY (`LocationAddressID`),
   KEY `LocationID_idx` (`LocationID`),
-  CONSTRAINT `LocationID` FOREIGN KEY (`LocationID`) REFERENCES `Location` (`LocationID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `FKLocAddrLoc_idx` FOREIGN KEY (`LocationID`) REFERENCES `Location` (`LocationID`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS location.`LocationDetail`;
@@ -131,7 +136,7 @@ CREATE TABLE location.`LocationDetail` (
   `LocationImage` varchar(255) DEFAULT NULL,
   `LocationDepartments` json DEFAULT NULL,
   `LocationServices` json DEFAULT NULL,
-  `CreatedBy` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `CreateBy` varchar(255) CHARACTER SET utf8 NOT NULL,
   `CreateDate` datetime NOT NULL,
   `UpdateBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `UpdateDate` datetime DEFAULT NULL,
@@ -140,6 +145,45 @@ CREATE TABLE location.`LocationDetail` (
   PRIMARY KEY (`LocationDetailID`),
   KEY `FKLocDtlLoc_idx` (`LocationID`),
   CONSTRAINT `FKLocDtlLoc` FOREIGN KEY (`LocationID`) REFERENCES `Location` (`LocationID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS location.`LocationSetting`;
+
+CREATE TABLE location.`LocationSetting` (
+  `LocationSettingID` char(36) NOT NULL,
+  `LocationID` char(36) NOT NULL,
+  `SettingKey` varchar(255) DEFAULT NULL,
+  `SettingValue` varchar(255) DEFAULT NULL,
+  `SettingType` enum('string', 'boolean', 'number') DEFAULT 'string',
+  `CreateBy` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `CreateDate` datetime NOT NULL,
+  `UpdateBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL,
+  `DeleteBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `DeleteDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`LocationSettingID`),
+  UNIQUE KEY `idx_LocSet_Location_SettingKey` (`LocationID`, `SettingKey`),
+  CONSTRAINT `FKLocSetLoc` FOREIGN KEY (`LocationID`) REFERENCES `Location` (`LocationID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS location.`LocationInventorySetting`;
+
+CREATE TABLE location.`LocationInventorySetting` (
+  `LocationInventorySettingID` char(36) NOT NULL,
+  `LocationID` char(36) NOT NULL,
+  `IsManaged` tinyint(1) DEFAULT 0,
+  `Mode` enum('blind', 'integrated') DEFAULT 'blind',
+  `SafetyStockMode` enum('enabled', 'disabled') DEFAULT 'disabled',
+  `SafetyStock` int(11) DEFAULT 0,
+  `SafetyStockType` enum('percentage', 'count') DEFAULT 'count',
+  `CreateBy` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `CreateDate` datetime NOT NULL,
+  `UpdateBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL,
+  `DeleteBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `DeleteDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`LocationInventorySettingID`),
+  CONSTRAINT `FKLocInvLoc` FOREIGN KEY (`LocationID`) REFERENCES `Location` (`LocationID`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS location.`LocationGroup`;
@@ -159,7 +203,8 @@ CREATE TABLE location.`LocationGroup` (
   PRIMARY KEY (`LocationGroupID`),
   KEY `FK_LG_Merc` (`MerchantID`),
   KEY `FK_LG_LS` (`StatusID`),
-  CONSTRAINT `FK_LG_LS` FOREIGN KEY (`StatusID`) REFERENCES `LocationGroupStatus` (`StatusID`)
+  CONSTRAINT `FK_LG_LS` FOREIGN KEY (`StatusID`) REFERENCES `LocationGroupStatus` (`StatusID`),
+  CONSTRAINT `FK_LG_Merc` FOREIGN KEY (`MerchantID`) REFERENCES `Merchant` (`MerchantID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS location.`LocationGroupMember`;
@@ -269,4 +314,264 @@ CREATE TABLE merchant.`MerchantSetting` (
   `DeleteBy` varchar(255) DEFAULT NULL,
   `DeleteDate` datetime DEFAULT NULL,
   PRIMARY KEY (`MerchantSettingID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS customer.`Attribute`;
+
+CREATE TABLE customer.`Attribute` (
+  `AttributeId` char(36) NOT NULL DEFAULT '',
+  `MerchantId` char(36) NOT NULL DEFAULT '',
+  `AttributeCode` varchar(255) NOT NULL DEFAULT '',
+  `AttributeType` enum('Text','Number','Boolean','Date','CollectionOfValues') DEFAULT NULL,
+  `IsRequired` tinyint(1) DEFAULT NULL,
+  `CreateBy` varchar(255) NOT NULL DEFAULT '',
+  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateBy` varchar(255) DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL,
+  `DeleteBy` varchar(255) DEFAULT NULL,
+  `DeleteDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`AttributeId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS customer.`AttributeContent`;
+
+CREATE TABLE customer.`AttributeContent` (
+  `AttributeContentId` char(36) NOT NULL DEFAULT '',
+  `AttributeId` char(36) NOT NULL DEFAULT '',
+  `LocaleCode` char(5) NOT NULL DEFAULT '',
+  `Name` varchar(255) NOT NULL DEFAULT '',
+  `CreateBy` varchar(255) NOT NULL DEFAULT '',
+  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateBy` varchar(255) DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `DeleteBy` varchar(255) DEFAULT NULL,
+  `DeleteDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`AttributeContentId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS customer.`AttributeValue`;
+
+CREATE TABLE customer.`AttributeValue` (
+  `AttributeValueID` char(36) NOT NULL,
+  `AttributeID` char(36) NOT NULL,
+  `AttributeValue` char(36) NOT NULL,
+  `SequenceId` int(11) DEFAULT NULL,
+  `CreateBy` varchar(255) NOT NULL,
+  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateBy` varchar(255) DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `DeleteBy` varchar(255) DEFAULT NULL,
+  `DeleteDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`AttributeValueID`),
+  KEY `AttributeID` (`AttributeID`,`AttributeValue`),
+  CONSTRAINT `AttributeValue_ibfk_1` FOREIGN KEY (`AttributeID`) REFERENCES `Attribute` (`AttributeId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS customer.`AttributeValueContent`;
+
+CREATE TABLE customer.`AttributeValueContent` (
+  `AttributeValueContentID` char(36) NOT NULL,
+  `AttributeValueID` char(36) NOT NULL,
+  `LocaleCode` varchar(5) NOT NULL,
+  `AttributeValueName` varchar(255) NOT NULL,
+  `CreateBy` varchar(255) NOT NULL,
+  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateBy` varchar(255) DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `DeleteBy` varchar(255) DEFAULT NULL,
+  `DeleteDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`AttributeValueContentID`),
+  KEY `AttributeValueID` (`AttributeValueID`),
+  CONSTRAINT `AttributeValueContent_ibfk_1` FOREIGN KEY (`AttributeValueID`) REFERENCES `AttributeValue` (`AttributeValueID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS customer.`ContactType`;
+
+CREATE TABLE customer.`ContactType` (
+  `ContactTypeID` char(36) NOT NULL DEFAULT '',
+  `ContactType` varchar(50) DEFAULT NULL,
+  `ContactTypeName` varchar(255) DEFAULT NULL,
+  `CreateBy` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL,
+  `DeleteBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `DeleteDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`ContactTypeID`),
+  UNIQUE KEY `ContactType` (`ContactType`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS customer.`Customer`;
+
+CREATE TABLE customer.`Customer` (
+  `CustomerID` char(36) NOT NULL DEFAULT '',
+  `MerchantID` char(36) NOT NULL DEFAULT '',
+  `CustomerNumber` varchar(100) DEFAULT NULL COMMENT 'from external source',
+  `Status` enum('active','inactive','deleted') NOT NULL DEFAULT 'active',
+  `FirstName` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `MiddleName` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `LastName` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `EmailAddress` varchar(255) NOT NULL,
+  `OriginalCreateDate` datetime DEFAULT NULL,
+  `IsAnonymous` tinyint(1) NOT NULL DEFAULT '0',
+  `ExternalUpdateDate` datetime DEFAULT NULL,
+  `CreateBy` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateBy` varchar(45) DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL,
+  `DeleteBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `DeleteDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`CustomerID`),
+  FULLTEXT KEY `FirstName` (`FirstName`,`MiddleName`,`LastName`),
+  FULLTEXT KEY `EmailAddress` (`EmailAddress`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS customer.`CustomerAttribute`;
+
+CREATE TABLE customer.`CustomerAttribute` (
+  `CustomerAttributeId` char(36) NOT NULL DEFAULT '',
+  `CustomerId` char(36) NOT NULL DEFAULT '',
+  `AttributeId` char(36) NOT NULL DEFAULT '',
+  `AttributeValueId` char(36) DEFAULT NULL,
+  `Value` varchar(255) DEFAULT NULL,
+  `CreateBy` varchar(255) NOT NULL DEFAULT '',
+  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateBy` varchar(255) DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `DeleteBy` varchar(255) DEFAULT '',
+  `DeleteDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`CustomerAttributeId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS customer.`CustomerContact`;
+
+CREATE TABLE customer.`CustomerContact` (
+  `CustomerContactID` char(36) NOT NULL DEFAULT '',
+  `CustomerID` char(36) NOT NULL DEFAULT '',
+  `ContactTypeID` char(36) DEFAULT NULL,
+  `ContactCode` varchar(255) DEFAULT NULL,
+  `Status` enum('active','inactive','deleted') DEFAULT 'active',
+  `FirstName` varchar(255) DEFAULT NULL,
+  `MiddleName` varchar(255) DEFAULT NULL,
+  `LastName` varchar(255) DEFAULT NULL,
+  `CompanyName` varchar(255) DEFAULT NULL,
+  `Address1` varchar(255) DEFAULT NULL,
+  `Address2` varchar(255) DEFAULT NULL,
+  `Address3` varchar(255) DEFAULT NULL,
+  `Address4` varchar(255) DEFAULT NULL,
+  `City` varchar(255) DEFAULT NULL,
+  `Region` varchar(255) DEFAULT NULL,
+  `PostalCode` varchar(255) DEFAULT NULL,
+  `Country` varchar(2) DEFAULT NULL,
+  `PhoneNumber` varchar(50) DEFAULT NULL,
+  `FaxNumber` varchar(50) DEFAULT NULL,
+  `MobileNumber` varchar(50) DEFAULT NULL,
+  `EmailAddress` varchar(255) DEFAULT NULL,
+  `IsPrimary` tinyint(1) NOT NULL DEFAULT '0',
+  `IsDefaultBilling` tinyint(1) DEFAULT '0',
+  `IsDefaultShipping` tinyint(1) DEFAULT '0',
+  `ExternalUpdateDate` datetime DEFAULT NULL,
+  `CreateBy` varchar(255) NOT NULL DEFAULT '',
+  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateBy` varchar(255) DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL,
+  `DeleteBy` varchar(255) DEFAULT NULL,
+  `DeleteDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`CustomerContactID`),
+  KEY `FK_Cont_ContType` (`ContactTypeID`),
+  KEY `FK_Cust_Cont` (`CustomerID`),
+  KEY `ContactCode` (`ContactCode`),
+  CONSTRAINT `FK_Cont_ContType` FOREIGN KEY (`ContactTypeID`) REFERENCES `ContactType` (`ContactTypeID`),
+  CONSTRAINT `FK_Cust_Cont` FOREIGN KEY (`CustomerID`) REFERENCES `Customer` (`CustomerID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS customer.`CustomerMetric`;
+
+CREATE TABLE customer.`CustomerMetric` (
+  `CustomerMetricId` char(36) NOT NULL DEFAULT '',
+  `CustomerId` char(36) NOT NULL DEFAULT '',
+  `Key` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `Value` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `CreateBy` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `DeleteBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `DeleteDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`CustomerMetricId`),
+  UNIQUE KEY `CustomerMetric_Key` (`CustomerId`,`Key`),
+  CONSTRAINT `CustomerMetric_CustomerID` FOREIGN KEY (`CustomerId`) REFERENCES `Customer` (`CustomerID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS customer.`CustomerNote`;
+
+CREATE TABLE customer.`CustomerNote` (
+  `CustomerNoteID` char(36) NOT NULL DEFAULT '',
+  `CustomerID` char(36) NOT NULL DEFAULT '',
+  `Code` varchar(255) DEFAULT NULL,
+  `Status` enum('active','deleted') NOT NULL DEFAULT 'active',
+  `Note` text NOT NULL,
+  `Date` datetime NOT NULL,
+  `Creator` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `CreateBy` varchar(255) DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL,
+  `UpdateBy` varchar(255) DEFAULT '',
+  `DeleteDate` datetime DEFAULT NULL,
+  `DeleteBy` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`CustomerNoteID`),
+  KEY `IDX_CustomerId_Status` (`CustomerID`,`Status`),
+  KEY `IDX_CustomerId_Status_Date` (`CustomerID`,`Status`,`Date`),
+  CONSTRAINT `CustomerNote_ibfk_1` FOREIGN KEY (`CustomerID`) REFERENCES `Customer` (`CustomerID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS customer.`CustomerSetting`;
+
+CREATE TABLE customer.`CustomerSetting` (
+  `CustomerSettingId` char(36) NOT NULL DEFAULT '',
+  `CustomerId` char(36) NOT NULL DEFAULT '',
+  `Key` varchar(255) NOT NULL DEFAULT '',
+  `Value` varchar(255) NOT NULL DEFAULT '',
+  `CreateBy` varchar(255) NOT NULL DEFAULT '',
+  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateBy` varchar(255) DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `DeleteBy` varchar(255) DEFAULT NULL,
+  `DeleteDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`CustomerSettingId`),
+  KEY `CustomerId` (`CustomerId`),
+  CONSTRAINT `CustomerSetting_ibfk_1` FOREIGN KEY (`CustomerId`) REFERENCES `Customer` (`CustomerID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS customer.`Wishlist`;
+
+CREATE TABLE customer.`Wishlist` (
+  `WishlistId` char(36) NOT NULL DEFAULT '',
+  `CustomerId` char(36) NOT NULL DEFAULT '',
+  `WishlistCode` varchar(255) NOT NULL DEFAULT '',
+  `WishlistName` varchar(255) DEFAULT NULL,
+  `CreateBy` varchar(255) NOT NULL DEFAULT '',
+  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateBy` varchar(255) DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `DeleteBy` varchar(255) DEFAULT '',
+  `DeleteDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`WishlistId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS customer.`WishlistItem`;
+
+CREATE TABLE customer.`WishlistItem` (
+  `WishlistItemId` char(36) NOT NULL DEFAULT '',
+  `WishlistId` char(36) NOT NULL DEFAULT '',
+  `ProductCode` varchar(255) NOT NULL DEFAULT '',
+  `CreateBy` varchar(255) NOT NULL DEFAULT '',
+  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateBy` varchar(255) DEFAULT '',
+  `UpdateDate` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `DeleteBy` varchar(255) DEFAULT '',
+  `DeleteDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`WishlistItemId`),
+  KEY `FK_WishlistItem_WishlistId` (`WishlistId`),
+  CONSTRAINT `FK_WishlistItem_WishlistId` FOREIGN KEY (`WishlistId`) REFERENCES `Wishlist` (`WishlistId`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

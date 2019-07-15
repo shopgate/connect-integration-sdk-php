@@ -25,15 +25,15 @@ namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Price;
 use Shopgate\ConnectSdk\Dto\Base;
 
 /**
- * @method VolumePricing setMinQty(float $minQty)
- * @method VolumePricing setMaxQty(float $maxQty)
+ * @method VolumePricing setMinQty(integer $minQty)
+ * @method VolumePricing setMaxQty(integer $maxQty)
  * @method VolumePricing setPrice(float $price)
  * @method VolumePricing setSalePrice(float $salePrice)
  * @method VolumePricing setUnit(string $unit)
  * @method VolumePricing setPriceType(string $priceType)
  *
- * @method float getMinQty()
- * @method float getMaxQty()
+ * @method integer getMinQty()
+ * @method integer getMaxQty()
  * @method float getPrice()
  * @method float getSalePrice()
  * @method string getUnit()
@@ -51,14 +51,12 @@ class VolumePricing extends Base
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'minQty'    => ['type' => 'number'],
-            'maxQty'    => ['type' => 'number'],
+            'minQty'    => ['type' => 'integer'],
+            'maxQty'    => ['type' => 'integer'],
             'price'     => ['type' => 'number'],
             'salePrice' => ['type' => 'number'],
             'unit'      => ['type' => 'string'],
-            'priceType' => [
-                'type' => 'string'
-            ]
+            'priceType' => ['type' => 'string']
         ],
         'additionalProperties' => true
     ];

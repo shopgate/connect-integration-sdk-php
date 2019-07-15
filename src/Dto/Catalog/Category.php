@@ -29,4 +29,6 @@ use Shopgate\ConnectSdk\Dto\Base;
  */
 class Category extends Base
 {
+    const STATUS_ACTIVE   = 'active';
+    const STATUS_INACTIVE = 'inactive';
 }

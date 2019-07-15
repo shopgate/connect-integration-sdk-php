@@ -22,9 +22,10 @@
 
 namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto;
 
+use Dto\RegulatorInterface;
 use Shopgate\ConnectSdk\Dto\Base;
-use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties\SubDisplayGroup;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties\Name as PropertyName;
+use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties\SubDisplayGroup;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties\Value;
 
 /**
@@ -39,39 +40,47 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties\Value;
  *
  * @method string getCode()
  * @method PropertyName getName()
- * @method Value getValue()
+ * @method Value|string[] getValue()
  * @method string getDisplayGroup()
  * @method SubDisplayGroup getSubDisplayGroup()
  * @method boolean getIsPriced()
  * @method float getAttributePrice()
  * @method string getUnit()
+ *
+ * @codeCoverageIgnore
  */
 class Properties extends Base
 {
+    const TYPE                     = 'simple';
     const DISPLAY_GROUP_PROPERTIES = 'properties';
-    const DISPLAY_GROUP_FEATURES = 'features';
-    const DISPLAY_GROUP_GENERAL = 'general';
-    const DISPLAY_GROUP_PRICING = 'pricing';
+    const DISPLAY_GROUP_FEATURES   = 'features';
+    const DISPLAY_GROUP_GENERAL    = 'general';
+    const DISPLAY_GROUP_PRICING    = 'pricing';
+
+    /**
+     * @inheritdoc
+     */
+    public function __construct($input = null, $schema = null, RegulatorInterface $regulator = null)
+    {
+        $this->schema['default']['type'] = $this::TYPE;
+        parent::__construct($input, $schema, $regulator);
+    }
 
     /**
      * @var array
-     * @codeCoverageIgnore
      */
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
             'code'            => ['type' => 'string'],
-            'name'            => ['type' => 'object'],
-            'value'           => ['type' => 'object'],
+            'name'            => ['$ref' => PropertyName::class],
+            'value'           => ['$ref' => Value::class],
             'type'            => ['type' => 'string'],
             'displayGroup'    => ['type' => 'string'],
-            'subDisplayGroup' => ['type' => 'object'],
+            'subDisplayGroup' => ['$ref' => SubDisplayGroup::class],
             'isPriced'        => ['type' => 'boolean'],
             'attributePrice'  => ['type' => 'number'],
-            'unit'            => ['type' => 'string'],
-        ],
-        'default'              => [
-            'type' => 'base',
+            'unit'            => ['type' => 'string']
         ],
         'additionalProperties' => true,
     ];

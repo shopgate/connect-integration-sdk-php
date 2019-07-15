@@ -33,17 +33,20 @@ docker network create ${SERVICE}-integration-network
 set -e
 
 docker-compose $DOCKER_COMPOSE_FILES build php56
-docker-compose $DOCKER_COMPOSE_FILES build php73
 
 docker-compose $DOCKER_COMPOSE_FILES up -d php56
-docker-compose $DOCKER_COMPOSE_FILES up -d php73
 docker-compose $DOCKER_COMPOSE_FILES up -d mysql
 
 docker-compose $DOCKER_COMPOSE_FILES up -d etcd
 docker-compose $DOCKER_COMPOSE_FILES up -d googlepubsub-emulator
 
-docker-compose exec -T php73 php ./tools/pubsubfiller.php
-docker-compose exec -T php73 php ./tools/etcdfiller.php
+if [[ -n "$CI_STACK" ]]; then
+    docker-compose $DOCKER_COMPOSE_FILES build php73
+    docker-compose $DOCKER_COMPOSE_FILES up -d php73
+fi
+
+docker-compose exec -T php56 php ./tools/pubsubfiller.php
+docker-compose exec -T php56 php ./tools/etcdfiller.php
 
 docker-compose $DOCKER_COMPOSE_FILES build import-script
 retry "MySQL" "docker-compose exec -T mysql mysql -uroot -psecret -e \"select 1 from dual\" 2>&1"
@@ -56,7 +59,10 @@ retry "EventReceiver" "docker-compose exec -T omni-event-receiver curl http://lo
 docker-compose stop catalog && docker-compose $DOCKER_COMPOSE_FILES up -d catalog
 retry "CatalogService" "docker-compose exec -T catalog curl http://localhost/health -o /dev/null 2>&1"
 
-docker-compose $DOCKER_COMPOSE_FILES up -d
+docker-compose $DOCKER_COMPOSE_FILES up -d elasticsearch
+retry "elasticsearch" "docker-compose exec -T elasticsearch curl http://localhost:9200/_cluster/health?wait_for_status=yellow 2>&1"
+
+docker-compose $DOCKER_COMPOSE_FILES up -d mysql auth redis omni-worker omni-event-receiver omni-merchant omni-location s3 import omni-customer
 
 retry "AuthService" "docker-compose exec -T auth curl http://localhost/health -o /dev/null 2>&1"
 retry "MerchantService" "docker-compose exec -T omni-merchant curl http://localhost/health -o /dev/null 2>&1"

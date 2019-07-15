@@ -22,12 +22,7 @@
 namespace Shopgate\ConnectSdk\Service;
 
 use Psr\Http\Message\ResponseInterface;
-use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
-use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
-use Shopgate\ConnectSdk\Dto\Catalog\Category;
-use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
-use Shopgate\ConnectSdk\Dto\Catalog\Product;
-use Shopgate\ConnectSdk\Dto\Catalog\ProductDescriptions;
+use Shopgate\ConnectSdk\Dto\Location\Location as LocationDto;
 use Shopgate\ConnectSdk\Dto\Meta;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
@@ -57,7 +52,7 @@ class Location
     }
 
     /**
-     * @param Location\Create[] $locations
+     * @param LocationDto\Create[] $locations
      * @param array             $query
      *
      * @return ResponseInterface
@@ -90,7 +85,7 @@ class Location
 
     /**
      * @param string          $code
-     * @param Location\Update $location
+     * @param LocationDTO\Update $location
      * @param array           $query
      *
      * @return ResponseInterface
@@ -100,7 +95,7 @@ class Location
      * @throws RequestException
      * @throws UnknownException
      */
-    public function updateLocation($code, Location\Update $location, array $query = [])
+    public function updateLocation($code, LocationDto\Update $location, array $query = [])
     {
         return $this->client->doRequest(
             [
@@ -157,7 +152,7 @@ class Location
     /**
      * @param array $query
      *
-     * @return Location\GetList
+     * @return LocationDto\GetList
      *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
@@ -183,11 +178,11 @@ class Location
 
         $locations = [];
         foreach ($response['locations'] as $location) {
-            $locations[] = new Location\Get($location);
+            $locations[] = new LocationDto\Get($location);
         }
         $response['meta']       = new Meta($response['meta']);
         $response['categories'] = $locations;
 
-        return new Location\GetList($response);
+        return new LocationDto\GetList($response);
     }
 }

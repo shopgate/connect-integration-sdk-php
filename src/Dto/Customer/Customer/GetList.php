@@ -27,7 +27,6 @@ use Shopgate\ConnectSdk\Dto\Meta;
 /**
  * @method Meta getMeta()
  * @method Get[] getCustomers()
- *
  */
 class GetList extends Customer
 {

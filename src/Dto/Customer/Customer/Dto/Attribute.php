@@ -25,8 +25,6 @@ use Shopgate\ConnectSdk\Dto\Base;
 use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Attribute\Value;
 
 /**
- * Dto for customer attribute.
- *
  * @method Attribute setCode(string $code)
  * @method Attribute setName(string $name)
  * @method string getCode()

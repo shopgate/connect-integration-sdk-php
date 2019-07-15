@@ -30,7 +30,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Categories;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Extras;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\LongDescription;
-use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Media;
+use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\MediaList;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Price;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Price\MapPricing;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Price\VolumePricing;
@@ -394,27 +394,27 @@ abstract class CatalogTest extends ShopgateSdkTest
     }
 
     /**
-     * @return Media
+     * @return MediaList
      */
-    protected function provideMedia()
+    private function provideMedia()
     {
-        $media1 = new Product\Dto\Media\Media();
+        $media1 = new Product\Dto\MediaList\Media();
         $media1->setCode('media_code_1')
-            ->setType(Product\Dto\Media\Media::TYPE_IMAGE)
+            ->setType(Product\Dto\MediaList\Media::TYPE_IMAGE)
             ->setUrl('example.com/media1.jpg')
             ->setAltText('alt text 1')
             ->setSubTitle('Title Media 1')
             ->setSequenceId(0);
 
-        $media2 = new Product\Dto\Media\Media();
+        $media2 = new Product\Dto\MediaList\Media();
         $media2->setCode('media_code_2')
-            ->setType(Product\Dto\Media\Media::TYPE_VIDEO)
+            ->setType(Product\Dto\MediaList\Media::TYPE_VIDEO)
             ->setUrl('example.com/media2.mov')
             ->setAltText('alt text 2')
             ->setSubTitle('Title Media 2')
             ->setSequenceId(5);
 
-        $media = new Media();
+        $media = new MediaList();
         $media->add('en-us', [$media1, $media2]);
 
         return $media;

@@ -24,7 +24,14 @@ namespace Shopgate\ConnectSdk\Dto\Location\Location\Dto;
 
 use Shopgate\ConnectSdk\Dto\Base as DtoBase;
 
-
+/**
+ * @method Type setCode(string $code)
+ * @method Type setName(string $name)
+ * @method string getCode()
+ * @method string getName()
+ *
+ * @codeCoverageIgnore
+ */
 class Type extends DtoBase
 {
     /**
@@ -33,23 +40,9 @@ class Type extends DtoBase
     protected $schema = [
         'type' => 'object',
         'properties'           => [
-            'code'  => ['type' => 'string'],
+            'code' => ['type' => 'string'],
             'name' => ['type' => 'string'],
         ],
         'additionalProperties' => true,
     ];
-
-    /**
-     * @param string $code
-     * @param string $name
-     *
-     * @return $this
-     */
-    public function add($code, $name)
-    {
-        $this->set('code', (string)$code);
-        $this->set('name', (string)$name);
-
-        return $this;
-    }
 }

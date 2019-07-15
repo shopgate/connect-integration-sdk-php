@@ -24,6 +24,22 @@ namespace Shopgate\ConnectSdk\Dto\Location\Location\Dto;
 
 use Shopgate\ConnectSdk\Dto\Base;
 
+/**
+ * @method Settings setEnableInStorePickup(string $enableInStorePickup)
+ * @method Settings setEnableShipFromStore(string $enableShipFromStore)
+ * @method Settings setEnableInLocationFinder(string $enableInLocationFinder)
+ * @method Settings setEnableInventoryBrowse(string $enableInventoryBrowse)
+ * @method Settings setEnableForRelate(string $enableForRelate)
+ * @method Settings setShowStoreHours(string $showStoreHours)
+ * @method bool getEnableInStorePickup()
+ * @method bool getEnableShipFromStore()
+ * @method bool getEnableInLocationFinder()
+ * @method bool getEnableInventoryBrowse()
+ * @method bool getEnableForRelate()
+ * @method bool getShowStoreHours()
+ *
+ * @codeCoverageIgnore
+ */
 class Settings extends Base
 {
     /**
@@ -42,25 +58,4 @@ class Settings extends Base
         'additionalProperties' => true,
     ];
 
-    /**
-     * @param bool $enableInStorePickup
-     * @param bool $enableShipFromStore
-     * @param bool $enableInLocationFinder
-     * @param bool $enableInventoryBrowse
-     * @param bool $enableForRelate
-     * @param bool $showStoreHours
-     *
-     * @return $this
-     */
-    public function add($enableInStorePickup, $enableShipFromStore, $enableInLocationFinder, $enableInventoryBrowse, $enableForRelate, $showStoreHours)
-    {
-        $this->set('enableInStorePickup', (bool)$enableInStorePickup);
-        $this->set('enableShipFromStore', (bool)$enableShipFromStore);
-        $this->set('enableInLocationFinder', (bool)$enableInLocationFinder);
-        $this->set('enableInventoryBrowse', (bool)$enableInventoryBrowse);
-        $this->set('enableForRelate', (bool)$enableForRelate);
-        $this->set('showStoreHours', (bool)$showStoreHours);
-
-        return $this;
-    }
 }

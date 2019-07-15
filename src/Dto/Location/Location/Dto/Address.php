@@ -24,6 +24,38 @@ namespace Shopgate\ConnectSdk\Dto\Location\Location\Dto;
 
 use Shopgate\ConnectSdk\Dto\Base;
 
+/**
+ * @method Address setCode(string $code)
+ * @method Address setName(string $name)
+ * @method Address setStreet(string $street)
+ * @method Address setStreet2(string $street2)
+ * @method Address setStreet3(string $street3)
+ * @method Address setStreet4(string $street4)
+ * @method Address setPostalCode(string $postalCode)
+ * @method Address setCity(string $city)
+ * @method Address setRegion(string $region)
+ * @method Address setCountry(string $country)
+ * @method Address setPhoneNumber(string $phoneNumber)
+ * @method Address setFaxNumber(string $faxNumber)
+ * @method Address setEmailAddress(string $emailAddress)
+ * @method Address setIsPrimary(bool $isPrimary)
+ * @method string getCode()
+ * @method string getName()
+ * @method string getStreet()
+ * @method string getStreet2()
+ * @method string getStreet3()
+ * @method string getStreet4()
+ * @method string getPostalCode()
+ * @method string getCity()
+ * @method string getRegion()
+ * @method string getCountry()
+ * @method string getPhoneNumber()
+ * @method string getFaxNumber()
+ * @method string getEmailAddress()
+ * @method string getIsPrimary()
+ *
+ * @codeCoverageIgnore
+ */
 class Address extends Base
 {
     /**
@@ -42,25 +74,4 @@ class Address extends Base
             'additionalProperties' => true,
         ];
 
-    /**
-     * @param string $code
-     * @param string $name
-     * @param string $street
-     * @param string $postalCode
-     * @param string $city
-     * @param string $country
-     *
-     * @return $this
-     */
-    public function add($code, $name, $street, $postalCode, $city, $country)
-    {
-        $this->set('code', (string)$code);
-        $this->set('name', (string)$name);
-        $this->set('street', (string)$street);
-        $this->set('postalCode', (string)$postalCode);
-        $this->set('city', (string)$city);
-        $this->set('country', (string)$country);
-
-        return $this;
-    }
 }

@@ -24,6 +24,18 @@ namespace Shopgate\ConnectSdk\Dto\Location\Location\Dto;
 
 use Shopgate\ConnectSdk\Dto\Base;
 
+/**
+ * @method Details setManager(string $Manager)
+ * @method Details setImage(string $image)
+ * @method Details setDepartments(string[] $departments)
+ * @method Details setServices(string[] $services)
+ * @method string getManager()
+ * @method string getImage()
+ * @method string getDepartments()
+ * @method string[] getServices()
+ *
+ * @codeCoverageIgnore
+ */
 class Details extends Base
 {
     /**
@@ -39,22 +51,4 @@ class Details extends Base
         ],
         'additionalProperties' => true,
     ];
-
-    /**
-     * @param string $manager
-     * @param string $image
-     * @param string[] $departments
-     * @param string[] $services
-     *
-     * @return $this
-     */
-    public function add($manager, $image, $departments, $services)
-    {
-        $this->set('manager', (string)$manager);
-        $this->set('image', (string)$image);
-        $this->set('image', $departments);
-        $this->set('image', $services);
-
-        return $this;
-    }
 }

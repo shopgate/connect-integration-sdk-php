@@ -24,6 +24,20 @@ namespace Shopgate\ConnectSdk\Dto\Location\Location\Dto;
 
 use Shopgate\ConnectSdk\Dto\Base;
 
+/**
+ * @method Inventory setIsManaged(bool $isManaged)
+ * @method Inventory setMode(string $mode)
+ * @method Inventory setSafetyStockMode(string $safetyStockMode)
+ * @method Inventory setSafetyStock(int $safetyStock)
+ * @method Inventory setSafetyStockType(string $safetyStockType)
+ * @method bool getIsManaged()
+ * @method string getMode()
+ * @method string getSafetyStockMode()
+ * @method int getSafetyStock()
+ * @method string getSafetyStockType()
+ *
+ * @codeCoverageIgnore
+ */
 class Inventory extends Base
 {
     const MODE_BLIND                 = 'blind';
@@ -48,23 +62,4 @@ class Inventory extends Base
             'additionalProperties' => true,
         ];
 
-    /**
-     * @param string $isManaged
-     * @param string $mode
-     * @param string $safetyStockMode
-     * @param int $safetyStock
-     * @param string $safetyStockType
-     *
-     * @return $this
-     */
-    public function add($isManaged, $mode, $safetyStockMode, $safetyStock, $safetyStockType)
-    {
-        $this->set('isManaged', (string)$isManaged);
-        $this->set('mode', (string)$mode);
-        $this->set('safetyStockMode', (boolean)$safetyStockMode);
-        $this->set('safetyStock', (int)$safetyStock);
-        $this->set('safetyStockType', (string)$safetyStockType);
-
-        return $this;
-    }
 }

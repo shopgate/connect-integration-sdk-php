@@ -24,6 +24,24 @@ namespace Shopgate\ConnectSdk\Dto\Location\Location\Dto;
 
 use Shopgate\ConnectSdk\Dto\Base;
 
+/**
+ * @method OperationHours setSun(string $sun)
+ * @method OperationHours setMon(string $mon)
+ * @method OperationHours setTue(string $tue)
+ * @method OperationHours setWed(string $wed)
+ * @method OperationHours setThu(string $thu)
+ * @method OperationHours setFri(string $fri)
+ * @method OperationHours setSat(string $sat)
+ * @method string getSun()
+ * @method string getMon()
+ * @method string getTue()
+ * @method string getWed()
+ * @method string getThu()
+ * @method string getFri()
+ * @method string getSat()
+ *
+ * @codeCoverageIgnore
+ */
 class OperationHours extends Base
 {
     /**
@@ -45,25 +63,14 @@ class OperationHours extends Base
         ];
 
     /**
-     * @param string $sun
-     * @param string $mon
-     * @param string $tue
-     * @param string $wed
-     * @param string $thu
-     * @param string $fri
-     * @param string $sat
+     * @param string $day
+     * @param string $hours
      *
      * @return $this
      */
-    public function add($sun, $mon, $tue, $wed, $thu, $fri, $sat)
+    public function add($day, $hours)
     {
-        $this->set('sun', (string)$sun);
-        $this->set('mon', (string)$mon);
-        $this->set('tue', (string)$tue);
-        $this->set('wed', (string)$wed);
-        $this->set('thu', (string)$thu);
-        $this->set('fri', (string)$fri);
-        $this->set('sat', (string)$sat);
+        $this->set((string)$day, (string)$hours);
 
         return $this;
     }

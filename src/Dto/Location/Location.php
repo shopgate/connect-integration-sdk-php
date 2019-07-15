@@ -24,7 +24,6 @@ namespace Shopgate\ConnectSdk\Dto\Location;
 
 use Shopgate\ConnectSdk\Dto\Base;
 
-
 class Location extends Base
 {
     const STATUS_ACTIVE   = 'active';

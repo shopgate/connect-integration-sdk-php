@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Changed
 - localized url
 - localized image
+
 ### Added
 - addNotes direct call
 - getNotes direct call

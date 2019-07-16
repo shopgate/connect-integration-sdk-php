@@ -19,3 +19,4 @@ build
 !*/.gitkeep
 tools/docker-compose.yml.tmp
 tools/import/node_modules
+tools/import/package-lock.json

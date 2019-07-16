@@ -185,7 +185,7 @@ abstract class CatalogTest extends ShopgateSdkTest
      *
      * @throws Exception
      */
-    protected function prepareProductMaximum($product = null, $sampleCategories = array())
+    protected function prepareProductMaximum($product = null, $sampleCategories = [])
     {
         if ($product === null) {
             $product = new Product\Create();

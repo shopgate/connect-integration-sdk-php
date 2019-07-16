@@ -25,13 +25,15 @@ namespace Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Description;
 use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Name;
+use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Image;
+use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Url;
 
 /**
  * @method Create setCode(string $code)
  * @method Create setParentCategoryCode(string $parentCategoryCode)
- * @method Create setImage(string $image)
+ * @method Create setImage(Image $image)
  * @method Create setName(Name $name)
- * @method Create setUrl(string $url)
+ * @method Create setUrl(Url $url)
  * @method Create setSequenceId(int $sequenceId)
  * @method Create setDescription(Description $description)
  * @method Create setExternalUpdateDate(string $externalUpdateDate)
@@ -49,9 +51,9 @@ class Create extends Category
         'properties'           => [
             'code'               => ['type' => 'string'],
             'parentCategoryCode' => ['type' => 'string'],
-            'image'              => ['type' => 'string'],
+            'image'              => ['type' => 'object'],
             'name'               => ['type' => 'object'],
-            'url'                => ['type' => 'string'],
+            'url'                => ['type' => 'object'],
             'sequenceId'         => ['type' => 'integer'],
             'description'        => ['type' => 'object'],
             'externalUpdateDate' => ['type' => 'string'],

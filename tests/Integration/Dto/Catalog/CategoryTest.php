@@ -229,16 +229,16 @@ class CategoryTest extends CatalogTest
                     self::PARENT_CATEGORY_CODE,
                     'Parent Integration Test Category',
                     1,
-                    'http://www.google.de/parent.png',
-                    'https://www.google.de/parent',
+                    new Category\Dto\Image(['en-us' => 'http://www.google.de/parent.png']),
+                    new Category\Dto\Url(['en-us' => 'https://www.google.de/parent']),
                     'test parent description'
                 ),
                 $this->provideSampleCreateCategory(
                     self::CATEGORY_CODE,
                     'Integration Test Category 1',
                     1,
-                    'http://www.google.de/image.png',
-                    'https://www.google.de',
+                    new Category\Dto\Image(['en-us' => 'http://www.google.de/image.png']),
+                    new Category\Dto\Url(['en-us' => 'https://www.google.de']),
                     'test description',
                     null,
                     '2019-12-15T00:00:00.000Z',
@@ -293,13 +293,13 @@ class CategoryTest extends CatalogTest
             ],
             'image'              => [
                 'updateCategoryData' => [
-                    'image' => 'http://updated.com/image.png',
+                    'image' => new Category\Dto\Image(['en-us' => 'http://updated.com/image.png']),
                 ],
                 'expectedValue'      => 'http://updated.com/image.png'
             ],
             'url'                => [
                 'updateCategoryData' => [
-                    'url' => 'http://updated.url.com',
+                    'url' => new Category\Dto\Url(['en-us' => 'http://updated.url.com']),
                 ],
                 'expectedValue'      => 'http://updated.url.com'
             ],
@@ -540,10 +540,10 @@ class CategoryTest extends CatalogTest
         $existingCategory = $this->provideSampleCreateCategory(
             $categoryCode,
             'test category',
-            'http://www.google.e/image.png',
-            'http://www.google.de',
-            'test description',
-            '12345'
+            '1',
+            new Category\Dto\Image(['en-us' => 'http://www.google.de']),
+            new Category\Dto\Url(['en-us' => 'http://www.google.de/image.png']),
+            'test description'
         );
         $this->sdk->getCatalogService()->addCategories(
             [$existingCategory],

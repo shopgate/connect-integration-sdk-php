@@ -25,12 +25,14 @@ namespace Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Description;
 use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Name;
+use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Image;
+use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Url;
 
 /**
- * @method Update setImage(string $image)
+ * @method Update setImage(Image $image)
  * @method Update setName(Name $name)
  * @method Update setParentCategoryCode(string $parentCategoryCode)
- * @method Update setUrl(string $url)
+ * @method Update setUrl(Url $url)
  * @method Update setDescription(Description $description)
  * @method Update setExternalUpdateDate(string $date)
  * @method Update setStatus(string $status)
@@ -45,10 +47,10 @@ class Update extends Category
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'image'              => ['type' => 'string'],
+            'image'              => ['type' => 'object'],
             'name'               => ['type' => 'object'],
             'parentCategoryCode' => ['type' => 'string'],
-            'url'                => ['type' => 'string'],
+            'url'                => ['type' => 'object'],
             'description'        => ['type' => 'object'],
             'externalUpdateDate' => ['type' => 'string'],
             'status'             => ['type' => 'string']

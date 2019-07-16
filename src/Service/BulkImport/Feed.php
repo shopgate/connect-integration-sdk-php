@@ -106,7 +106,7 @@ class Feed
         $response = $this->client->doRequest(
             [
                 'method' => 'post',
-                'body' => $this->requestBodyOptions,
+                'json' => $this->requestBodyOptions,
                 'requestType' => 'direct',
                 'service' => 'import',
                 'path' => 'imports/' . $this->importReference . '/' . 'urls',
@@ -144,7 +144,7 @@ class Feed
         switch ($this->handlerType) {
             case Stream::HANDLER_TYPE:
                 $this->stream->write(']');
-                $this->client->doRequest($requestOption + ['body' => $this->stream]);
+                $this->client->doRequest($requestOption + ['body' => (string)$this->stream]);
                 break;
             case File::HANDLER_TYPE:
                 fwrite($this->stream, ']');

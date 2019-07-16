@@ -23,17 +23,8 @@
 namespace Shopgate\ConnectSdk\Tests\Integration\Dto\Catalog;
 
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
-use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Categories;
-use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Extras;
-use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\LongDescription;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\LongName;
-use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\MediaList;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Name;
-use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Price;
-use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Price\MapPricing;
-use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Price\VolumePricing;
-use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
-use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\ShortDescription;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Update;
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\NotFoundException;

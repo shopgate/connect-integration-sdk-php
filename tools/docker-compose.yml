@@ -68,7 +68,7 @@ services:
 
 ### https://gitlab.localdev.cc/omnichannel/services/worker
   omni-worker:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/worker:v1.0.0-beta.10c
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/worker:v1.0.0-beta.11
     ports:
       - 5100:80
     links:
@@ -141,7 +141,7 @@ services:
 
 ### https://gitlab.localdev.cc/omnichannel/services/products
   catalog:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/catalog:v1.0.0-alpha.69
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/catalog:v1.0.0-alpha.78
     ports:
       - 5104:80
     restart: always
@@ -161,10 +161,11 @@ services:
       default:
         aliases:
           - shopgate-import.s3
+          - shopgate-import.s3.amazonaws.com
 
-  ### https://gitlab.localdev.cc/big-api/services/import
+### https://gitlab.localdev.cc/big-api/services/import
   import:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/import:v1.0.0-alpha.3
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/import:v1.0.0-alpha.5
     ports:
       - 5105:80
     environment:
@@ -181,7 +182,10 @@ services:
       - LOG_TO_SYSLOG=false
     links:
       - etcd
+      - s3:s3.amazonaws.com
+      - s3:shopgate-import.s3.amazonaws.com
 
+### https://gitlab.localdev.cc/SGXS/tools/import-script/tree/development
   import-script:
     build:
       context: ../
@@ -192,13 +196,18 @@ services:
       - S3_SECRET_ACCESS_KEY=bar
       - S3_BUCKET=shopgate-import
       - S3_REGION=eu-central-1
-      - S3_ENDPOINT=http://s3:4569
+      - S3_ENDPOINT=http://s3.amazonaws.com:4569
       - PUBSUB_EMULATOR_HOST=googlepubsub-emulator:8085
       - MYSQL_HOST=mysql
       - MYSQL_USER=root
       - MYSQL_PASSWORD=secret
       - MYSQL_DATABASE=import
       - GOOGLE_APPLICATION_CREDENTIALS=tools/dockerfiles/credentials-dev.json.js
+      - BIG_API_CLIENT_ID=integration-tests
+      - BIG_API_CLIENT_SECRET=integration-tests
+      - PUBSUB_PROJECT_ID=test-project
     ports:
       - '8079:8079'
     tty: true
+    links:
+      - s3:s3.amazonaws.com

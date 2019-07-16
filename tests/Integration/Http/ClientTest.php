@@ -235,7 +235,7 @@ class ClientTest extends ShopgateSdkTest
         $mockHandler = new MockHandler([]);
         $handlerStack = HandlerStack::create($mockHandler);
 
-        /** @var \GuzzleHttp\ClientInterface $client */
+        /** @var GuzzleClient $client */
         $client = $this
             ->getMockBuilder(GuzzleClient::class)
             ->setConstructorArgs([['handler' => $handlerStack]])
@@ -278,7 +278,7 @@ class ClientTest extends ShopgateSdkTest
         $stream = fopen('data://text/plain,test' ,'r');
         $mockHandler->append(new SeekException(new Stream($stream)));
 
-        /** @var \GuzzleHttp\ClientInterface $client */
+        /** @var GuzzleClient $client */
         $client = $this
             ->getMockBuilder(GuzzleClient::class)
             ->setConstructorArgs([['handler' => $handlerStack]])

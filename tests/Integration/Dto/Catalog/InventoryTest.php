@@ -57,7 +57,7 @@ class InventoryTest extends CatalogTest
             [
                 // general
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'body'        => $locations,
+                'json'        => $locations,
                 'query'       => [],
                 // direct
                 'method'      => 'post',

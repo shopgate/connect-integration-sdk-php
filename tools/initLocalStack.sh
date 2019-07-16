@@ -56,13 +56,14 @@ docker-compose exec -T mysql mysql -u root -psecret < ./fixtures/schema.sql
 docker-compose $DOCKER_COMPOSE_FILES up -d omni-event-receiver
 retry "EventReceiver" "docker-compose exec -T omni-event-receiver curl http://localhost/health -o /dev/null 2>&1"
 
-docker-compose stop catalog && docker-compose $DOCKER_COMPOSE_FILES up -d catalog
+docker-compose stop catalog import import-script && docker-compose $DOCKER_COMPOSE_FILES up -d catalog import import-script
 retry "CatalogService" "docker-compose exec -T catalog curl http://localhost/health -o /dev/null 2>&1"
+retry "ImportService" "docker-compose exec -T import curl http://localhost/health -o /dev/null 2>&1"
 
 docker-compose $DOCKER_COMPOSE_FILES up -d elasticsearch
 retry "elasticsearch" "docker-compose exec -T elasticsearch curl http://localhost:9200/_cluster/health?wait_for_status=yellow 2>&1"
 
-docker-compose $DOCKER_COMPOSE_FILES up -d mysql auth redis omni-worker omni-event-receiver omni-merchant omni-location s3 import omni-customer
+docker-compose $DOCKER_COMPOSE_FILES up -d mysql auth redis omni-worker omni-event-receiver omni-merchant omni-location s3 omni-customer
 
 retry "AuthService" "docker-compose exec -T auth curl http://localhost/health -o /dev/null 2>&1"
 retry "MerchantService" "docker-compose exec -T omni-merchant curl http://localhost/health -o /dev/null 2>&1"

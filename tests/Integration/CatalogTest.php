@@ -64,7 +64,7 @@ abstract class CatalogTest extends ShopgateSdkTest
     const SAMPLE_EXTRA_VALUE_CODE     = 'extra_value_code_1';
     const SAMPLE_EXTRA_VALUE_CODE_2   = 'extra_value_code_2';
 
-    const SAMPLE_CATALOG = 'NA Wholesale';
+    const SAMPLE_CATALOG = 'NAWholesale';
 
     public function setUp()
     {
@@ -171,6 +171,7 @@ abstract class CatalogTest extends ShopgateSdkTest
         $productPayload = new Product\Create();
 
         return $productPayload
+            ->setName(new Product\Dto\Name(['en-us' => 'Product Name']))
             ->setCode(self::PRODUCT_CODE)
             ->setModelType(Product\Create::MODEL_TYPE_STANDARD)
             ->setIsInventoryManaged(true);
@@ -178,21 +179,24 @@ abstract class CatalogTest extends ShopgateSdkTest
 
     /**
      * @param Product $product
+     * @param Category\Create[] $sampleCategories
      *
      * @return Update
      *
      * @throws Exception
      */
-    protected function prepareProductMaximum($product = null)
+    protected function prepareProductMaximum($product = null, $sampleCategories = array())
     {
         if ($product === null) {
             $product = new Product\Create();
         }
 
-        $sampleCategories = $this->provideSampleCategories();
-        $this->sdk->getCatalogService()->addCategories($sampleCategories, ['requestType' => 'direct']);
-        $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
-        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, $sampleCategoryCodes);
+        if (empty($sampleCategories)) {
+            $sampleCategories = $this->provideSampleCategories();
+            $this->sdk->getCatalogService()->addCategories($sampleCategories, ['requestType' => 'direct']);
+            $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
+            $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, $sampleCategoryCodes);
+        }
 
         $this->createSampleAttribute();
         $this->createSampleExtras();
@@ -309,8 +313,8 @@ abstract class CatalogTest extends ShopgateSdkTest
             ->setPrice(84.49);
 
         $mapPricing2 = new Product\Dto\Price\MapPricing();
-        $mapPricing2->setStartDate('2019-06-01T00:00:00.000Z')
-            ->setEndDate('2019-09-01T00:00:00.000Z')
+        $mapPricing2->setStartDate('2019-09-01T00:00:01.000Z')
+            ->setEndDate('2019-10-01T00:00:00.000Z')
             ->setPrice(84.49);
 
         return [$mapPricing1, $mapPricing2];

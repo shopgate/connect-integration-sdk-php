@@ -121,8 +121,6 @@ class AttributeTest extends CustomerTest
      */
     public function testCreateAttributesEvent()
     {
-        $this->markTestSkipped('Skipped - not working yet');
-
         // Arrange
         $createdItemCount = 10;
         $sampleAttributes = $this->provideSampleAttributes($createdItemCount);
@@ -325,8 +323,6 @@ class AttributeTest extends CustomerTest
      */
     public function testDeleteAttributeEvent()
     {
-        $this->markTestSkipped('Skipped - not working yet');
-
         // Arrange
         $sampleAttributes = $this->provideSampleAttributes(1);
         $this->createAttributes($sampleAttributes);

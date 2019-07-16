@@ -141,7 +141,7 @@ class Customer
             [
                 'method'      => 'post',
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'body'        => ['attributes' => $requestAttributes],
+                'json'        => ['attributes' => $requestAttributes],
                 'query'       => $query,
                 'service'     => 'omni-customer',
                 'path'        => 'attributes',
@@ -172,7 +172,7 @@ class Customer
                 'entity'      => 'attribute',
                 'query'       => $query,
                 'action'      => 'update',
-                'body'        => $attribute,
+                'json'        => $attribute,
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
             ]
         );
@@ -228,7 +228,7 @@ class Customer
                 'path'        => 'attributes/' . $code . '/values/',
                 'entity'      => 'attributes',
                 'action'      => 'create',
-                'body'        => ['values' => $attributeValues],
+                'json'        => ['values' => $attributeValues],
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'query'       => $query,
             ]
@@ -261,7 +261,7 @@ class Customer
                 'path'        => 'attributes/' . $code . '/values/' . $valueCode,
                 'entity'      => 'attribute',
                 'action'      => 'update',
-                'body'        => $attributeValue,
+                'json'        => $attributeValue,
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'query'       => $query,
             ]
@@ -382,7 +382,7 @@ class Customer
             [
                 'method'      => 'post',
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'body'        => ['customers' => $requestCustomers],
+                'json'        => ['customers' => $requestCustomers],
                 'query'       => $query,
                 'service'     => 'omni-customer',
                 'path'        => 'customers',
@@ -416,7 +416,7 @@ class Customer
                 'entity'      => 'customer',
                 'query'       => $query,
                 'action'      => 'update',
-                'body'        => $customer,
+                'json'        => $customer,
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
             ]
         );
@@ -469,7 +469,7 @@ class Customer
                 'path'        => 'customers/' . $id . '/contacts',
                 'entity'      => 'contact',
                 'action'      => 'create',
-                'body'        => ['contacts' => $contacts],
+                'json'        => ['contacts' => $contacts],
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'query'       => $query,
             ]
@@ -498,7 +498,7 @@ class Customer
                 'path'        => 'customers/' . $customerId . '/contacts/' . $id,
                 'entity'      => 'contact',
                 'action'      => 'update',
-                'body'        => $contact,
+                'json'        => $contact,
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'entityId'    => $id,
                 'query'       => $query,
@@ -551,7 +551,7 @@ class Customer
                 'service'     => 'omni-customer',
                 'method'      => 'post',
                 'path'        => 'customers/' . $customerId . '/notes',
-                'body'        => ['notes' => $notes],
+                'json'        => ['notes' => $notes],
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'query'       => $query
             ]

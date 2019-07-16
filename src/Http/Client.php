@@ -197,19 +197,21 @@ class Client implements ClientInterface
         }
 
         $response = null;
-        $body     = isset($params['body']) ? $params['body'] : [];
         try {
+            $parameters = [
+                'query' => isset($params['query']) ? $this->fixBoolValuesInQuery($params['query']) : []
+            ];
+            if (isset($params['body'])) {
+                $parameters['body'] = $params['body'];
+            } elseif (isset($params['json'])) {
+                $json               = !empty($params['json']) ? $params['json'] : [];
+                $parameters['json'] = $json instanceof Base ? $json->toJson() : (new Base($json))->toJson();
+            }
+
             $response = $this->client->request(
                 $params['method'],
                 isset($params['url']) ? $params['url'] : $this->buildServiceUrl($params['service'], $params['path']),
-                [
-                    'query' => isset($params['query'])
-                        ? $this->fixBoolValuesInQuery($params['query'])
-                        : [],
-                    'json'  => $body instanceof Base
-                        ? $body->toJson()
-                        : (new Base($body))->toJson(),
-                ]
+                $parameters
             );
         } catch (GuzzleRequestException $e) {
             $statusCode = $e->getResponse() ? $e->getResponse()->getStatusCode() : 0;
@@ -268,11 +270,11 @@ class Client implements ClientInterface
     private function triggerEvent(array $params)
     {
         $values = [
-            isset($params['body']) ? $params['body'] : new Base(),
+            isset($params['json']) ? $params['json'] : new Base(),
         ];
         if ($params['action'] === 'create') {
-            $key    = array_keys($params['body'])[0];
-            $values = $params['body'][$key];
+            $key    = array_keys($params['json'])[0];
+            $values = $params['json'][$key];
         }
 
         $factory = new Factory();

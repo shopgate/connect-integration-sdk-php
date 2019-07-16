@@ -23,5 +23,6 @@ docker-compose exec -T mysql mysql -uroot -psecret < ./fixtures/schema.sql
 docker-compose stop catalog import import-script && docker-compose up -d catalog import import-script
 
 retry "CatalogService" "docker-compose exec -T catalog curl http://localhost/health -o /dev/null 2>&1"
+retry "ImportService" "docker-compose exec -T import curl http://localhost/health -o /dev/null 2>&1"
 
 docker-compose exec -T mysql mysql -uroot -psecret < ./fixtures/sampleData.sql

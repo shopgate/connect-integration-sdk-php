@@ -6,8 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 ### Changed
-- localized url
-- localized image
+- localized category url
+- localized category image
 
 ### Added
 - addNotes direct call

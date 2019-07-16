@@ -786,8 +786,8 @@ class ProductTest extends CatalogTest
             ->setPrice(84.49);
 
         $mapPricing2 = new Product\Dto\Price\MapPricing();
-        $mapPricing2->setStartDate('2019-06-01T00:00:00.000Z')
-            ->setEndDate('2019-09-01T00:00:00.000Z')
+        $mapPricing2->setStartDate('2019-09-01T00:00:01.000Z')
+            ->setEndDate('2019-10-01T00:00:00.000Z')
             ->setPrice(84.49);
 
         return [$mapPricing1, $mapPricing2];

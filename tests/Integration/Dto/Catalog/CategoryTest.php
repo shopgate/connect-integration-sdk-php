@@ -540,10 +540,10 @@ class CategoryTest extends CatalogTest
         $existingCategory = $this->provideSampleCreateCategory(
             $categoryCode,
             'test category',
-            'http://www.google.e/image.png',
-            'http://www.google.de',
-            'test description',
-            '12345'
+            '1',
+            new Category\Dto\Image(['en-us' => 'http://www.google.de']),
+            new Category\Dto\Url(['en-us' => 'http://www.google.de/image.png']),
+            'test description'
         );
         $this->sdk->getCatalogService()->addCategories(
             [$existingCategory],

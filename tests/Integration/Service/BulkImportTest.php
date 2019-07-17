@@ -15,8 +15,6 @@ class BulkImportTest extends CatalogTest
      */
     public function testMaximumBulkFileImport()
     {
-        $this->markTestSkipped('Skipped due to fixes for the import script');
-
         // Arrange
         $categories = $this->provideSampleCategories();
         $extras = $this->provideSampleExtras();
@@ -70,8 +68,6 @@ class BulkImportTest extends CatalogTest
      */
     public function testCategoryBulkFileImport()
     {
-        $this->markTestSkipped('Skipped due to fixes for the import script');
-
         // Arrange
         $categories = $this->provideSampleCategories();
 
@@ -101,8 +97,6 @@ class BulkImportTest extends CatalogTest
      */
     public function testCategoryStreamBulkImport()
     {
-        $this->markTestSkipped('Skipped due to fixes for the import script');
-
         // Arrange
         $categories = $this->provideSampleCategories();
 
@@ -132,8 +126,6 @@ class BulkImportTest extends CatalogTest
      */
     public function testProductBulkFileImport()
     {
-        $this->markTestSkipped('Skipped due to fixes for the import script');
-
         // Arrange
         $products[] = $this->prepareProductMinimum();
         $products[] = $this->prepareProductMaximum();
@@ -164,8 +156,6 @@ class BulkImportTest extends CatalogTest
      */
     public function testProductStreamBulkImport()
     {
-        $this->markTestSkipped('Skipped due to fixes for the import script');
-
         // Arrange
         $products[] = $this->prepareProductMinimum();
         $products[] = $this->prepareProductMaximum();
@@ -196,8 +186,6 @@ class BulkImportTest extends CatalogTest
      */
     public function testProductAttributeBulkFileImport()
     {
-        $this->markTestSkipped('Skipped due to fixes for the import script');
-
         // Arrange
         $attributes = $this->provideSampleExtras();
 
@@ -227,8 +215,6 @@ class BulkImportTest extends CatalogTest
      */
     public function testAttributeStreamBulkImport()
     {
-        $this->markTestSkipped('Skipped due to fixes for the import script');
-
         // Arrange
         $attributes = $this->provideSampleExtras();
 

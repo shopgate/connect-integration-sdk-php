@@ -68,3 +68,38 @@ services:
           - omni-event-receiver.shopgatedev.services
           - catalog.shopgatedev.services
           - import.shopgatedev.services
+  import:
+    ports:
+      - 5105:80
+
+  catalog:
+    ports:
+      - 5104:80
+
+  omni-location:
+    ports:
+      - 5103:80
+
+  omni-merchant:
+    ports:
+      - 5102:80
+
+  omni-event-receiver:
+    ports:
+      - 5101:80
+
+  omni-worker:
+    ports:
+      - 5100:80
+
+  omni-customer:
+    ports:
+      - 5106:80
+
+  s3:
+    ports:
+      - '4569:4569'
+
+  import-script:
+    ports:
+      - '8079:8079'

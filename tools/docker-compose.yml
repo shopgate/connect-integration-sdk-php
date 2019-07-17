@@ -81,7 +81,6 @@ services:
 ### https://gitlab.localdev.cc/omnichannel/services/event-receiver
   omni-event-receiver:
     image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/event-receiver:v1.0.0-beta.11
-    restart: always
     links:
       - etcd
     environment:

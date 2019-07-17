@@ -4,11 +4,19 @@
 namespace Shopgate\ConnectSdk\Tests\Integration\Http;
 
 use Exception;
+use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Exception\SeekException;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Stream;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\RequestException;
+use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Http\Client;
+use Shopgate\ConnectSdk\Http\Client as SdkClient;
 use Shopgate\ConnectSdk\ShopgateSdk;
 use Shopgate\ConnectSdk\Tests\Integration\ShopgateSdkTest;
 
@@ -216,5 +224,85 @@ class ClientTest extends ShopgateSdkTest
                 getenv('accessTokenPath')
             ],
         ];
+    }
+
+    /**
+     * @throws \Shopgate\ConnectSdk\Exception\Exception
+     */
+    public function testClientThrowsRequestException()
+    {
+        // Arrange
+        $mockHandler = new MockHandler([]);
+        $handlerStack = HandlerStack::create($mockHandler);
+
+        /** @var GuzzleClient $client */
+        $client = $this
+            ->getMockBuilder(GuzzleClient::class)
+            ->setConstructorArgs([['handler' => $handlerStack]])
+            ->setMethods(null)
+            ->getMock();
+
+        $sdkClient = new SdkClient(
+            $client,
+            'http://{service}.local',
+            'TM2'
+        );
+
+        $mockHandler->append(new Response(500, [], 'internal server error'));
+
+        // Assert
+        $this->expectException(RequestException::class);
+
+        // Act
+        $sdkClient->doRequest([
+            'method' => 'get',
+            // direct
+            'service' => 'catalog',
+            'path' => 'categories',
+            'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
+            // event
+            'action' => 'update',
+            'entity' => 'category',
+        ]);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testClientThrowsUnknownException()
+    {
+        // Arrange
+        $mockHandler = new MockHandler([]);
+        $handlerStack = HandlerStack::create($mockHandler);
+
+        $stream = fopen('data://text/plain,test' ,'r');
+        $mockHandler->append(new SeekException(new Stream($stream)));
+
+        /** @var GuzzleClient $client */
+        $client = $this
+            ->getMockBuilder(GuzzleClient::class)
+            ->setConstructorArgs([['handler' => $handlerStack]])
+            ->setMethods(null)
+            ->getMock();
+        $sdkClient = new SdkClient(
+            $client,
+            'http://{service}.local',
+            'TM2'
+        );
+
+        // Assert
+        $this->expectException(UnknownException::class);
+
+        // Act
+        $sdkClient->doRequest([
+            'method' => 'get',
+            // direct
+            'service' => 'catalog',
+            'path' => 'categories',
+            'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
+            // event
+            'action' => 'update',
+            'entity' => 'category',
+        ]);
     }
 }

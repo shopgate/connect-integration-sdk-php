@@ -75,8 +75,6 @@ class AttributeTest extends CatalogTest
      */
     public function testCreateAttributesEvent()
     {
-        $this->markTestSkipped('Skipped due to bug in worker service');
-
         // Arrange
         $createdItemCount = 10;
         $sampleAttributes = $this->provideSampleAttributes($createdItemCount);

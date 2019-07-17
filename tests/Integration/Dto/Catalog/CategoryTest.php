@@ -590,12 +590,6 @@ class CategoryTest extends CatalogTest
      */
     public function testCreateCategoryEvent()
     {
-        // It seems only one category is created in the service. Cause of this bug:
-        // https://gitlab.localdev.cc/omnichannel/services/worker/blob/v1.0.0-beta.10c/app/EventController.js#L37
-        // the return will interrupt the execution of following events
-        // will be fixed once we can use something later than omni-worker: v1.0.0-beta.10c
-        $this->markTestSkipped('Skipped due to bug in worker service');
-
         // Arrange
         $sampleCategories    = $this->provideSampleCategories();
         $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
@@ -656,9 +650,9 @@ class CategoryTest extends CatalogTest
         // Act
         foreach ($this->getCategoryCodes($sampleCategories) as $categoryCode) {
             $responses[] = $this->sdk->getCatalogService()->deleteCategory($categoryCode);
-            // todo-sg: move out of loop once the omni-worker service is release version > worker:v1.0.0-beta.10d
-            sleep(self::SLEEP_TIME_AFTER_EVENT);
         }
+
+        sleep(self::SLEEP_TIME_AFTER_EVENT);
 
         // Assert
         $categories = $this->getCategories($this->getCategoryCodes($sampleCategories));

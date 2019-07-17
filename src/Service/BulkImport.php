@@ -57,7 +57,7 @@ class BulkImport
         $response = $this->client->doRequest(
             [
                 'method'      => 'post',
-                'body'        => [],
+                'json'        => [],
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'service'     => 'import',
                 'path'        => 'imports',

@@ -8,6 +8,7 @@ use Shopgate\ConnectSdk\Tests\Integration\CatalogTest;
 
 class BulkImportTest extends CatalogTest
 {
+    const SLEEP_TIME_AFTER_BULK = 10;
 
     /**
      * @throws Exception
@@ -16,9 +17,9 @@ class BulkImportTest extends CatalogTest
     {
         // Arrange
         $categories = $this->provideSampleCategories();
+        $extras = $this->provideSampleExtras();
         $products[] = $this->prepareProductMinimum();
-        $products[] = $this->prepareProductMaximum();
-        $attributes = $this->provideSampleExtras();
+        $products[] = $this->prepareProductMaximum(null, $categories, $extras, []);
 
         // Act
         $handler = $this->sdk->getBulkImportService()->createFileImport();
@@ -26,37 +27,39 @@ class BulkImportTest extends CatalogTest
         $categoryHandler->add($categories[0]);
         $categoryHandler->add($categories[1]);
         $categoryHandler->end();
+        $attributeHandler = $handler->createAttributeFeed(self::SAMPLE_CATALOG);
+        $attributeHandler->add($extras[0]);
+        $attributeHandler->add($extras[1]);
+        $attributeHandler->end();
         $productHandler = $handler->createProductFeed(self::SAMPLE_CATALOG);
         $productHandler->add($products[0]);
         $productHandler->add($products[1]);
         $productHandler->end();
-        $attributeHandler = $handler->createAttributeFeed(self::SAMPLE_CATALOG);
-        $attributeHandler->add($attributes[0]);
-        $attributeHandler->add($attributes[1]);
-        $attributeHandler->end();
         $handler->trigger();
 
         // CleanUp
-//        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, [
-//            $categories[0]->code,
-//            $categories[1]->code
-//        ]);
-//        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [
-//            $products[0]->code,
-//            $products[1]->code
-//        ]);
-//        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_ATTRIBUTE, [
-//            $attributes[0]->code,
-//            $attributes[1]->code
-//        ]);
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, [
+            $categories[0]->code,
+            $categories[1]->code
+        ]);
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [
+            $products[0]->code,
+            $products[1]->code
+        ]);
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_ATTRIBUTE, [
+            $extras[0]->code,
+            $extras[1]->code
+        ]);
+
+        sleep(self::SLEEP_TIME_AFTER_BULK + 5);
 
         // Assert
         $availableCategories = $this->sdk->getCatalogService()->getCategories();
-//        $this->assertCount(2, $availableCategories->getCategories());
+        $this->assertCount(2, $availableCategories->getCategories());
         $availableProducts = $this->sdk->getCatalogService()->getProducts();
-//        $this->assertCount(2, $availableProducts->getProducts());
+        $this->assertCount(2, $availableProducts->getProducts());
         $availableAttributes = $this->sdk->getCatalogService()->getAttributes();
-//        $this->assertCount(2, $availableAttributes->getAttributes());
+        $this->assertCount(2, $availableAttributes->getAttributes());
     }
 
 
@@ -77,14 +80,16 @@ class BulkImportTest extends CatalogTest
         $handler->trigger();
 
         // CleanUp
-//        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, [
-//            $categories[0]->code,
-//            $categories[1]->code
-//        ]);
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, [
+            $categories[0]->code,
+            $categories[1]->code
+        ]);
+
+        sleep(self::SLEEP_TIME_AFTER_BULK);
 
         // Assert
         $availableCategories = $this->sdk->getCatalogService()->getCategories();
-//        $this->assertCount(2, $availableCategories->getCategories());
+        $this->assertCount(2, $availableCategories->getCategories());
     }
 
     /**
@@ -104,14 +109,16 @@ class BulkImportTest extends CatalogTest
         $handler->trigger();
 
         // CleanUp
-//        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, [
-//            $categories[0]->code,
-//            $categories[1]->code
-//        ]);
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, [
+            $categories[0]->code,
+            $categories[1]->code
+        ]);
+
+        sleep(self::SLEEP_TIME_AFTER_BULK);
 
         // Assert
         $availableCategories = $this->sdk->getCatalogService()->getCategories();
-//        $this->assertCount(2, $availableCategories->getCategories());
+        $this->assertCount(2, $availableCategories->getCategories());
     }
 
     /**
@@ -132,14 +139,16 @@ class BulkImportTest extends CatalogTest
         $handler->trigger();
 
         // CleanUp
-//        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [
-//            $products[0]->code,
-//            $products[1]->code
-//        ]);
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [
+            $products[0]->code,
+            $products[1]->code
+        ]);
+
+        sleep(self::SLEEP_TIME_AFTER_BULK);
 
         // Assert
         $availableProducts = $this->sdk->getCatalogService()->getProducts();
-//        $this->assertCount(2, $availableProducts->getProducts());
+        $this->assertCount(2, $availableProducts->getProducts());
     }
 
     /**
@@ -160,14 +169,16 @@ class BulkImportTest extends CatalogTest
         $handler->trigger();
 
         // CleanUp
-//        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [
-//            $products[0]->code,
-//            $products[1]->code
-//        ]);
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [
+            $products[0]->code,
+            $products[1]->code
+        ]);
+
+        sleep(self::SLEEP_TIME_AFTER_BULK);
 
         // Assert
         $availableProducts = $this->sdk->getCatalogService()->getProducts();
-//        $this->assertCount(2, $availableProducts->getProducts());
+        $this->assertCount(2, $availableProducts->getProducts());
     }
 
     /**
@@ -187,14 +198,16 @@ class BulkImportTest extends CatalogTest
         $handler->trigger();
 
         // CleanUp
-//        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_ATTRIBUTE, [
-//            $attributes[0]->code,
-//            $attributes[1]->code
-//        ]);
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_ATTRIBUTE, [
+            $attributes[0]->code,
+            $attributes[1]->code
+        ]);
+
+        sleep(self::SLEEP_TIME_AFTER_BULK);
 
         // Assert
         $availableAttributes = $this->sdk->getCatalogService()->getAttributes();
-//        $this->assertCount(2, $availableAttributes->getAttributes());
+        $this->assertCount(2, $availableAttributes->getAttributes());
     }
 
     /**
@@ -214,13 +227,15 @@ class BulkImportTest extends CatalogTest
         $handler->trigger();
 
         // CleanUp
-//        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_ATTRIBUTE, [
-//            $attributes[0]->code,
-//            $attributes[1]->code
-//        ]);
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_ATTRIBUTE, [
+            $attributes[0]->code,
+            $attributes[1]->code
+        ]);
+
+        sleep(self::SLEEP_TIME_AFTER_BULK);
 
         // Assert
         $availableAttributes = $this->sdk->getCatalogService()->getAttributes();
-//        $this->assertCount(2, $availableAttributes->getAttributes());
+        $this->assertCount(2, $availableAttributes->getAttributes());
     }
 }

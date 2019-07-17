@@ -65,6 +65,7 @@ run_unit_tests:
     - docker-compose -p "${CI_COMMIT_SHORT_SHA}-unit" exec -T php73 php -v
     - docker-compose -p "${CI_COMMIT_SHORT_SHA}-unit" exec -T php73 composer unit-tests
   after_script:
+    - cd tools
     - docker-compose -p "${CI_COMMIT_SHORT_SHA}-unit" down
   cache:
     key: $BUILD_PREREQUISITES_CACHE_KEY
@@ -90,6 +91,7 @@ run_integration_tests:
     - docker-compose -p "${CI_COMMIT_SHORT_SHA}-integration" exec -T php73 php -v
     - docker-compose -p "${CI_COMMIT_SHORT_SHA}-integration" exec -T php73 composer integration-tests-local
   after_script:
+    - cd tools
     - docker-compose -p "${CI_COMMIT_SHORT_SHA}-integration" down
   cache:
     key: $BUILD_PREREQUISITES_CACHE_KEY

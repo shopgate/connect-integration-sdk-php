@@ -71,7 +71,7 @@ class Location
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'body'        => ['locations' => $locations],
+                'json'        => ['locations' => $locations],
                 'query'       => $query,
                 // direct
                 'service'     => 'omni-location',
@@ -103,7 +103,7 @@ class Location
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'body'        => $location,
+                'json'        => $location,
                 'query'       => $query,
                 // direct
                 'method'      => 'post',

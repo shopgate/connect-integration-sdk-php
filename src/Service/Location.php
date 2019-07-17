@@ -70,11 +70,11 @@ class Location
                 'method'      => 'post',
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
+                    : ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'body'        => ['locations' => $locations],
                 'query'       => $query,
                 // direct
-                'service'     => 'location',
+                'service'     => 'omni-location',
                 'path'        => 'locations',
                 // async
                 'entity'      => 'location',
@@ -102,12 +102,12 @@ class Location
                 // general
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
+                    : ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'body'        => $location,
                 'query'       => $query,
                 // direct
                 'method'      => 'post',
-                'service'     => 'location',
+                'service'     => 'omni-location',
                 'path'        => 'locations/' . $code,
                 // async
                 'entity'      => 'location',
@@ -135,11 +135,11 @@ class Location
                 // general
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
+                    : ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'query'       => $query,
                 // direct
                 'method'      => 'delete',
-                'service'     => 'location',
+                'service'     => 'omni-location',
                 'path'        => 'locations/' . $code,
                 // async
                 'entity'      => 'location',
@@ -168,7 +168,7 @@ class Location
         $response = $this->client->doRequest(
             [
                 // direct only
-                'service' => 'location',
+                'service' => 'omni-location',
                 'method'  => 'get',
                 'path'    => 'locations',
                 'query'   => $query,
@@ -181,7 +181,7 @@ class Location
             $locations[] = new LocationDto\Get($location);
         }
         $response['meta']       = new Meta($response['meta']);
-        $response['categories'] = $locations;
+        $response['locations'] = $locations;
 
         return new LocationDto\GetList($response);
     }

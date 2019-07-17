@@ -22,7 +22,7 @@
 
 namespace Shopgate\ConnectSdk\Dto\Location\Location\Dto;
 
-use Shopgate\ConnectSdk\Dto\Base as DtoBase;
+use Shopgate\ConnectSdk\Dto\Base;
 
 /**
  * @method Type setCode(string $code)
@@ -32,7 +32,7 @@ use Shopgate\ConnectSdk\Dto\Base as DtoBase;
  *
  * @codeCoverageIgnore
  */
-class Type extends DtoBase
+class Type extends Base
 {
     /**
      * @var array

@@ -56,7 +56,7 @@ retry "MySQL" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T mysql mysql -ur
 
 docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T mysql mysql -u root -psecret < ./fixtures/schema.sql
 
-docker-compose $DOCKER_COMPOSE_PARAMETERS up -d omni-event-receiver
+docker-compose $DOCKER_COMPOSE_PARAMETERS --verbose up -d omni-event-receiver
 retry "EventReceiver" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T omni-event-receiver curl http://localhost/health -o /dev/null 2>&1"
 
 docker-compose $DOCKER_COMPOSE_PARAMETERS stop catalog import import-script && docker-compose $DOCKER_COMPOSE_PARAMETERS up -d catalog import import-script

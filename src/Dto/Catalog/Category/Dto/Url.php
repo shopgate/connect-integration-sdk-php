@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright Shopgate Inc.
  *
@@ -19,29 +20,13 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Customer\Customer;
+namespace Shopgate\ConnectSdk\Dto\Catalog\Category\Dto;
 
-use Shopgate\ConnectSdk\Dto\Customer\Customer;
-use Shopgate\ConnectSdk\Dto\Meta;
+use Shopgate\ConnectSdk\Dto\LocalizedString;
 
 /**
- * @method Meta getMeta()
- * @method Get[] getCustomers()
+ * Localized url
  */
-class GetList extends Customer
+class Url extends LocalizedString
 {
-    /**
-     * @var array
-     */
-    protected $schema = [
-        'type'                 => 'object',
-        'properties'           => [
-            'meta'       => ['$ref' => Meta::class],
-            'customers' => [
-                'type'  => 'array',
-                'items' => ['$ref' => Get::class],
-            ],
-        ],
-        'additionalProperties' => true,
-    ];
 }

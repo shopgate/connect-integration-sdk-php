@@ -24,8 +24,6 @@ namespace Shopgate\ConnectSdk\Dto\Customer\Customer\Dto;
 use Shopgate\ConnectSdk\Dto\Base;
 
 /**
- * Dto for customer settings
- *
  * @method Settings setDefaultLocale(string $defaultLocale)
  * @method Settings setDefaultCurrency(string $defaultCurrency)
  * @method Settings setCommunicationPreferences(string[] $communicationPreferences)

@@ -19,9 +19,12 @@ function retry {
     echo "$1 ready"
 }
 
-docker-compose exec -T mysql mysql -uroot -psecret < ./fixtures/schema.sql
-docker-compose stop catalog && docker-compose up -d catalog
+DOCKER_COMPOSE_PARAMETERS="-f docker-compose.yml -f docker-compose.dev.yml"
 
-retry "CatalogService" "docker-compose exec -T catalog curl http://localhost/health -o /dev/null 2>&1"
+docker-compose ${DOCKER_COMPOSE_PARAMETERS} exec -T mysql mysql -uroot -psecret < ./fixtures/schema.sql
+docker-compose ${DOCKER_COMPOSE_PARAMETERS} stop catalog import import-script && docker-compose ${DOCKER_COMPOSE_PARAMETERS} up -d catalog import import-script
 
-docker-compose exec -T mysql mysql -uroot -psecret < ./fixtures/sampleData.sql
+retry "CatalogService" "docker-compose ${DOCKER_COMPOSE_PARAMETERS} exec -T catalog curl http://localhost/health -o /dev/null 2>&1"
+retry "ImportService" "docker-compose ${DOCKER_COMPOSE_PARAMETERS} exec -T import curl http://localhost/health -o /dev/null 2>&1"
+
+docker-compose ${DOCKER_COMPOSE_PARAMETERS} exec -T mysql mysql -uroot -psecret < ./fixtures/sampleData.sql

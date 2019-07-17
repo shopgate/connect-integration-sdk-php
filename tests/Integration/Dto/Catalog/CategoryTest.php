@@ -229,16 +229,16 @@ class CategoryTest extends CatalogTest
                     self::PARENT_CATEGORY_CODE,
                     'Parent Integration Test Category',
                     1,
-                    'http://www.google.de/parent.png',
-                    'https://www.google.de/parent',
+                    new Category\Dto\Image(['en-us' => 'http://www.google.de/parent.png']),
+                    new Category\Dto\Url(['en-us' => 'https://www.google.de/parent']),
                     'test parent description'
                 ),
                 $this->provideSampleCreateCategory(
                     self::CATEGORY_CODE,
                     'Integration Test Category 1',
                     1,
-                    'http://www.google.de/image.png',
-                    'https://www.google.de',
+                    new Category\Dto\Image(['en-us' => 'http://www.google.de/image.png']),
+                    new Category\Dto\Url(['en-us' => 'https://www.google.de']),
                     'test description',
                     null,
                     '2019-12-15T00:00:00.000Z',
@@ -293,13 +293,13 @@ class CategoryTest extends CatalogTest
             ],
             'image'              => [
                 'updateCategoryData' => [
-                    'image' => 'http://updated.com/image.png',
+                    'image' => new Category\Dto\Image(['en-us' => 'http://updated.com/image.png']),
                 ],
                 'expectedValue'      => 'http://updated.com/image.png'
             ],
             'url'                => [
                 'updateCategoryData' => [
-                    'url' => 'http://updated.url.com',
+                    'url' => new Category\Dto\Url(['en-us' => 'http://updated.url.com']),
                 ],
                 'expectedValue'      => 'http://updated.url.com'
             ],
@@ -540,10 +540,10 @@ class CategoryTest extends CatalogTest
         $existingCategory = $this->provideSampleCreateCategory(
             $categoryCode,
             'test category',
-            'http://www.google.e/image.png',
-            'http://www.google.de',
-            'test description',
-            '12345'
+            '1',
+            new Category\Dto\Image(['en-us' => 'http://www.google.de']),
+            new Category\Dto\Url(['en-us' => 'http://www.google.de/image.png']),
+            'test description'
         );
         $this->sdk->getCatalogService()->addCategories(
             [$existingCategory],
@@ -590,12 +590,6 @@ class CategoryTest extends CatalogTest
      */
     public function testCreateCategoryEvent()
     {
-        // It seems only one category is created in the service. Cause of this bug:
-        // https://gitlab.localdev.cc/omnichannel/services/worker/blob/v1.0.0-beta.10c/app/EventController.js#L37
-        // the return will interrupt the execution of following events
-        // will be fixed once we can use something later than omni-worker: v1.0.0-beta.10c
-        $this->markTestSkipped('Skipped due to bug in worker service');
-
         // Arrange
         $sampleCategories    = $this->provideSampleCategories();
         $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
@@ -656,9 +650,9 @@ class CategoryTest extends CatalogTest
         // Act
         foreach ($this->getCategoryCodes($sampleCategories) as $categoryCode) {
             $responses[] = $this->sdk->getCatalogService()->deleteCategory($categoryCode);
-            // todo-sg: move out of loop once the omni-worker service is release version > worker:v1.0.0-beta.10d
-            sleep(self::SLEEP_TIME_AFTER_EVENT);
         }
+
+        sleep(self::SLEEP_TIME_AFTER_EVENT);
 
         // Assert
         $categories = $this->getCategories($this->getCategoryCodes($sampleCategories));

@@ -68,9 +68,7 @@ services:
 
 ### https://gitlab.localdev.cc/omnichannel/services/worker
   omni-worker:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/worker:v1.0.0-beta.10c
-    ports:
-      - 5100:80
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/worker:v1.0.0-beta.11
     links:
       - etcd
     environment:
@@ -83,9 +81,6 @@ services:
 ### https://gitlab.localdev.cc/omnichannel/services/event-receiver
   omni-event-receiver:
     image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/event-receiver:v1.0.0-beta.11
-    ports:
-      - 5101:80
-    restart: always
     links:
       - etcd
     environment:
@@ -98,8 +93,6 @@ services:
 ### https://gitlab.localdev.cc/omnichannel/services/merchant
   omni-merchant:
     image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/merchant:v1.0.0-beta.14
-    ports:
-      - 5102:80
     links:
       - etcd
     environment:
@@ -111,8 +104,6 @@ services:
 ### https://gitlab.localdev.cc/omnichannel/services/location
   omni-location:
     image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/location:v1.0.0-alpha.43
-    ports:
-      - 5103:80
     links:
       - etcd
     environment:
@@ -132,7 +123,6 @@ services:
     links:
       - etcd
 
-  ### https://gitlab.localdev.cc/omnichannel/services/products
   elasticsearch:
     image: elasticsearch:6.8.0
     environment:
@@ -142,9 +132,7 @@ services:
 
 ### https://gitlab.localdev.cc/omnichannel/services/products
   catalog:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/catalog:v1.0.0-alpha.69
-    ports:
-      - 5104:80
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/catalog:v1.0.0-alpha.78
     restart: always
     links:
       - etcd
@@ -156,25 +144,22 @@ services:
 
   s3:
     image: lphoward/fake-s3
-    ports:
-      - '4569:4569'
     networks:
       default:
         aliases:
           - shopgate-import.s3
+          - shopgate-import.s3.amazonaws.com
 
-  ### https://gitlab.localdev.cc/big-api/services/import
+### https://gitlab.localdev.cc/big-api/services/import
   import:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/import:v1.0.0-alpha.3
-    ports:
-      - 5105:80
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/import:v1.0.0-alpha.5
     environment:
       - AWS_ACCESS_KEY_ID=foo
       - AWS_SECRET_ACCESS_KEY=bar
       - AWS_BUCKET_NAME=shopgate-import
       - AWS_REGION=eu-central-1
       - AWS_S3_ENDPOINT=http://s3:4569
-      - GITLAB_IMPORT_WEBHOOK_URL=https://webhook.site/476d03a0-882a-469c-9189-0168aa55617f
+      - GITLAB_IMPORT_WEBHOOK_URL=http://import-script:8079/
       - GITLAB_TOKEN=bar
       - SYSLOG_LOG_LEVEL=debug
       - NODE_ENV=development
@@ -182,3 +167,29 @@ services:
       - LOG_TO_SYSLOG=false
     links:
       - etcd
+
+### https://gitlab.localdev.cc/SGXS/tools/import-script/tree/development
+  import-script:
+    build:
+      context: ../
+      dockerfile: tools/dockerfiles/ImportScript
+    environment:
+      - APP_PORT=8079
+      - S3_SECRET_ACCESS_KEY_ID=foo
+      - S3_SECRET_ACCESS_KEY=bar
+      - S3_BUCKET=shopgate-import
+      - S3_REGION=eu-central-1
+      - S3_ENDPOINT=http://s3.amazonaws.com:4569
+      - PUBSUB_EMULATOR_HOST=googlepubsub-emulator:8085
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=secret
+      - MYSQL_DATABASE=import
+      - GOOGLE_APPLICATION_CREDENTIALS=tools/dockerfiles/credentials-dev.json.js
+      - BIG_API_CLIENT_ID=integration-tests
+      - BIG_API_CLIENT_SECRET=integration-tests
+      - PUBSUB_PROJECT_ID=test-project
+      - BIG_API_ENDPOINT_SCHEMA=http://{serviceName}.{baseDomain}
+    tty: true
+    links:
+      - s3:s3.amazonaws.com

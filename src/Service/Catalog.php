@@ -76,7 +76,7 @@ class Catalog
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
-                'body'        => ['categories' => $categories],
+                'json'        => ['categories' => $categories],
                 'query'       => $query,
                 // direct
                 'service'     => 'catalog',
@@ -108,7 +108,7 @@ class Catalog
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
-                'body'        => $category,
+                'json'        => $category,
                 'query'       => $query,
                 // direct
                 'method'      => 'post',
@@ -211,7 +211,7 @@ class Catalog
                 'path'        => 'products',
                 'entity'      => 'product',
                 'action'      => 'create',
-                'body'        => ['products' => $products],
+                'json'        => ['products' => $products],
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
@@ -242,7 +242,7 @@ class Catalog
                 'entityId'    => $code,
                 'entity'      => 'product',
                 'action'      => 'update',
-                'body'        => $product,
+                'json'        => $product,
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
@@ -382,11 +382,6 @@ class Catalog
      */
     public function addAttributes(array $attributes, array $query = [])
     {
-        $requestAttributes = [];
-        foreach ($attributes as $attribute) {
-            $requestAttributes[] = $attribute->toArray();
-        }
-
         return $this->client->doRequest(
             [
                 // general
@@ -394,7 +389,7 @@ class Catalog
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
-                'body'        => ['attributes' => $requestAttributes],
+                'json'        => ['attributes' => $attributes],
                 'query'       => $query,
                 // direct
                 'service'     => 'catalog',
@@ -495,7 +490,7 @@ class Catalog
                 'query'       => $query,
                 // direct only
                 'action'      => 'update',
-                'body'        => $attribute,
+                'json'        => $attribute,
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
@@ -559,7 +554,7 @@ class Catalog
                 'path'        => 'attributes/' . $attributeCode . '/values/',
                 'entity'      => 'attributes',
                 'action'      => 'create',
-                'body'        => ['values' => $attributeValues],
+                'json'        => ['values' => $attributeValues],
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
@@ -594,7 +589,7 @@ class Catalog
                 'path'        => 'attributes/' . $attributeCode . '/values/' . $attributeValueCode,
                 'entity'      => 'attribute',
                 'action'      => 'update',
-                'body'        => $attributeValue,
+                'json'        => $attributeValue,
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
@@ -623,7 +618,8 @@ class Catalog
                 'service'     => 'catalog',
                 'method'      => 'delete',
                 'path'        => 'attributes/' . $attributeCode . '/values/' . $attributeValueCode,
-                'entity'      => 'attribute',
+                'entity'      => 'attributeValue',
+                'entityId'    => $attributeValueCode,
                 'action'      => 'delete',
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']
@@ -653,7 +649,7 @@ class Catalog
                 'path'        => 'inventories',
                 'entity'      => 'inventory',
                 'action'      => 'create',
-                'body'        => ['inventories' => $inventories],
+                'json'        => ['inventories' => $inventories],
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
@@ -681,7 +677,7 @@ class Catalog
                 'method'      => 'delete',
                 'path'        => 'inventories',
                 'entity'      => 'inventory',
-                'body'        => ['inventories' => $inventories],
+                'json'        => ['inventories' => $inventories],
                 'action'      => 'delete',
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']
@@ -709,7 +705,7 @@ class Catalog
                 'method'      => 'patch',
                 'path'        => 'inventories',
                 'entity'      => 'inventory',
-                'body'        => ['inventories' => $inventories],
+                'json'        => ['inventories' => $inventories],
                 'action'      => 'update',
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']

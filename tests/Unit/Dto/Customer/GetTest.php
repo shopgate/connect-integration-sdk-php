@@ -23,7 +23,6 @@
 namespace Shopgate\ConnectSdk\Tests\Unit\Dto\Customer;
 
 use PHPUnit\Framework\TestCase;
-use Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
 use Shopgate\ConnectSdk\Dto\Customer\Customer;
 use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Attribute;
 use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Settings;

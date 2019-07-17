@@ -24,6 +24,7 @@ namespace Shopgate\ConnectSdk\Tests\Unit\Http;
 
 use Exception;
 use GuzzleHttp\ClientInterface as GuzzleClientInterface;
+use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -59,7 +60,7 @@ class ClientTest extends TestCase
         $this->handlerStack = HandlerStack::create($this->mockHandler);
 
         $this->client = $this
-            ->getMockBuilder(\GuzzleHttp\Client::class)
+            ->getMockBuilder(GuzzleClient::class)
             ->setConstructorArgs([['handler' => $this->handlerStack]])
             ->setMethods(null)
             ->getMock();
@@ -163,7 +164,7 @@ class ClientTest extends TestCase
     {
         // Arrange
         $this->client = $this
-            ->getMockBuilder(\GuzzleHttp\Client::class)
+            ->getMockBuilder(GuzzleClient::class)
             ->setConstructorArgs([['handler' => $this->handlerStack]])
             ->setMethods(['request'])
             ->getMock();
@@ -200,7 +201,7 @@ class ClientTest extends TestCase
     {
         // Arrange
         $this->client = $this
-            ->getMockBuilder(\GuzzleHttp\Client::class)
+            ->getMockBuilder(GuzzleClient::class)
             ->setConstructorArgs([['handler' => $this->handlerStack]])
             ->setMethods(['request'])
             ->getMock();
@@ -211,7 +212,6 @@ class ClientTest extends TestCase
                 $this->equalTo('http://catalog.local/v1/merchants/TM2/categories/'),
                 $this->equalTo([
                     'query' => [],
-                    'json' => "[]",
                 ])
             )->willReturn([]);
 
@@ -239,7 +239,7 @@ class ClientTest extends TestCase
     {
         // Arrange
         $this->client = $this
-            ->getMockBuilder(\GuzzleHttp\Client::class)
+            ->getMockBuilder(GuzzleClient::class)
             ->setConstructorArgs([['handler' => $this->handlerStack]])
             ->setMethods(['request'])
             ->getMock();

@@ -144,7 +144,7 @@ class Handler
             [
                 // general
                 'method' => 'post',
-                'body' => [],
+                'json' => [],
                 'requestType' => 'direct',
                 'service' => 'import',
                 'path' => 'imports/' . $this->importReference,

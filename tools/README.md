@@ -93,6 +93,17 @@ Execute the tests in you preferred IDE or by executing ```composer integration-t
 ### ECR Login
 On the first boot-up or upon updates you'll need to log in to ECR in your preferred CLI.
 
+### Composer timeout
+Sometimes composer times out cause its default timeout is about 300 seconds and 
+the boot up of the service stack might take longer depending on the performance of your machine.
+You might want to change this globally for composer by increasing the timeout:
+
+    composer config --global process-timeout 2000
+
+or just before you run the inital set up script via environment variable
+
+    export COMPOSER_PROCESS_TIMEOUT=600 
+
 ### Composer Commands
 Composer commands are available for the most commonly used actions:
 * ```composer unit-tests``` - run unit tests

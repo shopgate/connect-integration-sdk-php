@@ -140,7 +140,7 @@ class AttributeValueTest extends CatalogTest
      */
     public function testDeleteAttributeValueEvent()
     {
-        $this->markTestSkipped('Skipped due to bug in worker service');
+        $this->markTestSkipped('Skipped due to missing implementation in worker service');
 
         // Arrange
         $this->createSampleAttribute();

@@ -38,7 +38,7 @@ else
     docker-compose $DOCKER_COMPOSE_FILES build php56
 fi
 
-docker-compose $DOCKER_COMPOSE_FILES up -d php56
+docker-compose $DOCKER_COMPOSE_FILES up -d --remove-orphans php56
 docker-compose $DOCKER_COMPOSE_FILES up -d mysql
 
 docker-compose $DOCKER_COMPOSE_FILES up -d etcd
@@ -46,7 +46,7 @@ docker-compose $DOCKER_COMPOSE_FILES up -d googlepubsub-emulator
 
 if [[ -n "$CI_STACK" ]]; then
     docker-compose $DOCKER_COMPOSE_FILES build --no-cache php73
-    docker-compose $DOCKER_COMPOSE_FILES up -d php73
+    docker-compose $DOCKER_COMPOSE_FILES up -d --remove-orphans php73
 fi
 
 docker-compose exec -T php56 php ./tools/pubsubfiller.php

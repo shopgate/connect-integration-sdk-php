@@ -260,7 +260,7 @@ class CategoryTest extends CatalogTest
         $this->assertEquals('Name EN', $category->getName());
         $this->assertEquals('Description EN', $category->getDescription());
         $this->assertEquals('http://google.com', $category->getUrl());
-        $this->assertStringContainsString('http://image.com', $category->getImage());
+        $this->assertEquals(true, strpos($category->getImage(), 'http://image.com'));
     }
 
     /**

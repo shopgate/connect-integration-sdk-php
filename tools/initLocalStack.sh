@@ -32,7 +32,11 @@ docker network create ${SERVICE}-integration-network
 
 set -e
 
-docker-compose $DOCKER_COMPOSE_FILES build php56
+if [[ -n "$CI_STACK" ]]; then
+    docker-compose $DOCKER_COMPOSE_FILES build --no-cache php56
+else
+    docker-compose $DOCKER_COMPOSE_FILES build php56
+fi
 
 docker-compose $DOCKER_COMPOSE_FILES up -d php56
 docker-compose $DOCKER_COMPOSE_FILES up -d mysql
@@ -41,7 +45,7 @@ docker-compose $DOCKER_COMPOSE_FILES up -d etcd
 docker-compose $DOCKER_COMPOSE_FILES up -d googlepubsub-emulator
 
 if [[ -n "$CI_STACK" ]]; then
-    docker-compose $DOCKER_COMPOSE_FILES build php73
+    docker-compose $DOCKER_COMPOSE_FILES build --no-cache php73
     docker-compose $DOCKER_COMPOSE_FILES up -d php73
 fi
 

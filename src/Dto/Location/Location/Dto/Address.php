@@ -82,5 +82,4 @@ class Address extends Base
             ],
             'additionalProperties' => true,
         ];
-
 }

@@ -57,5 +57,4 @@ class Settings extends Base
         ],
         'additionalProperties' => true,
     ];
-
 }

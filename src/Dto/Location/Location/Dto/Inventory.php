@@ -61,5 +61,4 @@ class Inventory extends Base
             ],
             'additionalProperties' => true,
         ];
-
 }

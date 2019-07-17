@@ -206,6 +206,7 @@ services:
       - BIG_API_CLIENT_ID=integration-tests
       - BIG_API_CLIENT_SECRET=integration-tests
       - PUBSUB_PROJECT_ID=test-project
+      - BIG_API_ENDPOINT_SCHEMA=http://{serviceName}.{baseDomain}
     ports:
       - '8079:8079'
     tty: true

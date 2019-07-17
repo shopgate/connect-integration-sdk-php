@@ -121,6 +121,8 @@ class AttributeTest extends CustomerTest
      */
     public function testCreateAttributesEvent()
     {
+        $this->markTestSkipped('Skipped - event route does not exist yet');
+
         // Arrange
         $createdItemCount = 10;
         $sampleAttributes = $this->provideSampleAttributes($createdItemCount);
@@ -251,7 +253,7 @@ class AttributeTest extends CustomerTest
      */
     public function testUpdateAttributeEvent()
     {
-        $this->markTestSkipped('Skipped - not working yet');
+        $this->markTestSkipped('Skipped - event route does not exist yet');
 
         // Arrange
         $sampleAttributes = $this->provideSampleAttributes(1);
@@ -308,8 +310,6 @@ class AttributeTest extends CustomerTest
         // Act
         $this->sdk->getCustomerService()->deleteAttribute('code_1');
 
-        sleep(self::SLEEP_TIME_AFTER_EVENT);
-
         // Assert
         try {
             $this->getAttribute('code_1');
@@ -323,6 +323,8 @@ class AttributeTest extends CustomerTest
      */
     public function testDeleteAttributeEvent()
     {
+        $this->markTestSkipped('Skipped - event route does not exist yet');
+
         // Arrange
         $sampleAttributes = $this->provideSampleAttributes(1);
         $this->createAttributes($sampleAttributes);

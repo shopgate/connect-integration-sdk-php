@@ -212,7 +212,6 @@ class ClientTest extends TestCase
                 $this->equalTo('http://catalog.local/v1/merchants/TM2/categories/'),
                 $this->equalTo([
                     'query' => [],
-                    'json' => "[]",
                 ])
             )->willReturn([]);
 

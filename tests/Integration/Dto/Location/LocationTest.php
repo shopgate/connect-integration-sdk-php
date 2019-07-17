@@ -22,7 +22,6 @@
 
 namespace Shopgate\ConnectSdk\Tests\Integration\Dto\Location;
 
-use Dto\Dto;
 use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\RequestException;
@@ -50,6 +49,7 @@ class LocationTest extends LocationBaseTest
         //Assert
         $this->assertCount(count($sampleLocationCodes), $locations->getLocations());
     }
+
     /**
      * @throws Exception
      */
@@ -75,11 +75,11 @@ class LocationTest extends LocationBaseTest
         /** @noinspection PhpParamsInspection */
         $locationCodes = $this->getLocationCodes($locations->getLocations());
         $this->assertEquals($expectedLocationCodes, $locationCodes);
-
     }
+
     /**
-     * @param array      $original
-     * @param array      $updated
+     * @param array $original
+     * @param array $updated
      *
      * @throws Exception
      *
@@ -115,8 +115,6 @@ class LocationTest extends LocationBaseTest
             }
             $this->assertEquals($value, $locations->getLocations()[0]->get($index));
         }
-
-
     }
 
     /**
@@ -125,32 +123,32 @@ class LocationTest extends LocationBaseTest
     public function updateLocationDataProvider()
     {
         return [
-            'name change' => [
+            'name change'                  => [
                 'original' => [
                     'name' => 'original location name'
                 ],
-                'update' => [
+                'update'   => [
                     'name' => 'new location name'
                 ]
             ],
             'multiple simple value update' => [
                 'original' => [
-                    'name' => 'original location name',
-                    'latitude' => 41.8781,
-                    'longitude' => 87.6298,
+                    'name'       => 'original location name',
+                    'latitude'   => 41.8781,
+                    'longitude'  => 87.6298,
                     'localeCode' => 'en-US',
-                    'timeZone' => 'America/Chicago',
-                    'isDefault' => true
+                    'timeZone'   => 'America/Chicago',
+                    'isDefault'  => true
 
 
                 ],
-                'update' => [
-                    'name' => 'new location name',
-                    'latitude' => 26.3054,
-                    'longitude' => 31.1367,
+                'update'   => [
+                    'name'       => 'new location name',
+                    'latitude'   => 26.3054,
+                    'longitude'  => 31.1367,
                     'localeCode' => 'en-ZA',
-                    'timeZone' => 'Africa/Mbabane',
-                    'isDefault' => false
+                    'timeZone'   => 'Africa/Mbabane',
+                    'isDefault'  => false
                 ]
             ]
         ];

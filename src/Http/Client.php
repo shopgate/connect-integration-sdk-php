@@ -181,14 +181,14 @@ class Client implements ClientInterface
             . '/' . ltrim($path, '/');
     }
 
-    private function addOAuthAuthentication()
+    protected function addOAuthAuthentication()
     {
         /** @var HandlerStack $handlerStack */
         $handlerStack = $this->client->getConfig('handler');
         $handlerStack->push($this->OAuthMiddleware, 'oauth');
     }
 
-    private function removeOAuthAuthentication()
+    protected function removeOAuthAuthentication()
     {
         /** @var HandlerStack $handlerStack */
         $handlerStack = $this->client->getConfig('handler');
@@ -209,6 +209,8 @@ class Client implements ClientInterface
      */
     public function doRequest(array $params)
     {
+        $this->removeOAuthAuthentication();
+
         if (isset($params['query']['requestType'])) {
             unset($params['query']['requestType']);
         }
@@ -262,8 +264,6 @@ class Client implements ClientInterface
         } catch (Exception $e) {
             throw new UnknownException($e->getMessage());
         }
-
-        $this->removeOAuthAuthentication();
 
         return $response;
     }

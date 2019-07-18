@@ -53,10 +53,10 @@ class Inventory extends Base
     protected $schema = [
             'type'                 => 'object',
             'properties'           => [
-                'isManaged'       => ['type' => 'bool'],
+                'isManaged'       => ['type' => 'boolean'],
                 'mode'            => ['type' => 'string'],
                 'safetyStockMode' => ['type' => 'string'],
-                'safetyStock'     => ['type' => 'int'],
+                'safetyStock'     => ['type' => 'number'],
                 'safetyStockType' => ['type' => 'string']
             ],
             'additionalProperties' => true,

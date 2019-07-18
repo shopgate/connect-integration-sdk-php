@@ -48,12 +48,12 @@ class Settings extends Base
     protected $schema = [
         'type' => 'object',
         'properties'           => [
-            'enableInStorePickup'    => ['type' => 'bool'],
-            'enableShipFromStore'    => ['type' => 'bool'],
-            'enableInLocationFinder' => ['type' => 'bool'],
-            'enableInventoryBrowse'  => ['type' => 'bool'],
-            'enableForRelate'        => ['type' => 'bool'],
-            'showStoreHours'         => ['type' => 'bool'],
+            'enableInStorePickup'    => ['type' => 'boolean'],
+            'enableShipFromStore'    => ['type' => 'boolean'],
+            'enableInLocationFinder' => ['type' => 'boolean'],
+            'enableInventoryBrowse'  => ['type' => 'boolean'],
+            'enableForRelate'        => ['type' => 'boolean'],
+            'showStoreHours'         => ['type' => 'boolean'],
         ],
         'additionalProperties' => true,
     ];

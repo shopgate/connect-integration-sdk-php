@@ -78,7 +78,7 @@ class Address extends Base
                 'phoneNumber'  => ['type' => 'string'],
                 'faxNumber'    => ['type' => 'string'],
                 'emailAddress' => ['type' => 'string'],
-                'isPrimary'    => ['type' => 'bool']
+                'isPrimary'    => ['type' => 'boolean']
             ],
             'additionalProperties' => true,
         ];

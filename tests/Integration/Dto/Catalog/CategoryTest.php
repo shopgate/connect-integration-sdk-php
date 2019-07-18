@@ -236,13 +236,13 @@ class CategoryTest extends CatalogTest
 
         $category = new Category\Create();
         $category->setCode(self::CATEGORY_CODE)
-            ->setSequenceId(1)
-            ->setName($name)
-            ->setDescription($description)
-            ->setUrl($url)
-            ->setImage($image)
-            ->setExternalUpdateDate('2019-12-15T00:00:00.000Z')
-            ->setStatus(Category\Create::STATUS_ACTIVE);
+                 ->setSequenceId(1)
+                 ->setName($name)
+                 ->setDescription($description)
+                 ->setUrl($url)
+                 ->setImage($image)
+                 ->setExternalUpdateDate('2019-12-15T00:00:00.000Z')
+                 ->setStatus(Category\Create::STATUS_ACTIVE);
 
         // Act
         $this->createCategories(
@@ -287,13 +287,13 @@ class CategoryTest extends CatalogTest
 
         $category = new Category\Create();
         $category->setCode(self::CATEGORY_CODE)
-            ->setSequenceId(1)
-            ->setName($name)
-            ->setDescription($description)
-            ->setUrl($url)
-            ->setImage($image)
-            ->setExternalUpdateDate('2019-12-15T00:00:00.000Z')
-            ->setStatus(Category\Create::STATUS_ACTIVE);
+                 ->setSequenceId(1)
+                 ->setName($name)
+                 ->setDescription($description)
+                 ->setUrl($url)
+                 ->setImage($image)
+                 ->setExternalUpdateDate('2019-12-15T00:00:00.000Z')
+                 ->setStatus(Category\Create::STATUS_ACTIVE);
 
         // Act
         $this->createCategories(
@@ -855,11 +855,11 @@ class CategoryTest extends CatalogTest
     }
 
     /**
-     * @param string $name
-     * @param string $image
-     * @param string $url
-     * @param string $description
-     * @param string $parentCategoryCode
+     * @param string             $name
+     * @param Category\Dto\Image $image
+     * @param Category\Dto\Url   $url
+     * @param string             $description
+     * @param string             $parentCategoryCode
      *
      * @return Category\Update
      */

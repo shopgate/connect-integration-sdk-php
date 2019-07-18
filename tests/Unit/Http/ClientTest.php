@@ -29,6 +29,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
+use kamermans\OAuth2\OAuth2Middleware;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 use Psr\Log\LoggerInterface;
@@ -51,12 +52,15 @@ class ClientTest extends TestCase
     /** @var MockHandler */
     private $mockHandler;
 
+    /** @var OAuth2Middleware */
+    private $OAuthMiddleware;
+
     /** @var LoggerInterface|PHPUnit_Framework_MockObject_MockObject */
     private $logger;
 
     public function setUp()
     {
-        $this->mockHandler = new MockHandler([]);
+        $this->mockHandler  = new MockHandler([]);
         $this->handlerStack = HandlerStack::create($this->mockHandler);
 
         $this->client = $this
@@ -69,8 +73,14 @@ class ClientTest extends TestCase
             ->getMockBuilder(LoggerInterface::class)
             ->getMock();
 
+        /** @var OAuth2Middleware $OAuthMiddleware */
+        $this->OAuthMiddleware = $this->getMockBuilder(OAuth2Middleware::class)
+                                      ->disableOriginalConstructor()
+                                      ->getMock();
+
         $this->subjectUnderTest = new Client(
             $this->client,
+            $this->OAuthMiddleware,
             'http://{service}.local',
             'TM2'
         );
@@ -144,15 +154,15 @@ class ClientTest extends TestCase
     public function provideBuildServiceUrlFixtures()
     {
         return [
-            'should replace {service} with service name' => [
+            'should replace {service} with service name'       => [
                 'expectedUrl' => 'http://catalog.local/v1/merchants/TM2/',
                 'serviceName' => 'catalog',
-                'path' => ''
+                'path'        => ''
             ],
             'should left-trim slashes from path and append it' => [
                 'expectedUrl' => 'http://catalog.local/v1/merchants/TM2/products/prod1',
                 'serviceName' => 'catalog',
-                'path' => '///products/prod1'
+                'path'        => '///products/prod1'
             ]
         ];
     }
@@ -174,22 +184,23 @@ class ClientTest extends TestCase
                 'post',
                 'http://omni-event-receiver.local/v1/merchants/TM2/events',
                 [
-                    'json' => '{"events":[{"event":"entityUpdated","entity":"category","payload":{}}]}',
+                    'json'        => '{"events":[{"event":"entityUpdated","entity":"category","payload":{}}]}',
                     'http_errors' => false,
                 ]
             )->willReturn([]);
 
         $this->subjectUnderTest = new Client(
             $this->client,
+            $this->OAuthMiddleware,
             'http://{service}.local',
             'TM2'
         );
 
         // Act
         $this->subjectUnderTest->doRequest([
-            'action' => 'update',
-            'method' => 'post',
-            'entity' => 'category',
+            'action'      => 'update',
+            'method'      => 'post',
+            'entity'      => 'category',
             'requestType' => ShopgateSdk::REQUEST_TYPE_EVENT
         ]);
     }
@@ -210,22 +221,21 @@ class ClientTest extends TestCase
             ->method('request')->with(
                 $this->equalTo('post'),
                 $this->equalTo('http://catalog.local/v1/merchants/TM2/categories/'),
-                $this->equalTo([
-                    'query' => [],
-                ])
+                $this->equalTo([])
             )->willReturn([]);
 
         $this->subjectUnderTest = new Client(
             $this->client,
+            $this->OAuthMiddleware,
             'http://{service}.local',
             'TM2'
         );
 
         // Act
         $this->subjectUnderTest->doRequest([
-            'action' => 'update',
-            'method' => 'post',
-            'entity' => 'category',
+            'action'      => 'update',
+            'method'      => 'post',
+            'entity'      => 'category',
             'service'     => 'catalog',
             'path'        => 'categories/',
             'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT
@@ -254,6 +264,7 @@ class ClientTest extends TestCase
 
         $this->subjectUnderTest = new Client(
             $this->client,
+            $this->OAuthMiddleware,
             'http://{service}.local',
             'TM2'
         );
@@ -263,6 +274,46 @@ class ClientTest extends TestCase
             'service' => 'catalog',
             'method'  => 'get',
             'path'    => 'categories'
+        ]);
+    }
+
+    /**
+     * @throws ShopgateSdkException
+     */
+    public function testRequestTypeParameterGetsRemoved()
+    {
+        // Arrange
+        $this->client = $this
+            ->getMockBuilder(GuzzleClient::class)
+            ->setConstructorArgs([['handler' => $this->handlerStack]])
+            ->setMethods(['request'])
+            ->getMock();
+
+        $this->client
+            ->expects($this->once())
+            ->method('request')->with(
+                $this->equalTo('get'),
+                $this->equalTo('http://catalog.local/v1/merchants/TM2/categories'),
+                $this->equalTo([
+                    'query' => []
+                ])
+            )->willReturn([]);
+
+        $this->subjectUnderTest = new Client(
+            $this->client,
+            $this->OAuthMiddleware,
+            'http://{service}.local',
+            'TM2'
+        );
+
+        // Act
+        $this->subjectUnderTest->doRequest([
+            'service' => 'catalog',
+            'method'  => 'get',
+            'path'    => 'categories',
+            'query'   => [
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
+            ]
         ]);
     }
 }

@@ -121,7 +121,7 @@ class AttributeTest extends CustomerTest
      */
     public function testCreateAttributesEvent()
     {
-        $this->markTestSkipped('Skipped - event route does not exist yet');
+        $this->markTestSkipped('Skipped - omni-event-receiver route does not exist yet');
 
         // Arrange
         $createdItemCount = 10;
@@ -253,7 +253,7 @@ class AttributeTest extends CustomerTest
      */
     public function testUpdateAttributeEvent()
     {
-        $this->markTestSkipped('Skipped - event route does not exist yet');
+        $this->markTestSkipped('Skipped - omni-event-receiver route does not exist yet');
 
         // Arrange
         $sampleAttributes = $this->provideSampleAttributes(1);
@@ -323,7 +323,7 @@ class AttributeTest extends CustomerTest
      */
     public function testDeleteAttributeEvent()
     {
-        $this->markTestSkipped('Skipped - event route does not exist yet');
+        $this->markTestSkipped('Skipped - omni-event-receiver route does not exist yet');
 
         // Arrange
         $sampleAttributes = $this->provideSampleAttributes(1);

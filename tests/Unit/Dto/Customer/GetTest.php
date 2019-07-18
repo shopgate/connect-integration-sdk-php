@@ -244,6 +244,7 @@ class GetTest extends TestCase
         $this->assertInstanceOf(Customer\Dto\Settings::class, $settings);
         $this->assertEquals(self::CUSTOMER_SETTINGS_DEFAULT_LOCALE, $settings->getDefaultLocale());
         $this->assertEquals(self::CUSTOMER_SETTINGS_DEFAULT_CURRENCY, $settings->getDefaultCurrency());
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->assertEquals(
             self::CUSTOMER_SETTINGS_DEFAULT_COMMUNICATION_PREFERENCES,
             $settings->getCommunicationPreferences()->toArray()

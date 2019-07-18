@@ -58,19 +58,25 @@ class Client implements ClientInterface
     /** @var string */
     private $merchantCode;
 
+    /** @var OAuth2Middleware */
+    private $OAuthMiddleware;
+
     /**
      * @param GuzzleClientInterface $client
+     * @param OAuth2Middleware      $OAuth2Middleware
      * @param string                $baseUri
      * @param string                $merchantCode
      */
     public function __construct(
         GuzzleClientInterface $client,
+        OAuth2Middleware $OAuth2Middleware,
         $baseUri,
         $merchantCode
     ) {
-        $this->client       = $client;
-        $this->baseUri      = rtrim($baseUri, '/');
-        $this->merchantCode = $merchantCode;
+        $this->client          = $client;
+        $this->baseUri         = rtrim($baseUri, '/');
+        $this->merchantCode    = $merchantCode;
+        $this->OAuthMiddleware = $OAuth2Middleware;
     }
 
     /**
@@ -101,15 +107,15 @@ class Client implements ClientInterface
             $accessTokenPath = __DIR__ . ($env !== '' ? '/../access_token_' . $env : '/../access_token.txt');
         }
 
-        $reauthClient = new \GuzzleHttp\Client(
+        $reAuthClient = new \GuzzleHttp\Client(
             [
                 'base_uri' => rtrim(str_replace('{service}', 'auth', $baseUri), '/') . '/oauth/token'
             ]
         );
 
-        $oauth = new OAuth2Middleware(
+        $OAuthMiddleware = new OAuth2Middleware(
             new ClientCredentials(
-                $reauthClient,
+                $reAuthClient,
                 [
                     'client_id'     => $clientId,
                     'client_secret' => $clientSecret
@@ -117,20 +123,19 @@ class Client implements ClientInterface
             )
         );
 
-        $oauth->setTokenPersistence(new PersistenceChain([
+        $OAuthMiddleware->setTokenPersistence(new PersistenceChain([
             new EncryptedFile(new Json(), $accessTokenPath, $clientSecret)
         ]));
 
         $handlerStack = HandlerStack::create();
-        $handlerStack->push($oauth);
-        $client = new \GuzzleHttp\Client(
+        $client       = new \GuzzleHttp\Client(
             [
                 'auth'    => 'oauth',
                 'handler' => $handlerStack
             ]
         );
 
-        return new self($client, $baseUri, $merchantCode);
+        return new self($client, $OAuthMiddleware, $baseUri, $merchantCode);
     }
 
     /**
@@ -176,8 +181,24 @@ class Client implements ClientInterface
             . '/' . ltrim($path, '/');
     }
 
+    protected function addOAuthAuthentication()
+    {
+        /** @var HandlerStack $handlerStack */
+        $handlerStack = $this->client->getConfig('handler');
+        $handlerStack->push($this->OAuthMiddleware, 'oauth');
+    }
+
+    protected function removeOAuthAuthentication()
+    {
+        /** @var HandlerStack $handlerStack */
+        $handlerStack = $this->client->getConfig('handler');
+        $handlerStack->remove('oauth');
+    }
+
     /**
      * @param array $params ['url' => .., 'query' => .., 'body' => .., 'method' => .., 'service' => .., 'path' => ..]
+     *                      parameter 'body' or 'json' can not be set both at a time
+     *                      if parameter 'url' is set the oauth authentication will be deactivated
      *
      * @return ResponseInterface
      *
@@ -188,19 +209,27 @@ class Client implements ClientInterface
      */
     public function doRequest(array $params)
     {
-        if (!$this->isDirect($params)) {
-            return $this->triggerEvent($params);
-        }
+        $this->removeOAuthAuthentication();
 
         if (isset($params['query']['requestType'])) {
             unset($params['query']['requestType']);
         }
 
+        $parameters = [];
+        if (isset($params['query'])) {
+            $parameters['query'] = $this->fixBoolValuesInQuery($params['query']);
+        }
+
+        if (!isset($params['url'])) {
+            $this->addOAuthAuthentication();
+        }
+
+        if (!$this->isDirect($params)) {
+            return $this->triggerEvent($params);
+        }
+
         $response = null;
         try {
-            $parameters = [
-                'query' => isset($params['query']) ? $this->fixBoolValuesInQuery($params['query']) : []
-            ];
             if (isset($params['body'])) {
                 $parameters['body'] = $params['body'];
             } elseif (isset($params['json'])) {

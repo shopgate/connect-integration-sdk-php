@@ -52,6 +52,8 @@ abstract class CatalogTest extends ShopgateSdkTest
         self::METHOD_DELETE_ATTRIBUTE => [],
     ];
 
+    const SAMPLE_CATALOG_CODE = 'NAWholesale';
+
     const PRODUCT_CODE                = 'integration-test';
     const PRODUCT_CODE_SECOND         = 'integration-test-2';
     const PARENT_CATEGORY_CODE        = 'parent-integration-test';
@@ -64,7 +66,6 @@ abstract class CatalogTest extends ShopgateSdkTest
     const SAMPLE_EXTRA_VALUE_CODE     = 'extra_value_code_1';
     const SAMPLE_EXTRA_VALUE_CODE_2   = 'extra_value_code_2';
 
-    const SAMPLE_CATALOG = 'NAWholesale';
 
     public function setUp()
     {

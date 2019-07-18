@@ -56,7 +56,6 @@ run_unit_tests:
     - $(aws ecr get-login --region=us-east-1 --no-include-email --registry-ids 602824140852)
   script:
     - cd tools
-    - docker network create sdk-integration-network
     - docker-compose -p "${CI_COMMIT_SHORT_SHA}-unit" up -d --build php56
     - docker-compose -p "${CI_COMMIT_SHORT_SHA}-unit" up -d --build php73
     - echo '******************** Unit Tests PHP 5.6 ********************'

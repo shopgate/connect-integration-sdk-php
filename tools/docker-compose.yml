@@ -1,8 +1,4 @@
 version: '2.1'
-networks:
-  default:
-    external:
-      name: sdk-integration-network
 services:
 
 ### PHP containers for local testing

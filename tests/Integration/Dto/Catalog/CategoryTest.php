@@ -213,6 +213,116 @@ class CategoryTest extends CatalogTest
     }
 
     /**
+     * @throws Exception
+     */
+    public function testUseAddMethods()
+    {
+        // Arrange
+        $name = new Category\Dto\Name();
+        $name->add('en-us', 'Name EN');
+        $name->add('de-de', 'Name DE');
+
+        $description = new Category\Dto\Description();
+        $description->add('en-us', 'Description EN');
+        $description->add('de-de', 'Description DE');
+
+        $url = new Category\Dto\Url();
+        $url->add('en-us', 'http://google.com');
+        $url->add('de-de', 'http://google.de');
+
+        $image = new Category\Dto\Image();
+        $image->add('en-us', 'http://image.com');
+        $image->add('de-de', 'http://image.de');
+
+        $category = new Category\Create();
+        $category->setCode(self::CATEGORY_CODE)
+                 ->setSequenceId(1)
+                 ->setName($name)
+                 ->setDescription($description)
+                 ->setUrl($url)
+                 ->setImage($image)
+                 ->setExternalUpdateDate('2019-12-15T00:00:00.000Z')
+                 ->setStatus(Category\Create::STATUS_ACTIVE);
+
+        // Act
+        $this->createCategories(
+            [$category],
+            ['requestType' => 'direct']
+        );
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, [self::CATEGORY_CODE]);
+
+        // Assert
+        $categories = $this->getCategories([self::CATEGORY_CODE]);
+        $category   = $categories->getCategories()[0];
+
+        $this->assertEquals('Name EN', $category->getName());
+        $this->assertEquals('Description EN', $category->getDescription());
+        $this->assertEquals('http://google.com', $category->getUrl());
+        $this->assertEquals(true, strpos($category->getImage(), 'http://image.com'));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testLocale()
+    {
+        // Arrange
+        $name = new Category\Dto\Name();
+        $name->add('en-us', 'Name EN');
+        $name->add('de-de', 'Name DE');
+
+        $description = new Category\Dto\Description();
+        $description->add('en-us', 'Description EN');
+        $description->add('de-de', 'Description DE');
+
+        $url = new Category\Dto\Url();
+        $url->add('en-us', 'http://google.com');
+        $url->add('de-de', 'http://google.de');
+
+        $image = new Category\Dto\Image();
+        $image->add('en-us', 'http://image.com');
+        $image->add('de-de', 'http://image.de');
+
+        $category = new Category\Create();
+        $category->setCode(self::CATEGORY_CODE)
+                 ->setSequenceId(1)
+                 ->setName($name)
+                 ->setDescription($description)
+                 ->setUrl($url)
+                 ->setImage($image)
+                 ->setExternalUpdateDate('2019-12-15T00:00:00.000Z')
+                 ->setStatus(Category\Create::STATUS_ACTIVE);
+
+        // Act
+        $this->createCategories(
+            [$category],
+            ['requestType' => 'direct']
+        );
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, [self::CATEGORY_CODE]);
+
+        // Assert
+        $categoriesDe = $this->getCategories([self::CATEGORY_CODE], ['localeCode' => 'de-de']);
+        $categoryDe   = $categoriesDe->getCategories()[0];
+
+        $this->assertEquals('Name DE', $categoryDe->getName());
+        $this->assertEquals('Description DE', $categoryDe->getDescription());
+        $this->assertEquals('http://google.de', $categoryDe->getUrl());
+        $this->assertEquals(true, strpos($categoryDe->getImage(), 'http://image.de'));
+
+        $categoriesEn = $this->getCategories([self::CATEGORY_CODE], ['localeCode' => 'en-us']);
+        $categoryEn   = $categoriesEn->getCategories()[0];
+
+        $this->assertEquals('Name EN', $categoryEn->getName());
+        $this->assertEquals('Description EN', $categoryEn->getDescription());
+        $this->assertEquals('http://google.com', $categoryEn->getUrl());
+        $this->assertEquals(true, strpos($categoryEn->getImage(), 'http://image.com'));
+    }
+
+    /**
      * @param array  $updateCategoryData
      * @param string $expectedValue
      *
@@ -745,11 +855,11 @@ class CategoryTest extends CatalogTest
     }
 
     /**
-     * @param string $name
-     * @param string $image
-     * @param string $url
-     * @param string $description
-     * @param string $parentCategoryCode
+     * @param string             $name
+     * @param Category\Dto\Image $image
+     * @param Category\Dto\Url   $url
+     * @param string             $description
+     * @param string             $parentCategoryCode
      *
      * @return Category\Update
      */

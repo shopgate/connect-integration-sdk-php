@@ -316,7 +316,10 @@ class CustomerTest extends CustomerBaseTest
         $this->assertEquals(self::CUSTOMER_SETTINGS_DEFAULT_CURRENCY, $settings->getDefaultCurrency());
         $this->assertEquals(self::CUSTOMER_SETTINGS_DEFAULT_LOCATION_CODE, $settings->getDefaultLocationCode());
         $this->assertCount(2, $settings->getCommunicationPreferences());
+
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->assertContains('email', $settings->getCommunicationPreferences()->toArray());
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->assertContains('sms', $settings->getCommunicationPreferences()->toArray());
         $this->assertEquals(true, $settings->getMarketingOptIn());
 
@@ -435,7 +438,9 @@ class CustomerTest extends CustomerBaseTest
         $this->assertEquals('USD', $settings->getDefaultCurrency());
         $this->assertEquals('EUR', $settings->getDefaultLocationCode());
         $this->assertCount(2, $settings->getCommunicationPreferences());
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->assertContains('sms', $settings->getCommunicationPreferences()->toArray());
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->assertContains('email', $settings->getCommunicationPreferences()->toArray());
         $this->assertEquals(false, $settings->getMarketingOptIn());
     }

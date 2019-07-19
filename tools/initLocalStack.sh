@@ -29,8 +29,6 @@ fi
 
 export SERVICE=sdk
 
-docker network create ${SERVICE}-integration-network
-
 set -e
 
 if [[ -n "$CI_STACK" ]]; then

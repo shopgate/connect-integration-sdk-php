@@ -26,9 +26,7 @@ use Shopgate\ConnectSdk\Dto\Base;
 
 /**
  * @method Type setCode(string $code)
- * @method Type setName(string $name)
  * @method string getCode()
- * @method string getName()
  *
  * @codeCoverageIgnore
  */
@@ -41,7 +39,6 @@ class Type extends Base
         'type' => 'object',
         'properties'           => [
             'code' => ['type' => 'string'],
-            'name' => ['type' => 'string'],
         ],
         'additionalProperties' => true,
     ];

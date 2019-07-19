@@ -24,7 +24,10 @@ VALUES
 
 INSERT IGNORE INTO location.`LocationType` (`LocationTypeID`, `LocationTypeCode`, `TypeDesc`, `CreateBy`, `CreateDate`, `UpdateBy`, `UpdateDate`, `DeleteBy`, `DeleteDate`)
 VALUES
-('1', 'warehouse', 'Warehouse Location', 'Johnny Bravo', '2018-11-11 16:50:18', NULL, NULL, NULL, NULL);
+('1', 'warehouse', 'Warehouse Location', 'Johnny Bravo', '2018-11-11 16:50:18', NULL, NULL, NULL, NULL),
+('2', 'store', 'Store Location', 'Johnny Bravo', '2018-11-11 16:51:23', NULL, NULL, NULL, NULL),
+('3', 'dropShipping', 'Drop Shipping Location', 'Johnny Bravo', '2018-11-11 16:52:03', NULL, NULL, NULL, NULL),
+('4', '3rdPartyFulfillment', '3rd Party Fulfillment Location', 'Johnny Bravo', '2018-11-11 16:54:12', NULL, NULL, NULL, NULL);
 
 INSERT IGNORE INTO catalog.`ParentCatalog` (`ParentCatalogID`, `MerchantID`, `ParentCatalogCode`, `ParentCatalogName`, `DefaultLocaleCode`, `DefaultCurrencyCode`, `Status`, `isDefault`, `CreateBy`, `CreateDate`, `UpdateBy`, `UpdateDate`, `DeleteBy`, `DeleteDate`)
 VALUES

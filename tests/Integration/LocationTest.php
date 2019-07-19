@@ -30,6 +30,8 @@ class LocationTest extends ShopgateSdkTest
     const METHOD_DELETE_LOCATION = 'deleteLocation';
     const LOCATION_CODE          = 'integration-test';
     const LOCATION_CODE_SECOND   = 'integration-test-2';
+    const LOCATION_CODE_THIRD    = 'integration-test-3';
+    const LOCATION_CODE_FOURTH    = 'integration-test-4';
 
     public function setUp()
     {
@@ -50,15 +52,17 @@ class LocationTest extends ShopgateSdkTest
     protected function provideSampleLocations()
     {
         return [
-            $this->provideSampleCreateLocation(self::LOCATION_CODE, 'Integration Test Location 1', Location::TYPE_WAREHOUSE),
-            $this->provideSampleCreateLocation(self::LOCATION_CODE_SECOND, 'Integration Test Location 2', Location::TYPE_WAREHOUSE),
+            $this->provideSampleCreateLocation(self::LOCATION_CODE, 'Integration Test Location Store', Location::TYPE_STORE),
+            $this->provideSampleCreateLocation(self::LOCATION_CODE_SECOND, 'Integration Test Location Warehouse', Location::TYPE_WAREHOUSE),
+            $this->provideSampleCreateLocation(self::LOCATION_CODE_THIRD, 'Integration Test Location Drop Shipping', Location::TYPE_DROP_SHIPPING),
+            $this->provideSampleCreateLocation(self::LOCATION_CODE_FOURTH, 'Integration Test Location 3rd Party Fulfillment', Location::TYPE_3RD_PARTY_FULFILLMENT),
         ];
     }
 
     /**
-     * @param string      $code
-     * @param string      $name
-     * @param string      $type
+     * @param string $code
+     * @param string $name
+     * @param string $type
      *
      * @return Location\Create
      */
@@ -68,7 +72,7 @@ class LocationTest extends ShopgateSdkTest
         $type
     ) {
         $location = new Location\Create();
-        $typeObj = new Location\Dto\Type(['code' => $type, 'name' => $type]);
+        $typeObj = new Location\Dto\Type(['code' => $type]);
         $location->setCode($code)
             ->setName($name)
             ->setType($typeObj);

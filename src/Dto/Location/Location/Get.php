@@ -36,7 +36,7 @@ use Shopgate\ConnectSdk\Dto\Location\Location;
  * @method string getTimeZone()
  * @method Dto\Details getDetails()
  * @method Dto\Address[] getAddresses()
- * @method object getInventory()
+ * @method Dto\Inventory getInventory()
  * @method string[] getSupportedFulfillmentMethods()
  * @method Dto\Settings getSettings()
  * @method bool getIsDefault()

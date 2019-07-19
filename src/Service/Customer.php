@@ -27,6 +27,7 @@ use Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
 use Shopgate\ConnectSdk\Dto\Customer\Contact;
 use Shopgate\ConnectSdk\Dto\Customer\Customer as CustomerDto;
 use Shopgate\ConnectSdk\Dto\Customer\Note;
+use Shopgate\ConnectSdk\Dto\Customer\Wishlist;
 use Shopgate\ConnectSdk\Dto\Meta;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
@@ -585,5 +586,174 @@ class Customer
         $response = $this->jsonHelper->decode($response->getBody(), true);
 
         return new Note\GetList($response);
+    }
+
+    /**
+     * @param string           $id customer id
+     * @param Wishlist\Create[] $wishlists
+     * @param array            $query
+     *
+     * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function addWishlists($id, array $wishlists, array $query = [])
+    {
+        return $this->client->doRequest(
+            [
+                'service'     => 'omni-customer',
+                'method'      => 'post',
+                'path'        => 'customers/' . $id . '/wishlists',
+                'entity'      => 'wishlist',
+                'action'      => 'create',
+                'json'        => ['wishlists' => $wishlists],
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
+                'query'       => $query,
+            ]
+        );
+    }
+
+    /**
+     * @param string         $id wishlist id
+     * @param string         $customerId
+     * @param Wishlist\Update $wishlist
+     * @param array          $query
+     *
+     * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function updateWishlist($id, $customerId, Wishlist\Update $wishlist, array $query = [])
+    {
+        return $this->client->doRequest(
+            [
+                'service'     => 'omni-customer',
+                'method'      => 'post',
+                'path'        => 'customers/' . $customerId . '/wishlists/' . $id,
+                'entity'      => 'wishlist',
+                'action'      => 'update',
+                'json'        => $wishlist,
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
+                'entityId'    => $id,
+                'query'       => $query,
+            ]
+        );
+    }
+
+    /**
+     * @param string $id wishlist id
+     * @param string $customerId
+     * @param array  $query
+     *
+     * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function deleteWishlist($id, $customerId, array $query = [])
+    {
+        return $this->client->doRequest(
+            [
+                'service'     => 'omni-customer',
+                'method'      => 'delete',
+                'path'        => 'customers/' . $customerId . '/wishlists/' . $id,
+                'entity'      => 'wishlist',
+                'action'      => 'delete',
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
+                'query'       => $query,
+            ]
+        );
+    }
+
+    /**
+     * @param string $customerId
+     * @param array  $query
+     *
+     * @return Wishlist\GetList
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function getWishlists($customerId, array $query = [])
+    {
+        $response = $this->client->doRequest(
+            [
+                'service' => 'omni-customer',
+                'method'  => 'get',
+                'path'    => 'customers/' . $customerId . '/wishlists',
+                'query'   => $query,
+            ]
+        );
+
+        $response = $this->jsonHelper->decode($response->getBody(), true);
+
+        return new Wishlist\GetList($response);
+    }
+
+    /**
+     * @param string                     $id customer id
+     * @param string                     $wishlistId
+     * @param Wishlist\Dto\Item\Create[] $items
+     * @param array                      $query
+     *
+     * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function addWishlistItems($id, $wishlistId, array $items, array $query = [])
+    {
+        return $this->client->doRequest(
+            [
+                'service'     => 'omni-customer',
+                'method'      => 'post',
+                'path'        => 'customers/' . $id . '/wishlists/' . $wishlistId . '/items',
+                'entity'      => 'wishlistItem',
+                'action'      => 'create',
+                'json'        => $items,
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
+                'query'       => $query,
+            ]
+        );
+    }
+
+    /**
+     * @param string $id item id
+     * @param string $wishlistId
+     * @param string $customerId
+     * @param array  $query
+     *
+     * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function deleteWishlistItem($id, $wishlistId, $customerId, array $query = [])
+    {
+        return $this->client->doRequest(
+            [
+                'service'     => 'omni-customer',
+                'method'      => 'delete',
+                'path'        => 'customers/' . $customerId . '/wishlists/' . $wishlistId . '/items/' . $id,
+                'entity'      => 'wishlistItem',
+                'action'      => 'delete',
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
+                'query'       => $query,
+            ]
+        );
     }
 }

@@ -20,31 +20,24 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Customer\Wishlist;
+namespace Shopgate\ConnectSdk\Dto\Customer\Wishlist\Dto\Item;
 
-use Shopgate\ConnectSdk\Dto\Customer\Wishlist;
+use Shopgate\ConnectSdk\Dto\Customer\Wishlist\Dto\Item;
 
 /**
- * @method Create setCode(string $code)
- * @method Create setName(string $name)
- * @method Create setItems(Dto\Item[] $items)
+ * @method Create setProductCode(string $productCode)
  */
-class Create extends Wishlist
+class Create extends Item
 {
     /**
      * @var array
      * @codeCoverageIgnore
      */
     protected $schema = [
-            'type'                 => 'object',
-            'properties'           => [
-                'code'  => ['type' => 'string'],
-                'name'  => ['type' => 'string'],
-                'items' => [
-                    'type'  => 'array',
-                    'items' => ['$ref' => Dto\Item::class]
-                ]
-            ],
-            'additionalProperties' => true,
-        ];
+        'type'                 => 'object',
+        'properties'           => [
+            'productCode'  => ['type' => 'string']
+        ],
+        'additionalProperties' => true,
+    ];
 }

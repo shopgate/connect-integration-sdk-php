@@ -215,10 +215,9 @@ class LocationTest extends LocationBaseTest
         $this->deleteEntitiesAfterTestRun(self::LOCATION_SERVICE, self::METHOD_DELETE_LOCATION, $expectedLocationCodes);
 
         // Assert
-
         /** @noinspection PhpParamsInspection */
         $locationCodes = $this->getLocationCodes($locations->getLocations());
-        $this->assertEquals($expectedLocationCodes, $locationCodes);
+        $this->assertEquals(asort($expectedLocationCodes), asort($locationCodes));
     }
 
     /**

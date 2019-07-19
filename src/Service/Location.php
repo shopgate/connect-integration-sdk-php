@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright Shopgate Inc.
  *
@@ -34,7 +35,6 @@ use Shopgate\ConnectSdk\Helper\Json;
 
 class Location
 {
-
     /** @var ClientInterface */
     private $client;
 
@@ -47,7 +47,7 @@ class Location
      */
     public function __construct(ClientInterface $client, Json $jsonHelper)
     {
-        $this->client = $client;
+        $this->client     = $client;
         $this->jsonHelper = $jsonHelper;
     }
 
@@ -68,25 +68,20 @@ class Location
             [
                 // general
                 'method'      => 'post',
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_DIRECT,
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'json'        => ['locations' => $locations],
                 'query'       => $query,
                 // direct
                 'service'     => 'omni-location',
-                'path'        => 'locations',
-                // async
-                'entity'      => 'location',
-                'action'      => 'create',
+                'path'        => 'locations'
             ]
         );
     }
 
     /**
-     * @param string          $code
+     * @param string             $code
      * @param LocationDTO\Update $location
-     * @param array           $query
+     * @param array              $query
      *
      * @return ResponseInterface
      *
@@ -100,19 +95,13 @@ class Location
         return $this->client->doRequest(
             [
                 // general
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_DIRECT,
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'json'        => $location,
                 'query'       => $query,
                 // direct
                 'method'      => 'post',
                 'service'     => 'omni-location',
-                'path'        => 'locations/' . $code,
-                // async
-                'entity'      => 'location',
-                'action'      => 'update',
-                'entityId'    => $code,
+                'path'        => 'locations/' . $code
             ]
         );
     }
@@ -133,18 +122,12 @@ class Location
         return $this->client->doRequest(
             [
                 // general
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_DIRECT,
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'query'       => $query,
                 // direct
                 'method'      => 'delete',
                 'service'     => 'omni-location',
                 'path'        => 'locations/' . $code,
-                // async
-                'entity'      => 'location',
-                'action'      => 'delete',
-                'entityId'    => $code,
             ]
         );
     }

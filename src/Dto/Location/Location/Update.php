@@ -23,33 +23,26 @@
 namespace Shopgate\ConnectSdk\Dto\Location\Location;
 
 use Shopgate\ConnectSdk\Dto\Location\Location;
-use Shopgate\ConnectSdk\Dto\Location\Location\Dto\Type;
-use Shopgate\ConnectSdk\Dto\Location\Location\Dto\OperationHours;
-use Shopgate\ConnectSdk\Dto\Location\Location\Dto\Details;
-use Shopgate\ConnectSdk\Dto\Location\Location\Dto\Address;
-use Shopgate\ConnectSdk\Dto\Location\Location\Dto\Inventory;
-use Shopgate\ConnectSdk\Dto\Location\Location\Dto\Settings;
 
 /**
  * @method Update setCode(string $code)
  * @method Update setName(string $name)
- * @method Update setType(Type $type)
+ * @method Update setType(Dto\Type $type)
  * @method Update setStatus(string $status)
- * @method Update setLatitude(string $latitude)
- * @method Update setLongitude(string $longitude)
- * @method Update setOperationHours(OperationHours $operationHours)
+ * @method Update setLatitude(float $latitude)
+ * @method Update setLongitude(float $longitude)
+ * @method Update setOperationHours(Dto\OperationHours $operationHours)
  * @method Update setLocaleCode(string $localeCode)
  * @method Update setTimeZone(string $timeZone)
- * @method Update setDetails(Details $details)
- * @method Update setAddresses(Address[] $addresses)
- * @method Update setInventory(Inventory $inventory)
+ * @method Update setDetails(Dto\Details $details)
+ * @method Update setAddresses(Dto\Address[] $addresses)
+ * @method Update setInventory(Dto\Inventory $inventory)
  * @method Update setSupportedFulfillmentMethods(string[] $supportedFulfillmentMethods)
- * @method Update setSettings(Settings $settings)
+ * @method Update setSettings(Dto\Settings $settings)
  * @method Update setIsDefault(bool $isDefault)
  *
  * @codeCoverageIgnore
  */
-
 class Update extends Location
 {
     /**
@@ -60,18 +53,24 @@ class Update extends Location
         'properties'           => [
             'code'                        => ['type' => 'string'],
             'name'                        => ['type' => 'string'],
-            'type'                        => ['type' => 'object'],
+            'type'                        => ['$ref' => Dto\Type::class],
             'status'                      => ['type' => 'string'],
             'latitude'                    => ['type' => 'number'],
             'longitude'                   => ['type' => 'number'],
-            'operationHours'              => ['type' => 'object'],
+            'operationHours'              => ['$ref' => Dto\OperationHours::class],
             'localeCode'                  => ['type' => 'string'],
             'timeZone'                    => ['type' => 'string'],
-            'details'                     => ['type' => 'object'],
-            'addresses'                   => ['type' => 'array'],
-            'inventory'                   => ['type' => 'object'],
-            'supportedFulfillmentMethods' => ['type' => 'array'],
-            'settings'                    => ['type' => 'object'],
+            'details'                     => ['$ref' => Dto\Details::class],
+            'addresses'                   => [
+                'type' => 'array',
+                'items' => ['$ref' => Dto\Address::class]
+            ],
+            'inventory'                   => ['$ref' => Dto\Inventory::class],
+            'supportedFulfillmentMethods' => [
+                'type' => 'array',
+                'items' => ['type' => 'string']
+            ],
+            'settings'                    => ['$ref' => Dto\Settings::class],
             'isDefault'                   => ['type' => 'boolean']
         ],
         'additionalProperties' => true

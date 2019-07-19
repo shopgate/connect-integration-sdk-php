@@ -26,8 +26,6 @@ use Shopgate\ConnectSdk\Dto\Location\Location;
 use Shopgate\ConnectSdk\Dto\Meta;
 
 /**
- * Dto for location list response.
- *
  * @method Meta getMeta()
  * @method Get[] getLocations()
  *

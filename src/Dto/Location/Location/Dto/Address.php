@@ -52,7 +52,7 @@ use Shopgate\ConnectSdk\Dto\Base;
  * @method string getPhoneNumber()
  * @method string getFaxNumber()
  * @method string getEmailAddress()
- * @method string getIsPrimary()
+ * @method bool getIsPrimary()
  *
  * @codeCoverageIgnore
  */

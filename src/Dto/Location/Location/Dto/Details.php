@@ -31,7 +31,7 @@ use Shopgate\ConnectSdk\Dto\Base;
  * @method Details setServices(string[] $services)
  * @method string getManager()
  * @method string getImage()
- * @method string getDepartments()
+ * @method string[] getDepartments()
  * @method string[] getServices()
  *
  * @codeCoverageIgnore
@@ -41,14 +41,21 @@ class Details extends Base
     /**
      * @var array
      */
-    protected $schema = [
-        'type' => 'object',
-        'properties'           => [
-            'manager'          => ['type' => 'string'],
-            'image'            => ['type' => 'string'],
-            'departments'      => ['type' => 'array'],
-            'services'         => ['type' => 'array'],
-        ],
-        'additionalProperties' => true,
-    ];
+    protected $schema
+        = [
+            'type'                 => 'object',
+            'properties'           => [
+                'manager'     => ['type' => 'string'],
+                'image'       => ['type' => 'string'],
+                'departments' => [
+                    'type'  => 'array',
+                    'items' => ['type' => 'string']
+                ],
+                'services'    => [
+                    'type' => 'array',
+                    'items' => ['type' => 'string']
+                ]
+            ],
+            'additionalProperties' => true,
+        ];
 }

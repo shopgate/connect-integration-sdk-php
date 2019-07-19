@@ -22,8 +22,6 @@
 
 namespace Shopgate\ConnectSdk\Tests\Integration\Dto\Location;
 
-use Dto\Dto;
-use Dto\Exceptions\InvalidDataTypeException;
 use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
@@ -171,32 +169,6 @@ class LocationTest extends LocationBaseTest
     /**
      * @throws Exception
      */
-    public function testCreateLocationEvent()
-    {
-        $this->markTestSkipped('Skipped because there is something wrong with event location creation');
-        // Arrange
-        $sampleLocations = $this->provideSampleLocations();
-        $sampleLocationCodes = $this->getLocationCodes($sampleLocations);
-
-        // Act
-        $this->createLocations(
-            $sampleLocations,
-            ['requestType' => 'event']
-        );
-        sleep(self::SLEEP_TIME_AFTER_EVENT);
-        $locations = $this->getLocations($sampleLocationCodes);
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(self::LOCATION_SERVICE, self::METHOD_DELETE_LOCATION, $sampleLocationCodes);
-
-        //Assert
-        $this->assertCount(count($sampleLocationCodes), $locations->getLocations());
-    }
-
-
-    /**
-     * @throws Exception
-     */
     public function testDeleteLocation()
     {
         // Arrange
@@ -209,7 +181,6 @@ class LocationTest extends LocationBaseTest
         array_shift($expectedLocationCodes);
         $this->sdk->getLocationService()->deleteLocation($sampleLocationCodes[0]);
         $locations = $this->getLocations($sampleLocationCodes);
-
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(self::LOCATION_SERVICE, self::METHOD_DELETE_LOCATION, $expectedLocationCodes);
@@ -251,40 +222,31 @@ class LocationTest extends LocationBaseTest
 
         // Assert
         // check values that should have changed
+        $expectedGetLocations = new Location\Get(array_merge($original, $updated));
         foreach ($updated as $index => $value) {
-            $this->doComplexComparisons($value, $locations->getLocations()[0]->get($index));
+            $expectedValue = $expectedGetLocations->get($index);
+            $testValue = $locations->getLocations()[0]->get($index);
+            if (is_numeric($expectedValue)) {
+                $this->assertTrue(is_numeric($testValue));
+                $this->assertEquals(floor($value), floor($testValue));
+                return;
+            }
+
+            $this->assertEquals($expectedValue, $testValue);
         }
 
         // check values that should not have changed
         foreach (array_diff_key($original, $updated) as $index => $value) {
-            $this->doComplexComparisons($value, $locations->getLocations()[0]->get($index));
+            $expectedValue = $expectedGetLocations->get($index);
+            $testValue = $locations->getLocations()[0]->get($index);
+            if (is_numeric($expectedValue)) {
+                $this->assertTrue(is_numeric($testValue));
+                $this->assertEquals(floor($value), floor($testValue));
+                return;
+            }
+
+            $this->assertEquals($expectedValue, $testValue);
         }
-    }
-
-    /**
-     * @param mixed $expectedValue
-     * @param mixed $testValue
-     */
-    public function doComplexComparisons($expectedValue, $testValue)
-    {
-        if (is_numeric($expectedValue)) {
-            $this->assertTrue(is_numeric($testValue));
-            $this->assertEquals(floor($expectedValue), floor($testValue));
-            return;
-        }
-
-        if (is_array($expectedValue)) {
-            $expectedValue = array_map([$this, 'convertDtoToArrayIfPossible'], $expectedValue);
-        }
-
-        if (is_array($testValue)) {
-            $testValue = array_map([$this, 'convertDtoToArrayIfPossible'], $testValue);
-        }
-
-        $expectedValue = $this->convertDtoToArrayIfPossible($expectedValue);
-        $testValue = $this->convertDtoToArrayIfPossible($testValue);
-
-        $this->assertEquals($expectedValue, $testValue);
     }
 
     /**
@@ -339,28 +301,72 @@ class LocationTest extends LocationBaseTest
                 'original' => [
                     'addresses' => [
                         new Location\Dto\Address(
-                            ['code' => 'address-1', 'name' => 'address one', 'street' => '123 street', 'postalCode' => '78732', 'city' => 'Austin', 'country' => 'US', 'isPrimary' => false]
+                            ['code' => 'address-1',
+                             'name' => 'address one',
+                             'street' => '123 street',
+                             'street2' => null,
+                             'street3' => null,
+                             'street4' => null,
+                             'postalCode' => '78732',
+                             'city' => 'Austin',
+                             'region' => 'TX',
+                             'country' => 'US',
+                             'phoneNumber' => null,
+                             'faxNumber' => null,
+                             'emailAddress' => null,
+                             'isPrimary' => false
+                            ]
                         )
                     ]
                 ],
                 'update'   => [
                     'addresses' => [
                         new Location\Dto\Address(
-                            ['code' => 'address-1', 'name' => 'address one the best', 'street' => '123 street', 'postalCode' => '78732', 'city' => 'Austin', 'country' => 'US', 'isPrimary' => true]
+                            ['code' => 'address-1',
+                             'name' => 'address one the best',
+                             'street' => '123 street',
+                             'street2' => null,
+                             'street3' => null,
+                             'street4' => null,
+                             'postalCode' => '78732',
+                             'city' => 'Austin',
+                             'region' => 'TX',
+                             'country' => 'US',
+                             'phoneNumber' => null,
+                             'faxNumber' => null,
+                             'emailAddress' => null,
+                             'isPrimary' => true
+                            ]
                         ),
-                        new Location\Dto\Address(['code' => 'address-2', 'name' => 'address two', 'street' => '321 street', 'postalCode' => '78732', 'city' => 'Austin', 'country' => 'US'])
+                        new Location\Dto\Address(
+                            ['code' => 'address-2',
+                             'name' => 'address two',
+                             'street' => '321 street',
+                             'street2' => null,
+                             'street3' => null,
+                             'street4' => null,
+                             'postalCode' => '78732',
+                             'city' => 'Austin',
+                             'region' => 'TX',
+                             'phoneNumber' => null,
+                             'faxNumber' => null,
+                             'emailAddress' => null,
+                             'country' => 'US',
+                             'isPrimary' => false
+                            ]
+                        )
                     ]
                 ]
             ],
             'add inventory'                      => [
                 'original' => [],
                 'update'   => [
-                    'inventory' => new Location\Dto\Inventory(['isManaged' => true, 'mode' => 'blind', 'safetyStockMode' => 'disabled', 'safetyStockType' => 'count'])
+                    'inventory' => new Location\Dto\Inventory(['isManaged' => true, 'mode' => 'blind', 'safetyStockMode' => 'disabled', 'safetyStock' => 0, 'safetyStockType' => 'count'])
                 ]
             ],
             'change inventory'                   => [
                 'original' => [
-                    'inventory' => new Location\Dto\Inventory(['isManaged' => true, 'mode' => 'blind', 'safetyStockMode' => 'disabled', 'safetyStockType' => 'count'])
+                    'inventory' => new Location\Dto\Inventory(['isManaged' => true, 'mode' => 'blind', 'safetyStockMode' => 'disabled', 'safetyStock' => 0, 'safetyStockType' => 'count'])
                 ],
                 'update'   => [
                     'inventory' => new Location\Dto\Inventory(['isManaged' => true, 'mode' => 'integrated', 'safetyStockMode' => 'enabled', 'safetyStock' => 10, 'safetyStockType' => 'percentage'])
@@ -392,12 +398,16 @@ class LocationTest extends LocationBaseTest
             'add operationHours'                 => [
                 'original' => [],
                 'update'   => [
-                    'operationHours' => new Location\Dto\OperationHours(['mon' => '8a - 9p', 'tue' => '8a - 9p', 'wed' => '8a - 9p', 'thu' => '8a - 9p', 'fri' => '8a - 12p'])
+                    'operationHours' => new Location\Dto\OperationHours(
+                        ['sun' => null, 'mon' => '8a - 9p', 'tue' => '8a - 9p', 'wed' => '8a - 9p', 'thu' => '8a - 9p', 'fri' => '8a - 12p', 'sat' => null]
+                    )
                 ]
             ],
             'change operationHours'              => [
                 'original' => [
-                    'operationHours' => new Location\Dto\OperationHours(['sun' => '12p - 4p', 'mon' => '8a - 9p', 'tue' => '8a - 9p', 'wed' => '8a - 9p', 'thu' => '8a - 9p', 'fri' => '8a - 12p'])
+                    'operationHours' => new Location\Dto\OperationHours(
+                        ['sun' => '12p - 4p', 'mon' => '8a - 9p', 'tue' => '8a - 9p', 'wed' => '8a - 9p', 'thu' => '8a - 9p', 'fri' => '8a - 12p', 'sat' => null]
+                    )
                 ],
                 'update'   => [
                     'operationHours' => new Location\Dto\OperationHours(
@@ -421,7 +431,7 @@ class LocationTest extends LocationBaseTest
             ],
             'change detail but not inventory'    => [
                 'original' => [
-                    'inventory' => new Location\Dto\Inventory(['isManaged' => true, 'mode' => 'blind', 'safetyStockMode' => 'disabled', 'safetyStockType' => 'count']),
+                    'inventory' => new Location\Dto\Inventory(['isManaged' => true, 'mode' => 'blind', 'safetyStockMode' => 'disabled', 'safetyStock' => 0, 'safetyStockType' => 'count']),
                     'details'   => new Location\Dto\Details(
                         ['manager' => 'John Doe', 'image' => 'https://great-image.com/some-image.jpg', 'departments' => ['marketing'], 'services' => ['gift wrapping']]
                     )
@@ -436,34 +446,27 @@ class LocationTest extends LocationBaseTest
     }
 
     /**
-     * @param array     $locationData
-     * @param Exception $expectedException
+     * @param array $locationData
+     *
+     * @throws Exception
      *
      * @dataProvider providedCreateLocationWithMissingRequiredFields
      */
-    public function testCreateLocationsWithMissingRequiredFields(array $locationData, Exception $expectedException)
+    public function testCreateLocationsWithMissingRequiredFields(array $locationData)
     {
         // Arrange
         $location = new Location\Create($locationData);
 
+        // Assert
+        $this->expectException(RequestException::class);
+
         // Act
-        try {
-            $this->createLocations([$location]);
-        } catch (Exception $exception) {
-            // Assert
-            $this->assertInstanceOf(get_class($expectedException), $exception);
-            $this->assertEquals($expectedException->getStatusCode(), $exception->getStatusCode());
-
-            return;
-        }
-
-        $this->fail('Expected ' . get_class($expectedException) . ' but was not thrown');
-        // Clean Up
-        if (!empty($location['code'])) {
-            $this->deleteEntitiesAfterTestRun(self::LOCATION_SERVICE, self::METHOD_DELETE_LOCATION, [$location['code']]);
-        }
+        $this->createLocations([$location]);
     }
 
+    /**
+     * @return array
+     */
     public function providedCreateLocationWithMissingRequiredFields()
     {
         return [
@@ -471,22 +474,19 @@ class LocationTest extends LocationBaseTest
                 'locationData'      => [
                     'code' => 'test-code',
                     'type' => new Location\Dto\Type(['code' => Location::TYPE_WAREHOUSE, 'name' => Location::TYPE_WAREHOUSE])
-                ],
-                'expectedException' => new RequestException(400)
+                ]
             ],
             'missing code' => [
                 'locationData'      => [
                     'name' => 'test name',
                     'type' => new Location\Dto\Type(['code' => Location::TYPE_WAREHOUSE, 'name' => Location::TYPE_WAREHOUSE])
-                ],
-                'expectedException' => new RequestException(400)
+                ]
             ],
             'missing type' => [
                 'locationData'      => [
                     'name' => 'test name',
                     'code' => 'test-code'
-                ],
-                'expectedException' => new RequestException(400)
+                ]
             ]
         ];
     }
@@ -556,35 +556,5 @@ class LocationTest extends LocationBaseTest
     private function createLocations(array $sampleLocations, array $meta = [])
     {
         return $this->sdk->getLocationService()->addLocations($sampleLocations, $meta);
-    }
-
-    /**
-     * @param mixed $value
-     * @return mixed
-     */
-    public function convertDtoToArrayIfPossible($value)
-    {
-        if (is_object($value) && method_exists($value, 'toArray')) {
-            return $this->recursivelyRemoveNullFromArray($value->toArray());
-        }
-        return $value;
-    }
-
-    /**
-     * @param array $array
-     * @return array
-     */
-    public function recursivelyRemoveNullFromArray(array $array)
-    {
-        $array = array_filter($array);
-        return array_map(
-            function ($elem) {
-                if (is_array($elem)) {
-                    return $this->recursivelyRemoveNullFromArray($elem);
-                }
-                return $elem;
-            },
-            $array
-        );
     }
 }

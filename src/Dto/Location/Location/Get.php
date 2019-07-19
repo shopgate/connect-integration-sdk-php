@@ -25,22 +25,20 @@ namespace Shopgate\ConnectSdk\Dto\Location\Location;
 use Shopgate\ConnectSdk\Dto\Location\Location;
 
 /**
- * Dto for location response
- *
  * @method string getCode()
  * @method string getName()
- * @method object getType()
+ * @method Dto\Type getType()
  * @method string getStatus()
  * @method string getLatitude()
  * @method string getLongitude()
- * @method string getOperationHours()
+ * @method Dto\OperationHours getOperationHours()
  * @method string getLocaleCode()
  * @method string getTimeZone()
- * @method object getDetails()
- * @method object[] getAddresses()
+ * @method Dto\Details getDetails()
+ * @method Dto\Address[] getAddresses()
  * @method object getInventory()
  * @method string[] getSupportedFulfillmentMethods()
- * @method object getSettings()
+ * @method Dto\Settings getSettings()
  * @method bool getIsDefault()
  *
  * @codeCoverageIgnore
@@ -55,18 +53,24 @@ class Get extends Location
         'properties'           => [
             'code'                        => ['type' => 'string'],
             'name'                        => ['type' => 'string'],
-            'type'                        => ['type' => 'object'],
+            'type'                        => ['$ref' => Dto\Type::class],
             'status'                      => ['type' => 'string'],
             'latitude'                    => ['type' => 'string'],
             'longitude'                   => ['type' => 'string'],
-            'operationHours'              => ['type' => 'object'],
+            'operationHours'              => ['$ref' => Dto\OperationHours::class],
             'localeCode'                  => ['type' => 'string'],
             'timeZone'                    => ['type' => 'string'],
-            'details'                     => ['type' => 'object'],
-            'addresses'                   => ['type' => 'array'],
-            'inventory'                   => ['type' => 'object'],
-            'supportedFulfillmentMethods' => ['type' => 'array'],
-            'settings'                    => ['type' => 'object'],
+            'details'                     => ['$ref' => Dto\Details::class],
+            'addresses'                   => [
+                'type' => 'array',
+                'items' => ['$ref' => Dto\Address::class]
+            ],
+            'inventory'                   => ['$ref' => Dto\Inventory::class],
+            'supportedFulfillmentMethods' => [
+                'type' => 'array',
+                'items' => ['type' => 'string']
+            ],
+            'settings'                    => ['$ref' => Dto\Settings::class],
             'isDefault'                   => ['type' => 'boolean']
         ],
         'additionalProperties' => true

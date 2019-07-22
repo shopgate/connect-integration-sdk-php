@@ -27,7 +27,9 @@ abstract class CustomerTest extends ShopgateSdkTest
     const METHOD_DELETE_ATTRIBUTE = 'deleteAttribute';
     const METHOD_DELETE_CONTACT   = 'deleteContact';
     const METHOD_DELETE_CUSTOMER  = 'deleteCustomer';
+    const METHOD_DELETE_WISHLIST  = 'deleteWishlist';
     const CONTACT_CODE            = 'integration-test';
+    const WISHLIST_CODE           = 'integration-test-wishlist';
 
     public function setUp()
     {
@@ -40,6 +42,7 @@ abstract class CustomerTest extends ShopgateSdkTest
                 self::METHOD_DELETE_CONTACT   => [],
                 self::METHOD_DELETE_CUSTOMER  => [],
                 self::METHOD_DELETE_ATTRIBUTE => [],
+                self::METHOD_DELETE_WISHLIST  => []
             ]
         );
     }

@@ -28,6 +28,7 @@ use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\Service\BulkImport;
 use Shopgate\ConnectSdk\Service\Catalog;
 use Shopgate\ConnectSdk\Service\Customer;
+use Shopgate\ConnectSdk\Service\Location;
 
 class ShopgateSdk
 {
@@ -43,6 +44,9 @@ class ShopgateSdk
 
     /** @var Customer */
     private $customer;
+
+    /** @var Location */
+    private $location;
 
     /** @var BulkImport */
     private $bulkImport;
@@ -99,6 +103,18 @@ class ShopgateSdk
         }
 
         return $this->customer;
+    }
+
+    /**
+     * @return Location
+     */
+    public function getLocationService()
+    {
+        if (!$this->location) {
+            $this->location = new Location($this->client, $this->jsonHelper);
+        }
+
+        return $this->location;
     }
 
     /**

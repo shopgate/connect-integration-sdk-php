@@ -702,6 +702,35 @@ class Customer
     }
 
     /**
+     * @param string $id wishlist id
+     * @param string $customerId
+     * @param array  $query
+     *
+     * @return Wishlist\Get
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function getWishlist($id, $customerId, array $query = [])
+    {
+        $response = $this->client->doRequest(
+            [
+                // direct only
+                'service' => 'omni-customer',
+                'method'  => 'get',
+                'path'    => 'customers/' . $customerId . '/wishlists/' . $id,
+                'query'   => $query,
+            ]
+        );
+
+        $response = $this->jsonHelper->decode($response->getBody(), true);
+
+        return new Wishlist\Get($response);
+    }
+
+    /**
      * @param string                $id customer id
      * @param string                $wishlistId
      * @param WishlistItem\Create[] $items

@@ -185,6 +185,35 @@ class WishlistTest extends CustomerTest
         );
     }
 
+    /**
+     * @throws Exception\Exception
+     */
+    public function testAddWishlistItems()
+    {
+        $this->markTestSkipped('Skipping while productCode issue is figured out');
+        // Arrange
+        $customerId = $this->createCustomer();
+        $sampleWishlist = new Wishlist\Create([
+            'code' => self::WISHLIST_CODE,
+            'name' => 'Wishlist Name One'
+        ]);
+        $this->sdk->getCustomerService()->addWishlists($customerId, [$sampleWishlist]);
+
+        // Act
+        $sampleItem = new Wishlist\Dto\Item\Create(['productCode' => self::WISHLIST_PRODUCT_CODE]);
+        $this->sdk->getCustomerService()->addWishlistItems($customerId,self::WISHLIST_CODE, [$sampleItem]);
+        $wishList = $this->sdk->getCustomerService()->getWishlist(self::WISHLIST_CODE, $customerId);
+
+        // Assert
+        $this->assertEquals(self::WISHLIST_PRODUCT_CODE, $wishList->getItems()[0].get('code'));
+
+        // CleanUp
+        $this->cleanupWishlists(
+            [[self::WISHLIST_CODE, $customerId]],
+            $customerId
+        );
+    }
+
 
     /**
      * @return string customer id

@@ -30,6 +30,7 @@ abstract class CustomerTest extends ShopgateSdkTest
     const METHOD_DELETE_WISHLIST  = 'deleteWishlist';
     const CONTACT_CODE            = 'integration-test';
     const WISHLIST_CODE           = 'integration-test-wishlist';
+    const WISHLIST_PRODUCT_CODE   = 'integration-test-wishlist-product-code-1';
 
     public function setUp()
     {

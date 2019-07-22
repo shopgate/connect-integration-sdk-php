@@ -26,7 +26,7 @@ use Shopgate\ConnectSdk\Dto\Customer\Wishlist\Dto\Item;
 
 /**
  * @method Create setProductCode(string $productCode)
- * 
+ *
  * @codeCoverageIgnore
  */
 class Create extends Item
@@ -37,7 +37,7 @@ class Create extends Item
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'productCode'  => ['type' => 'string']
+            'productCode' => ['type' => 'string']
         ],
         'additionalProperties' => true,
     ];

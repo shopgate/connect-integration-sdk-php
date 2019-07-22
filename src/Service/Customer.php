@@ -28,6 +28,7 @@ use Shopgate\ConnectSdk\Dto\Customer\Contact;
 use Shopgate\ConnectSdk\Dto\Customer\Customer as CustomerDto;
 use Shopgate\ConnectSdk\Dto\Customer\Note;
 use Shopgate\ConnectSdk\Dto\Customer\Wishlist;
+use Shopgate\ConnectSdk\Dto\Customer\Wishlist\Dto\Item as WishlistItem;
 use Shopgate\ConnectSdk\Dto\Meta;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
@@ -589,9 +590,9 @@ class Customer
     }
 
     /**
-     * @param string           $id customer id
+     * @param string            $id customer id
      * @param Wishlist\Create[] $wishlists
-     * @param array            $query
+     * @param array             $query
      *
      * @return ResponseInterface
      *
@@ -617,10 +618,10 @@ class Customer
     }
 
     /**
-     * @param string         $id wishlist id
-     * @param string         $customerId
+     * @param string          $id wishlist id
+     * @param string          $customerId
      * @param Wishlist\Update $wishlist
-     * @param array          $query
+     * @param array           $query
      *
      * @return ResponseInterface
      *
@@ -701,10 +702,10 @@ class Customer
     }
 
     /**
-     * @param string                     $id customer id
-     * @param string                     $wishlistId
-     * @param Wishlist\Dto\Item\Create[] $items
-     * @param array                      $query
+     * @param string                $id customer id
+     * @param string                $wishlistId
+     * @param WishlistItem\Create[] $items
+     * @param array                 $query
      *
      * @return ResponseInterface
      *

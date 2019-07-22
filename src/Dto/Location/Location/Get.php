@@ -62,12 +62,12 @@ class Get extends Location
             'timeZone'                    => ['type' => 'string'],
             'details'                     => ['$ref' => Dto\Details::class],
             'addresses'                   => [
-                'type' => 'array',
+                'type'  => 'array',
                 'items' => ['$ref' => Dto\Address::class]
             ],
             'inventory'                   => ['$ref' => Dto\Inventory::class],
             'supportedFulfillmentMethods' => [
-                'type' => 'array',
+                'type'  => 'array',
                 'items' => ['type' => 'string']
             ],
             'settings'                    => ['$ref' => Dto\Settings::class],

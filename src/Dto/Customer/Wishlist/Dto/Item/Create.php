@@ -26,12 +26,13 @@ use Shopgate\ConnectSdk\Dto\Customer\Wishlist\Dto\Item;
 
 /**
  * @method Create setProductCode(string $productCode)
+ * 
+ * @codeCoverageIgnore
  */
 class Create extends Item
 {
     /**
      * @var array
-     * @codeCoverageIgnore
      */
     protected $schema = [
         'type'                 => 'object',

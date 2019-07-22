@@ -27,7 +27,7 @@ use Shopgate\ConnectSdk\Dto\Base;
 /**
  * @method Item setProductCode(string $code)
  *
- * @method string ProductCode()
+ * @method string getProductCode()
  *
  * @codeCoverageIgnore
  */
@@ -35,12 +35,11 @@ class Item extends Base
 {
     /**
      * @var array
-     * @codeCoverageIgnore
      */
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'type'       => ['productCode' => 'string'],
+            'type' => ['productCode' => 'string'],
         ],
         'additionalProperties' => true,
     ];

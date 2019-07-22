@@ -36,14 +36,14 @@ class Update extends Wishlist
      * @var array
      */
     protected $schema = [
-            'type'                 => 'object',
-            'properties'           => [
-                'name'  => ['string' => 'object'],
-                'items' => [
-                    'type'  => 'array',
-                    'items' => ['$ref' => Dto\Item::class]
-                ]
-            ],
-            'additionalProperties' => true
-        ];
+        'type'                 => 'object',
+        'properties'           => [
+            'name'  => ['string' => 'object'],
+            'items' => [
+                'type'  => 'array',
+                'items' => ['$ref' => Dto\Item::class]
+            ]
+        ],
+        'additionalProperties' => true
+    ];
 }

@@ -55,9 +55,6 @@ class LocationTest extends LocationBaseTest
             $params['offset'] = $offset;
         }
 
-        if ($offset == 99) {
-            $this->expectException(RequestException::class); //todo-sg Bug in location service. Should be an empty list instead.
-        }
         // Act
         $locations = $this->getLocations([], $params);
 

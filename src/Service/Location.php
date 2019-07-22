@@ -53,7 +53,7 @@ class Location
 
     /**
      * @param LocationDto\Create[] $locations
-     * @param array             $query
+     * @param array                $query
      *
      * @return ResponseInterface
      *

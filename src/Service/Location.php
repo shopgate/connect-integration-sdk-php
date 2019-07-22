@@ -168,4 +168,32 @@ class Location
 
         return new LocationDto\GetList($response);
     }
+
+    /**
+     * @param string $code location code
+     * @param array  $query
+     *
+     * @return LocationDto\Get
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function getLocation($code, array $query = [])
+    {
+        $response = $this->client->doRequest(
+            [
+                // direct only
+                'service' => 'omni-location',
+                'method'  => 'get',
+                'path'    => 'locations/' . $code,
+                'query'   => $query,
+            ]
+        );
+
+        $response = $this->jsonHelper->decode($response->getBody(), true);
+
+        return new LocationDto\Get($response['location']);
+    }
 }

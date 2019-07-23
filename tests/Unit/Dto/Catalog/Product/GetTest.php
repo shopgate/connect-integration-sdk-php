@@ -179,6 +179,7 @@ class GetTest extends TestCase
         $inventories = $get->getInventory();
 
         $this->assertCount(2, $inventories);
+        $this->assertInstanceOf(Dto\Inventory::class, $inventories);
         $this->assertInstanceOf(Dto\Inventory::class, $inventories[0]);
         $this->assertInstanceOf(Dto\Inventory::class, $inventories[1]);
 

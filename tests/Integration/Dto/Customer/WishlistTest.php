@@ -15,9 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @author    Shopgate Inc, 804 Congress Ave, Austin, Texas 78701 <interfaces@shopgate.com>
+ * @author    Shopgate Inc, 804 Congress Ave, Austin, Texas 78701
+ *            <interfaces@shopgate.com>
  * @copyright Shopgate Inc
- * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
+ * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License,
+ *            Version 2.0
  */
 
 namespace Shopgate\ConnectSdk\Tests\Integration\Dto\Customer;
@@ -40,21 +42,67 @@ class WishlistTest extends CustomerTest
     public function testCreateWishlist($sampleWishlists)
     {
         // Arrange
-        $customerId = $this->createCustomer();
+        $customerId   = $this->createCustomer();
+        $productCodes = [];
+        foreach ($sampleWishlists as $sampleWishlist) {
+            if (empty($sampleWishlist['items'])) {
+                continue;
+            }
+            $productCodes = array_merge(
+                $productCodes,
+                array_map(
+                    [$this, 'getItemProductCode'], $sampleWishlist['items']
+                )
+            );
+        }
+
+        $this->addSampleProducts($productCodes);
 
         // Act
-        $this->sdk->getCustomerService()->addWishlists($customerId, $sampleWishlists);
+        $this->sdk->getCustomerService()->addWishlists(
+            $customerId, array_map(
+                function ($sampleWishlist) {
+                    return new Wishlist\Create($sampleWishlist);
+                }, $sampleWishlists
+            )
+        );
+        $wishlistGetList = $this->sdk->getCustomerService()->getWishlists(
+            $customerId
+        );
 
-        // Assert
-        $wishlists = $this->sdk->getCustomerService()->getWishlists($customerId);
-
-        $this->assertCount(count($sampleWishlists), $wishlists->getWishlists());
+        $wishlists = [];
+        // must call each individual wishlist to get items
+        foreach ($sampleWishlists as $sampleWishlist) {
+            $wishlists[] = $this->sdk->getCustomerService()->getWishlist(
+                $sampleWishlist['code'], $customerId
+            );
+        }
 
         // CleanUp
         $this->cleanupWishlists(
-            $this->getWishlistsDeleteIdsForCleanup($wishlists, $customerId),
-            $customerId)
-        ;
+            $this->getWishlistsDeleteIdsForCleanup(
+                $wishlistGetList, $customerId
+            ),
+            $customerId,
+            $productCodes
+        );
+
+        // Assert
+        $this->assertCount(
+            count($sampleWishlists), $wishlistGetList->getWishlists()
+        );
+        foreach ($sampleWishlists as $sampleWishlist) {
+            $actualWishlist      = $this->findWishListByCode(
+                $sampleWishlist['code'], $wishlists
+            );
+            $sampleWishlistAsGet = new Wishlist\Get($sampleWishlist);
+            // must evaluate piece by piece
+            foreach ($sampleWishlist as $key => $parts) {
+                $this->assertEquals(
+                    $sampleWishlistAsGet->get($key), $actualWishlist->get($key)
+                );
+            }
+        }
     }
 
     /**
@@ -63,24 +111,56 @@ class WishlistTest extends CustomerTest
     public function providerCreateWishlist()
     {
         return [
-            'create one wishlist' => [
+            'create one wishlist'             => [
                 'sampleWishlists' => [
-                    new Wishlist\Create([
+                    [
                         'code' => 'wishlist-one',
                         'name' => 'Wishlist One'
-                    ])
+                    ]
                 ]
             ],
-            'create two wishlists' => [
+            'create two wishlists'            => [
                 'sampleWishlists' => [
-                    new Wishlist\Create([
+
+                    [
                         'code' => 'wishlist-a',
                         'name' => 'Wishlist A'
-                    ]),
-                    new Wishlist\Create([
+                    ],
+                    [
                         'code' => 'wishlist-b',
                         'name' => 'Wishlist B'
-                    ]),
+                    ],
+                ]
+            ],
+            'create one wishlist with items'  => [
+                'sampleWishlists' => [
+                    [
+                        'code'  => 'wishlist-1',
+                        'name'  => 'wishlist 1',
+                        'items' => [
+                            ['productCode' => 'product-1']
+                        ]
+                    ]
+                ]
+            ],
+            'create two wishlists with items' => [
+                'sampleWishlists' => [
+                    [
+                        'code'  => 'wishlist-uno',
+                        'name'  => 'wishlist Uno',
+                        'items' => [
+                            ['productCode' => 'product-a'],
+                            ['productCode' => 'product-b']
+                        ]
+                    ],
+                    [
+                        'code'  => 'wishlist-dos',
+                        'name'  => 'wishlist Dos',
+                        'items' => [
+                            ['productCode' => 'product-8'],
+                            ['productCode' => 'product-9']
+                        ]
+                    ]
                 ]
             ]
         ];
@@ -92,18 +172,22 @@ class WishlistTest extends CustomerTest
     public function testGetWishlist()
     {
         // Arrange
-        $customerId = $this->createCustomer();
-        $wishlistName = 'wishlist test name :)';
+        $customerId     = $this->createCustomer();
+        $wishlistName   = 'wishlist test name :)';
         $sampleWishlist = new Wishlist\Create(
             [
                 'code' => self::WISHLIST_CODE,
                 'name' => $wishlistName
             ]
         );
-        $this->sdk->getCustomerService()->addWishlists($customerId, [$sampleWishlist]);
+        $this->sdk->getCustomerService()->addWishlists(
+            $customerId, [$sampleWishlist]
+        );
 
         // Act
-        $wishlist = $this->sdk->getCustomerService()->getWishlist(self::WISHLIST_CODE, $customerId);
+        $wishlist = $this->sdk->getCustomerService()->getWishlist(
+            self::WISHLIST_CODE, $customerId
+        );
 
         // Assert
         $this->assertEquals(self::WISHLIST_CODE, $wishlist->getCode());
@@ -117,34 +201,95 @@ class WishlistTest extends CustomerTest
     }
 
     /**
+     * @param array $original
+     * @param array $updated
+     *
+     * @dataProvider providerUpdateWishlist
      * @throws Exception\Exception
      */
-    public function testUpdateWishlist()
+    public function testUpdateWishlist($original, $updated)
     {
         // Arrange
-        $customerId = $this->createCustomer();
-        $newName = 'new name';
+        $defaultFields  = ['code' => self::WISHLIST_CODE];
+        $customerId     = $this->createCustomer();
         $sampleWishlist = new Wishlist\Create(
-            [
-                'code' => self::WISHLIST_CODE,
-                'name' => 'original name'
-            ]
+            array_merge($defaultFields, $original)
         );
-        $this->sdk->getCustomerService()->addWishlists($customerId, [$sampleWishlist]);
+
+        $originalItems = !empty($original['items']) ? $original['items'] : [];
+        $updatedItems  = !empty($updated['items']) ? $updated['items'] : [];
+        $productCodes  = array_merge(
+            array_map([$this, 'getItemProductCode'], $originalItems),
+            array_map([$this, 'getItemProductCode'], $updatedItems)
+        );
+        $this->addSampleProducts($productCodes);
+        $this->sdk->getCustomerService()->addWishlists(
+            $customerId, [$sampleWishlist]
+        );
 
         // Act
-        $updateWishlist = new Wishlist\Update(['name' => $newName]);
-        $this->sdk->getCustomerService()->updateWishlist(self::WISHLIST_CODE, $customerId, $updateWishlist);
-
-        // Assert
-        $wishlistAfterUpdate = $this->sdk->getCustomerService()->getWishlist(self::WISHLIST_CODE, $customerId);
-        $this->assertEquals($newName, $wishlistAfterUpdate->getName());
+        $updateWishlist = new Wishlist\Update($updated);
+        $this->sdk->getCustomerService()->updateWishlist(
+            self::WISHLIST_CODE, $customerId, $updateWishlist
+        );
+        $wishlistAfterUpdate = $this->sdk->getCustomerService()->getWishlist(
+            self::WISHLIST_CODE, $customerId
+        );
 
         // CleanUp
         $this->cleanupWishlists(
             [[$wishlistAfterUpdate->getCode(), $customerId]],
-            $customerId
+            $customerId,
+            $productCodes
         );
+
+        // Assert
+        $expectedGet = new Wishlist\Get($updated);
+        foreach ($updated as $key => $value) {
+            $this->assertEquals(
+                $expectedGet->get($key), $wishlistAfterUpdate->get($key)
+            );
+        }
+    }
+
+    public function providerUpdateWishlist()
+    {
+        return [
+            'update name'                   => [
+                'original' => [
+                    'name' => 'wishlist one',
+                ],
+                'updated'  => [
+                    'name' => 'wishlist wedding one'
+                ]
+            ],
+            'update items by adding some'   => [
+                'original' => [
+                    'name' => 'wishlist one',
+                ],
+                'updated'  => [
+                    'items' => [
+                        ['productCode' => 'product-1'],
+                        ['productCode' => 'product-2']
+                    ]
+                ]
+            ],
+            'update items by changing them' => [
+                'original' => [
+                    'name'  => 'wishlist one',
+                    'items' => [
+                        ['productCode' => 'product-1'],
+                        ['productCode' => 'product-2']
+                    ]
+                ],
+                'updated'  => [
+                    'items' => [
+                        ['productCode' => 'product-a'],
+                        ['productCode' => 'product-b']
+                    ]
+                ]
+            ]
+        ];
     }
 
     /**
@@ -153,7 +298,7 @@ class WishlistTest extends CustomerTest
     public function testWishlistDelete()
     {
         // Arrange
-        $customerId = $this->createCustomer();
+        $customerId      = $this->createCustomer();
         $sampleWishlists = [
             new Wishlist\Create(
                 [
@@ -169,53 +314,140 @@ class WishlistTest extends CustomerTest
             ),
 
         ];
-        $this->sdk->getCustomerService()->addWishlists($customerId, $sampleWishlists);
+        $this->sdk->getCustomerService()->addWishlists(
+            $customerId, $sampleWishlists
+        );
 
         // Act
-        $wishlistsBeforeDelete = $this->sdk->getCustomerService()->getWishlists($customerId);
-        $this->sdk->getCustomerService()->deleteWishlist(self::WISHLIST_CODE, $customerId);
-        $wishlistsAfterDelete = $this->sdk->getCustomerService()->getWishlists($customerId);
+        $wishlistsBeforeDelete = $this->sdk->getCustomerService()->getWishlists(
+            $customerId
+        );
+        $this->sdk->getCustomerService()->deleteWishlist(
+            self::WISHLIST_CODE, $customerId
+        );
+        $wishlistsAfterDelete = $this->sdk->getCustomerService()->getWishlists(
+            $customerId
+        );
 
         // Assert
-        $this->assertCount(count($wishlistsBeforeDelete->getWishlists()) - 1, $wishlistsAfterDelete->getWishlists());
+        $this->assertCount(
+            count($wishlistsBeforeDelete->getWishlists()) - 1,
+            $wishlistsAfterDelete->getWishlists()
+        );
 
         // CleanUp
         $this->cleanupWishlists(
-            $this->getWishlistsDeleteIdsForCleanup($wishlistsAfterDelete, $customerId),
+            $this->getWishlistsDeleteIdsForCleanup(
+                $wishlistsAfterDelete, $customerId
+            ),
             $customerId
         );
     }
 
     /**
+     * @param string[] $productCodes
+     *
+     * @dataProvider providerAddWishlistItems
+     *
      * @throws Exception\Exception
      */
-    public function testAddWishlistItems()
+    public function testAddWishlistItems($productCodes)
     {
         // Arrange
-        $customerId = $this->createCustomer();
-        $sampleWishlist = new Wishlist\Create([
-            'code' => self::WISHLIST_CODE,
-            'name' => 'Wishlist Name One'
-        ]);
-        $sampleProduct = new Product\Create(['code' => self::WISHLIST_PRODUCT_CODE]);
-        $this->sdk->getCustomerService()->addWishlists($customerId, [$sampleWishlist]);
-        $this->sdk->getCatalogService()->addProducts([$sampleProduct]);
+        $customerId     = $this->createCustomer();
+        $sampleWishlist = new Wishlist\Create(
+            [
+                'code' => self::WISHLIST_CODE,
+                'name' => 'Wishlist Name One'
+            ]
+        );
+        $this->addSampleProducts($productCodes);
+
+        $this->sdk->getCustomerService()->addWishlists(
+            $customerId, [$sampleWishlist]
+        );
 
         // Act
-        $sampleItem = new Wishlist\Dto\Item\Create(['productCode' => self::WISHLIST_PRODUCT_CODE]);
-        $this->sdk->getCustomerService()->addWishlistItems($customerId,self::WISHLIST_CODE, [$sampleItem]);
-        $wishList = $this->sdk->getCustomerService()->getWishlist(self::WISHLIST_CODE, $customerId);
+        $sampleItems = $this->createWishlistItems($productCodes);
+        $this->sdk->getCustomerService()->addWishlistItems(
+            $customerId, self::WISHLIST_CODE, $sampleItems
+        );
 
         // Assert
-        $this->assertEquals(self::WISHLIST_PRODUCT_CODE, $wishList->getItems()[0].get('code'));
+        $wishlist                     = $this->sdk->getCustomerService()
+            ->getWishlist(
+                self::WISHLIST_CODE, $customerId
+            );
+        $returnedWishlistProductCodes = $this->getWishlistItemsProductCodes(
+            $wishlist
+        );
+        $this->assertEquals($productCodes, $returnedWishlistProductCodes);
 
         // CleanUp
         $this->cleanupWishlists(
             [[self::WISHLIST_CODE, $customerId]],
-            $customerId
+            $customerId,
+            $productCodes
         );
     }
 
+    public function providerAddWishlistItems()
+    {
+        return [
+            'add one item'  => [
+                'productCodes' => [self::WISHLIST_PRODUCT_CODE]
+            ],
+            'add two items' => [
+                'productCodes' => ['wishlist-item-1', 'wishlist-item-2']
+            ]
+        ];
+    }
+
+    /**
+     * @throws Exception\Exception
+     */
+    public function testDeleteWishlistItems()
+    {
+        // Arrange
+        $customerId   = $this->createCustomer();
+        $productCodes = [self::WISHLIST_PRODUCT_CODE,
+                         self::WISHLIST_PRODUCT_CODE_TWO];
+        $this->addSampleProducts($productCodes);
+        $sampleWishlist = new Wishlist\Create(
+            [
+                'code'  => self::WISHLIST_CODE,
+                'name'  => 'Wishlist Name One',
+                'items' => $this->createWishlistItems($productCodes)
+            ]
+        );
+        $this->sdk->getCustomerService()->addWishlists(
+            $customerId, [$sampleWishlist]
+        );
+
+        // Act
+        $this->sdk->getCustomerService()->deleteWishlistItem(
+            self::WISHLIST_PRODUCT_CODE, self::WISHLIST_CODE, $customerId
+        );
+
+        // Assert
+        $wishlist                     = $this->sdk->getCustomerService()
+            ->getWishlist(
+                self::WISHLIST_CODE, $customerId
+            );
+        $returnedWishlistProductCodes = $this->getWishlistItemsProductCodes(
+            $wishlist
+        );
+        $this->assertEquals(
+            [self::WISHLIST_PRODUCT_CODE_TWO], $returnedWishlistProductCodes
+        );
+
+        // CleanUp
+        $this->cleanupWishlists(
+            [[self::WISHLIST_CODE, $customerId]],
+            $customerId,
+            $productCodes
+        );
+    }
 
     /**
      * @return string customer id
@@ -234,8 +466,9 @@ class WishlistTest extends CustomerTest
         return array_pop($response['ids']);
     }
 
-    private function getWishlistsDeleteIdsForCleanup(Wishlist\GetList $wishlists, $customerId)
-    {
+    private function getWishlistsDeleteIdsForCleanup(Wishlist\GetList $wishlists,
+        $customerId
+    ) {
         $deleteIds = [];
         foreach ($wishlists->getWishlists() as $wishlist) {
             $deleteIds[] = [$wishlist->getCode(), $customerId];
@@ -245,11 +478,13 @@ class WishlistTest extends CustomerTest
     }
 
     /**
-     * @param array  $deleteIds
-     * @param string $customerId
+     * @param string[] $deleteIds
+     * @param string   $customerId
+     * @param string[] $productDeleteIds
      */
-    private function cleanupWishlists($deleteIds, $customerId)
-    {
+    private function cleanupWishlists($deleteIds, $customerId,
+        $productDeleteIds = []
+    ) {
         $this->deleteEntitiesAfterTestRun(
             self::CUSTOMER_SERVICE,
             self::METHOD_DELETE_WISHLIST,
@@ -261,5 +496,129 @@ class WishlistTest extends CustomerTest
             self::METHOD_DELETE_CUSTOMER,
             [$customerId]
         );
+
+        if (!empty($productDeleteIds)) {
+            $this->deleteEntitiesAfterTestRun(
+                self::CATALOG_SERVICE,
+                self::METHOD_DELETE_PRODUCT,
+                $productDeleteIds
+            );
+        }
+    }
+
+    /**
+     * @param string[] $productIds
+     *
+     * @throws Exception\Exception
+     */
+    private function addSampleProducts($productIds)
+    {
+        if (empty($productIds)) {
+            return;
+        }
+        $this->sdk->getCatalogService()->addProducts(
+            $this->createSampleProducts($productIds),
+            ['requestType' => 'direct']
+        );
+    }
+
+    /**
+     * @param string[] $productIds
+     *
+     * @return Product\Create[]
+     */
+    private function createSampleProducts($productIds)
+    {
+        return array_map([$this, 'createSampleProduct'], $productIds);
+    }
+
+    /**
+     * @param string $productId
+     *
+     * @return Product\Create
+     */
+    private function createSampleProduct($productId)
+    {
+        $sampleProduct = new Product\Create();
+        $sampleProduct->setCode($productId)
+            ->setCatalogCode('my_catalog')
+            ->setName(new Product\Dto\Name(['en-us' => 'Test Product']))
+            ->setStatus(Product\Create::STATUS_ACTIVE)
+            ->setModelType(Product\Create::MODEL_TYPE_STANDARD)
+            ->setIsInventoryManaged(true)
+            ->setPrice(
+                new Product\Dto\Price(
+                    ['price'        => 90,
+                     'currencyCode' => Product\Dto\Price::CURRENCY_CODE_EUR]
+                )
+            );
+
+        return $sampleProduct;
+    }
+
+    /**
+     * @param Wishlist\Get $wishlist
+     *
+     * @return array
+     */
+    private function getWishlistItemsProductCodes($wishlist)
+    {
+        $productCodes = [];
+        if (empty($wishlist->getItems())) {
+            return $productCodes;
+        }
+
+        foreach ($wishlist->getItems() as $item) {
+            $productCodes[] = $item->getProductCode();
+        }
+
+        return $productCodes;
+    }
+
+    /**
+     * @param string $productCode
+     *
+     * @return Wishlist\Dto\Item\Create
+     */
+    private function createWishlistItem($productCode)
+    {
+        return new Wishlist\Dto\Item\Create(['productCode' => $productCode]);
+    }
+
+    /**
+     * @param string[] $productCodes
+     *
+     * @return Wishlist\Dto\Item\Create[] array
+     */
+    private function createWishlistItems($productCodes)
+    {
+        return array_map([$this, 'createWishlistItem'], $productCodes);
+    }
+
+    /**
+     * @param                $code
+     * @param Wishlist\Get[] $wishlists
+     *
+     * @return Wishlist\Get|null
+     */
+    private function findWishListByCode($code, $wishlists)
+    {
+        foreach ($wishlists as $wishlist) {
+            if ($code == $wishlist->getCode()) {
+                return $wishlist;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param array $item
+     *
+     * @return string
+     */
+    private function getItemProductCode($item)
+    {
+        return $item['productCode'];
     }
 }

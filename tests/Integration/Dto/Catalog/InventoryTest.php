@@ -38,7 +38,7 @@ class InventoryTest extends CatalogTest
         // Arrange
         $product = $this->prepareProductMinimum();
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
-        $this->createLocation();
+        $this->createLocation(self::LOCATION_CODE);
         $inventories = $this->provideSampleInventories(1);
 
         // Act
@@ -52,7 +52,7 @@ class InventoryTest extends CatalogTest
         );
 
         // Assert
-        $product          = $this->sdk->getCatalogService()->getProduct(self::PRODUCT_CODE, ['fields' => 'inventory']);
+        $product = $this->sdk->getCatalogService()->getProduct(self::PRODUCT_CODE, ['fields' => 'inventory']);
         $currentInventory = $product->getInventory()[0];
 
         $this->assertEquals(self::LOCATION_CODE, $currentInventory->getLocationCode());
@@ -75,7 +75,7 @@ class InventoryTest extends CatalogTest
     public function testDeleteInventoryDirect()
     {
         // Arrange
-        $this->createLocation();
+        $this->createLocation(self::LOCATION_CODE);
         $product = $this->prepareProductMinimum();
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
         $inventories = $this->provideSampleInventories(1);
@@ -109,7 +109,7 @@ class InventoryTest extends CatalogTest
     public function testUpdateInventoryIncrementDirect()
     {
         // Arrange
-        $this->createLocation();
+        $this->createLocation(self::LOCATION_CODE);
         $product = $this->prepareProductMinimum();
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
         $inventories = $this->provideSampleInventories(1);
@@ -156,7 +156,7 @@ class InventoryTest extends CatalogTest
     public function testInvalidLocationCode()
     {
         // Arrange
-        $this->createLocation();
+        $this->createLocation(self::LOCATION_CODE);
         $product = $this->prepareProductMinimum();
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
         $inventories = $this->provideSampleInventories(1);
@@ -191,7 +191,7 @@ class InventoryTest extends CatalogTest
     public function testInvalidProductCode()
     {
         // Arrange
-        $this->createLocation();
+        $this->createLocation(self::LOCATION_CODE);
         $product = $this->prepareProductMinimum();
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
         $inventories = $this->provideSampleInventories(1);
@@ -226,7 +226,7 @@ class InventoryTest extends CatalogTest
     public function testUpdateInventoryDecrementDirect()
     {
         // Arrange
-        $this->createLocation();
+        $this->createLocation(self::LOCATION_CODE);
         $product = $this->prepareProductMinimum();
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
         $inventories = $this->provideSampleInventories(1);
@@ -282,7 +282,7 @@ class InventoryTest extends CatalogTest
         $missingItem
     ) {
         // Arrange
-        $this->createLocation();
+        $this->createLocation(self::LOCATION_CODE);
         $product = $this->prepareProductMinimum();
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
         $inventory = new Inventory\Create($inventoryData);
@@ -297,7 +297,7 @@ class InventoryTest extends CatalogTest
             );
         } catch (RequestException $exception) {
             // Assert
-            $errors  = \GuzzleHttp\json_decode($exception->getMessage(), false);
+            $errors = \GuzzleHttp\json_decode($exception->getMessage(), false);
             $message = $errors->error->results->errors[0]->message;
             $this->assertInstanceOf(get_class($expectedException), $exception);
             $this->assertEquals('Missing required property: ' . $missingItem, $message);
@@ -336,7 +336,7 @@ class InventoryTest extends CatalogTest
         $expectedVisible
     ) {
         // Arrange
-        $this->createLocation();
+        $this->createLocation(self::LOCATION_CODE);
         $product = $this->prepareProductMinimum();
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
         $inventories = $this->provideSampleInventories(1);
@@ -360,7 +360,7 @@ class InventoryTest extends CatalogTest
         // Assert
         $product = $this->sdk->getCatalogService()->getProduct(self::PRODUCT_CODE, ['fields' => 'inventory']);
 
-        $inventory        = $product->inventory;
+        $inventory = $product->getInventory();
         $currentInventory = new Inventory($inventory[0]);
 
         $this->assertEquals($expectedOnHand, $currentInventory->onHand);
@@ -391,7 +391,7 @@ class InventoryTest extends CatalogTest
         $expectedVisible
     ) {
         // Arrange
-        $this->createLocation();
+        $this->createLocation(self::LOCATION_CODE);
         $product = $this->prepareProductMinimum();
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
         $inventories = $this->provideSampleInventories(1);
@@ -432,56 +432,56 @@ class InventoryTest extends CatalogTest
     {
         return [
             'increment 10' => [
-                'inventoryData'       => [
-                    'productCode'   => self::PRODUCT_CODE,
-                    'locationCode'  => self::LOCATION_CODE,
+                'inventoryData' => [
+                    'productCode' => self::PRODUCT_CODE,
+                    'locationCode' => self::LOCATION_CODE,
                     'operationType' => Inventory\Create::OPERATION_TYPE_INCREMENT,
-                    'sku'           => 'SKU_1',
-                    'onHand'        => 10,
+                    'sku' => 'SKU_1',
+                    'onHand' => 10,
                 ],
-                'expectedOnHand'      => 20,
+                'expectedOnHand' => 20,
                 'expectedSafetyStock' => 0,
-                'expectedAvailable'   => 20,
-                'expectedVisible'     => 20,
+                'expectedAvailable' => 20,
+                'expectedVisible' => 20,
             ],
             'increment 20' => [
-                'inventoryData'       => [
-                    'productCode'   => self::PRODUCT_CODE,
-                    'locationCode'  => self::LOCATION_CODE,
+                'inventoryData' => [
+                    'productCode' => self::PRODUCT_CODE,
+                    'locationCode' => self::LOCATION_CODE,
                     'operationType' => Inventory\Create::OPERATION_TYPE_INCREMENT,
-                    'sku'           => 'SKU_1',
-                    'onHand'        => 20,
+                    'sku' => 'SKU_1',
+                    'onHand' => 20,
                 ],
-                'expectedOnHand'      => 30,
+                'expectedOnHand' => 30,
                 'expectedSafetyStock' => 0,
-                'expectedAvailable'   => 30,
-                'expectedVisible'     => 30,
+                'expectedAvailable' => 30,
+                'expectedVisible' => 30,
             ],
-            'decrement 2'  => [
-                'inventoryData'       => [
-                    'productCode'   => self::PRODUCT_CODE,
-                    'locationCode'  => self::LOCATION_CODE,
+            'decrement 2' => [
+                'inventoryData' => [
+                    'productCode' => self::PRODUCT_CODE,
+                    'locationCode' => self::LOCATION_CODE,
                     'operationType' => Inventory\Create::OPERATION_TYPE_DECREMENT,
-                    'sku'           => 'SKU_1',
-                    'onHand'        => 2,
+                    'sku' => 'SKU_1',
+                    'onHand' => 2,
                 ],
-                'expectedOnHand'      => 8,
+                'expectedOnHand' => 8,
                 'expectedSafetyStock' => 0,
-                'expectedAvailable'   => 8,
-                'expectedVisible'     => 8,
+                'expectedAvailable' => 8,
+                'expectedVisible' => 8,
             ],
             'decrement 20' => [
-                'inventoryData'       => [
-                    'productCode'   => self::PRODUCT_CODE,
-                    'locationCode'  => self::LOCATION_CODE,
+                'inventoryData' => [
+                    'productCode' => self::PRODUCT_CODE,
+                    'locationCode' => self::LOCATION_CODE,
                     'operationType' => Inventory\Create::OPERATION_TYPE_DECREMENT,
-                    'sku'           => 'SKU_1',
-                    'onHand'        => 20,
+                    'sku' => 'SKU_1',
+                    'onHand' => 20,
                 ],
-                'expectedOnHand'      => -10,
+                'expectedOnHand' => -10,
                 'expectedSafetyStock' => 0,
-                'expectedAvailable'   => 0,
-                'expectedVisible'     => 0,
+                'expectedAvailable' => 0,
+                'expectedVisible' => 0,
             ],
         ];
     }
@@ -493,56 +493,56 @@ class InventoryTest extends CatalogTest
     {
         return [
             'increment 10' => [
-                'inventoryData'       => [
-                    'productCode'   => self::PRODUCT_CODE,
-                    'locationCode'  => self::LOCATION_CODE,
+                'inventoryData' => [
+                    'productCode' => self::PRODUCT_CODE,
+                    'locationCode' => self::LOCATION_CODE,
                     'operationType' => Inventory\Create::OPERATION_TYPE_INCREMENT,
-                    'sku'           => 'SKU_1',
-                    'onHand'        => 10,
+                    'sku' => 'SKU_1',
+                    'onHand' => 10,
                 ],
-                'expectedOnHand'      => 20,
+                'expectedOnHand' => 20,
                 'expectedSafetyStock' => 2,
-                'expectedAvailable'   => 20,
-                'expectedVisible'     => 18,
+                'expectedAvailable' => 20,
+                'expectedVisible' => 18,
             ],
             'increment 20' => [
-                'inventoryData'       => [
-                    'productCode'   => self::PRODUCT_CODE,
-                    'locationCode'  => self::LOCATION_CODE,
+                'inventoryData' => [
+                    'productCode' => self::PRODUCT_CODE,
+                    'locationCode' => self::LOCATION_CODE,
                     'operationType' => Inventory\Create::OPERATION_TYPE_INCREMENT,
-                    'sku'           => 'SKU_1',
-                    'onHand'        => 20,
+                    'sku' => 'SKU_1',
+                    'onHand' => 20,
                 ],
-                'expectedOnHand'      => 30,
+                'expectedOnHand' => 30,
                 'expectedSafetyStock' => 2,
-                'expectedAvailable'   => 30,
-                'expectedVisible'     => 28,
+                'expectedAvailable' => 30,
+                'expectedVisible' => 28,
             ],
-            'decrement 2'  => [
-                'inventoryData'       => [
-                    'productCode'   => self::PRODUCT_CODE,
-                    'locationCode'  => self::LOCATION_CODE,
+            'decrement 2' => [
+                'inventoryData' => [
+                    'productCode' => self::PRODUCT_CODE,
+                    'locationCode' => self::LOCATION_CODE,
                     'operationType' => Inventory\Create::OPERATION_TYPE_DECREMENT,
-                    'sku'           => 'SKU_1',
-                    'onHand'        => 2,
+                    'sku' => 'SKU_1',
+                    'onHand' => 2,
                 ],
-                'expectedOnHand'      => 8,
+                'expectedOnHand' => 8,
                 'expectedSafetyStock' => 2,
-                'expectedAvailable'   => 8,
-                'expectedVisible'     => 6,
+                'expectedAvailable' => 8,
+                'expectedVisible' => 6,
             ],
             'decrement 20' => [
-                'inventoryData'       => [
-                    'productCode'   => self::PRODUCT_CODE,
-                    'locationCode'  => self::LOCATION_CODE,
+                'inventoryData' => [
+                    'productCode' => self::PRODUCT_CODE,
+                    'locationCode' => self::LOCATION_CODE,
                     'operationType' => Inventory\Create::OPERATION_TYPE_DECREMENT,
-                    'sku'           => 'SKU_1',
-                    'onHand'        => 20,
+                    'sku' => 'SKU_1',
+                    'onHand' => 20,
                 ],
-                'expectedOnHand'      => -10,
+                'expectedOnHand' => -10,
                 'expectedSafetyStock' => 2,
-                'expectedAvailable'   => 0,
-                'expectedVisible'     => 0,
+                'expectedAvailable' => 0,
+                'expectedVisible' => 0,
             ],
         ];
     }
@@ -553,29 +553,29 @@ class InventoryTest extends CatalogTest
     public function provideCreateInventoryWithMissingRequiredFields()
     {
         return [
-            'missing productCode'  => [
-                'inventoryData'     => [
+            'missing productCode' => [
+                'inventoryData' => [
                     'locationCode' => self::LOCATION_CODE,
-                    'sku'          => 'SKU_1',
+                    'sku' => 'SKU_1',
                 ],
                 'expectedException' => new RequestException(400),
-                'missingItem'       => 'productCode',
+                'missingItem' => 'productCode',
             ],
             'missing locationCode' => [
-                'inventoryData'     => [
+                'inventoryData' => [
                     'productCode' => self::PRODUCT_CODE,
-                    'sku'         => 'SKU_1',
+                    'sku' => 'SKU_1',
                 ],
                 'expectedException' => new RequestException(400),
-                'missingItem'       => 'locationCode',
+                'missingItem' => 'locationCode',
             ],
-            'missing sku'          => [
-                'inventoryData'     => [
-                    'productCode'  => self::PRODUCT_CODE,
+            'missing sku' => [
+                'inventoryData' => [
+                    'productCode' => self::PRODUCT_CODE,
                     'locationCode' => self::LOCATION_CODE,
                 ],
                 'expectedException' => new RequestException(400),
-                'missingItem'       => 'sku',
+                'missingItem' => 'sku',
             ],
         ];
     }

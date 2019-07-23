@@ -195,7 +195,7 @@ class BulkImportTest extends CatalogTest
         // Arrange
         $product = $this->prepareProductMinimum();
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
-        $this->createLocation();
+        $this->createLocation(self::LOCATION_CODE);
         $inventories = $this->provideSampleInventories(2, $product->code);
 
         // Act
@@ -231,7 +231,7 @@ class BulkImportTest extends CatalogTest
         // Arrange
         $product = $this->prepareProductMinimum();
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
-        $this->createLocation();
+        $this->createLocation(self::LOCATION_CODE);
         $inventories = $this->provideSampleInventories(2, $product->code);
 
         // Act
@@ -276,8 +276,8 @@ class BulkImportTest extends CatalogTest
         $products[] = $this->prepareProductMaximum(null, $categories, $extras, []);
         $inventories =
             array_merge($this->provideSampleInventories(2, $products[0]->code),
-            $this->provideSampleInventories(1, $products[1]->code));
-        $this->createLocation();
+                $this->provideSampleInventories(1, $products[1]->code));
+        $this->createLocation(self::LOCATION_CODE);
 
         // Act
         $handler = $this->sdk->getBulkImportService()->createFileImport();

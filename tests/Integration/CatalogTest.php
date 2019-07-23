@@ -614,7 +614,7 @@ abstract class CatalogTest extends ShopgateSdkTest
     {
         $result = [];
         for ($i = 1; $i < $count + 1; $i++) {
-            $inventory = new Inventory\Create();;
+            $inventory = new Inventory\Create();
             $inventory->setProductCode($productCode);
             $inventory->setLocationCode(self::LOCATION_CODE);
             $inventory->setSku('SKU_' . $i);

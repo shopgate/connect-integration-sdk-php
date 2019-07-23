@@ -25,6 +25,7 @@ namespace Shopgate\ConnectSdk\Tests\Integration\Dto\Customer;
 use Shopgate\ConnectSdk\Tests\Integration\CustomerTest;
 use Shopgate\ConnectSdk\Dto\Customer\Customer;
 use Shopgate\ConnectSdk\Dto\Customer\Wishlist;
+use Shopgate\ConnectSdk\Dto\Catalog\Product;
 use Shopgate\ConnectSdk\Exception;
 
 class WishlistTest extends CustomerTest
@@ -190,14 +191,15 @@ class WishlistTest extends CustomerTest
      */
     public function testAddWishlistItems()
     {
-        $this->markTestSkipped('Skipping while productCode issue is figured out');
         // Arrange
         $customerId = $this->createCustomer();
         $sampleWishlist = new Wishlist\Create([
             'code' => self::WISHLIST_CODE,
             'name' => 'Wishlist Name One'
         ]);
+        $sampleProduct = new Product\Create(['code' => self::WISHLIST_PRODUCT_CODE]);
         $this->sdk->getCustomerService()->addWishlists($customerId, [$sampleWishlist]);
+        $this->sdk->getCatalogService()->addProducts([$sampleProduct]);
 
         // Act
         $sampleItem = new Wishlist\Dto\Item\Create(['productCode' => self::WISHLIST_PRODUCT_CODE]);

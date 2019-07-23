@@ -21,7 +21,7 @@ class BulkImportTest extends CatalogTest
 
         // Act
         $handler = $this->sdk->getBulkImportService()->createFileImport();
-        $categoryHandler = $handler->createCategoryFeed(self::SAMPLE_CATALOG);
+        $categoryHandler = $handler->createCategoryFeed(self::SAMPLE_CATALOG_CODE);
         $categoryHandler->add($categories[0]);
         $categoryHandler->add($categories[1]);
         $categoryHandler->end();
@@ -50,7 +50,7 @@ class BulkImportTest extends CatalogTest
 
         // Act
         $handler = $this->sdk->getBulkImportService()->createStreamImport();
-        $categoryHandler = $handler->createCategoryFeed(self::SAMPLE_CATALOG);
+        $categoryHandler = $handler->createCategoryFeed(self::SAMPLE_CATALOG_CODE);
         $categoryHandler->add($categories[0]);
         $categoryHandler->add($categories[1]);
         $categoryHandler->end();
@@ -80,7 +80,7 @@ class BulkImportTest extends CatalogTest
 
         // Act
         $handler = $this->sdk->getBulkImportService()->createFileImport();
-        $productHandler = $handler->createProductFeed(self::SAMPLE_CATALOG);
+        $productHandler = $handler->createProductFeed(self::SAMPLE_CATALOG_CODE);
         $productHandler->add($products[0]);
         $productHandler->add($products[1]);
         $productHandler->end();
@@ -110,7 +110,7 @@ class BulkImportTest extends CatalogTest
 
         // Act
         $handler = $this->sdk->getBulkImportService()->createStreamImport();
-        $productHandler = $handler->createProductFeed(self::SAMPLE_CATALOG);
+        $productHandler = $handler->createProductFeed(self::SAMPLE_CATALOG_CODE);
         $productHandler->add($products[0]);
         $productHandler->add($products[1]);
         $productHandler->end();
@@ -139,7 +139,7 @@ class BulkImportTest extends CatalogTest
 
         // Act
         $handler = $this->sdk->getBulkImportService()->createFileImport();
-        $attributeHandler = $handler->createAttributeFeed(self::SAMPLE_CATALOG);
+        $attributeHandler = $handler->createAttributeFeed(self::SAMPLE_CATALOG_CODE);
         $attributeHandler->add($attributes[0]);
         $attributeHandler->add($attributes[1]);
         $attributeHandler->end();
@@ -168,7 +168,7 @@ class BulkImportTest extends CatalogTest
 
         // Act
         $handler = $this->sdk->getBulkImportService()->createStreamImport();
-        $attributeHandler = $handler->createAttributeFeed(self::SAMPLE_CATALOG);
+        $attributeHandler = $handler->createAttributeFeed(self::SAMPLE_CATALOG_CODE);
         $attributeHandler->add($attributes[0]);
         $attributeHandler->add($attributes[1]);
         $attributeHandler->end();
@@ -200,7 +200,7 @@ class BulkImportTest extends CatalogTest
 
         // Act
         $handler = $this->sdk->getBulkImportService()->createFileImport();
-        $inventoryHandler = $handler->createInventoryFeed(self::SAMPLE_CATALOG);
+        $inventoryHandler = $handler->createInventoryFeed(self::SAMPLE_CATALOG_CODE);
         $inventoryHandler->add($inventories[0]);
         $inventoryHandler->add($inventories[1]);
         $inventoryHandler->end();
@@ -236,7 +236,7 @@ class BulkImportTest extends CatalogTest
 
         // Act
         $handler = $this->sdk->getBulkImportService()->createStreamImport();
-        $inventoryHandler = $handler->createInventoryFeed(self::SAMPLE_CATALOG);
+        $inventoryHandler = $handler->createInventoryFeed(self::SAMPLE_CATALOG_CODE);
         $inventoryHandler->add($inventories[0]);
         $inventoryHandler->add($inventories[1]);
         $inventoryHandler->end();
@@ -281,19 +281,19 @@ class BulkImportTest extends CatalogTest
 
         // Act
         $handler = $this->sdk->getBulkImportService()->createFileImport();
-        $categoryHandler = $handler->createCategoryFeed(self::SAMPLE_CATALOG);
+        $categoryHandler = $handler->createCategoryFeed(self::SAMPLE_CATALOG_CODE);
         $categoryHandler->add($categories[0]);
         $categoryHandler->add($categories[1]);
         $categoryHandler->end();
-        $attributeHandler = $handler->createAttributeFeed(self::SAMPLE_CATALOG);
+        $attributeHandler = $handler->createAttributeFeed(self::SAMPLE_CATALOG_CODE);
         $attributeHandler->add($extras[0]);
         $attributeHandler->add($extras[1]);
         $attributeHandler->end();
-        $productHandler = $handler->createProductFeed(self::SAMPLE_CATALOG);
+        $productHandler = $handler->createProductFeed(self::SAMPLE_CATALOG_CODE);
         $productHandler->add($products[0]);
         $productHandler->add($products[1]);
         $productHandler->end();
-        $inventoryHandler = $handler->createInventoryFeed(self::SAMPLE_CATALOG);
+        $inventoryHandler = $handler->createInventoryFeed(self::SAMPLE_CATALOG_CODE);
         $inventoryHandler->add($inventories[0]);
         $inventoryHandler->add($inventories[1]);
         $inventoryHandler->add($inventories[2]);

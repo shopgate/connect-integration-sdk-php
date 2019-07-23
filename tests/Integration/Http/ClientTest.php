@@ -10,6 +10,7 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Stream;
+use kamermans\OAuth2\OAuth2Middleware;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
@@ -80,14 +81,14 @@ class ClientTest extends ShopgateSdkTest
         $sdk = $this->createNewSdk($clientId, $clientSecret, $merchantCode, $baseUri, $env, $accessTokenPath);
         try {
             $sdk->getClient()->doRequest([
-                'method' => 'get',
+                'method'      => 'get',
                 // direct
-                'service' => 'catalog',
-                'path' => 'categories',
+                'service'     => 'catalog',
+                'path'        => 'categories',
                 'requestType' => $requestType,
                 // event
-                'action' => 'update',
-                'entity' => 'category',
+                'action'      => 'update',
+                'entity'      => 'category',
             ]);
         } catch (Exception $exception) {
             $this->assertInstanceOf($expectedException, $exception);
@@ -103,7 +104,7 @@ class ClientTest extends ShopgateSdkTest
     public function provideConfigurations()
     {
         return [
-            'wrong path' => [
+            'wrong path'                 => [
                 AuthenticationInvalidException::class,
                 ShopgateSdk::REQUEST_TYPE_DIRECT,
                 getenv('clientId'),
@@ -113,7 +114,7 @@ class ClientTest extends ShopgateSdkTest
                 getenv('env') ?: '',
                 '/test.txt',
             ],
-            'wrong clientId' => [
+            'wrong clientId'             => [
                 AuthenticationInvalidException::class,
                 ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'wrong',
@@ -123,7 +124,7 @@ class ClientTest extends ShopgateSdkTest
                 getenv('env') ?: '',
                 getenv('accessTokenPath')
             ],
-            'wrong clientSecret' => [
+            'wrong clientSecret'         => [
                 AuthenticationInvalidException::class,
                 ShopgateSdk::REQUEST_TYPE_DIRECT,
                 getenv('clientId'),
@@ -133,7 +134,7 @@ class ClientTest extends ShopgateSdkTest
                 getenv('env') ?: '',
                 getenv('accessTokenPath')
             ],
-            'wrong merchantCode' => [
+            'wrong merchantCode'         => [
                 AuthenticationInvalidException::class,
                 ShopgateSdk::REQUEST_TYPE_DIRECT,
                 getenv('clientId'),
@@ -143,7 +144,7 @@ class ClientTest extends ShopgateSdkTest
                 getenv('env') ?: '',
                 getenv('accessTokenPath')
             ],
-            'wrong baseUri' => [
+            'wrong baseUri'              => [
                 RequestException::class,
                 ShopgateSdk::REQUEST_TYPE_DIRECT,
                 getenv('clientId'),
@@ -153,7 +154,7 @@ class ClientTest extends ShopgateSdkTest
                 getenv('env') ?: '',
                 getenv('accessTokenPath')
             ],
-            'wrong env' => [
+            'wrong env'                  => [
                 RequestException::class,
                 ShopgateSdk::REQUEST_TYPE_DIRECT,
                 getenv('clientId'),
@@ -163,7 +164,7 @@ class ClientTest extends ShopgateSdkTest
                 'wrong',
                 getenv('accessTokenPath')
             ],
-            'event - wrong path' => [
+            'event - wrong path'         => [
                 AuthenticationInvalidException::class,
                 ShopgateSdk::REQUEST_TYPE_EVENT,
                 getenv('clientId'),
@@ -173,7 +174,7 @@ class ClientTest extends ShopgateSdkTest
                 getenv('env') ?: '',
                 '/test.txt',
             ],
-            'event - wrong clientId' => [
+            'event - wrong clientId'     => [
                 AuthenticationInvalidException::class,
                 ShopgateSdk::REQUEST_TYPE_EVENT,
                 'wrong',
@@ -203,7 +204,7 @@ class ClientTest extends ShopgateSdkTest
                 getenv('env') ?: '',
                 getenv('accessTokenPath')
             ],
-            'event - wrong baseUri' => [
+            'event - wrong baseUri'      => [
                 RequestException::class,
                 ShopgateSdk::REQUEST_TYPE_EVENT,
                 getenv('clientId'),
@@ -213,7 +214,7 @@ class ClientTest extends ShopgateSdkTest
                 getenv('env') ?: '',
                 getenv('accessTokenPath')
             ],
-            'event - wrong env' => [
+            'event - wrong env'          => [
                 RequestException::class,
                 ShopgateSdk::REQUEST_TYPE_EVENT,
                 getenv('clientId'),
@@ -232,7 +233,7 @@ class ClientTest extends ShopgateSdkTest
     public function testClientThrowsRequestException()
     {
         // Arrange
-        $mockHandler = new MockHandler([]);
+        $mockHandler  = new MockHandler([]);
         $handlerStack = HandlerStack::create($mockHandler);
 
         /** @var GuzzleClient $client */
@@ -242,8 +243,15 @@ class ClientTest extends ShopgateSdkTest
             ->setMethods(null)
             ->getMock();
 
+        /** @var OAuth2Middleware $OAuthMiddleware */
+        $OAuthMiddleware =  $this->getMockBuilder(OAuth2Middleware::class)
+                                       ->disableOriginalConstructor()
+                                       ->setMethods(null)
+                                       ->getMock();
+
         $sdkClient = new SdkClient(
             $client,
+            $OAuthMiddleware,
             'http://{service}.local',
             'TM2'
         );
@@ -255,14 +263,14 @@ class ClientTest extends ShopgateSdkTest
 
         // Act
         $sdkClient->doRequest([
-            'method' => 'get',
+            'method'      => 'get',
             // direct
-            'service' => 'catalog',
-            'path' => 'categories',
+            'service'     => 'catalog',
+            'path'        => 'categories',
             'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
             // event
-            'action' => 'update',
-            'entity' => 'category',
+            'action'      => 'update',
+            'entity'      => 'category',
         ]);
     }
 
@@ -272,10 +280,10 @@ class ClientTest extends ShopgateSdkTest
     public function testClientThrowsUnknownException()
     {
         // Arrange
-        $mockHandler = new MockHandler([]);
+        $mockHandler  = new MockHandler([]);
         $handlerStack = HandlerStack::create($mockHandler);
 
-        $stream = fopen('data://text/plain,test' ,'r');
+        $stream = fopen('data://text/plain,test', 'r');
         $mockHandler->append(new SeekException(new Stream($stream)));
 
         /** @var GuzzleClient $client */
@@ -284,8 +292,16 @@ class ClientTest extends ShopgateSdkTest
             ->setConstructorArgs([['handler' => $handlerStack]])
             ->setMethods(null)
             ->getMock();
+
+        /** @var OAuth2Middleware $OAuthMiddleware */
+        $OAuthMiddleware =  $this->getMockBuilder(OAuth2Middleware::class)
+                                       ->disableOriginalConstructor()
+                                       ->setMethods(null)
+                                       ->getMock();
+
         $sdkClient = new SdkClient(
             $client,
+            $OAuthMiddleware,
             'http://{service}.local',
             'TM2'
         );
@@ -295,14 +311,14 @@ class ClientTest extends ShopgateSdkTest
 
         // Act
         $sdkClient->doRequest([
-            'method' => 'get',
+            'method'      => 'get',
             // direct
-            'service' => 'catalog',
-            'path' => 'categories',
+            'service'     => 'catalog',
+            'path'        => 'categories',
             'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
             // event
-            'action' => 'update',
-            'entity' => 'category',
+            'action'      => 'update',
+            'entity'      => 'category',
         ]);
     }
 }

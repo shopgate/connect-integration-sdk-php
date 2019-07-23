@@ -54,17 +54,18 @@ retry "MySQL" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T mysql mysql -ur
 
 docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T mysql mysql -u root -psecret < ./fixtures/schema.sql
 
-docker-compose $DOCKER_COMPOSE_PARAMETERS up -d omni-event-receiver
-retry "EventReceiver" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T omni-event-receiver curl http://localhost/health -o /dev/null 2>&1"
-
-docker-compose $DOCKER_COMPOSE_PARAMETERS stop catalog import import-script && docker-compose $DOCKER_COMPOSE_PARAMETERS up -d catalog import import-script
+docker-compose $DOCKER_COMPOSE_PARAMETERS stop omni-customer catalog import import-script && docker-compose $DOCKER_COMPOSE_PARAMETERS up -d omni-customer catalog import import-script
+retry "CustomerService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T omni-customer curl http://localhost/health -o /dev/null 2>&1"
 retry "CatalogService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T catalog curl http://localhost/health -o /dev/null 2>&1"
 retry "ImportService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T import curl http://localhost/health -o /dev/null 2>&1"
+
+docker-compose $DOCKER_COMPOSE_PARAMETERS up -d omni-event-receiver
+retry "EventReceiver" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T omni-event-receiver curl http://localhost/health -o /dev/null 2>&1"
 
 docker-compose $DOCKER_COMPOSE_PARAMETERS up -d elasticsearch
 retry "elasticsearch" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T elasticsearch curl http://localhost:9200/_cluster/health?wait_for_status=yellow 2>&1"
 
-docker-compose $DOCKER_COMPOSE_PARAMETERS up -d mysql auth redis omni-worker omni-event-receiver omni-merchant omni-location s3 omni-customer
+docker-compose $DOCKER_COMPOSE_PARAMETERS up -d mysql auth redis omni-worker omni-merchant omni-location s3
 
 retry "AuthService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T auth curl http://localhost/health -o /dev/null 2>&1"
 retry "MerchantService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T omni-merchant curl http://localhost/health -o /dev/null 2>&1"

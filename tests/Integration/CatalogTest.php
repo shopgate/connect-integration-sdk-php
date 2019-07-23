@@ -22,10 +22,12 @@
 
 namespace Shopgate\ConnectSdk\Tests\Integration;
 
+use Shopgate\ConnectSdk\Dto\Base;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute\Dto\Name;
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
+use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Categories;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Extras;
@@ -38,6 +40,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\ShortDescription;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Update;
 use Shopgate\ConnectSdk\Exception\Exception;
+use Shopgate\ConnectSdk\ShopgateSdk;
 
 abstract class CatalogTest extends ShopgateSdkTest
 {
@@ -63,6 +66,7 @@ abstract class CatalogTest extends ShopgateSdkTest
     const SAMPLE_EXTRA_CODE_2         = 'extra_code_2';
     const SAMPLE_EXTRA_VALUE_CODE     = 'extra_value_code_1';
     const SAMPLE_EXTRA_VALUE_CODE_2   = 'extra_value_code_2';
+    const LOCATION_CODE = 'WHS1';
 
     const SAMPLE_CATALOG = 'NAWholesale';
 
@@ -597,5 +601,83 @@ abstract class CatalogTest extends ShopgateSdkTest
         }
 
         return $categoryCodes;
+    }
+
+    /**
+     * @param int    $count
+     * @param string $productCode
+     *
+     * @return Inventory\Create[]
+     */
+    protected function provideSampleInventories($count = 1, $productCode = self::PRODUCT_CODE)
+    {
+        $result = [];
+        for ($i = 1; $i < $count + 1; $i++) {
+            $inventory = new Inventory\Create();
+            ;
+            $inventory->setProductCode($productCode);
+            $inventory->setLocationCode(self::LOCATION_CODE);
+            $inventory->setSku('SKU_' . $i);
+            $inventory->setOnHand(10 + $i);
+            $inventory->setBin($i);
+            $inventory->setBinLocation('DE-' . $i);
+            $inventory->setSafetyStock($i);
+            $result[] = $inventory;
+        }
+
+        return $result;
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function createLocation()
+    {
+        $locations = [
+            'locations' => [
+                new Base([
+                    'code'      => self::LOCATION_CODE,
+                    'name'      => 'Test Merchant 2 Warehouse 1',
+                    'status'    => 'active',
+                    'latitude'  => 47.117330,
+                    'longitude' => 20.681810,
+                    'type'      => [
+                        'code' => 'warehouse'
+                    ]
+                ])
+            ]
+        ];
+        $this->sdk->getClient()->doRequest(
+            [
+                // general
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
+                'json'        => $locations,
+                'query'       => [],
+                // direct
+                'method'      => 'post',
+                'service'     => 'omni-location',
+                'path'        => 'locations',
+            ]
+        );
+    }
+
+    /**
+     * @param $locationCode
+     *
+     * @throws Exception
+     */
+    protected function deleteLocation($locationCode)
+    {
+        $this->sdk->getClient()->doRequest(
+            [
+                // general
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
+                'query'       => [],
+                // direct
+                'method'      => 'delete',
+                'service'     => 'omni-location',
+                'path'        => 'locations/' . $locationCode,
+            ]
+        );
     }
 }

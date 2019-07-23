@@ -33,12 +33,64 @@ use Shopgate\ConnectSdk\Tests\Integration\CatalogTest;
 class CategoryTest extends CatalogTest
 {
     /**
+     * @throws Exception
+     */
+    public function testCreateCategoryDirect()
+    {
+        // Arrange
+        $sampleCategories    = $this->provideSampleCategories();
+        $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
+
+        // Act
+        $this->createCategories(
+            $sampleCategories,
+            ['requestType' => 'direct']
+        );
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, $sampleCategoryCodes);
+
+        // Assert
+        $categories = $this->getCategories($sampleCategoryCodes);
+        /** @noinspection PhpParamsInspection */
+        $this->assertCount(2, $categories->getCategories());
+    }
+
+    /**
+     * @depends testCreateCategoryDirect
+     *
+     * @throws Exception
+     */
+    public function testGetCategories()
+    {
+        // Arrange
+        $sampleCategories = $this->provideSampleCategories();
+        $this->sdk->getCatalogService()->addCategories($sampleCategories, ['requestType' => 'direct']);
+
+        // Act
+        $categories = $this->sdk->getCatalogService()->getCategories();
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_CATEGORY,
+            $this->getCategoryCodes($sampleCategories)
+        );
+
+        // Assert
+        /** @noinspection PhpParamsInspection */
+        $this->assertCount(2, $categories->getCategories());
+    }
+
+    /**
      * @param int      $limit
      * @param int      $offset
      * @param int      $expectedCategoryCount
      * @param string[] $expectedCategoryCodes
      *
      * @throws Exception
+     *
+     * @depends testCreateCategoryDirect
      *
      * @dataProvider provideCategoryLimitCases
      */
@@ -154,30 +206,9 @@ class CategoryTest extends CatalogTest
     }
 
     /**
-     * @throws Exception
-     */
-    public function testCreateCategoryDirect()
-    {
-        // Arrange
-        $sampleCategories    = $this->provideSampleCategories();
-        $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
-
-        // Act
-        $this->createCategories(
-            $sampleCategories,
-            ['requestType' => 'direct']
-        );
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, $sampleCategoryCodes);
-
-        // Assert
-        $categories = $this->getCategories($sampleCategoryCodes);
-        /** @noinspection PhpParamsInspection */
-        $this->assertCount(2, $categories->getCategories());
-    }
-
-    /**
+     * @depends testCreateCategoryDirect
+     * @depends testGetCategories
+     *
      * @throws Exception
      */
     public function testUpdateCategoryDirect()
@@ -217,6 +248,9 @@ class CategoryTest extends CatalogTest
      * @param string $expectedValue
      *
      * @throws Exception
+     *
+     * @depends testCreateCategoryDirect
+     * @depends testGetCategories
      *
      * @dataProvider provideUpdateCategoryData
      */
@@ -325,6 +359,9 @@ class CategoryTest extends CatalogTest
     }
 
     /**
+     * @depends testCreateCategoryDirect
+     * @depends testGetCategories
+     *
      * @throws Exception
      */
     public function testDeleteCategoryDirect()
@@ -345,30 +382,6 @@ class CategoryTest extends CatalogTest
         $categories = $this->getCategories($this->getCategoryCodes($sampleCategories));
         /** @noinspection PhpParamsInspection */
         $this->assertCount(0, $categories->getCategories());
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function testGetCategories()
-    {
-        // Arrange
-        $sampleCategories = $this->provideSampleCategories();
-        $this->sdk->getCatalogService()->addCategories($sampleCategories, ['requestType' => 'direct']);
-
-        // Act
-        $categories = $this->sdk->getCatalogService()->getCategories();
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_CATEGORY,
-            $this->getCategoryCodes($sampleCategories)
-        );
-
-        // Assert
-        /** @noinspection PhpParamsInspection */
-        $this->assertCount(2, $categories->getCategories());
     }
 
     /**
@@ -531,6 +544,8 @@ class CategoryTest extends CatalogTest
     }
 
     /**
+     * @depends testCreateCategoryDirect
+     *
      * @throws Exception
      */
     public function testUpdateCategoryWithoutAnyDataGiven()
@@ -586,6 +601,9 @@ class CategoryTest extends CatalogTest
     }
 
     /**
+     * @depends testCreateCategoryDirect
+     * @depends testGetCategories
+     *
      * @throws Exception
      */
     public function testCreateCategoryEvent()
@@ -609,6 +627,9 @@ class CategoryTest extends CatalogTest
     }
 
     /**
+     * @depends testCreateCategoryDirect
+     * @depends testGetCategories
+     *
      * @throws Exception
      */
     public function testUpdateCategoryEvent()
@@ -638,6 +659,9 @@ class CategoryTest extends CatalogTest
     }
 
     /**
+     * @depends testCreateCategoryDirect
+     * @depends testGetCategories
+     *
      * @throws Exception
      */
     public function testDeleteCategoryEvent()
@@ -745,11 +769,11 @@ class CategoryTest extends CatalogTest
     }
 
     /**
-     * @param string $name
-     * @param string $image
-     * @param string $url
-     * @param string $description
-     * @param string $parentCategoryCode
+     * @param string             $name
+     * @param Category\Dto\Image $image
+     * @param Category\Dto\Url   $url
+     * @param string             $description
+     * @param string             $parentCategoryCode
      *
      * @return Category\Update
      */

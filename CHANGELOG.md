@@ -32,6 +32,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - addInventory direct call
 - updateInventory direct call
 - deleteInventory direct call
+- getLocations direct call
+- getLocation direct call
+- addLocations direct call
+- updateLocation direct call
+- deleteLocation direct call
 - bulkImport for inventory
 
 ## [0.5.0]- 2019-06-28

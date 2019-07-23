@@ -314,7 +314,6 @@ class BulkImportTest extends CatalogTest
             $extras[1]->code
         ]);
 
-
         sleep(self::SLEEP_TIME_AFTER_BULK + 5);
 
         // Assert

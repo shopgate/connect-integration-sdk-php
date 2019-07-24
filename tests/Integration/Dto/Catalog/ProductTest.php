@@ -485,6 +485,26 @@ class ProductTest extends CatalogTest
     /**
      * @throws Exception
      */
+    public function testDeleteProductWithSpaceDirect()
+    {
+        // Arrange
+        $product = $this->prepareProductMaximum();
+        $productCode = 'Test Space';
+        $product->setCode($productCode);
+
+        $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
+
+        // Act
+        $this->sdk->getCatalogService()->deleteProduct($product->code, ['requestType' => 'direct']);
+
+        // Assert
+        $this->expectException(NotFoundException::class);
+        $this->sdk->getCatalogService()->getProduct($product->code);
+    }
+
+    /**
+     * @throws Exception
+     */
     public function testDeleteProductEvent()
     {
         // Arrange

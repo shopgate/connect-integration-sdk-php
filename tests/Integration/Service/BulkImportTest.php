@@ -262,7 +262,7 @@ class BulkImportTest extends CatalogTest
     /**
      * @depends testProductBulkFileImport
      * @depends testCategoryBulkFileImport
-     * @depends testAttributeStreamBulkImport
+     * @depends testProductAttributeStreamBulkImport
      * @depends testInventoryBulkFileImport
      *
      * @throws Exception

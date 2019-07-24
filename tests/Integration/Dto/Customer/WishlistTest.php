@@ -34,7 +34,7 @@ use Shopgate\ConnectSdk\Exception\RequestException;
 class WishlistTest extends CustomerIntegrationTest
 {
     /**
-     * @param Wishlist\Create[] $sampleWishlists
+     * @param array $sampleWishlists
      *
      * @dataProvider providerCreateWishlist
      *
@@ -469,14 +469,32 @@ class WishlistTest extends CustomerIntegrationTest
             $customerId, [$sampleWishlist]
         );
 
-        // Assert
-        $this->expectException(RequestException::class);
-
         // Act
         $sampleItem = new Wishlist\Dto\Item\Create();
-        $this->sdk->getCustomerService()->addWishlistItems(
-            $customerId, self::WISHLIST_CODE, [$sampleItem]
+        try {
+            $this->sdk->getCustomerService()->addWishlistItems(
+                $customerId, self::WISHLIST_CODE, [$sampleItem]
+            );
+        } catch (Exception\Exception $exception) {
+            // CleanUp
+            $this->cleanupWishlists(
+                [[self::WISHLIST_CODE, $customerId]],
+                $customerId
+            );
+            // Assert
+            $this->assertInstanceOf(RequestException::class, $exception);
+
+            return;
+        }
+
+        $this->fail('Expected ' . RequestException::class . ' but wasn\'t thrown');
+
+        // CleanUp
+        $this->cleanupWishlists(
+            [[self::WISHLIST_CODE, $customerId]],
+            $customerId
         );
+
     }
 
     /**

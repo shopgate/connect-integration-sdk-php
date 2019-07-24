@@ -1,22 +1,11 @@
 <?php
 
-require_once('../bootstrap.php');
+require_once(dirname(__FILE__) . '/../../bootstrap.php');
 
 use \Shopgate\ConnectSdk\ShopgateSdk;
 use \Shopgate\ConnectSdk\Exception\Exception;
 
-$catalogs = [
-    'catalogs' => [
-        new Base([
-            'code'                => 'NARetail',
-            'parentCatalogCode'   => 'BANA',
-            'name'                => 'North American Wholesale',
-            'isDefault'           => true,
-            'defaultLocaleCode'   => 'en-us',
-            'defaultCurrencyCode' => 'USD',
-        ]),
-    ]
-];
+$catalogs = provideCatalogs();
 
 try {
     $sdk->getClient()->doRequest(

@@ -1,21 +1,11 @@
 <?php
 
-require_once('../bootstrap.php');
+require_once(dirname(__FILE__) . '/../../bootstrap.php');
 
 use \Shopgate\ConnectSdk\ShopgateSdk;
 use \Shopgate\ConnectSdk\Exception\Exception;
 
-$parentCatalogs = [
-    'parentCatalogs' => [
-        new Base([
-            'code'                => 'BANA',
-            'name'                => 'Team Banana Parent Catalog',
-            'isDefault'           => true,
-            'defaultLocaleCode'   => 'en-us',
-            'defaultCurrencyCode' => 'USD',
-        ])
-    ]
-];
+$parentCatalogs = provideParentCatalogs();
 
 try {
     $sdk->getClient()->doRequest(

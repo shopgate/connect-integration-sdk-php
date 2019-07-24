@@ -2,10 +2,10 @@
 
 require_once(dirname(__FILE__) . '/../../bootstrap.php');
 
-$products = provideSampleProducts();
+$categories = provideSampleCategories();
 
 try {
-    $sdk->getCatalogService()->addProducts($products);
+    $sdk->getCatalogService()->addCategories($categories);
 } catch (Exception $exception) {
     echo $exception->getMessage();
 }

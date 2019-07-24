@@ -2,10 +2,9 @@
 
 require_once(dirname(__FILE__) . '/../../bootstrap.php');
 
-$products = provideSampleProducts();
-
 try {
-    $sdk->getCatalogService()->addProducts($products);
+    $sdk->getCatalogService()->deleteAttribute(EXTRA_CODE);
+    $sdk->getCatalogService()->deleteAttribute(EXTRA_CODE_SECOND);
 } catch (Exception $exception) {
     echo $exception->getMessage();
 }

@@ -1,6 +1,6 @@
 <?php
 
-require_once('../../bootstrap.php');
+require_once(dirname(__FILE__) . '/../../bootstrap.php');
 
 try {
     $sdk->getCatalogService()->deleteProduct(PRODUCT_CODE);

@@ -60,7 +60,6 @@ development:
         user: root
         password: secret
         port: 3306
-        autoCreateDatabase: "true"
 
     CatalogService:
       mysql:

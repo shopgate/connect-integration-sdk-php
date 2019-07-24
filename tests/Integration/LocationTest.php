@@ -24,7 +24,7 @@ namespace Shopgate\ConnectSdk\Tests\Integration;
 
 use Shopgate\ConnectSdk\Dto\Location\Location;
 
-class LocationTest extends ShopgateSdkTest
+abstract class LocationTest extends ShopgateSdkTest
 {
     const LOCATION_SERVICE       = 'omni-location';
     const METHOD_DELETE_LOCATION = 'deleteLocation';
@@ -89,7 +89,7 @@ class LocationTest extends ShopgateSdkTest
     {
         $locationCodes = [];
         foreach ($locations as $location) {
-            $locationCodes[] = $location->getCode();
+            $locationCodes[] = $location->get('code');
         }
 
         return $locationCodes;

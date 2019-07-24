@@ -3,25 +3,17 @@
 require_once(dirname(__FILE__) . '/../../bootstrap.php');
 
 use \Shopgate\ConnectSdk\ShopgateSdk;
-use \Shopgate\ConnectSdk\Exception\Exception;
-
-/**
- * preconditions:
- * - parentCatalog PARENT_CATALOG_CODE exists
- */
-$catalogs = provideCatalogs();
 
 try {
     $sdk->getClient()->doRequest(
         [
             // general
             'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-            'json'        => $catalogs,
             'query'       => [],
             // direct
-            'method'      => 'post',
-            'service'     => 'catalog',
-            'path'        => 'catalogs',
+            'method'      => 'delete',
+            'service'     => 'omni-location',
+            'path'        => 'locations/' . LOCATION_CODE,
         ]
     );
 } catch (Exception $exception) {

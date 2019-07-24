@@ -3,11 +3,15 @@
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute\Dto\Name;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
+use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
 use Shopgate\ConnectSdk\Dto\Base;
 
+const PARENT_CATALOG_CODE = 'NARetail';
 const CATALOG_CODE = 'NARetail';
+
+const LOCATION_CODE = 'WHS1';
 
 const CATEGORY_CODE = 'Test';
 const CATEGORY_CODE_SECOND = 'Second Test';
@@ -20,6 +24,10 @@ const EXTRA_CODE_SECOND = 'Second Test';
 const EXTRA_VALUE_CODE = 'Test';
 const EXTRA_VALUE_CODE_SECOND = 'Seconds Test';
 
+const INVENTORY_SKU = 'Test';
+const INVENTORY_SKU_ANOTHER = 'Another Test';
+const INVENTORY_SKU_SECOND = 'Second Test';
+
 /**
  * @return array
  */
@@ -28,7 +36,7 @@ function provideParentCatalogs()
     $parentCatalogs = [
         'parentCatalogs' => [
             new Base([
-                'code' => 'BANA',
+                'code' => PARENT_CATALOG_CODE,
                 'name' => 'Team Banana Parent Catalog',
                 'isDefault' => true,
                 'defaultLocaleCode' => 'en-us',
@@ -47,8 +55,8 @@ function provideCatalogs()
     $catalogs = [
         'catalogs' => [
             new Base([
-                'code' => 'NARetail',
-                'parentCatalogCode' => 'BANA',
+                'code' => CATALOG_CODE,
+                'parentCatalogCode' => PARENT_CATALOG_CODE,
                 'name' => 'North American Wholesale',
                 'isDefault' => true,
                 'defaultLocaleCode' => 'en-us',
@@ -146,6 +154,72 @@ function provideSampleAttributes()
     return $attributes;
 }
 
+/**
+ * @return Inventory\Create[]
+ */
+function provideSampleInventories()
+{
+    $inventory = new Inventory\Create();
+    $inventory->setProductCode(PRODUCT_CODE);
+    $inventory->setLocationCode(LOCATION_CODE);
+    $inventory->setSku(INVENTORY_SKU);
+    $inventory->setOnHand(10);
+    $inventory->setBin('test bin');
+    $inventory->setBinLocation('DE-DE');
+    $inventory->setSafetyStock(1);
+    $result[] = $inventory;
+
+    $inventory = new Inventory\Create();
+    $inventory->setProductCode(PRODUCT_CODE);
+    $inventory->setLocationCode(LOCATION_CODE);
+    $inventory->setSku(INVENTORY_SKU_ANOTHER);
+    $inventory->setOnHand(15);
+    $inventory->setBin('another test bin');
+    $inventory->setBinLocation('EN-US');
+    $inventory->setSafetyStock(3);
+    $result[] = $inventory;
+
+    $inventory = new Inventory\Create();
+    $inventory->setProductCode(PRODUCT_CODE_SECOND);
+    $inventory->setLocationCode(LOCATION_CODE);
+    $inventory->setSku(INVENTORY_SKU_SECOND);
+    $inventory->setOnHand(15);
+    $inventory->setBin('another test bin');
+    $inventory->setBinLocation('EN-US');
+    $inventory->setSafetyStock(3);
+    $result[] = $inventory;
+
+
+    return $result;
+}
+
+/**
+ * @return Inventory\Delete[]
+ */
+function provideSampleDeleteInventories()
+{
+    $inventories = [];
+
+    $inventory = new Inventory\Delete();
+    $inventory->setProductCode(PRODUCT_CODE);
+    $inventory->setLocationCode(LOCATION_CODE);
+    $inventory->setSku(INVENTORY_SKU);
+    $inventories[] = $inventory;
+
+    $inventory = new Inventory\Delete();
+    $inventory->setProductCode(PRODUCT_CODE);
+    $inventory->setLocationCode(LOCATION_CODE);
+    $inventory->setSku(INVENTORY_SKU_ANOTHER);
+    $inventories[] = $inventory;
+
+    $inventory = new Inventory\Delete();
+    $inventory->setProductCode(PRODUCT_CODE_SECOND);
+    $inventory->setLocationCode(LOCATION_CODE);
+    $inventory->setSku(INVENTORY_SKU_SECOND);
+    $inventories[] = $inventory;
+
+    return $inventories;
+}
 
 /**
  * @return Product\Create[]
@@ -171,4 +245,23 @@ function provideSampleProducts()
     $products[] = $product;
 
     return $products;
+}
+
+/**
+ * @return array
+ */
+function provideLocations()
+{
+    return [
+        new Base([
+            'code' => LOCATION_CODE,
+            'name' => 'Warehouse 1',
+            'status' => 'active',
+            'latitude' => 47.117330,
+            'longitude' => 20.681810,
+            'type' => [
+                'code' => 'warehouse'
+            ]
+        ])
+    ];
 }

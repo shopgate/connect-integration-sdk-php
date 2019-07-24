@@ -494,7 +494,6 @@ class WishlistTest extends CustomerIntegrationTest
             [[self::WISHLIST_CODE, $customerId]],
             $customerId
         );
-
     }
 
     /**

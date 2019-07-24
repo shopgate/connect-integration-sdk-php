@@ -7,12 +7,7 @@ use \Shopgate\ConnectSdk\Dto\Catalog\Product;
 $products = provideSampleProducts();
 
 try {
-    $handler = $sdk->getBulkImportService()->createFileImport();
-    $productHandler = $handler->createProductFeed(CATALOG_CODE);
-    $productHandler->add($products[0]);
-    $productHandler->add($products[1]);
-    $productHandler->end();
-    $handler->trigger();
+    $sdk->getCatalogService()->addProducts($products);
 } catch (Exception $exception) {
     echo $exception->getMessage();
 }

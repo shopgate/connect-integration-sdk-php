@@ -55,7 +55,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto;
  * @method Dto\Categories[] getCategories()
  * @method Dto\Properties[] getProperties()
  * @method Dto\MediaList\Media[] getMedia()
- * @method Dto\Inventory[] getInventories()
+ * @method Dto\Inventory[] getInventory()
  * @method Dto\Options[] getOptions()
  * @method Dto\Extras[] getExtras()
  *
@@ -84,7 +84,7 @@ class Get extends Product
                 'type'  => 'array',
                 'items' => ['$ref' => Dto\MediaList\Media::class]
             ],
-            'inventories'         => [
+            'inventory'         => [
                 'type'  => 'array',
                 'items' => ['$ref' => Dto\Inventory::class]
             ],

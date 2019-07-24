@@ -170,13 +170,13 @@ class GetTest extends TestCase
     public function testInventories()
     {
         $entry       = [
-            'inventories' => [
+            'inventory' => [
                 ['sku' => 'SKU-123'],
                 ['available' => 5]
             ]
         ];
         $get         = new Get($entry);
-        $inventories = $get->getInventories();
+        $inventories = $get->getInventory();
 
         $this->assertCount(2, $inventories);
         $this->assertInstanceOf(Dto\Inventory::class, $inventories);

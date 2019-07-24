@@ -9,10 +9,6 @@ $products = provideSampleProducts();
 
 try {
     $handler = $sdk->getBulkImportService()->createFileImport();
-    $inventoryHandler = $handler->createInventoryFeed(CATALOG_CODE);
-    $inventoryHandler->add($inventory[0]);
-    $inventoryHandler->add($inventory[1]);
-    $inventoryHandler->end();
     $attributeHandler = $handler->createAttributeFeed(CATALOG_CODE);
     $attributeHandler->add($attributes[0]);
     $attributeHandler->add($attributes[1]);
@@ -25,6 +21,10 @@ try {
     $categoryHandler->add($categories[0]);
     $categoryHandler->add($categories[1]);
     $categoryHandler->end();
+    $inventoryHandler = $handler->createInventoryFeed(CATALOG_CODE);
+    $inventoryHandler->add($inventory[0]);
+    $inventoryHandler->add($inventory[1]);
+    $inventoryHandler->end();
     $handler->trigger();
 } catch (Exception $exception) {
     echo $exception->getMessage();

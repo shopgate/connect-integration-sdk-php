@@ -161,7 +161,7 @@ class BulkImportTest extends CatalogTest
     /**
      * @throws Exception
      */
-    public function testAttributeStreamBulkImport()
+    public function testProductAttributeStreamBulkImport()
     {
         // Arrange
         $attributes = $this->provideSampleExtras();

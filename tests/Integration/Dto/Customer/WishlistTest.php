@@ -29,6 +29,7 @@ use Shopgate\ConnectSdk\Dto\Customer\Customer;
 use Shopgate\ConnectSdk\Dto\Customer\Wishlist;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
 use Shopgate\ConnectSdk\Exception;
+use Shopgate\ConnectSdk\Exception\RequestException;
 
 class WishlistTest extends CustomerTest
 {
@@ -446,6 +447,35 @@ class WishlistTest extends CustomerTest
             [[self::WISHLIST_CODE, $customerId]],
             $customerId,
             $productCodes
+        );
+    }
+
+    /**
+     * @return string customer id
+     *
+     * @throws Exception\Exception
+     */
+    public function testCreateWishlistItemWithoutRequiredField()
+    {
+        // Arrange
+        $customerId   = $this->createCustomer();
+        $sampleWishlist = new Wishlist\Create(
+            [
+                'code'  => self::WISHLIST_CODE,
+                'name'  => 'Wishlist Name One'
+            ]
+        );
+        $this->sdk->getCustomerService()->addWishlists(
+            $customerId, [$sampleWishlist]
+        );
+
+        // Assert
+        $this->expectException(RequestException::class);
+
+        // Act
+        $sampleItem = new Wishlist\Dto\Item\Create();
+        $this->sdk->getCustomerService()->addWishlistItems(
+            $customerId, self::WISHLIST_CODE, [$sampleItem]
         );
     }
 

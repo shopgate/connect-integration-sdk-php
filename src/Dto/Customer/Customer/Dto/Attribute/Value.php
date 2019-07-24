@@ -25,10 +25,8 @@ use Shopgate\ConnectSdk\Dto\Base;
 
 /**
  * @method Value setCode(string $code)
- * @method Value setName(string $name)
  *
  * @method string getCode()
- * @method string getName()
  *
  * @codeCoverageIgnore
  */
@@ -40,8 +38,7 @@ class Value extends Base
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'code' => ['type' => 'string'],
-            'name' => ['type' => 'string'],
+            'code' => ['type' => 'string']
         ],
         'additionalProperties' => true,
     ];

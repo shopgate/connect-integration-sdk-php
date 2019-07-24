@@ -38,6 +38,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - updateLocation direct call
 - deleteLocation direct call
 - bulkImport for inventory
+- addWishlists direct call
+- updateWishlist direct call
+- deleteWishlist direct call
+- getWishlists
+- getWishlist
+- addWishlistItems direct call
+- deleteWishlistItem direct call
+
 
 ## [0.5.0]- 2019-06-28
 ### Added

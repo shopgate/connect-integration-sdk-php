@@ -249,7 +249,6 @@ class CustomerTest extends CustomerBaseTest
         $attribute->setName('Attribute Name');
         $value = new Customer\Dto\Attribute\Value();
         $value->setCode(self::CUSTOMER_ATTRIBUTE_VALUE_CODE);
-        $value->setName('Main color');
         $attribute->setValue($value);
 
         // Add attribute

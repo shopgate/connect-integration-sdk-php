@@ -11,7 +11,7 @@ require_once(dirname(__FILE__) . '/../../bootstrap.php');
 $inventory = provideSampleInventories();
 
 try {
-    $handler = $sdk->getBulkImportService()->createFileImport();
+    $handler = $sdk->getBulkImportService()->createStreamImport();
     $inventoryHandler = $handler->createInventoryFeed(CATALOG_CODE);
     $inventoryHandler->add($inventory[0]);
     $inventoryHandler->add($inventory[1]);

@@ -31,20 +31,20 @@ class GetListTest extends TestCase
 {
     public function testBasicDtoList()
     {
-        $codeOne        = 'someCodeOne';
-        $nameOne        = 'some name one';
+        $codeOne = 'someCodeOne';
+        $nameOne = 'some name one';
         $productCodeOne = 'productCodeOne';
 
-        $codeTwo        = 'someCodeTwo';
-        $nameTwo        = 'some name two';
+        $codeTwo = 'someCodeTwo';
+        $nameTwo = 'some name two';
         $productCodeTwo = 'productCodeTwo';
 
         $entry = [
-            'meta'      => [],
+            'meta' => [],
             'wishlists' => [
                 [
-                    'code'  => $codeOne,
-                    'name'  => $nameOne,
+                    'code' => $codeOne,
+                    'name' => $nameOne,
                     'items' => [
                         [
                             'productCode' => $productCodeOne
@@ -52,8 +52,8 @@ class GetListTest extends TestCase
                     ]
                 ],
                 [
-                    'code'  => $codeTwo,
-                    'name'  => $nameTwo,
+                    'code' => $codeTwo,
+                    'name' => $nameTwo,
                     'items' => [
                         [
                             'productCode' => $productCodeTwo

@@ -34,8 +34,8 @@ class GetTest extends TestCase
         $productCode = 'productCode';
 
         $entry = [
-            'code'  => $code,
-            'name'  => $name,
+            'code' => $code,
+            'name' => $name,
             'items' => [
                 [
                     'productCode' => $productCode

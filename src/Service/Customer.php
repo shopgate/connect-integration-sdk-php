@@ -52,7 +52,7 @@ class Customer
      */
     public function __construct(ClientInterface $client, Json $jsonHelper)
     {
-        $this->client     = $client;
+        $this->client = $client;
         $this->jsonHelper = $jsonHelper;
     }
 
@@ -76,9 +76,9 @@ class Customer
             [
                 // direct only
                 'service' => 'omni-customer',
-                'method'  => 'get',
-                'path'    => 'attributes',
-                'query'   => $query,
+                'method' => 'get',
+                'path' => 'attributes',
+                'query' => $query,
             ]
         );
         $response = $this->jsonHelper->decode($response->getBody(), true);
@@ -87,7 +87,7 @@ class Customer
         foreach ($response['attributes'] as $attribute) {
             $attributes[] = new Attribute\Get($attribute);
         }
-        $response['meta']       = new Meta($response['meta']);
+        $response['meta'] = new Meta($response['meta']);
         $response['attributes'] = $attributes;
 
         return new Attribute\GetList($response);
@@ -110,9 +110,9 @@ class Customer
             [
                 // direct only
                 'service' => 'omni-customer',
-                'method'  => 'get',
-                'path'    => 'attributes/' . $code,
-                'query'   => $query,
+                'method' => 'get',
+                'path' => 'attributes/' . $code,
+                'query' => $query,
             ]
         );
 
@@ -141,12 +141,12 @@ class Customer
 
         return $this->client->doRequest(
             [
-                'method'      => 'post',
+                'method' => 'post',
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'json'        => ['attributes' => $requestAttributes],
-                'query'       => $query,
-                'service'     => 'omni-customer',
-                'path'        => 'attributes',
+                'json' => ['attributes' => $requestAttributes],
+                'query' => $query,
+                'service' => 'omni-customer',
+                'path' => 'attributes',
             ]
         );
     }
@@ -168,13 +168,13 @@ class Customer
         return $this->client->doRequest(
             [
                 // general
-                'service'     => 'omni-customer',
-                'method'      => 'post',
-                'path'        => 'attributes/' . $code,
-                'entity'      => 'attribute',
-                'query'       => $query,
-                'action'      => 'update',
-                'json'        => $attribute,
+                'service' => 'omni-customer',
+                'method' => 'post',
+                'path' => 'attributes/' . $code,
+                'entity' => 'attribute',
+                'query' => $query,
+                'action' => 'update',
+                'json' => $attribute,
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
             ]
         );
@@ -195,13 +195,13 @@ class Customer
     {
         return $this->client->doRequest(
             [
-                'service'     => 'omni-customer',
-                'method'      => 'delete',
-                'path'        => 'attributes/' . $code,
-                'entity'      => 'attribute',
-                'action'      => 'delete',
+                'service' => 'omni-customer',
+                'method' => 'delete',
+                'path' => 'attributes/' . $code,
+                'entity' => 'attribute',
+                'action' => 'delete',
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'query'       => $query,
+                'query' => $query,
             ]
         );
     }
@@ -225,14 +225,14 @@ class Customer
     ) {
         return $this->client->doRequest(
             [
-                'service'     => 'omni-customer',
-                'method'      => 'post',
-                'path'        => 'attributes/' . $code . '/values/',
-                'entity'      => 'attributes',
-                'action'      => 'create',
-                'json'        => ['values' => $attributeValues],
+                'service' => 'omni-customer',
+                'method' => 'post',
+                'path' => 'attributes/' . $code . '/values/',
+                'entity' => 'attributes',
+                'action' => 'create',
+                'json' => ['values' => $attributeValues],
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'query'       => $query,
+                'query' => $query,
             ]
         );
     }
@@ -258,14 +258,14 @@ class Customer
     ) {
         return $this->client->doRequest(
             [
-                'service'     => 'omni-customer',
-                'method'      => 'post',
-                'path'        => 'attributes/' . $code . '/values/' . $valueCode,
-                'entity'      => 'attribute',
-                'action'      => 'update',
-                'json'        => $attributeValue,
+                'service' => 'omni-customer',
+                'method' => 'post',
+                'path' => 'attributes/' . $code . '/values/' . $valueCode,
+                'entity' => 'attribute',
+                'action' => 'update',
+                'json' => $attributeValue,
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'query'       => $query,
+                'query' => $query,
             ]
         );
     }
@@ -286,13 +286,13 @@ class Customer
     {
         return $this->client->doRequest(
             [
-                'service'     => 'omni-customer',
-                'method'      => 'delete',
-                'path'        => 'attributes/' . $code . '/values/' . $valueCode,
-                'entity'      => 'attribute',
-                'action'      => 'delete',
+                'service' => 'omni-customer',
+                'method' => 'delete',
+                'path' => 'attributes/' . $code . '/values/' . $valueCode,
+                'entity' => 'attribute',
+                'action' => 'delete',
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'query'       => $query,
+                'query' => $query,
             ]
         );
     }
@@ -317,9 +317,9 @@ class Customer
             [
                 // direct only
                 'service' => 'omni-customer',
-                'method'  => 'get',
-                'path'    => 'customers',
-                'query'   => $query,
+                'method' => 'get',
+                'path' => 'customers',
+                'query' => $query,
             ]
         );
         $response = $this->jsonHelper->decode($response->getBody(), true);
@@ -328,7 +328,7 @@ class Customer
         foreach ($response['customers'] as $attribute) {
             $customers[] = new CustomerDto\Get($attribute);
         }
-        $response['meta']       = new Meta($response['meta']);
+        $response['meta'] = new Meta($response['meta']);
         $response['attributes'] = $customers;
 
         return new CustomerDto\GetList($response);
@@ -351,9 +351,9 @@ class Customer
             [
                 // direct only
                 'service' => 'omni-customer',
-                'method'  => 'get',
-                'path'    => 'customers/' . $id,
-                'query'   => $query,
+                'method' => 'get',
+                'path' => 'customers/' . $id,
+                'query' => $query,
             ]
         );
 
@@ -382,12 +382,12 @@ class Customer
 
         $response = $this->client->doRequest(
             [
-                'method'      => 'post',
+                'method' => 'post',
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'json'        => ['customers' => $requestCustomers],
-                'query'       => $query,
-                'service'     => 'omni-customer',
-                'path'        => 'customers',
+                'json' => ['customers' => $requestCustomers],
+                'query' => $query,
+                'service' => 'omni-customer',
+                'path' => 'customers',
             ]
         );
 
@@ -412,13 +412,13 @@ class Customer
     {
         return $this->client->doRequest(
             [
-                'service'     => 'omni-customer',
-                'method'      => 'post',
-                'path'        => 'customers/' . $id,
-                'entity'      => 'customer',
-                'query'       => $query,
-                'action'      => 'update',
-                'json'        => $customer,
+                'service' => 'omni-customer',
+                'method' => 'post',
+                'path' => 'customers/' . $id,
+                'entity' => 'customer',
+                'query' => $query,
+                'action' => 'update',
+                'json' => $customer,
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
             ]
         );
@@ -439,13 +439,13 @@ class Customer
     {
         return $this->client->doRequest(
             [
-                'service'     => 'omni-customer',
-                'method'      => 'delete',
-                'path'        => 'customers/' . $id,
-                'entity'      => 'customer',
-                'action'      => 'delete',
+                'service' => 'omni-customer',
+                'method' => 'delete',
+                'path' => 'customers/' . $id,
+                'entity' => 'customer',
+                'action' => 'delete',
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'query'       => $query,
+                'query' => $query,
             ]
         );
     }
@@ -466,14 +466,14 @@ class Customer
     {
         return $this->client->doRequest(
             [
-                'service'     => 'omni-customer',
-                'method'      => 'post',
-                'path'        => 'customers/' . $id . '/contacts',
-                'entity'      => 'contact',
-                'action'      => 'create',
-                'json'        => ['contacts' => $contacts],
+                'service' => 'omni-customer',
+                'method' => 'post',
+                'path' => 'customers/' . $id . '/contacts',
+                'entity' => 'contact',
+                'action' => 'create',
+                'json' => ['contacts' => $contacts],
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'query'       => $query,
+                'query' => $query,
             ]
         );
     }
@@ -495,15 +495,15 @@ class Customer
     {
         return $this->client->doRequest(
             [
-                'service'     => 'omni-customer',
-                'method'      => 'post',
-                'path'        => 'customers/' . $customerId . '/contacts/' . $id,
-                'entity'      => 'contact',
-                'action'      => 'update',
-                'json'        => $contact,
+                'service' => 'omni-customer',
+                'method' => 'post',
+                'path' => 'customers/' . $customerId . '/contacts/' . $id,
+                'entity' => 'contact',
+                'action' => 'update',
+                'json' => $contact,
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'entityId'    => $id,
-                'query'       => $query,
+                'entityId' => $id,
+                'query' => $query,
             ]
         );
     }
@@ -524,13 +524,13 @@ class Customer
     {
         return $this->client->doRequest(
             [
-                'service'     => 'omni-customer',
-                'method'      => 'delete',
-                'path'        => 'customers/' . $customerId . '/contacts/' . $id,
-                'entity'      => 'customer',
-                'action'      => 'delete',
+                'service' => 'omni-customer',
+                'method' => 'delete',
+                'path' => 'customers/' . $customerId . '/contacts/' . $id,
+                'entity' => 'customer',
+                'action' => 'delete',
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'query'       => $query,
+                'query' => $query,
             ]
         );
     }
@@ -550,12 +550,12 @@ class Customer
     {
         $response = $this->client->doRequest(
             [
-                'service'     => 'omni-customer',
-                'method'      => 'post',
-                'path'        => 'customers/' . $customerId . '/notes',
-                'json'        => ['notes' => $notes],
+                'service' => 'omni-customer',
+                'method' => 'post',
+                'path' => 'customers/' . $customerId . '/notes',
+                'json' => ['notes' => $notes],
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'query'       => $query
+                'query' => $query
             ]
         );
 
@@ -578,9 +578,9 @@ class Customer
         $response = $this->client->doRequest(
             [
                 'service' => 'omni-customer',
-                'method'  => 'get',
-                'path'    => 'customers/' . $customerId . '/notes',
-                'query'   => $query,
+                'method' => 'get',
+                'path' => 'customers/' . $customerId . '/notes',
+                'query' => $query,
             ]
         );
 
@@ -605,14 +605,14 @@ class Customer
     {
         return $this->client->doRequest(
             [
-                'service'     => 'omni-customer',
-                'method'      => 'post',
-                'path'        => 'customers/' . $id . '/wishlists',
-                'entity'      => 'wishlist',
-                'action'      => 'create',
-                'json'        => ['wishlists' => $wishlists],
+                'service' => 'omni-customer',
+                'method' => 'post',
+                'path' => 'customers/' . $id . '/wishlists',
+                'entity' => 'wishlist',
+                'action' => 'create',
+                'json' => ['wishlists' => $wishlists],
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'query'       => $query,
+                'query' => $query,
             ]
         );
     }
@@ -634,15 +634,15 @@ class Customer
     {
         return $this->client->doRequest(
             [
-                'service'     => 'omni-customer',
-                'method'      => 'post',
-                'path'        => 'customers/' . $customerId . '/wishlists/' . $id,
-                'entity'      => 'wishlist',
-                'action'      => 'update',
-                'json'        => $wishlist,
+                'service' => 'omni-customer',
+                'method' => 'post',
+                'path' => 'customers/' . $customerId . '/wishlists/' . $id,
+                'entity' => 'wishlist',
+                'action' => 'update',
+                'json' => $wishlist,
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'entityId'    => $id,
-                'query'       => $query,
+                'entityId' => $id,
+                'query' => $query,
             ]
         );
     }
@@ -663,13 +663,13 @@ class Customer
     {
         return $this->client->doRequest(
             [
-                'service'     => 'omni-customer',
-                'method'      => 'delete',
-                'path'        => 'customers/' . $customerId . '/wishlists/' . $id,
-                'entity'      => 'wishlist',
-                'action'      => 'delete',
+                'service' => 'omni-customer',
+                'method' => 'delete',
+                'path' => 'customers/' . $customerId . '/wishlists/' . $id,
+                'entity' => 'wishlist',
+                'action' => 'delete',
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'query'       => $query,
+                'query' => $query,
             ]
         );
     }
@@ -690,9 +690,9 @@ class Customer
         $response = $this->client->doRequest(
             [
                 'service' => 'omni-customer',
-                'method'  => 'get',
-                'path'    => 'customers/' . $customerId . '/wishlists',
-                'query'   => $query,
+                'method' => 'get',
+                'path' => 'customers/' . $customerId . '/wishlists',
+                'query' => $query,
             ]
         );
 
@@ -719,9 +719,9 @@ class Customer
             [
                 // direct only
                 'service' => 'omni-customer',
-                'method'  => 'get',
-                'path'    => 'customers/' . $customerId . '/wishlists/' . $id,
-                'query'   => $query,
+                'method' => 'get',
+                'path' => 'customers/' . $customerId . '/wishlists/' . $id,
+                'query' => $query,
             ]
         );
 
@@ -747,14 +747,14 @@ class Customer
     {
         return $this->client->doRequest(
             [
-                'service'     => 'omni-customer',
-                'method'      => 'post',
-                'path'        => 'customers/' . $id . '/wishlists/' . $wishlistId . '/items',
-                'entity'      => 'wishlistItem',
-                'action'      => 'create',
-                'json'        => $items,
+                'service' => 'omni-customer',
+                'method' => 'post',
+                'path' => 'customers/' . $id . '/wishlists/' . $wishlistId . '/items',
+                'entity' => 'wishlistItem',
+                'action' => 'create',
+                'json' => $items,
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'query'       => $query,
+                'query' => $query,
             ]
         );
     }
@@ -776,13 +776,13 @@ class Customer
     {
         return $this->client->doRequest(
             [
-                'service'     => 'omni-customer',
-                'method'      => 'delete',
-                'path'        => 'customers/' . $customerId . '/wishlists/' . $wishlistId . '/items/' . $id,
-                'entity'      => 'wishlistItem',
-                'action'      => 'delete',
+                'service' => 'omni-customer',
+                'method' => 'delete',
+                'path' => 'customers/' . $customerId . '/wishlists/' . $wishlistId . '/items/' . $id,
+                'entity' => 'wishlistItem',
+                'action' => 'delete',
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'query'       => $query,
+                'query' => $query,
             ]
         );
     }

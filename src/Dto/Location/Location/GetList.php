@@ -37,11 +37,11 @@ class GetList extends Location
      * @var array
      */
     protected $schema = [
-        'type'                 => 'object',
-        'properties'           => [
-            'meta'      => ['$ref' => Meta::class],
+        'type' => 'object',
+        'properties' => [
+            'meta' => ['$ref' => Meta::class],
             'locations' => [
-                'type'  => 'array',
+                'type' => 'array',
                 'items' => ['$ref' => Get::class]
             ]
         ],

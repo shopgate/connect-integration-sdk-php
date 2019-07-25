@@ -37,11 +37,11 @@ class GetList extends Wishlist
      * @var array
      */
     protected $schema = [
-        'type'                 => 'object',
-        'properties'           => [
-            'meta'      => ['$ref' => Meta::class],
+        'type' => 'object',
+        'properties' => [
+            'meta' => ['$ref' => Meta::class],
             'wishlists' => [
-                'type'  => 'array',
+                'type' => 'array',
                 'items' => ['$ref' => Get::class]
             ]
         ],

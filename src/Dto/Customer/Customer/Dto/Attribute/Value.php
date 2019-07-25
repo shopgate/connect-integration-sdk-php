@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright Shopgate Inc.
  *
@@ -27,6 +28,7 @@ use Shopgate\ConnectSdk\Dto\Base;
  * @method Value setCode(string $code)
  *
  * @method string getCode()
+ * @method string getName()
  *
  * @codeCoverageIgnore
  */
@@ -36,9 +38,10 @@ class Value extends Base
      * @var array
      */
     protected $schema = [
-        'type'                 => 'object',
-        'properties'           => [
-            'code' => ['type' => 'string']
+        'type' => 'object',
+        'properties' => [
+            'code' => ['type' => 'string'],
+            'name' => ['type' => 'string'],
         ],
         'additionalProperties' => true,
     ];

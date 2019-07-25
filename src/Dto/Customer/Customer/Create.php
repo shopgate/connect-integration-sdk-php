@@ -45,14 +45,14 @@ class Create extends Customer
      * @codeCoverageIgnore
      */
     protected $schema = [
-        'type'                 => 'object',
-        'properties'           => [
+        'type' => 'object',
+        'properties' => [
             'externalCustomerNumber' => ['type' => 'string'],
-            'firstName'              => ['type' => 'string'],
-            'middleName'             => ['type' => 'string'],
-            'lastName'               => ['type' => 'string'],
-            'emailAddress'           => ['type' => 'string'],
-            'status'                 => [
+            'firstName' => ['type' => 'string'],
+            'middleName' => ['type' => 'string'],
+            'lastName' => ['type' => 'string'],
+            'emailAddress' => ['type' => 'string'],
+            'status' => [
                 'type' => 'string',
                 'enum' => [
                     self::STATUS_ACTIVE,
@@ -60,10 +60,10 @@ class Create extends Customer
                     self::STATUS_DELETED,
                 ],
             ],
-            'isAnonymous'            => ['type' => 'boolean'],
-            'contacts'               => ['type' => 'array'],
-            'attributes'             => ['type' => 'array'],
-            'settings'               => ['type' => 'object'],
+            'isAnonymous' => ['type' => 'boolean'],
+            'contacts' => ['type' => 'array'],
+            'attributes' => ['type' => 'array'],
+            'settings' => ['type' => 'object'],
         ],
         'additionalProperties' => true,
     ];

@@ -37,8 +37,8 @@ class Item extends Base
      * @var array
      */
     protected $schema = [
-        'type'                 => 'object',
-        'properties'           => [
+        'type' => 'object',
+        'properties' => [
             'type' => ['productCode' => 'string'],
         ],
         'additionalProperties' => true,

@@ -25,6 +25,7 @@ namespace Shopgate\ConnectSdk\Dto\Customer\Wishlist;
 use Shopgate\ConnectSdk\Dto\Customer\Wishlist;
 
 /**
+ * @method Update setCode(string $code)
  * @method Update setName(string $name)
  * @method Update setItems(Dto\Item[] $items)
  *
@@ -36,11 +37,12 @@ class Update extends Wishlist
      * @var array
      */
     protected $schema = [
-        'type'                 => 'object',
-        'properties'           => [
-            'name'  => ['string' => 'object'],
+        'type' => 'object',
+        'properties' => [
+            'code' => ['type' => 'string'],
+            'name' => ['string' => 'object'],
             'items' => [
-                'type'  => 'array',
+                'type' => 'array',
                 'items' => ['$ref' => Dto\Item::class]
             ]
         ],

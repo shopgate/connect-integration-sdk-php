@@ -26,7 +26,7 @@ use Shopgate\ConnectSdk\Dto\Base;
 
 class Location extends Base
 {
-    const STATUS_ACTIVE   = 'active';
+    const STATUS_ACTIVE = 'active';
     const STATUS_INACTIVE = 'inactive';
     const STATUS_ONHOLD = 'onhold';
     const STATUS_DELETED = 'deleted';

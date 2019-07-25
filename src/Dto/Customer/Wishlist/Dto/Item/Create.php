@@ -35,8 +35,8 @@ class Create extends Item
      * @var array
      */
     protected $schema = [
-        'type'                 => 'object',
-        'properties'           => [
+        'type' => 'object',
+        'properties' => [
             'productCode' => ['type' => 'string']
         ],
         'additionalProperties' => true,

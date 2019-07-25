@@ -49,29 +49,29 @@ class Update extends Location
      * @var array
      */
     protected $schema = [
-        'type'                 => 'object',
-        'properties'           => [
-            'code'                        => ['type' => 'string'],
-            'name'                        => ['type' => 'string'],
-            'type'                        => ['$ref' => Dto\Type::class],
-            'status'                      => ['type' => 'string'],
-            'latitude'                    => ['type' => 'number'],
-            'longitude'                   => ['type' => 'number'],
-            'operationHours'              => ['$ref' => Dto\OperationHours::class],
-            'localeCode'                  => ['type' => 'string'],
-            'timeZone'                    => ['type' => 'string'],
-            'details'                     => ['$ref' => Dto\Details::class],
-            'addresses'                   => [
-                'type'  => 'array',
+        'type' => 'object',
+        'properties' => [
+            'code' => ['type' => 'string'],
+            'name' => ['type' => 'string'],
+            'type' => ['$ref' => Dto\Type::class],
+            'status' => ['type' => 'string'],
+            'latitude' => ['type' => 'number'],
+            'longitude' => ['type' => 'number'],
+            'operationHours' => ['$ref' => Dto\OperationHours::class],
+            'localeCode' => ['type' => 'string'],
+            'timeZone' => ['type' => 'string'],
+            'details' => ['$ref' => Dto\Details::class],
+            'addresses' => [
+                'type' => 'array',
                 'items' => ['$ref' => Dto\Address::class]
             ],
-            'inventory'                   => ['$ref' => Dto\Inventory::class],
+            'inventory' => ['$ref' => Dto\Inventory::class],
             'supportedFulfillmentMethods' => [
-                'type'  => 'array',
+                'type' => 'array',
                 'items' => ['type' => 'string']
             ],
-            'settings'                    => ['$ref' => Dto\Settings::class],
-            'isDefault'                   => ['type' => 'boolean']
+            'settings' => ['$ref' => Dto\Settings::class],
+            'isDefault' => ['type' => 'boolean']
         ],
         'additionalProperties' => true
     ];

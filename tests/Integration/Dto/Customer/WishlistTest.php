@@ -193,15 +193,15 @@ class WishlistTest extends CustomerIntegrationTest
             self::WISHLIST_CODE, $customerId
         );
 
-        // Assert
-        $this->assertEquals(self::WISHLIST_CODE, $wishlist->getCode());
-        $this->assertEquals($wishlistName, $wishlist->getName());
-
         // CleanUp
         $this->cleanupWishlists(
             [[self::WISHLIST_CODE, $customerId]],
             $customerId
         );
+
+        // Assert
+        $this->assertEquals(self::WISHLIST_CODE, $wishlist->getCode());
+        $this->assertEquals($wishlistName, $wishlist->getName());
     }
 
     /**
@@ -242,6 +242,8 @@ class WishlistTest extends CustomerIntegrationTest
         $this->sdk->getCustomerService()->updateWishlist(
             $originalCreateFields['code'], $customerId, $updateWishlist
         );
+
+        // Assert
         $wishlistAfterUpdate = $this->sdk->getCustomerService()->getWishlist(
             $updatedCode, $customerId
         );
@@ -348,6 +350,8 @@ class WishlistTest extends CustomerIntegrationTest
         $this->sdk->getCustomerService()->deleteWishlist(
             self::WISHLIST_CODE, $customerId
         );
+
+        // Assert
         $wishlistsAfterDelete = $this->sdk->getCustomerService()->getWishlists(
             $customerId
         );
@@ -455,6 +459,13 @@ class WishlistTest extends CustomerIntegrationTest
             $customerId, [$sampleWishlist]
         );
 
+        // CleanUp
+        $this->cleanupWishlists(
+            [[self::WISHLIST_CODE, $customerId]],
+            $customerId,
+            $productCodes
+        );
+
         // Act
         $this->sdk->getCustomerService()->deleteWishlistItem(
             self::WISHLIST_PRODUCT_CODE, self::WISHLIST_CODE, $customerId
@@ -467,13 +478,6 @@ class WishlistTest extends CustomerIntegrationTest
             );
         $returnedWishlistProductCodes = $this->getWishlistItemsProductCodes(
             $wishlist
-        );
-
-        // CleanUp
-        $this->cleanupWishlists(
-            [[self::WISHLIST_CODE, $customerId]],
-            $customerId,
-            $productCodes
         );
 
         // Assert
@@ -501,6 +505,12 @@ class WishlistTest extends CustomerIntegrationTest
             $customerId, [$sampleWishlist]
         );
 
+        // CleanUp
+        $this->cleanupWishlists(
+            [[self::WISHLIST_CODE, $customerId]],
+            $customerId
+        );
+
         // Act
         $sampleItem = new Wishlist\Dto\Item\Create();
         try {
@@ -508,24 +518,13 @@ class WishlistTest extends CustomerIntegrationTest
                 $customerId, self::WISHLIST_CODE, [$sampleItem]
             );
         } catch (Exception\Exception $exception) {
-            // CleanUp
-            $this->cleanupWishlists(
-                [[self::WISHLIST_CODE, $customerId]],
-                $customerId
-            );
+
             // Assert
             $this->assertInstanceOf(RequestException::class, $exception);
 
             return;
         }
 
-        // CleanUp
-        $this->cleanupWishlists(
-            [[self::WISHLIST_CODE, $customerId]],
-            $customerId
-        );
-
-        // Assert
         $this->fail('Expected ' . RequestException::class . ' but wasn\'t thrown');
     }
 

@@ -236,9 +236,9 @@ class WishlistTest extends CustomerIntegrationTest
         $this->sdk->getCustomerService()->addWishlists(
             $customerId, [$sampleWishlist]
         );
+        $updateWishlist = new Wishlist\Update($updated);
 
         // Act
-        $updateWishlist = new Wishlist\Update($updated);
         $this->sdk->getCustomerService()->updateWishlist(
             $originalCreateFields['code'], $customerId, $updateWishlist
         );
@@ -482,7 +482,6 @@ class WishlistTest extends CustomerIntegrationTest
             $wishlist
         );
 
-        // Assert
         $this->assertEquals(
             [self::WISHLIST_PRODUCT_CODE_TWO], $returnedWishlistProductCodes
         );

@@ -20,19 +20,16 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Attribute;
+namespace Shopgate\ConnectSdk\Dto\Customer\Wishlist\Dto\Item;
 
-use Shopgate\ConnectSdk\Dto\Base;
+use Shopgate\ConnectSdk\Dto\Customer\Wishlist\Dto\Item;
 
 /**
- * @method Value setCode(string $code)
- *
- * @method string getCode()
- * @method string getName()
+ * @method Create setProductCode(string $productCode)
  *
  * @codeCoverageIgnore
  */
-class Value extends Base
+class Create extends Item
 {
     /**
      * @var array
@@ -40,8 +37,7 @@ class Value extends Base
     protected $schema = [
         'type' => 'object',
         'properties' => [
-            'code' => ['type' => 'string'],
-            'name' => ['type' => 'string'],
+            'productCode' => ['type' => 'string']
         ],
         'additionalProperties' => true,
     ];

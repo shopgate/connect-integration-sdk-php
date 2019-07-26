@@ -36,36 +36,36 @@ use Shopgate\ConnectSdk\Tests\Integration\CustomerTest as CustomerBaseTest;
 
 class CustomerTest extends CustomerBaseTest
 {
-    const CUSTOMER_CUSTOMER_EXTERNAL_CUSTOMER_CODE            = 'external_customer_code';
-    const CUSTOMER_CUSTOMER_FIRSTNAME                         = 'Firstname';
-    const CUSTOMER_CUSTOMER_LASTNAME                          = 'Lastname';
-    const CUSTOMER_CUSTOMER_MIDDLE_NAME                       = 'Middlename';
-    const CUSTOMER_CUSTOMER_EMAIL                             = 'example+%s@mail.com';
-    const CUSTOMER_SETTINGS_DEFAULT_LOCALE                    = 'en-us';
-    const CUSTOMER_SETTINGS_DEFAULT_CURRENCY                  = 'USD';
+    const CUSTOMER_CUSTOMER_EXTERNAL_CUSTOMER_CODE = 'external_customer_code';
+    const CUSTOMER_CUSTOMER_FIRSTNAME = 'Firstname';
+    const CUSTOMER_CUSTOMER_LASTNAME = 'Lastname';
+    const CUSTOMER_CUSTOMER_MIDDLE_NAME = 'Middlename';
+    const CUSTOMER_CUSTOMER_EMAIL = 'example+%s@mail.com';
+    const CUSTOMER_SETTINGS_DEFAULT_LOCALE = 'en-us';
+    const CUSTOMER_SETTINGS_DEFAULT_CURRENCY = 'USD';
     const CUSTOMER_SETTINGS_DEFAULT_COMMUNICATION_PREFERENCES = ['email', 'sms'];
-    const CUSTOMER_SETTINGS_DEFAULT_LOCATION_CODE             = 'DERetail001';
-    const CUSTOMER_ATTRIBUTE_CODE                             = 'attribute_code';
-    const CUSTOMER_ATTRIBUTE_NAME                             = 'Attribute name';
-    const CUSTOMER_ATTRIBUTE_VALUE_CODE                       = 'attribute_value_code';
-    const CUSTOMER_ATTRIBUTE_VALUE_NAME                       = 'Attribute Value Name';
-    const CUSTOMER_CONTACT_EXTERNAL_CUSTOMER_CODE             = 'customer_code';
-    const CUSTOMER_CONTACT_FIRSTNAME                          = 'Firstname';
-    const CUSTOMER_CONTACT_MIDDLE_NAME                        = 'Middlename';
-    const CUSTOMER_CONTACT_LAST_NAME                          = 'Lastname';
-    const CUSTOMER_CONTACT_COMPANY                            = 'Shopgate Inc';
-    const CUSTOMER_CONTACT_ADDRESS_1                          = 'Somestreet 12';
-    const CUSTOMER_CONTACT_ADDRESS_2                          = 'Address 2';
-    const CUSTOMER_CONTACT_ADDRESS_3                          = 'Address 3';
-    const CUSTOMER_CONTACT_ADDRESS_4                          = 'Address 4';
-    const CUSTOMER_CONTACT_CITY                               = 'Austin';
-    const CUSTOMER_CONTACT_POSTAL_CODE                        = '78732';
-    const CUSTOMER_CONTACT_REGION                             = 'TX';
-    const CUSTOMER_CONTACT_COUNTRY                            = 'US';
-    const CUSTOMER_CONTACT_PHONE                              = '+1000000001';
-    const CUSTOMER_CONTACT_FAX                                = '+1000000002';
-    const CUSTOMER_CONTACT_MOBILE                             = '+1000000003';
-    const CUSTOMER_CONTACT_EMAIL                              = 'somelocation+%s@someRetailer.com';
+    const CUSTOMER_SETTINGS_DEFAULT_LOCATION_CODE = 'DERetail001';
+    const CUSTOMER_ATTRIBUTE_CODE = 'attribute_code';
+    const CUSTOMER_ATTRIBUTE_NAME = 'Attribute name';
+    const CUSTOMER_ATTRIBUTE_VALUE_CODE = 'attribute_value_code';
+    const CUSTOMER_ATTRIBUTE_VALUE_NAME = 'Attribute Value Name';
+    const CUSTOMER_CONTACT_EXTERNAL_CUSTOMER_CODE = 'customer_code';
+    const CUSTOMER_CONTACT_FIRSTNAME = 'Firstname';
+    const CUSTOMER_CONTACT_MIDDLE_NAME = 'Middlename';
+    const CUSTOMER_CONTACT_LAST_NAME = 'Lastname';
+    const CUSTOMER_CONTACT_COMPANY = 'Shopgate Inc';
+    const CUSTOMER_CONTACT_ADDRESS_1 = 'Somestreet 12';
+    const CUSTOMER_CONTACT_ADDRESS_2 = 'Address 2';
+    const CUSTOMER_CONTACT_ADDRESS_3 = 'Address 3';
+    const CUSTOMER_CONTACT_ADDRESS_4 = 'Address 4';
+    const CUSTOMER_CONTACT_CITY = 'Austin';
+    const CUSTOMER_CONTACT_POSTAL_CODE = '78732';
+    const CUSTOMER_CONTACT_REGION = 'TX';
+    const CUSTOMER_CONTACT_COUNTRY = 'US';
+    const CUSTOMER_CONTACT_PHONE = '+1000000001';
+    const CUSTOMER_CONTACT_FAX = '+1000000002';
+    const CUSTOMER_CONTACT_MOBILE = '+1000000003';
+    const CUSTOMER_CONTACT_EMAIL = 'somelocation+%s@someRetailer.com';
 
     /**
      * @throws Exception
@@ -74,8 +74,8 @@ class CustomerTest extends CustomerBaseTest
     {
         // Arrange
         $createdItemCount = 10;
-        $sampleCustomers  = $this->provideSampleCustomers($createdItemCount);
-        $response         = $this->sdk->getCustomerService()->addCustomers($sampleCustomers);
+        $sampleCustomers = $this->provideSampleCustomers($createdItemCount);
+        $response = $this->sdk->getCustomerService()->addCustomers($sampleCustomers);
 
         // Act
         $customers = $this->sdk->getCustomerService()->getCustomers()->getCustomers();
@@ -132,8 +132,8 @@ class CustomerTest extends CustomerBaseTest
     {
         // Arrange
         $createdItemCount = 10;
-        $sampleCustomers  = $this->provideSampleCustomers($createdItemCount);
-        $response         = $this->sdk->getCustomerService()->addCustomers($sampleCustomers);
+        $sampleCustomers = $this->provideSampleCustomers($createdItemCount);
+        $response = $this->sdk->getCustomerService()->addCustomers($sampleCustomers);
 
         // Act
         $meta = $this->sdk->getCustomerService()->getCustomers()->getMeta();
@@ -157,8 +157,8 @@ class CustomerTest extends CustomerBaseTest
     {
         // Arrange
         $createdItemCount = 10;
-        $sampleCustomers  = $this->provideSampleCustomers($createdItemCount);
-        $response         = $this->sdk->getCustomerService()->addCustomers($sampleCustomers);
+        $sampleCustomers = $this->provideSampleCustomers($createdItemCount);
+        $response = $this->sdk->getCustomerService()->addCustomers($sampleCustomers);
 
         // Act
         $customer = $this->sdk->getCustomerService()->getCustomer($response['ids'][1]);
@@ -185,7 +185,7 @@ class CustomerTest extends CustomerBaseTest
     {
         // Arrange
         $createdItemCount = 10;
-        $sampleCustomers  = $this->provideSampleCustomers($createdItemCount);
+        $sampleCustomers = $this->provideSampleCustomers($createdItemCount);
 
         // Act
         $response = $this->sdk->getCustomerService()->addCustomers($sampleCustomers);
@@ -230,9 +230,9 @@ class CustomerTest extends CustomerBaseTest
         // Create attribute
         $createAttribute = new Attribute\Create();
         $createAttribute->setCode(self::CUSTOMER_ATTRIBUTE_CODE)
-                        ->setType(Attribute\Create::TYPE_TEXT)
-                        ->setIsRequired(true)
-                        ->setName(self::CUSTOMER_ATTRIBUTE_NAME);
+            ->setType(Attribute\Create::TYPE_TEXT)
+            ->setIsRequired(true)
+            ->setName(self::CUSTOMER_ATTRIBUTE_NAME);
 
         // Create attribute value
         $createAttributeValue = new AttributeValue\Create();
@@ -249,7 +249,6 @@ class CustomerTest extends CustomerBaseTest
         $attribute->setName('Attribute Name');
         $value = new Customer\Dto\Attribute\Value();
         $value->setCode(self::CUSTOMER_ATTRIBUTE_VALUE_CODE);
-        $value->setName('Main color');
         $attribute->setValue($value);
 
         // Add attribute
@@ -297,9 +296,9 @@ class CustomerTest extends CustomerBaseTest
         );
 
         // Assert
-        $customer   = $this->sdk->getCustomerService()->getCustomer($response['ids'][0]);
-        $settings   = $customer->getSettings();
-        $contacts   = $customer->getContacts();
+        $customer = $this->sdk->getCustomerService()->getCustomer($response['ids'][0]);
+        $settings = $customer->getSettings();
+        $contacts = $customer->getContacts();
         $attributes = $customer->getAttributes();
 
         /** @noinspection PhpParamsInspection */
@@ -366,7 +365,7 @@ class CustomerTest extends CustomerBaseTest
     {
         // Arrange
         $createdItemCount = 1;
-        $sampleCustomers  = $this->provideSampleCustomers($createdItemCount);
+        $sampleCustomers = $this->provideSampleCustomers($createdItemCount);
 
         $response = $this->sdk->getCustomerService()->addCustomers($sampleCustomers);
 
@@ -388,7 +387,7 @@ class CustomerTest extends CustomerBaseTest
     {
         // Arrange
         $createdItemCount = 1;
-        $sampleCustomers  = $this->provideSampleCustomers($createdItemCount);
+        $sampleCustomers = $this->provideSampleCustomers($createdItemCount);
 
         $response = $this->sdk->getCustomerService()->addCustomers($sampleCustomers);
 
@@ -467,7 +466,7 @@ class CustomerTest extends CustomerBaseTest
             $this->sdk->getCustomerService()->addCustomers([$customer]);
         } catch (RequestException $exception) {
             // Assert
-            $errors  = \GuzzleHttp\json_decode($exception->getMessage(), false);
+            $errors = \GuzzleHttp\json_decode($exception->getMessage(), false);
             $message = $errors->error->results->errors[0]->message;
             $this->assertInstanceOf(get_class($expectedException), $exception);
             $this->assertEquals('Missing required property: ' . $missingItem, $message);
@@ -485,29 +484,29 @@ class CustomerTest extends CustomerBaseTest
     public function provideCreateCustomerWithMissingRequiredFields()
     {
         return [
-            'missing firstName'    => [
-                'customerData'      => [
+            'missing firstName' => [
+                'customerData' => [
                     'emailAddress' => 'example@shopgate.com',
-                    'lastName'     => 'Doe',
+                    'lastName' => 'Doe',
                 ],
                 'expectedException' => new RequestException(400),
-                'missingItem'       => 'firstName',
+                'missingItem' => 'firstName',
             ],
             'missing emailAddress' => [
-                'customerData'      => [
+                'customerData' => [
                     'firstName' => 'John',
-                    'lastName'  => 'Doe',
+                    'lastName' => 'Doe',
                 ],
                 'expectedException' => new RequestException(400),
-                'missingItem'       => 'emailAddress',
+                'missingItem' => 'emailAddress',
             ],
-            'missing lastName'     => [
-                'customerData'      => [
-                    'firstName'    => 'John',
+            'missing lastName' => [
+                'customerData' => [
+                    'firstName' => 'John',
                     'emailAddress' => 'example@shopgate.com',
                 ],
                 'expectedException' => new RequestException(400),
-                'missingItem'       => 'lastName',
+                'missingItem' => 'lastName',
             ],
         ];
     }
@@ -521,18 +520,18 @@ class CustomerTest extends CustomerBaseTest
     public function testNoteCreationAndRetrieval()
     {
         // Arrange
-        $firstNote      = (new Create())
+        $firstNote = (new Create())
             ->setNote('First Note')
             ->setExternalCode('firstNote')
             ->setDate('2019-06-21T12:17:33.000Z')
             ->setCreator('Konstantin');
-        $secondNote     = (new Create())
+        $secondNote = (new Create())
             ->setNote('Second Note')
             ->setExternalCode('secondNote')
             ->setDate('2019-06-13T12:17:33.000Z')
             ->setCreator('Other Creator');
         $sampleCustomer = $this->provideSampleCustomers(1);
-        $customers      = $this->sdk->getCustomerService()->addCustomers($sampleCustomer);
+        $customers = $this->sdk->getCustomerService()->addCustomers($sampleCustomer);
         $this->assertArrayHasKey('ids', $customers);
 
         // Clean Up Customers

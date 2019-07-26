@@ -343,10 +343,12 @@ class WishlistTest extends CustomerIntegrationTest
             $customerId, $sampleWishlists
         );
 
-        // Act
+        // Assert
         $wishlistsBeforeDelete = $this->sdk->getCustomerService()->getWishlists(
             $customerId
         );
+
+        // Act
         $this->sdk->getCustomerService()->deleteWishlist(
             self::WISHLIST_CODE, $customerId
         );
@@ -459,16 +461,16 @@ class WishlistTest extends CustomerIntegrationTest
             $customerId, [$sampleWishlist]
         );
 
+        // Act
+        $this->sdk->getCustomerService()->deleteWishlistItem(
+            self::WISHLIST_PRODUCT_CODE, self::WISHLIST_CODE, $customerId
+        );
+
         // CleanUp
         $this->cleanupWishlists(
             [[self::WISHLIST_CODE, $customerId]],
             $customerId,
             $productCodes
-        );
-
-        // Act
-        $this->sdk->getCustomerService()->deleteWishlistItem(
-            self::WISHLIST_PRODUCT_CODE, self::WISHLIST_CODE, $customerId
         );
 
         // Assert
@@ -525,6 +527,7 @@ class WishlistTest extends CustomerIntegrationTest
             return;
         }
 
+        // Assert
         $this->fail('Expected ' . RequestException::class . ' but wasn\'t thrown');
     }
 

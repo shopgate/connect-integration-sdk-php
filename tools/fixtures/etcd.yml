@@ -9,6 +9,7 @@ development:
       omni-product: "http://catalog/"
       catalog: "http://catalog/"
       import: "http://import/"
+      order: "http://order:51071/"
 
   settings:
     auth2:
@@ -81,3 +82,14 @@ development:
         password: secret
         port: 3306
         user: root
+
+    OmniOrderService:
+      mysql:
+        connectionLimit: 1
+        database: omnichannel
+        host: mysql
+        password: secret
+        port: 3306
+        user: root
+      googleCloud:
+        projectId: test-project

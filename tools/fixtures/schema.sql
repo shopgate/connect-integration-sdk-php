@@ -7,12 +7,14 @@ DROP DATABASE IF EXISTS location;
 DROP DATABASE IF EXISTS merchant;
 DROP DATABASE IF EXISTS customer;
 DROP DATABASE IF EXISTS import;
+DROP DATABASE IF EXISTS omnichannel;
 
 CREATE DATABASE authservice;
 CREATE DATABASE catalog;
 CREATE DATABASE location;
 CREATE DATABASE merchant;
 CREATE DATABASE import;
+CREATE DATABASE omnichannel;
 
 CREATE TABLE authservice.`access_tokens` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -313,4 +315,456 @@ CREATE TABLE merchant.`MerchantSetting` (
   `DeleteBy` varchar(255) DEFAULT NULL,
   `DeleteDate` datetime DEFAULT NULL,
   PRIMARY KEY (`MerchantSettingID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS omnichannel.`FOFulfillment`;
+
+CREATE TABLE omnichannel.`FOFulfillment` (
+  `FOFulfillmentID` char(36) NOT NULL DEFAULT '',
+  `FulfillmentOrderID` char(36) NOT NULL DEFAULT '',
+  `MerchantID` char(36) NOT NULL DEFAULT '',
+  `Status` enum('open','canceled','inProgress','fulfilled') NOT NULL DEFAULT 'open',
+  `Carrier` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `ServiceLevel` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `Tracking` json DEFAULT NULL,
+  `CreateBy` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL,
+  `DeleteBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `DeleteDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`FOFulfillmentID`),
+  KEY `FKFOF_Merchant` (`MerchantID`),
+  CONSTRAINT `FKFOF_Merchant` FOREIGN KEY (`MerchantID`) REFERENCES `Merchant` (`MerchantID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS omnichannel.`FOFulfillmentPackage`;
+
+CREATE TABLE omnichannel.`FOFulfillmentPackage` (
+  `FOFulfillmentPackageID` char(36) NOT NULL DEFAULT '',
+  `FulfillmentOrderID` char(36) NOT NULL DEFAULT '',
+  `FOFulfillmentID` char(36) NOT NULL DEFAULT '',
+  `Status` enum('open','canceled','inProgress','fulfilled') NOT NULL DEFAULT 'open',
+  `ServiceLevel` varchar(255) DEFAULT NULL,
+  `FulfilledFromLocationCode` varchar(45) DEFAULT NULL,
+  `Weight` float DEFAULT NULL,
+  `Dimensions` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `Tracking` json DEFAULT NULL,
+  `PickUpBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `LabelURL` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `FulfilledDate` datetime DEFAULT NULL,
+  `CreateBy` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL,
+  `DeleteBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `DeleteDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`FOFulfillmentPackageID`),
+  KEY `FK_FOFP_FOF` (`FOFulfillmentID`),
+  CONSTRAINT `FK_FOFP_FOF` FOREIGN KEY (`FOFulfillmentID`) REFERENCES `FOFulfillment` (`FOFulfillmentID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS omnichannel.`FOFulfillmentPackageLI`;
+
+CREATE TABLE omnichannel.`FOFulfillmentPackageLI` (
+  `FOFulfillmentPackageLIID` char(36) NOT NULL DEFAULT '',
+  `FOFulfillmentPackageID` char(36) NOT NULL DEFAULT '',
+  `FulfillmentOrderLineItemID` char(36) NOT NULL DEFAULT '',
+  `Quantity` int(11) NOT NULL,
+  `CreateBy` varchar(20) CHARACTER SET utf8 NOT NULL,
+  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL,
+  `DeleteBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `DeleteDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`FOFulfillmentPackageLIID`),
+  KEY `FK_FOFPLI_FOFP` (`FOFulfillmentPackageID`),
+  KEY `FulfillmentOrderLineItemID` (`FulfillmentOrderLineItemID`),
+  CONSTRAINT `FK_FOFPLI_FOFP` FOREIGN KEY (`FOFulfillmentPackageID`) REFERENCES `FOFulfillmentPackage` (`FOFulfillmentPackageID`),
+  CONSTRAINT `FOFulfillmentPackageLI_ibfk_1` FOREIGN KEY (`FulfillmentOrderLineItemID`) REFERENCES `FulfillmentOrderLineItem` (`FOLineItemID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS omnichannel.`FulfillmentOrder`;
+
+CREATE TABLE omnichannel.`FulfillmentOrder` (
+  `FulfillmentOrderID` char(36) NOT NULL,
+  `SalesOrderID` char(36) NOT NULL,
+  `MerchantID` char(36) NOT NULL,
+  `CustomerID` char(36) NOT NULL,
+  `CustomerNumber` varchar(100) DEFAULT NULL,
+  `ChannelID` char(36) NOT NULL,
+  `LocationID` char(36) NOT NULL DEFAULT '',
+  `RouteTypeID` char(36) NOT NULL,
+  `OrderTypeID` char(36) NOT NULL,
+  `Status` enum('new','requested','accepted','rejected','canceled','inProgress','picked','packed','ready','hold','fulfilled') NOT NULL DEFAULT 'new',
+  `OrderNumber` varchar(50) NOT NULL DEFAULT '',
+  `ExternalCode` varchar(50) DEFAULT NULL,
+  `SequenceID` int(11) NOT NULL,
+  `AcceptedDate` datetime DEFAULT NULL,
+  `ReadyDate` datetime DEFAULT NULL,
+  `CompletedDate` datetime DEFAULT NULL,
+  `OrderSubmittedDate` datetime NOT NULL,
+  `PricelistCode` varchar(50) DEFAULT NULL,
+  `Expedited` tinyint(1) NOT NULL DEFAULT '0',
+  `OrderSubTotal` float NOT NULL,
+  `OrderTaxTotal` float NOT NULL,
+  `OrderShippingTotal` float NOT NULL,
+  `OrderTotal` float NOT NULL,
+  `LocaleCode` varchar(5) NOT NULL DEFAULT 'en-US',
+  `CurrencyCode` varchar(3) NOT NULL DEFAULT 'USD',
+  `OrderNotes` json DEFAULT NULL,
+  `OrderSpecialInstructions` json DEFAULT NULL,
+  `CreateBy` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL,
+  `DeleteBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  PRIMARY KEY (`FulfillmentOrderID`),
+  UNIQUE KEY `SalesOrderID` (`SalesOrderID`,`SequenceID`),
+  KEY `FK_FO_Merc` (`MerchantID`),
+  KEY `FK_FO_RT` (`RouteTypeID`),
+  KEY `FK_FO_OT` (`OrderTypeID`),
+  KEY `FK_FO_Channel` (`ChannelID`),
+  KEY `LocationID` (`LocationID`),
+  KEY `OrderNumberLocationID` (`OrderNumber`,`LocationID`,`ExternalCode`),
+  KEY `UpdateDate` (`UpdateDate`,`CreateDate`),
+  CONSTRAINT `FK_FO_Channel` FOREIGN KEY (`ChannelID`) REFERENCES `Channel` (`ChannelID`),
+  CONSTRAINT `FK_FO_Merc` FOREIGN KEY (`MerchantID`) REFERENCES `Merchant` (`MerchantID`),
+  CONSTRAINT `FK_FO_OT` FOREIGN KEY (`OrderTypeID`) REFERENCES `OrderType` (`OrderTypeID`),
+  CONSTRAINT `FK_FO_RT` FOREIGN KEY (`RouteTypeID`) REFERENCES `RouteType` (`RouteTypeID`),
+  CONSTRAINT `FK_FO_SO` FOREIGN KEY (`SalesOrderID`) REFERENCES `SalesOrder` (`SalesOrderID`),
+  CONSTRAINT `FulfillmentOrder_ibfk_1` FOREIGN KEY (`LocationID`) REFERENCES `Location` (`LocationID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS omnichannel.`FulfillmentOrderAddress`;
+
+CREATE TABLE omnichannel.`FulfillmentOrderAddress` (
+  `FOAddressID` char(36) NOT NULL DEFAULT '',
+  `FulfillmentOrderID` char(36) NOT NULL DEFAULT '',
+  `OrderIndex` int(11) NOT NULL DEFAULT '0' COMMENT 'sort by OrderIndex ASC',
+  `ContactTypeID` char(36) NOT NULL DEFAULT '',
+  `FirstName` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `MiddleName` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `LastName` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `CompanyName` varchar(255) CHARACTER SET utf8 DEFAULT '',
+  `Address1` varchar(255) CHARACTER SET utf8 DEFAULT '',
+  `Address2` varchar(255) CHARACTER SET utf8 DEFAULT '',
+  `Address3` varchar(255) CHARACTER SET utf8 DEFAULT '',
+  `Address4` varchar(255) CHARACTER SET utf8 DEFAULT '',
+  `City` varchar(255) CHARACTER SET utf8 DEFAULT '',
+  `Region` varchar(255) CHARACTER SET utf8 DEFAULT '',
+  `PostalCode` varchar(255) CHARACTER SET utf8 DEFAULT '',
+  `Country` varchar(2) CHARACTER SET utf8 DEFAULT '',
+  `PhoneNumber` varchar(50) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `FaxNumber` varchar(50) CHARACTER SET utf8 DEFAULT '',
+  `MobileNumber` varchar(50) CHARACTER SET utf8 DEFAULT '',
+  `EmailAddress` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `CreateBy` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL,
+  `DeleteBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `DeleteDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`FOAddressID`),
+  UNIQUE KEY `FulfillmentOrderID` (`FulfillmentOrderID`,`OrderIndex`),
+  CONSTRAINT `FK_FOA_FO` FOREIGN KEY (`FulfillmentOrderID`) REFERENCES `FulfillmentOrder` (`FulfillmentOrderID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS omnichannel.`FulfillmentOrderHistory`;
+
+CREATE TABLE omnichannel.`FulfillmentOrderHistory` (
+  `FulfillmentOrderHistoryID` char(36) NOT NULL DEFAULT '',
+  `FulfillmentOrderID` char(36) NOT NULL DEFAULT '',
+  `SequenceID` int(11) NOT NULL DEFAULT '0',
+  `EventName` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `EventDate` datetime NOT NULL,
+  `EventDetails` json DEFAULT NULL,
+  `EventNewValue` json DEFAULT NULL,
+  `EventOldValue` json DEFAULT NULL,
+  `UserID` varchar(64) CHARACTER SET utf8 DEFAULT NULL,
+  `CreateBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL,
+  `DeleteBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `DeleteDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`FulfillmentOrderHistoryID`),
+  KEY `FK_FOH_FO` (`FulfillmentOrderID`),
+  CONSTRAINT `FK_FOH_FO` FOREIGN KEY (`FulfillmentOrderID`) REFERENCES `FulfillmentOrder` (`FulfillmentOrderID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS omnichannel.`FulfillmentOrderLineItem`;
+
+CREATE TABLE omnichannel.`FulfillmentOrderLineItem` (
+  `FOLineItemID` char(36) NOT NULL DEFAULT '',
+  `FulfillmentOrderID` char(36) NOT NULL DEFAULT '',
+  `SOLineItemID` char(36) NOT NULL DEFAULT '',
+  `Status` enum('new','requested','accepted','rejected','canceled','picked','packed','ready','hold','fulfilled') NOT NULL DEFAULT 'new',
+  `Quantity` int(11) NOT NULL,
+  `CurrencyCode` varchar(5) CHARACTER SET utf8 NOT NULL,
+  `LocaleCode` varchar(5) CHARACTER SET utf8 NOT NULL,
+  `Price` float NOT NULL,
+  `Cost` float DEFAULT NULL,
+  `ShippingAmount` float DEFAULT NULL,
+  `TaxAmount` float DEFAULT NULL,
+  `Tax2Amount` float DEFAULT NULL,
+  `TaxExempt` tinyint(1) NOT NULL,
+  `DiscountAmount` float DEFAULT NULL,
+  `PromoAmount` float DEFAULT NULL,
+  `OverrideAmount` float DEFAULT NULL,
+  `ExtendedPrice` float DEFAULT NULL,
+  `Product` json DEFAULT NULL,
+  `CreateBy` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL,
+  `DeleteBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `DeleteDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`FOLineItemID`),
+  KEY `FK_FOLI_FO` (`FulfillmentOrderID`),
+  KEY `SOLineItemID` (`SOLineItemID`),
+  CONSTRAINT `FK_FOLI_FO` FOREIGN KEY (`FulfillmentOrderID`) REFERENCES `FulfillmentOrder` (`FulfillmentOrderID`),
+  CONSTRAINT `FulfillmentOrderLineItem_ibfk_1` FOREIGN KEY (`SOLineItemID`) REFERENCES `SalesOrderLineItem` (`SOLineItemID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS omnichannel.`RouteType`;
+
+CREATE TABLE omnichannel.`RouteType` (
+  `RouteTypeID` char(36) NOT NULL DEFAULT '',
+  `RouteType` varchar(100) NOT NULL,
+  `CreateBy` varchar(255) NOT NULL,
+  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateBy` varchar(255) DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL,
+  `DeleteBy` varchar(255) DEFAULT NULL,
+  `DeleteDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`RouteTypeID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS omnichannel.`SalesOrder`;
+
+CREATE TABLE omnichannel.`SalesOrder` (
+  `SalesOrderID` char(36) NOT NULL DEFAULT '',
+  `MerchantID` char(36) NOT NULL DEFAULT '',
+  `CustomerID` char(36) NOT NULL,
+  `CustomerNumber` varchar(100) DEFAULT NULL,
+  `OrderTypeID` char(36) NOT NULL,
+  `ChannelID` char(36) NOT NULL,
+  `Status` enum('new','open','rejected','canceled','fulfilled','completed','ready') DEFAULT 'open',
+  `OrderNumber` varchar(50) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `ExternalCode` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
+  `Expedated` tinyint(1) NOT NULL,
+  `OrderDate` datetime NOT NULL,
+  `OrderSubmitDate` datetime DEFAULT NULL,
+  `OrderAcceptDate` datetime DEFAULT NULL,
+  `OrderCompleteDate` datetime DEFAULT NULL,
+  `PriceListCode` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
+  `PrimaryBillToAddressSequenceIndex` int(11) NOT NULL,
+  `PrimaryShipToAddressSequenceIndex` int(11) NOT NULL,
+  `OrderSubTotal` float NOT NULL,
+  `OrderDiscountAmount` float NOT NULL,
+  `OrderPromoAmount` float NOT NULL,
+  `OrderTaxAmount` float NOT NULL,
+  `OrderTax2Amount` float NOT NULL,
+  `OrderTotal` float NOT NULL,
+  `ShippingSubTotal` float NOT NULL,
+  `ShippingDiscountAmount` float NOT NULL DEFAULT '0',
+  `ShippingPromoAmount` float NOT NULL DEFAULT '0',
+  `ShippingTotal` float NOT NULL DEFAULT '0',
+  `LocaleCode` varchar(5) NOT NULL DEFAULT 'en-US',
+  `CurrencyCode` varchar(5) NOT NULL DEFAULT 'USD',
+  `TaxExempt` tinyint(1) DEFAULT NULL,
+  `Notes` json DEFAULT NULL,
+  `SpecialInstructions` json DEFAULT NULL,
+  `OrderData` json DEFAULT NULL,
+  `CreateBy` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL,
+  `DeleteBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `DeleteDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`SalesOrderID`),
+  UNIQUE KEY `MerchantID` (`MerchantID`,`OrderNumber`),
+  KEY `FK_SO_OT` (`OrderTypeID`),
+  CONSTRAINT `FK_SO_Merch` FOREIGN KEY (`MerchantID`) REFERENCES `Merchant` (`MerchantID`),
+  CONSTRAINT `FK_SO_OT` FOREIGN KEY (`OrderTypeID`) REFERENCES `OrderType` (`OrderTypeID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS omnichannel.`SalesOrderAddress`;
+
+CREATE TABLE omnichannel.`SalesOrderAddress` (
+  `SOAddressID` char(36) NOT NULL DEFAULT '',
+  `SalesOrderID` char(36) NOT NULL DEFAULT '',
+  `ContactTypeID` char(36) NOT NULL,
+  `OrderIndex` int(11) NOT NULL DEFAULT '0' COMMENT 'sort by OrderIndex ASC',
+  `FirstName` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `MiddleName` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `LastName` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `CompanyName` varchar(255) CHARACTER SET utf8 DEFAULT '',
+  `Address1` varchar(255) CHARACTER SET utf8 DEFAULT '',
+  `Address2` varchar(255) CHARACTER SET utf8 DEFAULT '',
+  `Address3` varchar(255) CHARACTER SET utf8 DEFAULT '',
+  `Address4` varchar(255) CHARACTER SET utf8 DEFAULT '',
+  `City` varchar(255) CHARACTER SET utf8 DEFAULT '',
+  `Region` varchar(255) CHARACTER SET utf8 DEFAULT '',
+  `PostalCode` varchar(255) CHARACTER SET utf8 DEFAULT '',
+  `Country` varchar(2) CHARACTER SET utf8 DEFAULT '',
+  `PhoneNumber` varchar(50) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `FaxNumber` varchar(50) CHARACTER SET utf8 DEFAULT '',
+  `MobileNumber` varchar(50) CHARACTER SET utf8 DEFAULT '',
+  `EmailAddress` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `CreateBy` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL,
+  `DeleteBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `DeleteDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`SOAddressID`),
+  UNIQUE KEY `SalesOrderID` (`SalesOrderID`,`OrderIndex`),
+  CONSTRAINT `FK_SOA_SO` FOREIGN KEY (`SalesOrderID`) REFERENCES `SalesOrder` (`SalesOrderID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS omnichannel.`SalesOrderHistory`;
+
+CREATE TABLE omnichannel.`SalesOrderHistory` (
+  `SalesOrderHistoryID` char(36) NOT NULL DEFAULT '',
+  `SalesOrderID` char(36) NOT NULL DEFAULT '',
+  `EventName` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `EventDate` datetime NOT NULL,
+  `EventDetails` json DEFAULT NULL,
+  `EventNewValue` json DEFAULT NULL,
+  `EventOldValue` json DEFAULT NULL,
+  `UserID` varchar(64) CHARACTER SET utf8 DEFAULT NULL,
+  `CreateBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL,
+  `DeleteBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `DeleteDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`SalesOrderHistoryID`),
+  KEY `FK_SOH_SO` (`SalesOrderID`),
+  CONSTRAINT `FK_SOH_SO` FOREIGN KEY (`SalesOrderID`) REFERENCES `SalesOrder` (`SalesOrderID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS omnichannel.`SalesOrderLineItem`;
+
+CREATE TABLE omnichannel.`SalesOrderLineItem` (
+  `SOLineItemID` char(36) NOT NULL DEFAULT '',
+  `SalesOrderID` char(36) NOT NULL DEFAULT '',
+  `LineItemCode` varchar(45) DEFAULT NULL,
+  `Quantity` int(11) NOT NULL,
+  `CurrencyCode` varchar(5) CHARACTER SET utf8 NOT NULL,
+  `LocaleCode` varchar(5) CHARACTER SET utf8 NOT NULL,
+  `Price` float NOT NULL,
+  `Cost` float NOT NULL,
+  `ShippingAmount` float NOT NULL,
+  `TaxAmount` float NOT NULL,
+  `Tax2Amount` float NOT NULL,
+  `TaxExempt` tinyint(1) NOT NULL,
+  `DiscountAmount` float NOT NULL,
+  `PromoAmount` float NOT NULL,
+  `OverrideAmount` float NOT NULL,
+  `FulfillmentMethodID` int(11) NOT NULL,
+  `FulfillmentLocationCode` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
+  `ShipToAddressSequenceIndex` int(11) DEFAULT NULL,
+  `ExtendedPrice` float NOT NULL,
+  `Product` json DEFAULT NULL,
+  `CreateBy` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL,
+  `DeleteBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `DeleteDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`SOLineItemID`),
+  KEY `FK_SOLI_SO` (`SalesOrderID`),
+  CONSTRAINT `FK_SOLI_SO` FOREIGN KEY (`SalesOrderID`) REFERENCES `SalesOrder` (`SalesOrderID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS omnichannel.`SOFulfillment`;
+
+CREATE TABLE omnichannel.`SOFulfillment` (
+  `SOFulfillmentID` char(36) NOT NULL DEFAULT '',
+  `FulfillmentGroupID` char(36) NOT NULL DEFAULT '',
+  `SalesOrderID` char(36) NOT NULL DEFAULT '',
+  `MerchantID` char(36) NOT NULL DEFAULT '',
+  `Status` enum('new','open','rejected','canceled','partially_fulfilled','fulfilled','completed') NOT NULL DEFAULT 'new',
+  `Carrier` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `ServiceLevel` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `Tracking` json DEFAULT NULL,
+  `CreateBy` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL,
+  `DeleteBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `DeleteDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`SOFulfillmentID`),
+  KEY `FK_SOF_SOFG` (`FulfillmentGroupID`),
+  KEY `FKSOF_Merchant` (`MerchantID`),
+  CONSTRAINT `FKSOF_Merchant` FOREIGN KEY (`MerchantID`) REFERENCES `Merchant` (`MerchantID`),
+  CONSTRAINT `FK_SOF_SOFG` FOREIGN KEY (`FulfillmentGroupID`) REFERENCES `SOFulfillmentGroup` (`SOFulfillmentGroupID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS omnichannel.`SOFulfillmentGroup`;
+
+CREATE TABLE omnichannel.`SOFulfillmentGroup` (
+  `SOFulfillmentGroupID` char(36) NOT NULL DEFAULT '',
+  `SalesOrderID` char(36) NOT NULL DEFAULT '',
+  `FulfillmentMethodID` int(11) NOT NULL COMMENT 'currently mapped to RouteTypeID',
+  `FulfillmentLocationCode` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
+  `ShipToAddressSequenceIndex` int(11) DEFAULT NULL,
+  `CreateBy` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL,
+  `DeleteBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `DeleteDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`SOFulfillmentGroupID`),
+  KEY `FK_SOFG_SO` (`SalesOrderID`),
+  CONSTRAINT `FK_SOFG_SO` FOREIGN KEY (`SalesOrderID`) REFERENCES `SalesOrder` (`SalesOrderID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS omnichannel.`SOFulfillmentPackage`;
+
+CREATE TABLE omnichannel.`SOFulfillmentPackage` (
+  `SOFulfillmentPackageID` char(36) NOT NULL DEFAULT '',
+  `SalesOrderID` char(36) NOT NULL DEFAULT '',
+  `SOFulfillmentID` char(36) NOT NULL DEFAULT '',
+  `Status` enum('open','canceled','in progress','fulfilled') NOT NULL DEFAULT 'open',
+  `ServiceLevel` varchar(255) DEFAULT NULL,
+  `FulfilledFromLocationCode` varchar(45) DEFAULT NULL,
+  `Weight` float DEFAULT NULL,
+  `Dimensions` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `Tracking` json DEFAULT NULL,
+  `PickUpBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `LabelURL` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `FulfilledDate` datetime DEFAULT NULL,
+  `CreateBy` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL,
+  `DeleteBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `DeleteDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`SOFulfillmentPackageID`),
+  KEY `FK_SOFP_SOF` (`SOFulfillmentID`),
+  CONSTRAINT `FK_SOFP_SOF` FOREIGN KEY (`SOFulfillmentID`) REFERENCES `SOFulfillment` (`SOFulfillmentID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS omnichannel.`SOFulfillmentPackageLI`;
+
+CREATE TABLE omnichannel.`SOFulfillmentPackageLI` (
+  `SOFulfillmentPackageLIID` char(36) NOT NULL DEFAULT '',
+  `SOFulfillmentPackageID` char(36) NOT NULL DEFAULT '',
+  `SalesOrderLineItemID` char(36) NOT NULL DEFAULT '',
+  `Quantity` int(11) NOT NULL,
+  `CreateBy` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL,
+  `DeleteBy` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `DeleteDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`SOFulfillmentPackageLIID`),
+  KEY `FK_SOFPLI_SOFP` (`SOFulfillmentPackageID`),
+  KEY `SalesOrderLineItemID` (`SalesOrderLineItemID`),
+  CONSTRAINT `FK_SOFPLI_SOFP` FOREIGN KEY (`SOFulfillmentPackageID`) REFERENCES `SOFulfillmentPackage` (`SOFulfillmentPackageID`),
+  CONSTRAINT `SOFulfillmentPackageLI_ibfk_1` FOREIGN KEY (`SalesOrderLineItemID`) REFERENCES `SalesOrderLineItem` (`SOLineItemID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

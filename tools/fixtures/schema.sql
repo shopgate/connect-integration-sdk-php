@@ -14,7 +14,6 @@ CREATE DATABASE catalog;
 CREATE DATABASE location;
 CREATE DATABASE merchant;
 CREATE DATABASE import;
-CREATE DATABASE omnichannel_order;
 
 CREATE TABLE authservice.`access_tokens` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

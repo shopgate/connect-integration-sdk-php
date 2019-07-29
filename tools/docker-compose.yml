@@ -130,7 +130,6 @@ services:
       - PUBSUB_EMULATOR_HOST=googlepubsub-emulator:8085
     links:
       - etcd
-    command: sh -c 'npm run setupIntegration && npm start | ./node_modules/.bin/bunyan'
 
   elasticsearch:
     image: elasticsearch:6.8.0

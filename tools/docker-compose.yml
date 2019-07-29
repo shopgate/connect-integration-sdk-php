@@ -121,15 +121,16 @@ services:
 
 ### https://gitlab.localdev.cc/omnichannel/services/order
   order:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/order:v1.0.0-beta.105
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/order:v1.0.0-beta.106
     restart: always
     environment:
       - NODE_ENV=development
       - APP_PORT=80
       - LOG_TO_SYSLOG=false
-      - GOOGLE_APPLICATION_CREDENTIALS=tools/dockerfiles/credentials-dev.json.js
+      - PUBSUB_EMULATOR_HOST=googlepubsub-emulator:8085
     links:
       - etcd
+    command: sh -c 'npm run setupIntegration && npm start | ./node_modules/.bin/bunyan'
 
   elasticsearch:
     image: elasticsearch:6.8.0

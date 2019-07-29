@@ -86,10 +86,23 @@ development:
     OmniOrderService:
       mysql:
         connectionLimit: 1
-        database: omnichannel
+        database: omnichannel_order
         host: mysql
         password: secret
         port: 3306
         user: root
+        autoCreateDatabase: true
+      googleCloud:
+        projectId: test-project
+
+    OmniOrderService2:
+      mysql:
+        connectionLimit: 1
+        database: omnichannel_order
+        host: mysql
+        password: secret
+        port: 3306
+        user: root
+        autoCreateDatabase: true
       googleCloud:
         projectId: test-project

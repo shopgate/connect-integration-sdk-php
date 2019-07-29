@@ -54,10 +54,11 @@ retry "MySQL" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T mysql mysql -ur
 
 docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T mysql mysql -u root -psecret < ./fixtures/schema.sql
 
-docker-compose $DOCKER_COMPOSE_PARAMETERS stop omni-customer catalog import import-script && docker-compose $DOCKER_COMPOSE_PARAMETERS up -d omni-customer catalog import import-script
+docker-compose $DOCKER_COMPOSE_PARAMETERS stop omni-customer catalog import import-script order && docker-compose $DOCKER_COMPOSE_PARAMETERS up -d omni-customer catalog import import-script order
 retry "CustomerService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T omni-customer curl http://localhost/health -o /dev/null 2>&1"
 retry "CatalogService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T catalog curl http://localhost/health -o /dev/null 2>&1"
 retry "ImportService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T import curl http://localhost/health -o /dev/null 2>&1"
+retry "OrderService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T order curl http://localhost/health -o /dev/null 2>&1"
 
 docker-compose $DOCKER_COMPOSE_PARAMETERS up -d omni-event-receiver
 retry "EventReceiver" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T omni-event-receiver curl http://localhost/health -o /dev/null 2>&1"
@@ -70,6 +71,5 @@ docker-compose $DOCKER_COMPOSE_PARAMETERS up -d mysql auth redis omni-worker omn
 retry "AuthService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T auth curl http://localhost/health -o /dev/null 2>&1"
 retry "MerchantService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T omni-merchant curl http://localhost/health -o /dev/null 2>&1"
 retry "LocationService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T omni-location curl http://localhost/health -o /dev/null 2>&1"
-retry "OmniOrderService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T order curl http://localhost/health -o /dev/null 2>&1"
 
 retry "SampleData" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T mysql mysql -u root -psecret < ./fixtures/sampleData.sql 2>&1"

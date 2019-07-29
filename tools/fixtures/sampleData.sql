@@ -40,3 +40,13 @@ VALUES
 (2, 'NARetail', 1, 'North American Retail', 'en-us', 'USD', 1, 'Johnny', '2018-12-14 20:06:31', NULL, NULL, NULL, NULL),
 (3, 'NAWholesale', 2, 'North American Wholesale', 'en-us', 'USD', 0, 'Scooby', '2018-12-14 20:06:31', NULL, NULL, NULL, NULL),
 (4, 'NARetail', 2, 'North American Retail', 'en-us', 'USD', 1, 'Scooby', '2018-12-14 20:06:31', NULL, NULL, NULL, NULL);
+
+INSERT INTO omnichannel_order.`OrderType` (`OrderTypeID`, `MerchantID`, `OrderType`, `RouteTypeID`, `CreateBy`)
+VALUES
+  (1, '1', 'directShip', 7, 'Mike Haze'),
+  (2, '1', 'BOPIS', 8, 'Mike Haze'),
+  (3, '1', 'ROPIS', 9, 'Mike Haze');
+
+INSERT INTO omnichannel_order.`Channel` (`ChannelID`, `MerchantID`, `Region`, `ChannelCode`, `ChannelName`, `CreateBy`, `CreateDate`, `UpdateBy`, `UpdateDate`, `DeleteBy`, `DeleteDate`)
+VALUES
+	(1, '1', NULL, 'USRTL', 'US Retail', 'Mike Haze', '2018-11-12 10:48:44', NULL, NULL, NULL, NULL);

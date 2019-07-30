@@ -26,4 +26,25 @@ use Shopgate\ConnectSdk\Dto\Base;
 
 class Order extends Base
 {
+    const TYPE_STANDARD = 'standard';
+    const STATUS_NEW = 'new';
+    const STATUS_OPEN = 'open';
+    const STATUS_REJECTED = 'rejected';
+    const STATUS_CANCELED = 'canceled';
+    const STATUS_READY = 'ready';
+    const STATUS_FULFILLED = 'fulfilled';
+    const STATUS_COMPLETED = 'completed';
+    const FULFILLMENT_STATUS_OPEN = 'open';
+    const FULFILLMENT_STATUS_IN_PROGRESS = 'inProgress';
+    const FULFILLMENT_STATUS_FULFILLED = 'fulfilled';
+    const SOURCE_DEVICE_DESKTOP = 'desktop';
+    const SOURCE_DEVICE_MOBILE = 'mobile';
+    const SOURCE_DEVICE_APP = 'app';
+    const SOURCE_DEVICE_OTHER = 'other';
+    const LINE_ITEM_FULFILLMENT_METHOD_DIRECT_SHIP = 'directShip';
+    const LINE_ITEM_FULFILLMENT_METHOD_BOPIS = 'BOPIS';
+    const LINE_ITEM_FULFILLMENT_METHOD_ROPIS = 'ROPIS';
+    const ADDRESS_TYPE_PICKUP = 'pickup';
+    const ADDRESS_TYPE_SHIPPING = 'shipping';
+    const ADDRESS_TYPE_BILLING = 'billing';
 }

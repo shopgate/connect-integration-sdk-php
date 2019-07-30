@@ -40,7 +40,7 @@ use Shopgate\ConnectSdk\Dto\Order\Order;
  * @method string getFulfillmentStatus()
  * @method int getPrimaryBillToAddressSequenceIndex()
  * @method int getPrimaryShipToAddressSequenceIndex()
- * @method object[] getAddressSequences()
+ * @method Dto\Address[] getAddressSequences()
  * @method float getSubTotal()
  * @method float getDiscountAmount()
  * @method float getPromoAmount()
@@ -58,8 +58,8 @@ use Shopgate\ConnectSdk\Dto\Order\Order;
  * @method string getSourceDevice()
  * @method string getSourceIp()
  * @method object[] getFulfillmentGroups()
- * @method object[] getLineItems()
- * @method object[] getHistory()
+ * @method Dto\LineItem[] getLineItems()
+ * @method Dto\HistoryItem[] getHistory()
  *
  * @codeCoverageIgnore
  */
@@ -86,7 +86,10 @@ class Get extends Order
             'fulfillmentStatus' => ['type' => 'string'],
             'primaryBillToAddressSequenceIndex' => ['type' =>'number'],
             'primaryShipToAddressSequenceIndex' => ['type' => 'number'],
-            'addressSequences' => ['type' => 'array'],
+            'addressSequences' => [
+                'type' => 'array',
+                'items' => ['$ref', Dto\Address::class]
+            ],
             'subTotal' => ['type' =>'number'],
             'discountAmount' => ['type' =>'number'],
             'promoAmount' => ['type' =>'number'],
@@ -104,8 +107,14 @@ class Get extends Order
             'sourceDevice' => ['type' => 'string'],
             'sourceIp' => ['type' => 'string'],
             'fulfillmentGroups' => ['type' => 'array'],
-            'lineItems' => ['type' => 'array'],
-            'history' => ['type' => 'array']
+            'lineItems' => [
+                'type' => 'array',
+                'items' => ['$ref' => Dto\LineItem::class]
+            ],
+            'history' => [
+                'type' => 'array',
+                'items' => ['$ref' => Dto\HistoryItem::class]
+            ]
         ],
         'additionalProperties' => true
     ];

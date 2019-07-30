@@ -40,7 +40,7 @@ use Shopgate\ConnectSdk\Dto\Order\Order;
  * @method Create setFulfillmentStatus(string $fulfillmentStatus)
  * @method Create setPrimaryBillToAddressSequenceIndex(int $primaryBillToAddressSequenceIndex)
  * @method Create setPrimaryShipToAddressSequenceIndex(int $primaryShipToAddressSequenceIndex)
- * @method Create setAddressSequences(array $addressSequences)
+ * @method Create setAddressSequences(Dto\Address[] $addressSequences)
  * @method Create setSubTotal(float $subTotal)
  * @method Create setDiscountAmount(float $discountAmount)
  * @method Create setPromoAmount(float $promoAmount)
@@ -58,8 +58,8 @@ use Shopgate\ConnectSdk\Dto\Order\Order;
  * @method Create setSourceDevice(string $sourceDevice)
  * @method Create setSourceIp(string $sourceIp)
  * @method Create setFulfillmentGroups(array $fulfillmentGroups)
- * @method Create setLineItems(array $lineItems)
- * @method Create setHistory(array $history)
+ * @method Create setLineItems(Dto\LineItem[] $lineItems)
+ * @method Create setHistory(Dto\HistoryItem[] $history)
  *
  * @codeCoverageIgnore
  */
@@ -86,7 +86,10 @@ class Create extends Order
             'fulfillmentStatus' => ['type' => 'string'],
             'primaryBillToAddressSequenceIndex' => ['type' =>'number'],
             'primaryShipToAddressSequenceIndex' => ['type' => 'number'],
-            'addressSequences' => ['type' => 'array'],
+            'addressSequences' => [
+                'type' => 'array',
+                'items' => ['$ref' => Dto\Address::class]
+            ],
             'subTotal' => ['type' =>'number'],
             'discountAmount' => ['type' =>'number'],
             'promoAmount' => ['type' =>'number'],
@@ -104,8 +107,14 @@ class Create extends Order
             'sourceDevice' => ['type' => 'string'],
             'sourceIp' => ['type' => 'string'],
             'fulfillmentGroups' => ['type' => 'array'],
-            'lineItems' => ['type' => 'array'],
-            'history' => ['type' => 'array']
+            'lineItems' => [
+                'type' => 'array',
+                'items' => ['$ref' => Dto\LineItem::class]
+            ],
+            'history' => [
+                'type' => 'array',
+                'items' => ['$ref' => Dto\HistoryItem::class]
+            ]
         ],
         'additionalProperties' => true
     ];

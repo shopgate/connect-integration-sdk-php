@@ -45,11 +45,7 @@ class InventoryTest extends CatalogTest
         $this->sdk->getCatalogService()->addInventories($inventories, ['requestType' => 'direct']);
 
         // CleanUp
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_PRODUCT,
-            [self::PRODUCT_CODE]
-        );
+        $this->cleanUp([self::PRODUCT_CODE], [self::LOCATION_CODE]);
 
         // Assert
         $product = $this->sdk->getCatalogService()->getProduct(self::PRODUCT_CODE, ['fields' => 'inventory']);
@@ -64,9 +60,6 @@ class InventoryTest extends CatalogTest
         $this->assertEquals(10, $currentInventory->getVisible());
         $this->assertEquals('1', $currentInventory->getBin());
         $this->assertEquals('DE-1', $currentInventory->getBinLocation());
-
-        // CleanUp
-        $this->deleteLocation(self::LOCATION_CODE);
     }
 
     /**
@@ -89,18 +82,11 @@ class InventoryTest extends CatalogTest
         $this->sdk->getCatalogService()->deleteInventories([$delete], ['requestType' => 'direct']);
 
         // CleanUp
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_PRODUCT,
-            [self::PRODUCT_CODE]
-        );
+        $this->cleanUp([self::PRODUCT_CODE], [self::LOCATION_CODE]);
 
         // Assert
         $product = $this->sdk->getCatalogService()->getProduct(self::PRODUCT_CODE, ['fields' => 'inventory']);
         $this->assertCount(0, $product->getInventory());
-
-        // CleanUp
-        $this->deleteLocation(self::LOCATION_CODE);
     }
 
     /**
@@ -126,11 +112,7 @@ class InventoryTest extends CatalogTest
         $this->sdk->getCatalogService()->updateInventories([$update], ['requestType' => 'direct']);
 
         // CleanUp
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_PRODUCT,
-            [self::PRODUCT_CODE]
-        );
+        $this->cleanUp([self::PRODUCT_CODE], [self::LOCATION_CODE]);
 
         // Assert
         $product = $this->sdk->getCatalogService()->getProduct(self::PRODUCT_CODE, ['fields' => 'inventory']);
@@ -145,9 +127,6 @@ class InventoryTest extends CatalogTest
         $this->assertEquals(20, $currentInventory->getVisible());
         $this->assertEquals('1', $currentInventory->getBin());
         $this->assertEquals('DE-1', $currentInventory->getBinLocation());
-
-        // CleanUp
-        $this->deleteLocation(self::LOCATION_CODE);
     }
 
     /**
@@ -174,12 +153,7 @@ class InventoryTest extends CatalogTest
             return;
         } finally {
             // CleanUp
-            $this->deleteEntitiesAfterTestRun(
-                self::CATALOG_SERVICE,
-                self::METHOD_DELETE_PRODUCT,
-                [self::PRODUCT_CODE]
-            );
-            $this->deleteLocation(self::LOCATION_CODE);
+            $this->cleanUp([self::PRODUCT_CODE], [self::LOCATION_CODE]);
         }
 
         $this->fail('Expected NotFoundException but wasn\'t thrown');
@@ -209,12 +183,7 @@ class InventoryTest extends CatalogTest
             return;
         } finally {
             // CleanUp
-            $this->deleteEntitiesAfterTestRun(
-                self::CATALOG_SERVICE,
-                self::METHOD_DELETE_PRODUCT,
-                [self::PRODUCT_CODE]
-            );
-            $this->deleteLocation(self::LOCATION_CODE);
+            $this->cleanUp([self::PRODUCT_CODE], [self::LOCATION_CODE]);
         }
 
         $this->fail('Expected NotFoundException but wasn\'t thrown');
@@ -243,11 +212,7 @@ class InventoryTest extends CatalogTest
         $this->sdk->getCatalogService()->updateInventories([$update], ['requestType' => 'direct']);
 
         // CleanUp
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_PRODUCT,
-            [self::PRODUCT_CODE]
-        );
+        $this->cleanUp([self::PRODUCT_CODE], [self::LOCATION_CODE]);
 
         // Assert
         $product = $this->sdk->getCatalogService()->getProduct(self::PRODUCT_CODE, ['fields' => 'inventory']);
@@ -262,9 +227,6 @@ class InventoryTest extends CatalogTest
         $this->assertEquals(5, $currentInventory->getVisible());
         $this->assertEquals('1', $currentInventory->getBin());
         $this->assertEquals('DE-1', $currentInventory->getBinLocation());
-
-        // CleanUp
-        $this->deleteLocation(self::LOCATION_CODE);
     }
 
     /**
@@ -306,12 +268,7 @@ class InventoryTest extends CatalogTest
             return;
         } finally {
             // CleanUp
-            $this->deleteEntitiesAfterTestRun(
-                self::CATALOG_SERVICE,
-                self::METHOD_DELETE_PRODUCT,
-                [self::PRODUCT_CODE]
-            );
-            $this->deleteLocation(self::LOCATION_CODE);
+            $this->cleanUp([self::PRODUCT_CODE], [self::LOCATION_CODE]);
         }
 
         $this->fail('Expected ' . get_class($expectedException) . ' but wasn\'t thrown');
@@ -351,11 +308,7 @@ class InventoryTest extends CatalogTest
         $this->sdk->getCatalogService()->updateInventories([$inventory], ['requestType' => 'direct']);
 
         // CleanUp
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_PRODUCT,
-            [self::PRODUCT_CODE]
-        );
+        $this->cleanUp([self::PRODUCT_CODE], [self::LOCATION_CODE]);
 
         // Assert
         $product = $this->sdk->getCatalogService()->getProduct(self::PRODUCT_CODE, ['fields' => 'inventory']);
@@ -367,9 +320,6 @@ class InventoryTest extends CatalogTest
         $this->assertEquals($expectedAvailable, $currentInventory->available);
         $this->assertEquals($expectedSafetyStock, $currentInventory->safetyStock);
         $this->assertEquals($expectedVisible, $currentInventory->visible);
-
-        // CleanUp
-        $this->deleteLocation(self::LOCATION_CODE);
     }
 
     /**
@@ -406,11 +356,7 @@ class InventoryTest extends CatalogTest
         $this->sdk->getCatalogService()->updateInventories([$inventory], ['requestType' => 'direct']);
 
         // CleanUp
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_PRODUCT,
-            [self::PRODUCT_CODE]
-        );
+        $this->cleanUp([self::PRODUCT_CODE], [self::LOCATION_CODE]);
 
         // Assert
         $product = $this->sdk->getCatalogService()->getProduct(self::PRODUCT_CODE, ['fields' => 'inventory']);
@@ -420,9 +366,6 @@ class InventoryTest extends CatalogTest
         $this->assertEquals($expectedAvailable, $currentInventory->getAvailable());
         $this->assertEquals($expectedSafetyStock, $currentInventory->getSafetyStock());
         $this->assertEquals($expectedVisible, $currentInventory->getVisible());
-
-        // CleanUp
-        $this->deleteLocation(self::LOCATION_CODE);
     }
 
     /**
@@ -578,5 +521,23 @@ class InventoryTest extends CatalogTest
                 'missingItem' => 'sku',
             ],
         ];
+    }
+
+    /**
+     * @param string[] $productCodes
+     * @param string[] $locationCodes
+     */
+    private function cleanUp($productCodes = [], $locationCodes = [])
+    {
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_PRODUCT,
+            $productCodes
+        );
+        $this->deleteEntitiesAfterTestRun(
+            self::LOCATION_SERVICE,
+            self::METHOD_DELETE_LOCATION,
+            $locationCodes
+        );
     }
 }

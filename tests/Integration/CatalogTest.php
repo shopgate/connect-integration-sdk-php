@@ -39,15 +39,18 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Price\VolumePricing;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\ShortDescription;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Update;
+use Shopgate\ConnectSdk\Dto\Location\Location;
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\ShopgateSdk;
 
 abstract class CatalogTest extends ShopgateSdkTest
 {
     const CATALOG_SERVICE = 'catalog';
+    const LOCATION_SERVICE = 'omni-location';
     const METHOD_DELETE_CATEGORY = 'deleteCategory';
     const METHOD_DELETE_PRODUCT = 'deleteProduct';
     const METHOD_DELETE_ATTRIBUTE = 'deleteAttribute';
+    const METHOD_DELETE_LOCATION = 'deleteLocation';
 
     const METHOD_DELETE_REQUEST_META = [
         self::METHOD_DELETE_CATEGORY => ['force' => true],
@@ -82,6 +85,13 @@ abstract class CatalogTest extends ShopgateSdkTest
                 self::METHOD_DELETE_CATEGORY => ['force' => true],
                 self::METHOD_DELETE_PRODUCT => [],
                 self::METHOD_DELETE_ATTRIBUTE => [],
+            ]
+        );
+        $this->registerForCleanUp(
+            self::LOCATION_SERVICE,
+            $this->sdk->getLocationService(),
+            [
+                self::METHOD_DELETE_LOCATION => []
             ]
         );
     }
@@ -636,50 +646,17 @@ abstract class CatalogTest extends ShopgateSdkTest
     protected function createLocation($locationCode)
     {
         $locations = [
-            'locations' => [
-                new Base([
-                    'code' => $locationCode,
-                    'name' => 'Test Merchant 2 Warehouse 1',
-                    'status' => 'active',
-                    'latitude' => 47.117330,
-                    'longitude' => 20.681810,
-                    'type' => [
-                        'code' => 'warehouse'
-                    ]
-                ])
-            ]
+            new Location\Create([
+                'code' => $locationCode,
+                'name' => 'Test Merchant 2 Warehouse 1',
+                'status' => 'active',
+                'latitude' => 47.117330,
+                'longitude' => 20.681810,
+                'type' => [
+                    'code' => 'warehouse'
+                ]
+            ])
         ];
-        $this->sdk->getClient()->doRequest(
-            [
-                // general
-                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'json' => $locations,
-                'query' => [],
-                // direct
-                'method' => 'post',
-                'service' => 'omni-location',
-                'path' => 'locations',
-            ]
-        );
-    }
-
-    /**
-     * @param string $locationCode
-     *
-     * @throws Exception
-     */
-    protected function deleteLocation($locationCode)
-    {
-        $this->sdk->getClient()->doRequest(
-            [
-                // general
-                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'query' => [],
-                // direct
-                'method' => 'delete',
-                'service' => 'omni-location',
-                'path' => 'locations/' . $locationCode,
-            ]
-        );
+        $this->sdk->getLocationService()->addLocations($locations);
     }
 }

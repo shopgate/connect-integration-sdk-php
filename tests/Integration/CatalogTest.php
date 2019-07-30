@@ -46,9 +46,11 @@ use Shopgate\ConnectSdk\ShopgateSdk;
 abstract class CatalogTest extends ShopgateSdkTest
 {
     const CATALOG_SERVICE = 'catalog';
+    const LOCATION_SERVICE = 'omni-location';
     const METHOD_DELETE_CATEGORY = 'deleteCategory';
     const METHOD_DELETE_PRODUCT = 'deleteProduct';
     const METHOD_DELETE_ATTRIBUTE = 'deleteAttribute';
+    const METHOD_DELETE_LOCATION = 'deleteLocation';
 
     const METHOD_DELETE_REQUEST_META = [
         self::METHOD_DELETE_CATEGORY => ['force' => true],
@@ -69,8 +71,6 @@ abstract class CatalogTest extends ShopgateSdkTest
     const SAMPLE_EXTRA_CODE_2 = 'extra_code_2';
     const SAMPLE_EXTRA_VALUE_CODE = 'extra_value_code_1';
     const SAMPLE_EXTRA_VALUE_CODE_2 = 'extra_value_code_2';
-    const LOCATION_SERVICE = 'omni-location';
-    const METHOD_DELETE_LOCATION = 'deleteLocation';
     const LOCATION_CODE = 'WHS1';
 
 

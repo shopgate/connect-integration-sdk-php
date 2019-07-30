@@ -66,7 +66,7 @@ retry "EventReceiver" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T omni-ev
 docker-compose $DOCKER_COMPOSE_PARAMETERS up -d elasticsearch
 retry "elasticsearch" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T elasticsearch curl http://localhost:9200/_cluster/health?wait_for_status=yellow 2>&1"
 
-docker-compose $DOCKER_COMPOSE_PARAMETERS up -d mysql auth redis omni-worker omni-merchant omni-location order s3
+docker-compose $DOCKER_COMPOSE_PARAMETERS up -d mysql auth redis omni-worker omni-merchant omni-location s3
 
 retry "AuthService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T auth curl http://localhost/health -o /dev/null 2>&1"
 retry "MerchantService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T omni-merchant curl http://localhost/health -o /dev/null 2>&1"

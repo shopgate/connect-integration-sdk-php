@@ -8,7 +8,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
 use Shopgate\ConnectSdk\Dto\Base;
 
-const PARENT_CATALOG_CODE = 'NARetail';
+const PARENT_CATALOG_CODE = 'BANA';
 const CATALOG_CODE = 'NARetail';
 
 const LOCATION_CODE = 'WHS1';

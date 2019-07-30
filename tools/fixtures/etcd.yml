@@ -9,7 +9,7 @@ development:
       omni-product: "http://catalog/"
       catalog: "http://catalog/"
       import: "http://import/"
-      order: "http://order/"
+      omni-order: "http://omni-order/"
 
   settings:
     auth2:

@@ -79,9 +79,11 @@ function createTopic($pubSub, $topic, $subscriptions)
             }
         }
 
-        echo "[FAILED] Retrying in 1s.\n";
-        $subscriptionCreated = 0;
-        $tries++;
-        sleep(1);
+        if ($subscriptionCreated != count($subscriptions)) {
+            echo "[FAILED] Retrying in 1s.\n";
+            $subscriptionCreated = 0;
+            $tries++;
+            sleep(1);
+        }
     }
 }

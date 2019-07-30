@@ -68,7 +68,7 @@ services:
           - omni-event-receiver.shopgatedev.services
           - catalog.shopgatedev.services
           - import.shopgatedev.services
-          - order.shopgatedev.services
+          - omni-order.shopgatedev.services
   import:
     ports:
       - 5105:80
@@ -97,7 +97,7 @@ services:
     ports:
       - 5106:80
 
-  order:
+  omni-order:
     ports:
       - 5107:80
 

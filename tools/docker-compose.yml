@@ -54,6 +54,7 @@ services:
           - omni-event-receiver.shopgatedev.services
           - catalog.shopgatedev.services
           - import.shopgatedev.services
+          - omni-order.shopgatedev.services
 
   googlepubsub-emulator:
     build:
@@ -120,7 +121,7 @@ services:
       - etcd
 
 ### https://gitlab.localdev.cc/omnichannel/services/order
-  order:
+  omni-order:
     image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/order:v1.0.0-beta.106
     restart: always
     environment:

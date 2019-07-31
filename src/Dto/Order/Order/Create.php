@@ -35,8 +35,8 @@ use Shopgate\ConnectSdk\Dto\Order\Order;
  * @method Create setLocaleCode(string $localCode)
  * @method Create setCurrencyCode(string $currencyCode)
  * @method Create setTaxExempt(bool $taxExempt)
- * @method Create setSpecialInstructions(object $specialInstructions)
- * @method Create setData(object $data)
+ * @method Create setSpecialInstructions(Dto\SpecialInstructions $specialInstructions)
+ * @method Create setData(Dto\Data $data)
  * @method Create setFulfillmentStatus(string $fulfillmentStatus)
  * @method Create setPrimaryBillToAddressSequenceIndex(int $primaryBillToAddressSequenceIndex)
  * @method Create setPrimaryShipToAddressSequenceIndex(int $primaryShipToAddressSequenceIndex)
@@ -51,13 +51,13 @@ use Shopgate\ConnectSdk\Dto\Order\Order;
  * @method Create setShippingPromoAmount(float $shippingPromoAmount)
  * @method Create setShippingTotal(float $shippingTotal)
  * @method Create setTotal(float $total)
- * @method Create setDate(string $date)
+ * @method Create setDate(Dto\Data $date)
  * @method Create setSubmitDate(string $submitDate)
  * @method Create setAcceptDate(string $acceptDate)
  * @method Create setCompleteDate(string $completeDate)
  * @method Create setSourceDevice(string $sourceDevice)
  * @method Create setSourceIp(string $sourceIp)
- * @method Create setFulfillmentGroups(array $fulfillmentGroups)
+ * @method Create setFulfillmentGroups(Dto\FulfillmentGroup[] $fulfillmentGroups)
  * @method Create setLineItems(Dto\LineItem[] $lineItems)
  * @method Create setHistory(Dto\HistoryItem[] $history)
  *
@@ -81,8 +81,8 @@ class Create extends Order
             'localeCode' => ['type' => 'string'],
             'currencyCode' => ['type' => 'string'],
             'taxExempt' => ['type' => 'boolean'],
-            'specialInstructions' => ['type' => 'object'],
-            'data' => ['type' => 'object'],
+            'specialInstructions' => ['$ref' => Dto\SpecialInstructions::class],
+            'data' => ['$ref' => Dto\Data::class],
             'fulfillmentStatus' => ['type' => 'string'],
             'primaryBillToAddressSequenceIndex' => ['type' =>'number'],
             'primaryShipToAddressSequenceIndex' => ['type' => 'number'],
@@ -106,7 +106,10 @@ class Create extends Order
             'completeDate' => ['type' => 'string'],
             'sourceDevice' => ['type' => 'string'],
             'sourceIp' => ['type' => 'string'],
-            'fulfillmentGroups' => ['type' => 'array'],
+            'fulfillmentGroups' => [
+                'type' => 'array',
+                'items' => ['$ref' => Dto\FulfillmentGroup::class]
+            ],
             'lineItems' => [
                 'type' => 'array',
                 'items' => ['$ref' => Dto\LineItem::class]

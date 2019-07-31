@@ -20,27 +20,21 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Order\Order\Dto\FulfillmentGroup\Dto;
+namespace Shopgate\ConnectSdk\Dto\Order\Order\Dto\FulfillmentGroup\Fulfillment\FulfillmentPackage;
 
 use Shopgate\ConnectSdk\Dto\Base;
 
 /**
- * @method Fulfillment setId(string $id)
- * @method Fulfillment setStatus(string $status)
- * @method Fulfillment setCarrier(string $carrier)
- * @method Fulfillment setServiceLevel(string $serviceLevel)
- * @method Fulfillment setTracking(string $tracking)
- * @method Fulfillment setFulfillmentPackages(object[] $fulfillmentPackages)
+ * @method PackageItem setId(string $id)
+ * @method PackageItem setLineItemId(string $lineItemId)
+ * @method PackageItem setQuantity(int $quantity)
  * @method string getId()
- * @method string getStatus()
- * @method string getCarrier()
- * @method string getServiceLevel()
- * @method string getTracking()
- * @method object[] getFulfillmentPackages()
+ * @method string getLineItemId()
+ * @method int getQuantity()
  *
  * @codeCoverageIgnore
  */
-class Fulfillment extends Base
+class PackageItem extends Base
 {
     /**
      * @var array
@@ -49,14 +43,8 @@ class Fulfillment extends Base
         'type' => 'object',
         'properties' => [
             'id' => ['type' => 'string'],
-            'status' => ['type' => 'string'],
-            'carrier' => ['type' => 'string'],
-            'serviceLevel' => ['type' => 'string'],
-            'tracking' => ['type' => 'number'],
-            'fulfillmentPackages' => [
-                'type' => 'array',
-                'items' => ['type' => 'object']
-            ]
+            'lineItemId' => ['type' => 'string'],
+            'quantity' => ['type' => 'number']
         ],
         'additionalProperties' => true,
     ];

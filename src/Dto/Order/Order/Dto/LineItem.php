@@ -23,7 +23,6 @@
 namespace Shopgate\ConnectSdk\Dto\Order\Order\Dto;
 
 use Shopgate\ConnectSdk\Dto\Base;
-use Shopgate\ConnectSdk\Dto\Order\Order\Dto\LineItem\Dto\Product;
 
 /**
  * @method LineItem setCode(string $code)
@@ -31,7 +30,7 @@ use Shopgate\ConnectSdk\Dto\Order\Order\Dto\LineItem\Dto\Product;
  * @method LineItem setFulfillmentMethod(string $fulfillmentMethod)
  * @method LineItem setFulfillmentLocationCode(string $fulfillmentLocationCode)
  * @method LineItem setShipToAddressSequenceIndex(int $shipToAddressSequenceIndex)
- * @method LineItem setProduct(Product $product)
+ * @method LineItem setProduct(LineItem\Product $product)
  * @method LineItem setCurrencyCode(string $currencyCode)
  * @method LineItem setShippingAmount(float $shippingAmount)
  * @method LineItem setTaxAmount(float $taxAmount)
@@ -47,7 +46,7 @@ use Shopgate\ConnectSdk\Dto\Order\Order\Dto\LineItem\Dto\Product;
  * @method string getFulfillmentMethod()
  * @method string getFulfillmentLocationCode()
  * @method int getShipToAddressSequenceIndex()
- * @method Product getProduct()
+ * @method LineItem\Product getProduct()
  * @method string getCurrencyCode()
  * @method float getShippingAmount()
  * @method float getTaxAmount()
@@ -74,7 +73,7 @@ class LineItem extends Base
             'fulfillmentMethod' => ['type' => 'string'],
             'fulfillmentLocationCode' => ['type' => 'string'],
             'shipToAddressSequenceIndex' => ['type' => 'number'],
-            'product' => ['$ref' => Product::class],
+            'product' => ['$ref' => LineItem\Product::class],
             'currencyCode' => ['type' => 'string'],
             'shippingAmount' => ['type' => 'number'],
             'taxAmount' => ['type' => 'number'],

@@ -35,8 +35,8 @@ use Shopgate\ConnectSdk\Dto\Order\Order;
  * @method string getLocaleCode()
  * @method string getCurrencyCode()
  * @method bool getTaxExempt()
- * @method object getSpecialInstructions()
- * @method object getData()
+ * @method Dto\SpecialInstructions getSpecialInstructions()
+ * @method Dto\Data getData()
  * @method string getFulfillmentStatus()
  * @method int getPrimaryBillToAddressSequenceIndex()
  * @method int getPrimaryShipToAddressSequenceIndex()
@@ -57,7 +57,7 @@ use Shopgate\ConnectSdk\Dto\Order\Order;
  * @method string getCompleteDate()
  * @method string getSourceDevice()
  * @method string getSourceIp()
- * @method object[] getFulfillmentGroups()
+ * @method Dto\FulfillmentGroup[] getFulfillmentGroups()
  * @method Dto\LineItem[] getLineItems()
  * @method Dto\HistoryItem[] getHistory()
  *
@@ -81,8 +81,8 @@ class Get extends Order
             'localeCode' => ['type' => 'string'],
             'currencyCode' => ['type' => 'string'],
             'taxExempt' => ['type' => 'boolean'],
-            'specialInstructions' => ['type' => 'object'],
-            'data' => ['type' => 'object'],
+            'specialInstructions' => ['$ref' => Dto\SpecialInstructions::class],
+            'data' => ['$ref' => Dto\Data::class],
             'fulfillmentStatus' => ['type' => 'string'],
             'primaryBillToAddressSequenceIndex' => ['type' =>'number'],
             'primaryShipToAddressSequenceIndex' => ['type' => 'number'],
@@ -106,7 +106,10 @@ class Get extends Order
             'completeDate' => ['type' => 'string'],
             'sourceDevice' => ['type' => 'string'],
             'sourceIp' => ['type' => 'string'],
-            'fulfillmentGroups' => ['type' => 'array'],
+            'fulfillmentGroups' => [
+                'type' => 'array',
+                'items' => ['$ref' => Dto\FulfillmentGroup::class]
+            ],
             'lineItems' => [
                 'type' => 'array',
                 'items' => ['$ref' => Dto\LineItem::class]

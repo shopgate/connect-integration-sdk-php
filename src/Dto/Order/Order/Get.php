@@ -88,7 +88,7 @@ class Get extends Order
             'primaryShipToAddressSequenceIndex' => ['type' => 'number'],
             'addressSequences' => [
                 'type' => 'array',
-                'items' => ['$ref', Dto\Address::class]
+                'items' => ['$ref' => Dto\Address::class]
             ],
             'subTotal' => ['type' =>'number'],
             'discountAmount' => ['type' =>'number'],

@@ -64,7 +64,7 @@ class Order
      */
     public function addOrders(array $orders, array $query = [])
     {
-        return $this->client->doRequest(
+        $response = $this->client->doRequest(
             [
                 // general
                 'method'      => 'post',
@@ -76,6 +76,10 @@ class Order
                 'path'        => 'orders'
             ]
         );
+
+        $response = $this->jsonHelper->decode($response->getBody(), true);
+
+        return $response;
     }
 
     /**
@@ -140,6 +144,6 @@ class Order
 
         $response = $this->jsonHelper->decode($response->getBody(), true);
 
-        return new OrderDto\Get($response);
+        return new OrderDto\Get($response['order']);
     }
 }

@@ -37,7 +37,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Url;
  * @method Update setExternalUpdateDate(string $date)
  * @method Update setStatus(string $status)
  *
- * @codeCoverageIgnore
+ * @inheritdoc
  */
 class Update extends Category
 {
@@ -47,11 +47,11 @@ class Update extends Category
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'image'              => ['type' => 'object'],
-            'name'               => ['type' => 'object'],
+            'image'              => ['$ref' => Dto\Image::class],
+            'name'               => ['$ref' => Dto\Name::class],
             'parentCategoryCode' => ['type' => 'string'],
-            'url'                => ['type' => 'object'],
-            'description'        => ['type' => 'object'],
+            'url'                => ['$ref' => Dto\Url::class],
+            'description'        => ['$ref' => Dto\Description::class],
             'externalUpdateDate' => ['type' => 'string'],
             'status'             => ['type' => 'string']
         ],

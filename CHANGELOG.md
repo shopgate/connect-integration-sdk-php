@@ -45,6 +45,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - getWishlist
 - addWishlistItems direct call
 - deleteWishlistItem direct call
+- addOrders direct call
+- getOrders
+- getOrder
 
 
 ## [0.5.0]- 2019-06-28

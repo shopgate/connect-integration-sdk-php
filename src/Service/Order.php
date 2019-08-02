@@ -77,9 +77,7 @@ class Order
             ]
         );
 
-        $response = $this->jsonHelper->decode($response->getBody(), true);
-
-        return $response;
+        return $this->jsonHelper->decode($response->getBody(), true);
     }
 
     /**

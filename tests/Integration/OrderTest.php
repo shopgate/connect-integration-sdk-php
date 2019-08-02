@@ -22,7 +22,7 @@
 
 namespace Shopgate\ConnectSdk\Tests\Integration;
 
-class OrderTest extends ShopgateSdkTest
+abstract class OrderTest extends ShopgateSdkTest
 {
     const CUSTOMER_SERVICE = 'omni-customer';
     const CATALOG_SERVICE = 'catalog';

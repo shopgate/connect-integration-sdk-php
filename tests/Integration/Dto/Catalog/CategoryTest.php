@@ -395,7 +395,7 @@ class CategoryTest extends CatalogTest
         $categoryImage->add('de-de', 'http://image.de');
         $category->setImage($categoryImage);
 
-         // Assert
+        // Assert
         $this->assertCount(2, $category->getName());
         $this->assertTrue(isset($category->getName()['de-de']));
         $this->assertTrue(isset($category->getName()['en-us']));

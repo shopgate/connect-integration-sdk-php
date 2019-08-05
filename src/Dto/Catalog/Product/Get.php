@@ -22,46 +22,13 @@
 
 namespace Shopgate\ConnectSdk\Dto\Catalog\Product;
 
-use Shopgate\ConnectSdk\Dto\Catalog\Product;
+use Shopgate\ConnectSdk\Dto\Catalog\Product as ProductBase;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto;
 
 /**
- * Dto for product response.
- *
- * @method string getCode()
- * @method string getParentProductCode()
- * @method string getCatalogCode()
- * @method string getModelType()
- * @method Dto\Identifiers getIdentifiers()
- * @method Dto\Price getPrice()
- * @method string[] getFulfillmentMethods()
- * @method string getUnit()
- * @method boolean getIsSerialized()
- * @method string getStatus()
- * @method string getStartDate()
- * @method string getEndDate()
- * @method string getFirstAvailableDate()
- * @method string getEolDate()
- * @method boolean getIsInventoryManaged()
- * @method string getInventoryTreatment()
- * @method Dto\ShippingInformation getShippingInformation()
- * @method float getRating()
- * @method string getUrl()
- * @method boolean getTaxClass()
- * @method float getMinQty()
- * @method float getMaxQty()
- * @method string getName()
- * @method string getLongName()
- * @method Dto\Categories[] getCategories()
- * @method Dto\Properties[] getProperties()
- * @method Dto\MediaList\Media[] getMedia()
- * @method Dto\Inventory[] getInventory()
- * @method Dto\Options[] getOptions()
- * @method Dto\Extras[] getExtras()
- *
- * @codeCoverageIgnore
+ * @inheritdoc
  */
-class Get extends Product
+class Get extends ProductBase
 {
     /**
      * @var array

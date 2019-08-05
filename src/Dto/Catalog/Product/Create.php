@@ -60,6 +60,8 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product;
  * @method Create setMinQty(float $minQty)
  * @method Create setMaxQty(float $maxQty)
  * @method Create setExternalUpdateDate(string $externalUpdateDate)
+ *
+ * @inheritdoc
  */
 class Create extends Product
 {
@@ -70,41 +72,33 @@ class Create extends Product
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'name'                => ['type' => 'object'],
-            'longName'            => ['type' => 'object'],
-            'shortDescription'    => ['type' => 'object'],
-            'longDescription'     => ['type' => 'object'],
+            'name'                => ['$ref' => Dto\Name::class],
+            'longName'            => ['$ref' => Dto\LongName::class],
+            'shortDescription'    => ['$ref' => Dto\ShortDescription::class],
+            'longDescription'     => ['$ref' => Dto\LongDescription::class],
             'categories'          => [
                 'type'  => 'array',
-                'items' => [
-                    'type' => 'object',
-                ],
+                'items' => ['$ref' => Dto\Categories::class]
             ],
             'properties'          => [
                 'type'  => 'array',
-                'items' => [
-                    'type' => 'object',
-                ],
+                'items' => ['$ref' => Dto\Properties::class]
             ],
-            'media'               => ['type' => 'object'],
+            'media'               => ['$ref' => Dto\MediaList::class],
             'options'             => [
                 'type'  => 'array',
-                'items' => [
-                    'type' => 'object',
-                ],
+                'items' => ['$ref' => Dto\Options::class]
             ],
             'extras'              => [
                 'type'  => 'array',
-                'items' => [
-                    'type' => 'object',
-                ],
+                'items' => ['$ref' => Dto\Extras::class]
             ],
             'code'                => ['type' => 'string'],
             'parentProductCode'   => ['type' => 'string'],
             'catalogCode'         => ['type' => 'string'],
             'modelType'           => ['type' => 'string'],
-            'identifiers'         => ['type' => 'object'],
-            'price'               => ['type' => 'object'],
+            'identifiers'         => ['$ref' => Dto\Identifiers::class],
+            'price'               => ['$ref' => Dto\Price::class],
             'fulfillmentMethods'  => [
                 'type'  => 'array',
                 'items' => [
@@ -120,7 +114,7 @@ class Create extends Product
             'eolDate'             => ['type' => 'string'],
             'isInventoryManaged'  => ['type' => 'boolean'],
             'inventoryTreatment'  => ['type' => 'string'],
-            'shippingInformation' => ['type' => 'object'],
+            'shippingInformation' => ['$ref' => Dto\ShippingInformation::class],
             'rating'              => ['type' => 'number'],
             'url'                 => ['type' => 'string'],
             'isTaxed'             => ['type' => 'boolean'],

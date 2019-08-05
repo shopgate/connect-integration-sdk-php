@@ -26,8 +26,6 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product;
 use Shopgate\ConnectSdk\Dto\Meta;
 
 /**
- * Dto for category list response.
- *
  * @method Meta getMeta()
  * @method Get[] getProducts()
  *

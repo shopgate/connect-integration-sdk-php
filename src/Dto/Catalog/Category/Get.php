@@ -25,19 +25,7 @@ namespace Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
 
 /**
- * Dto for category response
- *
- * @method string getCode()
- * @method string getParentCategoryCode()
- * @method string getCatalogCode()
- * @method string getImage()
- * @method string getName()
- * @method string getDescription()
- * @method string getUrl()
- * @method string getExternalUpdateDate()
- * @method string getStatus()
- *
- * @codeCoverageIgnore
+ * @inheritdoc
  */
 class Get extends Category
 {

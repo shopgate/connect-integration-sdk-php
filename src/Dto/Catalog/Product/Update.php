@@ -72,28 +72,20 @@ class Update extends Product
             'longName'            => ['$ref' => Dto\LongName::class],
             'categories'          => [
                 'type'  => 'array',
-                'items' => [
-                    'type' => 'object',
-                ],
+                'items' => ['$ref' => Dto\Categories::class]
             ],
             'properties'          => [
                 'type'  => 'array',
-                'items' => [
-                    'type' => 'object',
-                ],
+                'items' => ['$ref' => Dto\Properties::class]
             ],
             'media'               => ['$ref' => Dto\MediaList::class],
             'options'             => [
                 'type'  => 'array',
-                'items' => [
-                    'type' => 'object',
-                ],
+                'items' => ['$ref' => Dto\Options::class]
             ],
             'extras'              => [
                 'type'  => 'array',
-                'items' => [
-                    'type' => 'object',
-                ],
+                'items' => ['$ref' => Dto\Extras::class]
             ],
             'code'                => ['type' => 'string'],
             'parentProductCode'   => ['type' => 'string'],

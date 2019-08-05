@@ -70,18 +70,22 @@ class CategoryTest extends TestCase
 
         // Assert
         $this->assertCount(2, $category->getName());
+        $this->assertInstanceOf(Category\Dto\Name::class, $category->getName());
         $this->assertTrue(isset($category->getName()['de-de']));
         $this->assertTrue(isset($category->getName()['en-us']));
 
         $this->assertCount(2, $category->getDescription());
+        $this->assertInstanceOf(Category\Dto\Description::class, $category->getDescription());
         $this->assertTrue(isset($category->getDescription()['de-de']));
         $this->assertTrue(isset($category->getDescription()['en-us']));
 
         $this->assertCount(2, $category->getUrl());
+        $this->assertInstanceOf(Category\Dto\Url::class, $category->getUrl());
         $this->assertTrue(isset($category->getUrl()['de-de']));
         $this->assertTrue(isset($category->getUrl()['en-us']));
 
         $this->assertCount(2, $category->getImage());
+        $this->assertInstanceOf(Category\Dto\Image::class, $category->getImage());
         $this->assertTrue(isset($category->getImage()['de-de']));
         $this->assertTrue(isset($category->getImage()['en-us']));
     }

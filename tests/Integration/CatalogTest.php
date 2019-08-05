@@ -40,7 +40,6 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\ShortDescription;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Update;
 use Shopgate\ConnectSdk\Dto\Location\Location;
 use Shopgate\ConnectSdk\Exception\Exception;
-use Shopgate\ConnectSdk\ShopgateSdk;
 
 abstract class CatalogTest extends ShopgateSdkTest
 {

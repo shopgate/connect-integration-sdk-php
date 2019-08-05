@@ -52,7 +52,7 @@ class Fulfillment extends Base
             'status' => ['type' => 'string'],
             'carrier' => ['type' => 'string'],
             'serviceLevel' => ['type' => 'string'],
-            'tracking' => ['type' => 'number'],
+            'tracking' => ['type' => 'string'],
             'fulfillmentPackages' => [
                 'type' => 'array',
                 'items' => ['$ref' => Fulfillment\FulfillmentPackage::class]

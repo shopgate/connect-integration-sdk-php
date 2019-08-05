@@ -46,6 +46,7 @@ use Shopgate\ConnectSdk\Dto\Base;
  * @method string getFirstName()
  * @method string getMiddleName()
  * @method string getLastName()
+ * @method string getCompany()
  * @method string getAddress1()
  * @method string getAddress2()
  * @method string getAddress3()

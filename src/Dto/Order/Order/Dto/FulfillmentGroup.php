@@ -34,7 +34,7 @@ use Shopgate\ConnectSdk\Dto\Base;
  * @method string getFulfillmentMethod()
  * @method string getFulfillmentLocationCode()
  * @method int getShipToAddressSequenceIndex()
- * @method FulfillmentGroup\Fulfillment[] getFulFillments()
+ * @method FulfillmentGroup\Fulfillment[] getFulfillments()
  *
  * @codeCoverageIgnore
  */

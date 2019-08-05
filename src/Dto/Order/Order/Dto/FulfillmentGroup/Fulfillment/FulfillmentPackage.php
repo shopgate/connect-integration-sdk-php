@@ -45,6 +45,7 @@ use Shopgate\ConnectSdk\Dto\Base;
  * @method string getTracking()
  * @method string getPickUpBy()
  * @method string getLabelUrl()
+ * @method string getFulfilledDate()
  * @method FulfillmentPackage\PackageItem[] getPackageItems()
  *
  * @codeCoverageIgnore

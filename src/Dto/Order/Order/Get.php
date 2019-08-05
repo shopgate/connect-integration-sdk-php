@@ -35,6 +35,7 @@ use Shopgate\ConnectSdk\Dto\Order\Order;
  * @method string getLocaleCode()
  * @method string getCurrencyCode()
  * @method bool getTaxExempt()
+ * @method string getNotes()
  * @method Dto\SpecialInstructions getSpecialInstructions()
  * @method Dto\Data getData()
  * @method string getFulfillmentStatus()
@@ -81,6 +82,7 @@ class Get extends Order
             'localeCode' => ['type' => 'string'],
             'currencyCode' => ['type' => 'string'],
             'taxExempt' => ['type' => 'boolean'],
+            'notes' => ['type' => 'string'],
             'specialInstructions' => ['$ref' => Dto\SpecialInstructions::class],
             'data' => ['$ref' => Dto\Data::class],
             'fulfillmentStatus' => ['type' => 'string'],

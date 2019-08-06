@@ -2,10 +2,11 @@
 
 require_once(dirname(__FILE__) . '/../bootstrap.php');
 
-$orders = provideSampleOrders();
+$ordersNumber = '951357';
 
 try {
-    $sgSdk->getOrderService()->addOrders($orders);
+    $order = $sgSdk->getOrderService()->getOrder($ordersNumber);
 } catch (Exception $exception) {
     echo $exception->getMessage();
 }
+

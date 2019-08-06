@@ -122,7 +122,7 @@ services:
 
 ### https://gitlab.localdev.cc/omnichannel/services/order
   omni-order:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/order:v1.0.0-beta.108
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/order:v1.0.0-beta.116
     restart: always
     environment:
       - NODE_ENV=development

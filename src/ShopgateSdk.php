@@ -130,7 +130,7 @@ class ShopgateSdk
     }
 
     /**
-     * @return ClientInterface
+     * @return ClientInterface|Client
      */
     public function getClient()
     {

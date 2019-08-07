@@ -181,6 +181,16 @@ class Client implements ClientInterface
             . '/' . ltrim($path, '/');
     }
 
+    /**
+     * @param callable $middleware
+     */
+    public function addMiddleware(callable $middleware)
+    {
+        /** @var HandlerStack $handlerStack */
+        $handlerStack = $this->client->getConfig('handler');
+        $handlerStack->push($middleware);
+    }
+
     protected function addOAuthAuthentication()
     {
         /** @var HandlerStack $handlerStack */

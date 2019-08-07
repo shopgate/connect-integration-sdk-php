@@ -250,7 +250,7 @@ class Client implements ClientInterface
             $response = $this->client->request(
                 $params['method'],
                 isset($params['url']) ? $params['url'] : $this->buildServiceUrl($params['service'], $params['path']),
-                $parameters
+                $parameters + ['connect_timeout' => 5.0]
             );
         } catch (GuzzleRequestException $e) {
             $statusCode = $e->getResponse() ? $e->getResponse()->getStatusCode() : 0;
@@ -327,8 +327,9 @@ class Client implements ClientInterface
                 'post',
                 $this->buildServiceUrl('omni-event-receiver', 'events'),
                 [
-                    'json'        => $factory->getRequest()->toJson(),
-                    'http_errors' => false,
+                    'json'            => $factory->getRequest()->toJson(),
+                    'http_errors'     => false,
+                    'connect_timeout' => 5.0
                 ]
             );
         } catch (GuzzleRequestException $e) {

@@ -63,9 +63,9 @@ class Client implements ClientInterface
 
     /**
      * @param GuzzleClientInterface $client
-     * @param OAuth2Middleware      $OAuth2Middleware
-     * @param string                $baseUri
-     * @param string                $merchantCode
+     * @param OAuth2Middleware $OAuth2Middleware
+     * @param string $baseUri
+     * @param string $merchantCode
      */
     public function __construct(
         GuzzleClientInterface $client,
@@ -73,9 +73,9 @@ class Client implements ClientInterface
         $baseUri,
         $merchantCode
     ) {
-        $this->client          = $client;
-        $this->baseUri         = rtrim($baseUri, '/');
-        $this->merchantCode    = $merchantCode;
+        $this->client = $client;
+        $this->baseUri = rtrim($baseUri, '/');
+        $this->merchantCode = $merchantCode;
         $this->OAuthMiddleware = $OAuth2Middleware;
     }
 
@@ -117,7 +117,7 @@ class Client implements ClientInterface
             new ClientCredentials(
                 $reAuthClient,
                 [
-                    'client_id'     => $clientId,
+                    'client_id' => $clientId,
                     'client_secret' => $clientSecret
                 ]
             )
@@ -128,9 +128,9 @@ class Client implements ClientInterface
         ]));
 
         $handlerStack = HandlerStack::create();
-        $client       = new \GuzzleHttp\Client(
+        $client = new \GuzzleHttp\Client(
             [
-                'auth'    => 'oauth',
+                'auth' => 'oauth',
                 'handler' => $handlerStack
             ]
         );
@@ -148,7 +148,7 @@ class Client implements ClientInterface
 
     /**
      * @param LoggerInterface $logger
-     * @param string          $template
+     * @param string $template
      *
      * @throws Exception
      */
@@ -179,6 +179,16 @@ class Client implements ClientInterface
             . '/v1'
             . "/merchants/{$this->merchantCode}"
             . '/' . ltrim($path, '/');
+    }
+
+    /**
+     * @param callable $middleware
+     */
+    public function addMiddleware(callable $middleware)
+    {
+        /** @var HandlerStack $handlerStack */
+        $handlerStack = $this->client->getConfig('handler');
+        $handlerStack->push($middleware);
     }
 
     protected function addOAuthAuthentication()
@@ -229,18 +239,21 @@ class Client implements ClientInterface
         }
 
         $response = null;
+        $defaultConfigs = [
+            'connect_timeout' => 5.0
+        ];
         try {
             if (isset($params['body'])) {
                 $parameters['body'] = $params['body'];
             } elseif (isset($params['json'])) {
-                $json               = !empty($params['json']) ? $params['json'] : [];
+                $json = !empty($params['json']) ? $params['json'] : [];
                 $parameters['json'] = $json instanceof Base ? $json->toJson() : (new Base($json))->toJson();
             }
 
             $response = $this->client->request(
                 $params['method'],
                 isset($params['url']) ? $params['url'] : $this->buildServiceUrl($params['service'], $params['path']),
-                $parameters
+                array_merge($defaultConfigs, $parameters)
             );
         } catch (GuzzleRequestException $e) {
             $statusCode = $e->getResponse() ? $e->getResponse()->getStatusCode() : 0;
@@ -302,7 +315,7 @@ class Client implements ClientInterface
             isset($params['json']) ? $params['json'] : new Base(),
         ];
         if ($params['action'] === 'create') {
-            $key    = array_keys($params['json'])[0];
+            $key = array_keys($params['json'])[0];
             $values = $params['json'][$key];
         }
 
@@ -317,8 +330,9 @@ class Client implements ClientInterface
                 'post',
                 $this->buildServiceUrl('omni-event-receiver', 'events'),
                 [
-                    'json'        => $factory->getRequest()->toJson(),
+                    'json' => $factory->getRequest()->toJson(),
                     'http_errors' => false,
+                    'connect_timeout' => 5.0
                 ]
             );
         } catch (GuzzleRequestException $e) {

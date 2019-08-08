@@ -29,14 +29,14 @@ use Shopgate\ConnectSdk\Dto\Base;
  * @method Media setUrl(string $url)
  * @method Media setType(string $type)
  * @method Media setAltText(string $altText)
- * @method Media setSubTitle(string $title)
+ * @method Media setTitle(string $title)
  * @method Media setSequenceId(int $sequenceId)
  *
  * @method string getCode()
  * @method string getUrl()
  * @method string getType()
  * @method string getAltText()
- * @method string getSubTitle()
+ * @method string getTitle()
  * @method int getSequenceId()
  *
  * @codeCoverageIgnore

@@ -24,8 +24,8 @@ namespace Shopgate\ConnectSdk\Dto\Catalog\Category;
 
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Description;
-use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Name;
 use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Image;
+use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Name;
 use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Url;
 
 /**
@@ -36,6 +36,8 @@ use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Url;
  * @method Update setDescription(Description $description)
  * @method Update setExternalUpdateDate(string $date)
  * @method Update setStatus(string $status)
+ * @method Update setCatalogCode(string $catalogCode)
+ * @method Update setSequenceId(int $sequenceId)
  *
  * @inheritdoc
  */
@@ -53,7 +55,9 @@ class Update extends Category
             'url'                => ['$ref' => Dto\Url::class],
             'description'        => ['$ref' => Dto\Description::class],
             'externalUpdateDate' => ['type' => 'string'],
-            'status'             => ['type' => 'string']
+            'status'             => ['type' => 'string'],
+            'catalogCode'        => ['type' => 'string'],
+            'sequenceId'         => ['type' => 'integer']
         ],
         'additionalProperties' => true
     ];

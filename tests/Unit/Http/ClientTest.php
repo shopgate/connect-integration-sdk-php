@@ -23,8 +23,8 @@
 namespace Shopgate\ConnectSdk\Tests\Unit\Http;
 
 use Exception;
-use GuzzleHttp\ClientInterface as GuzzleClientInterface;
 use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\ClientInterface as GuzzleClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -60,7 +60,7 @@ class ClientTest extends TestCase
 
     public function setUp()
     {
-        $this->mockHandler  = new MockHandler([]);
+        $this->mockHandler = new MockHandler([]);
         $this->handlerStack = HandlerStack::create($this->mockHandler);
 
         $this->client = $this
@@ -75,8 +75,8 @@ class ClientTest extends TestCase
 
         /** @var OAuth2Middleware $OAuthMiddleware */
         $this->OAuthMiddleware = $this->getMockBuilder(OAuth2Middleware::class)
-                                      ->disableOriginalConstructor()
-                                      ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->subjectUnderTest = new Client(
             $this->client,
@@ -154,15 +154,15 @@ class ClientTest extends TestCase
     public function provideBuildServiceUrlFixtures()
     {
         return [
-            'should replace {service} with service name'       => [
+            'should replace {service} with service name' => [
                 'expectedUrl' => 'http://catalog.local/v1/merchants/TM2/',
                 'serviceName' => 'catalog',
-                'path'        => ''
+                'path' => ''
             ],
             'should left-trim slashes from path and append it' => [
                 'expectedUrl' => 'http://catalog.local/v1/merchants/TM2/products/prod1',
                 'serviceName' => 'catalog',
-                'path'        => '///products/prod1'
+                'path' => '///products/prod1'
             ]
         ];
     }
@@ -184,8 +184,9 @@ class ClientTest extends TestCase
                 'post',
                 'http://omni-event-receiver.local/v1/merchants/TM2/events',
                 [
-                    'json'        => '{"events":[{"event":"entityUpdated","entity":"category","payload":{}}]}',
+                    'json' => '{"events":[{"event":"entityUpdated","entity":"category","payload":{}}]}',
                     'http_errors' => false,
+                    'connect_timeout' => 5.0
                 ]
             )->willReturn([]);
 
@@ -198,9 +199,9 @@ class ClientTest extends TestCase
 
         // Act
         $this->subjectUnderTest->doRequest([
-            'action'      => 'update',
-            'method'      => 'post',
-            'entity'      => 'category',
+            'action' => 'update',
+            'method' => 'post',
+            'entity' => 'category',
             'requestType' => ShopgateSdk::REQUEST_TYPE_EVENT
         ]);
     }
@@ -221,7 +222,7 @@ class ClientTest extends TestCase
             ->method('request')->with(
                 $this->equalTo('post'),
                 $this->equalTo('http://catalog.local/v1/merchants/TM2/categories/'),
-                $this->equalTo([])
+                $this->equalTo(['connect_timeout' => 5.0])
             )->willReturn([]);
 
         $this->subjectUnderTest = new Client(
@@ -233,11 +234,11 @@ class ClientTest extends TestCase
 
         // Act
         $this->subjectUnderTest->doRequest([
-            'action'      => 'update',
-            'method'      => 'post',
-            'entity'      => 'category',
-            'service'     => 'catalog',
-            'path'        => 'categories/',
+            'action' => 'update',
+            'method' => 'post',
+            'entity' => 'category',
+            'service' => 'catalog',
+            'path' => 'categories/',
             'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT
         ]);
     }
@@ -272,8 +273,8 @@ class ClientTest extends TestCase
         // Act
         $this->subjectUnderTest->doRequest([
             'service' => 'catalog',
-            'method'  => 'get',
-            'path'    => 'categories'
+            'method' => 'get',
+            'path' => 'categories'
         ]);
     }
 
@@ -295,7 +296,8 @@ class ClientTest extends TestCase
                 $this->equalTo('get'),
                 $this->equalTo('http://catalog.local/v1/merchants/TM2/categories'),
                 $this->equalTo([
-                    'query' => []
+                    'query' => [],
+                    'connect_timeout' => 5.0
                 ])
             )->willReturn([]);
 
@@ -309,9 +311,9 @@ class ClientTest extends TestCase
         // Act
         $this->subjectUnderTest->doRequest([
             'service' => 'catalog',
-            'method'  => 'get',
-            'path'    => 'categories',
-            'query'   => [
+            'method' => 'get',
+            'path' => 'categories',
+            'query' => [
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
             ]
         ]);

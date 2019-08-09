@@ -72,18 +72,18 @@ class Catalog
         return $this->client->doRequest(
             [
                 // general
-                'method'      => 'post',
+                'method' => 'post',
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
-                'json'        => ['categories' => $categories],
-                'query'       => $query,
+                'json' => ['categories' => $categories],
+                'query' => $query,
                 // direct
-                'service'     => 'catalog',
-                'path'        => 'categories',
+                'service' => 'catalog',
+                'path' => 'categories',
                 // async
-                'entity'      => 'category',
-                'action'      => 'create',
+                'entity' => 'category',
+                'action' => 'create',
             ]
         );
     }
@@ -108,16 +108,16 @@ class Catalog
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
-                'json'        => $category,
-                'query'       => $query,
+                'json' => $category,
+                'query' => $query,
                 // direct
-                'method'      => 'post',
-                'service'     => 'catalog',
-                'path'        => 'categories/' . $code,
+                'method' => 'post',
+                'service' => 'catalog',
+                'path' => 'categories/' . $code,
                 // async
-                'entity'      => 'category',
-                'action'      => 'update',
-                'entityId'    => $code,
+                'entity' => 'category',
+                'action' => 'update',
+                'entityId' => $code,
             ]
         );
     }
@@ -141,15 +141,15 @@ class Catalog
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
-                'query'       => $query,
+                'query' => $query,
                 // direct
-                'method'      => 'delete',
-                'service'     => 'catalog',
-                'path'        => 'categories/' . $code,
+                'method' => 'delete',
+                'service' => 'catalog',
+                'path' => 'categories/' . $code,
                 // async
-                'entity'      => 'category',
-                'action'      => 'delete',
-                'entityId'    => $code,
+                'entity' => 'category',
+                'action' => 'delete',
+                'entityId' => $code,
             ]
         );
     }
@@ -174,9 +174,9 @@ class Catalog
             [
                 // direct only
                 'service' => 'catalog',
-                'method'  => 'get',
-                'path'    => 'categories',
-                'query'   => $query,
+                'method' => 'get',
+                'path' => 'categories',
+                'query' => $query,
             ]
         );
         $response = $this->jsonHelper->decode($response->getBody(), true);
@@ -185,7 +185,7 @@ class Catalog
         foreach ($response['categories'] as $category) {
             $categories[] = new Category\Get($category);
         }
-        $response['meta']       = new Meta($response['meta']);
+        $response['meta'] = new Meta($response['meta']);
         $response['categories'] = $categories;
 
         return new Category\GetList($response);
@@ -206,16 +206,16 @@ class Catalog
     {
         return $this->client->doRequest(
             [
-                'service'     => 'catalog',
-                'method'      => 'post',
-                'path'        => 'products',
-                'entity'      => 'product',
-                'action'      => 'create',
-                'json'        => ['products' => $products],
+                'service' => 'catalog',
+                'method' => 'post',
+                'path' => 'products',
+                'entity' => 'product',
+                'action' => 'create',
+                'json' => ['products' => $products],
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
-                'query'       => $query,
+                'query' => $query,
             ]
         );
     }
@@ -236,17 +236,17 @@ class Catalog
     {
         return $this->client->doRequest(
             [
-                'service'     => 'catalog',
-                'method'      => 'post',
-                'path'        => 'products/' . $code,
-                'entityId'    => $code,
-                'entity'      => 'product',
-                'action'      => 'update',
-                'json'        => $product,
+                'service' => 'catalog',
+                'method' => 'post',
+                'path' => 'products/' . $code,
+                'entityId' => $code,
+                'entity' => 'product',
+                'action' => 'update',
+                'json' => $product,
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
-                'query'       => $query,
+                'query' => $query,
             ]
         );
     }
@@ -266,16 +266,16 @@ class Catalog
     {
         return $this->client->doRequest(
             [
-                'service'     => 'catalog',
-                'method'      => 'delete',
-                'path'        => 'products/' . $code,
-                'entity'      => 'product',
-                'action'      => 'delete',
-                'entityId'    => $code,
+                'service' => 'catalog',
+                'method' => 'delete',
+                'path' => 'products/' . $code,
+                'entity' => 'product',
+                'action' => 'delete',
+                'entityId' => $code,
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
-                'query'       => $query,
+                'query' => $query,
             ]
         );
     }
@@ -300,9 +300,9 @@ class Catalog
             [
                 // direct only
                 'service' => 'catalog',
-                'method'  => 'get',
-                'path'    => 'products',
-                'query'   => $query,
+                'method' => 'get',
+                'path' => 'products',
+                'query' => $query,
             ]
         );
         $response = $this->jsonHelper->decode($response->getBody(), true);
@@ -311,7 +311,7 @@ class Catalog
         foreach ($response['products'] as $product) {
             $products[] = new Product\Get($product);
         }
-        $response['meta']     = new Meta($response['meta']);
+        $response['meta'] = new Meta($response['meta']);
         $response['products'] = $products;
 
         return new Product\GetList($response);
@@ -334,9 +334,9 @@ class Catalog
             [
                 // direct only
                 'service' => 'catalog',
-                'method'  => 'get',
-                'path'    => 'products/' . $code,
-                'query'   => $query
+                'method' => 'get',
+                'path' => 'products/' . $code,
+                'query' => $query
             ]
         );
         $response = $this->jsonHelper->decode($response->getBody(), true);
@@ -359,9 +359,9 @@ class Catalog
         $response = $this->client->doRequest(
             [
                 'service' => 'catalog',
-                'method'  => 'get',
-                'path'    => 'products/' . $code . '/descriptions',
-                'query'   => $query
+                'method' => 'get',
+                'path' => 'products/' . $code . '/descriptions',
+                'query' => $query
             ]
         );
         $response = json_decode($response->getBody(), true);
@@ -385,18 +385,18 @@ class Catalog
         return $this->client->doRequest(
             [
                 // general
-                'method'      => 'post',
+                'method' => 'post',
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
-                'json'        => ['attributes' => $attributes],
-                'query'       => $query,
+                'json' => ['attributes' => $attributes],
+                'query' => $query,
                 // direct
-                'service'     => 'catalog',
-                'path'        => 'attributes',
+                'service' => 'catalog',
+                'path' => 'attributes',
                 // async
-                'entity'      => 'attribute',
-                'action'      => 'create',
+                'entity' => 'attribute',
+                'action' => 'create',
             ]
         );
     }
@@ -421,9 +421,9 @@ class Catalog
             [
                 // direct only
                 'service' => 'catalog',
-                'method'  => 'get',
-                'path'    => 'attributes',
-                'query'   => $query,
+                'method' => 'get',
+                'path' => 'attributes',
+                'query' => $query,
             ]
         );
         $response = $this->jsonHelper->decode($response->getBody(), true);
@@ -432,7 +432,7 @@ class Catalog
         foreach ($response['attributes'] as $attribute) {
             $attributes[] = new Attribute\Get($attribute);
         }
-        $response['meta']       = new Meta($response['meta']);
+        $response['meta'] = new Meta($response['meta']);
         $response['attributes'] = $attributes;
 
         return new Attribute\GetList($response);
@@ -455,9 +455,9 @@ class Catalog
             [
                 // direct only
                 'service' => 'catalog',
-                'method'  => 'get',
-                'path'    => 'attributes/' . $attributeCode,
-                'query'   => $query,
+                'method' => 'get',
+                'path' => 'attributes/' . $attributeCode,
+                'query' => $query,
             ]
         );
 
@@ -483,19 +483,19 @@ class Catalog
         return $this->client->doRequest(
             [
                 // general
-                'service'     => 'catalog',
-                'method'      => 'post',
-                'path'        => 'attributes/' . $attributeCode,
-                'entity'      => 'attribute',
-                'query'       => $query,
+                'service' => 'catalog',
+                'method' => 'post',
+                'path' => 'attributes/' . $attributeCode,
+                'entity' => 'attribute',
+                'query' => $query,
                 // direct only
-                'action'      => 'update',
-                'json'        => $attribute,
+                'action' => 'update',
+                'json' => $attribute,
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
                 // async
-                'entityId'    => $attributeCode,
+                'entityId' => $attributeCode,
             ]
         );
     }
@@ -515,17 +515,17 @@ class Catalog
     {
         return $this->client->doRequest(
             [
-                'service'     => 'catalog',
-                'method'      => 'delete',
-                'path'        => 'attributes/' . $attributeCode,
-                'entity'      => 'attribute',
-                'action'      => 'delete',
+                'service' => 'catalog',
+                'method' => 'delete',
+                'path' => 'attributes/' . $attributeCode,
+                'entity' => 'attribute',
+                'action' => 'delete',
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
                 // async
-                'entityId'    => $attributeCode,
-                'query'       => $query,
+                'entityId' => $attributeCode,
+                'query' => $query,
             ]
         );
     }
@@ -549,16 +549,16 @@ class Catalog
     ) {
         return $this->client->doRequest(
             [
-                'service'     => 'catalog',
-                'method'      => 'post',
-                'path'        => 'attributes/' . $attributeCode . '/values/',
-                'entity'      => 'attributes',
-                'action'      => 'create',
-                'json'        => ['values' => $attributeValues],
+                'service' => 'catalog',
+                'method' => 'post',
+                'path' => 'attributes/' . $attributeCode . '/values/',
+                'entity' => 'attributes',
+                'action' => 'create',
+                'json' => ['values' => $attributeValues],
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
-                'query'       => $query,
+                'query' => $query,
             ]
         );
     }
@@ -584,17 +584,17 @@ class Catalog
     ) {
         return $this->client->doRequest(
             [
-                'service'     => 'catalog',
-                'method'      => 'post',
-                'path'        => 'attributes/' . $attributeCode . '/values/' . $attributeValueCode,
-                'entity'      => 'attribute',
-                'action'      => 'update',
-                'json'        => $attributeValue,
+                'service' => 'catalog',
+                'method' => 'post',
+                'path' => 'attributes/' . $attributeCode . '/values/' . $attributeValueCode,
+                'entity' => 'attribute',
+                'action' => 'update',
+                'json' => $attributeValue,
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
-                'entityId'    => $attributeCode,
-                'query'       => $query,
+                'entityId' => $attributeCode,
+                'query' => $query,
             ]
         );
     }
@@ -615,16 +615,16 @@ class Catalog
     {
         return $this->client->doRequest(
             [
-                'service'     => 'catalog',
-                'method'      => 'delete',
-                'path'        => 'attributes/' . $attributeCode . '/values/' . $attributeValueCode,
-                'entity'      => 'attributeValue',
-                'entityId'    => $attributeValueCode,
-                'action'      => 'delete',
+                'service' => 'catalog',
+                'method' => 'delete',
+                'path' => 'attributes/' . $attributeCode . '/values/' . $attributeValueCode,
+                'entity' => 'attributeValue',
+                'entityId' => $attributeValueCode,
+                'action' => 'delete',
                 'requestType' => isset($query['requestType'])
                     ? $query['requestType']
                     : ShopgateSdk::REQUEST_TYPE_EVENT,
-                'query'       => $query,
+                'query' => $query,
             ]
         );
     }
@@ -644,16 +644,14 @@ class Catalog
     {
         return $this->client->doRequest(
             [
-                'service'     => 'catalog',
-                'method'      => 'post',
-                'path'        => 'inventories',
-                'entity'      => 'inventory',
-                'action'      => 'create',
-                'json'        => ['inventories' => $inventories],
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
-                'query'       => $query,
+                'service' => 'catalog',
+                'method' => 'post',
+                'path' => 'inventories',
+                'entity' => 'inventory',
+                'action' => 'create',
+                'json' => ['inventories' => $inventories],
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
+                'query' => $query,
             ]
         );
     }
@@ -673,16 +671,14 @@ class Catalog
     {
         return $this->client->doRequest(
             [
-                'service'     => 'catalog',
-                'method'      => 'delete',
-                'path'        => 'inventories',
-                'entity'      => 'inventory',
-                'json'        => ['inventories' => $inventories],
-                'action'      => 'delete',
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
-                'query'       => $query,
+                'service' => 'catalog',
+                'method' => 'delete',
+                'path' => 'inventories',
+                'entity' => 'inventory',
+                'json' => ['inventories' => $inventories],
+                'action' => 'delete',
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
+                'query' => $query,
             ]
         );
     }
@@ -701,16 +697,14 @@ class Catalog
     {
         return $this->client->doRequest(
             [
-                'service'     => 'catalog',
-                'method'      => 'patch',
-                'path'        => 'inventories',
-                'entity'      => 'inventory',
-                'json'        => ['inventories' => $inventories],
-                'action'      => 'update',
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
-                'query'       => $query,
+                'service' => 'catalog',
+                'method' => 'patch',
+                'path' => 'inventories',
+                'entity' => 'inventory',
+                'json' => ['inventories' => $inventories],
+                'action' => 'update',
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
+                'query' => $query,
             ]
         );
     }

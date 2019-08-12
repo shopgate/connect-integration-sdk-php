@@ -38,7 +38,7 @@ class CategoryTest extends CatalogTest
     public function testCreateCategoryDirect()
     {
         // Arrange
-        $sampleCategories    = $this->provideSampleCategories();
+        $sampleCategories = $this->provideSampleCategories();
         $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
 
         // Act
@@ -90,14 +90,14 @@ class CategoryTest extends CatalogTest
      *
      * @throws Exception
      *
-     * @depends testCreateCategoryDirect
+     * @depends      testCreateCategoryDirect
      *
      * @dataProvider provideCategoryLimitCases
      */
     public function testCategoryLimit($limit, $offset, $expectedCategoryCount, $expectedCategoryCodes)
     {
         // Arrange
-        $sampleCategories    = $this->provideSampleCategories();
+        $sampleCategories = $this->provideSampleCategories();
         $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
         $this->createCategories(
             $sampleCategories,
@@ -142,63 +142,63 @@ class CategoryTest extends CatalogTest
     public function provideCategoryLimitCases()
     {
         return [
-            'get the second'    => [
-                'limit'                 => 1,
-                'offset'                => 1,
-                'expectedCount'         => 1,
+            'get the second' => [
+                'limit' => 1,
+                'offset' => 1,
+                'expectedCount' => 1,
                 'expectedCategoryCodes' => [
                     self::CATEGORY_CODE_SECOND
                 ]
             ],
-            'get the first'     => [
-                'limit'         => 1,
-                'offset'        => 0,
+            'get the first' => [
+                'limit' => 1,
+                'offset' => 0,
                 'expectedCount' => 1,
                 'expectedCodes' => [
                     self::CATEGORY_CODE
                 ]
             ],
-            'get two'           => [
-                'limit'         => 2,
-                'offset'        => 0,
+            'get two' => [
+                'limit' => 2,
+                'offset' => 0,
                 'expectedCount' => 2,
                 'expectedCodes' => [
                     self::CATEGORY_CODE,
                     self::CATEGORY_CODE_SECOND
                 ]
             ],
-            'limit 1'           => [
-                'limit'         => 1,
-                'offset'        => null,
+            'limit 1' => [
+                'limit' => 1,
+                'offset' => null,
                 'expectedCount' => 1,
                 'expectedCodes' => [
                     self::CATEGORY_CODE
                 ]
             ],
-            'limit 2'           => [
-                'limit'         => 2,
-                'offset'        => null,
+            'limit 2' => [
+                'limit' => 2,
+                'offset' => null,
                 'expectedCount' => 2,
                 'expectedCodes' => [
                     self::CATEGORY_CODE,
                     self::CATEGORY_CODE_SECOND
                 ]
             ],
-            'offset 1'          => [
-                'limit'         => null,
-                'offset'        => 1,
+            'offset 1' => [
+                'limit' => null,
+                'offset' => 1,
                 'expectedCount' => 1,
                 'expectedCodes' => [self::CATEGORY_CODE_SECOND]
             ],
-            'offset 2'          => [
-                'limit'         => null,
-                'offset'        => 2,
+            'offset 2' => [
+                'limit' => null,
+                'offset' => 2,
                 'expectedCount' => 0,
                 'expectedCodes' => []
             ],
             'no entities found' => [
-                'limit'         => 1,
-                'offset'        => 2,
+                'limit' => 1,
+                'offset' => 2,
                 'expectedCount' => 0,
                 'expectedCodes' => []
             ]
@@ -224,7 +224,7 @@ class CategoryTest extends CatalogTest
             ],
             ['requestType' => 'direct']
         );
-        $newName  = 'Renamed Product (Direct)';
+        $newName = 'Renamed Product (Direct)';
         $category = new Category\Update(['name' => new Name(['en-us' => $newName])]);
 
         // Act
@@ -238,7 +238,7 @@ class CategoryTest extends CatalogTest
         $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, [self::CATEGORY_CODE]);
 
         // Assert
-        $categories      = $this->getCategories([self::CATEGORY_CODE]);
+        $categories = $this->getCategories([self::CATEGORY_CODE]);
         $updatedCategory = $categories->getCategories()[0];
         $this->assertEquals($newName, $updatedCategory->getName());
     }
@@ -267,13 +267,13 @@ class CategoryTest extends CatalogTest
 
         $category = new Category\Create();
         $category->setCode(self::CATEGORY_CODE)
-                 ->setSequenceId(1)
-                 ->setName($name)
-                 ->setDescription($description)
-                 ->setUrl($url)
-                 ->setImage($image)
-                 ->setExternalUpdateDate('2019-12-15T00:00:00.000Z')
-                 ->setStatus(Category\Create::STATUS_ACTIVE);
+            ->setSequenceId(1)
+            ->setName($name)
+            ->setDescription($description)
+            ->setUrl($url)
+            ->setImage($image)
+            ->setExternalUpdateDate('2019-12-15T00:00:00.000Z')
+            ->setStatus(Category\Create::STATUS_ACTIVE);
 
         // Act
         $this->createCategories(
@@ -286,12 +286,12 @@ class CategoryTest extends CatalogTest
 
         // Assert
         $categories = $this->getCategories([self::CATEGORY_CODE]);
-        $category   = $categories->getCategories()[0];
+        $category = $categories->getCategories()[0];
 
         $this->assertEquals('Name EN', $category->getName());
         $this->assertEquals('Description EN', $category->getDescription());
         $this->assertEquals('http://google.com', $category->getUrl());
-        $this->assertEquals(true, strpos($category->getImage(), 'http://image.com'));
+        $this->assertTrue(strpos($category->getImage(), 'http://image.com'));
     }
 
     /**
@@ -318,13 +318,13 @@ class CategoryTest extends CatalogTest
 
         $category = new Category\Create();
         $category->setCode(self::CATEGORY_CODE)
-                 ->setSequenceId(1)
-                 ->setName($name)
-                 ->setDescription($description)
-                 ->setUrl($url)
-                 ->setImage($image)
-                 ->setExternalUpdateDate('2019-12-15T00:00:00.000Z')
-                 ->setStatus(Category\Create::STATUS_ACTIVE);
+            ->setSequenceId(1)
+            ->setName($name)
+            ->setDescription($description)
+            ->setUrl($url)
+            ->setImage($image)
+            ->setExternalUpdateDate('2019-12-15T00:00:00.000Z')
+            ->setStatus(Category\Create::STATUS_ACTIVE);
 
         // Act
         $this->createCategories(
@@ -337,20 +337,20 @@ class CategoryTest extends CatalogTest
 
         // Assert
         $categoriesDe = $this->getCategories([self::CATEGORY_CODE], ['localeCode' => 'de-de']);
-        $categoryDe   = $categoriesDe->getCategories()[0];
+        $categoryDe = $categoriesDe->getCategories()[0];
 
         $this->assertEquals('Name DE', $categoryDe->getName());
         $this->assertEquals('Description DE', $categoryDe->getDescription());
         $this->assertEquals('http://google.de', $categoryDe->getUrl());
-        $this->assertEquals(true, strpos($categoryDe->getImage(), 'http://image.de'));
+        $this->assertTrue(strpos($categoryDe->getImage(), 'http://image.de'));
 
         $categoriesEn = $this->getCategories([self::CATEGORY_CODE], ['localeCode' => 'en-us']);
-        $categoryEn   = $categoriesEn->getCategories()[0];
+        $categoryEn = $categoriesEn->getCategories()[0];
 
         $this->assertEquals('Name EN', $categoryEn->getName());
         $this->assertEquals('Description EN', $categoryEn->getDescription());
         $this->assertEquals('http://google.com', $categoryEn->getUrl());
-        $this->assertEquals(true, strpos($categoryEn->getImage(), 'http://image.com'));
+        $this->assertTrue(strpos($categoryEn->getImage(), 'http://image.com'));
     }
 
     /**
@@ -359,8 +359,8 @@ class CategoryTest extends CatalogTest
      *
      * @throws Exception
      *
-     * @depends testCreateCategoryDirect
-     * @depends testGetCategories
+     * @depends      testCreateCategoryDirect
+     * @depends      testGetCategories
      *
      * @dataProvider provideUpdateCategoryData
      */
@@ -411,9 +411,9 @@ class CategoryTest extends CatalogTest
         );
 
         // Assert
-        $categories      = $this->getCategories([self::CATEGORY_CODE], ['getOriginalImageUrls' => true]);
+        $categories = $this->getCategories([self::CATEGORY_CODE], ['getOriginalImageUrls' => true]);
         $updatedCategory = $categories->getCategories()[0];
-        $updatedKey      = array_keys($updateCategoryData)[0];
+        $updatedKey = array_keys($updateCategoryData)[0];
         $this->assertEquals($expectedValue, $updatedCategory->get($updatedKey));
     }
 
@@ -423,47 +423,47 @@ class CategoryTest extends CatalogTest
     public function provideUpdateCategoryData()
     {
         return [
-            'name'               => [
+            'name' => [
                 'updateCategoryData' => [
                     'name' => new Name(['en-us' => 'Updated Name']),
                 ],
-                'expectedValue'      => 'Updated Name'
+                'expectedValue' => 'Updated Name'
             ],
-            'description'        => [
+            'description' => [
                 'updateCategoryData' => [
                     'description' => new Category\Dto\Description(['en-us' => 'Updated Description']),
                 ],
-                'expectedValue'      => 'Updated Description'
+                'expectedValue' => 'Updated Description'
             ],
-            'image'              => [
+            'image' => [
                 'updateCategoryData' => [
                     'image' => new Category\Dto\Image(['en-us' => 'http://updated.com/image.png']),
                 ],
-                'expectedValue'      => 'http://updated.com/image.png'
+                'expectedValue' => 'http://updated.com/image.png'
             ],
-            'url'                => [
+            'url' => [
                 'updateCategoryData' => [
                     'url' => new Category\Dto\Url(['en-us' => 'http://updated.url.com']),
                 ],
-                'expectedValue'      => 'http://updated.url.com'
+                'expectedValue' => 'http://updated.url.com'
             ],
             'parentCategoryCode' => [
                 'updateCategoryData' => [
                     'parentCategoryCode' => self::PARENT_CATEGORY_CODE,
                 ],
-                'expectedValue'      => self::PARENT_CATEGORY_CODE
+                'expectedValue' => self::PARENT_CATEGORY_CODE
             ],
             'externalUpdateDate' => [
                 'updateCategoryData' => [
                     'externalUpdateDate' => '2019-12-21T00:00:00.000Z',
                 ],
-                'expectedValue'      => '2019-12-21T00:00:00.000Z'
+                'expectedValue' => '2019-12-21T00:00:00.000Z'
             ],
-            'status'             => [
+            'status' => [
                 'updateCategoryData' => [
                     'status' => Category::STATUS_ACTIVE,
                 ],
-                'expectedValue'      => Category::STATUS_ACTIVE
+                'expectedValue' => Category::STATUS_ACTIVE
             ]
         ];
     }
@@ -530,22 +530,22 @@ class CategoryTest extends CatalogTest
     public function provideCreateCategoryWithMissingRequiredFields()
     {
         return [
-            'missing name'       => [
-                'categoryData'      => [
-                    'code'       => 'category-test-code',
+            'missing name' => [
+                'categoryData' => [
+                    'code' => 'category-test-code',
                     'sequenceId' => 1006
                 ],
                 'expectedException' => new RequestException(400)
             ],
-            'missing code'       => [
-                'categoryData'      => [
-                    'name'       => 'Test Category',
+            'missing code' => [
+                'categoryData' => [
+                    'name' => 'Test Category',
                     'sequenceId' => 1006
                 ],
                 'expectedException' => new RequestException(400)
             ],
             'missing sequenceId' => [
-                'categoryData'      => [
+                'categoryData' => [
                     'name' => 'Test Category',
                     'code' => 'category-test-code',
                 ],
@@ -590,62 +590,62 @@ class CategoryTest extends CatalogTest
     public function provideCreateCategoryWithInvalidDataTypes()
     {
         return [
-            'wrong name data type'               => [
-                'categoryData'      => [
-                    'name'       => 12345,
-                    'code'       => 'category-test-code',
+            'wrong name data type' => [
+                'categoryData' => [
+                    'name' => 12345,
+                    'code' => 'category-test-code',
                     'sequenceId' => 1006
                 ],
                 'expectedException' => new RequestException(400)
             ],
-            'wrong code data type'               => [
-                'categoryData'      => [
-                    'name'       => 'Test Category',
-                    'code'       => 123456,
+            'wrong code data type' => [
+                'categoryData' => [
+                    'name' => 'Test Category',
+                    'code' => 123456,
                     'sequenceId' => 1006
                 ],
                 'expectedException' => new RequestException(400)
             ],
-            'wrong sequenceId data type'         => [
-                'categoryData'      => [
-                    'name'       => 'Test Category',
-                    'code'       => 'category-test-code',
+            'wrong sequenceId data type' => [
+                'categoryData' => [
+                    'name' => 'Test Category',
+                    'code' => 'category-test-code',
                     'sequenceId' => '1006'
                 ],
                 'expectedException' => new RequestException(400)
             ],
             'wrong parentCategoryCode data type' => [
-                'categoryData'      => [
-                    'name'               => 'Test Category',
-                    'code'               => 'category-test-code',
-                    'sequenceId'         => 1006,
+                'categoryData' => [
+                    'name' => 'Test Category',
+                    'code' => 'category-test-code',
+                    'sequenceId' => 1006,
                     'parentCategoryCode' => 12345
                 ],
                 'expectedException' => new RequestException(400)
             ],
-            'wrong image data type'              => [
-                'categoryData'      => [
-                    'name'       => 'Test Category',
-                    'code'       => 'category-test-code',
+            'wrong image data type' => [
+                'categoryData' => [
+                    'name' => 'Test Category',
+                    'code' => 'category-test-code',
                     'sequenceId' => 1006,
-                    'image'      => 12345
+                    'image' => 12345
                 ],
                 'expectedException' => new RequestException(400)
             ],
-            'wrong url type'                     => [
-                'categoryData'      => [
-                    'name'       => 'Test Category',
-                    'code'       => 'category-test-code',
+            'wrong url type' => [
+                'categoryData' => [
+                    'name' => 'Test Category',
+                    'code' => 'category-test-code',
                     'sequenceId' => 1006,
-                    'url'        => 123456
+                    'url' => 123456
                 ],
                 'expectedException' => new RequestException(400)
             ],
-            'wrong description type'             => [
-                'categoryData'      => [
-                    'name'        => 'Test Category',
-                    'code'        => 'category-test-code',
-                    'sequenceId'  => 1006,
+            'wrong description type' => [
+                'categoryData' => [
+                    'name' => 'Test Category',
+                    'code' => 'category-test-code',
+                    'sequenceId' => 1006,
                     'description' => new Category\Dto\Description(['en-US' => 12345])
                 ],
                 'expectedException' => new RequestException(400)
@@ -661,7 +661,7 @@ class CategoryTest extends CatalogTest
     public function testUpdateCategoryWithoutAnyDataGiven()
     {
         // Arrange
-        $categoryCode     = 'example-code';
+        $categoryCode = 'example-code';
         $existingCategory = $this->provideSampleCreateCategory(
             $categoryCode,
             'test category',
@@ -697,7 +697,7 @@ class CategoryTest extends CatalogTest
     {
         // Arrange
         $nonExistentCategoryCode = 'non-existent';
-        $category                = $this->provideSampleUpdateCategory('test non existent category');
+        $category = $this->provideSampleUpdateCategory('test non existent category');
 
         // Assert
         $this->expectException(NotFoundException::class);
@@ -719,7 +719,7 @@ class CategoryTest extends CatalogTest
     public function testCreateCategoryEvent()
     {
         // Arrange
-        $sampleCategories    = $this->provideSampleCategories();
+        $sampleCategories = $this->provideSampleCategories();
         $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
 
         // Act
@@ -751,7 +751,7 @@ class CategoryTest extends CatalogTest
             ],
             ['requestType' => 'direct']
         );
-        $newName         = 'Renamed Product (Event)';
+        $newName = 'Renamed Product (Event)';
         $updatedCategory = new Category\Update(['name' => new Name(['en-us' => $newName])]);
 
         // Act
@@ -762,7 +762,7 @@ class CategoryTest extends CatalogTest
         $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, [self::CATEGORY_CODE]);
 
         // Assert
-        $categories      = $this->getCategories([self::CATEGORY_CODE]);
+        $categories = $this->getCategories([self::CATEGORY_CODE]);
         $updatedCategory = $categories->getCategories()[0];
         $this->assertEquals(202, $response->getStatusCode());
         $this->assertEquals($newName, $updatedCategory->getName());

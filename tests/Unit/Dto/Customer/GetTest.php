@@ -89,7 +89,7 @@ class GetTest extends TestCase
         $this->assertEquals(self::CUSTOMER_LAST_NAME, $get->getLastName());
         $this->assertEquals(self::CUSTOMER_EMAIL_ADDRESS, $get->getEmailAddress());
         $this->assertEquals(Customer::STATUS_ACTIVE, $get->getStatus());
-        $this->assertEquals(false, $get->getIsAnonymous());
+        $this->assertFalse($get->getIsAnonymous());
     }
 
     /**
@@ -193,8 +193,8 @@ class GetTest extends TestCase
         $this->assertEquals(self::CUSTOMER_CONTACT_FAX, $contact->getFax());
         $this->assertEquals(self::CUSTOMER_CONTACT_MOBILE, $contact->getMobile());
         $this->assertEquals(sprintf(self::CUSTOMER_CONTACT_EMAIL, 1), $contact->getEmailAddress());
-        $this->assertEquals(true, $contact->getIsDefaultBilling());
-        $this->assertEquals(true, $contact->getIsDefaultShipping());
+        $this->assertTrue($contact->getIsDefaultBilling());
+        $this->assertTrue($contact->getIsDefaultShipping());
     }
 
     /**
@@ -250,6 +250,6 @@ class GetTest extends TestCase
             $settings->getCommunicationPreferences()
         );
         $this->assertEquals(self::CUSTOMER_SETTINGS_DEFAULT_LOCATION_CODE, $settings->getDefaultLocationCode());
-        $this->assertEquals(true, $settings->getMarketingOptIn());
+        $this->assertTrue($settings->getMarketingOptIn());
     }
 }

@@ -69,6 +69,6 @@ class GetListTest extends TestCase
         $this->assertEquals(GetTest::CUSTOMER_LAST_NAME, $customer->getLastName());
         $this->assertEquals(GetTest::CUSTOMER_EMAIL_ADDRESS, $customer->getEmailAddress());
         $this->assertEquals(Customer::STATUS_ACTIVE, $customer->getStatus());
-        $this->assertEquals(false, $customer->getIsAnonymous());
+        $this->assertFalse($customer->getIsAnonymous());
     }
 }

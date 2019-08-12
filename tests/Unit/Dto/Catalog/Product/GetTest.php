@@ -106,7 +106,7 @@ class GetTest extends TestCase
         $this->assertInstanceOf(Dto\Categories::class, $categories[1]);
 
         $this->assertEquals('la', $categories[0]->getCode());
-        $this->assertEquals(true, $categories[1]->getIsPrimary());
+        $this->assertTrue($categories[1]->getIsPrimary());
     }
 
     /**

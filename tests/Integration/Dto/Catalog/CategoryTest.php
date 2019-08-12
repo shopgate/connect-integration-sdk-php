@@ -342,7 +342,7 @@ class CategoryTest extends CatalogTest
         $this->assertEquals('Name DE', $categoryDe->getName());
         $this->assertEquals('Description DE', $categoryDe->getDescription());
         $this->assertEquals('http://google.de', $categoryDe->getUrl());
-        $this->assertTrue(strpos($categoryDe->getImage(), 'http://image.de'));
+        $this->assertTrue((bool)strpos($categoryDe->getImage(), 'http://image.de'));
 
         $categoriesEn = $this->getCategories([self::CATEGORY_CODE], ['localeCode' => 'en-us']);
         $categoryEn = $categoriesEn->getCategories()[0];
@@ -350,7 +350,7 @@ class CategoryTest extends CatalogTest
         $this->assertEquals('Name EN', $categoryEn->getName());
         $this->assertEquals('Description EN', $categoryEn->getDescription());
         $this->assertEquals('http://google.com', $categoryEn->getUrl());
-        $this->assertTrue(strpos($categoryEn->getImage(), 'http://image.com'));
+        $this->assertTrue((bool)strpos($categoryEn->getImage(), 'http://image.com'));
     }
 
     /**

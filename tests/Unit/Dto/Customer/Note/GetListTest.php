@@ -37,8 +37,8 @@ class GetListTest extends TestCase
      */
     public function testBasicDtoList()
     {
-        $entry   = [
-            'meta'  => [
+        $entry = [
+            'meta' => [
                 'limit' => 1
             ],
             'notes' => [
@@ -52,7 +52,7 @@ class GetListTest extends TestCase
 
         $notes = $getList->getNotes();
         $this->assertCount(2, $notes);
-        $this->assertInstanceOf(Get::class, $notes);
+        $this->assertTrue(is_array($notes));
         $this->assertInstanceOf(Get::class, $notes[0]);
         $this->assertInstanceOf(Get::class, $notes[1]);
         $this->assertEquals('someId', $notes[0]->getId());

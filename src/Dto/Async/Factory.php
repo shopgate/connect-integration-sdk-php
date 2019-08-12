@@ -56,7 +56,7 @@ class Factory
             $event->setEntityId($entityId);
         }
         try {
-            $this->request->getEvents()->append($event);
+            $this->request->append($event);
         } catch (Exception $exception) {
             // Since events will be an "array" it shouldn't throw an "InvalidDataTypeException"
         }

@@ -317,9 +317,9 @@ class CustomerTest extends CustomerBaseTest
         $this->assertCount(2, $settings->getCommunicationPreferences());
 
         /** @noinspection PhpUndefinedMethodInspection */
-        $this->assertContains('email', $settings->getCommunicationPreferences()->toArray());
+        $this->assertContains('email', $settings->getCommunicationPreferences());
         /** @noinspection PhpUndefinedMethodInspection */
-        $this->assertContains('sms', $settings->getCommunicationPreferences()->toArray());
+        $this->assertContains('sms', $settings->getCommunicationPreferences());
         $this->assertEquals(true, $settings->getMarketingOptIn());
 
         //Contacts
@@ -438,9 +438,9 @@ class CustomerTest extends CustomerBaseTest
         $this->assertEquals('EUR', $settings->getDefaultLocationCode());
         $this->assertCount(2, $settings->getCommunicationPreferences());
         /** @noinspection PhpUndefinedMethodInspection */
-        $this->assertContains('sms', $settings->getCommunicationPreferences()->toArray());
+        $this->assertContains('sms', $settings->getCommunicationPreferences());
         /** @noinspection PhpUndefinedMethodInspection */
-        $this->assertContains('email', $settings->getCommunicationPreferences()->toArray());
+        $this->assertContains('email', $settings->getCommunicationPreferences());
         $this->assertEquals(false, $settings->getMarketingOptIn());
     }
 

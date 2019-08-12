@@ -26,7 +26,7 @@ use Shopgate\ConnectSdk\Dto\Base;
 
 /**
  * @method Request setEvents(Event[] $events) - note, this rewrites the list. Use append if you want to add to the list.
- * @method Request getEvents()
+ * @method Event[] getEvents()
  */
 class Request extends Base
 {
@@ -46,6 +46,16 @@ class Request extends Base
         ],
         'additionalProperties' => false
     ];
+
+    /**
+     * @param Event $event
+     */
+    public function append($event)
+    {
+        $currentEvents = $this->getEvents();
+        $currentEvents[] = $event;
+        $this->setEvents($currentEvents);
+    }
 
     /**
      * This just makes sure that an empty object is

@@ -36,8 +36,8 @@ class GetListTest extends TestCase
      */
     public function testCategoryDto()
     {
-        $entry   = [
-            'meta'       => [
+        $entry = [
+            'meta' => [
                 'limit' => 1
             ],
             'categories' => [
@@ -45,13 +45,13 @@ class GetListTest extends TestCase
                 ['code' => 'la2'],
                 [
                     'parentCategoryCode' => 'pCode',
-                    'catalogCode'        => 'catCode',
-                    'image'              => 'http://img.com',
-                    'url'                => 'http://url.com',
-                    'name'               => 'someName',
-                    'description'        => 'someDesc',
+                    'catalogCode' => 'catCode',
+                    'image' => 'http://img.com',
+                    'url' => 'http://url.com',
+                    'name' => 'someName',
+                    'description' => 'someDesc',
                     'externalUpdateDate' => '2019-12-31',
-                    'status'             => Category::STATUS_INACTIVE
+                    'status' => Category::STATUS_INACTIVE
                 ]
             ]
         ];
@@ -61,7 +61,7 @@ class GetListTest extends TestCase
 
         $categories = $getList->getCategories();
         $this->assertCount(3, $categories);
-        $this->assertInstanceOf(Get::class, $categories);
+        $this->assertTrue(is_array($categories));
         $this->assertInstanceOf(Get::class, $categories[0]);
         $this->assertInstanceOf(Get::class, $categories[1]);
         $this->assertInstanceOf(Get::class, $categories[2]);
@@ -83,25 +83,25 @@ class GetListTest extends TestCase
     public function testInvalidCategoryDto()
     {
         $entry = [
-            'meta'       => [
+            'meta' => [
                 'limit' => '1'
             ],
             'categories' => [
                 [
-                    'status'             => 0,
-                    'code'               => 23.4,
+                    'status' => 0,
+                    'code' => 23.4,
                     'parentCategoryCode' => 16,
-                    'catalogCode'        => false,
-                    'image'              => true,
-                    'name'               => ['test' => 't'],
-                    'description'        => [],
+                    'catalogCode' => false,
+                    'image' => true,
+                    'name' => ['test' => 't'],
+                    'description' => [],
                     'externalUpdateDate' => new stdClass(),
                 ]
             ]
         ];
 
         $getList = new GetList($entry);
-        $limit   = $getList->getMeta()->getLimit();
+        $limit = $getList->getMeta()->getLimit();
         $this->assertInstanceOf(Meta::class, $getList->getMeta());
         $this->assertInternalType('int', $limit);
         $this->assertEquals(1, $limit);

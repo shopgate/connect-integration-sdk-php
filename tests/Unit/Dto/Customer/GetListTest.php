@@ -35,21 +35,21 @@ class GetListTest extends TestCase
      */
     public function testCustomerDto()
     {
-        $entry   = [
-            'meta'      => [
+        $entry = [
+            'meta' => [
                 'limit' => 1,
             ],
             'customers' => [
                 [
-                    'id'                     => GetTest::CUSTOMER_ID,
-                    'createDate'             => GetTest::CUSTOMER_CREATE_DATE,
+                    'id' => GetTest::CUSTOMER_ID,
+                    'createDate' => GetTest::CUSTOMER_CREATE_DATE,
                     'externalCustomerNumber' => GetTest::CUSTOMER_EXTERNAL_CUSTOMER_NUMBER,
-                    'firstName'              => GetTest::CUSTOMER_FIRST_NAME,
-                    'middleName'             => GetTest::CUSTOMER_MIDDLE_NAME,
-                    'lastName'               => GetTest::CUSTOMER_LAST_NAME,
-                    'emailAddress'           => GetTest::CUSTOMER_EMAIL_ADDRESS,
-                    'status'                 => Customer::STATUS_ACTIVE,
-                    'isAnonymous'            => false,
+                    'firstName' => GetTest::CUSTOMER_FIRST_NAME,
+                    'middleName' => GetTest::CUSTOMER_MIDDLE_NAME,
+                    'lastName' => GetTest::CUSTOMER_LAST_NAME,
+                    'emailAddress' => GetTest::CUSTOMER_EMAIL_ADDRESS,
+                    'status' => Customer::STATUS_ACTIVE,
+                    'isAnonymous' => false,
                 ],
             ],
         ];
@@ -60,7 +60,7 @@ class GetListTest extends TestCase
         $customers = $getList->getCustomers();
         /** @var Get $customer */
         $customer = $customers[0];
-        $this->assertInstanceOf(Get::class, $customers);
+        $this->assertTrue(is_array($customers));
         $this->assertInstanceOf(Get::class, $customer);
 
         $this->assertEquals(GetTest::CUSTOMER_EXTERNAL_CUSTOMER_NUMBER, $customer->getExternalCustomerNumber());

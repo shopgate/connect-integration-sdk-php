@@ -58,7 +58,7 @@ class GetListTest extends TestCase
 
         $attributes = $getList->getAttributes();
         $this->assertCount(2, $attributes);
-        $this->assertInstanceOf(Get::class, $attributes);
+        $this->assertEquals(true, is_array($attributes));
         $this->assertInstanceOf(Get::class, $attributes[0]);
         $this->assertInstanceOf(Get::class, $attributes[1]);
         $this->assertEquals('color', $attributes[0]->getCode());

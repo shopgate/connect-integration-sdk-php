@@ -33,6 +33,7 @@ use Exception;
 class Base extends Dto
 {
     const STORAGE_TYPE_SCALAR = 'scalar';
+    const STORAGE_TYPE_ARRAY = 'array';
 
     /**
      * Rewritten to provide inheritance of payload structure
@@ -117,6 +118,19 @@ class Base extends Dto
 
             if ($result->getStorageType() === self::STORAGE_TYPE_SCALAR) {
                 return $result->toScalar();
+            }
+
+            if ($result->getStorageType() === self::STORAGE_TYPE_ARRAY) {
+                $items = [];
+                foreach ($result as $item) {
+                    /** @var Base $item */
+                    if ($item->getStorageType() === self::STORAGE_TYPE_SCALAR) {
+                        $items[] = $item->toScalar();
+                    } else {
+                        $items[] = $item;
+                    }
+                }
+                return $items;
             }
 
             return $result;

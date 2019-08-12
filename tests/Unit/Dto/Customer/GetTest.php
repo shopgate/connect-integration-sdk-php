@@ -30,56 +30,56 @@ use Shopgate\ConnectSdk\Dto\Customer\Customer\Get;
 
 class GetTest extends TestCase
 {
-    const CUSTOMER_ID                                         = 'd162439c-e2f9-4050-8b94-6bff33e8163b';
-    const CUSTOMER_CREATE_DATE                                = '2019-04-22T20:16:23.000Z';
-    const CUSTOMER_EXTERNAL_CUSTOMER_NUMBER                   = '10001';
-    const CUSTOMER_FIRST_NAME                                 = 'John';
-    const CUSTOMER_MIDDLE_NAME                                = 'Doug';
-    const CUSTOMER_LAST_NAME                                  = 'Doe';
-    const CUSTOMER_EMAIL_ADDRESS                              = 'john.doe@shopgate.com';
-    const CUSTOMER_ATTRIBUTE_CODE_1                           = 'tshirtSize';
-    const CUSTOMER_ATTRIBUTE_NAME_1                           = 'T-Shirt Size';
-    const CUSTOMER_ATTRIBUTE_CODE_2                           = 'nameOfCat';
-    const CUSTOMER_ATTRIBUTE_NAME_2                           = 'Name of your cat';
-    const CUSTOMER_ATTRIBUTE_VALUE_CODE_1                     = 'l';
-    const CUSTOMER_ATTRIBUTE_VALUE_NAME_1                     = 'L';
-    const CUSTOMER_ATTRIBUTE_VALUE_2                          = 'Some Cat Name';
-    const CUSTOMER_SETTINGS_DEFAULT_LOCALE                    = 'en-us';
-    const CUSTOMER_SETTINGS_DEFAULT_CURRENCY                  = 'USD';
+    const CUSTOMER_ID = 'd162439c-e2f9-4050-8b94-6bff33e8163b';
+    const CUSTOMER_CREATE_DATE = '2019-04-22T20:16:23.000Z';
+    const CUSTOMER_EXTERNAL_CUSTOMER_NUMBER = '10001';
+    const CUSTOMER_FIRST_NAME = 'John';
+    const CUSTOMER_MIDDLE_NAME = 'Doug';
+    const CUSTOMER_LAST_NAME = 'Doe';
+    const CUSTOMER_EMAIL_ADDRESS = 'john.doe@shopgate.com';
+    const CUSTOMER_ATTRIBUTE_CODE_1 = 'tshirtSize';
+    const CUSTOMER_ATTRIBUTE_NAME_1 = 'T-Shirt Size';
+    const CUSTOMER_ATTRIBUTE_CODE_2 = 'nameOfCat';
+    const CUSTOMER_ATTRIBUTE_NAME_2 = 'Name of your cat';
+    const CUSTOMER_ATTRIBUTE_VALUE_CODE_1 = 'l';
+    const CUSTOMER_ATTRIBUTE_VALUE_NAME_1 = 'L';
+    const CUSTOMER_ATTRIBUTE_VALUE_2 = 'Some Cat Name';
+    const CUSTOMER_SETTINGS_DEFAULT_LOCALE = 'en-us';
+    const CUSTOMER_SETTINGS_DEFAULT_CURRENCY = 'USD';
     const CUSTOMER_SETTINGS_DEFAULT_COMMUNICATION_PREFERENCES = ['email', 'sms'];
-    const CUSTOMER_SETTINGS_DEFAULT_LOCATION_CODE             = 'DERetail001';
-    const CUSTOMER_CONTACT_ID                                 = 'c162439c-e2f9-4050-8b94-6bff33e8163b';
-    const CUSTOMER_CONTACT_EXTERNAL_CUSTOMER_CODE             = 'customer_code';
-    const CUSTOMER_CONTACT_FIRSTNAME                          = 'Firstname';
-    const CUSTOMER_CONTACT_MIDDLE_NAME                        = 'Middlename';
-    const CUSTOMER_CONTACT_LAST_NAME                          = 'Lastname';
-    const CUSTOMER_CONTACT_COMPANY                            = 'Shopgate Inc';
-    const CUSTOMER_CONTACT_ADDRESS_1                          = 'Somestreet 12';
-    const CUSTOMER_CONTACT_ADDRESS_2                          = 'Address 2';
-    const CUSTOMER_CONTACT_ADDRESS_3                          = 'Address 3';
-    const CUSTOMER_CONTACT_ADDRESS_4                          = 'Address 4';
-    const CUSTOMER_CONTACT_CITY                               = 'Austin';
-    const CUSTOMER_CONTACT_POSTAL_CODE                        = '78732';
-    const CUSTOMER_CONTACT_REGION                             = 'TX';
-    const CUSTOMER_CONTACT_COUNTRY                            = 'US';
-    const CUSTOMER_CONTACT_PHONE                              = '+1000000001';
-    const CUSTOMER_CONTACT_FAX                                = '+1000000002';
-    const CUSTOMER_CONTACT_MOBILE                             = '+1000000003';
-    const CUSTOMER_CONTACT_EMAIL                              = 'somelocation+%s@someRetailer.com';
+    const CUSTOMER_SETTINGS_DEFAULT_LOCATION_CODE = 'DERetail001';
+    const CUSTOMER_CONTACT_ID = 'c162439c-e2f9-4050-8b94-6bff33e8163b';
+    const CUSTOMER_CONTACT_EXTERNAL_CUSTOMER_CODE = 'customer_code';
+    const CUSTOMER_CONTACT_FIRSTNAME = 'Firstname';
+    const CUSTOMER_CONTACT_MIDDLE_NAME = 'Middlename';
+    const CUSTOMER_CONTACT_LAST_NAME = 'Lastname';
+    const CUSTOMER_CONTACT_COMPANY = 'Shopgate Inc';
+    const CUSTOMER_CONTACT_ADDRESS_1 = 'Somestreet 12';
+    const CUSTOMER_CONTACT_ADDRESS_2 = 'Address 2';
+    const CUSTOMER_CONTACT_ADDRESS_3 = 'Address 3';
+    const CUSTOMER_CONTACT_ADDRESS_4 = 'Address 4';
+    const CUSTOMER_CONTACT_CITY = 'Austin';
+    const CUSTOMER_CONTACT_POSTAL_CODE = '78732';
+    const CUSTOMER_CONTACT_REGION = 'TX';
+    const CUSTOMER_CONTACT_COUNTRY = 'US';
+    const CUSTOMER_CONTACT_PHONE = '+1000000001';
+    const CUSTOMER_CONTACT_FAX = '+1000000002';
+    const CUSTOMER_CONTACT_MOBILE = '+1000000003';
+    const CUSTOMER_CONTACT_EMAIL = 'somelocation+%s@someRetailer.com';
 
     /**
      * Tests minimal DTO structure return
      */
     public function testBasicProperties()
     {
-        $get        = new Get($this->getValidEntry());
-        $contacts   = $get->getContacts();
+        $get = new Get($this->getValidEntry());
+        $contacts = $get->getContacts();
         $attributes = $get->getAttributes();
-        $settings   = $get->getSettings();
+        $settings = $get->getSettings();
 
         // Test sub DTOs
-        $this->assertInstanceOf(Customer\Dto\Contact::class, $contacts);
-        $this->assertInstanceOf(Attribute::class, $attributes);
+        $this->assertTrue(is_array($contacts));
+        $this->assertTrue(is_array($attributes));
         $this->assertInstanceOf(Settings::class, $settings);
 
         // Test basic
@@ -98,44 +98,44 @@ class GetTest extends TestCase
     protected function getValidEntry()
     {
         return [
-            'id'                     => GetTest::CUSTOMER_ID,
-            'createDate'             => GetTest::CUSTOMER_CREATE_DATE,
+            'id' => GetTest::CUSTOMER_ID,
+            'createDate' => GetTest::CUSTOMER_CREATE_DATE,
             'externalCustomerNumber' => GetTest::CUSTOMER_EXTERNAL_CUSTOMER_NUMBER,
-            'firstName'              => GetTest::CUSTOMER_FIRST_NAME,
-            'middleName'             => GetTest::CUSTOMER_MIDDLE_NAME,
-            'lastName'               => GetTest::CUSTOMER_LAST_NAME,
-            'emailAddress'           => GetTest::CUSTOMER_EMAIL_ADDRESS,
-            'status'                 => Customer::STATUS_ACTIVE,
-            'isAnonymous'            => false,
-            'contacts'               => [
+            'firstName' => GetTest::CUSTOMER_FIRST_NAME,
+            'middleName' => GetTest::CUSTOMER_MIDDLE_NAME,
+            'lastName' => GetTest::CUSTOMER_LAST_NAME,
+            'emailAddress' => GetTest::CUSTOMER_EMAIL_ADDRESS,
+            'status' => Customer::STATUS_ACTIVE,
+            'isAnonymous' => false,
+            'contacts' => [
                 [
-                    'id'                  => self::CUSTOMER_CONTACT_ID,
+                    'id' => self::CUSTOMER_CONTACT_ID,
                     'externalContactCode' => self::CUSTOMER_CONTACT_EXTERNAL_CUSTOMER_CODE,
-                    'status'              => Customer::STATUS_ACTIVE,
-                    'firstName'           => self::CUSTOMER_CONTACT_FIRSTNAME,
-                    'middleName'          => self::CUSTOMER_CONTACT_MIDDLE_NAME,
-                    'lastName'            => self::CUSTOMER_CONTACT_LAST_NAME,
-                    'companyName'         => self::CUSTOMER_CONTACT_COMPANY,
-                    'address1'            => self::CUSTOMER_CONTACT_ADDRESS_1,
-                    'address2'            => self::CUSTOMER_CONTACT_ADDRESS_2,
-                    'address3'            => self::CUSTOMER_CONTACT_ADDRESS_3,
-                    'address4'            => self::CUSTOMER_CONTACT_ADDRESS_4,
-                    'city'                => self::CUSTOMER_CONTACT_CITY,
-                    'postalCode'          => self::CUSTOMER_CONTACT_POSTAL_CODE,
-                    'region'              => self::CUSTOMER_CONTACT_REGION,
-                    'country'             => self::CUSTOMER_CONTACT_COUNTRY,
-                    'phone'               => self::CUSTOMER_CONTACT_PHONE,
-                    'fax'                 => self::CUSTOMER_CONTACT_FAX,
-                    'mobile'              => self::CUSTOMER_CONTACT_MOBILE,
-                    'emailAddress'        => sprintf(self::CUSTOMER_CONTACT_EMAIL, 1),
-                    'isDefaultBilling'    => true,
-                    'isDefaultShipping'   => true,
+                    'status' => Customer::STATUS_ACTIVE,
+                    'firstName' => self::CUSTOMER_CONTACT_FIRSTNAME,
+                    'middleName' => self::CUSTOMER_CONTACT_MIDDLE_NAME,
+                    'lastName' => self::CUSTOMER_CONTACT_LAST_NAME,
+                    'companyName' => self::CUSTOMER_CONTACT_COMPANY,
+                    'address1' => self::CUSTOMER_CONTACT_ADDRESS_1,
+                    'address2' => self::CUSTOMER_CONTACT_ADDRESS_2,
+                    'address3' => self::CUSTOMER_CONTACT_ADDRESS_3,
+                    'address4' => self::CUSTOMER_CONTACT_ADDRESS_4,
+                    'city' => self::CUSTOMER_CONTACT_CITY,
+                    'postalCode' => self::CUSTOMER_CONTACT_POSTAL_CODE,
+                    'region' => self::CUSTOMER_CONTACT_REGION,
+                    'country' => self::CUSTOMER_CONTACT_COUNTRY,
+                    'phone' => self::CUSTOMER_CONTACT_PHONE,
+                    'fax' => self::CUSTOMER_CONTACT_FAX,
+                    'mobile' => self::CUSTOMER_CONTACT_MOBILE,
+                    'emailAddress' => sprintf(self::CUSTOMER_CONTACT_EMAIL, 1),
+                    'isDefaultBilling' => true,
+                    'isDefaultShipping' => true,
                 ],
             ],
-            'attributes'             => [
+            'attributes' => [
                 [
-                    'code'  => self::CUSTOMER_ATTRIBUTE_CODE_1,
-                    'name'  => self::CUSTOMER_ATTRIBUTE_NAME_1,
+                    'code' => self::CUSTOMER_ATTRIBUTE_CODE_1,
+                    'name' => self::CUSTOMER_ATTRIBUTE_NAME_1,
                     'value' => [
                         'code' => self::CUSTOMER_ATTRIBUTE_VALUE_CODE_1,
                         'name' => self::CUSTOMER_ATTRIBUTE_VALUE_NAME_1,
@@ -143,17 +143,17 @@ class GetTest extends TestCase
 
                 ],
                 [
-                    'code'  => self::CUSTOMER_ATTRIBUTE_CODE_2,
-                    'name'  => self::CUSTOMER_ATTRIBUTE_NAME_2,
+                    'code' => self::CUSTOMER_ATTRIBUTE_CODE_2,
+                    'name' => self::CUSTOMER_ATTRIBUTE_NAME_2,
                     'value' => self::CUSTOMER_ATTRIBUTE_VALUE_2,
                 ],
             ],
-            'settings'               => [
-                'defaultLocale'            => self::CUSTOMER_SETTINGS_DEFAULT_LOCALE,
-                'defaultCurrency'          => self::CUSTOMER_SETTINGS_DEFAULT_CURRENCY,
+            'settings' => [
+                'defaultLocale' => self::CUSTOMER_SETTINGS_DEFAULT_LOCALE,
+                'defaultCurrency' => self::CUSTOMER_SETTINGS_DEFAULT_CURRENCY,
                 'communicationPreferences' => self::CUSTOMER_SETTINGS_DEFAULT_COMMUNICATION_PREFERENCES,
-                'defaultLocationCode'      => self::CUSTOMER_SETTINGS_DEFAULT_LOCATION_CODE,
-                'marketingOptIn'           => true,
+                'defaultLocationCode' => self::CUSTOMER_SETTINGS_DEFAULT_LOCATION_CODE,
+                'marketingOptIn' => true,
 
             ],
         ];
@@ -164,9 +164,9 @@ class GetTest extends TestCase
      */
     public function testGetContacts()
     {
-        $get      = new Get($this->getValidEntry());
+        $get = new Get($this->getValidEntry());
         $contacts = $get->getContacts();
-        $contact  = $contacts[0];
+        $contact = $contacts[0];
 
         // Global
         $this->assertCount(1, $contacts);
@@ -204,10 +204,10 @@ class GetTest extends TestCase
     {
         $get = new Get($this->getValidEntry());
 
-        $attributes        = $get->getAttributes();
-        $attributeOne      = $attributes[0];
+        $attributes = $get->getAttributes();
+        $attributeOne = $attributes[0];
         $attributeValueOne = $attributeOne->getValue();
-        $attributeTwo      = $attributes[1];
+        $attributeTwo = $attributes[1];
         $attributeValueTwo = $attributeTwo->getValue();
 
         // Global
@@ -238,7 +238,7 @@ class GetTest extends TestCase
      */
     public function testGetSettings()
     {
-        $get      = new Get($this->getValidEntry());
+        $get = new Get($this->getValidEntry());
         $settings = $get->getSettings();
 
         $this->assertInstanceOf(Customer\Dto\Settings::class, $settings);
@@ -247,7 +247,7 @@ class GetTest extends TestCase
         /** @noinspection PhpUndefinedMethodInspection */
         $this->assertEquals(
             self::CUSTOMER_SETTINGS_DEFAULT_COMMUNICATION_PREFERENCES,
-            $settings->getCommunicationPreferences()->toArray()
+            $settings->getCommunicationPreferences()
         );
         $this->assertEquals(self::CUSTOMER_SETTINGS_DEFAULT_LOCATION_CODE, $settings->getDefaultLocationCode());
         $this->assertEquals(true, $settings->getMarketingOptIn());

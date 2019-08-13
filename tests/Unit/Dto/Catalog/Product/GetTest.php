@@ -170,13 +170,13 @@ class GetTest extends TestCase
     public function testInventories()
     {
         $entry = [
-            'inventory' => [
+            'inventories' => [
                 ['sku' => 'SKU-123'],
                 ['available' => 5]
             ]
         ];
         $get = new Get($entry);
-        $inventories = $get->getInventory();
+        $inventories = $get->getInventories();
 
         $this->assertCount(2, $inventories);
         $this->assertTrue(is_array($inventories));

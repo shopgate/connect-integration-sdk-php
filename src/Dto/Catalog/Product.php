@@ -53,7 +53,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto;
  * @method Dto\Categories[] getCategories()
  * @method Dto\Properties[] getProperties()
  * @method Dto\MediaList\Media[] getMedia()
- * @method Dto\Inventory[] getInventory()
+ * @method Dto\Inventory[] getInventories()
  * @method Dto\Options[] getOptions()
  * @method Dto\Extras[] getExtras()
  *

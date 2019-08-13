@@ -221,8 +221,8 @@ class BulkImportTest extends CatalogTest
         sleep(self::SLEEP_TIME_AFTER_BULK);
 
         // Assert
-        $product = $this->sdk->getCatalogService()->getProduct($product->code, ['fields' => 'inventory']);
-        $this->assertCount(2, $product->getInventory());
+        $product = $this->sdk->getCatalogService()->getProduct($product->code, ['fields' => 'inventories']);
+        $this->assertCount(2, $product->getInventories());
     }
 
     /**
@@ -259,8 +259,8 @@ class BulkImportTest extends CatalogTest
         sleep(self::SLEEP_TIME_AFTER_BULK);
 
         // Assert
-        $product = $this->sdk->getCatalogService()->getProduct($product->code, ['fields' => 'inventory']);
-        $this->assertCount(2, $product->getInventory());
+        $product = $this->sdk->getCatalogService()->getProduct($product->code, ['fields' => 'inventories']);
+        $this->assertCount(2, $product->getInventories());
     }
 
     /**
@@ -332,9 +332,9 @@ class BulkImportTest extends CatalogTest
         $this->assertCount(2, $availableProducts->getProducts());
         $availableAttributes = $this->sdk->getCatalogService()->getAttributes();
         $this->assertCount(2, $availableAttributes->getAttributes());
-        $product = $this->sdk->getCatalogService()->getProduct($products[0]->code, ['fields' => 'inventory']);
-        $this->assertCount(2, $product->getInventory());
-        $product = $this->sdk->getCatalogService()->getProduct($products[1]->code, ['fields' => 'inventory']);
-        $this->assertCount(1, $product->getInventory());
+        $product = $this->sdk->getCatalogService()->getProduct($products[0]->code, ['fields' => 'inventories']);
+        $this->assertCount(2, $product->getInventories());
+        $product = $this->sdk->getCatalogService()->getProduct($products[1]->code, ['fields' => 'inventories']);
+        $this->assertCount(1, $product->getInventories());
     }
 }

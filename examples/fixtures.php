@@ -1,12 +1,13 @@
 <?php
 
-use Shopgate\ConnectSdk\Dto\Catalog\Attribute\Dto\Name;
-use Shopgate\ConnectSdk\Dto\Catalog\Category;
-use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
-use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
-use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
-use Shopgate\ConnectSdk\Dto\Catalog\Product;
 use Shopgate\ConnectSdk\Dto\Base;
+use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
+use Shopgate\ConnectSdk\Dto\Catalog\Attribute\Dto\Name;
+use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
+use Shopgate\ConnectSdk\Dto\Catalog\Category;
+use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
+use Shopgate\ConnectSdk\Dto\Catalog\Product;
+use Shopgate\ConnectSdk\Dto\Order\Order;
 
 const PARENT_CATALOG_CODE = 'NARetail';
 const CATALOG_CODE = 'NARetail';
@@ -99,7 +100,6 @@ function provideSampleCategories()
     return $categories;
 }
 
-
 /**
  * @return Attribute\Create[]
  */
@@ -189,7 +189,6 @@ function provideSampleInventories()
     $inventory->setSafetyStock(3);
     $result[] = $inventory;
 
-
     return $result;
 }
 
@@ -264,4 +263,40 @@ function provideLocations()
             ]
         ])
     ];
+}
+
+function provideSampleOrders()
+{
+    $order = new Order\Create([
+        'customerId' => 'customer-1',
+        'localeCode' => 'en-us',
+        'currencyCode' => 'USD',
+        'primaryBillToAddressSequenceIndex' => 0,
+        'subTotal' => 100,
+        'total' => 100,
+        'submitDate' => date('c'),
+    ]);
+    $order->setAddressSequences([
+        new Order\Dto\Address([
+            'type' => Order::ADDRESS_TYPE_BILLING,
+            'firstName' => 'Jane',
+            'lastName' => 'Doe',
+        ])
+    ]);
+    $lineItem = new Order\Dto\LineItem([
+        'code' => 'line-item-one',
+        'quantity' => 1,
+        'fulfillmentMethod' => Order::LINE_ITEM_FULFILLMENT_METHOD_DIRECT_SHIP,
+        'shipToAddressSequenceIndex' => 0,
+        'product' => new Order\Dto\LineItem\Product([
+            'code' => 'product-one',
+            'name' => 'Product One',
+            'image' => 'https://mywebsite.com/images/product-one.jpg',
+            'price' => 100,
+            'currencyCode' => 'USD'
+        ])
+    ]);
+    $order->setLineItems([$lineItem]);
+
+    return [$order];
 }

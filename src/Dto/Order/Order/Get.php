@@ -25,43 +25,6 @@ namespace Shopgate\ConnectSdk\Dto\Order\Order;
 use Shopgate\ConnectSdk\Dto\Order\Order;
 
 /**
- * @method string getOrderNumber()
- * @method string getExternalCode()
- * @method string getType()
- * @method string getCustomerId()
- * @method string getExternalCustomerNumber()
- * @method string getStatus()
- * @method bool getExpedited()
- * @method string getLocaleCode()
- * @method string getCurrencyCode()
- * @method bool getTaxExempt()
- * @method string getNotes()
- * @method Dto\SpecialInstructions getSpecialInstructions()
- * @method Dto\Data getData()
- * @method string getFulfillmentStatus()
- * @method int getPrimaryBillToAddressSequenceIndex()
- * @method int getPrimaryShipToAddressSequenceIndex()
- * @method Dto\Address[] getAddressSequences()
- * @method float getSubTotal()
- * @method float getDiscountAmount()
- * @method float getPromoAmount()
- * @method float getTaxAmount()
- * @method float getTax2Amount()
- * @method float getShippingSubTotal()
- * @method float getShippingDiscountAmount()
- * @method float getShippingPromoAmount()
- * @method float getShippingTotal()
- * @method float getTotal()
- * @method string getDate()
- * @method string getSubmitDate()
- * @method string getAcceptDate()
- * @method string getCompleteDate()
- * @method string getSourceDevice()
- * @method string getSourceIp()
- * @method Dto\FulfillmentGroup[] getFulfillmentGroups()
- * @method Dto\LineItem[] getLineItems()
- * @method Dto\HistoryItem[] getHistory()
- *
  * @codeCoverageIgnore
  */
 class Get extends Order

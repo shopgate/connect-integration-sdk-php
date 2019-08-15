@@ -25,7 +25,6 @@ namespace Shopgate\ConnectSdk\Dto\Order\Order;
 use Shopgate\ConnectSdk\Dto\Order\Order;
 
 /**
- * @method Create setOrderNumber(string $orderNumber)
  * @method Create setExternalCode(string $externalCode)
  * @method Create setType(string $type)
  * @method Create setCustomerId(string $customerId)
@@ -52,7 +51,7 @@ use Shopgate\ConnectSdk\Dto\Order\Order;
  * @method Create setShippingPromoAmount(float $shippingPromoAmount)
  * @method Create setShippingTotal(float $shippingTotal)
  * @method Create setTotal(float $total)
- * @method Create setDate(Dto\Data $date)
+ * @method Create setDate(string $date)
  * @method Create setSubmitDate(string $submitDate)
  * @method Create setAcceptDate(string $acceptDate)
  * @method Create setCompleteDate(string $completeDate)
@@ -72,7 +71,6 @@ class Create extends Order
     protected $schema = [
         'type' => 'object',
         'properties' => [
-            'orderNumber' => ['type' => 'string'],
             'externalCode' => ['type' => 'string'],
             'type' => ['type' => 'string'],
             'customerId' => ['type' => 'string'],
@@ -86,22 +84,22 @@ class Create extends Order
             'specialInstructions' => ['$ref' => Dto\SpecialInstructions::class],
             'data' => ['$ref' => Dto\Data::class],
             'fulfillmentStatus' => ['type' => 'string'],
-            'primaryBillToAddressSequenceIndex' => ['type' =>'number'],
+            'primaryBillToAddressSequenceIndex' => ['type' => 'number'],
             'primaryShipToAddressSequenceIndex' => ['type' => 'number'],
             'addressSequences' => [
                 'type' => 'array',
                 'items' => ['$ref' => Dto\Address::class]
             ],
-            'subTotal' => ['type' =>'number'],
-            'discountAmount' => ['type' =>'number'],
-            'promoAmount' => ['type' =>'number'],
-            'taxAmount' => ['type' =>'number'],
-            'tax2Amount' => ['type' =>'number'],
-            'shippingSubTotal' => ['type' =>'number'],
-            'shippingDiscountAmount' => ['type' =>'number'],
-            'shippingPromoAmount' => ['type' =>'number'],
-            'shippingTotal' => ['type' =>'number'],
-            'total' => ['type' =>'number'],
+            'subTotal' => ['type' => 'number'],
+            'discountAmount' => ['type' => 'number'],
+            'promoAmount' => ['type' => 'number'],
+            'taxAmount' => ['type' => 'number'],
+            'tax2Amount' => ['type' => 'number'],
+            'shippingSubTotal' => ['type' => 'number'],
+            'shippingDiscountAmount' => ['type' => 'number'],
+            'shippingPromoAmount' => ['type' => 'number'],
+            'shippingTotal' => ['type' => 'number'],
+            'total' => ['type' => 'number'],
             'date' => ['type' => 'string'],
             'submitDate' => ['type' => 'string'],
             'acceptDate' => ['type' => 'string'],

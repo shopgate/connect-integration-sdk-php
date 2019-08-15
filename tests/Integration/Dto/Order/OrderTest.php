@@ -22,20 +22,20 @@
 
 namespace Shopgate\ConnectSdk\Tests\Integration\Dto\Order;
 
-use Shopgate\ConnectSdk\Tests\Integration\OrderTest as OrderBaseTest;
-use Shopgate\ConnectSdk\Dto\Order\Order;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
 use Shopgate\ConnectSdk\Dto\Customer\Customer;
 use Shopgate\ConnectSdk\Dto\Location\Location;
+use Shopgate\ConnectSdk\Dto\Order\Order;
 use Shopgate\ConnectSdk\Exception;
 use Shopgate\ConnectSdk\Exception\RequestException;
+use Shopgate\ConnectSdk\Tests\Integration\OrderTest as OrderBaseTest;
 
 class OrderTest extends OrderBaseTest
 {
     /**
      * @param string[] $productIds
-     * @param string   $locationCode
-     * @param array    $orders
+     * @param string $locationCode
+     * @param array $orders
      *
      * @throws Exception\AuthenticationInvalidException
      * @throws Exception\Exception
@@ -75,16 +75,16 @@ class OrderTest extends OrderBaseTest
                 'productIds' => ['123'],
                 'locationCode' => self::LOCATION_CODE,
                 'orders' => [
-                    ['externalCode' => md5(date('c') . (string)rand())]
+                    ['externalCode' => md5(date('c') . mt_rand())]
                 ]
             ],
             'add two orders' => [
                 'productIds' => ['123', '321'],
                 'locationCode' => self::LOCATION_CODE,
                 'orders' => [
-                    ['externalCode' => md5(date('c') . (string)rand())],
+                    ['externalCode' => md5(date('c') . mt_rand())],
                     [
-                        'externalCode' => md5(date('c') . (string)rand()),
+                        'externalCode' => md5(date('c') . mt_rand()),
                         'addressSequences' => [
                             new Order\Dto\Address([
                                 'type' => Order::ADDRESS_TYPE_BILLING,
@@ -158,8 +158,12 @@ class OrderTest extends OrderBaseTest
         );
 
         // Assert
-        $responseForCustomerOne = $this->sdk->getOrderService()->getOrders(['filters' => ['customerId' => $customerOneId]]);
-        $responseForCustomerTwo = $this->sdk->getOrderService()->getOrders(['filters' => ['customerId' => $customerTwoId]]);
+        $responseForCustomerOne = $this->sdk->getOrderService()->getOrders(
+            ['filters' => ['customerId' => $customerOneId]]
+        );
+        $responseForCustomerTwo = $this->sdk->getOrderService()->getOrders(
+            ['filters' => ['customerId' => $customerTwoId]]
+        );
 
         $this->assertCount(2, $responseForCustomerOne->getOrders());
         $this->assertCount(1, $responseForCustomerTwo->getOrders());
@@ -182,10 +186,22 @@ class OrderTest extends OrderBaseTest
         $externalCodeTwo = md5(date('c') . '2');
         $this->addSampleProducts($productIds);
         $orders = [
-            $this->createSampleOrder($productIds, self::LOCATION_CODE,
-                ['customerId' => $customerId, 'externalCode' => $externalCodeOne]),
-            $this->createSampleOrder($productIds, self::LOCATION_CODE,
-                ['customerId' => $customerId, 'externalCode' => $externalCodeTwo])
+            $this->createSampleOrder(
+                $productIds,
+                self::LOCATION_CODE,
+                [
+                    'customerId' => $customerId,
+                    'externalCode' => $externalCodeOne
+                ]
+            ),
+            $this->createSampleOrder(
+                $productIds,
+                self::LOCATION_CODE,
+                [
+                    'customerId' => $customerId,
+                    'externalCode' => $externalCodeTwo
+                ]
+            )
         ];
         $this->sdk->getOrderService()->addOrders($orders);
 
@@ -197,8 +213,12 @@ class OrderTest extends OrderBaseTest
         );
 
         // Assert
-        $responseForExternalCodeOne = $this->sdk->getOrderService()->getOrders(['filters' => ['externalCode' => $externalCodeOne]]);
-        $responseForExternalCodeTwo = $this->sdk->getOrderService()->getOrders(['filters' => ['externalCode' => $externalCodeTwo]]);
+        $responseForExternalCodeOne = $this->sdk->getOrderService()->getOrders(
+            ['filters' => ['externalCode' => $externalCodeOne]]
+        );
+        $responseForExternalCodeTwo = $this->sdk->getOrderService()->getOrders(
+            ['filters' => ['externalCode' => $externalCodeTwo]]
+        );
 
         $this->assertCount(1, $responseForExternalCodeOne->getOrders());
         $this->assertCount(1, $responseForExternalCodeTwo->getOrders());
@@ -223,7 +243,8 @@ class OrderTest extends OrderBaseTest
             $orders[] = $this->createSampleOrder(
                 $productIds,
                 self::LOCATION_CODE,
-                ['customerId' => $customerId, 'externalCode' => md5(date('c') . 'limit' . (string)$num)]);
+                ['customerId' => $customerId, 'externalCode' => md5(date('c') . 'limit' . $num)]
+            );
         }
         $this->sdk->getOrderService()->addOrders($orders);
 
@@ -247,8 +268,8 @@ class OrderTest extends OrderBaseTest
 
     /**
      * @param string[] $productIds
-     * @param string   $locationCode
-     * @param array    $fields
+     * @param string $locationCode
+     * @param array $fields
      *
      * @return Order\Create
      */
@@ -346,7 +367,7 @@ class OrderTest extends OrderBaseTest
 
     /**
      * @param string[] $productIds
-     * @param string   $locationCode
+     * @param string $locationCode
      *
      * @return Order\Dto\LineItem[]
      */

@@ -1,11 +1,11 @@
 <?php
 
-require_once(dirname(__FILE__) . '/../bootstrap.php');
+require_once __DIR__ . '/../bootstrap.php';
 
 $orders = provideSampleOrders();
 
 try {
-    $sgSdk->getOrderService()->addOrders($orders);
+    $sdk->getOrderService()->addOrders($orders);
 } catch (Exception $exception) {
     echo $exception->getMessage();
 }

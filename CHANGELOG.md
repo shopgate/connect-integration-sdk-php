@@ -49,7 +49,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - getOrders
 - getOrder
 
-
 ## [0.5.0]- 2019-06-28
 ### Added
 - bulkImport for attributes

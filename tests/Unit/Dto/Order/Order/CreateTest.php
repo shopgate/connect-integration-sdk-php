@@ -23,10 +23,10 @@
 namespace Shopgate\ConnectSdk\Tests\Unit\Dto\Order\Order;
 
 use PHPUnit\Framework\TestCase;
+use Shopgate\ConnectSdk\Dto\Order\Order\Create;
 use Shopgate\ConnectSdk\Dto\Order\Order\Dto as OrderDto;
-use Shopgate\ConnectSdk\Dto\Order\Order\Get;
 
-class GetTest extends TestCase
+class CreateTest extends TestCase
 {
     public function testBasicProperties()
     {
@@ -156,7 +156,7 @@ class GetTest extends TestCase
                 ]
             ]
         ];
-        $get = new Get($entry);
+        $get = new Create($entry);
 
         $this->assertEquals($entry['orderNumber'], $get->getOrderNumber());
         $this->assertEquals($entry['externalCode'], $get->getExternalCode());

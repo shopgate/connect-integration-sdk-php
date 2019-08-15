@@ -29,6 +29,7 @@ use Shopgate\ConnectSdk\Service\BulkImport;
 use Shopgate\ConnectSdk\Service\Catalog;
 use Shopgate\ConnectSdk\Service\Customer;
 use Shopgate\ConnectSdk\Service\Location;
+use Shopgate\ConnectSdk\Service\Order;
 
 class ShopgateSdk
 {
@@ -47,6 +48,9 @@ class ShopgateSdk
 
     /** @var Location */
     private $location;
+
+    /** @var Order */
+    private $order;
 
     /** @var BulkImport */
     private $bulkImport;
@@ -115,6 +119,18 @@ class ShopgateSdk
         }
 
         return $this->location;
+    }
+
+    /**
+     * @return Order
+     */
+    public function getOrderService()
+    {
+        if (!$this->order) {
+            $this->order = new Order($this->client, $this->jsonHelper);
+        }
+
+        return $this->order;
     }
 
     /**

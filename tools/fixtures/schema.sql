@@ -7,12 +7,14 @@ DROP DATABASE IF EXISTS location;
 DROP DATABASE IF EXISTS merchant;
 DROP DATABASE IF EXISTS customer;
 DROP DATABASE IF EXISTS import;
+DROP DATABASE IF EXISTS omnichannel_order;
 
 CREATE DATABASE authservice;
 CREATE DATABASE catalog;
 CREATE DATABASE location;
 CREATE DATABASE merchant;
 CREATE DATABASE import;
+CREATE DATABASE omnichannel_order;
 
 CREATE TABLE authservice.`access_tokens`
 (

@@ -151,7 +151,7 @@ class AttributeValueTest extends CatalogTest
             self::SAMPLE_ATTRIBUTE_VALUE_CODE
         );
 
-        sleep(self::SLEEP_TIME_AFTER_EVENT);
+        usleep(self::SLEEP_TIME_AFTER_EVENT);
 
         // Assert
         $removedAttributeValues = $this->sdk->getCatalogService()

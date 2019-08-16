@@ -81,7 +81,7 @@ class AttributeTest extends CatalogTest
 
         // Act
         $this->createAttributes($sampleAttributes);
-        sleep(self::SLEEP_TIME_AFTER_EVENT);
+        usleep(self::SLEEP_TIME_AFTER_EVENT);
 
         $attributes = $this->getAttributes();
 
@@ -237,7 +237,7 @@ class AttributeTest extends CatalogTest
             $attributeUpdate
         );
 
-        sleep(self::SLEEP_TIME_AFTER_EVENT);
+        usleep(self::SLEEP_TIME_AFTER_EVENT);
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(
@@ -291,7 +291,7 @@ class AttributeTest extends CatalogTest
             ]
         );
 
-        sleep(self::SLEEP_TIME_AFTER_EVENT);
+        usleep(self::SLEEP_TIME_AFTER_EVENT);
 
         // Assert
         try {
@@ -318,7 +318,7 @@ class AttributeTest extends CatalogTest
         // Act
         $this->sdk->getCatalogService()->deleteAttribute('code_1');
 
-        sleep(self::SLEEP_TIME_AFTER_EVENT);
+        usleep(self::SLEEP_TIME_AFTER_EVENT);
 
         // Assert
         try {

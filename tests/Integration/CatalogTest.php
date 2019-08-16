@@ -56,7 +56,7 @@ abstract class CatalogTest extends ShopgateSdkTest
         self::METHOD_DELETE_ATTRIBUTE => [],
     ];
 
-    const SAMPLE_CATALOG_CODE = 'NAWholesale';
+    const SAMPLE_CATALOG_CODE = 'NARetail';
 
     const PRODUCT_CODE = 'integration-test';
     const PRODUCT_CODE_SECOND = 'integration-test-2';
@@ -255,7 +255,7 @@ abstract class CatalogTest extends ShopgateSdkTest
             ->setExtras($sampleExtras)
             ->setCode(self::PRODUCT_CODE_SECOND)// required
             ->setParentProductCode('dfsdf7')
-            ->setCatalogCode('PNW Retail')// required
+            ->setCatalogCode(self::SAMPLE_CATALOG_CODE)// required
             ->setModelType(Product\Create::MODEL_TYPE_STANDARD)// required
             ->setIdentifiers($identifiers)
             ->setPrice($price)// required

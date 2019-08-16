@@ -51,7 +51,7 @@ class Get extends ProductBase
                 'type'  => 'array',
                 'items' => ['$ref' => Dto\MediaList\Media::class]
             ],
-            'inventory'         => [
+            'inventories'         => [
                 'type'  => 'array',
                 'items' => ['$ref' => Dto\Inventory::class]
             ],

@@ -724,7 +724,7 @@ class CategoryTest extends CatalogTest
 
         // Act
         $response = $this->createCategories($sampleCategories);
-        sleep(self::SLEEP_TIME_AFTER_EVENT);
+        usleep(self::SLEEP_TIME_AFTER_EVENT);
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, $sampleCategoryCodes);
@@ -756,7 +756,7 @@ class CategoryTest extends CatalogTest
 
         // Act
         $response = $this->sdk->getCatalogService()->updateCategory(self::CATEGORY_CODE, $updatedCategory);
-        sleep(self::SLEEP_TIME_AFTER_EVENT);
+        usleep(self::SLEEP_TIME_AFTER_EVENT);
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, [self::CATEGORY_CODE]);
@@ -786,7 +786,7 @@ class CategoryTest extends CatalogTest
             $responses[] = $this->sdk->getCatalogService()->deleteCategory($categoryCode);
         }
 
-        sleep(self::SLEEP_TIME_AFTER_EVENT);
+        usleep(self::SLEEP_TIME_AFTER_EVENT);
 
         // Assert
         $categories = $this->getCategories($this->getCategoryCodes($sampleCategories));

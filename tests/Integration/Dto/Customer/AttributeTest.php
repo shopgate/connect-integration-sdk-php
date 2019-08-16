@@ -23,7 +23,6 @@
 namespace Shopgate\ConnectSdk\Tests\Integration\Dto\Customer;
 
 use Psr\Http\Message\ResponseInterface;
-use Shopgate\ConnectSdk\Dto\Catalog\Attribute\Dto\Name;
 use Shopgate\ConnectSdk\Dto\Customer\Attribute;
 use Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
 
@@ -121,15 +120,13 @@ class AttributeTest extends CustomerTest
      */
     public function testCreateAttributesEvent()
     {
-        $this->markTestSkipped('Skipped - omni-event-receiver route does not exist yet');
-
         // Arrange
         $createdItemCount = 10;
         $sampleAttributes = $this->provideSampleAttributes($createdItemCount);
 
         // Act
         $this->createAttributes($sampleAttributes);
-        sleep(self::SLEEP_TIME_AFTER_EVENT);
+        usleep(self::SLEEP_TIME_AFTER_EVENT);
 
         $attributes = $this->getAttributes();
 
@@ -253,15 +250,13 @@ class AttributeTest extends CustomerTest
      */
     public function testUpdateAttributeEvent()
     {
-        $this->markTestSkipped('Skipped - omni-event-receiver route does not exist yet');
-
         // Arrange
         $sampleAttributes = $this->provideSampleAttributes(1);
         $this->createAttributes($sampleAttributes);
 
         // Act
         $newName         = 'Renamed Attribute (Event)';
-        $attributeUpdate = new Attribute\Update(['name' => new Name(['en-us' => $newName])]);
+        $attributeUpdate = new Attribute\Update(['name' => $newName]);
 
         // Act
         $this->sdk->getCustomerService()->updateAttribute(
@@ -269,7 +264,7 @@ class AttributeTest extends CustomerTest
             $attributeUpdate
         );
 
-        sleep(self::SLEEP_TIME_AFTER_EVENT);
+        usleep(self::SLEEP_TIME_AFTER_EVENT);
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(
@@ -323,8 +318,6 @@ class AttributeTest extends CustomerTest
      */
     public function testDeleteAttributeEvent()
     {
-        $this->markTestSkipped('Skipped - omni-event-receiver route does not exist yet');
-
         // Arrange
         $sampleAttributes = $this->provideSampleAttributes(1);
         $this->createAttributes($sampleAttributes);
@@ -332,7 +325,7 @@ class AttributeTest extends CustomerTest
         // Act
         $this->sdk->getCustomerService()->deleteAttribute('code_1');
 
-        sleep(self::SLEEP_TIME_AFTER_EVENT);
+        usleep(self::SLEEP_TIME_AFTER_EVENT);
 
         // Assert
         try {

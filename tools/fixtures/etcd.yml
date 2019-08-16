@@ -24,6 +24,8 @@ development:
     OmniWorkerService:
       googleCloud:
         projectId: test-project
+        topic: entityChanged
+        subscription: workerSvcEntityChanged
 
     OmniEventReceiverService:
       bigApi:

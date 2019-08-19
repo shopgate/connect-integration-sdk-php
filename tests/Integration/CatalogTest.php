@@ -28,6 +28,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
+use Shopgate\ConnectSdk\Dto\Catalog\Reservation;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Categories;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Extras;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\LongDescription;
@@ -49,11 +50,13 @@ abstract class CatalogTest extends ShopgateSdkTest
     const METHOD_DELETE_PRODUCT = 'deleteProduct';
     const METHOD_DELETE_ATTRIBUTE = 'deleteAttribute';
     const METHOD_DELETE_LOCATION = 'deleteLocation';
+    const METHOD_DELETE_RESERVATIONS = 'deleteReservations';
 
     const METHOD_DELETE_REQUEST_META = [
         self::METHOD_DELETE_CATEGORY => ['force' => true],
         self::METHOD_DELETE_PRODUCT => [],
         self::METHOD_DELETE_ATTRIBUTE => [],
+        self::METHOD_DELETE_RESERVATIONS => [],
     ];
 
     const SAMPLE_CATALOG_CODE = 'NARetail';
@@ -83,6 +86,7 @@ abstract class CatalogTest extends ShopgateSdkTest
                 self::METHOD_DELETE_CATEGORY => ['force' => true],
                 self::METHOD_DELETE_PRODUCT => [],
                 self::METHOD_DELETE_ATTRIBUTE => [],
+                self::METHOD_DELETE_RESERVATIONS => [],
             ]
         );
         $this->registerForCleanUp(
@@ -631,6 +635,30 @@ abstract class CatalogTest extends ShopgateSdkTest
             $inventory->setBinLocation('DE-' . $i);
             $inventory->setSafetyStock($i);
             $result[] = $inventory;
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param int    $count
+     * @param string $productCode
+     *
+     * @return Reservation\Create[]
+     */
+    protected function provideSampleReservations($count = 1, $productCode = self::PRODUCT_CODE)
+    {
+        $result = [];
+        for ($i = 1; $i < $count + 1; $i++) {
+            $reservation = new Reservation\Create();
+            $reservation->setProductCode($productCode);
+            $reservation->setLocationCode(self::LOCATION_CODE);
+            $reservation->setSku('SKU_' . $i);
+            $reservation->setSalesOrderLineItemCode('11111-2222-44444-' . $i);
+            $reservation->setSalesOrderId('11111-2222-33333-' . $i);
+            $reservation->setFulfillmentOrderId('11111-2222-22222-' . $i);
+            $reservation->setQuantity(1);
+            $result[] = $reservation;
         }
 
         return $result;

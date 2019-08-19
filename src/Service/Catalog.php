@@ -29,14 +29,15 @@ use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
 use Shopgate\ConnectSdk\Dto\Catalog\ProductDescriptions;
+use Shopgate\ConnectSdk\Dto\Catalog\Reservation;
 use Shopgate\ConnectSdk\Dto\Meta;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
+use Shopgate\ConnectSdk\Helper\Json;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\ShopgateSdk;
-use Shopgate\ConnectSdk\Helper\Json;
 
 class Catalog
 {
@@ -707,5 +708,149 @@ class Catalog
                 'query' => $query,
             ]
         );
+    }
+
+    /**
+     * @param Reservation\Create[]  $reservations
+     * @param array                 $query
+     *
+     * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function addReservations(array $reservations, array $query = [])
+    {
+        return $this->client->doRequest(
+            [
+                'service' => 'catalog',
+                'method' => 'post',
+                'path' => 'reservations',
+                'entity' => 'reservation',
+                'action' => 'create',
+                'json' => ['reservations' => $reservations],
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
+                'query' => $query,
+            ]
+        );
+    }
+
+    /**
+     * @param array $codes
+     * @param array $query
+     *
+     * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function deleteReservations(array $codes, array $query = [])
+    {
+        return $this->client->doRequest(
+            [
+                'service' => 'catalog',
+                'method' => 'delete',
+                'path' => 'reservations',
+                'entity' => 'reservation',
+                'json' => ['reservationCodes' => $codes],
+                'action' => 'delete',
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
+                'query' => $query,
+            ]
+        );
+    }
+
+    /**
+     * @param string             $reservationCode
+     * @param Reservation\Update $reservation
+     * @param array              $query
+     *
+     * @return ResponseInterface
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function updateReservation($reservationCode, $reservation, array $query = [])
+    {
+        return $this->client->doRequest(
+            [
+                'service' => 'catalog',
+                'method' => 'post',
+                'path' => 'reservations/' . $reservationCode,
+                'entity' => 'reservation',
+                'json' => $reservation,
+                'action' => 'update',
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
+                'query' => $query,
+            ]
+        );
+    }
+
+    /**
+     * @param string $reservationCode
+     * @param array  $query
+     *
+     * @return Reservation\Get
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function getReservation($reservationCode, array $query = [])
+    {
+        $response = $this->client->doRequest(
+            [
+                'service' => 'catalog',
+                'method' => 'get',
+                'path' => 'reservations/' . $reservationCode,
+                'query' => $query,
+            ]
+        );
+
+        $response = $this->jsonHelper->decode($response->getBody(), true);
+
+        return new Reservation\Get($response['reservation']);
+    }
+
+    /**
+     * @param array $query
+     *
+     * @return Reservation\GetList
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function getReservations(array $query = [])
+    {
+        if (isset($query['filters'])) {
+            $query['filters'] = $this->jsonHelper->encode($query['filters']);
+        }
+
+        $response = $this->client->doRequest(
+            [
+                'service' => 'catalog',
+                'method' => 'get',
+                'path' => 'reservations',
+                'query' => $query,
+            ]
+        );
+        $response = $this->jsonHelper->decode($response->getBody(), true);
+
+        $reservations = [];
+        foreach ($response['reservations'] as $reservation) {
+            $reservations[] = new Reservation\Get($reservation);
+        }
+        $response['meta'] = new Meta($response['meta']);
+        $response['reservations'] = $reservations;
+
+        return new Reservation\GetList($response);
     }
 }

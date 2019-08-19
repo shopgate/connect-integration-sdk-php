@@ -48,6 +48,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - addOrders direct call
 - getOrders
 - getOrder
+- addReservations direct call
+- updateReservations direct call
+- deleteReservations direct call
+- getReservation
+- getReservations
 
 ## [0.5.0]- 2019-06-28
 ### Added

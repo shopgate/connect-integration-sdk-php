@@ -108,7 +108,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - deleteCategory event & direct call
 
 [Unreleased]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.6.0...HEAD
-[Unreleased]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.5.0...0.6.0
+[0.6.0]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.5.0...0.6.0
 [0.5.0]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.4.0...0.5.0
 [0.4.0]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.3.0...0.4.0
 [0.3.0]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.2.1...0.3.0

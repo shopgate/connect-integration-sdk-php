@@ -344,6 +344,10 @@ class AttributeTest extends CatalogTest
         $createdItemCount = 10;
         $sampleAttributes = $this->provideSampleAttributes($createdItemCount);
 
+        $deleteCodes = [];
+        foreach ($sampleAttributes as $attribute) {
+            $deleteCodes[] = $attribute->getCode();
+        }
         // Act
         $this->createAttributes(
             $sampleAttributes,
@@ -363,11 +367,12 @@ class AttributeTest extends CatalogTest
         // Assert
         $attributes = $this->getAttributes($parameters);
 
-        // CleanUp
-        $deleteCodes = [];
+        $fetchedCodes = [];
         foreach ($attributes->getAttributes() as $attribute) {
-            $deleteCodes[] = $attribute->getCode();
+            $fetchedCodes[] = $attribute->getCode();
         }
+
+        // CleanUp
         $this->deleteEntitiesAfterTestRun(
             self::CATALOG_SERVICE,
             self::METHOD_DELETE_ATTRIBUTE,
@@ -375,7 +380,7 @@ class AttributeTest extends CatalogTest
         );
 
         $this->assertCount($expectedAttributeCount, $attributes->getAttributes());
-        $this->assertEquals($expectedAttributeCodes, $deleteCodes);
+        $this->assertEquals($expectedAttributeCodes, $fetchedCodes);
         if (isset($limit)) {
             $this->assertEquals($limit, $attributes->getMeta()->getLimit());
         }

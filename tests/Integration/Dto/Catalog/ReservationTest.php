@@ -59,7 +59,6 @@ class ReservationTest extends CatalogTest
         $this->assertEquals(1, $currentReservation->getQuantity());
         $this->assertEquals('11111-2222-44444-1', $currentReservation->getSalesOrderLineItemCode());
         $this->assertEquals('11111-2222-33333-1', $currentReservation->getSalesOrderId());
-        $this->assertEquals('11111-2222-22222-1', $currentReservation->getFulfillmentOrderId());
 
         // CleanUp
         $this->cleanUp([self::PRODUCT_CODE], [self::LOCATION_CODE]);

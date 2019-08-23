@@ -756,7 +756,7 @@ class Catalog
                 'method' => 'delete',
                 'path' => 'reservations',
                 'entity' => 'reservation',
-                'json' => ['reservationCodes' => $codes],
+                'json' => ['codes' => $codes],
                 'action' => 'delete',
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'query' => $query,

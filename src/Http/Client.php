@@ -200,7 +200,7 @@ class Client implements ClientInterface
      *                      parameter 'body' or 'json' can not be set both at a time
      *                      if parameter 'url' is set the oauth authentication will be deactivated
      *
-     * @return ResponseInterface
+     * @return ResponseInterface|array
      *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
@@ -265,7 +265,41 @@ class Client implements ClientInterface
             throw new UnknownException($e->getMessage());
         }
 
+        if ($response instanceof ResponseInterface) {
+            $this->checkForErrorsInResponse($response);
+        }
+
         return $response;
+    }
+
+    /**
+     * @param ResponseInterface $response
+     *
+     * @throws NotFoundException
+     * @throws RequestException
+     */
+    private function checkForErrorsInResponse($response)
+    {
+        if ($body = $response->getBody()) {
+            $responseContent = \json_decode($body->read($body->getSize()), true);
+
+            if (!isset($responseContent['errors']) || empty($responseContent['errors'])) {
+                return;
+            }
+
+            foreach ($responseContent['errors'] as $error) {
+                if ($error['code'] === 404) {
+                    throw new NotFoundException(
+                        $error['reason']
+                    );
+                }
+
+                throw new RequestException(
+                    $error['code'],
+                    $error['reason']
+                );
+            }
+        }
     }
 
     /**

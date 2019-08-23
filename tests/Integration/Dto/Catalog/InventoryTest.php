@@ -77,6 +77,8 @@ class InventoryTest extends CatalogTest
         $delete->setProductCode(self::PRODUCT_CODE);
         $delete->setLocationCode(self::LOCATION_CODE);
         $delete->setSku('SKU_1');
+        $delete->setBin('1');
+        $delete->setBinLocation('DE-1');
 
         // Act
         $this->sdk->getCatalogService()->deleteInventories([$delete], ['requestType' => 'direct']);
@@ -107,6 +109,8 @@ class InventoryTest extends CatalogTest
         $update->setLocationCode(self::LOCATION_CODE);
         $update->setSku('SKU_1');
         $update->setOperationType(Inventory\Update::OPERATION_TYPE_INCREMENT);
+        $update->setBinLocation('DE-1');
+        $update->setBin('1');
         $update->setOnHand(10);
 
         $this->sdk->getCatalogService()->updateInventories([$update], ['requestType' => 'direct']);
@@ -145,11 +149,6 @@ class InventoryTest extends CatalogTest
         try {
             $this->sdk->getCatalogService()->addInventories($inventories, ['requestType' => 'direct']);
         } catch (NotFoundException $exception) {
-            $this->assertEquals(
-                '{"code":"NotFound","message":"Locations not found: INVALID"}',
-                $exception->getMessage()
-            );
-
             return;
         } finally {
             // CleanUp
@@ -175,11 +174,6 @@ class InventoryTest extends CatalogTest
         try {
             $this->sdk->getCatalogService()->addInventories($inventories, ['requestType' => 'direct']);
         } catch (NotFoundException $exception) {
-            $this->assertEquals(
-                '{"code":"NotFound","message":"Products not found: INVALID"}',
-                $exception->getMessage()
-            );
-
             return;
         } finally {
             // CleanUp
@@ -207,6 +201,8 @@ class InventoryTest extends CatalogTest
         $update->setSku('SKU_1');
         $update->setOperationType(Inventory\Update::OPERATION_TYPE_DECREMENT);
         $update->setOnHand(5);
+        $update->setBin('1');
+        $update->setBinLocation('DE-1');
 
         // Act
         $this->sdk->getCatalogService()->updateInventories([$update], ['requestType' => 'direct']);
@@ -302,7 +298,7 @@ class InventoryTest extends CatalogTest
         $inventories[0]->setSafetyStock(0);
 
         $this->sdk->getCatalogService()->addInventories($inventories, ['requestType' => 'direct']);
-        $inventory = new Inventory\Create($inventoryData);
+        $inventory = new Inventory\Update($inventoryData);
 
         // Act
         $this->sdk->getCatalogService()->updateInventories([$inventory], ['requestType' => 'direct']);
@@ -313,8 +309,8 @@ class InventoryTest extends CatalogTest
         // Assert
         $product = $this->sdk->getCatalogService()->getProduct(self::PRODUCT_CODE, ['fields' => 'inventories']);
 
-        $inventories = $product->getInventories();
-        $currentInventory = new Inventory($inventories[0]);
+        $updatedInventories = $product->getInventories();
+        $currentInventory = new Inventory($updatedInventories[0]);
 
         $this->assertEquals($expectedOnHand, $currentInventory->onHand);
         $this->assertEquals($expectedAvailable, $currentInventory->available);
@@ -380,6 +376,8 @@ class InventoryTest extends CatalogTest
                     'locationCode' => self::LOCATION_CODE,
                     'operationType' => Inventory\Create::OPERATION_TYPE_INCREMENT,
                     'sku' => 'SKU_1',
+                    'bin' => '1',
+                    'binLocation' => 'DE-1',
                     'onHand' => 10,
                 ],
                 'expectedOnHand' => 20,
@@ -393,6 +391,8 @@ class InventoryTest extends CatalogTest
                     'locationCode' => self::LOCATION_CODE,
                     'operationType' => Inventory\Create::OPERATION_TYPE_INCREMENT,
                     'sku' => 'SKU_1',
+                    'bin' => '1',
+                    'binLocation' => 'DE-1',
                     'onHand' => 20,
                 ],
                 'expectedOnHand' => 30,
@@ -406,6 +406,8 @@ class InventoryTest extends CatalogTest
                     'locationCode' => self::LOCATION_CODE,
                     'operationType' => Inventory\Create::OPERATION_TYPE_DECREMENT,
                     'sku' => 'SKU_1',
+                    'bin' => '1',
+                    'binLocation' => 'DE-1',
                     'onHand' => 2,
                 ],
                 'expectedOnHand' => 8,
@@ -419,6 +421,8 @@ class InventoryTest extends CatalogTest
                     'locationCode' => self::LOCATION_CODE,
                     'operationType' => Inventory\Create::OPERATION_TYPE_DECREMENT,
                     'sku' => 'SKU_1',
+                    'bin' => '1',
+                    'binLocation' => 'DE-1',
                     'onHand' => 20,
                 ],
                 'expectedOnHand' => -10,
@@ -441,6 +445,8 @@ class InventoryTest extends CatalogTest
                     'locationCode' => self::LOCATION_CODE,
                     'operationType' => Inventory\Create::OPERATION_TYPE_INCREMENT,
                     'sku' => 'SKU_1',
+                    'bin' => '1',
+                    'binLocation' => 'DE-1',
                     'onHand' => 10,
                 ],
                 'expectedOnHand' => 20,
@@ -454,6 +460,8 @@ class InventoryTest extends CatalogTest
                     'locationCode' => self::LOCATION_CODE,
                     'operationType' => Inventory\Create::OPERATION_TYPE_INCREMENT,
                     'sku' => 'SKU_1',
+                    'bin' => '1',
+                    'binLocation' => 'DE-1',
                     'onHand' => 20,
                 ],
                 'expectedOnHand' => 30,
@@ -467,6 +475,8 @@ class InventoryTest extends CatalogTest
                     'locationCode' => self::LOCATION_CODE,
                     'operationType' => Inventory\Create::OPERATION_TYPE_DECREMENT,
                     'sku' => 'SKU_1',
+                    'bin' => '1',
+                    'binLocation' => 'DE-1',
                     'onHand' => 2,
                 ],
                 'expectedOnHand' => 8,
@@ -480,6 +490,8 @@ class InventoryTest extends CatalogTest
                     'locationCode' => self::LOCATION_CODE,
                     'operationType' => Inventory\Create::OPERATION_TYPE_DECREMENT,
                     'sku' => 'SKU_1',
+                    'bin' => '1',
+                    'binLocation' => 'DE-1',
                     'onHand' => 20,
                 ],
                 'expectedOnHand' => -10,

@@ -27,7 +27,9 @@ use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 /**
  * @method Delete setProductCode(string $productCode)
  * @method Delete setLocationCode(string $locationCode)
- * @method Delete setSku(string $sku)
+ * @method Delete setSku(string $bin)
+ * @method Delete setBin(string $sku)
+ * @method Delete setBinLocation(string $binLocation)
  */
 class Delete extends Inventory
 {
@@ -37,10 +39,12 @@ class Delete extends Inventory
      */
     protected $schema = [
         'type'                 => 'object',
-        'properties'           => [
+        'properties' => [
             'productCode'  => ['type' => 'string'],
             'locationCode' => ['type' => 'string'],
             'sku'          => ['type' => 'string'],
+            'bin'          => ['type' => 'string'],
+            'binLocation'  => ['type' => 'string'],
         ],
         'additionalProperties' => true,
     ];

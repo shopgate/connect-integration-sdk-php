@@ -27,6 +27,8 @@ use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 /**
  * @method Update setProductCode(string $productCode)
  * @method Update setLocationCode(string $locationCode)
+ * @method Update setBin(string $bin)
+ * @method Update setBinLocation(string $binLocation)
  * @method Update setSku(string $sku)
  * @method Update setOperationType(string $operationType)
  * @method Update setOnHand(integer $onHand)
@@ -39,13 +41,14 @@ class Update extends Inventory
      */
     protected $schema = [
         'type'                 => 'object',
-        'properties'           => [
+        'properties' => [
             'productCode'   => ['type' => 'string'],
             'locationCode'  => ['type' => 'string'],
             'sku'           => ['type' => 'string'],
             'operationType' => ['type' => 'string'],
+            'bin'           => ['type' => 'string'],
+            'binLocation'   => ['type' => 'string'],
             'onHand'        => ['type' => 'integer'],
-
         ],
         'additionalProperties' => true,
     ];

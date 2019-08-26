@@ -75,8 +75,11 @@ class ShopgateSdk
                 $config['clientId'],
                 $config['clientSecret'],
                 $config['merchantCode'],
+                isset($config['username']) ? $config['username'] : '',
+                isset($config['password']) ? $config['password'] : '',
                 null,
                 isset($config['env']) ? $config['env'] : ''
+
             );
         $this->jsonHelper = new Json();
 

@@ -83,6 +83,8 @@ class Client implements ClientInterface
      * @param string $clientId
      * @param string $clientSecret
      * @param string $merchantCode
+     * @param string $username
+     * @param string $password
      * @param string $baseUri
      * @param string $env
      * @param string $accessTokenPath
@@ -93,6 +95,8 @@ class Client implements ClientInterface
         $clientId,
         $clientSecret,
         $merchantCode,
+        $username = '',
+        $password = '',
         $baseUri = '',
         $env = '',
         $accessTokenPath = ''
@@ -118,7 +122,9 @@ class Client implements ClientInterface
                 $reAuthClient,
                 [
                     'client_id'     => $clientId,
-                    'client_secret' => $clientSecret
+                    'client_secret' => $clientSecret,
+                    'username'      => $username,
+                    'password'      => $password
                 ]
             )
         );

@@ -27,6 +27,8 @@ class ClientTest extends ShopgateSdkTest
      * @param string $clientId
      * @param string $clientSecret
      * @param string $merchantCode
+     * @param string $username
+     * @param string $password
      * @param string $baseUri
      * @param string $env
      * @param string $accessTokenPath
@@ -35,12 +37,14 @@ class ClientTest extends ShopgateSdkTest
      *
      * @throws Exception
      */
-    public function createNewSdk($clientId, $clientSecret, $merchantCode, $baseUri, $env, $accessTokenPath)
+    public function createNewSdk($clientId, $clientSecret, $merchantCode, $username, $password, $baseUri, $env, $accessTokenPath)
     {
         $client = Client::createInstance(
             $clientId,
             $clientSecret,
             $merchantCode,
+            $username,
+            $password,
             $baseUri,
             $env,
             $accessTokenPath

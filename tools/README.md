@@ -69,21 +69,21 @@ clicking the `Start Listening for PHP Debug Connections` icon and setting up pat
 Create the file `tests/Integration/.env` and put the following into it:
 
     accessTokenPath="./access_token.txt"
-    baseUri="http://{service}.shopgatedev.services:8080"
+    baseUri="http://{service}.shopgatedev.io:8080"
     clientId="integration-tests"
     clientSecret="integration-tests"
     merchantCode="TM2"
 
 In your `/etc/hosts` file (usually `C:\Windows\System32\Drivers\etc\hosts` on Windows) add the following entries:
 
-    127.0.0.1       auth.shopgatedev.services
-    127.0.0.1       catalog.shopgatedev.services
-    127.0.0.1       omni-customer.shopgatedev.services
-    127.0.0.1       import.shopgatedev.services
-    127.0.0.1       omni-event-receiver.shopgatedev.services
-    127.0.0.1       omni-location.shopgatedev.services
+    127.0.0.1       auth.shopgatedev.io
+    127.0.0.1       catalog.shopgatedev.io
+    127.0.0.1       omni-customer.shopgatedev.io
+    127.0.0.1       import.shopgatedev.io
+    127.0.0.1       omni-event-receiver.shopgatedev.io
+    127.0.0.1       omni-location.shopgatedev.io
     127.0.0.1       shopgate-import.s3
-    127.0.0.1       omni-order.shopgatedev.services
+    127.0.0.1       omni-order.shopgatedev.io
 
 Log in to ECR and boot up the local stack using ```composer start```.
 

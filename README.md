@@ -150,7 +150,7 @@ $handler->trigger();
 * __clientId__ (string) - oAuth2 client ID
 * __clientSecret__ (string) - oAuth2 client secret
 * __merchantCode__ (string) - the following are template system related, the default _base_uri_ provided takes in variables in __{merchantCode}__ format. These params just replace these variables. This way you do not need to rewrite the base_uri, but just provide the correct variables to replace the template components.
-* __base_uri__ (string, default: _https://{service}.shopgate{env}.services/v{ver}/merchants/{merchantCode}/_) - if rewriting, make sure to add a forward slash at end as the calls will append paths
+* __base_uri__ (string, default: _https://{service}.shopgate{env}.io/v{ver}/merchants/{merchantCode}/_) - if rewriting, make sure to add a forward slash at end as the calls will append paths
 * __ver__ (integer, default: 1) - template variable, can be substituted on a per call level in the meta array parameters
 * __env__ (string, default: '') - template variable, can also be 'dev' or 'pg'
 

@@ -25,7 +25,7 @@ development:
     OmniAuthService:
       mysql:
         connectionLimit: 1
-        database: omnichannel_auth
+        database: merchant
         host: mysql
         password: secret
         port: 3306
@@ -38,7 +38,7 @@ development:
         projectId: test-project
       mysql:
         connectionLimit: 1
-        database: omnichannel_user
+        database: autherservice
         host: mysql
         password: secret
         port: 3306
@@ -52,7 +52,7 @@ development:
 
     OmniEventReceiverService:
       bigApi:
-        baseUrl: http://{serviceName}.shopgatedev.services/
+        baseUrl: http://{serviceName}.shopgatedev.io/
         clientId: integration-tests
         clientSecret: integration-tests
       googleCloud:

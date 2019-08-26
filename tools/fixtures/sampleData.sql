@@ -1,17 +1,25 @@
 SET FOREIGN_KEY_CHECKS=1;
 
-INSERT IGNORE INTO authservice.`clients` (`id`,`name`,`secret`,`grantTypes`,`userId`,`accessTokenLifetime`,`refreshTokenLifetime`)
+INSERT INTO authservice.`Client` (`ClientId`, `Name`, `Secret`, `GrantTypes`, `UserId`, `AccessTokenLifetime`, `RefreshTokenLifetime`, `ApplicationType`)
 VALUES
-(1, 'integration-tests', 'integration-tests', 'client_credentials,refresh_token',1,3600,7776000);
+(19,'integration-tests','integration-tests','client_credentials,refresh_token',13,3600,7776000,NULL);
 
-INSERT IGNORE INTO authservice.`users` (`id`,`name`,`type`,`password`,`scopes`,`parentId`)
+INSERT INTO merchant.`User` (`UserID`, `UserEmail`, `FirstName`, `LastName`, `ProfileImage`, `CreateBy`, `CreateDate`, `UpdateBy`, `UpdateDate`, `DeleteBy`, `DeleteDate`, `UserCode`)
 VALUES
-(1, 'tester', 'system', '', 'shop.*:rw', null);
+('4b4b51ce-a4de-4e48-9cf4-ade08de2cc02', 'test@test.com', 'test', 'test', NULL, '', '2018-11-13 18:57:40', NULL, NULL, NULL, NULL, '64981c63-e909-47aa-95ab-a7e6ee2a6e50');
 
 INSERT IGNORE INTO merchant.`Merchant` (`MerchantID`, `OwnerUserID`, `MerchantName`, `MerchantCode`, `Region`, `AppLogo`, `CreateBy`)
 VALUES
 ('1', '4b4b51ce-a4de-4e48-9cf4-ade08de2cc02', 'Test Merchant 1', 'TM1', 'US', 'https://scontent-ber1-1.xx.fbcdn.net/v/t1.0-1/p200x200/28471572_10156169825948781_8970975354537639936_n.jpg?_nc_cat=106&_nc_ht=scontent-ber1-1.xx&oh=b7c659809d68e285aca5fcfab13dec91&oe=5C6E1AD0', 'Johnny Bravo'),
 ('2', '4b4b51ce-a4de-4e48-9cf4-ade08de2cc02', 'Test Merchant 2', 'TM2', 'US', 'https://scontent-ber1-1.xx.fbcdn.net/v/t1.0-1/p200x200/28471572_10156169825948781_8970975354537639936_n.jpg?_nc_cat=106&_nc_ht=scontent-ber1-1.xx&oh=b7c659809d68e285aca5fcfab13dec91&oe=5C6E1AD0', 'Scooby Doo');
+
+INSERT INTO merchant.`MerchantEngageApp` (`MerchantEngageAppId`, `MerchantId`, `ShopNumber`, `CreateBy`, `CreateDate`, `UpdateBy`, `UpdateDate`, `DeleteBy`, `DeleteDate`)
+VALUES
+('cce23639-73c8-4ba0-b43d-2fa7f59d', '1', '31371', 'Pascal Vomhoff', '2018-12-18 13:03:07', NULL, NULL, NULL, NULL);
+
+INSERT INTO merchant.`MerchantPartner` (`MerchantPartnerID`, `MerchantID`, `PartnerName`, `PartnerURL`, `PartnerLogo`, `PartnerPhone`, `CreateBy`, `CreateDate`, `UpdateBy`, `UpdateDate`, `DeleteBy`, `DeleteDate`)
+VALUES
+('689ca1ae-866d-4ee8-ac83-7c893eab4a20', '1', 'Ernie Consulting', 'https://shopgate.com', 'https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/exampleData/omni/bild.jpg', '+17471234567', 'Pascal Vomhoff', '1970-01-01 00:00:00', NULL, NULL, NULL, NULL);
 
 INSERT IGNORE INTO merchant.`MerchantSetting` (`MerchantSettingID`,`MerchantID`,`Key`,`Value`,`CreateBy`,`CreateDate`,`UpdateBy`,`UpdateDate`,`DeleteBy`,`DeleteDate`)
 VALUES

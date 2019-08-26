@@ -46,15 +46,15 @@ services:
     networks:
       default:
         aliases:
-          - omni-auth.shopgatedev.services
-          - omni-merchant.shopgatedev.services
-          - omni-location.shopgatedev.services
-          - omni-customer.shopgatedev.services
-          - omni-event-receiver.shopgatedev.services
-          - catalog.shopgatedev.services
-          - import.shopgatedev.services
-          - omni-order.shopgatedev.services
-          - omni-user.shopgatedev.services
+          - omni-auth.shopgatedev.io
+          - omni-merchant.shopgatedev.io
+          - omni-location.shopgatedev.io
+          - omni-customer.shopgatedev.io
+          - omni-event-receiver.shopgatedev.io
+          - catalog.shopgatedev.io
+          - import.shopgatedev.io
+          - omni-order.shopgatedev.io
+          - omni-user.shopgatedev.io
 
   omni-user:
     image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/user:v1.0.0-beta.25

@@ -66,7 +66,7 @@ retry "EventReceiver" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T omni-ev
 docker-compose $DOCKER_COMPOSE_PARAMETERS up -d elasticsearch
 retry "elasticsearch" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T elasticsearch curl http://localhost:9200/_cluster/health?wait_for_status=yellow 2>&1"
 
-docker-compose $DOCKER_COMPOSE_PARAMETERS up -d mysql sqs omni-auth omni-user redis omni-worker omni-merchant omni-location s3
+docker-compose $DOCKER_COMPOSE_PARAMETERS up -d mysql sqs omni-auth omni-user omni-worker omni-merchant omni-location s3
 
 # add DE postalcodes
 docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T mysql sh -c "apt-get update && apt-get install -y curl unzip && curl http://download.geonames.org/export/zip/DE.zip --output de.zip && unzip -o de.zip"

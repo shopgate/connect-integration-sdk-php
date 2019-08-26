@@ -44,8 +44,9 @@ services:
     ports:
       - ${EXPOSED_PORT_MYSQL}:3306
 
-  auth:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/auth2:2018-02-12_48
+  ### https://gitlab.localdev.cc/omnichannel/services/auth
+  omni-auth:
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/auth:v1.0.0-beta.7
     restart: always
     links:
       - etcd
@@ -61,7 +62,7 @@ services:
     networks:
       default:
         aliases:
-          - auth.shopgatedev.services
+          - omni-auth.shopgatedev.services
           - omni-merchant.shopgatedev.services
           - omni-customer.shopgatedev.services
           - omni-location.shopgatedev.services
@@ -69,6 +70,7 @@ services:
           - catalog.shopgatedev.services
           - import.shopgatedev.services
           - omni-order.shopgatedev.services
+          - omni-user.shopgatedev.services
   import:
     ports:
       - 5105:80

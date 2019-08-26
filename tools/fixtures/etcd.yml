@@ -10,12 +10,35 @@ development:
       catalog: "http://catalog/"
       import: "http://import/"
       omni-order: "http://omni-order/"
+      omni-user: "http://omni-user/"
 
   settings:
     auth2:
       mysql:
         connectionLimit: 10
         database: authservice
+        host: mysql
+        password: secret
+        port: 3306
+        user: root
+
+    OmniAuthService:
+      mysql:
+        connectionLimit: 1
+        database: omnichannel_auth
+        host: mysql
+        password: secret
+        port: 3306
+        user: root
+      jwt:
+        secret: test
+
+    OmniUserService:
+      googleCloud:
+        projectId: test-project
+      mysql:
+        connectionLimit: 1
+        database: omnichannel_user
         host: mysql
         password: secret
         port: 3306

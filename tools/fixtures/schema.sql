@@ -310,7 +310,6 @@ CREATE TABLE merchant.`MerchantSetting`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
-
 DROP TABLE IF EXISTS merchant.`MerchantApiKey`;
 
 CREATE TABLE merchant.`MerchantApiKey`
@@ -470,7 +469,6 @@ CREATE TABLE authservice.`RefreshToken`
     CONSTRAINT `RefreshToken_ibfk_1` FOREIGN KEY (`ClientId`) REFERENCES `Client` (`ClientId`) ON DELETE CASCADE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
-
 
 DROP TABLE IF EXISTS authservice.`Permission`;
 CREATE TABLE authservice.`Permission`

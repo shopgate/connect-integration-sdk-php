@@ -104,6 +104,10 @@ services:
     ports:
       - 5107:80
 
+  omni-user:
+    ports: 
+      - 5108:80
+
   s3:
     ports:
       - '4569:4569'

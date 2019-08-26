@@ -76,7 +76,7 @@ Create the file `tests/Integration/.env` and put the following into it:
 
 In your `/etc/hosts` file (usually `C:\Windows\System32\Drivers\etc\hosts` on Windows) add the following entries:
 
-    127.0.0.1       auth.shopgatedev.io
+    127.0.0.1       omni-auth.shopgatedev.io
     127.0.0.1       catalog.shopgatedev.io
     127.0.0.1       omni-customer.shopgatedev.io
     127.0.0.1       import.shopgatedev.io
@@ -84,6 +84,7 @@ In your `/etc/hosts` file (usually `C:\Windows\System32\Drivers\etc\hosts` on Wi
     127.0.0.1       omni-location.shopgatedev.io
     127.0.0.1       shopgate-import.s3
     127.0.0.1       omni-order.shopgatedev.io
+    127.0.0.1       omni-user.shopgatedev.io
 
 Log in to ECR and boot up the local stack using ```composer start```.
 

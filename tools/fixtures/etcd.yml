@@ -13,15 +13,6 @@ development:
       omni-user: "http://omni-user/"
 
   settings:
-    auth2:
-      mysql:
-        connectionLimit: 10
-        database: authservice
-        host: mysql
-        password: secret
-        port: 3306
-        user: root
-
     OmniAuthService:
       mysql:
         connectionLimit: 1
@@ -34,15 +25,15 @@ development:
         secret: test
 
     OmniUserService:
-      googleCloud:
-        projectId: test-project
       mysql:
         connectionLimit: 1
-        database: autherservice
+        database: omnichannel_user
         host: mysql
         password: secret
         port: 3306
         user: root
+      googleCloud:
+        projectId: test-project
 
     OmniWorkerService:
       googleCloud:

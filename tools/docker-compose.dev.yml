@@ -71,7 +71,7 @@ services:
           - catalog.shopgatedev.io
           - import.shopgatedev.io
           - omni-order.shopgatedev.io
-          - omni-user.shopgatedev.io
+          - user.shopgatedev.io
   import:
     ports:
       - 5105:80
@@ -104,8 +104,8 @@ services:
     ports:
       - 5107:80
 
-  omni-user:
-    ports: 
+  user:
+    ports:
       - 5108:80
 
   s3:

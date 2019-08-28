@@ -10,13 +10,24 @@ development:
       catalog: "http://catalog/"
       import: "http://import/"
       omni-order: "http://omni-order/"
-      omni-user: "http://omni-user/"
+      user: "http://user/"
+    services-v2:
+      omni-worker: "http://omni-worker/"
+      omni-event-receiver: "http://omni-event-receiver/"
+      omni-merchant: "http://omni-merchant/"
+      omni-location: "http://omni-location/"
+      omni-customer: "http://omni-customer/"
+      omni-product: "http://catalog/"
+      catalog: "http://catalog/"
+      import: "http://import/"
+      omni-order: "http://omni-order/"
+      user: "http://user/"
 
   settings:
     OmniAuthService:
       mysql:
         connectionLimit: 1
-        database: merchant
+        database: omnichannel_auth
         host: mysql
         password: secret
         port: 3306
@@ -52,7 +63,7 @@ development:
     OmniMerchantService:
       mysql:
         connectionLimit: 1
-        database: merchant
+        database: omnichannel
         host: mysql
         password: secret
         port: 3306

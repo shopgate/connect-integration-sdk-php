@@ -55,6 +55,8 @@ abstract class ShopgateSdkTest extends TestCase
                 'clientId',
                 'clientSecret',
                 'merchantCode',
+                'username',
+                'password',
             ]
         );
     }

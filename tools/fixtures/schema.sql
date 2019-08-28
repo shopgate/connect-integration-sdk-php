@@ -1,19 +1,21 @@
 SET GLOBAL sql_mode = 'NO_ENGINE_SUBSTITUTION';
 SET FOREIGN_KEY_CHECKS = 0;
 
-DROP DATABASE IF EXISTS authservice;
+DROP DATABASE IF EXISTS omnichannel_user;
 DROP DATABASE IF EXISTS catalog;
 DROP DATABASE IF EXISTS location;
 DROP DATABASE IF EXISTS merchant;
 DROP DATABASE IF EXISTS customer;
 DROP DATABASE IF EXISTS import;
 DROP DATABASE IF EXISTS omnichannel_order;
-DROP DATABASE IF EXISTS merchant;
+DROP DATABASE IF EXISTS omnichannel;
+DROP DATABASE IF EXISTS omnichannel_auth;
 
-CREATE DATABASE authservice;
+CREATE DATABASE omnichannel_user;
 CREATE DATABASE catalog;
 CREATE DATABASE location;
-CREATE DATABASE merchant;
+CREATE DATABASE omnichannel;
+CREATE DATABASE omnichannel_auth;
 CREATE DATABASE import;
 CREATE DATABASE omnichannel_order;
 
@@ -269,9 +271,9 @@ CREATE TABLE location.`LocationType`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
-DROP TABLE IF EXISTS merchant.`Merchant`;
+DROP TABLE IF EXISTS omnichannel.`Merchant`;
 
-CREATE TABLE merchant.`Merchant`
+CREATE TABLE omnichannel.`Merchant`
 (
     `MerchantID`   char(36)                        NOT NULL DEFAULT '',
     `OwnerUserID`  char(36)                        NOT NULL,
@@ -292,9 +294,9 @@ CREATE TABLE merchant.`Merchant`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
-DROP TABLE IF EXISTS merchant.`MerchantSetting`;
+DROP TABLE IF EXISTS omnichannel.`MerchantSetting`;
 
-CREATE TABLE merchant.`MerchantSetting`
+CREATE TABLE omnichannel.`MerchantSetting`
 (
     `MerchantSettingID` char(36)     NOT NULL,
     `MerchantID`        char(36)     NOT NULL,
@@ -310,9 +312,9 @@ CREATE TABLE merchant.`MerchantSetting`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
-DROP TABLE IF EXISTS merchant.`MerchantApiKey`;
+DROP TABLE IF EXISTS omnichannel.`MerchantApiKey`;
 
-CREATE TABLE merchant.`MerchantApiKey`
+CREATE TABLE omnichannel.`MerchantApiKey`
 (
     `MerchantApiKeyid` char(36)     NOT NULL DEFAULT '',
     `MerchantId`       char(36)     NOT NULL DEFAULT '',
@@ -329,9 +331,9 @@ CREATE TABLE merchant.`MerchantApiKey`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
-DROP TABLE IF EXISTS merchant.`MerchantEngageApp`;
+DROP TABLE IF EXISTS omnichannel.`MerchantEngageApp`;
 
-CREATE TABLE merchant.`MerchantEngageApp`
+CREATE TABLE omnichannel.`MerchantEngageApp`
 (
     `MerchantEngageAppId` char(36)     NOT NULL DEFAULT '',
     `MerchantId`          char(36)     NOT NULL DEFAULT '',
@@ -348,9 +350,9 @@ CREATE TABLE merchant.`MerchantEngageApp`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
-DROP TABLE IF EXISTS merchant.`MerchantEntitlement`;
+DROP TABLE IF EXISTS omnichannel.`MerchantEntitlement`;
 
-CREATE TABLE merchant.`MerchantEntitlement`
+CREATE TABLE omnichannel.`MerchantEntitlement`
 (
     `EntitlementID` char(36)                                         NOT NULL,
     `MerchantID`    char(36)                                         NOT NULL,
@@ -368,9 +370,9 @@ CREATE TABLE merchant.`MerchantEntitlement`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
-DROP TABLE IF EXISTS merchant.`MerchantPartner`;
+DROP TABLE IF EXISTS omnichannel.`MerchantPartner`;
 
-CREATE TABLE merchant.`MerchantPartner`
+CREATE TABLE omnichannel.`MerchantPartner`
 (
     `MerchantPartnerID` char(36)                        NOT NULL,
     `MerchantID`        char(36)                        NOT NULL,
@@ -390,9 +392,9 @@ CREATE TABLE merchant.`MerchantPartner`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
-DROP TABLE IF EXISTS merchant.`User`;
+DROP TABLE IF EXISTS omnichannel.`User`;
 
-CREATE TABLE merchant.`User`
+CREATE TABLE omnichannel.`User`
 (
     `UserID`       char(36)                        NOT NULL DEFAULT '',
     `UserEmail`    varchar(255) CHARACTER SET utf8 NOT NULL,
@@ -412,9 +414,9 @@ CREATE TABLE merchant.`User`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
-DROP TABLE IF EXISTS merchant.`UserRole`;
+DROP TABLE IF EXISTS omnichannel.`UserRole`;
 
-CREATE TABLE merchant.`UserRole`
+CREATE TABLE omnichannel.`UserRole`
 (
     `UserRoleID` char(36)                        NOT NULL DEFAULT '',
     `UserID`     char(36)                        NOT NULL DEFAULT '',
@@ -435,9 +437,9 @@ CREATE TABLE merchant.`UserRole`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
-DROP TABLE IF EXISTS authservice.`Client`;
+DROP TABLE IF EXISTS omnichannel_auth.`Client`;
 
-CREATE TABLE authservice.`Client`
+CREATE TABLE omnichannel_auth.`Client`
 (
     `ClientId`             int(11)      NOT NULL AUTO_INCREMENT,
     `Name`                 varchar(100) NOT NULL,
@@ -452,9 +454,9 @@ CREATE TABLE authservice.`Client`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
-DROP TABLE IF EXISTS authservice.`RefreshToken`;
+DROP TABLE IF EXISTS omnichannel_auth.`RefreshToken`;
 
-CREATE TABLE authservice.`RefreshToken`
+CREATE TABLE omnichannel_auth.`RefreshToken`
 (
     `RefreshTokenId` int(11)     NOT NULL AUTO_INCREMENT,
     `Token`          varchar(50) NOT NULL DEFAULT '',
@@ -470,8 +472,8 @@ CREATE TABLE authservice.`RefreshToken`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
-DROP TABLE IF EXISTS authservice.`Permission`;
-CREATE TABLE authservice.`Permission`
+DROP TABLE IF EXISTS omnichannel_user.`Permission`;
+CREATE TABLE omnichannel_user.`Permission`
 (
     `PermissionID`     char(36)                                NOT NULL DEFAULT '',
     `PermissionStatus` enum ('active','inactive','deleted')    NOT NULL DEFAULT 'active',
@@ -491,8 +493,8 @@ CREATE TABLE authservice.`Permission`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
-DROP TABLE IF EXISTS authservice.`PermissionMapping`;
-CREATE TABLE authservice.`PermissionMapping`
+DROP TABLE IF EXISTS omnichannel_user.`PermissionMapping`;
+CREATE TABLE omnichannel_user.`PermissionMapping`
 (
     `PermissionMappingId`   char(36) NOT NULL DEFAULT '',
     `PermissionId`          char(36) NOT NULL DEFAULT '',
@@ -507,8 +509,8 @@ CREATE TABLE authservice.`PermissionMapping`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
-DROP TABLE IF EXISTS authservice.`Role`;
-CREATE TABLE authservice.`Role`
+DROP TABLE IF EXISTS omnichannel_user.`Role`;
+CREATE TABLE omnichannel_user.`Role`
 (
     `RoleID`          char(36)                             NOT NULL DEFAULT '',
     `MerchantID`      char(36)                                      DEFAULT '',
@@ -526,9 +528,9 @@ CREATE TABLE authservice.`Role`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
-DROP TABLE IF EXISTS authservice.`RolePermission`;
+DROP TABLE IF EXISTS omnichannel_user.`RolePermission`;
 
-CREATE TABLE authservice.`RolePermission`
+CREATE TABLE omnichannel_user.`RolePermission`
 (
     `RolePermissionID` char(36)                        NOT NULL DEFAULT '',
     `RoleID`           char(36)                        NOT NULL DEFAULT '',
@@ -542,14 +544,14 @@ CREATE TABLE authservice.`RolePermission`
     PRIMARY KEY (`RolePermissionID`, `RoleID`, `PermissionID`),
     KEY `PermissionID_idx` (`PermissionID`),
     KEY `RoleID_idx` (`RoleID`),
-    CONSTRAINT `FK_Permission` FOREIGN KEY (`PermissionID`) REFERENCES authservice.`Permission` (`PermissionID`),
+    CONSTRAINT `FK_Permission` FOREIGN KEY (`PermissionID`) REFERENCES omnichannel_user.`Permission` (`PermissionID`),
     CONSTRAINT `FK_Role` FOREIGN KEY (`RoleID`) REFERENCES `Role` (`RoleID`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
-DROP TABLE IF EXISTS authservice.`User`;
+DROP TABLE IF EXISTS omnichannel_user.`User`;
 
-CREATE TABLE authservice.`User`
+CREATE TABLE omnichannel_user.`User`
 (
     `UserID`         char(36)                        NOT NULL DEFAULT '',
     `UserEmail`      varchar(255) CHARACTER SET utf8 NOT NULL,
@@ -571,9 +573,9 @@ CREATE TABLE authservice.`User`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
-DROP TABLE IF EXISTS authservice.`UserRole`;
+DROP TABLE IF EXISTS omnichannel_user.`UserRole`;
 
-CREATE TABLE authservice.`UserRole`
+CREATE TABLE omnichannel_user.`UserRole`
 (
     `UserRoleID`  char(36)                        NOT NULL DEFAULT '',
     `UserID`      char(36)                        NOT NULL DEFAULT '',
@@ -595,9 +597,9 @@ CREATE TABLE authservice.`UserRole`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
-DROP TABLE IF EXISTS authservice.`UserMerchant`;
+DROP TABLE IF EXISTS omnichannel_user.`UserMerchant`;
 
-CREATE TABLE authservice.`UserMerchant`
+CREATE TABLE omnichannel_user.`UserMerchant`
 (
     `UserMerchantID` char(36)                             NOT NULL DEFAULT '',
     `UserID`         char(36)                             NOT NULL DEFAULT '',

@@ -84,7 +84,7 @@ In your `/etc/hosts` file (usually `C:\Windows\System32\Drivers\etc\hosts` on Wi
     127.0.0.1       omni-location.shopgatedev.io
     127.0.0.1       shopgate-import.s3
     127.0.0.1       omni-order.shopgatedev.io
-    127.0.0.1       omni-user.shopgatedev.io
+    127.0.0.1       user.shopgatedev.io
 
 Log in to ECR and boot up the local stack using ```composer start```.
 

@@ -30,7 +30,7 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
 use kamermans\OAuth2\Exception\AccessTokenRequestException;
-use kamermans\OAuth2\GrantType\ClientCredentials;
+use kamermans\OAuth2\GrantType\PasswordCredentials;
 use kamermans\OAuth2\OAuth2Middleware;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -118,7 +118,7 @@ class Client implements ClientInterface
         );
 
         $OAuthMiddleware = new OAuth2Middleware(
-            new ClientCredentials(
+            new PasswordCredentials(
                 $reAuthClient,
                 [
                     'client_id'     => $clientId,
@@ -246,7 +246,10 @@ class Client implements ClientInterface
             $response = $this->client->request(
                 $params['method'],
                 isset($params['url']) ? $params['url'] : $this->buildServiceUrl($params['service'], $params['path']),
-                $parameters
+                array_merge($parameters, [    'auth' => [
+                    'bananas',
+                    'bananas'
+                ]])
             );
         } catch (GuzzleRequestException $e) {
             $statusCode = $e->getResponse() ? $e->getResponse()->getStatusCode() : 0;

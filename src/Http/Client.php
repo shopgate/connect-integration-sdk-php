@@ -30,7 +30,6 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
 use kamermans\OAuth2\Exception\AccessTokenRequestException;
-use kamermans\OAuth2\GrantType\PasswordCredentials;
 use kamermans\OAuth2\OAuth2Middleware;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -43,6 +42,7 @@ use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Helper\Json;
+use Shopgate\ConnectSdk\Http\Client\GrantType\ShopgateCredentials;
 use Shopgate\ConnectSdk\Http\Persistence\EncryptedFile;
 use Shopgate\ConnectSdk\Http\Persistence\PersistenceChain;
 use Shopgate\ConnectSdk\ShopgateSdk;
@@ -118,13 +118,14 @@ class Client implements ClientInterface
         );
 
         $OAuthMiddleware = new OAuth2Middleware(
-            new PasswordCredentials(
+            new ShopgateCredentials(
                 $reAuthClient,
                 [
                     'client_id'     => $clientId,
                     'client_secret' => $clientSecret,
                     'username'      => $username,
-                    'password'      => $password
+                    'password'      => $password,
+                    'merchant_code' => $merchantCode
                 ]
             )
         );
@@ -246,10 +247,7 @@ class Client implements ClientInterface
             $response = $this->client->request(
                 $params['method'],
                 isset($params['url']) ? $params['url'] : $this->buildServiceUrl($params['service'], $params['path']),
-                array_merge($parameters, [    'auth' => [
-                    'bananas',
-                    'bananas'
-                ]])
+                $parameters
             );
         } catch (GuzzleRequestException $e) {
             $statusCode = $e->getResponse() ? $e->getResponse()->getStatusCode() : 0;

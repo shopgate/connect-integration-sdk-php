@@ -45,7 +45,7 @@ use Shopgate\ConnectSdk\Exception\Exception;
 abstract class CatalogTest extends ShopgateSdkTest
 {
     const CATALOG_SERVICE = 'catalog';
-    const LOCATION_SERVICE = 'omni-location';
+    const LOCATION_SERVICE = 'location';
     const METHOD_DELETE_CATEGORY = 'deleteCategory';
     const METHOD_DELETE_PRODUCT = 'deleteProduct';
     const METHOD_DELETE_ATTRIBUTE = 'deleteAttribute';

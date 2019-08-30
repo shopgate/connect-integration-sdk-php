@@ -26,7 +26,7 @@ use Shopgate\ConnectSdk\Dto\Location\Location;
 
 abstract class LocationTest extends ShopgateSdkTest
 {
-    const LOCATION_SERVICE       = 'omni-location';
+    const LOCATION_SERVICE       = 'location';
     const METHOD_DELETE_LOCATION = 'deleteLocation';
     const LOCATION_CODE          = 'integration-test';
     const LOCATION_CODE_SECOND   = 'integration-test-2';

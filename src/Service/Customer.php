@@ -40,6 +40,8 @@ use Shopgate\ConnectSdk\ShopgateSdk;
 
 class Customer
 {
+    const SERVICE_CUSTOMER = 'customer';
+
     /** @var ClientInterface */
     private $client;
 
@@ -75,7 +77,7 @@ class Customer
         $response = $this->client->doRequest(
             [
                 // direct only
-                'service' => 'omni-customer',
+                'service' => self::SERVICE_CUSTOMER,
                 'method' => 'get',
                 'path' => 'attributes',
                 'query' => $query,
@@ -109,7 +111,7 @@ class Customer
         $response = $this->client->doRequest(
             [
                 // direct only
-                'service' => 'omni-customer',
+                'service' => self::SERVICE_CUSTOMER,
                 'method' => 'get',
                 'path' => 'attributes/' . $code,
                 'query' => $query,
@@ -145,7 +147,7 @@ class Customer
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'json' => ['attributes' => $requestAttributes],
                 'query' => $query,
-                'service' => 'omni-customer',
+                'service' => self::SERVICE_CUSTOMER,
                 'path' => 'attributes',
             ]
         );
@@ -168,7 +170,7 @@ class Customer
         return $this->client->doRequest(
             [
                 // general
-                'service' => 'omni-customer',
+                'service' => self::SERVICE_CUSTOMER,
                 'method' => 'post',
                 'path' => 'attributes/' . $code,
                 'entity' => 'attribute',
@@ -195,7 +197,7 @@ class Customer
     {
         return $this->client->doRequest(
             [
-                'service' => 'omni-customer',
+                'service' => self::SERVICE_CUSTOMER,
                 'method' => 'delete',
                 'path' => 'attributes/' . $code,
                 'entity' => 'attribute',
@@ -225,7 +227,7 @@ class Customer
     ) {
         return $this->client->doRequest(
             [
-                'service' => 'omni-customer',
+                'service' => self::SERVICE_CUSTOMER,
                 'method' => 'post',
                 'path' => 'attributes/' . $code . '/values/',
                 'entity' => 'attributes',
@@ -258,7 +260,7 @@ class Customer
     ) {
         return $this->client->doRequest(
             [
-                'service' => 'omni-customer',
+                'service' => self::SERVICE_CUSTOMER,
                 'method' => 'post',
                 'path' => 'attributes/' . $code . '/values/' . $valueCode,
                 'entity' => 'attribute',
@@ -286,7 +288,7 @@ class Customer
     {
         return $this->client->doRequest(
             [
-                'service' => 'omni-customer',
+                'service' => self::SERVICE_CUSTOMER,
                 'method' => 'delete',
                 'path' => 'attributes/' . $code . '/values/' . $valueCode,
                 'entity' => 'attribute',
@@ -316,7 +318,7 @@ class Customer
         $response = $this->client->doRequest(
             [
                 // direct only
-                'service' => 'omni-customer',
+                'service' => self::SERVICE_CUSTOMER,
                 'method' => 'get',
                 'path' => 'customers',
                 'query' => $query,
@@ -350,7 +352,7 @@ class Customer
         $response = $this->client->doRequest(
             [
                 // direct only
-                'service' => 'omni-customer',
+                'service' => self::SERVICE_CUSTOMER,
                 'method' => 'get',
                 'path' => 'customers/' . $id,
                 'query' => $query,
@@ -386,7 +388,7 @@ class Customer
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'json' => ['customers' => $requestCustomers],
                 'query' => $query,
-                'service' => 'omni-customer',
+                'service' => self::SERVICE_CUSTOMER,
                 'path' => 'customers',
             ]
         );
@@ -412,7 +414,7 @@ class Customer
     {
         return $this->client->doRequest(
             [
-                'service' => 'omni-customer',
+                'service' => self::SERVICE_CUSTOMER,
                 'method' => 'post',
                 'path' => 'customers/' . $id,
                 'entity' => 'customer',
@@ -439,7 +441,7 @@ class Customer
     {
         return $this->client->doRequest(
             [
-                'service' => 'omni-customer',
+                'service' => self::SERVICE_CUSTOMER,
                 'method' => 'delete',
                 'path' => 'customers/' . $id,
                 'entity' => 'customer',
@@ -466,7 +468,7 @@ class Customer
     {
         return $this->client->doRequest(
             [
-                'service' => 'omni-customer',
+                'service' => self::SERVICE_CUSTOMER,
                 'method' => 'post',
                 'path' => 'customers/' . $id . '/contacts',
                 'entity' => 'contact',
@@ -495,7 +497,7 @@ class Customer
     {
         return $this->client->doRequest(
             [
-                'service' => 'omni-customer',
+                'service' => self::SERVICE_CUSTOMER,
                 'method' => 'post',
                 'path' => 'customers/' . $customerId . '/contacts/' . $id,
                 'entity' => 'contact',
@@ -524,7 +526,7 @@ class Customer
     {
         return $this->client->doRequest(
             [
-                'service' => 'omni-customer',
+                'service' => self::SERVICE_CUSTOMER,
                 'method' => 'delete',
                 'path' => 'customers/' . $customerId . '/contacts/' . $id,
                 'entity' => 'customer',
@@ -550,7 +552,7 @@ class Customer
     {
         $response = $this->client->doRequest(
             [
-                'service' => 'omni-customer',
+                'service' => self::SERVICE_CUSTOMER,
                 'method' => 'post',
                 'path' => 'customers/' . $customerId . '/notes',
                 'json' => ['notes' => $notes],
@@ -577,7 +579,7 @@ class Customer
     {
         $response = $this->client->doRequest(
             [
-                'service' => 'omni-customer',
+                'service' => self::SERVICE_CUSTOMER,
                 'method' => 'get',
                 'path' => 'customers/' . $customerId . '/notes',
                 'query' => $query,
@@ -605,7 +607,7 @@ class Customer
     {
         return $this->client->doRequest(
             [
-                'service' => 'omni-customer',
+                'service' => self::SERVICE_CUSTOMER,
                 'method' => 'post',
                 'path' => 'customers/' . $id . '/wishlists',
                 'entity' => 'wishlist',
@@ -634,7 +636,7 @@ class Customer
     {
         return $this->client->doRequest(
             [
-                'service' => 'omni-customer',
+                'service' => self::SERVICE_CUSTOMER,
                 'method' => 'post',
                 'path' => 'customers/' . $customerId . '/wishlists/' . $id,
                 'entity' => 'wishlist',
@@ -663,7 +665,7 @@ class Customer
     {
         return $this->client->doRequest(
             [
-                'service' => 'omni-customer',
+                'service' => self::SERVICE_CUSTOMER,
                 'method' => 'delete',
                 'path' => 'customers/' . $customerId . '/wishlists/' . $id,
                 'entity' => 'wishlist',
@@ -689,7 +691,7 @@ class Customer
     {
         $response = $this->client->doRequest(
             [
-                'service' => 'omni-customer',
+                'service' => self::SERVICE_CUSTOMER,
                 'method' => 'get',
                 'path' => 'customers/' . $customerId . '/wishlists',
                 'query' => $query,
@@ -718,7 +720,7 @@ class Customer
         $response = $this->client->doRequest(
             [
                 // direct only
-                'service' => 'omni-customer',
+                'service' => self::SERVICE_CUSTOMER,
                 'method' => 'get',
                 'path' => 'customers/' . $customerId . '/wishlists/' . $id,
                 'query' => $query,
@@ -747,7 +749,7 @@ class Customer
     {
         return $this->client->doRequest(
             [
-                'service' => 'omni-customer',
+                'service' => self::SERVICE_CUSTOMER,
                 'method' => 'post',
                 'path' => 'customers/' . $id . '/wishlists/' . $wishlistId . '/items',
                 'entity' => 'wishlistItem',
@@ -776,7 +778,7 @@ class Customer
     {
         return $this->client->doRequest(
             [
-                'service' => 'omni-customer',
+                'service' => self::SERVICE_CUSTOMER,
                 'method' => 'delete',
                 'path' => 'customers/' . $customerId . '/wishlists/' . $wishlistId . '/items/' . $id,
                 'entity' => 'wishlistItem',

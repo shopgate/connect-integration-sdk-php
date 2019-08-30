@@ -41,6 +41,8 @@ use Shopgate\ConnectSdk\ShopgateSdk;
 
 class Catalog
 {
+    const SERVICE_CATALOG = 'catalog';
+
     /** @var ClientInterface */
     private $client;
 
@@ -80,7 +82,7 @@ class Catalog
                 'json' => ['categories' => $categories],
                 'query' => $query,
                 // direct
-                'service' => 'catalog',
+                'service' => self::SERVICE_CATALOG,
                 'path' => 'categories',
                 // async
                 'entity' => 'category',
@@ -113,7 +115,7 @@ class Catalog
                 'query' => $query,
                 // direct
                 'method' => 'post',
-                'service' => 'catalog',
+                'service' => self::SERVICE_CATALOG,
                 'path' => 'categories/' . $code,
                 // async
                 'entity' => 'category',
@@ -145,7 +147,7 @@ class Catalog
                 'query' => $query,
                 // direct
                 'method' => 'delete',
-                'service' => 'catalog',
+                'service' => self::SERVICE_CATALOG,
                 'path' => 'categories/' . $code,
                 // async
                 'entity' => 'category',
@@ -174,7 +176,7 @@ class Catalog
         $response = $this->client->doRequest(
             [
                 // direct only
-                'service' => 'catalog',
+                'service' => self::SERVICE_CATALOG,
                 'method' => 'get',
                 'path' => 'categories',
                 'query' => $query,
@@ -207,7 +209,7 @@ class Catalog
     {
         return $this->client->doRequest(
             [
-                'service' => 'catalog',
+                'service' => self::SERVICE_CATALOG,
                 'method' => 'post',
                 'path' => 'products',
                 'entity' => 'product',
@@ -237,7 +239,7 @@ class Catalog
     {
         return $this->client->doRequest(
             [
-                'service' => 'catalog',
+                'service' => self::SERVICE_CATALOG,
                 'method' => 'post',
                 'path' => 'products/' . $code,
                 'entityId' => $code,
@@ -267,7 +269,7 @@ class Catalog
     {
         return $this->client->doRequest(
             [
-                'service' => 'catalog',
+                'service' => self::SERVICE_CATALOG,
                 'method' => 'delete',
                 'path' => 'products/' . $code,
                 'entity' => 'product',
@@ -300,7 +302,7 @@ class Catalog
         $response = $this->client->doRequest(
             [
                 // direct only
-                'service' => 'catalog',
+                'service' => self::SERVICE_CATALOG,
                 'method' => 'get',
                 'path' => 'products',
                 'query' => $query,
@@ -334,7 +336,7 @@ class Catalog
         $response = $this->client->doRequest(
             [
                 // direct only
-                'service' => 'catalog',
+                'service' => self::SERVICE_CATALOG,
                 'method' => 'get',
                 'path' => 'products/' . $code,
                 'query' => $query
@@ -359,7 +361,7 @@ class Catalog
     {
         $response = $this->client->doRequest(
             [
-                'service' => 'catalog',
+                'service' => self::SERVICE_CATALOG,
                 'method' => 'get',
                 'path' => 'products/' . $code . '/descriptions',
                 'query' => $query
@@ -393,7 +395,7 @@ class Catalog
                 'json' => ['attributes' => $attributes],
                 'query' => $query,
                 // direct
-                'service' => 'catalog',
+                'service' => self::SERVICE_CATALOG,
                 'path' => 'attributes',
                 // async
                 'entity' => 'attribute',
@@ -421,7 +423,7 @@ class Catalog
         $response = $this->client->doRequest(
             [
                 // direct only
-                'service' => 'catalog',
+                'service' => self::SERVICE_CATALOG,
                 'method' => 'get',
                 'path' => 'attributes',
                 'query' => $query,
@@ -455,7 +457,7 @@ class Catalog
         $response = $this->client->doRequest(
             [
                 // direct only
-                'service' => 'catalog',
+                'service' => self::SERVICE_CATALOG,
                 'method' => 'get',
                 'path' => 'attributes/' . $attributeCode,
                 'query' => $query,
@@ -484,7 +486,7 @@ class Catalog
         return $this->client->doRequest(
             [
                 // general
-                'service' => 'catalog',
+                'service' => self::SERVICE_CATALOG,
                 'method' => 'post',
                 'path' => 'attributes/' . $attributeCode,
                 'entity' => 'attribute',
@@ -516,7 +518,7 @@ class Catalog
     {
         return $this->client->doRequest(
             [
-                'service' => 'catalog',
+                'service' => self::SERVICE_CATALOG,
                 'method' => 'delete',
                 'path' => 'attributes/' . $attributeCode,
                 'entity' => 'attribute',
@@ -550,7 +552,7 @@ class Catalog
     ) {
         return $this->client->doRequest(
             [
-                'service' => 'catalog',
+                'service' => self::SERVICE_CATALOG,
                 'method' => 'post',
                 'path' => 'attributes/' . $attributeCode . '/values/',
                 'entity' => 'attributes',
@@ -585,7 +587,7 @@ class Catalog
     ) {
         return $this->client->doRequest(
             [
-                'service' => 'catalog',
+                'service' => self::SERVICE_CATALOG,
                 'method' => 'post',
                 'path' => 'attributes/' . $attributeCode . '/values/' . $attributeValueCode,
                 'entity' => 'attribute',
@@ -616,7 +618,7 @@ class Catalog
     {
         return $this->client->doRequest(
             [
-                'service' => 'catalog',
+                'service' => self::SERVICE_CATALOG,
                 'method' => 'delete',
                 'path' => 'attributes/' . $attributeCode . '/values/' . $attributeValueCode,
                 'entity' => 'attributeValue',
@@ -645,7 +647,7 @@ class Catalog
     {
         return $this->client->doRequest(
             [
-                'service' => 'catalog',
+                'service' => self::SERVICE_CATALOG,
                 'method' => 'post',
                 'path' => 'inventories',
                 'entity' => 'inventory',
@@ -672,7 +674,7 @@ class Catalog
     {
         return $this->client->doRequest(
             [
-                'service' => 'catalog',
+                'service' => self::SERVICE_CATALOG,
                 'method' => 'delete',
                 'path' => 'inventories',
                 'entity' => 'inventory',
@@ -698,7 +700,7 @@ class Catalog
     {
         return $this->client->doRequest(
             [
-                'service' => 'catalog',
+                'service' => self::SERVICE_CATALOG,
                 'method' => 'patch',
                 'path' => 'inventories',
                 'entity' => 'inventory',
@@ -725,7 +727,7 @@ class Catalog
     {
         return $this->client->doRequest(
             [
-                'service' => 'catalog',
+                'service' => self::SERVICE_CATALOG,
                 'method' => 'post',
                 'path' => 'reservations',
                 'entity' => 'reservation',
@@ -752,7 +754,7 @@ class Catalog
     {
         return $this->client->doRequest(
             [
-                'service' => 'catalog',
+                'service' => self::SERVICE_CATALOG,
                 'method' => 'delete',
                 'path' => 'reservations',
                 'entity' => 'reservation',
@@ -779,7 +781,7 @@ class Catalog
     {
         return $this->client->doRequest(
             [
-                'service' => 'catalog',
+                'service' => self::SERVICE_CATALOG,
                 'method' => 'post',
                 'path' => 'reservations/' . $reservationCode,
                 'entity' => 'reservation',
@@ -806,7 +808,7 @@ class Catalog
     {
         $response = $this->client->doRequest(
             [
-                'service' => 'catalog',
+                'service' => self::SERVICE_CATALOG,
                 'method' => 'get',
                 'path' => 'reservations/' . $reservationCode,
                 'query' => $query,
@@ -836,7 +838,7 @@ class Catalog
 
         $response = $this->client->doRequest(
             [
-                'service' => 'catalog',
+                'service' => self::SERVICE_CATALOG,
                 'method' => 'get',
                 'path' => 'reservations',
                 'query' => $query,

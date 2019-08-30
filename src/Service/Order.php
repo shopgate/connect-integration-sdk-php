@@ -35,6 +35,8 @@ use Shopgate\ConnectSdk\Helper\Json;
 
 class Order
 {
+    const SERVICE_ORDER = 'order';
+
     /** @var ClientInterface */
     private $client;
 
@@ -72,7 +74,7 @@ class Order
                 'json'        => ['orders' => $orders],
                 'query'       => $query,
                 // direct
-                'service'     => 'omni-order',
+                'service'     => self::SERVICE_ORDER,
                 'path'        => 'orders'
             ]
         );
@@ -99,7 +101,7 @@ class Order
         $response = $this->client->doRequest(
             [
                 // direct only
-                'service' => 'omni-order',
+                'service' => self::SERVICE_ORDER,
                 'method'  => 'get',
                 'path'    => 'orders',
                 'query'   => $query,
@@ -133,7 +135,7 @@ class Order
         $response = $this->client->doRequest(
             [
                 // direct only
-                'service' => 'omni-order',
+                'service' => self::SERVICE_ORDER,
                 'method'  => 'get',
                 'path'    => 'orders/' . $orderNumber,
                 'query'   => $query,

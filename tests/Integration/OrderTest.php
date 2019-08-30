@@ -24,9 +24,9 @@ namespace Shopgate\ConnectSdk\Tests\Integration;
 
 abstract class OrderTest extends ShopgateSdkTest
 {
-    const CUSTOMER_SERVICE = 'omni-customer';
+    const CUSTOMER_SERVICE = 'customer';
     const CATALOG_SERVICE = 'catalog';
-    const LOCATION_SERVICE = 'omni-location';
+    const LOCATION_SERVICE = 'location';
     const METHOD_DELETE_CUSTOMER = 'deleteCustomer';
     const METHOD_DELETE_PRODUCT = 'deleteProduct';
     const METHOD_DELETE_LOCATION = 'deleteLocation';

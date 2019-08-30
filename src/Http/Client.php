@@ -168,7 +168,7 @@ class Client implements ClientInterface
         }
 
         if (!$template) {
-            $template = 'URL: {hostname}/{target} Method: {method} RequestBody: {req_body} ResponseBody: {res_body}';
+            $template = 'URL: {url} Auth: {req_header_Authorization} Method: {method} RequestBody: {req_body} ResponseBody: {res_body}';
         }
 
         $handler->push(Middleware::log($logger, new MessageFormatter($template)));
@@ -356,7 +356,7 @@ class Client implements ClientInterface
         try {
             return $this->client->request(
                 'post',
-                $this->buildServiceUrl('omni-event-receiver', 'events'),
+                $this->buildServiceUrl('event-receiver', 'events'),
                 [
                     'json'        => $factory->getRequest()->toJson(),
                     'http_errors' => false,

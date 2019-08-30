@@ -12,7 +12,7 @@ try {
             'query'       => [],
             // direct
             'method'      => 'delete',
-            'service'     => 'omni-location',
+            'service'     => 'location',
             'path'        => 'locations/' . LOCATION_CODE,
         ]
     );

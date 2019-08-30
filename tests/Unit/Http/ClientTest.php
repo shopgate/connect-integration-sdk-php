@@ -182,7 +182,7 @@ class ClientTest extends TestCase
             ->expects($this->once())
             ->method('request')->with(
                 'post',
-                'http://omni-event-receiver.local/v1/merchants/TM2/events',
+                'http://event-receiver.local/v1/merchants/TM2/events',
                 [
                     'json'        => '{"events":[{"event":"entityUpdated","entity":"category","payload":{}}]}',
                     'http_errors' => false,

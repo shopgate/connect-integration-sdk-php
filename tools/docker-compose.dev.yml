@@ -44,34 +44,10 @@ services:
     ports:
       - ${EXPOSED_PORT_MYSQL}:3306
 
-  ### https://gitlab.localdev.cc/omnichannel/services/auth
-  omni-auth:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/auth:v1.0.0-beta.7
-    restart: always
-    links:
-      - etcd
-      - sqs
-    environment:
-      - SYSLOG_LOG_LEVEL=debug
-      - NODE_ENV=development
-      - APP_PORT=80
-      - MANAGEMENT_PORT=81
-      - LOG_TO_SYSLOG=false
-      - PUBSUB_EMULATOR_HOST=googlepubsub-emulator:8085
+  reverse-proxy:
     ports:
       - ${EXPOSED_PORT_AUTH}:80
-    networks:
-      default:
-        aliases:
-          - omni-auth.shopgatedev.io
-          - omni-merchant.shopgatedev.io
-          - omni-customer.shopgatedev.io
-          - omni-location.shopgatedev.io
-          - omni-event-receiver.shopgatedev.io
-          - catalog.shopgatedev.io
-          - import.shopgatedev.io
-          - omni-order.shopgatedev.io
-          - user.shopgatedev.io
+
   import:
     ports:
       - 5105:80
@@ -80,15 +56,15 @@ services:
     ports:
       - 5104:80
 
-  omni-location:
+  location:
     ports:
       - 5103:80
 
-  omni-merchant:
+  merchant:
     ports:
       - 5102:80
 
-  omni-event-receiver:
+  event-receiver:
     ports:
       - 5101:80
 
@@ -96,11 +72,11 @@ services:
     ports:
       - 5100:80
 
-  omni-customer:
+  customer:
     ports:
       - 5106:80
 
-  omni-order:
+  order:
     ports:
       - 5107:80
 

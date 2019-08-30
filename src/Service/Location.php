@@ -35,6 +35,8 @@ use Shopgate\ConnectSdk\Helper\Json;
 
 class Location
 {
+    const SERVICE_LOCATION = 'location';
+
     /** @var ClientInterface */
     private $client;
 
@@ -72,7 +74,7 @@ class Location
                 'json'        => ['locations' => $locations],
                 'query'       => $query,
                 // direct
-                'service'     => 'omni-location',
+                'service'     => self::SERVICE_LOCATION,
                 'path'        => 'locations'
             ]
         );
@@ -100,7 +102,7 @@ class Location
                 'query'       => $query,
                 // direct
                 'method'      => 'post',
-                'service'     => 'omni-location',
+                'service'     => self::SERVICE_LOCATION,
                 'path'        => 'locations/' . $code
             ]
         );
@@ -126,7 +128,7 @@ class Location
                 'query'       => $query,
                 // direct
                 'method'      => 'delete',
-                'service'     => 'omni-location',
+                'service'     => self::SERVICE_LOCATION,
                 'path'        => 'locations/' . $code,
             ]
         );
@@ -151,7 +153,7 @@ class Location
         $response = $this->client->doRequest(
             [
                 // direct only
-                'service' => 'omni-location',
+                'service' => self::SERVICE_LOCATION,
                 'method'  => 'get',
                 'path'    => 'locations',
                 'query'   => $query,
@@ -185,7 +187,7 @@ class Location
         $response = $this->client->doRequest(
             [
                 // direct only
-                'service' => 'omni-location',
+                'service' => self::SERVICE_LOCATION,
                 'method'  => 'get',
                 'path'    => 'locations/' . $code,
                 'query'   => $query,

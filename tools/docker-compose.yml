@@ -29,9 +29,26 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=secret
 
+  reverse-proxy:
+    build:
+      context: ../
+      dockerfile: tools/dockerfiles/Nginx
+    networks:
+      default:
+        aliases:
+          - auth.shopgatedev.io
+          - merchant.shopgatedev.io
+          - location.shopgatedev.io
+          - customer.shopgatedev.io
+          - catalog.shopgatedev.io
+          - import.shopgatedev.io
+          - order.shopgatedev.io
+          - user.shopgatedev.io
+          - event-receiver.shopgatedev.io
+
   ### https://gitlab.localdev.cc/omnichannel/services/auth
-  omni-auth:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/auth:v1.0.0-beta.7
+  auth:
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/auth:v1.0.0-alpha-google-cloud.2
     restart: always
     links:
       - etcd
@@ -43,18 +60,6 @@ services:
       - MANAGEMENT_PORT=81
       - LOG_TO_SYSLOG=false
       - PUBSUB_EMULATOR_HOST=googlepubsub-emulator:8085
-    networks:
-      default:
-        aliases:
-          - omni-auth.shopgatedev.io
-          - omni-merchant.shopgatedev.io
-          - omni-location.shopgatedev.io
-          - omni-customer.shopgatedev.io
-          - omni-event-receiver.shopgatedev.io
-          - catalog.shopgatedev.io
-          - import.shopgatedev.io
-          - omni-order.shopgatedev.io
-          - user.shopgatedev.io
 
   googlepubsub-emulator:
     build:
@@ -68,7 +73,7 @@ services:
 
   ### https://gitlab.localdev.cc/omnichannel/services/user
   user:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/user:v1.0.0-beta.37
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/user:v1.0.0-beta.37-google-cloud.3
     restart: always
     links:
       - etcd
@@ -81,7 +86,7 @@ services:
 
   ### https://gitlab.localdev.cc/omnichannel/services/worker
   omni-worker:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/worker:v1.0.0-alpha.21
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/worker:v1.0.0-alpha.21-google-cloud
     links:
       - etcd
     environment:
@@ -94,8 +99,8 @@ services:
       - QUEUE_BATCH_DELAY=50
 
   ### https://gitlab.localdev.cc/omnichannel/services/event-receiver
-  omni-event-receiver:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/event-receiver:v1.0.0-beta.14
+  event-receiver:
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/event-receiver:v1.0.0-beta.14-google-cloud.1
     links:
       - etcd
     environment:
@@ -106,8 +111,8 @@ services:
       - PUBSUB_EMULATOR_HOST=googlepubsub-emulator:8085
 
   ### https://gitlab.localdev.cc/omnichannel/services/merchant
-  omni-merchant:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/merchant:v1.0.0-beta.14
+  merchant:
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/merchant:v1.0.0-alpha.1-google-cloud.1
     links:
       - etcd
     environment:
@@ -117,8 +122,8 @@ services:
       - LOG_TO_SYSLOG=false
 
   ### https://gitlab.localdev.cc/omnichannel/services/location
-  omni-location:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/location:v1.0.0-alpha.51
+  location:
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/location:v1.0.0-alpha.51-google-cloud
     links:
       - etcd
     environment:
@@ -128,8 +133,8 @@ services:
       - LOG_TO_SYSLOG=false
 
   ### https://gitlab.localdev.cc/omnichannel/services/customer
-  omni-customer:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/customer:v1.0.0-alpha.31
+  customer:
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/customer:v1.0.0-alpha.32-google-cloud
     restart: always
     environment:
       - NODE_ENV=development
@@ -139,8 +144,8 @@ services:
       - etcd
 
 ### https://gitlab.localdev.cc/omnichannel/services/order
-  omni-order:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/order:v1.0.0-beta.116
+  order:
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/order:v1.0.0-alpha.16-google-cloud.2
     restart: always
     environment:
       - NODE_ENV=development
@@ -159,7 +164,7 @@ services:
 
   ### https://gitlab.localdev.cc/omnichannel/services/products
   catalog:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/catalog:v1.0.0-alpha.89
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/catalog:v1.0.0-alpha.91-google-cloud.4
     restart: always
     links:
       - etcd
@@ -213,12 +218,12 @@ services:
       - MYSQL_PASSWORD=secret
       - MYSQL_DATABASE=import
       - GOOGLE_APPLICATION_CREDENTIALS=tools/dockerfiles/credentials-dev.json.js
-      - BIG_API_CLIENT_ID=integration-tests
-      - BIG_API_CLIENT_SECRET=integration-tests
+      - BIG_API_CLIENT_ID=bananas
+      - BIG_API_CLIENT_SECRET=bananas
       - BIG_API_ENDPOINT_SCHEMA=http://{serviceName}.{baseDomain}
       - PUBSUB_PROJECT_ID=test-project
       - PUBSUB_BATCHING={}
-      - PUBSUB_TOPIC=entityChanged
+      - PUBSUB_TOPIC=entityChanged-development
     tty: true
     links:
       - s3:s3.amazonaws.com

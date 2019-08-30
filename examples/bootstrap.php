@@ -13,6 +13,8 @@ if (file_exists(__DIR__ . '/config.php')) {
         'merchantCode'  => 'xxx',
         'clientId'      => 'xxx',
         'clientSecret'  => 'xxx',
+        'username'      => 'xxx',
+        'password'      => 'xxx'
     ];
 }
 

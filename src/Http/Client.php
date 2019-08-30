@@ -45,6 +45,7 @@ use Shopgate\ConnectSdk\Helper\Json;
 use Shopgate\ConnectSdk\Http\Client\GrantType\ShopgateCredentials;
 use Shopgate\ConnectSdk\Http\Persistence\EncryptedFile;
 use Shopgate\ConnectSdk\Http\Persistence\PersistenceChain;
+use Shopgate\ConnectSdk\Http\Persistence\TokenPersistenceException;
 use Shopgate\ConnectSdk\ShopgateSdk;
 
 class Client implements ClientInterface
@@ -95,8 +96,8 @@ class Client implements ClientInterface
         $clientId,
         $clientSecret,
         $merchantCode,
-        $username = '',
-        $password = '',
+        $username,
+        $password,
         $baseUri = '',
         $env = '',
         $accessTokenPath = ''
@@ -123,9 +124,9 @@ class Client implements ClientInterface
                 [
                     'client_id'     => $clientId,
                     'client_secret' => $clientSecret,
+                    'merchant_code' => $merchantCode,
                     'username'      => $username,
-                    'password'      => $password,
-                    'merchant_code' => $merchantCode
+                    'password'      => $password
                 ]
             )
         );
@@ -211,6 +212,7 @@ class Client implements ClientInterface
      *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
+     * @throws TokenPersistenceException
      * @throws RequestException
      * @throws UnknownException
      */
@@ -268,6 +270,8 @@ class Client implements ClientInterface
             throw new UnknownException($e->getMessage());
         } catch (AccessTokenRequestException $e) {
             throw new AuthenticationInvalidException($e->getMessage());
+        } catch (TokenPersistenceException $e) {
+            throw $e;
         } catch (Exception $e) {
             throw new UnknownException($e->getMessage());
         }

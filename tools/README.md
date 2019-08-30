@@ -70,9 +70,11 @@ Create the file `tests/Integration/.env` and put the following into it:
 
     accessTokenPath="./access_token.txt"
     baseUri="http://{service}.shopgatedev.io:8080"
-    clientId="integration-tests"
-    clientSecret="integration-tests"
+    clientId="bananas"
+    clientSecret="bananas"
     merchantCode="TM2"
+    username="team-bananas@shopgate.com"
+    password="test"
 
 In your `/etc/hosts` file (usually `C:\Windows\System32\Drivers\etc\hosts` on Windows) add the following entries:
 

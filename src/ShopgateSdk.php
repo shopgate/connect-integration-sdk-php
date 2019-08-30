@@ -22,6 +22,7 @@
 
 namespace Shopgate\ConnectSdk;
 
+use Shopgate\ConnectSdk\Exception\MissingConfigFieldException;
 use Shopgate\ConnectSdk\Helper\Json;
 use Shopgate\ConnectSdk\Http\Client;
 use Shopgate\ConnectSdk\Http\ClientInterface;
@@ -33,9 +34,10 @@ use Shopgate\ConnectSdk\Service\Order;
 
 class ShopgateSdk
 {
-    const REQUEST_TYPE_DIRECT = 'direct';
-    const REQUEST_TYPE_EVENT  = 'event';
-    const REGISTERED_SERVICES = ['catalog', 'customer', 'bulkImport'];
+    const REQUEST_TYPE_DIRECT       = 'direct';
+    const REQUEST_TYPE_EVENT        = 'event';
+    const REGISTERED_SERVICES       = ['catalog', 'customer', 'bulkImport'];
+    const REQUIRED_CONFIG_FIELDS    = ['clientId', 'clientSecret', 'merchantCode', 'username', 'password'];
 
     /** @var ClientInterface */
     private $client;
@@ -64,21 +66,29 @@ class ShopgateSdk
      * clientId     => your app's client ID for authentication
      * clientSecret => your app's client secret for authentication
      * merchantCode => the merchant code at Shopgate that you want to sync to/from
+     * username     => your username
+     * password     => your password
      *
      * @param array $config
+     *
+     * @throws MissingConfigFieldException
      */
     public function __construct(array $config)
     {
-        $this->client = isset($config['client'])
+        $this->validateConfig($config);
+
+        $this->client     = isset($config['client'])
             ? $config['client']
             : Client::createInstance(
                 $config['clientId'],
                 $config['clientSecret'],
                 $config['merchantCode'],
-                isset($config['username']) ? $config['username'] : '',
-                isset($config['password']) ? $config['password'] : '',
+                $config['username'],
+                $config['password'],
                 null,
-                isset($config['env']) ? $config['env'] : ''
+                isset($config['env'])
+                    ? $config['env']
+                    : ''
 
             );
         $this->jsonHelper = new Json();
@@ -167,6 +177,25 @@ class ShopgateSdk
             }
 
             $this->$service = $serviceArgs[$service];
+        }
+    }
+
+    /**
+     * @param array $config
+     *
+     * @throws MissingConfigFieldException
+     */
+    private function validateConfig($config)
+    {
+        if (isset($config['client'])) {
+            return;
+        }
+
+        if ($missing = array_diff(self::REQUIRED_CONFIG_FIELDS, array_keys($config))) {
+            throw new MissingConfigFieldException(
+                'Config is missing the following keys: ' .
+                implode(', ', $missing)
+            );
         }
     }
 }

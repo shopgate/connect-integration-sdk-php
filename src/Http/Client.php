@@ -96,8 +96,8 @@ class Client implements ClientInterface
         $clientId,
         $clientSecret,
         $merchantCode,
-        $username = '',
-        $password = '',
+        $username,
+        $password,
         $baseUri = '',
         $env = '',
         $accessTokenPath = ''
@@ -124,9 +124,9 @@ class Client implements ClientInterface
                 [
                     'client_id'     => $clientId,
                     'client_secret' => $clientSecret,
+                    'merchant_code' => $merchantCode,
                     'username'      => $username,
-                    'password'      => $password,
-                    'merchant_code' => $merchantCode
+                    'password'      => $password
                 ]
             )
         );

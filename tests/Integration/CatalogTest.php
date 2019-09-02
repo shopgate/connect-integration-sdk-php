@@ -46,11 +46,13 @@ abstract class CatalogTest extends ShopgateSdkTest
 {
     const CATALOG_SERVICE = 'catalog';
     const LOCATION_SERVICE = 'location';
+    const CUSTOMER_SERVICE = 'customer';
     const METHOD_DELETE_CATEGORY = 'deleteCategory';
     const METHOD_DELETE_PRODUCT = 'deleteProduct';
     const METHOD_DELETE_ATTRIBUTE = 'deleteAttribute';
     const METHOD_DELETE_LOCATION = 'deleteLocation';
     const METHOD_DELETE_RESERVATIONS = 'deleteReservations';
+    const METHOD_DELETE_CUSTOMER = 'deleteCustomer';
 
     const METHOD_DELETE_REQUEST_META = [
         self::METHOD_DELETE_CATEGORY => ['force' => true],
@@ -94,6 +96,13 @@ abstract class CatalogTest extends ShopgateSdkTest
             $this->sdk->getLocationService(),
             [
                 self::METHOD_DELETE_LOCATION => []
+            ]
+        );
+        $this->registerForCleanUp(
+            self::CUSTOMER_SERVICE,
+            $this->sdk->getCustomerService(),
+            [
+                self::METHOD_DELETE_CUSTOMER => []
             ]
         );
     }

@@ -69,7 +69,7 @@ class ReservationTest extends CatalogTest
         $this->assertEquals($orderNumber, $currentReservation->getSalesOrderNumber());
 
         // CleanUp
-        $this->cleanUp([self::PRODUCT_CODE], [self::LOCATION_CODE]);
+        $this->cleanUp([self::PRODUCT_CODE], [self::LOCATION_CODE], [$order['customerId']]);
         $this->sdk->getCatalogService()->deleteReservations([$currentReservation->getCode()]);
 
         $this->assertEmpty($this->sdk->getCatalogService()->getReservations()->getReservations());
@@ -164,8 +164,9 @@ class ReservationTest extends CatalogTest
     /**
      * @param string[] $productCodes
      * @param string[] $locationCodes
+     * @param string[] $customerIds
      */
-    private function cleanUp($productCodes = [], $locationCodes = [])
+    private function cleanUp($productCodes = [], $locationCodes = [], $customerIds = [])
     {
         $this->deleteEntitiesAfterTestRun(
             self::CATALOG_SERVICE,
@@ -176,6 +177,12 @@ class ReservationTest extends CatalogTest
             self::LOCATION_SERVICE,
             self::METHOD_DELETE_LOCATION,
             $locationCodes
+        );
+
+        $this->deleteEntitiesAfterTestRun(
+            self::CUSTOMER_SERVICE,
+            self::METHOD_DELETE_CUSTOMER,
+            $customerIds
         );
     }
 }

@@ -21,6 +21,7 @@ function retry {
 
 DOCKER_COMPOSE_PARAMETERS="-f docker-compose.yml -f docker-compose.dev.yml"
 
+docker-compose ${DOCKER_COMPOSE_PARAMETERS} exec -T elasticsearch curl -X DELETE 'http://localhost:9200/_all'
 docker-compose ${DOCKER_COMPOSE_PARAMETERS} exec -T mysql mysql -uroot -psecret < ./fixtures/schema.sql
 docker-compose ${DOCKER_COMPOSE_PARAMETERS} stop customer catalog import import-script order && docker-compose ${DOCKER_COMPOSE_PARAMETERS} up -d customer catalog import import-script order
 

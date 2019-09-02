@@ -184,7 +184,7 @@ services:
 
   ### https://gitlab.localdev.cc/big-api/services/import
   import:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/import:v1.0.0-alpha.5
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/import:v1.0.0-alpha.6
     environment:
       - AWS_ACCESS_KEY_ID=foo
       - AWS_SECRET_ACCESS_KEY=bar
@@ -218,12 +218,9 @@ services:
       - MYSQL_PASSWORD=secret
       - MYSQL_DATABASE=import
       - GOOGLE_APPLICATION_CREDENTIALS=tools/dockerfiles/credentials-dev.json.js
-      - BIG_API_CLIENT_ID=bananas
-      - BIG_API_CLIENT_SECRET=bananas
-      - BIG_API_ENDPOINT_SCHEMA=http://{serviceName}.{baseDomain}
       - PUBSUB_PROJECT_ID=test-project
       - PUBSUB_BATCHING={}
-      - PUBSUB_TOPIC=entityChanged-development
+      - PUBSUB_TOPIC_BASE_NAME=entityChanged
     tty: true
     links:
       - s3:s3.amazonaws.com

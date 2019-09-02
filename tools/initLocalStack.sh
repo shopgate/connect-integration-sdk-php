@@ -76,7 +76,7 @@ docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T mysql sh -c "echo \"LOAD DATA 
 
 retry "AuthService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T auth curl http://localhost/health -o /dev/null 2>&1"
 
-docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d reverse-proxy
+docker-compose $DOCKER_COMPOSE_PARAMETERS up -d reverse-proxy
 
 retry "MerchantService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T merchant curl http://localhost/health -o /dev/null 2>&1"
 retry "LocationService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T location curl http://localhost/health -o /dev/null 2>&1"

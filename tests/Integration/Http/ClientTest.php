@@ -147,6 +147,18 @@ class ClientTest extends ShopgateSdkTest
         );
 
         return [
+            'wrong path'                 => [
+                TokenPersistenceException::class,
+                ShopgateSdk::REQUEST_TYPE_DIRECT,
+                getenv('clientId'),
+                getenv('clientSecret'),
+                getenv('merchantCode'),
+                getenv('username'),
+                getenv('password'),
+                getenv('baseUri') ?: '',
+                getenv('env') ?: '',
+                '/invalid/test.txt',
+            ],
             'wrong clientId' => [
                 AuthenticationInvalidException::class,
                 ShopgateSdk::REQUEST_TYPE_DIRECT,

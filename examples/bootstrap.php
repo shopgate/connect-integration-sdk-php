@@ -17,9 +17,11 @@ if (file_exists(__DIR__ . '/config.php')) {
     require_once __DIR__ . '/config.php';
 } else {
     $config = [
-        'merchantCode' => 'xxx',
-        'clientId' => 'xxx',
-        'clientSecret' => 'xxx',
+        'merchantCode'  => 'xxx',
+        'clientId'      => 'xxx',
+        'clientSecret'  => 'xxx',
+        'username'      => 'xxx',
+        'password'      => 'xxx'
     ];
 }
 

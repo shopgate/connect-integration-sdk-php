@@ -10,21 +10,43 @@ if (!getenv('PUBSUB_EMULATOR_HOST')) {
 
 $pubSub = new PubSubClient(['projectId' => 'test-project']);
 $topics = [
-    'entityChanged' => [
-        'workerSvcEntityChanged'
+    'entityChanged-development' => [
+        'entityChanged-development'
     ],
     'fulfillmentOrderStatusUpdated' => [
-        'orderSvcFulfillmentOrderStatusUpdated'
+        'orderSvcFulfillmentOrderStatusUpdated-development'
     ],
     'salesOrderAdded' => [
-        'testerSalesOrderAdded'
+        'testerSalesOrderAdded-development'
     ],
     'salesOrderFulfillmentAdded' => [
-        'testerSOFulfillmentAdded'
+        'testerSOFulfillmentAdded-development'
     ],
     'salesOrderStatusUpdated' => [
-        'orderSvcSalesOrderStatusUpdated',
-        'testerSalesOrderStatusUpdated'
+        'orderSvcSalesOrderStatusUpdated-development',
+        'testerSalesOrderStatusUpdated-development'
+    ],
+    'userCreated' => [
+        'testerUserCreated-development',
+    ],
+    'userAssigned' => [
+        'testerUserAssigned-development',
+    ],
+    'userPasswordReset' => [
+        'testerUserPasswordReset-development',
+        'userSvcUserPasswordReset-development',
+    ],
+    'userPasswordChanged' => [
+        'testerUserPasswordChanged-development',
+        'userSvcUserPasswordChanged-development',
+    ],
+    'userAuthorized' => [
+        'testerUserAuthorized-development',
+        'userSvcUserAuthorized-development',
+    ],
+    'userAuthorizationFailed' => [
+        'testerUserAuthorizationFailed-development',
+        'userSvcUserAuthorizationFailed-development',
     ],
 ];
 
@@ -42,7 +64,7 @@ function createTopic($pubSub, $topic, $subscriptions)
     $createdTopic = null;
     $subscriptionCreated = 0;
     $tries = 0;
-    while (!$createdTopic && $subscriptionCreated != count($subscriptions) && $tries < 10) {
+    while (!$createdTopic && $subscriptionCreated != count($subscriptions) && $tries < 15) {
         try {
             echo "Creating Google PubSub topic '$topic' . . . ";
             $createdTopic = $pubSub->createTopic($topic);

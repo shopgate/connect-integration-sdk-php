@@ -30,7 +30,6 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
 use kamermans\OAuth2\Exception\AccessTokenRequestException;
-use kamermans\OAuth2\GrantType\ClientCredentials;
 use kamermans\OAuth2\OAuth2Middleware;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -43,8 +42,10 @@ use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Helper\Json;
+use Shopgate\ConnectSdk\Http\Client\GrantType\ShopgateCredentials;
 use Shopgate\ConnectSdk\Http\Persistence\EncryptedFile;
 use Shopgate\ConnectSdk\Http\Persistence\PersistenceChain;
+use Shopgate\ConnectSdk\Http\Persistence\TokenPersistenceException;
 use Shopgate\ConnectSdk\ShopgateSdk;
 
 class Client implements ClientInterface
@@ -83,6 +84,8 @@ class Client implements ClientInterface
      * @param string $clientId
      * @param string $clientSecret
      * @param string $merchantCode
+     * @param string $username
+     * @param string $password
      * @param string $baseUri
      * @param string $env
      * @param string $accessTokenPath
@@ -93,6 +96,8 @@ class Client implements ClientInterface
         $clientId,
         $clientSecret,
         $merchantCode,
+        $username,
+        $password,
         $baseUri = '',
         $env = '',
         $accessTokenPath = ''
@@ -100,7 +105,7 @@ class Client implements ClientInterface
         $env = $env === 'live' ? '' : $env;
 
         if (empty($baseUri)) {
-            $baseUri = str_replace('{env}', $env, 'https://{service}.shopgate{env}.services');
+            $baseUri = str_replace('{env}', $env, 'https://{service}.shopgate{env}.io');
         }
 
         if (empty($accessTokenPath)) {
@@ -114,11 +119,14 @@ class Client implements ClientInterface
         );
 
         $OAuthMiddleware = new OAuth2Middleware(
-            new ClientCredentials(
+            new ShopgateCredentials(
                 $reAuthClient,
                 [
                     'client_id'     => $clientId,
-                    'client_secret' => $clientSecret
+                    'client_secret' => $clientSecret,
+                    'merchant_code' => $merchantCode,
+                    'username'      => $username,
+                    'password'      => $password
                 ]
             )
         );
@@ -161,7 +169,7 @@ class Client implements ClientInterface
         }
 
         if (!$template) {
-            $template = 'URL: {hostname}/{target} Method: {method} RequestBody: {req_body} ResponseBody: {res_body}';
+            $template = 'URL: {url} Method: {method} RequestBody: {req_body} ResponseBody: {res_body}';
         }
 
         $handler->push(Middleware::log($logger, new MessageFormatter($template)));
@@ -204,6 +212,7 @@ class Client implements ClientInterface
      *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
+     * @throws TokenPersistenceException
      * @throws RequestException
      * @throws UnknownException
      */
@@ -261,6 +270,8 @@ class Client implements ClientInterface
             throw new UnknownException($e->getMessage());
         } catch (AccessTokenRequestException $e) {
             throw new AuthenticationInvalidException($e->getMessage());
+        } catch (TokenPersistenceException $e) {
+            throw $e;
         } catch (Exception $e) {
             throw new UnknownException($e->getMessage());
         }
@@ -349,7 +360,7 @@ class Client implements ClientInterface
         try {
             return $this->client->request(
                 'post',
-                $this->buildServiceUrl('omni-event-receiver', 'events'),
+                $this->buildServiceUrl('event-receiver', 'events'),
                 [
                     'json'        => $factory->getRequest()->toJson(),
                     'http_errors' => false,

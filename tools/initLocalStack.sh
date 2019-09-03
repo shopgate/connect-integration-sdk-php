@@ -49,31 +49,36 @@ docker-compose $DOCKER_COMPOSE_PARAMETERS up -d googlepubsub-emulator
 docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T php56 php ./tools/pubsubfiller.php
 docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T php56 php ./tools/etcdfiller.php
 
-docker-compose $DOCKER_COMPOSE_PARAMETERS build import-script
+docker-compose $DOCKER_COMPOSE_PARAMETERS build import-script reverse-proxy
 retry "MySQL" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T mysql mysql -uroot -psecret -e \"select 1 from dual\" 2>&1"
 
 docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T mysql mysql -u root -psecret < ./fixtures/schema.sql
 
-docker-compose $DOCKER_COMPOSE_PARAMETERS stop omni-customer catalog import import-script omni-order && docker-compose $DOCKER_COMPOSE_PARAMETERS up -d omni-customer catalog import import-script omni-order
-retry "CustomerService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T omni-customer curl http://localhost/health -o /dev/null 2>&1"
+docker-compose $DOCKER_COMPOSE_PARAMETERS stop user customer catalog import import-script order && docker-compose $DOCKER_COMPOSE_PARAMETERS up -d user customer catalog import import-script order
+retry "UserService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T user curl http://localhost/health -o /dev/null 2>&1"
+retry "CustomerService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T customer curl http://localhost/health -o /dev/null 2>&1"
 retry "CatalogService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T catalog curl http://localhost/health -o /dev/null 2>&1"
 retry "ImportService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T import curl http://localhost/health -o /dev/null 2>&1"
-retry "OrderService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T omni-order curl http://localhost/health -o /dev/null 2>&1"
+retry "OrderService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T order curl http://localhost/health -o /dev/null 2>&1"
 
-docker-compose $DOCKER_COMPOSE_PARAMETERS up -d omni-event-receiver
-retry "EventReceiver" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T omni-event-receiver curl http://localhost/health -o /dev/null 2>&1"
+docker-compose $DOCKER_COMPOSE_PARAMETERS up -d event-receiver
+retry "EventReceiver" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T event-receiver curl http://localhost/health -o /dev/null 2>&1"
 
 docker-compose $DOCKER_COMPOSE_PARAMETERS up -d elasticsearch
 retry "elasticsearch" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T elasticsearch curl http://localhost:9200/_cluster/health?wait_for_status=yellow 2>&1"
+docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T elasticsearch curl -X DELETE 'http://localhost:9200/_all'
 
-docker-compose $DOCKER_COMPOSE_PARAMETERS up -d mysql auth redis omni-worker omni-merchant omni-location s3
+docker-compose $DOCKER_COMPOSE_PARAMETERS up -d mysql sqs reverse-proxy auth omni-worker merchant location s3
 
 # add DE postalcodes
 docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T mysql sh -c "apt-get update && apt-get install -y curl unzip && curl http://download.geonames.org/export/zip/DE.zip --output de.zip && unzip -o de.zip"
 docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T mysql sh -c "echo \"LOAD DATA LOCAL INFILE 'DE.txt' INTO TABLE Postalcode (CountryCode,PostalCode,PlaceName,AdminName1,AdminCode1,AdminName2,AdminCode2,AdminName3,AdminCode3,Latitude,Longitude,Accuracy);\" | mysql  -u root -psecret location"
 
 retry "AuthService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T auth curl http://localhost/health -o /dev/null 2>&1"
-retry "MerchantService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T omni-merchant curl http://localhost/health -o /dev/null 2>&1"
-retry "LocationService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T omni-location curl http://localhost/health -o /dev/null 2>&1"
+
+docker-compose $DOCKER_COMPOSE_PARAMETERS up -d reverse-proxy
+
+retry "MerchantService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T merchant curl http://localhost/health -o /dev/null 2>&1"
+retry "LocationService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T location curl http://localhost/health -o /dev/null 2>&1"
 
 retry "SampleData" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T mysql mysql -u root -psecret < ./fixtures/sampleData.sql 2>&1"

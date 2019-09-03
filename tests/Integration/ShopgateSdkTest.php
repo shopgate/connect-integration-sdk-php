@@ -55,6 +55,8 @@ abstract class ShopgateSdkTest extends TestCase
                 'clientId',
                 'clientSecret',
                 'merchantCode',
+                'username',
+                'password',
             ]
         );
     }
@@ -95,6 +97,8 @@ abstract class ShopgateSdkTest extends TestCase
             getenv('clientId'),
             getenv('clientSecret'),
             getenv('merchantCode'),
+            getenv('username'),
+            getenv('password'),
             getenv('baseUri')
                 ?: '',
             getenv('env')

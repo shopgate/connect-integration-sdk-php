@@ -1,4 +1,4 @@
-FROM 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/import-script:development-v1.0.0-alpha.24
+FROM 602824140852.dkr.ecr.us-east-1.amazonaws.com/import-script:v1.0.0-alpha.26-google-cloud.4
 
 WORKDIR /usr/src/app
 

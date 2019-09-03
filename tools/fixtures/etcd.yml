@@ -2,43 +2,70 @@ development:
   endpoints:
     services:
       omni-worker: "http://omni-worker/"
-      omni-event-receiver: "http://omni-event-receiver/"
-      omni-merchant: "http://omni-merchant/"
-      omni-location: "http://omni-location/"
-      omni-customer: "http://omni-customer/"
+      omni-event-receiver: "http://event-receiver/"
+      omni-merchant: "http://merchant/"
+      omni-location: "http://location/"
+      omni-customer: "http://customer/"
+      catalog: "http://catalog/"
       omni-product: "http://catalog/"
+      import: "http://import/"
+      omni-order: "http://order/"
+      user: "http://user/"
+    services-v2:
+      omni-worker: "http://omni-worker/"
+      event-receiver: "http://event-receiver/"
+      merchant: "http://merchant/"
+      location: "http://location/"
+      customer: "http://customer/"
       catalog: "http://catalog/"
       import: "http://import/"
-      omni-order: "http://omni-order/"
+      order: "http://order/"
+      user: "http://user/"
 
   settings:
-    auth2:
+    OmniAuthService:
       mysql:
-        connectionLimit: 10
-        database: authservice
+        connectionLimit: 1
+        database: omnichannel_auth
         host: mysql
         password: secret
         port: 3306
         user: root
+      jwt:
+        secret: test
+
+    OmniUserService:
+      mysql:
+        connectionLimit: 1
+        database: omnichannel_user
+        host: mysql
+        password: secret
+        port: 3306
+        user: root
+      googleCloud:
+        projectId: test-project
 
     OmniWorkerService:
       googleCloud:
         projectId: test-project
-        topic: entityChanged
-        subscription: workerSvcEntityChanged
+        topic: entityChanged-development
+        subscription: entityChanged-development
 
     OmniEventReceiverService:
       bigApi:
-        baseUrl: http://{serviceName}.shopgatedev.services/
-        clientId: integration-tests
-        clientSecret: integration-tests
+        baseDomain: shopgatedev.io
+        baseUrl: http://{serviceName}.shopgatedev.io:8080/
+        clientId: bananas
+        clientSecret: bananas
       googleCloud:
         projectId: test-project
+      jwt:
+        secret: test
 
     OmniMerchantService:
       mysql:
         connectionLimit: 1
-        database: merchant
+        database: omnichannel
         host: mysql
         password: secret
         port: 3306

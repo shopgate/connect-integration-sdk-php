@@ -29,8 +29,8 @@ use Shopgate\ConnectSdk\Dto\Catalog\Reservation as ReservationBase;
  * @method Create setLocationCode(string $locationCode)
  * @method Create setSku(string $sku)
  * @method Create setSalesOrderLineItemCode(string $salesOrderLineItemCode)
- * @method Create setSalesOrderId(string $salesOrderId)
- * @method Create setFulfillmentOrderId(string $fulfillmentOrderId)
+ * @method Create setSalesOrderNumber(string $salesOrderNumber)
+ * @method Create setFulfillmentOrderNumber(string $fulfillmentOrderId)
  * @method Create setBin(string $bin)
  * @method Create setBinLocation(string $binLocation)
  * @method Create setQuantity(int $quantity)
@@ -50,11 +50,11 @@ class Create extends ReservationBase
             'locationCode'           => ['type' => 'string'],
             'sku'                    => ['type' => 'string'],
             'salesOrderLineItemCode' => ['type' => 'string'],
-            'salesOrderId'           => ['type' => 'string'],
-            'fulfillmentOrderId'     => ['type' => 'string'],
+            'salesOrderNumber'       => ['type' => 'string'],
+            'fulfillmentOrderNumber' => ['type' => 'string'],
             'bin'                    => ['type' => 'string'],
             'binLocation'            => ['type' => 'string'],
-            'quantity'               => ['type' => 'int']
+            'quantity'               => ['type' => 'int'],
         ],
         'additionalProperties' => true,
     ];

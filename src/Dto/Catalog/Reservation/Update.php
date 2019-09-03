@@ -25,7 +25,7 @@ namespace Shopgate\ConnectSdk\Dto\Catalog\Reservation;
 use Shopgate\ConnectSdk\Dto\Catalog\Reservation as ReservationBase;
 
 /**
- * @method Update setFulfillmentOrderId(string $fulfillmentOrderId)
+ * @method Update setFulfillmentOrderNumber(string $fulfillmentOrderNumber)
  *
  * @inheritdoc
  */
@@ -37,7 +37,7 @@ class Update extends ReservationBase
     protected $schema = [
         'type'                 => 'object',
         'reservations'         => [
-            'fulfillmentOrderId' => ['type' => 'string']
+            'fulfillmentOrderNumber' => ['type' => 'string']
         ],
         'additionalProperties' => true,
     ];

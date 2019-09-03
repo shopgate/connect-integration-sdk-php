@@ -46,11 +46,13 @@ abstract class CatalogTest extends ShopgateSdkTest
 {
     const CATALOG_SERVICE = 'catalog';
     const LOCATION_SERVICE = 'location';
+    const CUSTOMER_SERVICE = 'customer';
     const METHOD_DELETE_CATEGORY = 'deleteCategory';
     const METHOD_DELETE_PRODUCT = 'deleteProduct';
     const METHOD_DELETE_ATTRIBUTE = 'deleteAttribute';
     const METHOD_DELETE_LOCATION = 'deleteLocation';
     const METHOD_DELETE_RESERVATIONS = 'deleteReservations';
+    const METHOD_DELETE_CUSTOMER = 'deleteCustomer';
 
     const METHOD_DELETE_REQUEST_META = [
         self::METHOD_DELETE_CATEGORY => ['force' => true],
@@ -94,6 +96,13 @@ abstract class CatalogTest extends ShopgateSdkTest
             $this->sdk->getLocationService(),
             [
                 self::METHOD_DELETE_LOCATION => []
+            ]
+        );
+        $this->registerForCleanUp(
+            self::CUSTOMER_SERVICE,
+            $this->sdk->getCustomerService(),
+            [
+                self::METHOD_DELETE_CUSTOMER => []
             ]
         );
     }
@@ -643,10 +652,11 @@ abstract class CatalogTest extends ShopgateSdkTest
     /**
      * @param int    $count
      * @param string $productCode
+     * @param int $orderNumber
      *
      * @return Reservation\Create[]
      */
-    protected function provideSampleReservations($count = 1, $productCode = self::PRODUCT_CODE)
+    protected function provideSampleReservations($count = 1, $productCode = self::PRODUCT_CODE, $orderNumber)
     {
         $result = [];
         for ($i = 1; $i < $count + 1; $i++) {
@@ -655,7 +665,7 @@ abstract class CatalogTest extends ShopgateSdkTest
             $reservation->setLocationCode(self::LOCATION_CODE);
             $reservation->setSku('SKU_' . $i);
             $reservation->setSalesOrderLineItemCode('11111-2222-44444-' . $i);
-            $reservation->setSalesOrderId('11111-2222-33333-' . $i);
+            $reservation->setSalesOrderNumber($orderNumber);
             $reservation->setBin((string) $i);
             $reservation->setBinLocation('DE-' . $i);
             $reservation->setQuantity(1);
@@ -668,7 +678,10 @@ abstract class CatalogTest extends ShopgateSdkTest
     /**
      * @param string $locationCode
      *
-     * @throws Exception
+     * @throws \Shopgate\ConnectSdk\Exception\AuthenticationInvalidException
+     * @throws \Shopgate\ConnectSdk\Exception\NotFoundException
+     * @throws \Shopgate\ConnectSdk\Exception\RequestException
+     * @throws \Shopgate\ConnectSdk\Exception\UnknownException
      */
     protected function createLocation($locationCode)
     {

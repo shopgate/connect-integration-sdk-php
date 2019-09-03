@@ -25,6 +25,17 @@ use Shopgate\ConnectSdk\Tests\Integration\ShopgateSdkTest;
 
 class ClientTest extends ShopgateSdkTest
 {
+    private $accessTokenPath = './access_token_client_test.txt';
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        if (file_exists($this->accessTokenPath)) {
+            unlink($this->accessTokenPath);
+        }
+    }
+
     /**
      * @param string $expectedException
      * @param string $requestType
@@ -146,7 +157,7 @@ class ClientTest extends ShopgateSdkTest
                 getenv('password'),
                 getenv('baseUri') ?: '',
                 getenv('env') ?: '',
-                '/test.txt',
+                '/invalid/test.txt',
             ],
             'wrong clientId' => [
                 AuthenticationInvalidException::class,
@@ -158,7 +169,7 @@ class ClientTest extends ShopgateSdkTest
                 getenv('password'),
                 getenv('baseUri') ?: '',
                 getenv('env') ?: '',
-                getenv('accessTokenPath')
+                $this->accessTokenPath
             ],
 
             'wrong clientSecret' => [
@@ -171,7 +182,7 @@ class ClientTest extends ShopgateSdkTest
                 getenv('password'),
                 getenv('baseUri') ?: '',
                 getenv('env') ?: '',
-                getenv('accessTokenPath')
+                $this->accessTokenPath
             ],
             'wrong merchantCode'         => [
                 AuthenticationInvalidException::class,
@@ -183,7 +194,7 @@ class ClientTest extends ShopgateSdkTest
                 getenv('password'),
                 getenv('baseUri') ?: '',
                 getenv('env') ?: '',
-                getenv('accessTokenPath')
+                $this->accessTokenPath
             ],
             'wrong username'         => [
                 AuthenticationInvalidException::class,
@@ -195,7 +206,7 @@ class ClientTest extends ShopgateSdkTest
                 getenv('password'),
                 getenv('baseUri') ?: '',
                 getenv('env') ?: '',
-                getenv('accessTokenPath')
+                $this->accessTokenPath
             ],
             'wrong password'         => [
                 AuthenticationInvalidException::class,
@@ -207,7 +218,7 @@ class ClientTest extends ShopgateSdkTest
                 'wrong',
                 getenv('baseUri') ?: '',
                 getenv('env') ?: '',
-                getenv('accessTokenPath')
+                $this->accessTokenPath
             ],
             'wrong baseUri'              => [
                 RequestException::class,
@@ -219,7 +230,7 @@ class ClientTest extends ShopgateSdkTest
                 getenv('password'),
                 'httpp://localhost',
                 getenv('env') ?: '',
-                getenv('accessTokenPath')
+                $this->accessTokenPath
             ],
             'wrong env'                  => [
                 RequestException::class,
@@ -231,7 +242,7 @@ class ClientTest extends ShopgateSdkTest
                 getenv('password'),
                 '',
                 'wrong',
-                getenv('accessTokenPath')
+                $this->accessTokenPath
             ],
             'event - wrong clientId'     => [
                 AuthenticationInvalidException::class,
@@ -243,7 +254,7 @@ class ClientTest extends ShopgateSdkTest
                 getenv('password'),
                 getenv('baseUri') ?: '',
                 getenv('env') ?: '',
-                getenv('accessTokenPath')
+                $this->accessTokenPath
             ],
             'event - wrong clientSecret' => [
                 AuthenticationInvalidException::class,
@@ -255,7 +266,7 @@ class ClientTest extends ShopgateSdkTest
                 getenv('password'),
                 getenv('baseUri') ?: '',
                 getenv('env') ?: '',
-                getenv('accessTokenPath')
+                $this->accessTokenPath
             ],
             'event - wrong merchantCode' => [
                 AuthenticationInvalidException::class,
@@ -267,7 +278,7 @@ class ClientTest extends ShopgateSdkTest
                 getenv('password'),
                 getenv('baseUri') ?: '',
                 getenv('env') ?: '',
-                getenv('accessTokenPath')
+                $this->accessTokenPath
             ],
             'event - wrong baseUri'      => [
                 RequestException::class,
@@ -279,7 +290,7 @@ class ClientTest extends ShopgateSdkTest
                 getenv('password'),
                 'httpp://localhost',
                 getenv('env') ?: '',
-                getenv('accessTokenPath')
+                $this->accessTokenPath
             ],
         ];
     }

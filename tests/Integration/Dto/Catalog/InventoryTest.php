@@ -138,8 +138,6 @@ class InventoryTest extends CatalogTest
      */
     public function testInvalidLocationCode()
     {
-        $this->expectNotToPerformAssertions();
-
         // Arrange
         $this->createLocation(self::LOCATION_CODE);
         $product = $this->prepareProductMinimum();
@@ -165,9 +163,7 @@ class InventoryTest extends CatalogTest
      */
     public function testInvalidProductCode()
     {
-        $this->expectNotToPerformAssertions();
-
-        // Arrange
+         // Arrange
         $this->createLocation(self::LOCATION_CODE);
         $product = $this->prepareProductMinimum();
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);

@@ -169,7 +169,7 @@ class Client implements ClientInterface
         }
 
         if (!$template) {
-            $template = 'URL: {url} Auth: {req_header_Authorization} Method: {method} RequestBody: {req_body} ResponseBody: {res_body}';
+            $template = 'URL: {url} Method: {method} RequestBody: {req_body} ResponseBody: {res_body}';
         }
 
         $handler->push(Middleware::log($logger, new MessageFormatter($template)));

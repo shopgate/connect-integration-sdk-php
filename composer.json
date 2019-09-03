@@ -3,7 +3,7 @@
   "description": "A PHP framework supporting the integration with the Shopgate Connect Platform.",
   "homepage": "https://github.com/shopgate/connect-integration-sdk-php",
   "license": "Apache-2.0",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "authors": [
     {
       "name": "Shopgate",

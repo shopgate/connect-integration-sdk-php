@@ -27,6 +27,10 @@ class ShopgateCredentials implements GrantTypeInterface
      */
     private $config;
 
+    /**
+     * @param ClientInterface $client
+     * @param array           $config
+     */
     public function __construct(ClientInterface $client, array $config)
     {
         $this->client = $client;
@@ -48,6 +52,13 @@ class ShopgateCredentials implements GrantTypeInterface
         );
     }
 
+    /**
+     * @param SignerInterface $clientCredentialsSigner
+     * @param null            $refreshToken
+     *
+     * @return array|mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function getRawData(SignerInterface $clientCredentialsSigner, $refreshToken = null)
     {
         if (Helper::guzzleIs('>=', 6)) {

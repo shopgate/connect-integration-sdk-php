@@ -20,27 +20,27 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Order\Order\Dto;
+namespace Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder\Dto\LineItem;
 
 use Shopgate\ConnectSdk\Dto\Base;
-use Shopgate\ConnectSdk\Dto\Order\Dto\Fulfillment;
+use Shopgate\ConnectSdk\Dto\Order\Dto\Fulfillment\FulfillmentPackage;
 
 /**
- * @method FulfillmentGroup setId(string $id)
- * @method FulfillmentGroup setFulfillmentMethod(string $fulfillmentMethod)
- * @method FulfillmentGroup setFulfillmentLocationCode(string $fulfillmentLocationCode)
- * @method FulfillmentGroup setShipToAddressSequenceIndex(int $shipToAddressSequenceIndex)
- * @method FulfillmentGroup setFulFillments(Fulfillment[] $fulfillments)
+ * @method LineItemProduct setCode(string $code)
+ * @method LineItemProduct setName(string $name)
+ * @method LineItemProduct setImage(string $image)
+ * @method LineItemProduct setPrice(string $price)
+ * @method LineItemProduct setCurrencyCode(string $currencyCode)
  *
- * @method string getId()
- * @method string getFulfillmentMethod()
- * @method string getFulfillmentLocationCode()
- * @method int getShipToAddressSequenceIndex()
- * @method Fulfillment[] getFulfillments()
+ * @method string getCode()
+ * @method string getName()
+ * @method string getImage()
+ * @method float getPrice()
+ * @method string getCurrencyCode()
  *
  * @codeCoverageIgnore
  */
-class FulfillmentGroup extends Base
+class LineItemProduct extends Base
 {
     /**
      * @var array
@@ -49,12 +49,13 @@ class FulfillmentGroup extends Base
         'type' => 'object',
         'properties' => [
             'id' => ['type' => 'string'],
-            'fulfillmentMethod' => ['type' => 'string'],
-            'fulfillmentLocationCode' => ['type' => 'string'],
-            'shipToAddressSequenceIndex' => ['type' => 'number'],
-            'fulfillments' => [
+            'status' => ['type' => 'string'],
+            'carrier' => ['type' => 'string'],
+            'serviceLevel' => ['type' => 'string'],
+            'tracking' => ['type' => 'string'],
+            'fulfillmentPackages' => [
                 'type' => 'array',
-                'items' => ['$ref' => Fulfillment::class]
+                'items' => ['$ref' => FulfillmentPackage::class]
             ]
         ],
         'additionalProperties' => true,

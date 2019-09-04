@@ -23,6 +23,7 @@
 namespace Shopgate\ConnectSdk\Helper;
 
 use GuzzleHttp;
+use InvalidArgumentException;
 
 class Json
 {
@@ -32,7 +33,7 @@ class Json
      * @param int   $depth   Set the maximum depth. Must be greater than zero.
      *
      * @return string
-     * @throws \InvalidArgumentException if the JSON cannot be encoded.
+     * @throws InvalidArgumentException if the JSON cannot be encoded.
      */
     public function encode($value, $options = 0, $depth = 512)
     {
@@ -47,7 +48,7 @@ class Json
      * @param int    $options Bitmask of JSON decode options.
      *
      * @return mixed
-     * @throws \InvalidArgumentException if the JSON cannot be decoded.
+     * @throws InvalidArgumentException if the JSON cannot be decoded.
      */
     public function decode($json, $assoc = false, $depth = 512, $options = 0)
     {

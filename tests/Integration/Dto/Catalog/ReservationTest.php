@@ -143,7 +143,7 @@ class ReservationTest extends CatalogTest
             $sampleLineItems[] = new Order\Dto\LineItem([
                 'code' => 'lineItem-' . $productId,
                 'quantity' => 2,
-                'fulfillmentMethod' => Order::LINE_ITEM_FULFILLMENT_METHOD_ROPIS,
+                'fulfillmentMethod' => Order\Dto\LineItem::FULFILLMENT_METHOD_ROPIS,
                 'shipToAddressSequenceIndex' => 0,
                 'fulfillmentLocationCode' => $locationCode,
                 'product' => new Order\Dto\LineItem\Product([

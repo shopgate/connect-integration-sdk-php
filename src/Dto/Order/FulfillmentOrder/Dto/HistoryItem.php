@@ -20,27 +20,28 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Order\Order\Dto;
+namespace Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder\Dto;
 
 use Shopgate\ConnectSdk\Dto\Base;
-use Shopgate\ConnectSdk\Dto\Order\Dto\Fulfillment;
 
 /**
- * @method FulfillmentGroup setId(string $id)
- * @method FulfillmentGroup setFulfillmentMethod(string $fulfillmentMethod)
- * @method FulfillmentGroup setFulfillmentLocationCode(string $fulfillmentLocationCode)
- * @method FulfillmentGroup setShipToAddressSequenceIndex(int $shipToAddressSequenceIndex)
- * @method FulfillmentGroup setFulFillments(Fulfillment[] $fulfillments)
+ * @method HistoryItem setId(string $id)
+ * @method HistoryItem setEventName(string $eventName)
+ * @method HistoryItem setEventDetails(string $eventDetails)
+ * @method HistoryItem setEventNewValue(string $eventNewValue)
+ * @method HistoryItem setEventOldValue(string $eventOldValue)
+ * @method HistoryItem setEventDateTime(string $eventDateTime)
+ * @method HistoryItem setEventUser(string $eventUser)
  *
  * @method string getId()
- * @method string getFulfillmentMethod()
- * @method string getFulfillmentLocationCode()
- * @method int getShipToAddressSequenceIndex()
- * @method Fulfillment[] getFulfillments()
- *
- * @codeCoverageIgnore
+ * @method string getEventName()
+ * @method string getEventDetails()
+ * @method string getEventNewValue()
+ * @method string getEventOldValue()
+ * @method string getEventDateTime()
+ * @method string getEventUser()
  */
-class FulfillmentGroup extends Base
+class HistoryItem extends Base
 {
     /**
      * @var array
@@ -49,13 +50,12 @@ class FulfillmentGroup extends Base
         'type' => 'object',
         'properties' => [
             'id' => ['type' => 'string'],
-            'fulfillmentMethod' => ['type' => 'string'],
-            'fulfillmentLocationCode' => ['type' => 'string'],
-            'shipToAddressSequenceIndex' => ['type' => 'number'],
-            'fulfillments' => [
-                'type' => 'array',
-                'items' => ['$ref' => Fulfillment::class]
-            ]
+            'eventName' => ['type' => 'string'],
+            'eventDetails' => ['type' => 'string'],
+            'eventNewValue' => ['type' => 'string'],
+            'eventOldValue' => ['type' => 'string'],
+            'eventDateTime' => ['type' => 'string'],
+            'eventUser' => ['type' => 'string'],
         ],
         'additionalProperties' => true,
     ];

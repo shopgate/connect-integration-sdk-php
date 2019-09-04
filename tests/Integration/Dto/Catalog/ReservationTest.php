@@ -112,7 +112,7 @@ class ReservationTest extends CatalogTest
             'currencyCode' => Price::CURRENCY_CODE_EUR,
             'addressSequences' => [
                 new Address([
-                    'type' => Order::ADDRESS_TYPE_BILLING,
+                    'type' => Address::TYPE_BILLING,
                     'firstName' => 'Jane',
                     'lastName' => 'Doe'
                 ])

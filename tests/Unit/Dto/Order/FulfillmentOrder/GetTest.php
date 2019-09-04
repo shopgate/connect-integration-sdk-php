@@ -58,6 +58,26 @@ class GetTest extends TestCase
             'currencyCode' => 'USD',
             'notes' => 'Some note',
             'specialInstructions' => '',
+            'fulfillmentOrderAddress' => [
+                "orderIndex" => "123",
+                "type" => "pickup",
+                "firstName" => "John",
+                "middleName" => "D.",
+                "lastName" => "Doe",
+                "company" => "Shopgate Inc",
+                "address1" => "12 Somestreet",
+                "address2" => "Unknown Type: string,null",
+                "address3" => "Unknown Type: string,null",
+                "address4" => "Unknown Type: string,null",
+                "city" => "Austin",
+                "region" => "TX",
+                "postalCode" => 78732,
+                "country" => "US",
+                "phone" => "+1 000-000-0000",
+                "fax" => "+1 000-000-0000",
+                "mobile" => "+1 000-000-0000",
+                "emailAddress" => "john@doe.com"
+            ],
             "fulfillments" => [
                 [
                     "id" => "975edd0a-e76c-11e8-8115-063a60f67055",
@@ -161,6 +181,27 @@ class GetTest extends TestCase
         $this->assertEquals($entry['notes'], $get->getNotes());
         $this->assertEquals($entry['specialInstructions'], $get->getSpecialInstructions());
 
+        $fulfillmentOrderAddress = $get->getFulfillmentOrderAddress();
+        $this->assertInstanceOf(FulfillmentOrderDto\FulfillmentOrderAddress::class, $fulfillmentOrderAddress);
+        $this->assertEquals($entry['fulfillmentOrderAddress']['orderIndex'], $fulfillmentOrderAddress->getOrderIndex());
+        $this->assertEquals($entry['fulfillmentOrderAddress']['type'], $fulfillmentOrderAddress->getType());
+        $this->assertEquals($entry['fulfillmentOrderAddress']['firstName'], $fulfillmentOrderAddress->getFirstName());
+        $this->assertEquals($entry['fulfillmentOrderAddress']['middleName'], $fulfillmentOrderAddress->getMiddleName());
+        $this->assertEquals($entry['fulfillmentOrderAddress']['lastName'], $fulfillmentOrderAddress->getLastName());
+        $this->assertEquals($entry['fulfillmentOrderAddress']['company'], $fulfillmentOrderAddress->getCompany());
+        $this->assertEquals($entry['fulfillmentOrderAddress']['address1'], $fulfillmentOrderAddress->getAddress1());
+        $this->assertEquals($entry['fulfillmentOrderAddress']['address2'], $fulfillmentOrderAddress->getAddress2());
+        $this->assertEquals($entry['fulfillmentOrderAddress']['address3'], $fulfillmentOrderAddress->getAddress3());
+        $this->assertEquals($entry['fulfillmentOrderAddress']['address4'], $fulfillmentOrderAddress->getAddress4());
+        $this->assertEquals($entry['fulfillmentOrderAddress']['city'], $fulfillmentOrderAddress->getCity());
+        $this->assertEquals($entry['fulfillmentOrderAddress']['region'], $fulfillmentOrderAddress->getRegion());
+        $this->assertEquals($entry['fulfillmentOrderAddress']['postalCode'], $fulfillmentOrderAddress->getPostalCode());
+        $this->assertEquals($entry['fulfillmentOrderAddress']['country'], $fulfillmentOrderAddress->getCountry());
+        $this->assertEquals($entry['fulfillmentOrderAddress']['phone'], $fulfillmentOrderAddress->getPhone());
+        $this->assertEquals($entry['fulfillmentOrderAddress']['fax'], $fulfillmentOrderAddress->getFax());
+        $this->assertEquals($entry['fulfillmentOrderAddress']['mobile'], $fulfillmentOrderAddress->getMobile());
+        $this->assertEquals($entry['fulfillmentOrderAddress']['emailAddress'], $fulfillmentOrderAddress->getEmailAddress());
+
         // Fulfillments
         $fulfillments = $get->getFulfillments();
         $this->assertTrue(is_array($fulfillments));
@@ -232,7 +273,7 @@ class GetTest extends TestCase
 
         // LineItemProducts
         $lineItemProduct = $lineItem->getProduct();
-        $this->assertInstanceOf(FulfillmentOrderDto\LineItem\LineItemProduct::class, $lineItemProduct);
+        $this->assertInstanceOf(FulfillmentOrderDto\LineItem\Product::class, $lineItemProduct);
         $this->assertEquals($entry['lineItems'][0]['product']['code'], $lineItemProduct->getCode());
         $this->assertEquals($entry['lineItems'][0]['product']['name'], $lineItemProduct->getName());
         $this->assertEquals($entry['lineItems'][0]['product']['image'], $lineItemProduct->getImage());

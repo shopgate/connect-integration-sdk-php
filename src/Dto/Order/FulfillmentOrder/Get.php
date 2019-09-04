@@ -90,7 +90,7 @@ class Get extends FulfillmentOrder
             'currencyCode' => ['type' => 'string'],
             'notes' => ['type' => 'string'],
             'specialInstructions' => ['type' => 'string'],
-            'fulfillmentOrderAddress' => ['$ref' => Dto\HistoryItem::class],
+            'fulfillmentOrderAddress' => ['$ref' => Dto\FulfillmentOrderAddress::class],
             'fulfillments' => [
                 'type' => 'array',
                 'items' => ['$ref' => Fulfillment::class]

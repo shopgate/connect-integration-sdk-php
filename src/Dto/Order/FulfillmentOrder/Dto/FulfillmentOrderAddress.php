@@ -25,6 +25,7 @@ namespace Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder\Dto;
 use Shopgate\ConnectSdk\Dto\Base;
 
 /**
+ * @method FulfillmentOrderAddress setOrderIndex(string $orderIndex)
  * @method FulfillmentOrderAddress setType(string $type)
  * @method FulfillmentOrderAddress setFirstName(string $firstName)
  * @method FulfillmentOrderAddress setMiddleName(string $middleName)

@@ -26,11 +26,11 @@ use Shopgate\ConnectSdk\Dto\Base;
 use Shopgate\ConnectSdk\Dto\Order\Dto\Fulfillment\FulfillmentPackage;
 
 /**
- * @method LineItemProduct setCode(string $code)
- * @method LineItemProduct setName(string $name)
- * @method LineItemProduct setImage(string $image)
- * @method LineItemProduct setPrice(string $price)
- * @method LineItemProduct setCurrencyCode(string $currencyCode)
+ * @method Product setCode(string $code)
+ * @method Product setName(string $name)
+ * @method Product setImage(string $image)
+ * @method Product setPrice(string $price)
+ * @method Product setCurrencyCode(string $currencyCode)
  *
  * @method string getCode()
  * @method string getName()
@@ -40,7 +40,7 @@ use Shopgate\ConnectSdk\Dto\Order\Dto\Fulfillment\FulfillmentPackage;
  *
  * @codeCoverageIgnore
  */
-class LineItemProduct extends Base
+class Product extends Base
 {
     /**
      * @var array
@@ -48,15 +48,11 @@ class LineItemProduct extends Base
     protected $schema = [
         'type' => 'object',
         'properties' => [
-            'id' => ['type' => 'string'],
-            'status' => ['type' => 'string'],
-            'carrier' => ['type' => 'string'],
-            'serviceLevel' => ['type' => 'string'],
-            'tracking' => ['type' => 'string'],
-            'fulfillmentPackages' => [
-                'type' => 'array',
-                'items' => ['$ref' => FulfillmentPackage::class]
-            ]
+            'code' => ['type' => 'string'],
+            'name' => ['type' => 'string'],
+            'image' => ['type' => 'string'],
+            'price' => ['type' => 'number'],
+            'currencyCode' => ['type' => 'string'],
         ],
         'additionalProperties' => true,
     ];

@@ -22,42 +22,11 @@
 
 namespace Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder;
 
+use Shopgate\ConnectSdk\Dto\Order\Dto\Fulfillment;
 use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder;
 use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder\Dto;
-use Shopgate\ConnectSdk\Dto\Order\Dto\Fulfillment;
 
 /**
- * @method string getOrderNumber()
- * @method string getExternalCode()
- * @method string getPosTransactionId()
- * @method string getCancellationReason()
- * @method string getSalesOrderNumber()
- * @method string getLocationCode()
- * @method string getType()
- * @method string getCustomerId()
- * @method string getExternalCustomerNumber()
- * @method string getRouteType()
- * @method string getExpedited()
- * @method string getStatus()
- * @method Dto\Channel getChannel()
- * @method float getSubTotal()
- * @method float getTaxAmount()
- * @method float getTax2Amount()
- * @method float getTotal()
- * @method float getShippingTotal()
- * @method string getLocaleCode()
- * @method string getCurrencyCode()
- * @method string getNotes() // this is special
- * @method string getSpecialInstructions()
- * @method Dto\FulfillmentOrderAddress getFulfillmentOrderAddress()
- * @method Fulfillment[] getFulfillments()
- * @method Dto\LineItem[] getLineItems()
- * @method Dto\HistoryItem[] getHistory()
- * @method string getOrderSubmittedDate()
- * @method string getAcceptedDate()
- * @method string getReadyDate()
- * @method string getCompletedDate()
- *
  * @codeCoverageIgnore
  */
 class Get extends FulfillmentOrder

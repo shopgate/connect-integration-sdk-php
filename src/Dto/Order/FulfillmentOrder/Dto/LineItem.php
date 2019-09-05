@@ -27,21 +27,21 @@ use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder\Dto\LineItem\Product;
 
 /**
  * @method LineItem setId(string $id)
- * @method LineItem setSalesOrderLineItemCode(string $status)
+ * @method LineItem setSalesOrderLineItemCode(string $lineItemCode)
  * @method LineItem setSku(string $sku)
- * @method LineItem setQuantity(float $quantity)
+ * @method LineItem setQuantity(int $quantity)
  * @method LineItem setStatus(string $status)
  * @method LineItem setCurrencyCode(string $currencyCode)
  * @method LineItem setPrice(float $price)
  * @method LineItem setShippingAmount(float $shippingAmount)
  * @method LineItem setTaxAmount(float $taxAmount)
  * @method LineItem setTax2Amount(float $tax2Amount)
- * @method LineItem setTaxExempt(float $taxExempt)
+ * @method LineItem setTaxExempt(boolean $taxExempt)
  * @method LineItem setDiscountAmount(float $discountAmount)
  * @method LineItem setPromoAmount(float $promoAmount)
  * @method LineItem setOverrideAmount(float $overrideAmount)
- * @method LineItem setExtendedPrice(string $extendedPrice)
- * @method LineItem setProduct(Product[] $extendedPrice)
+ * @method LineItem setExtendedPrice(float $extendedPrice)
+ * @method LineItem setProduct(Product $product)
  *
  * @method string getId()
  * @method string getSalesOrderLineItemCode()
@@ -87,6 +87,6 @@ class LineItem extends Base
             'extendedPrice' => ['type' => 'number'],
             'product' => ['$ref' => Product::class],
         ],
-        'additionalProperties' => true,
+        'additionalProperties' => true
     ];
 }

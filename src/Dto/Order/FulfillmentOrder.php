@@ -23,8 +23,41 @@
 namespace Shopgate\ConnectSdk\Dto\Order;
 
 use Shopgate\ConnectSdk\Dto\Base;
+use Shopgate\ConnectSdk\Dto\Order\Dto\Fulfillment;
+use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder\Dto;
 
 /**
+ * @method string getOrderNumber()
+ * @method string getExternalCode()
+ * @method string getPosTransactionId()
+ * @method string getCancellationReason()
+ * @method string getSalesOrderNumber()
+ * @method string getLocationCode()
+ * @method string getType()
+ * @method string getCustomerId()
+ * @method string getExternalCustomerNumber()
+ * @method string getRouteType()
+ * @method string getExpedited()
+ * @method string getStatus()
+ * @method Dto\Channel getChannel()
+ * @method float getSubTotal()
+ * @method float getTaxAmount()
+ * @method float getTax2Amount()
+ * @method float getTotal()
+ * @method float getShippingTotal()
+ * @method string getLocaleCode()
+ * @method string getCurrencyCode()
+ * @method string getNotes()
+ * @method string getSpecialInstructions()
+ * @method Dto\FulfillmentOrderAddress getFulfillmentOrderAddress()
+ * @method Fulfillment[] getFulfillments()
+ * @method Dto\LineItem[] getLineItems()
+ * @method Dto\HistoryItem[] getHistory()
+ * @method string getOrderSubmittedDate()
+ * @method string getAcceptedDate()
+ * @method string getReadyDate()
+ * @method string getCompletedDate()
+ *
  * @codeCoverageIgnore
  */
 class FulfillmentOrder extends Base
@@ -40,7 +73,7 @@ class FulfillmentOrder extends Base
     const ROUTE_TYPE_STANDARD_RESERVE = 'standardReserve';
     const STATUS_NEW = 'new';
     const STATUS_REQUESTED = 'requested';
-    const STATUS_ACCEPETED = 'accepted';
+    const STATUS_ACCEPTED = 'accepted';
     const STATUS_IN_PROGRESS = 'inProgress';
     const STATUS_PICKED = 'picked';
     const STATUS_PACKED = 'packed';

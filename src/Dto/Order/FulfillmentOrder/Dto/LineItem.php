@@ -20,65 +20,63 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Order\Order\Dto;
+namespace Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder\Dto;
 
 use Shopgate\ConnectSdk\Dto\Base;
+use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder\Dto\LineItem\Product;
 
 /**
- * @method LineItem setCode(string $code)
+ * @method LineItem setId(string $id)
+ * @method LineItem setSalesOrderLineItemCode(string $lineItemCode)
+ * @method LineItem setSku(string $sku)
  * @method LineItem setQuantity(int $quantity)
- * @method LineItem setFulfillmentMethod(string $fulfillmentMethod)
- * @method LineItem setFulfillmentLocationCode(string $fulfillmentLocationCode)
- * @method LineItem setShipToAddressSequenceIndex(int $shipToAddressSequenceIndex)
- * @method LineItem setProduct(LineItem\Product $product)
+ * @method LineItem setStatus(string $status)
  * @method LineItem setCurrencyCode(string $currencyCode)
+ * @method LineItem setPrice(float $price)
  * @method LineItem setShippingAmount(float $shippingAmount)
  * @method LineItem setTaxAmount(float $taxAmount)
  * @method LineItem setTax2Amount(float $tax2Amount)
- * @method LineItem setTaxExempt(bool $taxExempt)
+ * @method LineItem setTaxExempt(boolean $taxExempt)
  * @method LineItem setDiscountAmount(float $discountAmount)
  * @method LineItem setPromoAmount(float $promoAmount)
  * @method LineItem setOverrideAmount(float $overrideAmount)
  * @method LineItem setExtendedPrice(float $extendedPrice)
- * @method LineItem setPrice(string $price)
- * @method string getCode()
+ * @method LineItem setProduct(Product $product)
+ *
+ * @method string getId()
+ * @method string getSalesOrderLineItemCode()
+ * @method string getSku()
  * @method int getQuantity()
- * @method string getFulfillmentMethod()
- * @method string getFulfillmentLocationCode()
- * @method int getShipToAddressSequenceIndex()
- * @method LineItem\Product getProduct()
+ * @method string getStatus()
  * @method string getCurrencyCode()
+ * @method float getPrice()
  * @method float getShippingAmount()
  * @method float getTaxAmount()
  * @method float getTax2Amount()
- * @method float getTaxExempt()
+ * @method boolean getTaxExempt()
  * @method float getDiscountAmount()
  * @method float getPromoAmount()
  * @method float getOverrideAmount()
  * @method float getExtendedPrice()
- * @method float getPrice()
+ * @method Product getProduct()
  *
  * @codeCoverageIgnore
  */
 class LineItem extends Base
 {
-    const FULFILLMENT_METHOD_DIRECT_SHIP = 'directShip';
-    const FULFILLMENT_METHOD_BOPIS = 'BOPIS';
-    const FULFILLMENT_METHOD_ROPIS = 'ROPIS';
-
     /**
      * @var array
      */
     protected $schema = [
         'type' => 'object',
         'properties' => [
-            'code' => ['type' => 'string'],
+            'id' => ['type' => 'string'],
+            'salesOrderLineItemCode' => ['type' => 'string'],
+            'sku' => ['type' => 'string'],
             'quantity' => ['type' => 'number'],
-            'fulfillmentMethod' => ['type' => 'string'],
-            'fulfillmentLocationCode' => ['type' => 'string'],
-            'shipToAddressSequenceIndex' => ['type' => 'number'],
-            'product' => ['$ref' => LineItem\Product::class],
+            'status' => ['type' => 'string'],
             'currencyCode' => ['type' => 'string'],
+            'price' => ['type' => 'number'],
             'shippingAmount' => ['type' => 'number'],
             'taxAmount' => ['type' => 'number'],
             'tax2Amount' => ['type' => 'number'],
@@ -87,8 +85,8 @@ class LineItem extends Base
             'promoAmount' => ['type' => 'number'],
             'overrideAmount' => ['type' => 'number'],
             'extendedPrice' => ['type' => 'number'],
-            'price' => ['type' => 'number']
+            'product' => ['$ref' => Product::class],
         ],
-        'additionalProperties' => true,
+        'additionalProperties' => true
     ];
 }

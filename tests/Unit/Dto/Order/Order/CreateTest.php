@@ -23,6 +23,7 @@
 namespace Shopgate\ConnectSdk\Tests\Unit\Dto\Order\Order;
 
 use PHPUnit\Framework\TestCase;
+use Shopgate\ConnectSdk\Dto\Order\Dto\Fulfillment;
 use Shopgate\ConnectSdk\Dto\Order\Order\Create;
 use Shopgate\ConnectSdk\Dto\Order\Order\Dto as OrderDto;
 
@@ -224,7 +225,7 @@ class CreateTest extends TestCase
         );
         $actualFulfillment = $actualFulfillmentGroup->getFulfillments()[0];
         $expectFulfillment = $expectedFulfillmentGroup['fulfillments'][0];
-        $this->assertInstanceOf(OrderDto\FulfillmentGroup\Fulfillment::class, $actualFulfillment);
+        $this->assertInstanceOf(Fulfillment::class, $actualFulfillment);
         $this->assertEquals($expectFulfillment['id'], $actualFulfillment->getId());
         $this->assertEquals($expectFulfillment['status'], $actualFulfillment->getStatus());
         $this->assertEquals($expectFulfillment['carrier'], $actualFulfillment->getCarrier());
@@ -233,7 +234,7 @@ class CreateTest extends TestCase
         $actualFulfillmentPackage = $actualFulfillment->getFulfillmentPackages()[0];
         $expectedFulfillmentPackage = $expectFulfillment['fulfillmentPackages'][0];
         $this->assertInstanceOf(
-            OrderDto\FulfillmentGroup\Fulfillment\FulfillmentPackage::class,
+            Fulfillment\FulfillmentPackage::class,
             $actualFulfillmentPackage
         );
         $this->assertEquals($expectedFulfillmentPackage['id'], $actualFulfillmentPackage->getId());
@@ -255,7 +256,7 @@ class CreateTest extends TestCase
         $actualPackageItems = $actualFulfillmentPackage->getPackageItems()[0];
         $expectedPackageItems = $expectedFulfillmentPackage['packageItems'][0];
         $this->assertInstanceOf(
-            OrderDto\FulfillmentGroup\Fulfillment\FulfillmentPackage\PackageItem::class,
+            Fulfillment\FulfillmentPackage\PackageItem::class,
             $actualPackageItems
         );
         $this->assertEquals($expectedPackageItems['id'], $actualPackageItems->getId());

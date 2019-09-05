@@ -87,7 +87,7 @@ class OrderTest extends OrderBaseTest
                         'externalCode' => md5(date('c') . mt_rand()),
                         'addressSequences' => [
                             new Order\Dto\Address([
-                                'type' => Order::ADDRESS_TYPE_BILLING,
+                                'type' => Order\Dto\Address::TYPE_BILLING,
                                 'firstName' => 'Johnny',
                                 'lastName' => 'Bravo'
                             ])
@@ -280,7 +280,7 @@ class OrderTest extends OrderBaseTest
             'currencyCode' => 'USD',
             'addressSequences' => [
                 new Order\Dto\Address([
-                    'type' => Order::ADDRESS_TYPE_BILLING,
+                    'type' => Order\Dto\Address::TYPE_BILLING,
                     'firstName' => 'Jane',
                     'lastName' => 'Doe'
                 ])
@@ -392,7 +392,7 @@ class OrderTest extends OrderBaseTest
         return new Order\Dto\LineItem([
             'code' => 'lineItem-' . $productId,
             'quantity' => 1,
-            'fulfillmentMethod' => Order::LINE_ITEM_FULFILLMENT_METHOD_DIRECT_SHIP,
+            'fulfillmentMethod' => Order\Dto\LineItem::FULFILLMENT_METHOD_DIRECT_SHIP,
             'shipToAddressSequenceIndex' => 0,
             'fulfillmentLocationCode' => $locationCode,
             'product' => new Order\Dto\LineItem\Product([

@@ -278,7 +278,7 @@ function provideSampleOrders()
     ]);
     $order->setAddressSequences([
         new Order\Dto\Address([
-            'type' => Order::ADDRESS_TYPE_BILLING,
+            'type' => Order\Dto\Address::TYPE_BILLING,
             'firstName' => 'Jane',
             'lastName' => 'Doe',
         ])
@@ -286,7 +286,7 @@ function provideSampleOrders()
     $lineItem = new Order\Dto\LineItem([
         'code' => 'line-item-one',
         'quantity' => 1,
-        'fulfillmentMethod' => Order::LINE_ITEM_FULFILLMENT_METHOD_DIRECT_SHIP,
+        'fulfillmentMethod' => Order\Dto\LineItem::FULFILLMENT_METHOD_DIRECT_SHIP,
         'shipToAddressSequenceIndex' => 0,
         'product' => new Order\Dto\LineItem\Product([
             'code' => 'product-one',

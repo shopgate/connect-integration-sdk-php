@@ -60,6 +60,10 @@ INSERT INTO omnichannel_order.`Channel` (`ChannelID`, `MerchantID`, `Region`, `C
 VALUES
 	(1, '1', NULL, 'USRTL', 'US Retail', 'Me', '2018-11-12 10:48:44', NULL, NULL, NULL, NULL);
 
+INSERT INTO omnichannel_order.`FulfillmentOrder` (`FulfillmentOrderID`, `SalesOrderID`, `MerchantID`, `CustomerID`, `CustomerNumber`, `ChannelID`, `LocationID`, `RouteTypeID`, `OrderTypeID`, `Status`, `CancellationReason`, `OrderNumber`, `ExternalCode`, `POSTransactionId`, `SequenceID`, `AcceptedDate`, `ReadyDate`, `CompletedDate`, `OrderSubmittedDate`, `PricelistCode`, `Expedited`, `OrderSubTotal`, `OrderTaxTotal`, `OrderTax2Total`, `OrderShippingTotal`, `OrderTotal`, `LocaleCode`, `CurrencyCode`, `OrderNotes`, `OrderSpecialInstructions`, `CreateBy`, `CreateDate`, `UpdateBy`, `UpdateDate`, `DeleteBy`)
+VALUES
+	(1, 207, '2', '50ed505b-1d7e-4240-af9d-f5f8d6316cf6', NULL, 1, '1', 8, 3, 'fulfilled', NULL, '10138-0001', NULL, NULL, 0, '2018-12-21 12:28:55', '2018-12-21 12:29:38', NULL, '2018-12-20 19:19:50', NULL, 0, 59, 0, NULL, 0, 59, 'en-US', 'USD', X'7B226D657373616765223A2022227D', '{}', '', '2018-12-20 19:22:21', 'pascal.vomhoff+testadmin@shopgate.com', '2018-12-21 12:29:39', NULL);
+
 
 INSERT INTO omnichannel_user.`Permission` (`PermissionID`,`PermissionStatus`,`PermissionCode`,`Application`,`Module`,`Submodule`,`Function`,`CreateBy`,`CreateDate`,`UpdateBy`,`UpdateDate`,`DeleteBy`,`DeleteDate`)
 VALUE

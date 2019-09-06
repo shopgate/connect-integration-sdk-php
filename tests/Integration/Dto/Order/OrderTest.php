@@ -135,6 +135,19 @@ class OrderTest extends OrderBaseTest
      * @throws Exception\UnknownException
      * @throws RequestException
      */
+    public function testGetFulfillmentOrder()
+    {
+        $returnedFulfillmentOrder = $this->sdk->getOrderService()->getFulfillmentOrder('10138-0001');
+        $this->assertEquals('10138-0001', $returnedFulfillmentOrder->getOrderNumber());
+    }
+
+    /**
+     * @throws Exception\AuthenticationInvalidException
+     * @throws Exception\Exception
+     * @throws Exception\NotFoundException
+     * @throws Exception\UnknownException
+     * @throws RequestException
+     */
     public function testGetOrdersByCustomerId()
     {
         // Arrange

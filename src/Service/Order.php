@@ -23,15 +23,16 @@
 namespace Shopgate\ConnectSdk\Service;
 
 use Psr\Http\Message\ResponseInterface;
-use Shopgate\ConnectSdk\Dto\Order\Order as OrderDto;
-use Shopgate\ConnectSdk\Dto\Meta;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
+use Shopgate\ConnectSdk\Dto\Meta;
+use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder;
+use Shopgate\ConnectSdk\Dto\Order\Order as OrderDto;
+use Shopgate\ConnectSdk\Helper\Json;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\ShopgateSdk;
-use Shopgate\ConnectSdk\Helper\Json;
 
 class Order
 {
@@ -145,5 +146,33 @@ class Order
         $response = $this->jsonHelper->decode($response->getBody(), true);
 
         return new OrderDto\Get($response['order']);
+    }
+
+    /**
+     * @param string $orderNumber
+     * @param array  $query
+     *
+     * @return FulfillmentOrder\Get
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function getFulfillmentOrder($orderNumber, array $query = [])
+    {
+        $response = $this->client->doRequest(
+            [
+                // direct only
+                'service' => self::SERVICE_ORDER,
+                'method'  => 'get',
+                'path'    => 'fulfillmentOrders/' . $orderNumber,
+                'query'   => $query,
+            ]
+        );
+
+        $response = $this->jsonHelper->decode($response->getBody(), true);
+
+        return new FulfillmentOrder\Get($response['fulfillmentOrder']);
     }
 }

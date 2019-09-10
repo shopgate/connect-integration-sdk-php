@@ -20,21 +20,18 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Order\Order\Dto\FulfillmentGroup\Fulfillment\FulfillmentPackage;
+namespace Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder\Dto;
 
 use Shopgate\ConnectSdk\Dto\Base;
 
 /**
- * @method PackageItem setId(string $id)
- * @method PackageItem setLineItemId(string $lineItemId)
- * @method PackageItem setQuantity(int $quantity)
- * @method string getId()
- * @method string getLineItemId()
- * @method int getQuantity()
+ * @method Channel setCode(string $code)
+ * @method Channel setName(string $name)
  *
- * @codeCoverageIgnore
+ * @method string getCode()
+ * @method string getName()
  */
-class PackageItem extends Base
+class Channel extends Base
 {
     /**
      * @var array
@@ -42,9 +39,8 @@ class PackageItem extends Base
     protected $schema = [
         'type' => 'object',
         'properties' => [
-            'id' => ['type' => 'string'],
-            'lineItemId' => ['type' => 'string'],
-            'quantity' => ['type' => 'number']
+            'code' => ['type' => 'string'],
+            'name' => ['type' => 'string'],
         ],
         'additionalProperties' => true,
     ];

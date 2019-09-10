@@ -20,28 +20,31 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Order\Order\Dto;
+namespace Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder\Dto;
 
 use Shopgate\ConnectSdk\Dto\Base;
 
 /**
- * @method Address setType(string $type)
- * @method Address setFirstName(string $firstName)
- * @method Address setMiddleName(string $middleName)
- * @method Address setLastName(string $lastName)
- * @method Address setCompany(string $company)
- * @method Address setAddress1(string $address1)
- * @method Address setAddress2(string $address2)
- * @method Address setAddress3(string $address3)
- * @method Address setAddress4(string $address4)
- * @method Address setCity(string $city)
- * @method Address setRegion(string $region)
- * @method Address setPostalCode(string $postalCode)
- * @method Address setCountry(string $country)
- * @method Address setPhone(string $phone)
- * @method Address setFax(string $fax)
- * @method Address setMobile(string $mobile)
- * @method Address setEmailAddress(string $emailAddress)
+ * @method FulfillmentOrderAddress setOrderIndex(string $orderIndex)
+ * @method FulfillmentOrderAddress setType(string $type)
+ * @method FulfillmentOrderAddress setFirstName(string $firstName)
+ * @method FulfillmentOrderAddress setMiddleName(string $middleName)
+ * @method FulfillmentOrderAddress setLastName(string $lastName)
+ * @method FulfillmentOrderAddress setCompany(string $company)
+ * @method FulfillmentOrderAddress setAddress1(string $address1)
+ * @method FulfillmentOrderAddress setAddress2(string $address2)
+ * @method FulfillmentOrderAddress setAddress3(string $address3)
+ * @method FulfillmentOrderAddress setAddress4(string $address4)
+ * @method FulfillmentOrderAddress setCity(string $city)
+ * @method FulfillmentOrderAddress setRegion(string $region)
+ * @method FulfillmentOrderAddress setPostalCode(string $postalCode)
+ * @method FulfillmentOrderAddress setCountry(string $country)
+ * @method FulfillmentOrderAddress setPhone(string $phone)
+ * @method FulfillmentOrderAddress setFax(string $fax)
+ * @method FulfillmentOrderAddress setMobile(string $mobile)
+ * @method FulfillmentOrderAddress setEmailAddress(string $emailAddress)
+ *
+ * @method string getOrderIndex()
  * @method string getType()
  * @method string getFirstName()
  * @method string getMiddleName()
@@ -62,7 +65,7 @@ use Shopgate\ConnectSdk\Dto\Base;
  *
  * @codeCoverageIgnore
  */
-class Address extends Base
+class FulfillmentOrderAddress extends Base
 {
     const TYPE_PICKUP = 'pickup';
     const TYPE_SHIPPING = 'shipping';
@@ -74,6 +77,7 @@ class Address extends Base
     protected $schema = [
         'type' => 'object',
         'properties' => [
+            'orderIndex' => ['type' => 'string'],
             'type' => ['type' => 'string'],
             'firstName' => ['type' => 'string'],
             'middleName' => ['type' => 'string'],

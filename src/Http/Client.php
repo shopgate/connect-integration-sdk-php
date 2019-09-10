@@ -47,6 +47,7 @@ use Shopgate\ConnectSdk\Http\Persistence\EncryptedFile;
 use Shopgate\ConnectSdk\Http\Persistence\PersistenceChain;
 use Shopgate\ConnectSdk\Http\Persistence\TokenPersistenceException;
 use Shopgate\ConnectSdk\ShopgateSdk;
+use function json_decode;
 
 class Client implements ClientInterface
 {

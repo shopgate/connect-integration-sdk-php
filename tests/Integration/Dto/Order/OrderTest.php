@@ -87,7 +87,7 @@ class OrderTest extends OrderBaseTest
                         'externalCode' => md5(date('c') . mt_rand()),
                         'addressSequences' => [
                             new Order\Dto\Address([
-                                'type' => Order::ADDRESS_TYPE_BILLING,
+                                'type' => Order\Dto\Address::TYPE_BILLING,
                                 'firstName' => 'Johnny',
                                 'lastName' => 'Bravo'
                             ])
@@ -126,6 +126,19 @@ class OrderTest extends OrderBaseTest
         // Assert
         $returnedOrder = $this->sdk->getOrderService()->getOrder($orderId);
         $this->assertEquals($externalCode, $returnedOrder->getExternalCode());
+    }
+
+    /**
+     * @throws Exception\AuthenticationInvalidException
+     * @throws Exception\Exception
+     * @throws Exception\NotFoundException
+     * @throws Exception\UnknownException
+     * @throws RequestException
+     */
+    public function testGetFulfillmentOrder()
+    {
+        $returnedFulfillmentOrder = $this->sdk->getOrderService()->getFulfillmentOrder('10138-0001');
+        $this->assertEquals('10138-0001', $returnedFulfillmentOrder->getOrderNumber());
     }
 
     /**
@@ -280,7 +293,7 @@ class OrderTest extends OrderBaseTest
             'currencyCode' => 'USD',
             'addressSequences' => [
                 new Order\Dto\Address([
-                    'type' => Order::ADDRESS_TYPE_BILLING,
+                    'type' => Order\Dto\Address::TYPE_BILLING,
                     'firstName' => 'Jane',
                     'lastName' => 'Doe'
                 ])
@@ -392,7 +405,7 @@ class OrderTest extends OrderBaseTest
         return new Order\Dto\LineItem([
             'code' => 'lineItem-' . $productId,
             'quantity' => 1,
-            'fulfillmentMethod' => Order::LINE_ITEM_FULFILLMENT_METHOD_DIRECT_SHIP,
+            'fulfillmentMethod' => Order\Dto\LineItem::FULFILLMENT_METHOD_DIRECT_SHIP,
             'shipToAddressSequenceIndex' => 0,
             'fulfillmentLocationCode' => $locationCode,
             'product' => new Order\Dto\LineItem\Product([

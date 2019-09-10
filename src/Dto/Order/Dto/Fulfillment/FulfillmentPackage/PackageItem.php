@@ -20,27 +20,21 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Order\Order\Dto;
+namespace Shopgate\ConnectSdk\Dto\Order\Dto\Fulfillment\FulfillmentPackage;
 
 use Shopgate\ConnectSdk\Dto\Base;
-use Shopgate\ConnectSdk\Dto\Order\Dto\Fulfillment;
 
 /**
- * @method FulfillmentGroup setId(string $id)
- * @method FulfillmentGroup setFulfillmentMethod(string $fulfillmentMethod)
- * @method FulfillmentGroup setFulfillmentLocationCode(string $fulfillmentLocationCode)
- * @method FulfillmentGroup setShipToAddressSequenceIndex(int $shipToAddressSequenceIndex)
- * @method FulfillmentGroup setFulFillments(Fulfillment[] $fulfillments)
- *
+ * @method PackageItem setId(string $id)
+ * @method PackageItem setLineItemId(string $lineItemId)
+ * @method PackageItem setQuantity(int $quantity)
  * @method string getId()
- * @method string getFulfillmentMethod()
- * @method string getFulfillmentLocationCode()
- * @method int getShipToAddressSequenceIndex()
- * @method Fulfillment[] getFulfillments()
+ * @method string getLineItemId()
+ * @method int getQuantity()
  *
  * @codeCoverageIgnore
  */
-class FulfillmentGroup extends Base
+class PackageItem extends Base
 {
     /**
      * @var array
@@ -49,13 +43,8 @@ class FulfillmentGroup extends Base
         'type' => 'object',
         'properties' => [
             'id' => ['type' => 'string'],
-            'fulfillmentMethod' => ['type' => 'string'],
-            'fulfillmentLocationCode' => ['type' => 'string'],
-            'shipToAddressSequenceIndex' => ['type' => 'number'],
-            'fulfillments' => [
-                'type' => 'array',
-                'items' => ['$ref' => Fulfillment::class]
-            ]
+            'lineItemId' => ['type' => 'string'],
+            'quantity' => ['type' => 'number']
         ],
         'additionalProperties' => true,
     ];

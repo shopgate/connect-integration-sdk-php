@@ -20,7 +20,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Order\Order\Dto\FulfillmentGroup\Fulfillment;
+namespace Shopgate\ConnectSdk\Dto\Order\Dto\Fulfillment;
 
 use Shopgate\ConnectSdk\Dto\Base;
 
@@ -52,6 +52,11 @@ use Shopgate\ConnectSdk\Dto\Base;
  */
 class FulfillmentPackage extends Base
 {
+    const STATUS_OPEN = 'open';
+    const STATUS_CANCELED = 'canceled';
+    const STATUS_IN_PROGRESS = 'inProgress';
+    const STATUS_FULFILLED = 'fulfilled';
+
     /**
      * @var array
      */

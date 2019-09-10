@@ -47,6 +47,7 @@ use Shopgate\ConnectSdk\Http\Persistence\EncryptedFile;
 use Shopgate\ConnectSdk\Http\Persistence\PersistenceChain;
 use Shopgate\ConnectSdk\Http\Persistence\TokenPersistenceException;
 use Shopgate\ConnectSdk\ShopgateSdk;
+use function json_decode;
 
 class Client implements ClientInterface
 {
@@ -292,7 +293,7 @@ class Client implements ClientInterface
     private function checkForErrorsInResponse($response)
     {
         if ($body = $response->getBody()) {
-            $responseContent = \json_decode($body->read($body->getSize()), true);
+            $responseContent = json_decode($body->read($body->getSize()), true);
 
             if (!isset($responseContent['errors']) || empty($responseContent['errors'])) {
                 return;

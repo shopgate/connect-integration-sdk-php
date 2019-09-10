@@ -3,10 +3,12 @@
 namespace Shopgate\ConnectSdk\Http\Client\GrantType;
 
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
 use kamermans\OAuth2\GrantType\GrantTypeInterface;
 use kamermans\OAuth2\Signer\ClientCredentials\SignerInterface;
 use kamermans\OAuth2\Utils\Collection;
-use kamermans\OAuth2\Utils\Helper;
+use GuzzleHttp\Psr7;
+use Psr\Http\Message\StreamInterface;
 
 class ShopgateCredentials implements GrantTypeInterface
 {
@@ -57,18 +59,13 @@ class ShopgateCredentials implements GrantTypeInterface
      * @param null            $refreshToken
      *
      * @return array|mixed
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function getRawData(SignerInterface $clientCredentialsSigner, $refreshToken = null)
     {
-        if (Helper::guzzleIs('>=', 6)) {
-            $request = (new \GuzzleHttp\Psr7\Request('POST', $this->client->getConfig()['base_uri']))
-                ->withBody($this->getPostBody())
-                ->withHeader('Content-Type', 'application/x-www-form-urlencoded');
-        } else {
-            $request = $this->client->createRequest('POST', null);
-            $request->setBody($this->getPostBody());
-        }
+        $request = (new Psr7\Request('POST', $this->client->getConfig()['base_uri']))
+            ->withBody($this->getPostBody())
+            ->withHeader('Content-Type', 'application/x-www-form-urlencoded');
 
         $request = $clientCredentialsSigner->sign(
             $request,
@@ -82,40 +79,23 @@ class ShopgateCredentials implements GrantTypeInterface
     }
 
     /**
-     * @return PostBody
+     * @return StreamInterface
      */
     protected function getPostBody()
     {
-        if (Helper::guzzleIs('>=', '6')) {
-            $data = [
-                'grant_type' => 'password',
-                'username'   => $this->config['username'],
-                'password'   => $this->config['password'],
-                'tenantType' => self::DEFAULT_TENANT_TYPE,
-                'tenantId' => $this->config['merchant_code']
-
-            ];
-
-            if ($this->config['scope']) {
-                $data['scope'] = $this->config['scope'];
-            }
-
-            return \GuzzleHttp\Psr7\stream_for(http_build_query($data, '', '&'));
-        }
-
-        $postBody = new PostBody();
-        $postBody->replaceFields([
+        $data = [
             'grant_type' => 'password',
             'username'   => $this->config['username'],
             'password'   => $this->config['password'],
             'tenantType' => self::DEFAULT_TENANT_TYPE,
             'tenantId' => $this->config['merchant_code']
-        ]);
+
+        ];
 
         if ($this->config['scope']) {
-            $postBody->setField('scope', $this->config['scope']);
+            $data['scope'] = $this->config['scope'];
         }
 
-        return $postBody;
+        return Psr7\stream_for(http_build_query($data, '', '&'));
     }
 }

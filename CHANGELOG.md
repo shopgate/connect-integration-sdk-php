@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [0.8.0] - 2019-09-10
+### Added
+- getFulfillmentOrder direct call
+
+### Fixed
+- an error related to not throwing exceptions we got from the api
+
 ## [0.7.0] - 2019-09-03
 ### Changed
 - switch to the new .io service endpoints
@@ -112,7 +119,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - createCategory event & direct call
 - deleteCategory event & direct call
 
-[Unreleased]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.7.0...HEAD
+[Unreleased]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.8.0...HEAD
+[0.8.0]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.8.0...0.7.0
 [0.7.0]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.6.0...0.7.0
 [0.6.0]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.5.0...0.6.0
 [0.5.0]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.4.0...0.5.0

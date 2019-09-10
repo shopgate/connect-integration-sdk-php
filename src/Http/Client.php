@@ -293,7 +293,7 @@ class Client implements ClientInterface
     private function checkForErrorsInResponse($response)
     {
         if ($body = $response->getBody()) {
-            $responseContent = json_decode($body->read($body->getSize()), true);
+            $responseContent = json_decode((string)$body, true);
 
             if (!isset($responseContent['errors']) || empty($responseContent['errors'])) {
                 return;

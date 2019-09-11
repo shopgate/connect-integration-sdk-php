@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.8.0] - 2019-09-10
+### Added
+- getFulfillmentOrder direct call
+
+### Fixed
+- an error related to not throwing exceptions we got from the api
+
+## [0.7.0] - 2019-09-03
+### Changed
+- switch to the new .io service endpoints
+- handle the new auth methods with username and password
+
+## [0.6.0] - 2019-08-23
 ### Changed
 - localized category url
 - localized category image
@@ -45,15 +59,22 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - getWishlist
 - addWishlistItems direct call
 - deleteWishlistItem direct call
+- addOrders direct call
+- getOrders
+- getOrder
+- addReservations direct call
+- updateReservations direct call
+- deleteReservations direct call
+- getReservation
+- getReservations
 
-
-## [0.5.0]- 2019-06-28
+## [0.5.0] - 2019-06-28
 ### Added
 - bulkImport for attributes
 - bulkImport for categories
 - bulkImport for products
 
-## [0.4.0]- 2019-06-13
+## [0.4.0] - 2019-06-13
 ### Added
 - getProduct direct call
 - getCategory direct call
@@ -69,7 +90,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - SDK structure
 - DTO structure
 
-## [0.3.0]- 2019-06-06
+## [0.3.0] - 2019-06-06
 ### Added
 - oauth2 authentication for endpoint calls
 - encrypted token saving to a file
@@ -77,7 +98,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Changed
 - client SDK configuration to be more flat
 
-## [0.2.1]- 2019-05-23
+## [0.2.1] - 2019-05-23
 ### Changed
 - symphony option-resolver version to be compatible with Mage 2.3+
 
@@ -98,7 +119,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - createCategory event & direct call
 - deleteCategory event & direct call
 
-[Unreleased]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.5.0...HEAD
+[Unreleased]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.8.0...HEAD
+[0.8.0]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.7.0...0.8.0
+[0.7.0]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.6.0...0.7.0
+[0.6.0]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.5.0...0.6.0
 [0.5.0]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.4.0...0.5.0
 [0.4.0]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.3.0...0.4.0
 [0.3.0]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.2.1...0.3.0

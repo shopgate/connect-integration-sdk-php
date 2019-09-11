@@ -28,6 +28,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
+use Shopgate\ConnectSdk\Dto\Catalog\Reservation;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Categories;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Extras;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\LongDescription;
@@ -44,19 +45,23 @@ use Shopgate\ConnectSdk\Exception\Exception;
 abstract class CatalogTest extends ShopgateSdkTest
 {
     const CATALOG_SERVICE = 'catalog';
-    const LOCATION_SERVICE = 'omni-location';
+    const LOCATION_SERVICE = 'location';
+    const CUSTOMER_SERVICE = 'customer';
     const METHOD_DELETE_CATEGORY = 'deleteCategory';
     const METHOD_DELETE_PRODUCT = 'deleteProduct';
     const METHOD_DELETE_ATTRIBUTE = 'deleteAttribute';
     const METHOD_DELETE_LOCATION = 'deleteLocation';
+    const METHOD_DELETE_RESERVATIONS = 'deleteReservations';
+    const METHOD_DELETE_CUSTOMER = 'deleteCustomer';
 
     const METHOD_DELETE_REQUEST_META = [
         self::METHOD_DELETE_CATEGORY => ['force' => true],
         self::METHOD_DELETE_PRODUCT => [],
         self::METHOD_DELETE_ATTRIBUTE => [],
+        self::METHOD_DELETE_RESERVATIONS => [],
     ];
 
-    const SAMPLE_CATALOG_CODE = 'NAWholesale';
+    const SAMPLE_CATALOG_CODE = 'NARetail';
 
     const PRODUCT_CODE = 'integration-test';
     const PRODUCT_CODE_SECOND = 'integration-test-2';
@@ -83,6 +88,7 @@ abstract class CatalogTest extends ShopgateSdkTest
                 self::METHOD_DELETE_CATEGORY => ['force' => true],
                 self::METHOD_DELETE_PRODUCT => [],
                 self::METHOD_DELETE_ATTRIBUTE => [],
+                self::METHOD_DELETE_RESERVATIONS => [],
             ]
         );
         $this->registerForCleanUp(
@@ -90,6 +96,13 @@ abstract class CatalogTest extends ShopgateSdkTest
             $this->sdk->getLocationService(),
             [
                 self::METHOD_DELETE_LOCATION => []
+            ]
+        );
+        $this->registerForCleanUp(
+            self::CUSTOMER_SERVICE,
+            $this->sdk->getCustomerService(),
+            [
+                self::METHOD_DELETE_CUSTOMER => []
             ]
         );
     }
@@ -131,8 +144,8 @@ abstract class CatalogTest extends ShopgateSdkTest
     ) {
         $category = new Category\Create();
         $category->setCode($code)
-            ->setName(new Category\Dto\Name(['en-us' => $name]))
-            ->setSequenceId($sequenceId);
+                 ->setName(new Category\Dto\Name(['en-us' => $name]))
+                 ->setSequenceId($sequenceId);
         if ($description) {
             $translatedDescription = new Category\Dto\Description(['en-us' => $description]);
             $category->setDescription($translatedDescription);
@@ -153,9 +166,9 @@ abstract class CatalogTest extends ShopgateSdkTest
     {
         $attribute = new Attribute\Create;
         $attribute->setCode(self::SAMPLE_ATTRIBUTE_CODE)
-            ->setType(Attribute\Create::TYPE_TEXT)
-            ->setUse(Attribute\Create::USE_OPTION)
-            ->setExternalUpdateDate('2018-12-15T00:00:23.114Z');
+                  ->setType(Attribute\Create::TYPE_TEXT)
+                  ->setUse(Attribute\Create::USE_OPTION)
+                  ->setExternalUpdateDate('2018-12-15T00:00:23.114Z');
 
         $attributeName = new Name();
         $attributeName->add('de-de', 'Attribute de');
@@ -255,7 +268,7 @@ abstract class CatalogTest extends ShopgateSdkTest
             ->setExtras($sampleExtras)
             ->setCode(self::PRODUCT_CODE_SECOND)// required
             ->setParentProductCode('dfsdf7')
-            ->setCatalogCode('PNW Retail')// required
+            ->setCatalogCode(self::SAMPLE_CATALOG_CODE)// required
             ->setModelType(Product\Create::MODEL_TYPE_STANDARD)// required
             ->setIdentifiers($identifiers)
             ->setPrice($price)// required
@@ -286,11 +299,11 @@ abstract class CatalogTest extends ShopgateSdkTest
     {
         $categoryMapping = new Product\Dto\Categories();
         $categoryMapping->setCode(self::CATEGORY_CODE)
-            ->setIsPrimary(true);
+                        ->setIsPrimary(true);
 
         $categoryMapping2 = new Product\Dto\Categories();
         $categoryMapping2->setCode(self::CATEGORY_CODE_SECOND)
-            ->setIsPrimary(false);
+                         ->setIsPrimary(false);
 
         return [$categoryMapping, $categoryMapping2];
     }
@@ -298,10 +311,10 @@ abstract class CatalogTest extends ShopgateSdkTest
     protected function provideIdentifiers()
     {
         return (new Product\Dto\Identifiers())->setMfgPartNum('someMfgPartNum')
-            ->setUpc('Universal-Product-Code')
-            ->setEan('European Article Number')
-            ->setIsbn('978-3-16-148410-0')
-            ->setSku('stock_keeping_unit');
+                                              ->setUpc('Universal-Product-Code')
+                                              ->setEan('European Article Number')
+                                              ->setIsbn('978-3-16-148410-0')
+                                              ->setSku('stock_keeping_unit');
     }
 
     /**
@@ -311,19 +324,19 @@ abstract class CatalogTest extends ShopgateSdkTest
     {
         $volumePricing1 = new Product\Dto\Price\VolumePricing();
         $volumePricing1->setMinQty(5)
-            ->setMaxQty(20)
-            ->setPrice(84.99)
-            ->setSalePrice(83.99)
-            ->setUnit('kg')
-            ->setPriceType(Product\Dto\Price\VolumePricing::PRICE_TYPE_FIXED);
+                       ->setMaxQty(20)
+                       ->setPrice(84.99)
+                       ->setSalePrice(83.99)
+                       ->setUnit('kg')
+                       ->setPriceType(Product\Dto\Price\VolumePricing::PRICE_TYPE_FIXED);
 
         $volumePricing2 = new Product\Dto\Price\VolumePricing();
         $volumePricing2->setMinQty(21)
-            ->setMaxQty(100)
-            ->setPrice(84.99)
-            ->setSalePrice(-2)
-            ->setUnit('kg')
-            ->setPriceType(Product\Dto\Price\VolumePricing::PRICE_TYPE_RELATIVE);
+                       ->setMaxQty(100)
+                       ->setPrice(84.99)
+                       ->setSalePrice(-2)
+                       ->setUnit('kg')
+                       ->setPriceType(Product\Dto\Price\VolumePricing::PRICE_TYPE_RELATIVE);
 
         return [$volumePricing1, $volumePricing2];
     }
@@ -335,13 +348,13 @@ abstract class CatalogTest extends ShopgateSdkTest
     {
         $mapPricing1 = new Product\Dto\Price\MapPricing();
         $mapPricing1->setStartDate('2019-06-01T00:00:00.000Z')
-            ->setEndDate('2019-09-01T00:00:00.000Z')
-            ->setPrice(84.49);
+                    ->setEndDate('2019-09-01T00:00:00.000Z')
+                    ->setPrice(84.49);
 
         $mapPricing2 = new Product\Dto\Price\MapPricing();
         $mapPricing2->setStartDate('2019-09-01T00:00:01.000Z')
-            ->setEndDate('2019-10-01T00:00:00.000Z')
-            ->setPrice(84.49);
+                    ->setEndDate('2019-10-01T00:00:00.000Z')
+                    ->setPrice(84.49);
 
         return [$mapPricing1, $mapPricing2];
     }
@@ -355,15 +368,15 @@ abstract class CatalogTest extends ShopgateSdkTest
         $mapPricing = $this->provideMapPricing();
 
         return (new Product\Dto\Price())->setCurrencyCode(Product\Dto\Price::CURRENCY_CODE_USD)
-            ->setCost(50)
-            ->setPrice(90)
-            ->setSalePrice(84.99)
-            ->setVolumePricing($volumePricing)
-            ->setUnit('kg')
-            ->setMsrp(100)
-            ->setMinPrice(80)
-            ->setMaxPrice(90)
-            ->setMapPricing($mapPricing);
+                                        ->setCost(50)
+                                        ->setPrice(90)
+                                        ->setSalePrice(84.99)
+                                        ->setVolumePricing($volumePricing)
+                                        ->setUnit('kg')
+                                        ->setMsrp(100)
+                                        ->setMinPrice(80)
+                                        ->setMaxPrice(90)
+                                        ->setMapPricing($mapPricing);
     }
 
     /**
@@ -385,23 +398,23 @@ abstract class CatalogTest extends ShopgateSdkTest
 
         $property1 = new Product\Dto\Properties\Product();
         $property1->setCode('property_code_1')
-            ->setName(new Properties\Name(['en-us' => 'property 1 english', 'de-de' => 'property 1 deutsch']))
-            ->setValue(new Properties\Value(['stuff' => 'stuff value', 'other stuff' => 'other stuff value']))
-            ->setDisplayGroup(Properties::DISPLAY_GROUP_FEATURES)
-            ->setSubDisplayGroup($subDisplayGroup);
+                  ->setName(new Properties\Name(['en-us' => 'property 1 english', 'de-de' => 'property 1 deutsch']))
+                  ->setValue(new Properties\Value(['stuff' => 'stuff value', 'other stuff' => 'other stuff value']))
+                  ->setDisplayGroup(Properties::DISPLAY_GROUP_FEATURES)
+                  ->setSubDisplayGroup($subDisplayGroup);
 
         $property2 = (new Product\Dto\Properties\Simple())->setCode('property_code_2')
-            ->setName(
-                new Properties\Name(
-                    [
-                        'en-us' => 'property 2 english',
-                        'de-de' => 'property 2 deutsch'
-                    ]
-                )
-            )
-            ->setValue(new Properties\Value())
-            ->setDisplayGroup('features')
-            ->setSubDisplayGroup($subDisplayGroup);
+                                                          ->setName(
+                                                              new Properties\Name(
+                                                                  [
+                                                                      'en-us' => 'property 2 english',
+                                                                      'de-de' => 'property 2 deutsch'
+                                                                  ]
+                                                              )
+                                                          )
+                                                          ->setValue(new Properties\Value())
+                                                          ->setDisplayGroup('features')
+                                                          ->setSubDisplayGroup($subDisplayGroup);
 
         return [$property1, $property2];
     }
@@ -430,19 +443,19 @@ abstract class CatalogTest extends ShopgateSdkTest
     {
         $media1 = new Product\Dto\MediaList\Media();
         $media1->setCode('media_code_1')
-            ->setType(Product\Dto\MediaList\Media::TYPE_IMAGE)
-            ->setUrl('example.com/media1.jpg')
-            ->setAltText('alt text 1')
-            ->setSubTitle('Title Media 1')
-            ->setSequenceId(0);
+               ->setType(Product\Dto\MediaList\Media::TYPE_IMAGE)
+               ->setUrl('example.com/media1.jpg')
+               ->setAltText('alt text 1')
+               ->setSubTitle('Title Media 1')
+               ->setSequenceId(0);
 
         $media2 = new Product\Dto\MediaList\Media();
         $media2->setCode('media_code_2')
-            ->setType(Product\Dto\MediaList\Media::TYPE_VIDEO)
-            ->setUrl('example.com/media2.mov')
-            ->setAltText('alt text 2')
-            ->setSubTitle('Title Media 2')
-            ->setSequenceId(5);
+               ->setType(Product\Dto\MediaList\Media::TYPE_VIDEO)
+               ->setUrl('example.com/media2.mov')
+               ->setAltText('alt text 2')
+               ->setSubTitle('Title Media 2')
+               ->setSequenceId(5);
 
         $media = new MediaList();
         $media->add('en-us', [$media1, $media2]);
@@ -459,7 +472,7 @@ abstract class CatalogTest extends ShopgateSdkTest
 
         $option1 = new Product\Dto\Options();
         $option1->setCode(self::SAMPLE_ATTRIBUTE_CODE)
-            ->setValues([$value1]);
+                ->setValues([$value1]);
 
         return [$option1];
     }
@@ -472,11 +485,11 @@ abstract class CatalogTest extends ShopgateSdkTest
         list($value1, $value2) = $this->provideExtraValues();
         $extra1 = new Product\Dto\Extras();
         $extra1->setCode(self::SAMPLE_EXTRA_CODE)
-            ->setValues([$value1, $value2]);
+               ->setValues([$value1, $value2]);
 
         $extra2 = new Product\Dto\Extras();
         $extra2->setCode(self::SAMPLE_EXTRA_CODE_2)
-            ->setValues([$value2]);
+               ->setValues([$value2]);
 
         return [$extra1, $extra2];
     }
@@ -488,7 +501,7 @@ abstract class CatalogTest extends ShopgateSdkTest
     {
         $value1 = new Product\Dto\Options\Values();
         $value1->setCode(self::SAMPLE_ATTRIBUTE_VALUE_CODE)
-            ->setAdditionalPrice(5);
+               ->setAdditionalPrice(5);
 
         return [$value1];
     }
@@ -500,10 +513,10 @@ abstract class CatalogTest extends ShopgateSdkTest
     {
         $value1 = new Product\Dto\Options\Values();
         $value1->setCode(self::SAMPLE_EXTRA_VALUE_CODE)
-            ->setAdditionalPrice(5);
+               ->setAdditionalPrice(5);
         $value2 = new Product\Dto\Options\Values();
         $value2->setCode(self::SAMPLE_EXTRA_VALUE_CODE_2)
-            ->setAdditionalPrice(10);
+               ->setAdditionalPrice(10);
 
         return [$value1, $value2];
     }
@@ -552,9 +565,9 @@ abstract class CatalogTest extends ShopgateSdkTest
     {
         $extra = new Attribute\Create;
         $extra->setCode(self::SAMPLE_EXTRA_CODE)
-            ->setType(Attribute\Create::TYPE_TEXT)
-            ->setUse(Attribute\Create::USE_EXTRA)
-            ->setExternalUpdateDate('2018-12-15T00:00:23.114Z');
+              ->setType(Attribute\Create::TYPE_TEXT)
+              ->setUse(Attribute\Create::USE_EXTRA)
+              ->setExternalUpdateDate('2018-12-15T00:00:23.114Z');
 
         $extraName = new Name();
         $extraName->add('de-de', 'Extra 1 de');
@@ -570,19 +583,6 @@ abstract class CatalogTest extends ShopgateSdkTest
         $extraValueName->add('en-us', 'Extra 1 Attribute en');
         $extraValue->setName($extraValueName);
 
-        $extra->setValues([$extraValue]);
-
-        $extraSecond = new Attribute\Create;
-        $extraSecond->setCode(self::SAMPLE_EXTRA_CODE_2)
-            ->setType(Attribute\Create::TYPE_TEXT)
-            ->setUse(Attribute\Create::USE_EXTRA)
-            ->setExternalUpdateDate('2018-12-15T00:00:23.114Z');
-
-        $extraSecondName = new Name();
-        $extraSecondName->add('de-de', 'Extra 2 de');
-        $extraSecondName->add('en-us', 'Extra 2 en');
-        $extraSecond->setName($extraSecondName);
-
         $extraSecondValue = new AttributeValue\Create();
         $extraSecondValue->setCode(self::SAMPLE_EXTRA_VALUE_CODE_2);
         $extraSecondValue->setSequenceId(1);
@@ -591,6 +591,19 @@ abstract class CatalogTest extends ShopgateSdkTest
         $extraSecondValueName->add('de-de', 'Extra 2 Attribute de');
         $extraSecondValueName->add('en-us', 'Extra 2 Attribute en');
         $extraSecondValue->setName($extraSecondValueName);
+
+        $extra->setValues([$extraValue, $extraSecondValue]);
+
+        $extraSecond = new Attribute\Create;
+        $extraSecond->setCode(self::SAMPLE_EXTRA_CODE_2)
+                    ->setType(Attribute\Create::TYPE_TEXT)
+                    ->setUse(Attribute\Create::USE_EXTRA)
+                    ->setExternalUpdateDate('2018-12-15T00:00:23.114Z');
+
+        $extraSecondName = new Name();
+        $extraSecondName->add('de-de', 'Extra 2 de');
+        $extraSecondName->add('en-us', 'Extra 2 en');
+        $extraSecond->setName($extraSecondName);
 
         $extraSecond->setValues([$extraSecondValue]);
 
@@ -627,7 +640,7 @@ abstract class CatalogTest extends ShopgateSdkTest
             $inventory->setLocationCode(self::LOCATION_CODE);
             $inventory->setSku('SKU_' . $i);
             $inventory->setOnHand(10 + $i);
-            $inventory->setBin($i);
+            $inventory->setBin((string) $i);
             $inventory->setBinLocation('DE-' . $i);
             $inventory->setSafetyStock($i);
             $result[] = $inventory;
@@ -637,9 +650,38 @@ abstract class CatalogTest extends ShopgateSdkTest
     }
 
     /**
+     * @param int    $count
+     * @param string $productCode
+     * @param int $orderNumber
+     *
+     * @return Reservation\Create[]
+     */
+    protected function provideSampleReservations($count = 1, $productCode = self::PRODUCT_CODE, $orderNumber)
+    {
+        $result = [];
+        for ($i = 1; $i < $count + 1; $i++) {
+            $reservation = new Reservation\Create();
+            $reservation->setProductCode($productCode);
+            $reservation->setLocationCode(self::LOCATION_CODE);
+            $reservation->setSku('SKU_' . $i);
+            $reservation->setSalesOrderLineItemCode('11111-2222-44444-' . $i);
+            $reservation->setSalesOrderNumber($orderNumber);
+            $reservation->setBin((string) $i);
+            $reservation->setBinLocation('DE-' . $i);
+            $reservation->setQuantity(1);
+            $result[] = $reservation;
+        }
+
+        return $result;
+    }
+
+    /**
      * @param string $locationCode
      *
-     * @throws Exception
+     * @throws \Shopgate\ConnectSdk\Exception\AuthenticationInvalidException
+     * @throws \Shopgate\ConnectSdk\Exception\NotFoundException
+     * @throws \Shopgate\ConnectSdk\Exception\RequestException
+     * @throws \Shopgate\ConnectSdk\Exception\UnknownException
      */
     protected function createLocation($locationCode)
     {

@@ -3,6 +3,7 @@
 
 namespace Shopgate\ConnectSdk\Tests\Integration\Http;
 
+use Dotenv\Dotenv;
 use Exception;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\SeekException;
@@ -18,40 +19,21 @@ use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Http\Client;
 use Shopgate\ConnectSdk\Http\Client as SdkClient;
+use Shopgate\ConnectSdk\Http\Persistence\TokenPersistenceException;
 use Shopgate\ConnectSdk\ShopgateSdk;
 use Shopgate\ConnectSdk\Tests\Integration\ShopgateSdkTest;
 
 class ClientTest extends ShopgateSdkTest
 {
-    /**
-     * @param string $clientId
-     * @param string $clientSecret
-     * @param string $merchantCode
-     * @param string $baseUri
-     * @param string $env
-     * @param string $accessTokenPath
-     *
-     * @return ShopgateSdk
-     *
-     * @throws Exception
-     */
-    public function createNewSdk($clientId, $clientSecret, $merchantCode, $baseUri, $env, $accessTokenPath)
+    private $accessTokenPath = './access_token_client_test.txt';
+
+    public function setUp()
     {
-        $client = Client::createInstance(
-            $clientId,
-            $clientSecret,
-            $merchantCode,
-            $baseUri,
-            $env,
-            $accessTokenPath
-        );
+        parent::setUp();
 
-        if ((int)getenv('requestLogging')) {
-            $client->enableRequestLogging(new Logger('request_logger_integration_tests',
-                [new StreamHandler('php://stdout')]));
+        if (file_exists($this->accessTokenPath)) {
+            unlink($this->accessTokenPath);
         }
-
-        return new ShopgateSdk(['client' => $client]);
     }
 
     /**
@@ -60,6 +42,8 @@ class ClientTest extends ShopgateSdkTest
      * @param string $clientId
      * @param string $clientSecret
      * @param string $merchantCode
+     * @param string $username
+     * @param string $password
      * @param string $baseUri
      * @param string $env
      * @param string $accessTokenPath
@@ -74,11 +58,14 @@ class ClientTest extends ShopgateSdkTest
         $clientId,
         $clientSecret,
         $merchantCode,
+        $username,
+        $password,
         $baseUri,
         $env,
         $accessTokenPath
     ) {
-        $sdk = $this->createNewSdk($clientId, $clientSecret, $merchantCode, $baseUri, $env, $accessTokenPath);
+        $sdk = $this->createNewSdk($clientId, $clientSecret, $merchantCode, $username, $password, $baseUri, $env,
+            $accessTokenPath);
         try {
             $sdk->getClient()->doRequest([
                 'method'      => 'get',
@@ -92,6 +79,7 @@ class ClientTest extends ShopgateSdkTest
             ]);
         } catch (Exception $exception) {
             $this->assertInstanceOf($expectedException, $exception);
+
             return;
         }
 
@@ -99,40 +87,102 @@ class ClientTest extends ShopgateSdkTest
     }
 
     /**
+     * @param string $clientId
+     * @param string $clientSecret
+     * @param string $merchantCode
+     * @param string $username
+     * @param string $password
+     * @param string $baseUri
+     * @param string $env
+     * @param string $accessTokenPath
+     *
+     * @return ShopgateSdk
+     *
+     * @throws Exception
+     */
+    public function createNewSdk(
+        $clientId,
+        $clientSecret,
+        $merchantCode,
+        $username,
+        $password,
+        $baseUri,
+        $env,
+        $accessTokenPath
+    ) {
+        $client = Client::createInstance(
+            $clientId,
+            $clientSecret,
+            $merchantCode,
+            $username,
+            $password,
+            $baseUri,
+            $env,
+            $accessTokenPath
+        );
+
+        if ((int)getenv('requestLogging')) {
+            $client->enableRequestLogging(new Logger('request_logger_integration_tests',
+                [new StreamHandler('php://stdout')]));
+        }
+
+        return new ShopgateSdk(['client' => $client]);
+    }
+
+    /**
      * @return array
      */
     public function provideConfigurations()
     {
+        $env = Dotenv::create(__DIR__ . '/../');
+        $env->load();
+        $env->required(
+            [
+                'clientId',
+                'clientSecret',
+                'merchantCode',
+                'username',
+                'password',
+            ]
+        );
+
         return [
             'wrong path'                 => [
-                AuthenticationInvalidException::class,
+                TokenPersistenceException::class,
                 ShopgateSdk::REQUEST_TYPE_DIRECT,
                 getenv('clientId'),
                 getenv('clientSecret'),
                 getenv('merchantCode'),
+                getenv('username'),
+                getenv('password'),
                 getenv('baseUri') ?: '',
                 getenv('env') ?: '',
-                '/test.txt',
+                '/invalid/test.txt',
             ],
-            'wrong clientId'             => [
+            'wrong clientId' => [
                 AuthenticationInvalidException::class,
                 ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'wrong',
                 getenv('clientSecret'),
                 getenv('merchantCode'),
+                getenv('username'),
+                getenv('password'),
                 getenv('baseUri') ?: '',
                 getenv('env') ?: '',
-                getenv('accessTokenPath')
+                $this->accessTokenPath
             ],
-            'wrong clientSecret'         => [
+
+            'wrong clientSecret' => [
                 AuthenticationInvalidException::class,
                 ShopgateSdk::REQUEST_TYPE_DIRECT,
                 getenv('clientId'),
                 'wrong',
                 getenv('merchantCode'),
+                getenv('username'),
+                getenv('password'),
                 getenv('baseUri') ?: '',
                 getenv('env') ?: '',
-                getenv('accessTokenPath')
+                $this->accessTokenPath
             ],
             'wrong merchantCode'         => [
                 AuthenticationInvalidException::class,
@@ -140,9 +190,35 @@ class ClientTest extends ShopgateSdkTest
                 getenv('clientId'),
                 getenv('clientSecret'),
                 'wrong',
+                getenv('username'),
+                getenv('password'),
                 getenv('baseUri') ?: '',
                 getenv('env') ?: '',
-                getenv('accessTokenPath')
+                $this->accessTokenPath
+            ],
+            'wrong username'         => [
+                AuthenticationInvalidException::class,
+                ShopgateSdk::REQUEST_TYPE_DIRECT,
+                getenv('clientId'),
+                getenv('clientSecret'),
+                getenv('merchantCode'),
+                'wrong',
+                getenv('password'),
+                getenv('baseUri') ?: '',
+                getenv('env') ?: '',
+                $this->accessTokenPath
+            ],
+            'wrong password'         => [
+                AuthenticationInvalidException::class,
+                ShopgateSdk::REQUEST_TYPE_DIRECT,
+                getenv('clientId'),
+                getenv('clientSecret'),
+                getenv('merchantCode'),
+                getenv('username'),
+                'wrong',
+                getenv('baseUri') ?: '',
+                getenv('env') ?: '',
+                $this->accessTokenPath
             ],
             'wrong baseUri'              => [
                 RequestException::class,
@@ -150,9 +226,11 @@ class ClientTest extends ShopgateSdkTest
                 getenv('clientId'),
                 getenv('clientSecret'),
                 getenv('merchantCode'),
+                getenv('username'),
+                getenv('password'),
                 'httpp://localhost',
                 getenv('env') ?: '',
-                getenv('accessTokenPath')
+                $this->accessTokenPath
             ],
             'wrong env'                  => [
                 RequestException::class,
@@ -160,19 +238,11 @@ class ClientTest extends ShopgateSdkTest
                 getenv('clientId'),
                 getenv('clientSecret'),
                 getenv('merchantCode'),
-                getenv('baseUri') ?: '',
+                getenv('username'),
+                getenv('password'),
+                '',
                 'wrong',
-                getenv('accessTokenPath')
-            ],
-            'event - wrong path'         => [
-                AuthenticationInvalidException::class,
-                ShopgateSdk::REQUEST_TYPE_EVENT,
-                getenv('clientId'),
-                getenv('clientSecret'),
-                getenv('merchantCode'),
-                getenv('baseUri') ?: '',
-                getenv('env') ?: '',
-                '/test.txt',
+                $this->accessTokenPath
             ],
             'event - wrong clientId'     => [
                 AuthenticationInvalidException::class,
@@ -180,9 +250,11 @@ class ClientTest extends ShopgateSdkTest
                 'wrong',
                 getenv('clientSecret'),
                 getenv('merchantCode'),
+                getenv('username'),
+                getenv('password'),
                 getenv('baseUri') ?: '',
                 getenv('env') ?: '',
-                getenv('accessTokenPath')
+                $this->accessTokenPath
             ],
             'event - wrong clientSecret' => [
                 AuthenticationInvalidException::class,
@@ -190,9 +262,11 @@ class ClientTest extends ShopgateSdkTest
                 getenv('clientId'),
                 'wrong',
                 getenv('merchantCode'),
+                getenv('username'),
+                getenv('password'),
                 getenv('baseUri') ?: '',
                 getenv('env') ?: '',
-                getenv('accessTokenPath')
+                $this->accessTokenPath
             ],
             'event - wrong merchantCode' => [
                 AuthenticationInvalidException::class,
@@ -200,9 +274,11 @@ class ClientTest extends ShopgateSdkTest
                 getenv('clientId'),
                 getenv('clientSecret'),
                 'wrong',
+                getenv('username'),
+                getenv('password'),
                 getenv('baseUri') ?: '',
                 getenv('env') ?: '',
-                getenv('accessTokenPath')
+                $this->accessTokenPath
             ],
             'event - wrong baseUri'      => [
                 RequestException::class,
@@ -210,19 +286,11 @@ class ClientTest extends ShopgateSdkTest
                 getenv('clientId'),
                 getenv('clientSecret'),
                 getenv('merchantCode'),
+                getenv('username'),
+                getenv('password'),
                 'httpp://localhost',
                 getenv('env') ?: '',
-                getenv('accessTokenPath')
-            ],
-            'event - wrong env'          => [
-                RequestException::class,
-                ShopgateSdk::REQUEST_TYPE_EVENT,
-                getenv('clientId'),
-                getenv('clientSecret'),
-                getenv('merchantCode'),
-                getenv('baseUri') ?: '',
-                'wrong',
-                getenv('accessTokenPath')
+                $this->accessTokenPath
             ],
         ];
     }
@@ -244,10 +312,10 @@ class ClientTest extends ShopgateSdkTest
             ->getMock();
 
         /** @var OAuth2Middleware $OAuthMiddleware */
-        $OAuthMiddleware =  $this->getMockBuilder(OAuth2Middleware::class)
-                                       ->disableOriginalConstructor()
-                                       ->setMethods(null)
-                                       ->getMock();
+        $OAuthMiddleware = $this->getMockBuilder(OAuth2Middleware::class)
+            ->disableOriginalConstructor()
+            ->setMethods(null)
+            ->getMock();
 
         $sdkClient = new SdkClient(
             $client,
@@ -294,10 +362,10 @@ class ClientTest extends ShopgateSdkTest
             ->getMock();
 
         /** @var OAuth2Middleware $OAuthMiddleware */
-        $OAuthMiddleware =  $this->getMockBuilder(OAuth2Middleware::class)
-                                       ->disableOriginalConstructor()
-                                       ->setMethods(null)
-                                       ->getMock();
+        $OAuthMiddleware = $this->getMockBuilder(OAuth2Middleware::class)
+            ->disableOriginalConstructor()
+            ->setMethods(null)
+            ->getMock();
 
         $sdkClient = new SdkClient(
             $client,

@@ -308,7 +308,7 @@ class CustomerTest extends CustomerBaseTest
         $this->assertEquals(self::CUSTOMER_CUSTOMER_LASTNAME, $customer->getLastName());
         $this->assertEquals(self::CUSTOMER_CUSTOMER_MIDDLE_NAME, $customer->getMiddleName());
         $this->assertEquals(sprintf(self::CUSTOMER_CUSTOMER_EMAIL, 1), $customer->getEmailAddress());
-        $this->assertEquals(false, $customer->getIsAnonymous());
+        $this->assertFalse($customer->getIsAnonymous());
 
         // Settings
         $this->assertEquals(self::CUSTOMER_SETTINGS_DEFAULT_LOCALE, $settings->getDefaultLocale());
@@ -317,10 +317,10 @@ class CustomerTest extends CustomerBaseTest
         $this->assertCount(2, $settings->getCommunicationPreferences());
 
         /** @noinspection PhpUndefinedMethodInspection */
-        $this->assertContains('email', $settings->getCommunicationPreferences()->toArray());
+        $this->assertContains('email', $settings->getCommunicationPreferences());
         /** @noinspection PhpUndefinedMethodInspection */
-        $this->assertContains('sms', $settings->getCommunicationPreferences()->toArray());
-        $this->assertEquals(true, $settings->getMarketingOptIn());
+        $this->assertContains('sms', $settings->getCommunicationPreferences());
+        $this->assertTrue($settings->getMarketingOptIn());
 
         //Contacts
         $this->assertCount(1, $contacts);
@@ -342,8 +342,8 @@ class CustomerTest extends CustomerBaseTest
         $this->assertEquals(self::CUSTOMER_CONTACT_MOBILE, $contact->getMobile());
         $this->assertEquals(self::CUSTOMER_CONTACT_FAX, $contact->getFax());
         $this->assertEquals(sprintf(self::CUSTOMER_CONTACT_EMAIL, 1), $contact->getEmailAddress());
-        $this->assertEquals(true, $contact->getIsDefaultBilling());
-        $this->assertEquals(true, $contact->getIsDefaultShipping());
+        $this->assertTrue($contact->getIsDefaultBilling());
+        $this->assertTrue($contact->getIsDefaultShipping());
 
         //Attributes
         $this->assertCount(1, $attributes);
@@ -430,7 +430,7 @@ class CustomerTest extends CustomerBaseTest
         $this->assertEquals(self::CUSTOMER_CUSTOMER_LASTNAME . ' Update', $customer->getLastName());
         $this->assertEquals(self::CUSTOMER_CUSTOMER_MIDDLE_NAME . ' Update', $customer->getMiddleName());
         $this->assertEquals(sprintf(self::CUSTOMER_CUSTOMER_EMAIL, 'update'), $customer->getEmailAddress());
-        $this->assertEquals(true, $customer->getIsAnonymous());
+        $this->assertTrue($customer->getIsAnonymous());
 
         // Settings
         $this->assertEquals('de-de', $settings->getDefaultLocale());
@@ -438,10 +438,10 @@ class CustomerTest extends CustomerBaseTest
         $this->assertEquals('EUR', $settings->getDefaultLocationCode());
         $this->assertCount(2, $settings->getCommunicationPreferences());
         /** @noinspection PhpUndefinedMethodInspection */
-        $this->assertContains('sms', $settings->getCommunicationPreferences()->toArray());
+        $this->assertContains('sms', $settings->getCommunicationPreferences());
         /** @noinspection PhpUndefinedMethodInspection */
-        $this->assertContains('email', $settings->getCommunicationPreferences()->toArray());
-        $this->assertEquals(false, $settings->getMarketingOptIn());
+        $this->assertContains('email', $settings->getCommunicationPreferences());
+        $this->assertFalse($settings->getMarketingOptIn());
     }
 
     /**

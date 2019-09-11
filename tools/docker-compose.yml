@@ -1,7 +1,7 @@
 version: '2.1'
 services:
 
-### PHP containers for local testing
+  ### PHP containers for local testing
   php56:
     build:
       context: ../
@@ -17,7 +17,7 @@ services:
       dockerfile: tools/dockerfiles/Php73
     tty: true
 
-### infra-structure
+  ### infra-structure
   etcd:
     image: elcolio/etcd
     restart: always
@@ -29,42 +29,78 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=secret
 
-  redis:
-    image: library/redis
+  reverse-proxy:
+    build:
+      context: ../
+      dockerfile: tools/dockerfiles/Nginx
+    networks:
+      default:
+        aliases:
+          - auth.shopgatedev.io
+          - merchant.shopgatedev.io
+          - location.shopgatedev.io
+          - customer.shopgatedev.io
+          - catalog.shopgatedev.io
+          - import.shopgatedev.io
+          - order.shopgatedev.io
+          - user.shopgatedev.io
+          - event-receiver.shopgatedev.io
 
+  ### https://gitlab.localdev.cc/omnichannel/services/auth
   auth:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/auth2:2018-02-12_48
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/auth:v1.0.0-alpha-google-cloud.2
     restart: always
     links:
       - etcd
-      - redis
+      - sqs
     environment:
       - SYSLOG_LOG_LEVEL=debug
       - NODE_ENV=development
       - APP_PORT=80
       - MANAGEMENT_PORT=81
       - LOG_TO_SYSLOG=false
-    networks:
-      default:
-        aliases:
-          - auth.shopgatedev.services
-          - omni-merchant.shopgatedev.services
-          - omni-location.shopgatedev.services
-          - omni-customer.shopgatedev.services
-          - omni-event-receiver.shopgatedev.services
-          - catalog.shopgatedev.services
-          - import.shopgatedev.services
+      - PUBSUB_EMULATOR_HOST=googlepubsub-emulator:8085
 
   googlepubsub-emulator:
     build:
       context: ./dockerfiles
       dockerfile: GooglePubsub
 
-### services
+  sqs:
+    image: pafortin/goaws
 
-### https://gitlab.localdev.cc/omnichannel/services/worker
+  ### services
+
+  ### https://gitlab.localdev.cc/omnichannel/services/user
+  user:
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/user:v1.0.0-beta.37-google-cloud.3
+    restart: always
+    links:
+      - etcd
+    environment:
+      - NODE_ENV=development
+      - APP_PORT=80
+      - LOG_TO_SYSLOG=false
+      - PUBSUB_EMULATOR_HOST=googlepubsub-emulator:8085
+      - INTEGRATION=1
+
+  ### https://gitlab.localdev.cc/omnichannel/services/worker
   omni-worker:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/worker:v1.0.0-beta.11
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/worker:v1.0.0-alpha.21-google-cloud
+    links:
+      - etcd
+    environment:
+      - SYSLOG_LOG_LEVEL=debug
+      - NODE_ENV=development
+      - APP_PORT=80
+      - LOG_TO_SYSLOG=false
+      - PUBSUB_EMULATOR_HOST=googlepubsub-emulator:8085
+      - QUEUE_BATCH_SIZE=100
+      - QUEUE_BATCH_DELAY=50
+
+  ### https://gitlab.localdev.cc/omnichannel/services/event-receiver
+  event-receiver:
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/event-receiver:v1.0.0-beta.14-google-cloud.1
     links:
       - etcd
     environment:
@@ -74,21 +110,9 @@ services:
       - LOG_TO_SYSLOG=false
       - PUBSUB_EMULATOR_HOST=googlepubsub-emulator:8085
 
-### https://gitlab.localdev.cc/omnichannel/services/event-receiver
-  omni-event-receiver:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/event-receiver:v1.0.0-beta.11
-    links:
-      - etcd
-    environment:
-      - SYSLOG_LOG_LEVEL=debug
-      - NODE_ENV=development
-      - APP_PORT=80
-      - LOG_TO_SYSLOG=false
-      - PUBSUB_EMULATOR_HOST=googlepubsub-emulator:8085
-
-### https://gitlab.localdev.cc/omnichannel/services/merchant
-  omni-merchant:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/merchant:v1.0.0-beta.14
+  ### https://gitlab.localdev.cc/omnichannel/services/merchant
+  merchant:
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/merchant:v1.0.0-alpha.1-google-cloud.1
     links:
       - etcd
     environment:
@@ -97,9 +121,9 @@ services:
       - APP_PORT=80
       - LOG_TO_SYSLOG=false
 
-### https://gitlab.localdev.cc/omnichannel/services/location
-  omni-location:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/location:v1.0.0-alpha.46
+  ### https://gitlab.localdev.cc/omnichannel/services/location
+  location:
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/location:v1.0.0-alpha.51-google-cloud
     links:
       - etcd
     environment:
@@ -108,14 +132,26 @@ services:
       - APP_PORT=80
       - LOG_TO_SYSLOG=false
 
-### https://gitlab.localdev.cc/omnichannel/services/customer
-  omni-customer:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/customer:v1.0.0-alpha.30
+  ### https://gitlab.localdev.cc/omnichannel/services/customer
+  customer:
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/customer:v1.0.0-alpha.32-google-cloud
     restart: always
     environment:
       - NODE_ENV=development
       - APP_PORT=80
       - LOG_TO_SYSLOG=false
+    links:
+      - etcd
+
+### https://gitlab.localdev.cc/omnichannel/services/order
+  order:
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/order:v1.0.0-alpha.16-google-cloud.2
+    restart: always
+    environment:
+      - NODE_ENV=development
+      - APP_PORT=80
+      - LOG_TO_SYSLOG=false
+      - PUBSUB_EMULATOR_HOST=googlepubsub-emulator:8085
     links:
       - etcd
 
@@ -126,9 +162,9 @@ services:
       - ES_JAVA_OPTS=-Xms750m -Xmx750m
       - xpack.security.enabled=false
 
-### https://gitlab.localdev.cc/omnichannel/services/products
+  ### https://gitlab.localdev.cc/omnichannel/services/products
   catalog:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/catalog:v1.0.0-alpha.78
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/catalog:v1.0.0-alpha.91-google-cloud.4
     restart: always
     links:
       - etcd
@@ -146,9 +182,9 @@ services:
           - shopgate-import.s3
           - shopgate-import.s3.amazonaws.com
 
-### https://gitlab.localdev.cc/big-api/services/import
+  ### https://gitlab.localdev.cc/big-api/services/import
   import:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/import:v1.0.0-alpha.5
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/import:v1.0.0-alpha.6
     environment:
       - AWS_ACCESS_KEY_ID=foo
       - AWS_SECRET_ACCESS_KEY=bar
@@ -164,7 +200,7 @@ services:
     links:
       - etcd
 
-### https://gitlab.localdev.cc/SGXS/tools/import-script/tree/development
+  ### https://gitlab.localdev.cc/SGXS/tools/import-script/tree/development
   import-script:
     build:
       context: ../
@@ -182,10 +218,9 @@ services:
       - MYSQL_PASSWORD=secret
       - MYSQL_DATABASE=import
       - GOOGLE_APPLICATION_CREDENTIALS=tools/dockerfiles/credentials-dev.json.js
-      - BIG_API_CLIENT_ID=integration-tests
-      - BIG_API_CLIENT_SECRET=integration-tests
       - PUBSUB_PROJECT_ID=test-project
-      - BIG_API_ENDPOINT_SCHEMA=http://{serviceName}.{baseDomain}
+      - PUBSUB_BATCHING={}
+      - PUBSUB_TOPIC_BASE_NAME=entityChanged
     tty: true
     links:
       - s3:s3.amazonaws.com

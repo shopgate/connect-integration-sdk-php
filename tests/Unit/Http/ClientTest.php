@@ -95,7 +95,9 @@ class ClientTest extends TestCase
         $this->assertInstanceOf(ClientInterface::class, Client::createInstance(
             'test',
             'secret',
-            'TM2'
+            'TM2',
+            'username',
+            'password'
         ));
     }
 
@@ -132,7 +134,7 @@ class ClientTest extends TestCase
      */
     public function testEnableRequestLoggingShouldNotFailIfNothingWasPassed()
     {
-        $subjectUnderTest = Client::createInstance('123', '123', '123');
+        $subjectUnderTest = Client::createInstance('123', '123', '123', 'username', 'password');
         $subjectUnderTest->enableRequestLogging();
     }
 
@@ -182,7 +184,7 @@ class ClientTest extends TestCase
             ->expects($this->once())
             ->method('request')->with(
                 'post',
-                'http://omni-event-receiver.local/v1/merchants/TM2/events',
+                'http://event-receiver.local/v1/merchants/TM2/events',
                 [
                     'json' => '{"events":[{"event":"entityUpdated","entity":"category","payload":{}}]}',
                     'http_errors' => false,

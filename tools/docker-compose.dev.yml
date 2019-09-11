@@ -44,30 +44,10 @@ services:
     ports:
       - ${EXPOSED_PORT_MYSQL}:3306
 
-  auth:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/auth2:2018-02-12_48
-    restart: always
-    links:
-      - etcd
-      - redis
-    environment:
-      - SYSLOG_LOG_LEVEL=debug
-      - NODE_ENV=development
-      - APP_PORT=80
-      - MANAGEMENT_PORT=81
-      - LOG_TO_SYSLOG=false
+  reverse-proxy:
     ports:
       - ${EXPOSED_PORT_AUTH}:80
-    networks:
-      default:
-        aliases:
-          - auth.shopgatedev.services
-          - omni-merchant.shopgatedev.services
-          - omni-customer.shopgatedev.services
-          - omni-location.shopgatedev.services
-          - omni-event-receiver.shopgatedev.services
-          - catalog.shopgatedev.services
-          - import.shopgatedev.services
+
   import:
     ports:
       - 5105:80
@@ -76,15 +56,15 @@ services:
     ports:
       - 5104:80
 
-  omni-location:
+  location:
     ports:
       - 5103:80
 
-  omni-merchant:
+  merchant:
     ports:
       - 5102:80
 
-  omni-event-receiver:
+  event-receiver:
     ports:
       - 5101:80
 
@@ -92,9 +72,17 @@ services:
     ports:
       - 5100:80
 
-  omni-customer:
+  customer:
     ports:
       - 5106:80
+
+  order:
+    ports:
+      - 5107:80
+
+  user:
+    ports:
+      - 5108:80
 
   s3:
     ports:

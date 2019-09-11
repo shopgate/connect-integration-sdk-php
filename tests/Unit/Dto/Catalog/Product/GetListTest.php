@@ -37,8 +37,8 @@ class GetListTest extends TestCase
      */
     public function testGetListDto()
     {
-        $entry   = [
-            'meta'     => [
+        $entry = [
+            'meta' => [
                 'limit' => 1
             ],
             'products' => [
@@ -63,29 +63,29 @@ class GetListTest extends TestCase
      */
     public function testProductPropertyTypes()
     {
-        $properties  = [
+        $properties = [
             [
-                'type'  => Attribute::TYPE,
+                'type' => Attribute::TYPE,
                 'value' => ['attr1', 'attr2']
             ],
             [
-                'type'  => Simple::TYPE,
+                'type' => Simple::TYPE,
                 'value' => ['en-us' => ['test1', 'test2']]
             ]
         ];
-        $entry       = ['products' => [['properties' => $properties]]];
-        $getList     = new GetList($entry);
-        $properties  = $getList->getProducts()[0]->getProperties();
-        $attrValue   = $properties[0]->getValue();
+        $entry = ['products' => [['properties' => $properties]]];
+        $getList = new GetList($entry);
+        $properties = $getList->getProducts()[0]->getProperties();
+        $attrValue = $properties[0]->getValue();
         $simpleValue = $properties[1]->getValue();
 
         $this->assertInstanceOf(Attribute::class, $properties[0]);
-        $this->assertInstanceOf(Attribute::class, $attrValue);
-        $this->assertEquals(['attr1', 'attr2'], $attrValue->toArray());
+        $this->assertTrue(is_array($attrValue));
+        $this->assertEquals(['attr1', 'attr2'], $attrValue);
 
-        $this->assertInstanceOf(Properties::class, $properties);
+        $this->assertTrue(is_array($properties));
         $this->assertInstanceOf(Properties::class, $properties[1]);
         $this->assertInstanceOf(Properties\Value::class, $simpleValue);
-        $this->assertEquals(['test1', 'test2'], $simpleValue->{'en-us'}->toArray());
+        $this->assertEquals(['test1', 'test2'], $simpleValue->{'en-us'});
     }
 }

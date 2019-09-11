@@ -68,7 +68,7 @@ class GetListTest extends TestCase
 
         $wishlists = $getList->getWishlists();
         $this->assertCount(2, $wishlists);
-        $this->assertInstanceOf(Get::class, $wishlists);
+        $this->assertTrue(is_array($wishlists));
         $this->assertInstanceOf(Get::class, $wishlists[0]);
         $this->assertInstanceOf(Get::class, $wishlists[1]);
         $this->assertEquals($codeOne, $wishlists[0]->getCode());

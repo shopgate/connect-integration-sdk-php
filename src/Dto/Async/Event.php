@@ -35,12 +35,9 @@ use Shopgate\ConnectSdk\Dto\Base;
  */
 class Event extends Base
 {
-    const UPDATE           = 'entityUpdated';
-    const CREATE           = 'entityCreated';
-    const DELETE           = 'entityDeleted';
-    const ENTITY_CATEGORY  = 'category';
-    const ENTITY_PRODUCT   = 'product';
-    const ENTITY_ATTRIBUTE = 'attribute';
+    const UPDATE = 'entityUpdated';
+    const CREATE = 'entityCreated';
+    const DELETE = 'entityDeleted';
 
     /**
      * @return array
@@ -49,22 +46,15 @@ class Event extends Base
     public function getDefaultSchema()
     {
         return [
-            'type'                 => 'object',
-            'properties'           => [
-                'event'    => [
+            'type' => 'object',
+            'properties' => [
+                'event' => [
                     'type' => 'string',
                     'enum' => [self::UPDATE, self::CREATE, self::DELETE]
                 ],
-                'entity'   => [
-                    'type' => 'string',
-                    'enum' => [
-                        self::ENTITY_CATEGORY,
-                        self::ENTITY_PRODUCT,
-                        self::ENTITY_ATTRIBUTE
-                    ]
-                ],
+                'entity' => ['type' => 'string'],
                 'entityId' => ['type' => 'string'],
-                'payload'  => ['type' => 'object']
+                'payload' => ['type' => 'object']
             ],
             'additionalProperties' => false
         ];

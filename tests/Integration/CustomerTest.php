@@ -26,7 +26,7 @@ namespace Shopgate\ConnectSdk\Tests\Integration;
 
 abstract class CustomerTest extends ShopgateSdkTest
 {
-    const CUSTOMER_SERVICE          = 'omni-customer';
+    const CUSTOMER_SERVICE          = 'customer';
     const CATALOG_SERVICE           = 'catalog';
     const METHOD_DELETE_ATTRIBUTE   = 'deleteAttribute';
     const METHOD_DELETE_CONTACT     = 'deleteContact';

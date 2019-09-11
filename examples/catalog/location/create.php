@@ -19,7 +19,7 @@ try {
             'query'       => [],
             // direct
             'method'      => 'post',
-            'service'     => 'omni-location',
+            'service'     => 'location',
             'path'        => 'locations',
         ]
     );

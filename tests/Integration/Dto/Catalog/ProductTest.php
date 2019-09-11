@@ -422,7 +422,7 @@ class ProductTest extends CatalogTest
 
         // Act
         $this->sdk->getCatalogService()->addProducts([$product]);
-        sleep(self::SLEEP_TIME_AFTER_EVENT);
+        usleep(self::SLEEP_TIME_AFTER_EVENT);
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [$product->code]);
@@ -442,7 +442,7 @@ class ProductTest extends CatalogTest
 
         // Act
         $this->sdk->getCatalogService()->addProducts([$product]);
-        sleep(self::SLEEP_TIME_AFTER_EVENT);
+        usleep(self::SLEEP_TIME_AFTER_EVENT);
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [$product->code]);
@@ -513,7 +513,7 @@ class ProductTest extends CatalogTest
 
         // Act
         $this->sdk->getCatalogService()->deleteProduct($product->code);
-        sleep(self::SLEEP_TIME_AFTER_EVENT);
+        usleep(self::SLEEP_TIME_AFTER_EVENT);
 
         // Assert
         $this->expectException(NotFoundException::class);

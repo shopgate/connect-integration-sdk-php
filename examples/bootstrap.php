@@ -2,16 +2,26 @@
 
 use Shopgate\ConnectSdk\ShopgateSdk;
 
-require dirname(__FILE__) . '/../vendor/autoload.php';
-require dirname(__FILE__) . '/fixtures.php';
+if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    require __DIR__ . '/../vendor/autoload.php';
+} else {
+    if (file_exists(__DIR__ . '/../../../autoload.php')) {
+        require __DIR__ . '/../../../autoload.php';
+    }
+}
 
-if (file_exists(dirname(__FILE__) . '/config.php')) {
-    require_once dirname(__FILE__) . '/config.php';
+require __DIR__ . '/fixtures.php';
+
+if (file_exists(__DIR__ . '/config.php')) {
+    /** @noinspection PhpIncludeInspection */
+    require_once __DIR__ . '/config.php';
 } else {
     $config = [
         'merchantCode'  => 'xxx',
         'clientId'      => 'xxx',
         'clientSecret'  => 'xxx',
+        'username'      => 'xxx',
+        'password'      => 'xxx'
     ];
 }
 

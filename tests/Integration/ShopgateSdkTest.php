@@ -32,7 +32,7 @@ use Shopgate\ConnectSdk\ShopgateSdk;
 
 abstract class ShopgateSdkTest extends TestCase
 {
-    const SLEEP_TIME_AFTER_EVENT = 2;
+    const SLEEP_TIME_AFTER_EVENT = 300000;
 
     /** @var array */
     protected $sdkConfig = [];
@@ -55,6 +55,8 @@ abstract class ShopgateSdkTest extends TestCase
                 'clientId',
                 'clientSecret',
                 'merchantCode',
+                'username',
+                'password',
             ]
         );
     }
@@ -95,6 +97,8 @@ abstract class ShopgateSdkTest extends TestCase
             getenv('clientId'),
             getenv('clientSecret'),
             getenv('merchantCode'),
+            getenv('username'),
+            getenv('password'),
             getenv('baseUri')
                 ?: '',
             getenv('env')

@@ -166,7 +166,7 @@ class InventoryTest extends CatalogTest
     public function testInvalidProductCode()
     {
         $this->markTestSkipped('Wait for Steffen and ask if this is the correct behavior. It probably is!');
-        
+
         // Arrange
         $this->createLocation(self::LOCATION_CODE);
         $product = $this->prepareProductMinimum();

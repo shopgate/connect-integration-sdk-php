@@ -41,6 +41,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\ShortDescription;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Update;
 use Shopgate\ConnectSdk\Dto\Location\Location;
 use Shopgate\ConnectSdk\Exception\Exception;
+use Shopgate\ConnectSdk\ShopgateSdk;
 
 abstract class CatalogTest extends ShopgateSdkTest
 {
@@ -51,6 +52,7 @@ abstract class CatalogTest extends ShopgateSdkTest
     const METHOD_DELETE_PRODUCT = 'deleteProduct';
     const METHOD_DELETE_ATTRIBUTE = 'deleteAttribute';
     const METHOD_DELETE_LOCATION = 'deleteLocation';
+    const METHOD_DELETE_INVENTORIES = 'deleteInventories';
     const METHOD_DELETE_RESERVATIONS = 'deleteReservations';
     const METHOD_DELETE_CUSTOMER = 'deleteCustomer';
 
@@ -90,6 +92,7 @@ abstract class CatalogTest extends ShopgateSdkTest
                 self::METHOD_DELETE_PRODUCT => [],
                 self::METHOD_DELETE_ATTRIBUTE => [],
                 self::METHOD_DELETE_RESERVATIONS => [],
+                self::METHOD_DELETE_INVENTORIES => [],
             ]
         );
         $this->registerForCleanUp(

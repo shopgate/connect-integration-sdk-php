@@ -10,43 +10,69 @@ if (!getenv('PUBSUB_EMULATOR_HOST')) {
 
 $pubSub = new PubSubClient(['projectId' => 'test-project']);
 $topics = [
-    'entityChanged-development' => [
-        'entityChanged-development'
+    'entityChanged' => [
+        'entityChanged',
+        'workerSvcEntityChanged'
+    ],
+    'fulfillmentOrderAdded' => [
+        'webhookTransSalesOrderFulfillmentAdded'
     ],
     'fulfillmentOrderStatusUpdated' => [
-        'orderSvcFulfillmentOrderStatusUpdated-development'
+        'orderSvcFulfillmentOrderStatusUpdated',
+        'webhookFulfillmentOrderStatusUpdated',
+        'webhookTransFulfillmentOrderStatusUpdated'
+    ],
+    'fulfillmentOrderUpdated' => [
+        'analyticsSvcFulfillmentOrderUpdated'
+    ],
+    'inventoryReservationDeleted' => [
+        'webhookTransInventoryReservationDeleted'
+    ],
+    'inventoryReservationSettled' => [
+        'webhookTransInventoryReservationSettled'
     ],
     'salesOrderAdded' => [
-        'testerSalesOrderAdded-development'
+        'routingSvcSalesOrderAdded',
+        'webhookSalesOrderAdded',
+        'webhookTransSalesOrderAdded',
+        'testerSalesOrderAdded' # maybe not needed
     ],
     'salesOrderFulfillmentAdded' => [
-        'testerSOFulfillmentAdded-development'
+        'webhookSalesOrderFulfillmentAdded',
+        'testerSOFulfillmentAdded' # maybe not needed
     ],
     'salesOrderStatusUpdated' => [
-        'orderSvcSalesOrderStatusUpdated-development',
-        'testerSalesOrderStatusUpdated-development'
-    ],
-    'userCreated' => [
-        'testerUserCreated-development',
+        'orderSvcSalesOrderStatusUpdated',
+        'webhookSalesOrderStatusUpdated',
+        'webhookTransSalesOrderStatusUpdated',
+        'testerSalesOrderStatusUpdated' # maybe not needed
     ],
     'userAssigned' => [
-        'testerUserAssigned-development',
-    ],
-    'userPasswordReset' => [
-        'testerUserPasswordReset-development',
-        'userSvcUserPasswordReset-development',
-    ],
-    'userPasswordChanged' => [
-        'testerUserPasswordChanged-development',
-        'userSvcUserPasswordChanged-development',
-    ],
-    'userAuthorized' => [
-        'testerUserAuthorized-development',
-        'userSvcUserAuthorized-development',
+        'notificationSvcUserAssigned',
+        'testerUserAssigned', # maybe not needed
     ],
     'userAuthorizationFailed' => [
-        'testerUserAuthorizationFailed-development',
-        'userSvcUserAuthorizationFailed-development',
+        'userSvcUserAuthorizationFailed',
+        'testerUserAuthorizationFailed', # maybe not needed
+    ],
+    'userAuthorized' => [
+        'userSvcUserAuthorized',
+        'testerUserAuthorized', # maybe not needed
+    ],
+    'userCreated' => [
+        'notificationSvcUserCreated',
+        'testerUserCreated', # maybe not needed
+    ],
+    'userPasswordChanged' => [
+        'userSvcUserPasswordChanged',
+        'testerUserPasswordChanged', #maybe not needed
+    ],
+    'userPasswordReset' => [
+        'userSvcUserPasswordReset',
+        'testerUserPasswordReset', # maybe not needed
+    ],
+    'webhookRouted' => [
+        'webhookTransWebhookRouted'
     ],
 ];
 
@@ -66,6 +92,7 @@ function createTopic($pubSub, $topic, $subscriptions)
     $tries = 0;
     while (!$createdTopic && $subscriptionCreated != count($subscriptions) && $tries < 15) {
         try {
+            $topic .= '-development';
             echo "Creating Google PubSub topic '$topic' . . . ";
             $createdTopic = $pubSub->createTopic($topic);
             echo "[OK]\n";
@@ -86,6 +113,7 @@ function createTopic($pubSub, $topic, $subscriptions)
 
         foreach ($subscriptions as $subscription) {
             try {
+                $subscription .= '-development';
                 echo "Creating Google PubSub subscription '$subscription' to topic $topic . . . ";
                 $pubSub->subscribe($subscription, $topic);
                 $subscriptionCreated++;

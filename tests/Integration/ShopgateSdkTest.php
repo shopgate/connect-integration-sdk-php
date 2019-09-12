@@ -27,6 +27,7 @@ use Dotenv\Dotenv;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
+use Shopgate\ConnectSdk\Dto\Base;
 use Shopgate\ConnectSdk\Http\Client;
 use Shopgate\ConnectSdk\ShopgateSdk;
 
@@ -84,6 +85,10 @@ abstract class ShopgateSdkTest extends TestCase
      */
     protected function deleteEntitiesAfterTestRun($service, $deleteMethod, array $entityIds, $catalogCode = null)
     {
+        if (empty($entityIds)) {
+            return;
+        }
+
         $deleteRequestParameter = [];
 
         $extraParameter = array_merge(
@@ -98,7 +103,7 @@ abstract class ShopgateSdkTest extends TestCase
         foreach ($entityIds as $entityId) {
             $entry = $deleteRequestParameter;
 
-            if (is_array($entityId)) {
+            if (is_array($entityId) && !$entityId[0] instanceof Base) {
                 foreach (array_reverse($entityId) as $parameter) {
                     array_unshift($entry, $parameter);
                 }

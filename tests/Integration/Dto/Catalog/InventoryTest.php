@@ -45,7 +45,7 @@ class InventoryTest extends CatalogTest
         $this->sdk->getCatalogService()->addInventories($inventories, ['requestType' => 'direct']);
 
         // CleanUp
-        $this->cleanUp([self::PRODUCT_CODE], [self::LOCATION_CODE]);
+        $this->cleanUp([self::PRODUCT_CODE], [self::LOCATION_CODE], $this->getDeleteInventories($inventories));
 
         // Assert
         $product = $this->sdk->getCatalogService()->getProduct(self::PRODUCT_CODE, ['fields' => 'inventories']);
@@ -116,7 +116,7 @@ class InventoryTest extends CatalogTest
         $this->sdk->getCatalogService()->updateInventories([$update], ['requestType' => 'direct']);
 
         // CleanUp
-        $this->cleanUp([self::PRODUCT_CODE], [self::LOCATION_CODE]);
+        $this->cleanUp([self::PRODUCT_CODE], [self::LOCATION_CODE], $this->getDeleteInventories($inventories));
 
         // Assert
         $product = $this->sdk->getCatalogService()->getProduct(self::PRODUCT_CODE, ['fields' => 'inventories']);
@@ -208,7 +208,7 @@ class InventoryTest extends CatalogTest
         $this->sdk->getCatalogService()->updateInventories([$update], ['requestType' => 'direct']);
 
         // CleanUp
-        $this->cleanUp([self::PRODUCT_CODE], [self::LOCATION_CODE]);
+        $this->cleanUp([self::PRODUCT_CODE], [self::LOCATION_CODE], $this->getDeleteInventories($inventories));
 
         // Assert
         $product = $this->sdk->getCatalogService()->getProduct(self::PRODUCT_CODE, ['fields' => 'inventories']);
@@ -304,7 +304,7 @@ class InventoryTest extends CatalogTest
         $this->sdk->getCatalogService()->updateInventories([$inventory], ['requestType' => 'direct']);
 
         // CleanUp
-        $this->cleanUp([self::PRODUCT_CODE], [self::LOCATION_CODE]);
+        $this->cleanUp([self::PRODUCT_CODE], [self::LOCATION_CODE], $this->getDeleteInventories($inventories));
 
         // Assert
         $product = $this->sdk->getCatalogService()->getProduct(self::PRODUCT_CODE, ['fields' => 'inventories']);
@@ -352,7 +352,7 @@ class InventoryTest extends CatalogTest
         $this->sdk->getCatalogService()->updateInventories([$inventory], ['requestType' => 'direct']);
 
         // CleanUp
-        $this->cleanUp([self::PRODUCT_CODE], [self::LOCATION_CODE]);
+        $this->cleanUp([self::PRODUCT_CODE], [self::LOCATION_CODE], $this->getDeleteInventories($inventories));
 
         // Assert
         $product = $this->sdk->getCatalogService()->getProduct(self::PRODUCT_CODE, ['fields' => 'inventories']);
@@ -538,8 +538,9 @@ class InventoryTest extends CatalogTest
     /**
      * @param string[] $productCodes
      * @param string[] $locationCodes
+     * @param stirng[] $inventories
      */
-    private function cleanUp($productCodes = [], $locationCodes = [])
+    private function cleanUp($productCodes = [], $locationCodes = [], $inventories = [])
     {
         $this->deleteEntitiesAfterTestRun(
             self::CATALOG_SERVICE,
@@ -551,5 +552,32 @@ class InventoryTest extends CatalogTest
             self::METHOD_DELETE_LOCATION,
             $locationCodes
         );
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_INVENTORIES,
+            $inventories
+        );
+    }
+
+    /**
+     * @param Inventory\Create[] $createInventories
+     *
+     * @return Inventory\Delete[]
+     */
+    private function getDeleteInventories(array $createInventories)
+    {
+        $deleteInventories = [];
+        foreach ($createInventories as $createInventory) {
+            $deleteInventory = new Inventory\Delete();
+            $deleteInventory->setProductCode($createInventory->productCode);
+            $deleteInventory->setLocationCode($createInventory->locationCode);
+            $deleteInventory->setSku($createInventory->sku);
+            $deleteInventory->setBin($createInventory->bin);
+            $deleteInventory->setBinLocation($createInventory->binLocation);
+
+            $deleteInventories[] = [$deleteInventory];
+        }
+
+        return $deleteInventories;
     }
 }

@@ -123,3 +123,10 @@ development:
         autoCreateDatabase: true
       googleCloud:
         projectId: test-project
+
+    elasticSearch:
+      url: http://elasticsearch:9200
+      authUser: elastic
+      authPassword: omni
+      authRequired: false
+      requireValidSSL: false

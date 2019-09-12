@@ -35,7 +35,6 @@ use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto;
  * @method int getSequenceId()
  * @method string getExternalUpdateDate()
  * @method string getStatus()
- * @method string getCatalogCode()
  *
  * @package Shopgate\ConnectSdk\Dto\Catalog
  *

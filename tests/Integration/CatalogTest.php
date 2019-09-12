@@ -62,6 +62,7 @@ abstract class CatalogTest extends ShopgateSdkTest
     ];
 
     const SAMPLE_CATALOG_CODE = 'NARetail';
+    const SAMPLE_CATALOG_CODE_NON_DEFAULT = 'NAWholesale';
 
     const PRODUCT_CODE = 'integration-test';
     const PRODUCT_CODE_SECOND = 'integration-test-2';

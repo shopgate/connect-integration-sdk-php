@@ -38,7 +38,6 @@ use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Url;
  * @method Create setDescription(Description $description)
  * @method Create setExternalUpdateDate(string $externalUpdateDate)
  * @method Create setStatus(string $status)
- * @method Create setCatalogCode(string $catalogCode)
  *
  * @inheritdoc
  */
@@ -58,8 +57,7 @@ class Create extends Category
             'sequenceId'         => ['type' => 'integer'],
             'description'        => ['$ref' => Dto\Description::class],
             'externalUpdateDate' => ['type' => 'string'],
-            'status'             => ['type' => 'string'],
-            'catalogCode'        => ['type' => 'string']
+            'status'             => ['type' => 'string']
         ],
         'additionalProperties' => true
     ];

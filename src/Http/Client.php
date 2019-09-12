@@ -65,9 +65,9 @@ class Client implements ClientInterface
 
     /**
      * @param GuzzleClientInterface $client
-     * @param OAuth2Middleware $OAuth2Middleware
-     * @param string $baseUri
-     * @param string $merchantCode
+     * @param OAuth2Middleware      $OAuth2Middleware
+     * @param string                $baseUri
+     * @param string                $merchantCode
      */
     public function __construct(
         GuzzleClientInterface $client,
@@ -123,11 +123,11 @@ class Client implements ClientInterface
             new ShopgateCredentials(
                 $reAuthClient,
                 [
-                    'client_id'     => $clientId,
+                    'client_id' => $clientId,
                     'client_secret' => $clientSecret,
                     'merchant_code' => $merchantCode,
-                    'username'      => $username,
-                    'password'      => $password
+                    'username' => $username,
+                    'password' => $password
                 ]
             )
         );
@@ -157,7 +157,7 @@ class Client implements ClientInterface
 
     /**
      * @param LoggerInterface $logger
-     * @param string $template
+     * @param string          $template
      *
      * @throws Exception
      */
@@ -358,7 +358,10 @@ class Client implements ClientInterface
     private function triggerEvent(array $params)
     {
         $values = [
-            isset($params['json']) ? $params['json'] : new Base(),
+            isset($params['json']) ? $params['json'] : new Base([], [
+                'type' => 'object',
+                'additionalProperties' => true
+            ]),
         ];
         if ($params['action'] === 'create') {
             $key = array_keys($params['json'])[0];
@@ -367,6 +370,8 @@ class Client implements ClientInterface
 
         $factory = new Factory();
         foreach ($values as $payload) {
+            $payload = $this->prepareEventPayload($params, $payload);
+
             $entityId = isset($params['entityId']) ? $params['entityId'] : null;
             $factory->addEvent($params['action'], $params['entity'], $payload, $entityId);
         }
@@ -407,5 +412,20 @@ class Client implements ClientInterface
         return
             (!isset($params['requestType']) && $params['method'] === 'get')
             || $params['requestType'] === ShopgateSdk::REQUEST_TYPE_DIRECT;
+    }
+
+    /**
+     * @param array $params
+     * @param Base  $payload
+     *
+     * @return Base
+     */
+    private function prepareEventPayload(array $params, Base $payload)
+    {
+        if (isset($params['query']['catalogCode'])) {
+            $payload->setCatalogCode($params['query']['catalogCode']);
+        }
+
+        return $payload;
     }
 }

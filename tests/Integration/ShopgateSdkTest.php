@@ -77,13 +77,37 @@ abstract class ShopgateSdkTest extends TestCase
     }
 
     /**
-     * @param string   $service
-     * @param string   $deleteMethod
-     * @param string[] $entityIds
+     * @param string      $service
+     * @param string      $deleteMethod
+     * @param string[]    $entityIds
+     * @param null|string $catalogCode
      */
-    protected function deleteEntitiesAfterTestRun($service, $deleteMethod, $entityIds)
+    protected function deleteEntitiesAfterTestRun($service, $deleteMethod, array $entityIds, $catalogCode = null)
     {
-        $this->services[$service][$deleteMethod]['ids'] = array_merge($this->services[$service][$deleteMethod]['ids'], $entityIds);
+        $deleteRequestParameter = [];
+
+        $extraParameter = array_merge(
+            $this->services[$service][$deleteMethod]['parameters'],
+            ['requestType' => 'direct']
+        );
+        if ($catalogCode) {
+            $extraParameter['catalogCode'] = $catalogCode;
+        }
+        $deleteRequestParameter[] = $extraParameter;
+
+        foreach ($entityIds as $entityId) {
+            $entry = $deleteRequestParameter;
+
+            if (is_array($entityId)) {
+                foreach (array_reverse($entityId) as $parameter) {
+                    array_unshift($entry, $parameter);
+                }
+            } else {
+                array_unshift($entry, $entityId);
+            }
+
+            $this->services[$service][$deleteMethod]['ids'][] = $entry;
+        }
     }
 
     /**
@@ -121,18 +145,12 @@ abstract class ShopgateSdkTest extends TestCase
         parent::tearDown();
 
         foreach ($this->services as $service) {
-            foreach ($service as $deleteMethod => $entityIds) {
-                if (!is_array($entityIds)) {
+            foreach ($service as $deleteMethodName => $values) {
+                if (!is_array($values)) {
                     continue;
                 }
-                foreach ($entityIds['ids'] as $entity) {
-                    $parameters = is_array($entity) ? $entity : [$entity];
-                    $parameters[] = array_merge(
-                        ['requestType' => 'direct'],
-                        $entityIds['parameters']
-                    );
-
-                    call_user_func_array([$service['service'], $deleteMethod], $parameters);
+                foreach ($values['ids'] as $parameters) {
+                    call_user_func_array([$service['service'], $deleteMethodName], $parameters);
                 }
             }
         }

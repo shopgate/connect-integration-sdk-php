@@ -33,6 +33,8 @@ use kamermans\OAuth2\OAuth2Middleware;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 use Psr\Log\LoggerInterface;
+use Shopgate\ConnectSdk\Dto\Base;
+use Shopgate\ConnectSdk\Dto\Catalog\Category\Update;
 use Shopgate\ConnectSdk\Exception\Exception as ShopgateSdkException;
 use Shopgate\ConnectSdk\Http\Client;
 use Shopgate\ConnectSdk\Http\ClientInterface;
@@ -205,6 +207,49 @@ class ClientTest extends TestCase
             'method' => 'post',
             'entity' => 'category',
             'requestType' => ShopgateSdk::REQUEST_TYPE_EVENT
+        ]);
+    }
+
+    /**
+     * @throws ShopgateSdkException
+     */
+    public function testParameterCatalogCodeIsPassedAlongInThePayload()
+    {
+        // Arrange
+        $this->client = $this
+            ->getMockBuilder(GuzzleClient::class)
+            ->setConstructorArgs([['handler' => $this->handlerStack]])
+            ->setMethods(['request'])
+            ->getMock();
+        $this->client
+            ->expects($this->once())
+            ->method('request')->with(
+                'post',
+                'http://event-receiver.local/v1/merchants/TM2/events',
+                [
+                    'json' => '{"events":[{"event":"entityUpdated","entity":"category","payload":{"catalogCode":"ABCD"}}]}',
+                    'http_errors' => false,
+                    'connect_timeout' => 5.0
+                ]
+            )->willReturn([]);
+
+        $this->subjectUnderTest = new Client(
+            $this->client,
+            $this->OAuthMiddleware,
+            'http://{service}.local',
+            'TM2'
+        );
+
+        // Act
+        $this->subjectUnderTest->doRequest([
+            'action' => 'update',
+            'method' => 'post',
+            'entity' => 'category',
+            'json' => new Update(),
+            'requestType' => ShopgateSdk::REQUEST_TYPE_EVENT,
+            'query' => [
+                'catalogCode' => 'ABCD',
+            ]
         ]);
     }
 

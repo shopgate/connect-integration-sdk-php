@@ -33,7 +33,7 @@ use Shopgate\ConnectSdk\ShopgateSdk;
 
 abstract class ShopgateSdkTest extends TestCase
 {
-    const SLEEP_TIME_AFTER_EVENT = 600000;
+    const SLEEP_TIME_AFTER_EVENT = 1200000;
 
     /** @var array */
     protected $sdkConfig = [];

@@ -80,7 +80,11 @@ development:
         port: 3306
         user: root
       elasticSearch:
-        url: http://elasticsearch:9200
+        url: http://elasticsearch:9200/
+        authUser: elastic
+        authPassword: omni
+        authRequired: false
+        requireValidSSL: false
 
     OmniCustomerService:
       mysql:

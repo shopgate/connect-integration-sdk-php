@@ -10,69 +10,78 @@ if (!getenv('PUBSUB_EMULATOR_HOST')) {
 
 $pubSub = new PubSubClient(['projectId' => 'test-project']);
 $topics = [
-    'entityChanged' => [
-        'entityChanged',
-        'workerSvcEntityChanged'
+    'entityChanged-development' => [
+        'entityChanged-development',
+        'workerSvcEntityChanged-development',
     ],
-    'fulfillmentOrderAdded' => [
-        'webhookTransSalesOrderFulfillmentAdded'
+    'entityCreated-development' => [
+        'entityCreated-development',
     ],
-    'fulfillmentOrderStatusUpdated' => [
-        'orderSvcFulfillmentOrderStatusUpdated',
-        'webhookFulfillmentOrderStatusUpdated',
-        'webhookTransFulfillmentOrderStatusUpdated'
+    'entityUpdated-development' => [
+        'entityUpdated-development',
     ],
-    'fulfillmentOrderUpdated' => [
-        'analyticsSvcFulfillmentOrderUpdated'
+    'entityDeleted-development' => [
+        'entityDeleted-development',
     ],
-    'inventoryReservationDeleted' => [
-        'webhookTransInventoryReservationDeleted'
+    'fulfillmentOrderAdded-development' => [
+        'webhookTransSalesOrderFulfillmentAdded-development',
     ],
-    'inventoryReservationSettled' => [
-        'webhookTransInventoryReservationSettled'
+    'fulfillmentOrderStatusUpdated-development' => [
+        'orderSvcFulfillmentOrderStatusUpdated-development',
+        'webhookFulfillmentOrderStatusUpdated-development',
+        'webhookTransFulfillmentOrderStatusUpdated-development',
     ],
-    'salesOrderAdded' => [
-        'routingSvcSalesOrderAdded',
-        'webhookSalesOrderAdded',
-        'webhookTransSalesOrderAdded',
-        'testerSalesOrderAdded' # maybe not needed
+    'fulfillmentOrderUpdated-development' => [
+        'analyticsSvcFulfillmentOrderUpdated-development',
     ],
-    'salesOrderFulfillmentAdded' => [
-        'webhookSalesOrderFulfillmentAdded',
-        'testerSOFulfillmentAdded' # maybe not needed
+    'inventoryReservationDeleted-development' => [
+        'webhookTransInventoryReservationDeleted-development',
     ],
-    'salesOrderStatusUpdated' => [
-        'orderSvcSalesOrderStatusUpdated',
-        'webhookSalesOrderStatusUpdated',
-        'webhookTransSalesOrderStatusUpdated',
-        'testerSalesOrderStatusUpdated' # maybe not needed
+    'inventoryReservationSettled-development' => [
+        'webhookTransInventoryReservationSettled-development',
     ],
-    'userAssigned' => [
-        'notificationSvcUserAssigned',
-        'testerUserAssigned', # maybe not needed
+    'salesOrderAdded-development' => [
+        'routingSvcSalesOrderAdded-development',
+        'webhookSalesOrderAdded-development',
+        'webhookTransSalesOrderAdded-development',
+        'testerSalesOrderAdded-development', # maybe not needed
     ],
-    'userAuthorizationFailed' => [
-        'userSvcUserAuthorizationFailed',
-        'testerUserAuthorizationFailed', # maybe not needed
+    'salesOrderFulfillmentAdded-development' => [
+        'webhookSalesOrderFulfillmentAdded-development',
+        'testerSOFulfillmentAdded-development', # maybe not needed
     ],
-    'userAuthorized' => [
-        'userSvcUserAuthorized',
-        'testerUserAuthorized', # maybe not needed
+    'salesOrderStatusUpdated-development' => [
+        'orderSvcSalesOrderStatusUpdated-development',
+        'webhookSalesOrderStatusUpdated-development',
+        'webhookTransSalesOrderStatusUpdated-development',
+        'testerSalesOrderStatusUpdated-development', # maybe not needed
     ],
-    'userCreated' => [
-        'notificationSvcUserCreated',
-        'testerUserCreated', # maybe not needed
+    'userAssigned-development' => [
+        'notificationSvcUserAssigned-development',
+        'testerUserAssigned-development', # maybe not needed
     ],
-    'userPasswordChanged' => [
-        'userSvcUserPasswordChanged',
-        'testerUserPasswordChanged', #maybe not needed
+    'userAuthorizationFailed-development' => [
+        'userSvcUserAuthorizationFailed-development',
+        'testerUserAuthorizationFailed-development', # maybe not needed
     ],
-    'userPasswordReset' => [
-        'userSvcUserPasswordReset',
-        'testerUserPasswordReset', # maybe not needed
+    'userAuthorized-development' => [
+        'userSvcUserAuthorized-development',
+        'testerUserAuthorized-development', # maybe not needed
     ],
-    'webhookRouted' => [
-        'webhookTransWebhookRouted'
+    'userCreated-development' => [
+        'notificationSvcUserCreated-development',
+        'testerUserCreated-development', # maybe not needed
+    ],
+    'userPasswordChanged-development' => [
+        'userSvcUserPasswordChanged-development',
+        'testerUserPasswordChanged-development', #maybe not needed
+    ],
+    'userPasswordReset-development' => [
+        'userSvcUserPasswordReset-development',
+        'testerUserPasswordReset-development', # maybe not needed
+    ],
+    'webhookRouted-development' => [
+        'webhookTransWebhookRouted-development',
     ],
 ];
 
@@ -92,7 +101,6 @@ function createTopic($pubSub, $topic, $subscriptions)
     $tries = 0;
     while (!$createdTopic && $subscriptionCreated != count($subscriptions) && $tries < 15) {
         try {
-            $topic .= '-development';
             echo "Creating Google PubSub topic '$topic' . . . ";
             $createdTopic = $pubSub->createTopic($topic);
             echo "[OK]\n";
@@ -113,7 +121,6 @@ function createTopic($pubSub, $topic, $subscriptions)
 
         foreach ($subscriptions as $subscription) {
             try {
-                $subscription .= '-development';
                 echo "Creating Google PubSub subscription '$subscription' to topic $topic . . . ";
                 $pubSub->subscribe($subscription, $topic);
                 $subscriptionCreated++;

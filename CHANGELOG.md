@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [0.9.0] - 2019-09-13
+### Added
+- catalogCode in payload of events
+
 ## [0.8.0] - 2019-09-10
 ### Added
 - getFulfillmentOrder direct call
@@ -119,7 +123,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - createCategory event & direct call
 - deleteCategory event & direct call
 
-[Unreleased]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.8.0...HEAD
+[Unreleased]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.9.0...HEAD
+[0.9.0]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.8.0...0.9.0
 [0.8.0]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.7.0...0.8.0
 [0.7.0]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.6.0...0.7.0
 [0.6.0]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.5.0...0.6.0

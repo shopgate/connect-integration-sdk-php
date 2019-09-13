@@ -56,7 +56,7 @@ class Event extends Base
                 'entityId' => ['type' => 'string'],
                 'payload' => ['type' => 'object']
             ],
-            'additionalProperties' => false
+            'additionalProperties' => true
         ];
     }
 }

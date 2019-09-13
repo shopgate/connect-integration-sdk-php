@@ -217,6 +217,11 @@ class BulkImportTest extends CatalogTest
             self::METHOD_DELETE_LOCATION,
             [self::LOCATION_CODE]
         );
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_INVENTORIES,
+            $this->getDeleteInventories($inventories)
+        );
 
         usleep(self::SLEEP_TIME_AFTER_BULK);
 
@@ -254,6 +259,11 @@ class BulkImportTest extends CatalogTest
             self::LOCATION_SERVICE,
             self::METHOD_DELETE_LOCATION,
             [self::LOCATION_CODE]
+        );
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_INVENTORIES,
+            $this->getDeleteInventories($inventories)
         );
 
         usleep(self::SLEEP_TIME_AFTER_BULK);
@@ -321,6 +331,11 @@ class BulkImportTest extends CatalogTest
             self::LOCATION_SERVICE,
             self::METHOD_DELETE_LOCATION,
             [self::LOCATION_CODE]
+        );
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_INVENTORIES,
+            $this->getDeleteInventories($inventories)
         );
 
         usleep(self::SLEEP_TIME_AFTER_BULK + 5000000);

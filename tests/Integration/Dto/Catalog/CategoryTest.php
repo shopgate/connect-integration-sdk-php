@@ -83,6 +83,39 @@ class CategoryTest extends CatalogTest
     }
 
     /**
+     * @depends testCreateCategoryDirect
+     * @depends testGetCategories
+     *
+     * @throws Exception
+     */
+    public function testGetCategoriesWithSpecificCatalogCode()
+    {
+        // Arrange
+        $sampleCategories = $this->provideSampleCategories();
+        $this->sdk->getCatalogService()->addCategories($sampleCategories, [
+            'requestType' => 'direct',
+            'catalogCode' => self::SAMPLE_CATALOG_CODE_NON_DEFAULT,
+        ]);
+
+        // Act
+        $categories = $this->sdk->getCatalogService()->getCategories([
+            'catalogCode' => self::SAMPLE_CATALOG_CODE_NON_DEFAULT,
+        ]);
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_CATEGORY,
+            $this->getCategoryCodes($sampleCategories),
+            self::SAMPLE_CATALOG_CODE_NON_DEFAULT
+        );
+
+        // Assert
+        /** @noinspection PhpParamsInspection */
+        $this->assertCount(2, $categories->getCategories());
+    }
+
+    /**
      * @param int      $limit
      * @param int      $offset
      * @param int      $expectedCategoryCount
@@ -738,6 +771,41 @@ class CategoryTest extends CatalogTest
 
     /**
      * @depends testCreateCategoryDirect
+     * @depends testGetCategoriesWithSpecificCatalogCode
+     *
+     * @throws Exception
+     */
+    public function testCreateCategoryEventInSpecificCatalogCode()
+    {
+        // Arrange
+        $sampleCategories = $this->provideSampleCategories();
+        $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
+
+        // Act
+        $response = $this->createCategories($sampleCategories, [
+            'catalogCode' => self::SAMPLE_CATALOG_CODE_NON_DEFAULT
+        ]);
+        usleep(self::SLEEP_TIME_AFTER_EVENT);
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_CATEGORY,
+            $sampleCategoryCodes,
+            self::SAMPLE_CATALOG_CODE_NON_DEFAULT
+        );
+
+        // Assert
+        $categories = $this->getCategories($sampleCategoryCodes, [
+            'catalogCode' => self::SAMPLE_CATALOG_CODE_NON_DEFAULT
+        ]);
+        $this->assertEquals(202, $response->getStatusCode());
+        /** @noinspection PhpParamsInspection */
+        $this->assertCount(2, $categories->getCategories());
+    }
+
+    /**
+     * @depends testCreateCategoryDirect
      * @depends testGetCategories
      *
      * @throws Exception
@@ -790,6 +858,46 @@ class CategoryTest extends CatalogTest
 
         // Assert
         $categories = $this->getCategories($this->getCategoryCodes($sampleCategories));
+        /** @noinspection PhpParamsInspection */
+        $this->assertCount(0, $categories->getCategories());
+
+        foreach ($responses as $response) {
+            $this->assertEquals(202, $response->getStatusCode());
+        }
+    }
+
+    /**
+     * @depends testCreateCategoryDirect
+     * @depends testGetCategories
+     *
+     * @throws Exception
+     */
+    public function testDeleteCategoryEventInSpecificCatalogCode()
+    {
+        // Arrange
+        $sampleCategories = $this->provideSampleCategories();
+        $this->sdk->getCatalogService()->addCategories($sampleCategories, [
+            'requestType' => 'direct',
+            'catalogCode' => self::SAMPLE_CATALOG_CODE_NON_DEFAULT
+        ]);
+        $responses = [];
+
+        // Act
+        foreach ($this->getCategoryCodes($sampleCategories) as $categoryCode) {
+            $responses[] = $this->sdk->getCatalogService()->deleteCategory(
+                $categoryCode,
+                [
+                    'catalogCode' => self::SAMPLE_CATALOG_CODE_NON_DEFAULT
+                ]
+            );
+        }
+
+        usleep(self::SLEEP_TIME_AFTER_EVENT*5);
+
+        // Assert
+        $categories = $this->getCategories($this->getCategoryCodes($sampleCategories), [
+            'catalogCode' => self::SAMPLE_CATALOG_CODE_NON_DEFAULT
+        ]);
         /** @noinspection PhpParamsInspection */
         $this->assertCount(0, $categories->getCategories());
 

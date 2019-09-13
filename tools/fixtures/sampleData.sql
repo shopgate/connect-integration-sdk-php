@@ -64,9 +64,31 @@ INSERT INTO omnichannel_order.`FulfillmentOrder` (`FulfillmentOrderID`, `SalesOr
 VALUES
 	(1, 207, '2', '50ed505b-1d7e-4240-af9d-f5f8d6316cf6', NULL, 1, '1', 8, 3, 'fulfilled', NULL, '10138-0001', NULL, NULL, 0, '2018-12-21 12:28:55', '2018-12-21 12:29:38', NULL, '2018-12-20 19:19:50', NULL, 0, 59, 0, NULL, 0, 59, 'en-US', 'USD', X'7B226D657373616765223A2022227D', '{}', '', '2018-12-20 19:22:21', 'pascal.vomhoff+testadmin@shopgate.com', '2018-12-21 12:29:39', NULL);
 
+# How to update the permissions:
+# 1. Checkout project omni-user (https://gitlab.localdev.cc/omnichannel/services/user/tree/add-permissions-update-script) branch: add-permissions-update-script
+# 2. Change file scripts/_connectionPool.js
+# host: 'localhost',
+# user: 'root',
+# password: 'secret',
+# database: 'omnichannel_user',
+# waitForConnections: true,
+# port: 3306,
+# 3. Replace dependingApiCodes with the codes you created via the scratch file
+# Replace all entries with just this one:
+#   {
+#     permissionCode: 'APIALL',
+#     application: 'api',
+#     module: 'api',
+#     submodule: 'api',
+#     function: 'edit',
+#     dependingApiCodes: [PUT IN HERE THE CODES FROM THE FILE]
+#   }
+# 4. Execute scripts/insertPermissions.js
+# 5. Truncate table PermissionMapping in your local(!) MySQL database and execute scripts/updatePermissionMapping.js
+# 6. Export both tables and replace the already here existing entries: (replace CreatedBy with 'Me')
 
 INSERT INTO omnichannel_user.`Permission` (`PermissionID`,`PermissionStatus`,`PermissionCode`,`Application`,`Module`,`Submodule`,`Function`,`CreateBy`,`CreateDate`,`UpdateBy`,`UpdateDate`,`DeleteBy`,`DeleteDate`)
-VALUE
+VALUES
 ('08ccdd99-63ea-4047-86b5-6b23af4ad533','active','SOV','api',NULL,NULL,NULL,'','2019-06-03 09:10:57',NULL,NULL,NULL,NULL),
 ('0e006e85-6d74-4d06-a6a2-76014fb71755','active','CCAE','api','catalog','category','edit','Me','2019-07-22 05:32:52',NULL,NULL,NULL,NULL),
 ('1','active','FOV','api',NULL,NULL,NULL,'','2019-06-04 11:57:34',NULL,NULL,NULL,NULL),
@@ -74,8 +96,10 @@ VALUE
 ('106c5b18-e8b9-41a3-93cf-b8b34c796219','active','CCD','api','catalog','catalog','delete','Me','2019-07-22 05:32:52',NULL,NULL,NULL,NULL),
 ('124c62af-4da8-4ccb-a35b-5cd7f8d1b539','active','CAD','api','catalog','attributes','delete','Me','2019-07-22 05:32:52',NULL,NULL,NULL,NULL),
 ('1f9eec9a-810e-44bb-965f-c5acc9eb16ff','active','CCAV','api','catalog','category','view','Me','2019-07-22 05:32:52',NULL,NULL,NULL,NULL),
+('22eabc08-49a3-40af-90af-a96dbac2f7d2','active','CUCE','api','customer','customer','edit','Me','2019-09-12 10:02:33',NULL,NULL,NULL,NULL),
 ('24d52d94-b1ab-4872-aae9-4f578578a4c8','active','FOC','api',NULL,NULL,'create','Me','2019-07-08 08:25:25',NULL,NULL,NULL,NULL),
 ('2725c142-7d1a-4281-b792-10498d0f71ff','active','CAV','api','catalog','attributes','view','Me','2019-07-22 05:32:51',NULL,NULL,NULL,NULL),
+('2b2d9f1d-5fef-48d1-9770-1dd8f169569b','active','APIALL','api','api','api','edit','Me','2019-08-28 06:57:21',NULL,NULL,NULL,NULL),
 ('2caa765e-2b5f-4079-86fc-8e5f1b5a5955','active','URV','api',NULL,NULL,'view','Me','2019-06-10 16:36:46',NULL,NULL,NULL,NULL),
 ('3335abb9-ccb3-4fe3-9524-695246911ab2','active','LLC','api','location','location','create','Me','2019-08-26 12:20:45',NULL,NULL,NULL,NULL),
 ('4042b334-1d9d-497f-affd-9a53b650e615','active','CPV','api','catalog','product','view','Me','2019-07-22 05:32:53',NULL,NULL,NULL,NULL),
@@ -93,58 +117,72 @@ VALUE
 ('85fd2890-aac6-48a0-a1ef-a5ae66b4b8d2','active','CCAD','api','catalog','category','delete','Me','2019-07-22 05:32:52',NULL,NULL,NULL,NULL),
 ('911a6650-4a9e-4b27-9a9a-584c237c7293','active','CPE','api','catalog','product','edit','Me','2019-07-22 05:32:53',NULL,NULL,NULL,NULL),
 ('930fbe82-2a5d-4f40-bd4b-87fe29124a6c','active','URE','api',NULL,NULL,'edit','Me','2019-06-10 16:36:46',NULL,NULL,NULL,NULL),
+('9ba08e15-8dd6-4451-ab70-8d2257ccf261','active','CUAE','api','customer','attribute','edit','Me','2019-09-12 10:02:33',NULL,NULL,NULL,NULL),
 ('9d6bc3cd-707e-42bc-905a-edb8663c0317','active','CAE','api','catalog','attributes','edit','Me','2019-07-22 05:32:52',NULL,NULL,NULL,NULL),
 ('a1ed6229-0ab5-4725-9fbb-3f26de78d8ed','active','URD','api',NULL,NULL,'delete','Me','2019-06-10 16:36:46',NULL,NULL,NULL,NULL),
+('a6958c2d-4446-4915-a8db-3269d7dd6b6d','active','CUAC','api','customer','attribute','create','Me','2019-09-12 10:02:33',NULL,NULL,NULL,NULL),
+('b138f75a-dc44-444a-abe9-cf01118dfa5e','active','CUCD','api','customer','customer','delete','Me','2019-09-12 10:02:33',NULL,NULL,NULL,NULL),
+('b972f76d-5dfe-4b06-a34e-43f0fd6c3784','active','CUAV','api','customer','attribute','view','Me','2019-09-12 10:02:33',NULL,NULL,NULL,NULL),
 ('bab2b536-a411-4da8-b653-b30dc01000b5','active','LLD','api','location','location','delete','Me','2019-08-26 12:20:45',NULL,NULL,NULL,NULL),
 ('bd29cd68-ae5b-415d-b8c3-5f35e4023ddf','active','CIV','api','catalog','inventory','view','Me','2019-07-22 05:32:52',NULL,NULL,NULL,NULL),
+('cb06a5a4-567d-4d03-94d0-2095aa499610','active','CUCV','api','customer','customer','view','Me','2019-09-12 10:02:33',NULL,NULL,NULL,NULL),
 ('d126acc7-46e3-43aa-aec2-e98c4a2dc32d','active','URC','api',NULL,NULL,'create','Me','2019-06-10 16:36:46',NULL,NULL,NULL,NULL),
 ('db752f3e-3318-49d7-a34c-fee5952c9233','active','CCE','api','catalog','catalog','edit','Me','2019-07-22 05:32:52',NULL,NULL,NULL,NULL),
 ('e6b7be84-55c2-4f08-b966-b1ecd5ec465e','active','CCC','api','catalog','catalog','create','Me','2019-07-22 05:32:52',NULL,NULL,NULL,NULL),
+('ef4b4d75-5c7c-4619-8fff-b69eb0a339de','active','CUCC','api','customer','customer','create','Me','2019-09-12 10:02:33',NULL,NULL,NULL,NULL),
 ('f3b032fa-2b67-41f5-b46d-ca6ce0631ac9','active','CCAC','api','catalog','category','create','Me','2019-07-22 05:32:52',NULL,NULL,NULL,NULL),
+('f50589e1-1189-4b23-b87b-950bc30e9aa6','active','CUAD','api','customer','attribute','delete','Me','2019-09-12 10:02:33',NULL,NULL,NULL,NULL),
 ('f99912e7-0e1d-4828-b3cf-f6299b952698','active','FOE','api',NULL,NULL,'create','Me','2019-07-08 08:30:06',NULL,NULL,NULL,NULL),
-('fe6b4100-57f2-413a-948b-6b3c4089ee25','active','CID','api','catalog','inventory','delete','Me','2019-07-22 05:32:53',NULL,NULL,NULL,NULL),
-('2b2d9f1d-5fef-48d1-9770-1dd8f169569b','active','APIALL','api','api','api','edit','Me','2019-08-28 06:57:21',NULL,NULL,NULL,NULL);
+('fe6b4100-57f2-413a-948b-6b3c4089ee25','active','CID','api','catalog','inventory','delete','Me','2019-07-22 05:32:53',NULL,NULL,NULL,NULL);
 
 
 
 INSERT INTO omnichannel_user.`PermissionMapping` (`PermissionMappingId`,`PermissionId`,`DependingPermissionId`,`CreateBy`,`CreateDate`,`UpdateBy`,`UpdateDate`,`DeleteBy`,`DeleteDate`)
 VALUES
-('0816075d-7b01-4fcb-aadc-c0705190a2cf','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','d126acc7-46e3-43aa-aec2-e98c4a2dc32d','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('08802a6c-77e7-4d83-a749-9b79e0e7f65d','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','24d52d94-b1ab-4872-aae9-4f578578a4c8','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('0f9373a8-eb95-4321-9636-ea0faadd35d9','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','bab2b536-a411-4da8-b653-b30dc01000b5','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('1195a626-31c4-42ad-8a53-e13ba38d81ae','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','516deae0-0d5a-4214-8bb3-6c322294aaf8','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('1400dbec-6353-47b0-bebc-78717b023b99','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','f3b032fa-2b67-41f5-b46d-ca6ce0631ac9','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('1409ca11-b21a-4499-87bc-213cdf3c0619','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','454d9bf9-a762-45d8-9e57-1dbcb3987a38','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('159e1380-e243-4929-a02f-7cdfcc147d54','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','a1ed6229-0ab5-4725-9fbb-3f26de78d8ed','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('1804628e-1356-4949-904b-a4906f01e5fb','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','70c975cd-a202-4071-93cc-0b5e76fc97d7','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('19e13794-8875-4564-b703-cb3d59b4fafa','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','100b2d42-219e-443b-90a4-11eb28dacbc3','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('1cf4f8b9-afdc-4078-ae5c-519e7727da7c','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','db752f3e-3318-49d7-a34c-fee5952c9233','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('1d8a69f8-0604-4d19-8567-fec2d0a5c9a9','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','46657198-b4e1-4f66-8a0f-2d6a112a6c57','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('218b17ed-b50c-443a-838b-fc8d82342f0e','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','124c62af-4da8-4ccb-a35b-5cd7f8d1b539','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('38af4a43-40f3-47fd-a6e9-8c5ccd984d58','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','629365a6-f69d-4bb4-bafb-a113c68ce2e6','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('38f7d379-59d5-4922-9874-c73552ce2f2b','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','796bb4a5-b3dc-4e64-aef5-89fc156da1bb','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('3fc3a05e-d322-4349-813f-6a83b533da70','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','85fd2890-aac6-48a0-a1ef-a5ae66b4b8d2','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('49e01ac5-84ba-4ccd-830b-e6ded42f6b86','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','76ccbf00-5c94-43c5-9f1f-67f3a062b6af','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('7061187c-c751-40ec-8762-b74f11be2e2e','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','911a6650-4a9e-4b27-9a9a-584c237c7293','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('72899b12-f5b5-47a5-938b-710b98bb3ad5','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','2725c142-7d1a-4281-b792-10498d0f71ff','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('7ec4747b-6954-44f1-8dbf-ce9765164206','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','08ccdd99-63ea-4047-86b5-6b23af4ad533','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('8270c1c1-7f87-4716-b99f-1144cd59e622','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','106c5b18-e8b9-41a3-93cf-b8b34c796219','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('83a81c2f-2917-47c4-92a5-012ae74c8c17','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','e6b7be84-55c2-4f08-b966-b1ecd5ec465e','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('86b47dea-6d05-4cca-8f48-5fae4fdb85a8','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','930fbe82-2a5d-4f40-bd4b-87fe29124a6c','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('9f5d3647-ff9e-485b-b0d4-9489377de39d','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','4388a62e-a85a-410f-8889-a700b75873fb','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('ab5eafea-876d-4f0e-9acb-55245ff3a822','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','561e6aa6-f2cb-4f36-aa5d-d77160d57ca0','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('b35495bf-7bfe-4012-a557-d2a1444cf592','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','4196e4a5-d875-42c8-81e1-658b80180607','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('be420fd6-7d0c-41d4-bebf-49bb0d857e8e','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','3335abb9-ccb3-4fe3-9524-695246911ab2','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('c0b23a3f-5b50-4e2a-b18d-99064929ce3d','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','52a695df-ba4b-4426-be50-50eea288cea9','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('cd99ff01-18d4-4e12-9599-337b0320835d','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','0e006e85-6d74-4d06-a6a2-76014fb71755','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('d1b36487-e63a-4f13-94f7-c6580ae79b9b','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','1f9eec9a-810e-44bb-965f-c5acc9eb16ff','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('d7153abd-3503-45b1-85a6-1ff0bbc2a843','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','bd29cd68-ae5b-415d-b8c3-5f35e4023ddf','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('e146a6ce-6755-48b5-b0e4-bb266292c741','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','2caa765e-2b5f-4079-86fc-8e5f1b5a5955','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('ec3fd72f-0b0f-47e8-8d8f-467ec51774f6','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','9d6bc3cd-707e-42bc-905a-edb8663c0317','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('f4570d47-72b5-4fdb-b909-fd0df504cfb1','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','1','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('f4fc315d-7ef1-49db-ab90-87af8c48b5ce','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','f99912e7-0e1d-4828-b3cf-f6299b952698','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('f7b4a6ce-445e-416d-8fdc-9a263edaec77','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','4042b334-1d9d-497f-affd-9a53b650e615','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL),
-('fa577d01-46e2-42c8-9460-aa1d1c99b311','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','fe6b4100-57f2-413a-948b-6b3c4089ee25','Me','2019-08-28 06:59:41',NULL,NULL,'',NULL);
+('0197f39c-c57c-4b40-aa81-cb50cb8b0ad4','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','516deae0-0d5a-4214-8bb3-6c322294aaf8','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('05f9a681-e7d9-422d-95d7-8132f8960091','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','3335abb9-ccb3-4fe3-9524-695246911ab2','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('06fe812d-23d1-4317-a69c-2b110f3c3482','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','9d6bc3cd-707e-42bc-905a-edb8663c0317','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('0da4a07d-9815-4734-9653-daf043b53508','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','b138f75a-dc44-444a-abe9-cf01118dfa5e','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('10f93dd1-dae6-498a-9191-afe676a5e125','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','f3b032fa-2b67-41f5-b46d-ca6ce0631ac9','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('156003ee-27d7-4057-80c2-6c5ef1b09121','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','1f9eec9a-810e-44bb-965f-c5acc9eb16ff','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('1d2cad46-79b6-42d6-8771-2d4fed26ef76','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','2caa765e-2b5f-4079-86fc-8e5f1b5a5955','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('2dc4e525-e097-4fc0-8aa6-7c6cc7d790a7','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','a1ed6229-0ab5-4725-9fbb-3f26de78d8ed','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('2ecb007b-53bb-4c1d-a67d-d9b086a46d99','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','22eabc08-49a3-40af-90af-a96dbac2f7d2','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('31ff3e82-3e34-4d5a-b216-bf52c852a89a','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','db752f3e-3318-49d7-a34c-fee5952c9233','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('3a8f1446-99cd-45d2-b424-55f1196a29a7','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','9ba08e15-8dd6-4451-ab70-8d2257ccf261','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('468f8efd-509c-453b-8cbb-07e932bf9a9b','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','ef4b4d75-5c7c-4619-8fff-b69eb0a339de','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('4e118d7f-f52a-4b7d-a001-7e3c0858274e','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','4196e4a5-d875-42c8-81e1-658b80180607','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('4eb7187d-a898-4071-91e0-5eaddc56c0b7','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','930fbe82-2a5d-4f40-bd4b-87fe29124a6c','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('6494aab4-6214-4f7b-a1ba-1d23006ab5f7','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','a6958c2d-4446-4915-a8db-3269d7dd6b6d','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('662e1207-4135-4767-bdf9-65913baeb27a','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','70c975cd-a202-4071-93cc-0b5e76fc97d7','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('66d6fb73-4693-4f76-92fe-f38d0d867f10','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','629365a6-f69d-4bb4-bafb-a113c68ce2e6','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('6a4df901-821b-4763-a1a0-313bd400ad15','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','e6b7be84-55c2-4f08-b966-b1ecd5ec465e','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('6cab7c60-2cf0-426d-9948-3a7e0d6732ac','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','cb06a5a4-567d-4d03-94d0-2095aa499610','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('6f92fb86-bea9-4c58-8f1b-1a3620ab4ddb','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','106c5b18-e8b9-41a3-93cf-b8b34c796219','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('742b3697-23bd-45fd-b843-02c41b4fa7be','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','124c62af-4da8-4ccb-a35b-5cd7f8d1b539','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('76057fab-126b-48f5-9e94-2faadb388511','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','454d9bf9-a762-45d8-9e57-1dbcb3987a38','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('76ebb43f-ae9e-42ec-9008-47327d8c8930','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','796bb4a5-b3dc-4e64-aef5-89fc156da1bb','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('79924090-1f32-4d2c-86d7-816379237fa9','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','fe6b4100-57f2-413a-948b-6b3c4089ee25','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('851cc9ad-8bd4-4bc9-b7ff-81caeb5fca66','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','4042b334-1d9d-497f-affd-9a53b650e615','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('8dd3bfeb-2e50-4a02-a833-63a6b2e87fd3','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','911a6650-4a9e-4b27-9a9a-584c237c7293','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('a29d7cc2-72d4-439f-9a23-8188d382e4a8','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','1','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('a7b93909-ab6a-475d-a082-fccb167dd122','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','d126acc7-46e3-43aa-aec2-e98c4a2dc32d','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('aacd330f-8259-4fbd-99db-70f585eebdbc','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','52a695df-ba4b-4426-be50-50eea288cea9','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('ac8d078f-a42c-44b6-8225-a34475de1514','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','f50589e1-1189-4b23-b87b-950bc30e9aa6','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('b14f2025-61d4-468d-9545-c0c76636a9d7','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','4388a62e-a85a-410f-8889-a700b75873fb','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('b5146651-d62f-4588-a762-021b80f66f3c','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','561e6aa6-f2cb-4f36-aa5d-d77160d57ca0','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('bce2effa-51dd-4812-9460-4254155288f0','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','85fd2890-aac6-48a0-a1ef-a5ae66b4b8d2','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('bdedcb0f-10d2-4ee5-be3a-ee5490127099','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','0e006e85-6d74-4d06-a6a2-76014fb71755','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('bf12187b-e782-4f90-b9b9-61cec2f7c398','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','2725c142-7d1a-4281-b792-10498d0f71ff','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('c3612da6-3046-4be9-8d70-bf47124d038a','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','08ccdd99-63ea-4047-86b5-6b23af4ad533','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('d2b5c8e9-3035-4b0b-ab9e-c4746d3b39a2','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','bd29cd68-ae5b-415d-b8c3-5f35e4023ddf','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('d62bb779-7b7b-4b96-8a35-f273646077d1','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','100b2d42-219e-443b-90a4-11eb28dacbc3','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('d808dba0-08a7-4874-ac24-3c96ff63f33d','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','f99912e7-0e1d-4828-b3cf-f6299b952698','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('e98e3e53-a606-42ff-b65c-2acd51007964','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','24d52d94-b1ab-4872-aae9-4f578578a4c8','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('eda5fa2b-6df8-4677-9bee-67d4e75b2657','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','b972f76d-5dfe-4b06-a34e-43f0fd6c3784','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('f6b13037-1fde-46f0-9483-45c617be3cc3','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','bab2b536-a411-4da8-b653-b30dc01000b5','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('f9909044-9ba4-49c8-964a-ebd5522de429','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','76ccbf00-5c94-43c5-9f1f-67f3a062b6af','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL),
+('ff795d75-e0e1-4424-92e5-d51f48e23097','2b2d9f1d-5fef-48d1-9770-1dd8f169569b','46657198-b4e1-4f66-8a0f-2d6a112a6c57','Me','2019-09-12 10:12:11',NULL,NULL,'',NULL);
 
 
 INSERT INTO omnichannel_user.`Role` (`RoleID`,`MerchantID`,`RoleCode`,`RoleName`,`RoleStatus`,`ApplicationType`,`CreateBy`,`CreateDate`,`UpdateBy`,`UpdateDate`,`DeleteBy`,`DeleteDate`)

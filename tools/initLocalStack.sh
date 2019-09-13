@@ -65,7 +65,7 @@ docker-compose $DOCKER_COMPOSE_PARAMETERS up -d event-receiver
 retry "EventReceiver" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T event-receiver curl http://localhost/health -o /dev/null 2>&1"
 
 docker-compose $DOCKER_COMPOSE_PARAMETERS up -d elasticsearch
-retry "elasticsearch" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T elasticsearch curl http://localhost:9200/_cluster/health?wait_for_status=yellow 2>&1"
+retry "elasticsearch" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T elasticsearch curl --insecure -u elastic:omni http://localhost:9200/_cluster/health?wait_for_status=yellow 2>&1"
 docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T elasticsearch curl -X DELETE 'http://localhost:9200/_all'
 
 docker-compose $DOCKER_COMPOSE_PARAMETERS up -d mysql sqs reverse-proxy auth omni-worker merchant location s3

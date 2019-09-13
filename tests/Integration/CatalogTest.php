@@ -41,6 +41,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\ShortDescription;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Update;
 use Shopgate\ConnectSdk\Dto\Location\Location;
 use Shopgate\ConnectSdk\Exception\Exception;
+use Shopgate\ConnectSdk\ShopgateSdk;
 
 abstract class CatalogTest extends ShopgateSdkTest
 {
@@ -51,6 +52,7 @@ abstract class CatalogTest extends ShopgateSdkTest
     const METHOD_DELETE_PRODUCT = 'deleteProduct';
     const METHOD_DELETE_ATTRIBUTE = 'deleteAttribute';
     const METHOD_DELETE_LOCATION = 'deleteLocation';
+    const METHOD_DELETE_INVENTORIES = 'deleteInventories';
     const METHOD_DELETE_RESERVATIONS = 'deleteReservations';
     const METHOD_DELETE_CUSTOMER = 'deleteCustomer';
 
@@ -62,6 +64,7 @@ abstract class CatalogTest extends ShopgateSdkTest
     ];
 
     const SAMPLE_CATALOG_CODE = 'NARetail';
+    const SAMPLE_CATALOG_CODE_NON_DEFAULT = 'NAWholesale';
 
     const PRODUCT_CODE = 'integration-test';
     const PRODUCT_CODE_SECOND = 'integration-test-2';
@@ -89,6 +92,7 @@ abstract class CatalogTest extends ShopgateSdkTest
                 self::METHOD_DELETE_PRODUCT => [],
                 self::METHOD_DELETE_ATTRIBUTE => [],
                 self::METHOD_DELETE_RESERVATIONS => [],
+                self::METHOD_DELETE_INVENTORIES => [],
             ]
         );
         $this->registerForCleanUp(
@@ -698,5 +702,27 @@ abstract class CatalogTest extends ShopgateSdkTest
             ])
         ];
         $this->sdk->getLocationService()->addLocations($locations);
+    }
+
+    /**
+     * @param Inventory\Create[] $createInventories
+     *
+     * @return Inventory\Delete[]
+     */
+    protected function getDeleteInventories(array $createInventories)
+    {
+        $deleteInventories = [];
+        foreach ($createInventories as $createInventory) {
+            $deleteInventory = new Inventory\Delete();
+            $deleteInventory->setProductCode($createInventory->productCode);
+            $deleteInventory->setLocationCode($createInventory->locationCode);
+            $deleteInventory->setSku($createInventory->sku);
+            $deleteInventory->setBin($createInventory->bin);
+            $deleteInventory->setBinLocation($createInventory->binLocation);
+
+            $deleteInventories[] = [$deleteInventory];
+        }
+
+        return $deleteInventories;
     }
 }

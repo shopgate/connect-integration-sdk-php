@@ -11,42 +11,77 @@ if (!getenv('PUBSUB_EMULATOR_HOST')) {
 $pubSub = new PubSubClient(['projectId' => 'test-project']);
 $topics = [
     'entityChanged-development' => [
-        'entityChanged-development'
+        'entityChanged-development',
+        'workerSvcEntityChanged-development',
     ],
-    'fulfillmentOrderStatusUpdated' => [
-        'orderSvcFulfillmentOrderStatusUpdated-development'
+    'entityCreated-development' => [
+        'entityCreated-development',
     ],
-    'salesOrderAdded' => [
-        'testerSalesOrderAdded-development'
+    'entityUpdated-development' => [
+        'entityUpdated-development',
     ],
-    'salesOrderFulfillmentAdded' => [
-        'testerSOFulfillmentAdded-development'
+    'entityDeleted-development' => [
+        'entityDeleted-development',
     ],
-    'salesOrderStatusUpdated' => [
+    'fulfillmentOrderAdded-development' => [
+        'webhookTransSalesOrderFulfillmentAdded-development',
+    ],
+    'fulfillmentOrderStatusUpdated-development' => [
+        'orderSvcFulfillmentOrderStatusUpdated-development',
+        'webhookFulfillmentOrderStatusUpdated-development',
+        'webhookTransFulfillmentOrderStatusUpdated-development',
+    ],
+    'fulfillmentOrderUpdated-development' => [
+        'analyticsSvcFulfillmentOrderUpdated-development',
+    ],
+    'inventoryReservationDeleted-development' => [
+        'webhookTransInventoryReservationDeleted-development',
+    ],
+    'inventoryReservationSettled-development' => [
+        'webhookTransInventoryReservationSettled-development',
+    ],
+    'salesOrderAdded-development' => [
+        'routingSvcSalesOrderAdded-development',
+        'webhookSalesOrderAdded-development',
+        'webhookTransSalesOrderAdded-development',
+        'testerSalesOrderAdded-development', # maybe not needed
+    ],
+    'salesOrderFulfillmentAdded-development' => [
+        'webhookSalesOrderFulfillmentAdded-development',
+        'testerSOFulfillmentAdded-development', # maybe not needed
+    ],
+    'salesOrderStatusUpdated-development' => [
         'orderSvcSalesOrderStatusUpdated-development',
-        'testerSalesOrderStatusUpdated-development'
+        'webhookSalesOrderStatusUpdated-development',
+        'webhookTransSalesOrderStatusUpdated-development',
+        'testerSalesOrderStatusUpdated-development', # maybe not needed
     ],
-    'userCreated' => [
-        'testerUserCreated-development',
+    'userAssigned-development' => [
+        'notificationSvcUserAssigned-development',
+        'testerUserAssigned-development', # maybe not needed
     ],
-    'userAssigned' => [
-        'testerUserAssigned-development',
-    ],
-    'userPasswordReset' => [
-        'testerUserPasswordReset-development',
-        'userSvcUserPasswordReset-development',
-    ],
-    'userPasswordChanged' => [
-        'testerUserPasswordChanged-development',
-        'userSvcUserPasswordChanged-development',
-    ],
-    'userAuthorized' => [
-        'testerUserAuthorized-development',
-        'userSvcUserAuthorized-development',
-    ],
-    'userAuthorizationFailed' => [
-        'testerUserAuthorizationFailed-development',
+    'userAuthorizationFailed-development' => [
         'userSvcUserAuthorizationFailed-development',
+        'testerUserAuthorizationFailed-development', # maybe not needed
+    ],
+    'userAuthorized-development' => [
+        'userSvcUserAuthorized-development',
+        'testerUserAuthorized-development', # maybe not needed
+    ],
+    'userCreated-development' => [
+        'notificationSvcUserCreated-development',
+        'testerUserCreated-development', # maybe not needed
+    ],
+    'userPasswordChanged-development' => [
+        'userSvcUserPasswordChanged-development',
+        'testerUserPasswordChanged-development', #maybe not needed
+    ],
+    'userPasswordReset-development' => [
+        'userSvcUserPasswordReset-development',
+        'testerUserPasswordReset-development', # maybe not needed
+    ],
+    'webhookRouted-development' => [
+        'webhookTransWebhookRouted-development',
     ],
 ];
 

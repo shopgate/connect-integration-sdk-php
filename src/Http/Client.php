@@ -75,9 +75,9 @@ class Client implements ClientInterface
         $baseUri,
         $merchantCode
     ) {
-        $this->client          = $client;
-        $this->baseUri         = rtrim($baseUri, '/');
-        $this->merchantCode    = $merchantCode;
+        $this->client = $client;
+        $this->baseUri = rtrim($baseUri, '/');
+        $this->merchantCode = $merchantCode;
         $this->OAuthMiddleware = $OAuth2Middleware;
     }
 
@@ -103,7 +103,7 @@ class Client implements ClientInterface
         $env = '',
         $accessTokenPath = ''
     ) {
-        $env = $env === 'live' ? '' : $env;
+        $env = $env === 'production' ? '' : $env;
 
         if (empty($baseUri)) {
             $baseUri = str_replace('{env}', $env, 'https://{service}.shopgate{env}.io');
@@ -123,11 +123,11 @@ class Client implements ClientInterface
             new ShopgateCredentials(
                 $reAuthClient,
                 [
-                    'client_id'     => $clientId,
+                    'client_id' => $clientId,
                     'client_secret' => $clientSecret,
                     'merchant_code' => $merchantCode,
-                    'username'      => $username,
-                    'password'      => $password
+                    'username' => $username,
+                    'password' => $password
                 ]
             )
         );
@@ -137,9 +137,9 @@ class Client implements ClientInterface
         ]));
 
         $handlerStack = HandlerStack::create();
-        $client       = new \GuzzleHttp\Client(
+        $client = new \GuzzleHttp\Client(
             [
-                'auth'    => 'oauth',
+                'auth' => 'oauth',
                 'handler' => $handlerStack
             ]
         );
@@ -188,6 +188,16 @@ class Client implements ClientInterface
             . '/v1'
             . "/merchants/{$this->merchantCode}"
             . '/' . ltrim($path, '/');
+    }
+
+    /**
+     * @param callable $middleware
+     */
+    public function addMiddleware(callable $middleware)
+    {
+        /** @var HandlerStack $handlerStack */
+        $handlerStack = $this->client->getConfig('handler');
+        $handlerStack->push($middleware);
     }
 
     protected function addOAuthAuthentication()
@@ -239,18 +249,21 @@ class Client implements ClientInterface
         }
 
         $response = null;
+        $defaultConfigs = [
+            'connect_timeout' => 5.0
+        ];
         try {
             if (isset($params['body'])) {
                 $parameters['body'] = $params['body'];
             } elseif (isset($params['json'])) {
-                $json               = !empty($params['json']) ? $params['json'] : [];
+                $json = !empty($params['json']) ? $params['json'] : [];
                 $parameters['json'] = $json instanceof Base ? $json->toJson() : (new Base($json))->toJson();
             }
 
             $response = $this->client->request(
                 $params['method'],
                 isset($params['url']) ? $params['url'] : $this->buildServiceUrl($params['service'], $params['path']),
-                $parameters
+                array_merge($defaultConfigs, $parameters)
             );
         } catch (GuzzleRequestException $e) {
             $statusCode = $e->getResponse() ? $e->getResponse()->getStatusCode() : 0;
@@ -345,15 +358,20 @@ class Client implements ClientInterface
     private function triggerEvent(array $params)
     {
         $values = [
-            isset($params['json']) ? $params['json'] : new Base(),
+            isset($params['json']) ? $params['json'] : new Base([], [
+                'type' => 'object',
+                'additionalProperties' => true
+            ]),
         ];
         if ($params['action'] === 'create') {
-            $key    = array_keys($params['json'])[0];
+            $key = array_keys($params['json'])[0];
             $values = $params['json'][$key];
         }
 
         $factory = new Factory();
         foreach ($values as $payload) {
+            $payload = $this->prepareEventPayload($params, $payload);
+
             $entityId = isset($params['entityId']) ? $params['entityId'] : null;
             $factory->addEvent($params['action'], $params['entity'], $payload, $entityId);
         }
@@ -363,8 +381,9 @@ class Client implements ClientInterface
                 'post',
                 $this->buildServiceUrl('event-receiver', 'events'),
                 [
-                    'json'        => $factory->getRequest()->toJson(),
+                    'json' => $factory->getRequest()->toJson(),
                     'http_errors' => false,
+                    'connect_timeout' => 5.0
                 ]
             );
         } catch (GuzzleRequestException $e) {
@@ -393,5 +412,20 @@ class Client implements ClientInterface
         return
             (!isset($params['requestType']) && $params['method'] === 'get')
             || $params['requestType'] === ShopgateSdk::REQUEST_TYPE_DIRECT;
+    }
+
+    /**
+     * @param array $params
+     * @param Base  $payload
+     *
+     * @return Base
+     */
+    private function prepareEventPayload(array $params, Base $payload)
+    {
+        if (isset($params['query']['catalogCode'])) {
+            $payload->setCatalogCode($params['query']['catalogCode']);
+        }
+
+        return $payload;
     }
 }

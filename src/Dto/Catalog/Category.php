@@ -28,11 +28,11 @@ use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto;
 /**
  * @method string getCode()
  * @method string getParentCategoryCode()
- * @method string getCatalogCode()
  * @method Dto\Image getImage()
  * @method Dto\Name getName()
  * @method Dto\Description getDescription()
  * @method Dto\Url getUrl()
+ * @method int getSequenceId()
  * @method string getExternalUpdateDate()
  * @method string getStatus()
  *

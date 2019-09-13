@@ -24,8 +24,8 @@ namespace Shopgate\ConnectSdk\Dto\Catalog\Category;
 
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Description;
-use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Name;
 use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Image;
+use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Name;
 use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Url;
 
 /**

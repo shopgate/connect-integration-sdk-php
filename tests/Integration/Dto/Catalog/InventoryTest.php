@@ -270,7 +270,7 @@ class InventoryTest extends CatalogTest
             return;
         } finally {
             // CleanUp
-            $this->cleanUp([self::PRODUCT_CODE], [self::LOCATION_CODE], $this->getDeleteInventories([$inventory]));
+            $this->cleanUp([self::PRODUCT_CODE], [self::LOCATION_CODE]);
         }
 
         $this->fail('Expected ' . get_class($expectedException) . ' but wasn\'t thrown');

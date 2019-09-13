@@ -46,7 +46,8 @@ class ReservationTest extends CatalogTest
         $product = $this->prepareProductMinimum();
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
         $this->createLocation(self::LOCATION_CODE);
-        $this->sdk->getCatalogService()->addInventories($this->provideSampleInventories(1));
+        $inventories = $this->provideSampleInventories(1);
+        $this->sdk->getCatalogService()->addInventories($inventories);
 
         $order['customerId'] = $this->createCustomer();
         $orderNumber = $this->createSampleOrder([self::PRODUCT_CODE], self::LOCATION_CODE, $order);
@@ -70,7 +71,7 @@ class ReservationTest extends CatalogTest
         $this->assertEquals($orderNumber, $currentReservation->getSalesOrderNumber());
 
         // CleanUp
-        $this->cleanUp([self::PRODUCT_CODE], [self::LOCATION_CODE], [$order['customerId']]);
+        $this->cleanUp([self::PRODUCT_CODE], [self::LOCATION_CODE], [$order['customerId']], $this->getDeleteInventories($inventories));
         $this->sdk->getCatalogService()->deleteReservations([$currentReservation->getCode()]);
 
         $this->assertEmpty($this->sdk->getCatalogService()->getReservations()->getReservations());

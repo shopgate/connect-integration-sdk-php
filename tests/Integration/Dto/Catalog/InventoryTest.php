@@ -564,26 +564,4 @@ class InventoryTest extends CatalogTest
             $inventories
         );
     }
-
-    /**
-     * @param Inventory\Create[] $createInventories
-     *
-     * @return Inventory\Delete[]
-     */
-    private function getDeleteInventories(array $createInventories)
-    {
-        $deleteInventories = [];
-        foreach ($createInventories as $createInventory) {
-            $deleteInventory = new Inventory\Delete();
-            $deleteInventory->setProductCode($createInventory->productCode);
-            $deleteInventory->setLocationCode($createInventory->locationCode);
-            $deleteInventory->setSku($createInventory->sku);
-            $deleteInventory->setBin($createInventory->bin);
-            $deleteInventory->setBinLocation($createInventory->binLocation);
-
-            $deleteInventories[] = [$deleteInventory];
-        }
-
-        return $deleteInventories;
-    }
 }

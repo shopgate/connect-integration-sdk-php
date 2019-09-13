@@ -103,7 +103,7 @@ class Client implements ClientInterface
         $env = '',
         $accessTokenPath = ''
     ) {
-        $env = $env === 'live' ? '' : $env;
+        $env = $env === 'production' ? '' : $env;
 
         if (empty($baseUri)) {
             $baseUri = str_replace('{env}', $env, 'https://{service}.shopgate{env}.io');

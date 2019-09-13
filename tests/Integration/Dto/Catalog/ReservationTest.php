@@ -22,6 +22,7 @@
 
 namespace Shopgate\ConnectSdk\Tests\Integration\Dto\Catalog;
 
+use Shopgate\ConnectSdk\Dto\Catalog\Inventory\Delete;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Price;
 use Shopgate\ConnectSdk\Dto\Catalog\Reservation\Get;
 use Shopgate\ConnectSdk\Dto\Customer\Customer;
@@ -165,8 +166,9 @@ class ReservationTest extends CatalogTest
      * @param string[] $productCodes
      * @param string[] $locationCodes
      * @param string[] $customerIds
+     * @param Delete[] $inventories
      */
-    private function cleanUp($productCodes = [], $locationCodes = [], $customerIds = [])
+    private function cleanUp($productCodes = [], $locationCodes = [], $customerIds = [], $inventories = [])
     {
         $this->deleteEntitiesAfterTestRun(
             self::CATALOG_SERVICE,
@@ -178,11 +180,15 @@ class ReservationTest extends CatalogTest
             self::METHOD_DELETE_LOCATION,
             $locationCodes
         );
-
         $this->deleteEntitiesAfterTestRun(
             self::CUSTOMER_SERVICE,
             self::METHOD_DELETE_CUSTOMER,
             $customerIds
+        );
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_INVENTORIES,
+            $inventories
         );
     }
 }

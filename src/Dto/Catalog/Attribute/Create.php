@@ -26,6 +26,13 @@ use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 
 /**
+ * @method string getCode()
+ * @method string getType()
+ * @method string getUse()
+ * @method Dto\Name getName()
+ * @method string getExternalUpdateDate()
+ * @method array getValues()
+ *
  * @method Create setCode(string $code)
  * @method Create setType(string $type)
  * @method Create setUse(string $use)

@@ -615,7 +615,7 @@ abstract class CatalogTest extends ShopgateSdkTest
     {
         $categoryCodes = [];
         foreach ($categories as $category) {
-            $categoryCodes[] = $category->code;
+            $categoryCodes[] = $category->getCode();
         }
 
         return $categoryCodes;

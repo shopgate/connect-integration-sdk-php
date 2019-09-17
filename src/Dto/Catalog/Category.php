@@ -27,6 +27,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto;
 
 /**
  * @method string getCode()
+ * @method string getCatalogCode()
  * @method string getParentCategoryCode()
  * @method Dto\Image getImage()
  * @method Dto\Name getName()

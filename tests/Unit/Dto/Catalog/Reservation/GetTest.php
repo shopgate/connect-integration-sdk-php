@@ -37,8 +37,8 @@ class GetTest extends TestCase
             'locationCode' => 'DERetail1',
             'sku' => 'SKU-1',
             'salesOrderLineItemCode' => 'ddf05955-d47a-4449-a5ee-4c731dfe4952',
-            'salesOrderId' => '07838fc-1cba-4529-aeed-ac76a5222822',
-            'fulfillmentOrderId' => '0026cc38-f5ad-488f-abf5-e834239e45a1',
+            'salesOrderNumber' => '07838fc-1cba-4529-aeed-ac76a5222822',
+            'fulfillmentOrderNumber' => '0026cc38-f5ad-488f-abf5-e834239e45a1',
             'bin' => '1203',
             'binLocation' => '1203-4',
             'quantity' => 1,
@@ -49,8 +49,8 @@ class GetTest extends TestCase
         $this->assertEquals('DERetail1', $reservation->getLocationCode());
         $this->assertEquals('SKU-1', $reservation->getSku());
         $this->assertEquals('ddf05955-d47a-4449-a5ee-4c731dfe4952', $reservation->getSalesOrderLineItemCode());
-        $this->assertEquals('07838fc-1cba-4529-aeed-ac76a5222822', $reservation->salesOrderId);
-        $this->assertEquals('0026cc38-f5ad-488f-abf5-e834239e45a1', $reservation->fulfillmentOrderId);
+        $this->assertEquals('07838fc-1cba-4529-aeed-ac76a5222822', $reservation->getSalesOrderNumber());
+        $this->assertEquals('0026cc38-f5ad-488f-abf5-e834239e45a1', $reservation->getFulfillmentOrderNumber());
         $this->assertEquals('1203', $reservation->getBin());
         $this->assertEquals('1203-4', $reservation->getBinLocation());
         $this->assertEquals(1, $reservation->getQuantity());

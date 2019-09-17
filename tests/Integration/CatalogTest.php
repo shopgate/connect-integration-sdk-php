@@ -555,7 +555,7 @@ abstract class CatalogTest extends ShopgateSdkTest
     }
 
     /**
-     * @return array
+     * @return Attribute\Create[]
      */
     protected function provideSampleExtras()
     {

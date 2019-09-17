@@ -26,6 +26,12 @@ use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 
 /**
+ * @method string getCode()
+ * @method string getType()
+ * @method string getUse()
+ * @method string getName()
+ * @method AttributeValue\Get[] getValues()
+ *
  * @codeCoverageIgnore
  */
 class Get extends Attribute
@@ -34,14 +40,14 @@ class Get extends Attribute
      * @var array
      */
     protected $schema = [
-        'type'                 => 'object',
-        'properties'           => [
+        'type' => 'object',
+        'properties' => [
             'name' => [
-                'type'  => 'string',
+                'type' => 'string',
                 'items' => ['$ref' => Dto\Name::class]
             ],
             'values' => [
-                'type'  => 'array',
+                'type' => 'array',
                 'items' => ['$ref' => AttributeValue\Get::class]
             ]
         ],

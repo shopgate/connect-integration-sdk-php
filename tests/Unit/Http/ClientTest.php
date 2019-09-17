@@ -33,7 +33,6 @@ use kamermans\OAuth2\OAuth2Middleware;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 use Psr\Log\LoggerInterface;
-use Shopgate\ConnectSdk\Dto\Base;
 use Shopgate\ConnectSdk\Dto\Catalog\Category\Update;
 use Shopgate\ConnectSdk\Exception\Exception as ShopgateSdkException;
 use Shopgate\ConnectSdk\Http\Client;

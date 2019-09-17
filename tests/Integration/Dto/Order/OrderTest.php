@@ -27,7 +27,6 @@ use Shopgate\ConnectSdk\Dto\Customer\Customer;
 use Shopgate\ConnectSdk\Dto\Location\Location;
 use Shopgate\ConnectSdk\Dto\Order\Order;
 use Shopgate\ConnectSdk\Exception;
-use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Tests\Integration\OrderTest as OrderBaseTest;
 
 class OrderTest extends OrderBaseTest
@@ -37,11 +36,7 @@ class OrderTest extends OrderBaseTest
      * @param string $locationCode
      * @param array $orders
      *
-     * @throws Exception\AuthenticationInvalidException
      * @throws Exception\Exception
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnknownException
-     * @throws RequestException
      *
      * @dataProvider createOrderDataProvider
      */
@@ -99,11 +94,7 @@ class OrderTest extends OrderBaseTest
     }
 
     /**
-     * @throws Exception\AuthenticationInvalidException
      * @throws Exception\Exception
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnknownException
-     * @throws RequestException
      */
     public function testGetOrder()
     {
@@ -129,11 +120,7 @@ class OrderTest extends OrderBaseTest
     }
 
     /**
-     * @throws Exception\AuthenticationInvalidException
      * @throws Exception\Exception
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnknownException
-     * @throws RequestException
      */
     public function testGetFulfillmentOrder()
     {
@@ -142,11 +129,16 @@ class OrderTest extends OrderBaseTest
     }
 
     /**
-     * @throws Exception\AuthenticationInvalidException
      * @throws Exception\Exception
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnknownException
-     * @throws RequestException
+     */
+    public function testGetFulfillmentOrders()
+    {
+        $returnedFulfillmentOrder = $this->sdk->getOrderService()->getFulfillmentOrders();
+        $this->assertEquals('10138-0001', $returnedFulfillmentOrder->getFulfillmentOrders()[0]->getOrderNumber());
+    }
+
+    /**
+     * @throws Exception\Exception
      */
     public function testGetOrdersByCustomerId()
     {
@@ -183,11 +175,7 @@ class OrderTest extends OrderBaseTest
     }
 
     /**
-     * @throws Exception\AuthenticationInvalidException
      * @throws Exception\Exception
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnknownException
-     * @throws RequestException
      */
     public function testGetOrdersByExternalCode()
     {
@@ -238,11 +226,7 @@ class OrderTest extends OrderBaseTest
     }
 
     /**
-     * @throws Exception\AuthenticationInvalidException
      * @throws Exception\Exception
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnknownException
-     * @throws RequestException
      */
     public function testGetOrdersLimitOffset()
     {
@@ -423,10 +407,7 @@ class OrderTest extends OrderBaseTest
     /**
      * @param string $code
      *
-     * @throws Exception\AuthenticationInvalidException
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnknownException
-     * @throws RequestException
+     * @throws Exception\Exception
      */
     private function addSampleLocation($code)
     {

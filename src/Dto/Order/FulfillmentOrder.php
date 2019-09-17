@@ -22,65 +22,43 @@
 
 namespace Shopgate\ConnectSdk\Dto\Order;
 
-use Shopgate\ConnectSdk\Dto\Base;
+use Dto\RegulatorInterface;
 use Shopgate\ConnectSdk\Dto\Order\Dto\Fulfillment;
 use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder\Dto;
 
 /**
- * @method string getOrderNumber()
- * @method string getExternalCode()
- * @method string getPosTransactionId()
- * @method string getCancellationReason()
- * @method string getSalesOrderNumber()
- * @method string getLocationCode()
- * @method string getType()
- * @method string getCustomerId()
- * @method string getExternalCustomerNumber()
- * @method string getRouteType()
- * @method string getExpedited()
- * @method string getStatus()
  * @method Dto\Channel getChannel()
- * @method float getSubTotal()
- * @method float getTaxAmount()
- * @method float getTax2Amount()
- * @method float getTotal()
- * @method float getShippingTotal()
- * @method string getLocaleCode()
- * @method string getCurrencyCode()
- * @method string getNotes()
- * @method string getSpecialInstructions()
  * @method Dto\FulfillmentOrderAddress getFulfillmentOrderAddress()
  * @method Fulfillment[] getFulfillments()
  * @method Dto\LineItem[] getLineItems()
  * @method Dto\HistoryItem[] getHistory()
- * @method string getOrderSubmittedDate()
- * @method string getAcceptedDate()
- * @method string getReadyDate()
- * @method string getCompletedDate()
  *
  * @codeCoverageIgnore
  */
-class FulfillmentOrder extends Base
+class FulfillmentOrder extends SimpleFulfillmentOrder
 {
-    const CANCELLATION_EXPIRED = 'expired';
-    const CANCELLATION_DECLINED = 'declined';
-    const CANCELLATION_NEW_PURCHASE = 'newPurchase';
-    const TYPE_DIRECT_SHIP = 'directShip';
-    const TYPE_BOPIS = 'BOPIS';
-    const TYPE_ROPIS = 'ROPIS';
-    const ROUTE_TYPE_STANDARD_DIRECT_SHIP = 'standardDirectShip';
-    const ROUTE_TYPE_STANDARD_PICKUP = 'standardPickup';
-    const ROUTE_TYPE_STANDARD_RESERVE = 'standardReserve';
-    const STATUS_NEW = 'new';
-    const STATUS_REQUESTED = 'requested';
-    const STATUS_ACCEPTED = 'accepted';
-    const STATUS_IN_PROGRESS = 'inProgress';
-    const STATUS_PICKED = 'picked';
-    const STATUS_PACKED = 'packed';
-    const STATUS_READY = 'ready';
-    const STATUS_HOLD = 'hold';
-    const STATUS_CHECKED_IN = 'checkedIn';
-    const STATUS_CANCELED = 'canceled';
-    const STATUS_REJECTED = 'rejected';
-    const STATUS_FULFILLED = 'fulfilled';
+    /**
+     * Rewritten to provide inheritance of payload structure
+     *
+     * @inheritDoc
+     */
+    public function __construct($input = null, $schema = null, RegulatorInterface $regulator = null)
+    {
+        $this->schema['properties']['channel'] = ['$ref' => Dto\Channel::class];
+        $this->schema['properties']['fulfilmentOrderAddress'] = ['$ref' => Dto\FulfillmentOrderAddress::class];
+        $this->schema['properties']['fulfilments'] = [
+            'type'  => 'array',
+            'items' => ['$ref' => Fulfillment::class],
+        ];
+        $this->schema['properties']['lineItems'] = [
+            'type'  => 'array',
+            'items' => ['$ref' => Dto\LineItem::class],
+        ];
+        $this->schema['properties']['history'] = [
+            'type'  => 'array',
+            'items' => ['$ref' => Dto\HistoryItem::class],
+        ];
+
+        parent::__construct($input, $schema , $regulator);
+    }
 }

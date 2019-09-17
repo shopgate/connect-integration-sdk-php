@@ -35,9 +35,6 @@ abstract class ShopgateSdkTest extends TestCase
 {
     const SLEEP_TIME_AFTER_EVENT = 300000;
 
-    /** @var array */
-    protected $sdkConfig = [];
-
     /** @var ShopgateSdk */
     protected $sdk;
 

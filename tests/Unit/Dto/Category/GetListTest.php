@@ -68,7 +68,7 @@ class GetListTest extends TestCase
         $this->assertEquals(Category::STATUS_ACTIVE, $categories[0]->getStatus());
         $this->assertEquals('la2', $categories[1]->getCode());
         $this->assertEquals('pCode', $categories[2]->getParentCategoryCode());
-        $this->assertEquals('catCode', $categories[2]->getCatalogCode());
+        $this->assertEquals('catCode', $categories[2]->catalogCode);
         $this->assertEquals('http://img.com', $categories[2]->getImage());
         $this->assertEquals('http://url.com', $categories[2]->getUrl());
         $this->assertEquals('someName', $categories[2]->getName());
@@ -109,7 +109,7 @@ class GetListTest extends TestCase
         $this->assertEquals('0', $categories->getStatus());
         $this->assertEquals('23.4', $categories->getCode());
         $this->assertEquals('16', $categories->getParentCategoryCode());
-        $this->assertEquals('', $categories->getCatalogCode());
+        $this->assertEquals('', $categories->catalogCode);
         $this->assertEquals('1', $categories->getImage());
         $this->assertEquals('', $categories->getName());
         $this->assertEquals('', $categories->getDescription());

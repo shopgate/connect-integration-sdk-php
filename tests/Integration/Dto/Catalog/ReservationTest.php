@@ -52,7 +52,7 @@ class ReservationTest extends CatalogTest
         $order['customerId'] = $this->createCustomer();
         $orderNumber = $this->createSampleOrder([self::PRODUCT_CODE], self::LOCATION_CODE, $order);
 
-        $reservations = $this->provideSampleReservations(1, self::PRODUCT_CODE, $orderNumber);
+        $reservations = $this->provideSampleReservations($orderNumber, 1, self::PRODUCT_CODE);
 
         // Act
         $this->sdk->getCatalogService()->addReservations($reservations);
@@ -79,10 +79,7 @@ class ReservationTest extends CatalogTest
 
     /**
      * @return mixed
-     * @throws \Shopgate\ConnectSdk\Exception\AuthenticationInvalidException
-     * @throws \Shopgate\ConnectSdk\Exception\NotFoundException
-     * @throws \Shopgate\ConnectSdk\Exception\RequestException
-     * @throws \Shopgate\ConnectSdk\Exception\UnknownException
+     * @throws Exception
      */
     private function createCustomer()
     {
@@ -101,11 +98,9 @@ class ReservationTest extends CatalogTest
      * @param string $locationCode
      * @param array $fields
      *
-     * @return mixed
-     * @throws \Shopgate\ConnectSdk\Exception\AuthenticationInvalidException
-     * @throws \Shopgate\ConnectSdk\Exception\NotFoundException
-     * @throws \Shopgate\ConnectSdk\Exception\RequestException
-     * @throws \Shopgate\ConnectSdk\Exception\UnknownException
+     * @return string
+     *
+     * @throws Exception
      */
     private function createSampleOrder($productIds, $locationCode, $fields = [])
     {

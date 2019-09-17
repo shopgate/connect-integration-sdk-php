@@ -346,7 +346,7 @@ class AttributeTest extends CatalogTest
 
         $deleteCodes = [];
         foreach ($sampleAttributes as $attribute) {
-            $deleteCodes[] = $attribute->getCode();
+            $deleteCodes[] = $attribute->code;
         }
         // Act
         $this->createAttributes(

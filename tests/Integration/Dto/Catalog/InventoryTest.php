@@ -544,7 +544,7 @@ class InventoryTest extends CatalogTest
     /**
      * @param string[] $productCodes
      * @param string[] $locationCodes
-     * @param stirng[] $inventories
+     * @param string[] $inventories
      */
     private function cleanUp($productCodes = [], $locationCodes = [], $inventories = [])
     {

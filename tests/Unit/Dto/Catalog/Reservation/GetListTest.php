@@ -72,14 +72,14 @@ class GetListTest extends TestCase
         $this->assertEquals('DERetail1', $reservations[0]->getLocationCode());
         $this->assertEquals('SKU-1', $reservations[0]->getSku());
         $this->assertEquals('ddf05955-d47a-4449-a5ee-4c731dfe4952', $reservations[0]->getSalesOrderLineItemCode());
-        $this->assertEquals('07838fc-1cba-4529-aeed-ac76a5222822', $reservations[0]->getSalesOrderId());
+        $this->assertEquals('07838fc-1cba-4529-aeed-ac76a5222822', $reservations[0]->salesOrderId);
         $this->assertEquals(1, $reservations[0]->getQuantity());
 
         $this->assertEquals('productCode2', $reservations[1]->getProductCode());
         $this->assertEquals('DERetail2', $reservations[1]->getLocationCode());
         $this->assertEquals('SKU-2', $reservations[1]->getSku());
         $this->assertEquals('ddf05955-d47a-4449-a5ee-4c731dfe4953', $reservations[1]->getSalesOrderLineItemCode());
-        $this->assertEquals('07838fc-1cba-4529-aeed-ac76a5222823', $reservations[1]->getSalesOrderId());
+        $this->assertEquals('07838fc-1cba-4529-aeed-ac76a5222823', $reservations[1]->salesOrderId);
         $this->assertEquals(2, $reservations[1]->getQuantity());
     }
 }

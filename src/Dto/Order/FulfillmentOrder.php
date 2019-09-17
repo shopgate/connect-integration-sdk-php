@@ -45,20 +45,20 @@ class FulfillmentOrder extends SimpleFulfillmentOrder
     public function __construct($input = null, $schema = null, RegulatorInterface $regulator = null)
     {
         $this->schema['properties']['channel'] = ['$ref' => Dto\Channel::class];
-        $this->schema['properties']['fulfilmentOrderAddress'] = ['$ref' => Dto\FulfillmentOrderAddress::class];
-        $this->schema['properties']['fulfilments'] = [
-            'type'  => 'array',
+        $this->schema['properties']['fulfillmentOrderAddress'] = ['$ref' => Dto\FulfillmentOrderAddress::class];
+        $this->schema['properties']['fulfillments'] = [
+            'type' => 'array',
             'items' => ['$ref' => Fulfillment::class],
         ];
         $this->schema['properties']['lineItems'] = [
-            'type'  => 'array',
+            'type' => 'array',
             'items' => ['$ref' => Dto\LineItem::class],
         ];
         $this->schema['properties']['history'] = [
-            'type'  => 'array',
+            'type' => 'array',
             'items' => ['$ref' => Dto\HistoryItem::class],
         ];
 
-        parent::__construct($input, $schema , $regulator);
+        parent::__construct($input, $schema, $regulator);
     }
 }

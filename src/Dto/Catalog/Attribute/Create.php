@@ -31,7 +31,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
  * @method string getUse()
  * @method Dto\Name getName()
  * @method string getExternalUpdateDate()
- * @method array getValues()
+ * @method AttributeValue\Create[] getValues()
  *
  * @method Create setCode(string $code)
  * @method Create setType(string $type)

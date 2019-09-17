@@ -25,6 +25,12 @@ namespace Shopgate\ConnectSdk\Dto\Catalog;
 use Shopgate\ConnectSdk\Dto\Base;
 
 /**
+ * @method string getCode()
+ * @method string getType()
+ * @method string getUse()
+ * @method string getName()
+ * @method AttributeValue\Get[] getValues()
+ *
  * @package Shopgate\ConnectSdk\Dto\Catalog
  */
 class Attribute extends Base

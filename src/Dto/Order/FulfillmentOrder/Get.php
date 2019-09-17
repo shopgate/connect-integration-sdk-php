@@ -22,9 +22,7 @@
 
 namespace Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder;
 
-use Shopgate\ConnectSdk\Dto\Order\Dto\Fulfillment;
 use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder;
-use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder\Dto;
 
 /**
  * @codeCoverageIgnore

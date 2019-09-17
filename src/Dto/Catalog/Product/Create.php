@@ -25,7 +25,7 @@ namespace Shopgate\ConnectSdk\Dto\Catalog\Product;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
 
 /**
- * Default class that handles validation for product Create payloads.
+ * @method string getCode()
  *
  * @method Create setName(Dto\Name $name)
  * @method Create setLongName(Dto\LongName $longName)

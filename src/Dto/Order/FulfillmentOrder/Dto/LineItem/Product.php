@@ -23,7 +23,6 @@
 namespace Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder\Dto\LineItem;
 
 use Shopgate\ConnectSdk\Dto\Base;
-use Shopgate\ConnectSdk\Dto\Order\Dto\Fulfillment\FulfillmentPackage;
 
 /**
  * @method Product setCode(string $code)

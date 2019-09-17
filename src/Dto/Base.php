@@ -93,7 +93,7 @@ class Base extends Dto
      * @param $key   mixed
      * @param $value mixed
      *
-     * @return Base
+     * @return $this
      */
     public function set($key, $value)
     {

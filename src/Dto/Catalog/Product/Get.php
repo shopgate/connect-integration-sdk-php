@@ -26,6 +26,8 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product as ProductBase;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto;
 
 /**
+ * @method Dto\MediaList\Media[] getMedia()
+ *
  * @inheritdoc
  */
 class Get extends ProductBase

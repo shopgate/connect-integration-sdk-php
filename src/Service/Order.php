@@ -23,6 +23,7 @@
 namespace Shopgate\ConnectSdk\Service;
 
 use Psr\Http\Message\ResponseInterface;
+use Shopgate\ConnectSdk\Dto\Order\SimpleFulfillmentOrder;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
@@ -50,13 +51,13 @@ class Order
      */
     public function __construct(ClientInterface $client, Json $jsonHelper)
     {
-        $this->client     = $client;
+        $this->client = $client;
         $this->jsonHelper = $jsonHelper;
     }
 
     /**
      * @param OrderDto\Create[] $orders
-     * @param array                $query
+     * @param array             $query
      *
      * @return ResponseInterface
      *
@@ -70,13 +71,13 @@ class Order
         $response = $this->client->doRequest(
             [
                 // general
-                'method'      => 'post',
+                'method' => 'post',
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'json'        => ['orders' => $orders],
-                'query'       => $query,
+                'json' => ['orders' => $orders],
+                'query' => $query,
                 // direct
-                'service'     => self::SERVICE_ORDER,
-                'path'        => 'orders'
+                'service' => self::SERVICE_ORDER,
+                'path' => 'orders'
             ]
         );
 
@@ -103,9 +104,9 @@ class Order
             [
                 // direct only
                 'service' => self::SERVICE_ORDER,
-                'method'  => 'get',
-                'path'    => 'orders',
-                'query'   => $query,
+                'method' => 'get',
+                'path' => 'orders',
+                'query' => $query,
             ]
         );
         $response = $this->jsonHelper->decode($response->getBody(), true);
@@ -114,7 +115,7 @@ class Order
         foreach ($response['orders'] as $order) {
             $orders[] = new OrderDto\Get($order);
         }
-        $response['meta']       = new Meta($response['meta']);
+        $response['meta'] = new Meta($response['meta']);
         $response['orders'] = $orders;
 
         return new OrderDto\GetList($response);
@@ -137,9 +138,9 @@ class Order
             [
                 // direct only
                 'service' => self::SERVICE_ORDER,
-                'method'  => 'get',
-                'path'    => 'orders/' . $orderNumber,
-                'query'   => $query,
+                'method' => 'get',
+                'path' => 'orders/' . $orderNumber,
+                'query' => $query,
             ]
         );
 
@@ -165,14 +166,51 @@ class Order
             [
                 // direct only
                 'service' => self::SERVICE_ORDER,
-                'method'  => 'get',
-                'path'    => 'fulfillmentOrders/' . $orderNumber,
-                'query'   => $query,
+                'method' => 'get',
+                'path' => 'fulfillmentOrders/' . $orderNumber,
+                'query' => $query,
             ]
         );
 
         $response = $this->jsonHelper->decode($response->getBody(), true);
 
         return new FulfillmentOrder\Get($response['fulfillmentOrder']);
+    }
+
+    /**
+     * @param array  $query
+     *
+     * @return FulfillmentOrder\GetList
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function getFulfillmentOrders(array $query = [])
+    {
+        if (isset($query['filters'])) {
+            $query['filters'] = $this->jsonHelper->encode($query['filters']);
+        }
+
+        $response = $this->client->doRequest(
+            [
+                // direct only
+                'service' => self::SERVICE_ORDER,
+                'method' => 'get',
+                'path' => 'fulfillmentOrders',
+                'query' => $query,
+            ]
+        );
+        $response = $this->jsonHelper->decode($response->getBody(), true);
+
+        $orders = [];
+        foreach ($response['fulfillmentOrders'] as $order) {
+            $orders[] = new SimpleFulfillmentOrder($order);
+        }
+        $response['meta'] = new Meta($response['meta']);
+        $response['fulfillmentOrders'] = $orders;
+
+        return new FulfillmentOrder\GetList($response);
     }
 }

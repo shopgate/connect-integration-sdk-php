@@ -20,10 +20,32 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder\Dto;
+namespace Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder;
 
-use Shopgate\ConnectSdk\Dto\Base;
+use Shopgate\ConnectSdk\Dto\Order\Order;
+use Shopgate\ConnectSdk\Dto\Meta;
+use Shopgate\ConnectSdk\Dto\Order\SimpleFulfillmentOrder;
 
-class SpecialInstructions extends Base
+/**
+ * @method Meta getMeta()
+ * @method SimpleFulfillmentOrder[] getFulfillmentOrders()
+ *
+ * @codeCoverageIgnore
+ */
+class GetList extends Order
 {
+    /**
+     * @var array
+     */
+    protected $schema = [
+        'type' => 'object',
+        'properties' => [
+            'meta' => ['$ref' => Meta::class],
+            'fulfillmentOrders' => [
+                'type' => 'array',
+                'items' => ['$ref' => SimpleFulfillmentOrder::class]
+            ]
+        ],
+        'additionalProperties' => true
+    ];
 }

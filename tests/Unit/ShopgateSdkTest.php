@@ -24,6 +24,7 @@ namespace Shopgate\ConnectSdk\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
+use Shopgate\ConnectSdk\Exception\MissingConfigFieldException;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\Service\BulkImport;
 use Shopgate\ConnectSdk\Service\Catalog;
@@ -42,6 +43,9 @@ class ShopgateSdkTest extends TestCase
         $this->client = $this->getMockBuilder(ClientInterface::class)->getMock();
     }
 
+    /**
+     * @throws MissingConfigFieldException
+     */
     public function testShouldConstructWithGivenClient()
     {
         $subjectUnderTest = new ShopgateSdk(['client' => $this->client]);
@@ -49,6 +53,9 @@ class ShopgateSdkTest extends TestCase
         $this->assertSame($this->client, $subjectUnderTest->getClient());
     }
 
+    /**
+     * @throws MissingConfigFieldException
+     */
     public function testShouldConstructWithNewInstanceOfClient()
     {
         $subjectUnderTest = new ShopgateSdk(['clientId'     => 'test',
@@ -63,6 +70,9 @@ class ShopgateSdkTest extends TestCase
         $this->assertInstanceOf(ClientInterface::class, $subjectUnderTest->getClient());
     }
 
+    /**
+     * @throws MissingConfigFieldException
+     */
     public function testShouldConstructWithGivenServices()
     {
         $catalog          = $this->getMockBuilder(Catalog::class)->disableOriginalConstructor()->getMock();
@@ -79,6 +89,9 @@ class ShopgateSdkTest extends TestCase
         $this->assertSame($bulkImport, $subjectUnderTest->getBulkImportService());
     }
 
+    /**
+     * @throws MissingConfigFieldException
+     */
     public function testShouldConstructWithNewInstancesOfServices()
     {
         $subjectUnderTest = new ShopgateSdk(['client' => $this->client]);
@@ -90,6 +103,9 @@ class ShopgateSdkTest extends TestCase
         $this->assertInstanceOf(BulkImport::class, $subjectUnderTest->getBulkImportService());
     }
 
+    /**
+     * @throws MissingConfigFieldException
+     */
     public function testShouldConstructWithNewInstancesOfServicesNotPassed()
     {
         $catalog          = $this->getMockBuilder(Catalog::class)->disableOriginalConstructor()->getMock();

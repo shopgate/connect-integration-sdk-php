@@ -29,8 +29,8 @@ class BulkImportTest extends CatalogTest
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, [
-            $categories[0]->code,
-            $categories[1]->code
+            $categories[0]->getCode(),
+            $categories[1]->getCode()
         ]);
 
         usleep(self::SLEEP_TIME_AFTER_BULK);
@@ -58,8 +58,8 @@ class BulkImportTest extends CatalogTest
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, [
-            $categories[0]->code,
-            $categories[1]->code
+            $categories[0]->getCode(),
+            $categories[1]->getCode()
         ]);
 
         usleep(self::SLEEP_TIME_AFTER_BULK);
@@ -88,8 +88,8 @@ class BulkImportTest extends CatalogTest
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [
-            $products[0]->code,
-            $products[1]->code
+            $products[0]->getCode(),
+            $products[1]->getCode()
         ]);
 
         usleep(self::SLEEP_TIME_AFTER_BULK);
@@ -118,8 +118,8 @@ class BulkImportTest extends CatalogTest
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [
-            $products[0]->code,
-            $products[1]->code
+            $products[0]->getCode(),
+            $products[1]->getCode()
         ]);
 
         usleep(self::SLEEP_TIME_AFTER_BULK);
@@ -147,8 +147,8 @@ class BulkImportTest extends CatalogTest
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_ATTRIBUTE, [
-            $attributes[0]->code,
-            $attributes[1]->code
+            $attributes[0]->getCode(),
+            $attributes[1]->getCode()
         ]);
 
         usleep(self::SLEEP_TIME_AFTER_BULK);
@@ -176,8 +176,8 @@ class BulkImportTest extends CatalogTest
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_ATTRIBUTE, [
-            $attributes[0]->code,
-            $attributes[1]->code
+            $attributes[0]->getCode(),
+            $attributes[1]->getCode()
         ]);
 
         usleep(self::SLEEP_TIME_AFTER_BULK);
@@ -196,7 +196,7 @@ class BulkImportTest extends CatalogTest
         $product = $this->prepareProductMinimum();
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
         $this->createLocation(self::LOCATION_CODE);
-        $inventories = $this->provideSampleInventories(2, $product->code);
+        $inventories = $this->provideSampleInventories(2, $product->getCode());
 
         // Act
         $handler = $this->sdk->getBulkImportService()->createFileImport();
@@ -210,7 +210,7 @@ class BulkImportTest extends CatalogTest
         $this->deleteEntitiesAfterTestRun(
             self::CATALOG_SERVICE,
             self::METHOD_DELETE_PRODUCT,
-            [$product->code]
+            [$product->getCode()]
         );
         $this->deleteEntitiesAfterTestRun(
             self::LOCATION_SERVICE,
@@ -226,7 +226,7 @@ class BulkImportTest extends CatalogTest
         usleep(self::SLEEP_TIME_AFTER_BULK);
 
         // Assert
-        $product = $this->sdk->getCatalogService()->getProduct($product->code, ['fields' => 'inventories']);
+        $product = $this->sdk->getCatalogService()->getProduct($product->getCode(), ['fields' => 'inventories']);
         $this->assertCount(2, $product->getInventories());
     }
 
@@ -239,7 +239,7 @@ class BulkImportTest extends CatalogTest
         $product = $this->prepareProductMinimum();
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
         $this->createLocation(self::LOCATION_CODE);
-        $inventories = $this->provideSampleInventories(2, $product->code);
+        $inventories = $this->provideSampleInventories(2, $product->getCode());
 
         // Act
         $handler = $this->sdk->getBulkImportService()->createStreamImport();
@@ -253,7 +253,7 @@ class BulkImportTest extends CatalogTest
         $this->deleteEntitiesAfterTestRun(
             self::CATALOG_SERVICE,
             self::METHOD_DELETE_PRODUCT,
-            [$product->code]
+            [$product->getCode()]
         );
         $this->deleteEntitiesAfterTestRun(
             self::LOCATION_SERVICE,
@@ -269,7 +269,7 @@ class BulkImportTest extends CatalogTest
         usleep(self::SLEEP_TIME_AFTER_BULK);
 
         // Assert
-        $product = $this->sdk->getCatalogService()->getProduct($product->code, ['fields' => 'inventories']);
+        $product = $this->sdk->getCatalogService()->getProduct($product->getCode(), ['fields' => 'inventories']);
         $this->assertCount(2, $product->getInventories());
     }
 
@@ -289,8 +289,8 @@ class BulkImportTest extends CatalogTest
         $products[] = $this->prepareProductMinimum();
         $products[] = $this->prepareProductMaximum(null, $categories, $extras, []);
         $inventories =
-            array_merge($this->provideSampleInventories(2, $products[0]->code),
-                $this->provideSampleInventories(1, $products[1]->code));
+            array_merge($this->provideSampleInventories(2, $products[0]->getCode()),
+                $this->provideSampleInventories(1, $products[1]->getCode()));
         $this->createLocation(self::LOCATION_CODE);
 
         // Act
@@ -316,16 +316,16 @@ class BulkImportTest extends CatalogTest
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY, [
-            $categories[0]->code,
-            $categories[1]->code
+            $categories[0]->getCode(),
+            $categories[1]->getCode()
         ]);
         $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [
-            $products[0]->code,
-            $products[1]->code
+            $products[0]->getCode(),
+            $products[1]->getCode()
         ]);
         $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_ATTRIBUTE, [
-            $extras[0]->code,
-            $extras[1]->code
+            $extras[0]->getCode(),
+            $extras[1]->getCode()
         ]);
         $this->deleteEntitiesAfterTestRun(
             self::LOCATION_SERVICE,
@@ -347,9 +347,9 @@ class BulkImportTest extends CatalogTest
         $this->assertCount(2, $availableProducts->getProducts());
         $availableAttributes = $this->sdk->getCatalogService()->getAttributes();
         $this->assertCount(2, $availableAttributes->getAttributes());
-        $product = $this->sdk->getCatalogService()->getProduct($products[0]->code, ['fields' => 'inventories']);
+        $product = $this->sdk->getCatalogService()->getProduct($products[0]->getCode(), ['fields' => 'inventories']);
         $this->assertCount(2, $product->getInventories());
-        $product = $this->sdk->getCatalogService()->getProduct($products[1]->code, ['fields' => 'inventories']);
+        $product = $this->sdk->getCatalogService()->getProduct($products[1]->getCode(), ['fields' => 'inventories']);
         $this->assertCount(1, $product->getInventories());
     }
 }

@@ -38,7 +38,7 @@ class ProductTest extends TestCase
             ->setType(Product\Dto\MediaList\Media::TYPE_IMAGE)
             ->setUrl('example.com/media1.jpg')
             ->setAltText('alt text 1')
-            ->setSubTitle('Title Media 1')
+            ->setTitle('Title Media 1')
             ->setSequenceId(0);
 
         $germanImage = new Product\Dto\MediaList\Media();
@@ -46,7 +46,7 @@ class ProductTest extends TestCase
             ->setType(Product\Dto\MediaList\Media::TYPE_IMAGE)
             ->setUrl('example.com/media2.jpg')
             ->setAltText('alt text 2')
-            ->setSubTitle('Title Media 2')
+            ->setTitle('Title Media 2')
             ->setSequenceId(0);
 
         $media = new Product\Dto\MediaList();

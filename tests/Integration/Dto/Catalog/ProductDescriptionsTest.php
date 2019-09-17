@@ -49,14 +49,14 @@ class ProductDescriptionsTest extends CatalogTest
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
 
         // CleanUp
-        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [$product->code]);
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [$product->getCode()]);
 
         // Assert
-        $ruProduct = $this->sdk->getCatalogService()->getProductDescriptions($product->code, ['localeCode' => 'ru-ru']);
+        $ruProduct = $this->sdk->getCatalogService()->getProductDescriptions($product->getCode(), ['localeCode' => 'ru-ru']);
         $this->assertEquals('Длинное описание', $ruProduct->getLongDescription());
         $this->assertEquals('Короткое описание', $ruProduct->getShortDescription());
 
-        $enProduct = $this->sdk->getCatalogService()->getProductDescriptions($product->code, ['localeCode' => 'en-us']);
+        $enProduct = $this->sdk->getCatalogService()->getProductDescriptions($product->getCode(), ['localeCode' => 'en-us']);
         $this->assertEquals('My Long Description', $enProduct->getLongDescription());
         $this->assertEquals('My Short Description', $enProduct->getShortDescription());
     }

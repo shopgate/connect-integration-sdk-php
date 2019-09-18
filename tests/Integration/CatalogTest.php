@@ -403,8 +403,8 @@ abstract class CatalogTest extends ShopgateSdkTest
             ->setName(
                 new Properties\Name(
                     [
-                        'en-us' => 'property 2 english',
-                        'de-de' => 'property 2 deutsch'
+                        'en-us' => 'Color',
+                        'de-de' => 'Farbe'
                     ]
                 )
             )

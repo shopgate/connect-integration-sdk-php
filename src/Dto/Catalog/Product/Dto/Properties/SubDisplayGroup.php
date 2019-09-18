@@ -22,8 +22,6 @@
 
 namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 
-use Shopgate\ConnectSdk\Dto\LocalizedString;
-
-class SubDisplayGroup extends LocalizedString
+class SubDisplayGroup extends LocalizationType
 {
 }

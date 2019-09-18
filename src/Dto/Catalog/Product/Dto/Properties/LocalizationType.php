@@ -42,9 +42,7 @@ class LocalizationType extends Base
     ];
 
     /**
-     * @param array                   $input
-     * @param null                    $schema
-     * @param RegulatorInterface|null $regulator
+     * @inheritDoc
      */
     public function __construct($input = [], $schema = null, RegulatorInterface $regulator = null)
     {

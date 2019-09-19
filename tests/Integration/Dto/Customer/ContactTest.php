@@ -95,9 +95,7 @@ class ContactTest extends CustomerTest
 
         $response = $this->sdk->getCustomerService()->addCustomers([$customer]);
 
-        $id = array_pop($response['ids']);
-
-        return $id;
+        return array_pop($response['ids']);
     }
 
     /**

@@ -48,10 +48,8 @@ class Base extends Dto
     {
         try {
             parent::__construct($input, null === $schema ? $this->getDefaultSchema() : $schema, $regulator);
-        } catch (InvalidDataTypeException $exception) {
-            throw new ShopgateInvalidDataTypeException();
         } catch (Exception $exception) {
-            throw new ShopgateInvalidDataTypeException();
+            throw new ShopgateInvalidDataTypeException($exception->getMessage());
         }
     }
 

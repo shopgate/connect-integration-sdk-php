@@ -24,6 +24,7 @@ namespace Shopgate\ConnectSdk\Dto\Async;
 
 use Shopgate\ConnectSdk\Dto\Base as Payload;
 use Exception;
+use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 
 class Factory
 {
@@ -45,6 +46,8 @@ class Factory
      * @param string|null  $entityId
      *
      * @return Factory
+     *
+     * @throws InvalidDataTypeException
      */
     public function addEvent($type, $entity, Payload $payload = null, $entityId = null)
     {

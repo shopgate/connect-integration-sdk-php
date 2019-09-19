@@ -26,11 +26,9 @@ use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Dto\Customer\Attribute;
 use Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
 
-use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
-use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Tests\Integration\CustomerTest;
 
 class AttributeTest extends CustomerTest
@@ -481,6 +479,8 @@ class AttributeTest extends CustomerTest
      * @param int $itemCount
      *
      * @return Attribute\Create[]
+     *
+     * @throws Exception
      */
     private function provideSampleAttributes($itemCount = 2)
     {
@@ -511,10 +511,8 @@ class AttributeTest extends CustomerTest
      *
      * @return ResponseInterface
      *
-     * @throws AuthenticationInvalidException
-     * @throws NotFoundException
      * @throws RequestException
-     * @throws UnknownException
+     * @throws Exception
      */
     private function createAttributes(array $sampleAttributes, array $meta = [])
     {
@@ -539,10 +537,8 @@ class AttributeTest extends CustomerTest
      *
      * @return Attribute\Get
      *
-     * @throws AuthenticationInvalidException
      * @throws NotFoundException
-     * @throws RequestException
-     * @throws UnknownException
+     * @throws Exception
      */
     private function getAttribute($attributeCode, $localeCode = '')
     {

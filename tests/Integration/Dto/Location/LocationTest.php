@@ -238,6 +238,8 @@ class LocationTest extends LocationBaseTest
 
     /**
      * @return array
+     *
+     * @throws Exception
      */
     public function updateLocationDataProvider()
     {
@@ -453,6 +455,8 @@ class LocationTest extends LocationBaseTest
 
     /**
      * @return array
+     *
+     * @throws Exception
      */
     public function providedCreateLocationWithMissingRequiredFields()
     {

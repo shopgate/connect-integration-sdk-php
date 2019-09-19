@@ -24,11 +24,11 @@
 
 namespace Shopgate\ConnectSdk\Tests\Integration\Dto\Customer;
 
+use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Tests\Integration\CustomerTest as CustomerIntegrationTest;
 use Shopgate\ConnectSdk\Dto\Customer\Customer;
 use Shopgate\ConnectSdk\Dto\Customer\Wishlist;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
-use Shopgate\ConnectSdk\Exception;
 use Shopgate\ConnectSdk\Exception\RequestException;
 
 class WishlistTest extends CustomerIntegrationTest
@@ -38,7 +38,7 @@ class WishlistTest extends CustomerIntegrationTest
      *
      * @dataProvider providerCreateWishlist
      *
-     * @throws Exception\Exception
+     * @throws Exception
      */
     public function testCreateWishlist($sampleWishlists)
     {
@@ -171,7 +171,7 @@ class WishlistTest extends CustomerIntegrationTest
     /**
      * @depends testCreateWishlist
      *
-     * @throws Exception\Exception
+     * @throws Exception
      */
     public function testGetWishlist()
     {
@@ -210,7 +210,7 @@ class WishlistTest extends CustomerIntegrationTest
      *
      * @depends      testCreateWishlist
      *
-     * @throws Exception\Exception
+     * @throws Exception
      *
      * @dataProvider providerUpdateWishlist
      */
@@ -318,7 +318,7 @@ class WishlistTest extends CustomerIntegrationTest
     /**
      * @depends testCreateWishlist
      *
-     * @throws Exception\Exception
+     * @throws Exception
      */
     public function testWishlistDelete()
     {
@@ -380,7 +380,7 @@ class WishlistTest extends CustomerIntegrationTest
      *
      * @dataProvider providerAddWishlistItems
      *
-     * @throws Exception\Exception
+     * @throws Exception
      */
     public function testAddWishlistItems($productCodes)
     {
@@ -439,7 +439,7 @@ class WishlistTest extends CustomerIntegrationTest
     /**
      * @depends testCreateWishlist
      *
-     * @throws Exception\Exception
+     * @throws Exception
      */
     public function testDeleteWishlistItems()
     {
@@ -490,7 +490,7 @@ class WishlistTest extends CustomerIntegrationTest
     /**
      * @depends testCreateWishlist
      *
-     * @throws Exception\Exception
+     * @throws Exception
      */
     public function testCreateWishlistItemWithoutRequiredField()
     {
@@ -518,7 +518,7 @@ class WishlistTest extends CustomerIntegrationTest
             $this->sdk->getCustomerService()->addWishlistItems(
                 $customerId, self::WISHLIST_CODE, [$sampleItem]
             );
-        } catch (Exception\Exception $exception) {
+        } catch (Exception $exception) {
 
             // Assert
             $this->assertInstanceOf(RequestException::class, $exception);
@@ -533,7 +533,7 @@ class WishlistTest extends CustomerIntegrationTest
     /**
      * @return string customer id
      *
-     * @throws Exception\Exception
+     * @throws Exception
      */
     private function createCustomer()
     {
@@ -593,7 +593,7 @@ class WishlistTest extends CustomerIntegrationTest
     /**
      * @param string[] $productIds
      *
-     * @throws Exception\Exception
+     * @throws Exception
      */
     private function addSampleProducts($productIds)
     {
@@ -620,6 +620,8 @@ class WishlistTest extends CustomerIntegrationTest
      * @param string $productId
      *
      * @return Product\Create
+     *
+     * @throws Exception
      */
     private function createSampleProduct($productId)
     {
@@ -665,6 +667,8 @@ class WishlistTest extends CustomerIntegrationTest
      * @param string $productCode
      *
      * @return Wishlist\Dto\Item\Create
+     *
+     * @throws Exception
      */
     private function createWishlistItem($productCode)
     {

@@ -24,6 +24,7 @@ namespace Shopgate\ConnectSdk\Tests\Unit\Dto\Catalog\Product;
 
 use PHPUnit\Framework\TestCase;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto;
+use Shopgate\ConnectSdk\Exception\Exception;
 
 class PropertiesTest extends TestCase
 {
@@ -39,6 +40,8 @@ class PropertiesTest extends TestCase
      * @param mixed $value
      *
      * @dataProvider providePropertyValues
+     *
+     * @throws Exception
      */
     public function testPropertyValueInitialization($value)
     {
@@ -64,6 +67,8 @@ class PropertiesTest extends TestCase
 
     /**
      * @dataProvider providePropertyValues
+     *
+     * @throws Exception
      */
     public function testPropertyValueInitializationObject()
     {
@@ -82,6 +87,9 @@ class PropertiesTest extends TestCase
         $this->assertEquals('english', $name->{'en-us'});
     }
 
+    /**
+     * @throws Exception
+     */
     public function testPropertySimpleNameInitialization()
     {
         $property = new Dto\Properties(['name' => 'Test Property']);
@@ -89,6 +97,9 @@ class PropertiesTest extends TestCase
         $this->assertEquals('Test Property', $property->getName());
     }
 
+    /**
+     * @throws Exception
+     */
     public function testPropertyTranslatedNameInitialization()
     {
         $property = new Dto\Properties(['name' => ['en-us' => 'Test Property']]);
@@ -105,6 +116,9 @@ class PropertiesTest extends TestCase
         $this->assertEquals('english', $subDisplayGroup->{'en-us'});
     }
 
+    /**
+     * @throws Exception
+     */
     public function testPropertySimpleSubDisplayGroupInitialization()
     {
         $property = new Dto\Properties(['subDisplayGroup' => 'Test Display Group']);
@@ -112,6 +126,9 @@ class PropertiesTest extends TestCase
         $this->assertEquals('Test Display Group', $property->getSubDisplayGroup());
     }
 
+    /**
+     * @throws Exception
+     */
     public function testPropertyTranslatedSubDisplayGroupInitialization()
     {
         $property = new Dto\Properties(['subDisplayGroup' => ['en-us' => 'Test Display Group']]);

@@ -26,9 +26,13 @@ use PHPUnit\Framework\TestCase;
 use Shopgate\ConnectSdk\Dto\Order\Dto\Fulfillment;
 use Shopgate\ConnectSdk\Dto\Order\Order\Create;
 use Shopgate\ConnectSdk\Dto\Order\Order\Dto as OrderDto;
+use Shopgate\ConnectSdk\Exception\Exception;
 
 class CreateTest extends TestCase
 {
+    /**
+     * @throws Exception
+     */
     public function testBasicProperties()
     {
         $entry = [

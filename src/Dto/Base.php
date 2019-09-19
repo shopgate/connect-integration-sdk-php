@@ -22,7 +22,9 @@
 
 namespace Shopgate\ConnectSdk\Dto;
 
+use Shopgate\ConnectSdk\Exception\InvalidDataTypeException as ShopgateInvalidDataTypeException;
 use Dto\Dto;
+use Dto\Exceptions\InvalidDataTypeException;
 use Dto\RegulatorInterface;
 use Dto\ServiceContainer;
 use Exception;
@@ -39,10 +41,16 @@ class Base extends Dto
      * Rewritten to provide inheritance of payload structure
      *
      * @inheritDoc
+     *
+     * @throws ShopgateInvalidDataTypeException
      */
     public function __construct($input = null, $schema = null, RegulatorInterface $regulator = null)
     {
-        parent::__construct($input, null === $schema ? $this->getDefaultSchema() : $schema, $regulator);
+        try {
+            parent::__construct($input, null === $schema ? $this->getDefaultSchema() : $schema, $regulator);
+        } catch (Exception $exception) {
+            throw new ShopgateInvalidDataTypeException($exception->getMessage());
+        }
     }
 
     /**

@@ -105,6 +105,8 @@ abstract class CatalogTest extends ShopgateSdkTest
 
     /**
      * @return Category\Create[]
+     *
+     * @throws Exception
      */
     protected function provideSampleCategories()
     {
@@ -126,6 +128,8 @@ abstract class CatalogTest extends ShopgateSdkTest
      * @param string|null             $status
      *
      * @return Category\Create
+     *
+     * @throws Exception
      */
     protected function provideSampleCreateCategory(
         $code,
@@ -187,6 +191,8 @@ abstract class CatalogTest extends ShopgateSdkTest
      * Retrieves the default product with minimum details needed
      *
      * @return Product\Create
+     *
+     * @throws Exception
      */
     protected function prepareProductMinimum()
     {
@@ -290,6 +296,8 @@ abstract class CatalogTest extends ShopgateSdkTest
 
     /**
      * @return Categories[]
+     *
+     * @throws Exception
      */
     protected function provideCategoryMapping()
     {
@@ -315,6 +323,8 @@ abstract class CatalogTest extends ShopgateSdkTest
 
     /**
      * @return VolumePricing[]
+     *
+     * @throws Exception
      */
     protected function provideVolumePricing()
     {
@@ -339,6 +349,8 @@ abstract class CatalogTest extends ShopgateSdkTest
 
     /**
      * @return MapPricing[]
+     *
+     * @throws Exception
      */
     protected function provideMapPricing()
     {
@@ -357,6 +369,8 @@ abstract class CatalogTest extends ShopgateSdkTest
 
     /**
      * @return Price
+     *
+     * @throws Exception
      */
     protected function providePricing()
     {
@@ -377,6 +391,8 @@ abstract class CatalogTest extends ShopgateSdkTest
 
     /**
      * @return Properties\SubDisplayGroup
+     *
+     * @throws Exception
      */
     protected function provideSubDisplayGroup()
     {
@@ -387,6 +403,8 @@ abstract class CatalogTest extends ShopgateSdkTest
 
     /**
      * @return Product\Dto\Properties[]
+     *
+     * @throws Exception
      */
     protected function provideProperties()
     {
@@ -417,6 +435,8 @@ abstract class CatalogTest extends ShopgateSdkTest
 
     /**
      * @return Product\Dto\ShippingInformation
+     *
+     * @throws Exception
      */
     protected function provideShippingInformation()
     {
@@ -434,6 +454,8 @@ abstract class CatalogTest extends ShopgateSdkTest
 
     /**
      * @return MediaList
+     *
+     * @throws Exception
      */
     private function provideMedia()
     {
@@ -461,6 +483,8 @@ abstract class CatalogTest extends ShopgateSdkTest
 
     /**
      * @return array
+     *
+     * @throws Exception
      */
     protected function provideOptions()
     {
@@ -475,6 +499,8 @@ abstract class CatalogTest extends ShopgateSdkTest
 
     /**
      * @return Extras[]
+     *
+     * @throws Exception
      */
     protected function provideExtras()
     {
@@ -492,6 +518,8 @@ abstract class CatalogTest extends ShopgateSdkTest
 
     /**
      * @return array
+     *
+     * @throws Exception
      */
     protected function provideOptionsValues()
     {
@@ -504,6 +532,8 @@ abstract class CatalogTest extends ShopgateSdkTest
 
     /**
      * @return array
+     *
+     * @throws Exception
      */
     protected function provideExtraValues()
     {
@@ -534,6 +564,8 @@ abstract class CatalogTest extends ShopgateSdkTest
 
     /**
      * @return AttributeValue\Create
+     *
+     * @throws Exception
      */
     protected function provideSampleAttributeValue()
     {
@@ -556,6 +588,8 @@ abstract class CatalogTest extends ShopgateSdkTest
 
     /**
      * @return Attribute\Create[]
+     *
+     * @throws Exception
      */
     protected function provideSampleExtras()
     {
@@ -626,6 +660,8 @@ abstract class CatalogTest extends ShopgateSdkTest
      * @param string $productCode
      *
      * @return Inventory\Create[]
+     *
+     * @throws Exception
      */
     protected function provideSampleInventories($count = 1, $productCode = self::PRODUCT_CODE)
     {
@@ -651,6 +687,8 @@ abstract class CatalogTest extends ShopgateSdkTest
      * @param string $productCode
      *
      * @return Reservation\Create[]
+     *
+     * @throws Exception
      */
     protected function provideSampleReservations($orderNumber, $count = 1, $productCode = self::PRODUCT_CODE)
     {
@@ -697,6 +735,8 @@ abstract class CatalogTest extends ShopgateSdkTest
      * @param Inventory\Create[] $createInventories
      *
      * @return Inventory\Delete[]
+     *
+     * @throws Exception
      */
     protected function getDeleteInventories(array $createInventories)
     {

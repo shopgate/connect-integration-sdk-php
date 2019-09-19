@@ -26,6 +26,7 @@ use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Dto\Location\Location as LocationDto;
 use Shopgate\ConnectSdk\Dto\Meta;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
+use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
@@ -63,6 +64,7 @@ class Location
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function addLocations(array $locations, array $query = [])
     {
@@ -91,6 +93,7 @@ class Location
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function updateLocation($code, LocationDto\Update $location, array $query = [])
     {
@@ -118,6 +121,7 @@ class Location
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function deleteLocation($code, array $query = [])
     {
@@ -143,6 +147,7 @@ class Location
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function getLocations(array $query = [])
     {
@@ -181,6 +186,7 @@ class Location
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function getLocation($code, array $query = [])
     {

@@ -23,6 +23,7 @@
 namespace Shopgate\ConnectSdk\Service;
 
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
+use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\Exception\RequestException;
@@ -51,6 +52,7 @@ class BulkImport
      * @throws RequestException
      * @throws UnknownException
      * @throws NotFoundException
+     * @throws InvalidDataTypeException
      */
     protected function getImportReference()
     {
@@ -76,6 +78,7 @@ class BulkImport
      * @throws RequestException
      * @throws UnknownException
      * @throws NotFoundException
+     * @throws InvalidDataTypeException
      */
     public function createFileImport()
     {
@@ -89,6 +92,7 @@ class BulkImport
      * @throws RequestException
      * @throws UnknownException
      * @throws NotFoundException
+     * @throws InvalidDataTypeException
      */
     public function createStreamImport()
     {

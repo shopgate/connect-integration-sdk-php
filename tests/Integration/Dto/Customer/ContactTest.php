@@ -24,7 +24,8 @@ namespace Shopgate\ConnectSdk\Tests\Integration\Dto\Customer;
 
 use Shopgate\ConnectSdk\Dto\Customer\Contact as ContactDto;
 use Shopgate\ConnectSdk\Dto\Customer\Customer;
-use Shopgate\ConnectSdk\Exception;
+use Shopgate\ConnectSdk\Exception\Exception;
+use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Tests\Integration\CustomerTest;
 
 class ContactTest extends CustomerTest
@@ -34,7 +35,7 @@ class ContactTest extends CustomerTest
      *
      * @dataProvider providerCreateContactDirect
      *
-     * @throws Exception\Exception
+     * @throws Exception
      */
     public function testCreateContactDirect($sampleContacts)
     {
@@ -70,48 +71,11 @@ class ContactTest extends CustomerTest
     }
 
     /**
-     * @param array                      $fieldset
-     * @param Exception\RequestException $expectedException
-     * @param string                     $missingField
-     *
-     * @dataProvider providerForMissingRequiredFields
-     *
-     * @throws Exception\Exception
-     */
-    public function testMissingRequiredFields($fieldset, $expectedException, $missingField)
-    {
-        // Arrange
-        $customerId = $this->createCustomer();
-        $contact = new ContactDto\Create($fieldset);
-
-        // Act
-        try {
-            $this->sdk->getCustomerService()->addContacts($customerId, [$contact]);
-
-            $this->fail('Expected ' . get_class($expectedException) . ' but wasn\'t thrown');
-        } catch (Exception\RequestException $exception) {
-            // Assert
-            $errors  = \GuzzleHttp\json_decode($exception->getMessage(), false);
-            $message = $errors->error->results->errors[0]->message;
-            $this->assertInstanceOf(get_class($expectedException), $exception);
-            $this->assertEquals('Missing required property: ' . $missingField, $message);
-            $this->assertEquals($expectedException->getStatusCode(), $exception->getStatusCode());
-        }
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(
-            self::CUSTOMER_SERVICE,
-            self::METHOD_DELETE_CUSTOMER,
-            [$customerId]
-        );
-    }
-
-    /**
      * @param bool $withContact
      *
      * @return string customer id
      *
-     * @throws Exception\Exception
+     * @throws Exception
      */
     private function createCustomer($withContact = false)
     {
@@ -131,24 +95,59 @@ class ContactTest extends CustomerTest
 
         $response = $this->sdk->getCustomerService()->addCustomers([$customer]);
 
-        $id = array_pop($response['ids']);
+        return array_pop($response['ids']);
+    }
 
-        return $id;
+    /**
+     * @param array            $fieldset
+     * @param RequestException $expectedException
+     * @param string           $missingField
+     *
+     * @dataProvider providerForMissingRequiredFields
+     *
+     * @throws Exception
+     */
+    public function testMissingRequiredFields($fieldset, $expectedException, $missingField)
+    {
+        // Arrange
+        $customerId = $this->createCustomer();
+        $contact = new ContactDto\Create($fieldset);
+
+        // Act
+        try {
+            $this->sdk->getCustomerService()->addContacts($customerId, [$contact]);
+
+            $this->fail('Expected ' . get_class($expectedException) . ' but wasn\'t thrown');
+        } catch (RequestException $exception) {
+            // Assert
+            $errors = \GuzzleHttp\json_decode($exception->getMessage(), false);
+            $message = $errors->error->results->errors[0]->message;
+            $this->assertInstanceOf(get_class($expectedException), $exception);
+            $this->assertEquals('Missing required property: ' . $missingField, $message);
+            $this->assertEquals($expectedException->getStatusCode(), $exception->getStatusCode());
+        }
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(
+            self::CUSTOMER_SERVICE,
+            self::METHOD_DELETE_CUSTOMER,
+            [$customerId]
+        );
     }
 
     /**
      * Tests updating a contact
      *
-     * @throws Exception\Exception
+     * @throws Exception
      */
     public function testUpdateContact()
     {
         // Arrange
-        $customerId       = $this->createCustomer(true);
-        $customer         = $this->sdk->getCustomerService()->getCustomer($customerId);
-        $contact          = $customer->getContacts()[0];
+        $customerId = $this->createCustomer(true);
+        $customer = $this->sdk->getCustomerService()->getCustomer($customerId);
+        $contact = $customer->getContacts()[0];
         $updatedFirstName = 'TestName';
-        $updatedCity      = 'Magdeburg';
+        $updatedCity = 'Magdeburg';
 
         // Act
         $updateDto = new ContactDto\Update();
@@ -161,7 +160,7 @@ class ContactTest extends CustomerTest
         $this->assertNotEquals($contact->getFirstName(), $updatedFirstName);
         $this->assertNotEquals($contact->getCity(), $updatedCity);
 
-        $customer       = $this->sdk->getCustomerService()->getCustomer($customerId);
+        $customer = $this->sdk->getCustomerService()->getCustomer($customerId);
         $updatedContact = $customer->getContacts()[0];
 
         $this->assertEquals($updatedFirstName, $updatedContact->getFirstName());
@@ -184,14 +183,14 @@ class ContactTest extends CustomerTest
     /**
      * Test deleting a contact
      *
-     * @throws Exception\Exception
+     * @throws Exception
      */
     public function testDeleteContact()
     {
         // Arrange
         $customerId = $this->createCustomer(true);
-        $customer   = $this->sdk->getCustomerService()->getCustomer($customerId);
-        $contact    = $customer->getContacts()[0];
+        $customer = $this->sdk->getCustomerService()->getCustomer($customerId);
+        $contact = $customer->getContacts()[0];
 
         // Act
         $this->sdk->getCustomerService()->deleteContact($contact->getId(), $customerId);
@@ -211,35 +210,14 @@ class ContactTest extends CustomerTest
 
     /**
      * @return array
+     *
+     * @throws Exception
      */
     public function providerCreateContactDirect()
     {
         return [
-            'Single contact, full example'    => [$this->createSampleContacts(1)],
+            'Single contact, full example' => [$this->createSampleContacts(1)],
             'Multiple contacts, full example' => [$this->createSampleContacts(2)],
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    public function providerForMissingRequiredFields()
-    {
-        return [
-            'missing firstName'       => [
-                [
-                    'lastName' => 'LastName'
-                ],
-                new Exception\RequestException(400),
-                'firstName',
-            ],
-            'missing lastName' => [
-                [
-                    'firstName' => 'FirstName'
-                ],
-                new Exception\RequestException(400),
-                'lastName',
-            ]
         ];
     }
 
@@ -247,6 +225,8 @@ class ContactTest extends CustomerTest
      * @param int $count
      *
      * @return ContactDto\Create[]
+     *
+     * @throws Exception
      */
     private function createSampleContacts($count)
     {
@@ -276,5 +256,28 @@ class ContactTest extends CustomerTest
         }
 
         return $contacts;
+    }
+
+    /**
+     * @return array
+     */
+    public function providerForMissingRequiredFields()
+    {
+        return [
+            'missing firstName' => [
+                [
+                    'lastName' => 'LastName'
+                ],
+                new RequestException(400),
+                'firstName',
+            ],
+            'missing lastName' => [
+                [
+                    'firstName' => 'FirstName'
+                ],
+                new RequestException(400),
+                'lastName',
+            ]
+        ];
     }
 }

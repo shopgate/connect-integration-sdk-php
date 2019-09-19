@@ -26,7 +26,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product;
 use Shopgate\ConnectSdk\Dto\Customer\Customer;
 use Shopgate\ConnectSdk\Dto\Location\Location;
 use Shopgate\ConnectSdk\Dto\Order\Order;
-use Shopgate\ConnectSdk\Exception;
+use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Tests\Integration\OrderTest as OrderBaseTest;
 
 class OrderTest extends OrderBaseTest
@@ -36,7 +36,7 @@ class OrderTest extends OrderBaseTest
      * @param string $locationCode
      * @param array $orders
      *
-     * @throws Exception\Exception
+     * @throws Exception
      *
      * @dataProvider createOrderDataProvider
      */
@@ -62,6 +62,8 @@ class OrderTest extends OrderBaseTest
 
     /**
      * @return array
+     *
+     * @throws Exception
      */
     public function createOrderDataProvider()
     {
@@ -94,7 +96,7 @@ class OrderTest extends OrderBaseTest
     }
 
     /**
-     * @throws Exception\Exception
+     * @throws Exception
      */
     public function testGetOrder()
     {
@@ -120,7 +122,7 @@ class OrderTest extends OrderBaseTest
     }
 
     /**
-     * @throws Exception\Exception
+     * @throws Exception
      */
     public function testGetFulfillmentOrder()
     {
@@ -129,7 +131,7 @@ class OrderTest extends OrderBaseTest
     }
 
     /**
-     * @throws Exception\Exception
+     * @throws Exception
      */
     public function testGetFulfillmentOrders()
     {
@@ -138,7 +140,7 @@ class OrderTest extends OrderBaseTest
     }
 
     /**
-     * @throws Exception\Exception
+     * @throws Exception
      */
     public function testGetOrdersByCustomerId()
     {
@@ -175,7 +177,7 @@ class OrderTest extends OrderBaseTest
     }
 
     /**
-     * @throws Exception\Exception
+     * @throws Exception
      */
     public function testGetOrdersByExternalCode()
     {
@@ -226,7 +228,7 @@ class OrderTest extends OrderBaseTest
     }
 
     /**
-     * @throws Exception\Exception
+     * @throws Exception
      */
     public function testGetOrdersLimitOffset()
     {
@@ -269,6 +271,8 @@ class OrderTest extends OrderBaseTest
      * @param array $fields
      *
      * @return Order\Create
+     *
+     * @throws Exception
      */
     private function createSampleOrder($productIds, $locationCode, $fields = [])
     {
@@ -296,7 +300,7 @@ class OrderTest extends OrderBaseTest
     /**
      * @return string customer id
      *
-     * @throws Exception\Exception
+     * @throws Exception
      */
     private function createCustomer()
     {
@@ -313,7 +317,7 @@ class OrderTest extends OrderBaseTest
     /**
      * @param string[] $productIds
      *
-     * @throws Exception\Exception
+     * @throws Exception
      */
     private function addSampleProducts($productIds)
     {
@@ -340,6 +344,8 @@ class OrderTest extends OrderBaseTest
      * @param string $productId
      *
      * @return Product\Create
+     *
+     * @throws Exception
      */
     private function createSampleProduct($productId)
     {
@@ -367,6 +373,8 @@ class OrderTest extends OrderBaseTest
      * @param string $locationCode
      *
      * @return Order\Dto\LineItem[]
+     *
+     * @throws Exception
      */
     private function createSampleLineItems($productIds, $locationCode)
     {
@@ -383,6 +391,8 @@ class OrderTest extends OrderBaseTest
      * @param string $locationCode
      *
      * @return Order\Dto\LineItem
+     *
+     * @throws Exception
      */
     private function createSampleLineItem($productId, $locationCode)
     {
@@ -407,7 +417,7 @@ class OrderTest extends OrderBaseTest
     /**
      * @param string $code
      *
-     * @throws Exception\Exception
+     * @throws Exception
      */
     private function addSampleLocation($code)
     {

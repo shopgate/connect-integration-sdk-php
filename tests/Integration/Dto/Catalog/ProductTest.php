@@ -333,8 +333,9 @@ class ProductTest extends CatalogTest
     }
 
     /**
-     *
      * @return array
+     *
+     * @throws Exception
      */
     public function provideUpdateProductData()
     {

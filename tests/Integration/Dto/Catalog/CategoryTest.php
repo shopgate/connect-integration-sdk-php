@@ -452,6 +452,8 @@ class CategoryTest extends CatalogTest
 
     /**
      * @return array
+     *
+     * @throws Exception
      */
     public function provideUpdateCategoryData()
     {
@@ -619,6 +621,8 @@ class CategoryTest extends CatalogTest
 
     /**
      * @return array
+     *
+     * @throws Exception
      */
     public function provideCreateCategoryWithInvalidDataTypes()
     {
@@ -994,6 +998,8 @@ class CategoryTest extends CatalogTest
      * @param string             $parentCategoryCode
      *
      * @return Category\Update
+     *
+     * @throws Exception
      */
     private function provideSampleUpdateCategory(
         $name = null,

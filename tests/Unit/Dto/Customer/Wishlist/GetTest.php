@@ -24,9 +24,13 @@ namespace Shopgate\ConnectSdk\Tests\Unit\Dto\Customer\Wishlist;
 
 use PHPUnit\Framework\TestCase;
 use Shopgate\ConnectSdk\Dto\Customer\Wishlist\Get;
+use Shopgate\ConnectSdk\Exception\Exception;
 
 class GetTest extends TestCase
 {
+    /**
+     * @throws Exception
+     */
     public function testBasicProperties()
     {
         $code = 'someCode';

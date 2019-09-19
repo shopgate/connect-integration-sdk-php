@@ -22,6 +22,7 @@
 
 namespace Shopgate\ConnectSdk\Service\BulkImport;
 
+use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use function GuzzleHttp\Psr7\stream_for;
 use Psr\Http\Message\StreamInterface;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
@@ -66,6 +67,7 @@ class Feed
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function __construct(
         ClientInterface $client,
@@ -100,6 +102,7 @@ class Feed
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     protected function getUrl()
     {
@@ -133,6 +136,7 @@ class Feed
      * @throws UnknownException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws InvalidDataTypeException
      */
     public function end()
     {

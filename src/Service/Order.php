@@ -23,14 +23,15 @@
 namespace Shopgate\ConnectSdk\Service;
 
 use Psr\Http\Message\ResponseInterface;
-use Shopgate\ConnectSdk\Dto\Order\SimpleFulfillmentOrder;
-use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
-use Shopgate\ConnectSdk\Exception\NotFoundException;
-use Shopgate\ConnectSdk\Exception\RequestException;
-use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Dto\Meta;
 use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder;
 use Shopgate\ConnectSdk\Dto\Order\Order as OrderDto;
+use Shopgate\ConnectSdk\Dto\Order\SimpleFulfillmentOrder;
+use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
+use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
+use Shopgate\ConnectSdk\Exception\NotFoundException;
+use Shopgate\ConnectSdk\Exception\RequestException;
+use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Helper\Json;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\ShopgateSdk;
@@ -65,6 +66,7 @@ class Order
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function addOrders(array $orders, array $query = [])
     {
@@ -93,6 +95,7 @@ class Order
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function getOrders(array $query = [])
     {
@@ -131,6 +134,7 @@ class Order
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function getOrder($orderNumber, array $query = [])
     {
@@ -159,6 +163,7 @@ class Order
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function getFulfillmentOrder($orderNumber, array $query = [])
     {
@@ -178,7 +183,7 @@ class Order
     }
 
     /**
-     * @param array  $query
+     * @param array $query
      *
      * @return FulfillmentOrder\GetList
      *
@@ -186,6 +191,7 @@ class Order
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function getFulfillmentOrders(array $query = [])
     {

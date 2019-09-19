@@ -23,6 +23,7 @@ namespace Shopgate\ConnectSdk\Dto\Customer\Customer\Dto;
 
 use Shopgate\ConnectSdk\Dto\Base;
 use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Attribute\Value;
+use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 
 /**
  * @method Attribute setCode(string $code)
@@ -51,6 +52,8 @@ class Attribute extends Base
      * @param Value|string $value
      *
      * @return Attribute
+     *
+     * @throws InvalidDataTypeException
      */
     public function setValue($value)
     {
@@ -63,6 +66,8 @@ class Attribute extends Base
 
     /**
      * @return Value|string|null
+     *
+     * @throws InvalidDataTypeException
      */
     public function getValue()
     {

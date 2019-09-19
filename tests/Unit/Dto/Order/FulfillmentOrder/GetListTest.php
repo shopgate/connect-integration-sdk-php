@@ -8,9 +8,13 @@ use Shopgate\ConnectSdk\Dto\Meta;
 use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder;
 use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder\GetList;
 use Shopgate\ConnectSdk\Dto\Order\SimpleFulfillmentOrder;
+use Shopgate\ConnectSdk\Exception\Exception;
 
 class GetListTest extends TestCase
 {
+    /**
+     * @throws Exception
+     */
     public function testCategoryDto()
     {
         // Arrange

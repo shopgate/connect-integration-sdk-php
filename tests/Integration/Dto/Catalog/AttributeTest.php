@@ -26,11 +26,9 @@ use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute\Dto\Name;
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
-use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
-use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Tests\Integration\CatalogTest;
 
 class AttributeTest extends CatalogTest
@@ -434,6 +432,8 @@ class AttributeTest extends CatalogTest
      * @param string           $expectedMessage
      *
      * @dataProvider provideCreateAttributeWithInvalidFields
+     *
+     * @throws Exception
      */
     public function testCreateAttributeDirectWithInvalidFields(
         array $attributeData,
@@ -469,6 +469,8 @@ class AttributeTest extends CatalogTest
 
     /**
      * @return array
+     *
+     * @throws Exception
      */
     public function provideCreateAttributeWithMissingRequiredFields()
     {
@@ -525,6 +527,8 @@ class AttributeTest extends CatalogTest
 
     /**
      * @return array
+     *
+     * @throws Exception
      */
     public function provideCreateAttributeWithInvalidFields()
     {
@@ -654,6 +658,8 @@ class AttributeTest extends CatalogTest
      * @param int  $itemCount
      *
      * @return Attribute\Create[]
+     *
+     * @throws Exception
      */
     private function provideSampleAttributes($itemCount = 2)
     {
@@ -698,10 +704,8 @@ class AttributeTest extends CatalogTest
      *
      * @return ResponseInterface
      *
-     * @throws AuthenticationInvalidException
-     * @throws NotFoundException
+     * @throws Exception
      * @throws RequestException
-     * @throws UnknownException
      */
     private function createAttributes(array $sampleAttributes, array $meta = [])
     {
@@ -712,8 +716,8 @@ class AttributeTest extends CatalogTest
      * @param array $meta
      *
      * @return Attribute\GetList
-     * @throws Exception
      *
+     * @throws Exception
      */
     private function getAttributes($meta = [])
     {
@@ -726,11 +730,8 @@ class AttributeTest extends CatalogTest
      *
      * @return Attribute\Get
      *
-     * @throws AuthenticationInvalidException
+     * @throws Exception
      * @throws NotFoundException
-     * @throws RequestException
-     * @throws UnknownException
-     *
      */
     private function getAttribute($attributeCode, $localeCode = '')
     {

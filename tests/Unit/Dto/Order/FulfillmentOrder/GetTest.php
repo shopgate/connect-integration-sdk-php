@@ -27,9 +27,14 @@ use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder;
 use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder\Dto as FulfillmentOrderDto;
 use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder\Get;
 use Shopgate\ConnectSdk\Dto\Order\Dto\Fulfillment;
+use Shopgate\ConnectSdk\Exception\Exception;
 
 class GetTest extends TestCase
 {
+
+    /**
+     * @throws Exception
+     */
     public function testBasicProperties()
     {
         // Arrange

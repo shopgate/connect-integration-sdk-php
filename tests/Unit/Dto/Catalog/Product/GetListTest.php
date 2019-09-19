@@ -29,11 +29,14 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties\Simple;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Get;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\GetList;
 use Shopgate\ConnectSdk\Dto\Meta;
+use Shopgate\ConnectSdk\Exception\Exception;
 
 class GetListTest extends TestCase
 {
     /**
      * Tests basic DTO structure return
+     *
+     * @throws Exception
      */
     public function testGetListDto()
     {
@@ -60,6 +63,8 @@ class GetListTest extends TestCase
 
     /**
      * Testing the difference between simple and attribute property types
+     *
+     * @throws Exception
      */
     public function testProductPropertyTypes()
     {

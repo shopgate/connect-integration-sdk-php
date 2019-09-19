@@ -7,9 +7,13 @@ use PHPUnit\Framework\TestCase;
 use Shopgate\ConnectSdk\Dto\Order\Order\GetList;
 use Shopgate\ConnectSdk\Dto\Order\Order\Get;
 use Shopgate\ConnectSdk\Dto\Meta;
+use Shopgate\ConnectSdk\Exception\Exception;
 
 class GetListTest extends TestCase
 {
+    /**
+     * @throws Exception
+     */
     public function testCategoryDto()
     {
         $entry = [

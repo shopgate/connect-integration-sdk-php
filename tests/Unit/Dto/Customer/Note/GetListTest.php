@@ -26,6 +26,7 @@ use PHPUnit\Framework\TestCase;
 use Shopgate\ConnectSdk\Dto\Customer\Note\Get;
 use Shopgate\ConnectSdk\Dto\Customer\Note\GetList;
 use Shopgate\ConnectSdk\Dto\Meta;
+use Shopgate\ConnectSdk\Exception\Exception;
 
 /**
  * @coversDefaultClass \Shopgate\ConnectSdk\Dto\Customer\Note\GetList
@@ -34,6 +35,8 @@ class GetListTest extends TestCase
 {
     /**
      * Testing recursive reference for notes
+     *
+     * @throws Exception
      */
     public function testBasicDtoList()
     {

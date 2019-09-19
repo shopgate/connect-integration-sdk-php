@@ -132,6 +132,8 @@ class ReservationTest extends CatalogTest
      * @param string $locationCode
      *
      * @return Order\Dto\LineItem[]
+     *
+     * @throws Exception
      */
     private function createSampleLineItems($productIds, $locationCode)
     {

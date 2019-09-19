@@ -24,11 +24,8 @@ namespace Shopgate\ConnectSdk\Tests\Integration\Dto\Customer;
 use Shopgate\ConnectSdk\Dto\Customer\Attribute;
 use Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
 
-use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\Exception;
-use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
-use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Tests\Integration\CustomerTest;
 
 class AttributeValueTest extends CustomerTest
@@ -233,10 +230,7 @@ class AttributeValueTest extends CustomerTest
     }
 
     /**
-     * @throws AuthenticationInvalidException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws UnknownException
+     * @throws Exception
      */
     private function createSampleAttribute()
     {

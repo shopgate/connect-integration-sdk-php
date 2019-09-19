@@ -24,6 +24,7 @@ namespace Shopgate\ConnectSdk\Tests\Unit\Dto\Customer\Note;
 
 use PHPUnit\Framework\TestCase;
 use Shopgate\ConnectSdk\Dto\Customer\Note\Get;
+use Shopgate\ConnectSdk\Exception\Exception;
 
 /**
  * @coversDefaultClass \Shopgate\ConnectSdk\Dto\Customer\Note\Get
@@ -32,6 +33,8 @@ class GetTest extends TestCase
 {
     /**
      * Tests minimal DTO structure return
+     *
+     * @throws Exception
      */
     public function testBasicProperties()
     {

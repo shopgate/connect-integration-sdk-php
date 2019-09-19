@@ -31,6 +31,7 @@ use Shopgate\ConnectSdk\Dto\Customer\Wishlist;
 use Shopgate\ConnectSdk\Dto\Customer\Wishlist\Dto\Item as WishlistItem;
 use Shopgate\ConnectSdk\Dto\Meta;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
+use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
@@ -67,6 +68,7 @@ class Customer
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function getAttributes(array $query = [])
     {
@@ -105,6 +107,7 @@ class Customer
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function getAttribute($code, array $query = [])
     {
@@ -133,6 +136,7 @@ class Customer
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function addAttributes(array $attributes, array $query = [])
     {
@@ -164,6 +168,7 @@ class Customer
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function updateAttribute($code, Attribute\Update $attribute, array $query = [])
     {
@@ -192,6 +197,7 @@ class Customer
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function deleteAttribute($code, array $query = [])
     {
@@ -219,6 +225,7 @@ class Customer
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function addAttributeValue(
         $code,
@@ -251,6 +258,7 @@ class Customer
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function updateAttributeValue(
         $code,
@@ -283,6 +291,7 @@ class Customer
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function deleteAttributeValue($code, $valueCode, array $query = [])
     {
@@ -308,6 +317,7 @@ class Customer
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function getCustomers(array $query = [])
     {
@@ -346,6 +356,7 @@ class Customer
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function getCustomer($id, array $query = [])
     {
@@ -374,6 +385,7 @@ class Customer
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function addCustomers(array $customers, array $query = [])
     {
@@ -409,6 +421,7 @@ class Customer
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function updateCustomer($id, CustomerDto\Update $customer, array $query = [])
     {
@@ -436,6 +449,7 @@ class Customer
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function deleteCustomer($id, array $query = [])
     {
@@ -463,6 +477,7 @@ class Customer
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function addContacts($id, array $contacts, array $query = [])
     {
@@ -492,6 +507,7 @@ class Customer
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function updateContact($id, $customerId, Contact\Update $contact, array $query = [])
     {
@@ -521,6 +537,7 @@ class Customer
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function deleteContact($id, $customerId, array $query = [])
     {
@@ -547,6 +564,7 @@ class Customer
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function addNotes($customerId, array $notes, array $query = [])
     {
@@ -574,6 +592,7 @@ class Customer
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function getNotes($customerId, array $query = [])
     {
@@ -602,6 +621,7 @@ class Customer
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function addWishlists($id, array $wishlists, array $query = [])
     {
@@ -631,6 +651,7 @@ class Customer
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function updateWishlist($id, $customerId, Wishlist\Update $wishlist, array $query = [])
     {
@@ -660,6 +681,7 @@ class Customer
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function deleteWishlist($id, $customerId, array $query = [])
     {
@@ -686,6 +708,7 @@ class Customer
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function getWishlists($customerId, array $query = [])
     {
@@ -714,6 +737,7 @@ class Customer
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function getWishlist($id, $customerId, array $query = [])
     {
@@ -744,6 +768,7 @@ class Customer
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function addWishlistItems($id, $wishlistId, array $items, array $query = [])
     {
@@ -773,6 +798,7 @@ class Customer
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function deleteWishlistItem($id, $wishlistId, $customerId, array $query = [])
     {

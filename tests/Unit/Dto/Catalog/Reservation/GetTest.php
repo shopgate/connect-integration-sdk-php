@@ -24,11 +24,14 @@ namespace Shopgate\ConnectSdk\Tests\Unit\Dto\Catalog\Reservation;
 
 use PHPUnit\Framework\TestCase;
 use Shopgate\ConnectSdk\Dto\Catalog\Reservation\Get;
+use Shopgate\ConnectSdk\Exception\Exception;
 
 class GetTest extends TestCase
 {
     /**
      * Tests basic DTO structure return
+     *
+     * @throws Exception
      */
     public function testCategoryDto()
     {

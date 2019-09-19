@@ -38,6 +38,7 @@ use Psr\Log\LoggerInterface;
 use Shopgate\ConnectSdk\Dto\Async\Factory;
 use Shopgate\ConnectSdk\Dto\Base;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
+use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
@@ -226,6 +227,7 @@ class Client implements ClientInterface
      * @throws TokenPersistenceException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function doRequest(array $params)
     {
@@ -354,6 +356,7 @@ class Client implements ClientInterface
      * @throws AuthenticationInvalidException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     private function triggerEvent(array $params)
     {

@@ -23,6 +23,7 @@
 namespace Shopgate\ConnectSdk\Tests\Integration;
 
 use Shopgate\ConnectSdk\Dto\Location\Location;
+use Shopgate\ConnectSdk\Exception\Exception;
 
 abstract class LocationTest extends ShopgateSdkTest
 {
@@ -48,6 +49,8 @@ abstract class LocationTest extends ShopgateSdkTest
 
     /**
      * @return Location\Create[]
+     *
+     * @throws Exception
      */
     protected function provideSampleLocations()
     {
@@ -65,6 +68,8 @@ abstract class LocationTest extends ShopgateSdkTest
      * @param string $type
      *
      * @return Location\Create
+     *
+     * @throws Exception
      */
     protected function provideSampleCreateLocation(
         $code,

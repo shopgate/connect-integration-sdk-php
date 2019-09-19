@@ -26,9 +26,13 @@ use PHPUnit\Framework\TestCase;
 use Shopgate\ConnectSdk\Dto\Customer\Wishlist\Get;
 use Shopgate\ConnectSdk\Dto\Customer\Wishlist\GetList;
 use Shopgate\ConnectSdk\Dto\Meta;
+use Shopgate\ConnectSdk\Exception\Exception;
 
 class GetListTest extends TestCase
 {
+    /**
+     * @throws Exception
+     */
     public function testBasicDtoList()
     {
         $codeOne = 'someCodeOne';

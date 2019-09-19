@@ -27,11 +27,9 @@ use Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
 use Shopgate\ConnectSdk\Dto\Customer\Contact;
 use Shopgate\ConnectSdk\Dto\Customer\Customer;
 use Shopgate\ConnectSdk\Dto\Customer\Note\Create;
-use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
-use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Tests\Integration\CustomerTest as CustomerBaseTest;
 
 class CustomerTest extends CustomerBaseTest
@@ -96,6 +94,8 @@ class CustomerTest extends CustomerBaseTest
      * @param int $itemCount
      *
      * @return Customer\Create[]
+     *
+     * @throws Exception
      */
     private function provideSampleCustomers($itemCount = 2)
     {
@@ -512,10 +512,7 @@ class CustomerTest extends CustomerBaseTest
     }
 
     /**
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws AuthenticationInvalidException
-     * @throws UnknownException
+     * @throws Exception
      */
     public function testNoteCreationAndRetrieval()
     {

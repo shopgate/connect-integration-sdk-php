@@ -26,6 +26,7 @@ use PHPUnit\Framework\TestCase;
 use Shopgate\ConnectSdk\Dto\Customer\Customer;
 use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Settings;
 use Shopgate\ConnectSdk\Dto\Customer\Customer\Get;
+use Shopgate\ConnectSdk\Exception\Exception;
 
 class GetTest extends TestCase
 {
@@ -68,6 +69,8 @@ class GetTest extends TestCase
 
     /**
      * Tests minimal DTO structure return
+     *
+     * @throws Exception
      */
     public function testBasicProperties()
     {
@@ -160,6 +163,8 @@ class GetTest extends TestCase
 
     /**
      * Tests contacts DTO structure return
+     *
+     * @throws Exception
      */
     public function testGetContacts()
     {
@@ -198,6 +203,8 @@ class GetTest extends TestCase
 
     /**
      * Tests attributes DTO structure return
+     *
+     * @throws Exception
      */
     public function testGetAttributes()
     {
@@ -234,6 +241,8 @@ class GetTest extends TestCase
 
     /**
      * Tests settings DTO structure return
+     *
+     * @throws Exception
      */
     public function testGetSettings()
     {

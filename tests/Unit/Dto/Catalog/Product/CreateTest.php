@@ -25,9 +25,13 @@ namespace Shopgate\ConnectSdk\Tests\Unit\Dto\Catalog\Product;
 use PHPUnit\Framework\TestCase;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Create;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto;
+use Shopgate\ConnectSdk\Exception\Exception;
 
 class CreateTest extends TestCase
 {
+    /**
+     * @throws Exception
+     */
     public function testGetPropertiesValueIsArray()
     {
         $entry = [

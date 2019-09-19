@@ -32,6 +32,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\ProductDescriptions;
 use Shopgate\ConnectSdk\Dto\Catalog\Reservation;
 use Shopgate\ConnectSdk\Dto\Meta;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
+use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
@@ -69,6 +70,7 @@ class Catalog
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function addCategories(array $categories, array $query = [])
     {
@@ -102,6 +104,7 @@ class Catalog
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function updateCategory($code, Category\Update $category, array $query = [])
     {
@@ -135,6 +138,7 @@ class Catalog
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function deleteCategory($code, array $query = [])
     {
@@ -166,6 +170,7 @@ class Catalog
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function getCategories(array $query = [])
     {
@@ -204,6 +209,7 @@ class Catalog
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function addProducts(array $products, array $query = [])
     {
@@ -234,6 +240,7 @@ class Catalog
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function updateProduct($code, Product\Update $product, array $query = [])
     {
@@ -264,6 +271,7 @@ class Catalog
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function deleteProduct($code, array $query = [])
     {
@@ -292,6 +300,7 @@ class Catalog
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function getProducts(array $query = [])
     {
@@ -330,6 +339,7 @@ class Catalog
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function getProduct($code, array $query = [])
     {
@@ -356,6 +366,7 @@ class Catalog
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function getProductDescriptions($code, array $query = [])
     {
@@ -382,6 +393,7 @@ class Catalog
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function addAttributes(array $attributes, array $query = [])
     {
@@ -413,6 +425,7 @@ class Catalog
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function getAttributes(array $query = [])
     {
@@ -451,6 +464,7 @@ class Catalog
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function getAttribute($attributeCode, array $query = [])
     {
@@ -480,6 +494,7 @@ class Catalog
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function updateAttribute($attributeCode, Attribute\Update $attribute, array $query = [])
     {
@@ -513,6 +528,7 @@ class Catalog
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function deleteAttribute($attributeCode, array $query = [])
     {
@@ -544,6 +560,7 @@ class Catalog
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function addAttributeValue(
         $attributeCode,
@@ -578,6 +595,7 @@ class Catalog
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function updateAttributeValue(
         $attributeCode,
@@ -613,6 +631,7 @@ class Catalog
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function deleteAttributeValue($attributeCode, $attributeValueCode, array $query = [])
     {
@@ -642,6 +661,7 @@ class Catalog
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function addInventories(array $inventories, array $query = [])
     {
@@ -669,6 +689,7 @@ class Catalog
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function deleteInventories(array $inventories, array $query = [])
     {
@@ -695,6 +716,7 @@ class Catalog
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function updateInventories($inventories, array $query = [])
     {
@@ -722,6 +744,7 @@ class Catalog
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function addReservations(array $reservations, array $query = [])
     {
@@ -749,6 +772,7 @@ class Catalog
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function deleteReservations(array $codes, array $query = [])
     {
@@ -776,6 +800,7 @@ class Catalog
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function updateReservation($reservationCode, $reservation, array $query = [])
     {
@@ -803,6 +828,7 @@ class Catalog
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function getReservation($reservationCode, array $query = [])
     {
@@ -829,6 +855,7 @@ class Catalog
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function getReservations(array $query = [])
     {

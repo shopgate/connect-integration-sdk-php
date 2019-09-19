@@ -25,11 +25,14 @@ namespace Shopgate\ConnectSdk\Tests\Unit\Dto\Catalog\Attribute;
 use PHPUnit\Framework\TestCase;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute\Get;
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
+use Shopgate\ConnectSdk\Exception\Exception;
 
 class GetTest extends TestCase
 {
     /**
      * Tests basic DTO structure return
+     *
+     * @throws Exception
      */
     public function testCategoryDto()
     {

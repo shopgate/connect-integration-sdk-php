@@ -26,11 +26,14 @@ use PHPUnit\Framework\TestCase;
 use Shopgate\ConnectSdk\Dto\Catalog\Reservation\Get;
 use Shopgate\ConnectSdk\Dto\Catalog\Reservation\GetList;
 use Shopgate\ConnectSdk\Dto\Meta;
+use Shopgate\ConnectSdk\Exception\Exception;
 
 class GetListTest extends TestCase
 {
     /**
      * Tests basic DTO structure return
+     *
+     * @throws Exception
      */
     public function testCategoryDto()
     {

@@ -286,6 +286,8 @@ class AttributeValueTest extends CatalogTest
 
     /**
      * @return array
+     *
+     * @throws Exception
      */
     public function provideAddAttributeValueWithMissingRequiredFields()
     {
@@ -328,6 +330,8 @@ class AttributeValueTest extends CatalogTest
 
     /**
      * @return array
+     *
+     * @throws Exception
      */
     public function provideAddAttributeValuesWithInvalidFields()
     {

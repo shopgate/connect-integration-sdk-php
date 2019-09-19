@@ -20,27 +20,8 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Tests\Unit\Dto\Catalog\ProductDescriptions;
+namespace Shopgate\ConnectSdk\Exception;
 
-use PHPUnit\Framework\TestCase;
-use Shopgate\ConnectSdk\Dto\Catalog\ProductDescriptions\Get;
-use Shopgate\ConnectSdk\Exception\Exception;
-
-/**
- * @coversDefaultClass \Shopgate\ConnectSdk\Dto\Catalog\ProductDescriptions\Get
- */
-class GetTest extends TestCase
+class InvalidDataTypeException extends Exception
 {
-    /**
-     * Tests basic DTO getters
-     *
-     * @throws Exception
-     */
-    public function testDescriptionGetter()
-    {
-        $get = new Get(['shortDescription' => 'short', 'longDescription' => 'long']);
-
-        $this->assertEquals('short', $get->getShortDescription());
-        $this->assertEquals('long', $get->getLongDescription());
-    }
 }

@@ -24,24 +24,29 @@ namespace Shopgate\ConnectSdk\Tests\Unit\Dto;
 
 use PHPUnit\Framework\TestCase;
 use Shopgate\ConnectSdk\Dto\Base;
+use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties\Name as PropertyName;
+use Shopgate\ConnectSdk\Exception\Exception;
+use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 
 class BaseTest extends TestCase
 {
     /**
      * Dto\Exceptions\InvalidKeyException : The key "test" does not exist in this Dto.
+     *
+     * @throws Exception
      */
     public function testInvalidKeyExceptionWithoutValueSet()
     {
         //Arrange
         $schema = [
-            'type'                 => 'object',
-            'properties'           => [
+            'type' => 'object',
+            'properties' => [
                 'code' => ['type' => 'string'],
                 'test' => ['type' => 'string'],
             ],
             'additionalProperties' => true
         ];
-        $base   = new Base(null, $schema);
+        $base = new Base(null, $schema);
 
         // Act
         /** @noinspection PhpUndefinedMethodInspection */
@@ -87,20 +92,22 @@ class BaseTest extends TestCase
      * Dto\Exceptions\InvalidKeyException : Key not allowed by "properties", "patternProperties", or
      * "additionalProperties": test
      *
+     * @throws Exception
+     *
      * @doesNotPerformAssertions
      */
     public function testInvalidKeyExceptionWithAdditionalPropertiesNotAllowed()
     {
         //Arrange
         $schema = [
-            'type'                 => 'object',
-            'properties'           => [
-                'code'  => ['type' => 'string'],
+            'type' => 'object',
+            'properties' => [
+                'code' => ['type' => 'string'],
                 'other' => ['type' => 'string'],
             ],
             'additionalProperties' => false
         ];
-        $base   = new Base(null, $schema);
+        $base = new Base(null, $schema);
 
         // Act
         /** @noinspection PhpUndefinedMethodInspection */
@@ -135,5 +142,45 @@ class BaseTest extends TestCase
         // Act
         /** @noinspection PhpUndefinedMethodInspection */
         $base->nonExistentMethod('1234');
+    }
+
+    /**
+     * Should throw an exception when data type is invalid
+     *
+     * @throws Exception
+     */
+    public function testShouldThrowExceptionWhenAnyDtoExceptionIsThrown()
+    {
+        //Arrange
+        $schema = [
+            'anyOf' => [
+                'type' => 'array'
+            ]
+        ];
+
+        // Assert
+        $this->expectException(InvalidDataTypeException::class);
+
+        // Act
+        new Base(123, $schema);
+    }
+
+    /**
+     * Should throw an exception when data type is invalid
+     *
+     * @throws Exception
+     */
+    public function testShouldThrowExceptionWHenDataTypeIsInvalid()
+    {
+        //Arrange
+        $schema = [
+            'type' => ['$ref' => PropertyName::class],
+        ];
+
+        // Assert
+        $this->expectException(InvalidDataTypeException::class);
+
+        // Act
+        new Base(true, $schema);
     }
 }

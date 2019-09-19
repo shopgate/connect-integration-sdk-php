@@ -68,7 +68,7 @@ class LocalizationType extends Base
          * We want to make sure when the dto was initialized as scalar type to hydrate the new value correctly
          * so the storage_type will change to object
          */
-        if ($this->getStorageType() == self::STORAGE_TYPE_SCALAR) {
+        if ($this->getStorageType() === self::STORAGE_TYPE_SCALAR) {
             try {
                 $this->hydrate([$locale => $string]);
             } catch (Exception $ex) {

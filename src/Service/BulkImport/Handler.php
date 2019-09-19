@@ -24,6 +24,7 @@ namespace Shopgate\ConnectSdk\Service\BulkImport;
 
 use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
+use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
@@ -59,6 +60,7 @@ class Handler
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function createCategoryFeed($catalogCode)
     {
@@ -79,6 +81,7 @@ class Handler
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function createProductFeed($catalogCode)
     {
@@ -99,6 +102,7 @@ class Handler
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function createAttributeFeed($catalogCode)
     {
@@ -119,6 +123,7 @@ class Handler
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function createInventoryFeed($catalogCode)
     {
@@ -137,6 +142,7 @@ class Handler
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function trigger()
     {

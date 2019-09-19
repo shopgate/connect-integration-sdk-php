@@ -27,12 +27,15 @@ use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Category\Get;
 use Shopgate\ConnectSdk\Dto\Catalog\Category\GetList;
 use Shopgate\ConnectSdk\Dto\Meta;
+use Shopgate\ConnectSdk\Exception\Exception;
 use stdClass;
 
 class GetListTest extends TestCase
 {
     /**
      * Tests basic DTO structure return
+     *
+     * @throws Exception
      */
     public function testCategoryDto()
     {
@@ -79,6 +82,8 @@ class GetListTest extends TestCase
 
     /**
      * Checking typecasting if properties provided are of incorrect format or missing
+     *
+     * @throws Exception
      */
     public function testInvalidCategoryDto()
     {

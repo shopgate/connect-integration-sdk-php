@@ -25,11 +25,14 @@ namespace Shopgate\ConnectSdk\Tests\Unit\Dto\Catalog\Product;
 use PHPUnit\Framework\TestCase;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Get;
+use Shopgate\ConnectSdk\Exception\Exception;
 
 class GetTest extends TestCase
 {
     /**
      * Tests minimal DTO structure return
+     *
+     * @throws Exception
      */
     public function testBasicProperties()
     {
@@ -50,6 +53,8 @@ class GetTest extends TestCase
 
     /**
      * Tests price DTO structure return
+     *
+     * @throws Exception
      */
     public function testGetPrice()
     {
@@ -88,6 +93,8 @@ class GetTest extends TestCase
 
     /**
      * Test category DTO reference
+     *
+     * @throws Exception
      */
     public function testGetCategories()
     {
@@ -111,6 +118,8 @@ class GetTest extends TestCase
 
     /**
      * Test media DTO reference
+     *
+     * @throws Exception
      */
     public function testGetMedia()
     {
@@ -133,6 +142,8 @@ class GetTest extends TestCase
 
     /**
      * Test inventories DTO references
+     *
+     * @throws Exception
      */
     public function testInventories()
     {
@@ -156,6 +167,8 @@ class GetTest extends TestCase
 
     /**
      * Test options DTO references
+     *
+     * @throws Exception
      */
     public function testOptions()
     {
@@ -183,6 +196,8 @@ class GetTest extends TestCase
 
     /**
      * Test extras DTO references
+     *
+     * @throws Exception
      */
     public function testExtras()
     {
@@ -208,6 +223,9 @@ class GetTest extends TestCase
         $this->assertEquals('testCode2', $extrasValues[1]->getCode());
     }
 
+    /**
+     * @throws Exception
+     */
     public function testGetProperties()
     {
         $entry = [
@@ -235,6 +253,9 @@ class GetTest extends TestCase
         $this->assertEquals('Some subgroup', $subGroup);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testGetPropertiesValueIsArray()
     {
         $entry = [

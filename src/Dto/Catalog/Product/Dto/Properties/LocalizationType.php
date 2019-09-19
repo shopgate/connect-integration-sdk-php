@@ -46,8 +46,10 @@ class LocalizationType extends Base
      */
     public function __construct($input = [], $schema = null, RegulatorInterface $regulator = null)
     {
-        // this is for allowing a default constructor but do initialize it as object - because the only case
-        // to use the default constructor and later adding values is adding translations
+        /**
+         * This is to allow initializing this class without parameters,
+         * because normally the translations will be added via add() method, not the constructor parameter
+         */
         parent::__construct($input, null === $schema ? $this->getDefaultSchema() : $schema, $regulator);
         if ($input === []) {
             $this->storage_type = 'object';
@@ -62,8 +64,10 @@ class LocalizationType extends Base
      */
     public function add($locale, $string)
     {
-        // make sure if this was initialized as scalar type to hydrate the value correctly
-        // so the storage_type will change to object
+        /**
+         * We want to make sure when the dto was initialized as scalar type to hydrate the new value correctly
+         * so the storage_type will change to object
+         */
         if ($this->getStorageType() == self::STORAGE_TYPE_SCALAR) {
             try {
                 $this->hydrate([$locale => $string]);

@@ -132,39 +132,6 @@ class GetTest extends TestCase
     }
 
     /**
-     * Test Properties DTO references
-     */
-    public function testGetProperties()
-    {
-        $entry = [
-            'properties' => [
-                ['value' => ['en-us' => 'test']],
-                ['name' => ['en-us' => 'Some name']],
-                ['subDisplayGroup' => ['en-us' => 'Some subgroup']]
-            ]
-        ];
-
-        $get = new Get($entry);
-        $properties = $get->getProperties();
-        $value = $properties[0]->getValue();
-        $name = $properties[1]->getName();
-        $subGroup = $properties[2]->getSubDisplayGroup();
-
-        $this->assertCount(3, $properties);
-        $this->assertTrue(is_array($properties));
-        $this->assertInstanceOf(Dto\Properties::class, $properties[0]);
-        $this->assertInstanceOf(Dto\Properties::class, $properties[1]);
-        $this->assertInstanceOf(Dto\Properties::class, $properties[2]);
-        $this->assertInstanceOf(Dto\Properties\Value::class, $value);
-        $this->assertInstanceOf(Dto\Properties\Name::class, $name);
-        $this->assertInstanceOf(Dto\Properties\SubDisplayGroup::class, $subGroup);
-
-        $this->assertEquals('test', $value->{'en-us'});
-        $this->assertEquals('Some name', $name->{'en-us'});
-        $this->assertEquals('Some subgroup', $subGroup->{'en-us'});
-    }
-
-    /**
      * Test inventories DTO references
      */
     public function testInventories()
@@ -239,5 +206,86 @@ class GetTest extends TestCase
         $this->assertTrue(is_array($extrasValues));
         $this->assertEquals(5.6, $extrasValues[0]->getAdditionalPrice());
         $this->assertEquals('testCode2', $extrasValues[1]->getCode());
+    }
+
+    public function testGetProperties()
+    {
+        $entry = [
+            'properties' => [
+                ['value' => 'test'],
+                ['name' => 'Some name'],
+                ['subDisplayGroup' => 'Some subgroup']
+            ]
+        ];
+
+        $get = new Get($entry);
+        $properties = $get->getProperties();
+        $value = $properties[0]->getValue();
+        $name = $properties[1]->getName();
+        $subGroup = $properties[2]->getSubDisplayGroup();
+
+        $this->assertCount(3, $properties);
+        $this->assertTrue(is_array($properties));
+        $this->assertInstanceOf(Dto\Properties::class, $properties[0]);
+        $this->assertInstanceOf(Dto\Properties::class, $properties[1]);
+        $this->assertInstanceOf(Dto\Properties::class, $properties[2]);
+
+        $this->assertEquals('test', $value);
+        $this->assertEquals('Some name', $name);
+        $this->assertEquals('Some subgroup', $subGroup);
+    }
+
+    public function testGetPropertiesValueIsArray()
+    {
+        $entry = [
+            'properties' => [
+                [
+                    'code' => 'property_code_1',
+                    'name' => 'property 1 english',
+                    'type' => 'product',
+                    'value' => 'a name',
+                    'displayGroup' => 'features',
+                ],
+                [
+                    'code' => 'property_code_2',
+                    'name' => 'property 2 english',
+                    'type' => 'simple',
+                    'value' => [
+                        'attributeValueCode1',
+                        'attributeValueCode2',
+                        'attributeValueCode3'
+                    ],
+                    'displayGroup' => 'properties',
+                ],
+                [
+                    'code' => 'property_code_3',
+                    'name' => 'property 3 english',
+                    'type' => 'simple',
+                    'value' => [
+                        'en-us' => 'Some name',
+                        'de-de' => 'Ein name',
+                    ],
+                    'displayGroup' => 'properties',
+                ],
+            ]
+        ];
+
+        $get = new Get($entry);
+        $properties = $get->getProperties();
+
+        $this->assertCount(3, $properties);
+        $this->assertTrue(is_array($properties));
+        $this->assertInstanceOf(Dto\Properties::class, $properties[0]);
+        $this->assertInstanceOf(Dto\Properties::class, $properties[1]);
+        $this->assertInstanceOf(Dto\Properties::class, $properties[2]);
+
+        $this->assertEquals('a name', $properties[0]->getValue());
+        $this->assertEquals([
+            'attributeValueCode1',
+            'attributeValueCode2',
+            'attributeValueCode3'
+        ], $properties[1]->getValue());
+        $this->assertEquals('Some name', $properties[2]->getValue()->{'en-us'});
+        $this->assertEquals('Ein name', $properties[2]->getValue()->{'de-de'});
     }
 }

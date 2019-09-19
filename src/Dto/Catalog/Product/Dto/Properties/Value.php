@@ -22,8 +22,22 @@
 
 namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 
-use Shopgate\ConnectSdk\Dto\LocalizedArray;
-
-class Value extends LocalizedArray
+class Value extends LocalizationType
 {
+    protected $schema = [
+        'anyOf' => [
+            [
+                'type' => 'string',
+                'additionalProperties' => true,
+            ],
+            [
+                'type' => 'object',
+                'additionalProperties' => true,
+            ],
+            [
+                'type' => 'array',
+                'additionalProperties' => true,
+            ],
+        ]
+    ];
 }

@@ -27,6 +27,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto;
 
 /**
  * @method Dto\MediaList\Media[] getMedia()
+ * @method Dto\Properties[] getProperties()
  *
  * @inheritdoc
  */

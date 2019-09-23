@@ -702,7 +702,7 @@ class CategoryTest extends CatalogTest
         $existingCategory = $this->provideSampleCreateCategory(
             $categoryCode,
             'test category',
-            '1',
+            1,
             new Category\Dto\Image(['en-us' => 'http://www.google.de']),
             new Category\Dto\Url(['en-us' => 'http://www.google.de/image.png']),
             'test description'
@@ -896,7 +896,7 @@ class CategoryTest extends CatalogTest
             );
         }
 
-        usleep(self::SLEEP_TIME_AFTER_EVENT*5);
+        usleep(self::SLEEP_TIME_AFTER_EVENT * 5);
 
         // Assert
         $categories = $this->getCategories($this->getCategoryCodes($sampleCategories), [

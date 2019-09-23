@@ -25,14 +25,14 @@ namespace Shopgate\ConnectSdk\Dto\Order\Order\Dto;
 use Shopgate\ConnectSdk\Dto\Base;
 
 /**
- * @method HistoryItem setId(string $id)
+ * @method HistoryItem setId(integer $id)
  * @method HistoryItem setEventName(string $eventName)
  * @method HistoryItem setEventDetails(string $eventDetails)
  * @method HistoryItem setEventNewValue(string $eventNewValue)
  * @method HistoryItem setEventOldValue(string $eventOldValue)
  * @method HistoryItem setEventDateTime(string $eventDateTime)
  * @method HistoryItem setEventUser(string $eventUser)
- * @method string getId()
+ * @method integer getId()
  * @method string getEventName()
  * @method string getEventDetails()
  * @method string getEventNewValue()
@@ -50,7 +50,7 @@ class HistoryItem extends Base
     protected $schema = [
         'type' => 'object',
         'properties' => [
-            'id' => ['type' => 'string'],
+            'id' => ['type' => 'number'],
             'eventName' => ['type' => 'string'],
             'eventDetails' => ['type' => 'string'],
             'eventNewValue' => ['type' => 'string'],

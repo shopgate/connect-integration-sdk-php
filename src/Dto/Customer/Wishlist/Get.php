@@ -39,8 +39,6 @@ class Get extends Wishlist
     protected $schema = [
         'type' => 'object',
         'properties' => [
-            'code' => ['type' => 'string'],
-            'name' => ['type' => 'string'],
             'items' => [
                 'type' => 'array',
                 'items' => ['$ref' => Dto\Item::class]

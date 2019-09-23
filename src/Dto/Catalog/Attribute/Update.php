@@ -51,7 +51,10 @@ class Update extends Attribute
             'type'               => ['type' => 'string'],
             'use'                => ['type' => 'string'],
             'name'               => ['$ref' => Dto\Name::class],
-            'values'             => ['type' => 'array'],
+            'values'             => [
+                'type' => 'array',
+                'items' => ['$ref' => AttributeValue\Update::class]
+            ],
         ],
         'additionalProperties' => true,
     ];

@@ -34,15 +34,4 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product;
  */
 class Get extends Product
 {
-    /**
-     * @var array
-     */
-    protected $schema = [
-        'type'                 => 'object',
-        'properties'           => [
-            'shortDescription' => ['type' => 'string'],
-            'longDescription'  => ['type' => 'string']
-        ],
-        'additionalProperties' => true
-    ];
 }

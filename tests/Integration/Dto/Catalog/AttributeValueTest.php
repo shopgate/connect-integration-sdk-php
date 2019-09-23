@@ -105,7 +105,7 @@ class AttributeValueTest extends CatalogTest
         // Assert
         $updatedAttributeValues = $this->sdk->getCatalogService()
             ->getAttribute(self::SAMPLE_ATTRIBUTE_CODE)->getValues();
-        $updatedAttributeValue  = $updatedAttributeValues[0];
+        $updatedAttributeValue = $updatedAttributeValues[0];
 
         $this->assertCount(1, $updatedAttributeValues);
         $this->assertEquals('Attribute Value 2 en update', $updatedAttributeValue->getName());

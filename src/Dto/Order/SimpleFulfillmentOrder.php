@@ -35,7 +35,7 @@ use Shopgate\ConnectSdk\Dto\Base;
  * @method string getCustomerId()
  * @method string getExternalCustomerNumber()
  * @method string getRouteType()
- * @method string getExpedited()
+ * @method bool getExpedited()
  * @method string getStatus()
  * @method float getSubTotal()
  * @method float getTaxAmount()
@@ -93,7 +93,7 @@ class SimpleFulfillmentOrder extends Base
             'customerId' => ['type' => 'string'],
             'externalCustomerNumber' => ['type' => 'string'],
             'routeType' => ['type' => 'string'],
-            'expedited' => ['type' => 'string'],
+            'expedited' => ['type' => 'boolean'],
             'status' => ['type' => 'string'],
             'subTotal' => ['type' => 'number'],
             'taxAmount' => ['type' => 'number'],

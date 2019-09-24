@@ -39,10 +39,10 @@ class GetList extends Wishlist
     protected $schema = [
         'type' => 'object',
         'properties' => [
-            'meta' => ['$ref' => Meta::class],
+            'meta' => ['$ref' => Meta::class, 'skipValidation' => true],
             'wishlists' => [
                 'type' => 'array',
-                'items' => ['$ref' => Get::class]
+                'items' => ['$ref' => Get::class, 'skipValidation' => true]
             ]
         ],
         'additionalProperties' => true

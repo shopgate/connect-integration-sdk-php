@@ -35,21 +35,23 @@ class Get extends Order
     protected $schema = [
         'type' => 'object',
         'properties' => [
+            'specialInstructions' => ['$ref' => Dto\SpecialInstructions::class, 'skipValidation' => true],
+            'data' => ['$ref' => Dto\Data::class, 'skipValidation' => true],
             'addressSequences' => [
                 'type' => 'array',
-                'items' => ['$ref' => Dto\Address::class]
+                'items' => ['$ref' => Dto\Address::class, 'skipValidation' => true]
             ],
             'fulfillmentGroups' => [
                 'type' => 'array',
-                'items' => ['$ref' => Dto\FulfillmentGroup::class]
+                'items' => ['$ref' => Dto\FulfillmentGroup::class, 'skipValidation' => true]
             ],
             'lineItems' => [
                 'type' => 'array',
-                'items' => ['$ref' => Dto\LineItem::class]
+                'items' => ['$ref' => Dto\LineItem::class, 'skipValidation' => true]
             ],
             'history' => [
                 'type' => 'array',
-                'items' => ['$ref' => Dto\HistoryItem::class]
+                'items' => ['$ref' => Dto\HistoryItem::class, 'skipValidation' => true],
             ]
         ],
         'additionalProperties' => true

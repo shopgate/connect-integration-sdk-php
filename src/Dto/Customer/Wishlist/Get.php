@@ -41,7 +41,7 @@ class Get extends Wishlist
         'properties' => [
             'items' => [
                 'type' => 'array',
-                'items' => ['$ref' => Dto\Item::class]
+                'items' => ['$ref' => Dto\Item::class, 'skipValidation' => true]
             ]
         ],
         'additionalProperties' => true

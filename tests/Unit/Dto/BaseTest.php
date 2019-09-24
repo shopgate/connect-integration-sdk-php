@@ -24,6 +24,7 @@ namespace Shopgate\ConnectSdk\Tests\Unit\Dto;
 
 use PHPUnit\Framework\TestCase;
 use Shopgate\ConnectSdk\Dto\Base;
+use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Name;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties\Name as PropertyName;
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
@@ -98,6 +99,10 @@ class BaseTest extends TestCase
      */
     public function testInvalidKeyExceptionWithAdditionalPropertiesNotAllowed()
     {
+        $this->markTestSkipped(
+            'This case is currently irrelevant since we have no dto which permits having additionalProperties'
+        );
+
         //Arrange
         $schema = [
             'type' => 'object',
@@ -116,6 +121,7 @@ class BaseTest extends TestCase
 
     /**
      * Dto\Exceptions\InvalidDataTypeException : Properties can only be set on objects.
+     * should throw an exception
      *
      * @doesNotPerformAssertions
      */
@@ -124,13 +130,17 @@ class BaseTest extends TestCase
         //Arrange
         $base = new Base();
 
+        // Assert
+        $this->expectException(InvalidDataTypeException::class);
+
         // Act
         /** @noinspection PhpUndefinedMethodInspection */
         $base->setNonExistent('1234');
     }
 
     /**
-     * Should not throw an exception
+     * Dto\Exceptions\InvalidDataTypeException : Properties can only be set on objects.
+     * Should throw an exception
      *
      * @doesNotPerformAssertions
      */
@@ -138,6 +148,9 @@ class BaseTest extends TestCase
     {
         //Arrange
         $base = new Base();
+
+        // Assert
+        $this->expectException(InvalidDataTypeException::class);
 
         // Act
         /** @noinspection PhpUndefinedMethodInspection */
@@ -170,7 +183,7 @@ class BaseTest extends TestCase
      *
      * @throws Exception
      */
-    public function testShouldThrowExceptionWHenDataTypeIsInvalid()
+    public function testShouldThrowExceptionWhenDataTypeIsInvalidClassReference()
     {
         //Arrange
         $schema = [
@@ -182,5 +195,165 @@ class BaseTest extends TestCase
 
         // Act
         new Base(true, $schema);
+    }
+
+    /**
+     * Should throw an exception when data type is invalid
+     *
+     * @param string $dataType
+     * @param mixed  $data
+     *
+     * @throws Exception
+     *
+     * @dataProvider provideInvalidArrayCases
+     */
+    public function testShouldThrowExceptionWhenDataTypeIsInvalid($dataType, $data)
+    {
+        //Arrange
+        $schema = [
+            'type' => 'object',
+            'properties' => [
+                'testProperty' => ['type' => $dataType, 'strict' => true]
+            ]
+        ];
+        $dto = new Base(null, $schema);
+
+        // Assert
+        $this->expectException(InvalidDataTypeException::class);
+
+        // Act
+        /** @noinspection PhpUndefinedMethodInspection */
+        $dto->setTestProperty($data);
+    }
+
+    /**
+     * @return array
+     * @throws InvalidDataTypeException
+     */
+    public function provideInvalidArrayCases()
+    {
+        return [
+            'array - string' => [
+                'array',
+                'teststring'
+            ],
+            'array - object' => [
+                'array',
+                new Name()
+            ],
+            'array - int' => [
+                'array',
+                1
+            ],
+            'array - float' => [
+                'array',
+                1.0
+            ],
+            'string - array' => [
+                'string',
+                []
+            ],
+            'string - object' => [
+                'string',
+                new Name()
+            ],
+            'string - int' => [
+                'string',
+                1
+            ],
+            'string - number' => [
+                'string',
+                1.0
+            ],
+            'number - array' => [
+                'number',
+                []
+            ],
+            'number - object' => [
+                'number',
+                new Name()
+            ],
+            'number - string' => [
+                'number',
+                'teststring'
+            ],
+            'integer - array' => [
+                'integer',
+                []
+            ],
+            'integer - object' => [
+                'integer',
+                new Name()
+            ],
+            'integer - number' => [
+                'integer',
+                4.5
+            ],
+            'integer - string' => [
+                'integer',
+                'teststring'
+            ]
+        ];
+    }
+
+    /**
+     * Should not throw an exception when data type is valid
+     *
+     * @param string $dataType
+     * @param mixed  $data
+     *
+     * @throws Exception
+     *
+     * @dataProvider provideValidDataTypeTestCases
+     */
+    public function testShouldNotThrowExceptionWhenDataTypeIsValid($dataType, $data)
+    {
+        //Arrange
+        $schema = [
+            'type' => 'object',
+            'properties' => [
+                'testProperty' => ['type' => $dataType]
+            ]
+        ];
+        $dto = new Base(null, $schema);
+
+        // Act
+        /** @noinspection PhpUndefinedMethodInspection */
+        $dto->setTestProperty($data);
+    }
+
+    /**
+     * @return array
+     *
+     * @throws InvalidDataTypeException
+     */
+    public function provideValidDataTypeTestCases()
+    {
+        return [
+            'array' => [
+                'array',
+                []
+            ],
+            'object' => [
+                'object',
+                new Name()
+            ],
+            'string' => [
+                'string',
+                'teststring'
+            ],
+            'number' => [
+                'number',
+                5.0
+            ],
+            'integer' => [
+                'integer',
+                7
+            ],
+            'null' => [
+                'null',
+                null
+            ]
+        ];
     }
 }

@@ -44,11 +44,11 @@ class Get extends Attribute
         'properties' => [
             'name' => [
                 'type' => 'string',
-                'items' => ['$ref' => Dto\Name::class]
+                'items' => ['$ref' => Dto\Name::class, 'skipValidation' => true]
             ],
             'values' => [
                 'type' => 'array',
-                'items' => ['$ref' => AttributeValue\Get::class]
+                'items' => ['$ref' => AttributeValue\Get::class, 'skipValidation' => true]
             ]
         ],
         'additionalProperties' => true,

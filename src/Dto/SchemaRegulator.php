@@ -28,6 +28,27 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties\Attribute;
 
 class SchemaRegulator extends JsonSchemaRegulator
 {
+    public function compileSchema($schema = null, $base_dir = '')
+    {
+        $newSchema = parent::compileSchema($schema, $base_dir);
+
+        /**
+         * We pass along the 'skipValidation' flag to all child definitions if the "parent" schema had this property set.
+         */
+        if (isset($schema['skipValidation'])) {
+            if (isset($newSchema['properties']) && is_array($newSchema['properties'])) {
+                foreach ($newSchema['properties'] as &$property) {
+                    $property['skipValidation'] = true;
+                }
+            }
+            if (empty($newSchema)) {
+                $newSchema['skipValidation'] = true;
+            }
+        }
+
+        return $newSchema;
+    }
+
     /**
      * Rewritten to instantiate referenced objects instead of parent DTOs
      *

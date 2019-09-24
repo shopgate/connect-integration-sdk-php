@@ -151,10 +151,10 @@ class CreateTest extends TestCase
             ],
             'history' => [
                 [
-                    'id' => 'test-history-item-one',
+                    'id' => 123,
                     'eventName' => 'created',
                     'eventDetails' => 'test event details',
-                    'eventNewValue' => 'test event new value',
+                    'eventNewValue' => ['test' => 'newValue'],
                     'eventOldValue' => 'test event old value',
                     'eventDateTime' => 'right now',
                     'eventUser' => 'Dana Scully'
@@ -305,7 +305,7 @@ class CreateTest extends TestCase
         $this->assertEquals($expectedHistoryItem['id'], $actualHistoryItem->getId());
         $this->assertEquals($expectedHistoryItem['eventName'], $actualHistoryItem->getEventName());
         $this->assertEquals($expectedHistoryItem['eventDetails'], $actualHistoryItem->getEventDetails());
-        $this->assertEquals($expectedHistoryItem['eventNewValue'], $actualHistoryItem->getEventNewValue());
+        $this->assertEquals($expectedHistoryItem['eventNewValue'], $actualHistoryItem->getEventNewValue()->toArray());
         $this->assertEquals($expectedHistoryItem['eventOldValue'], $actualHistoryItem->getEventOldValue());
         $this->assertEquals($expectedHistoryItem['eventDateTime'], $actualHistoryItem->getEventDateTime());
         $this->assertEquals($expectedHistoryItem['eventUser'], $actualHistoryItem->getEventUser());

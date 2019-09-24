@@ -35,7 +35,7 @@ use Shopgate\ConnectSdk\Dto\Base;
  * @method integer getId()
  * @method string getEventName()
  * @method string getEventDetails()
- * @method string getEventNewValue()
+ * @method Base getEventNewValue()
  * @method string getEventOldValue()
  * @method string getEventDateTime()
  * @method string getEventUser()
@@ -53,7 +53,7 @@ class HistoryItem extends Base
             'id' => ['type' => 'number'],
             'eventName' => ['type' => 'string'],
             'eventDetails' => ['type' => 'string'],
-            'eventNewValue' => ['type' => 'string'],
+            'eventNewValue' => ['type' => 'object'],
             'eventOldValue' => ['type' => 'string'],
             'eventDateTime' => ['type' => 'string'],
             'eventUser' => ['type' => 'string']

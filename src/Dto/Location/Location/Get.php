@@ -51,27 +51,19 @@ class Get extends Location
     protected $schema = [
         'type' => 'object',
         'properties' => [
-            'code' => ['type' => 'string'],
-            'name' => ['type' => 'string'],
-            'type' => ['$ref' => Dto\Type::class],
-            'status' => ['type' => 'string'],
-            'latitude' => ['type' => 'string'],
-            'longitude' => ['type' => 'string'],
-            'operationHours' => ['$ref' => Dto\OperationHours::class],
-            'localeCode' => ['type' => 'string'],
-            'timeZone' => ['type' => 'string'],
-            'details' => ['$ref' => Dto\Details::class],
+            'type' => ['$ref' => Dto\Type::class, 'skipValidation' => true],
+            'operationHours' => ['$ref' => Dto\OperationHours::class, 'skipValidation' => true],
+            'details' => ['$ref' => Dto\Details::class, 'skipValidation' => true],
             'addresses' => [
                 'type' => 'array',
-                'items' => ['$ref' => Dto\Address::class]
+                'items' => ['$ref' => Dto\Address::class, 'skipValidation' => true]
             ],
-            'inventory' => ['$ref' => Dto\Inventory::class],
+            'inventory' => ['$ref' => Dto\Inventory::class, 'skipValidation' => true],
             'supportedFulfillmentMethods' => [
                 'type' => 'array',
-                'items' => ['type' => 'string']
+                'items' => ['type' => 'string', 'skipValidation' => true]
             ],
-            'settings' => ['$ref' => Dto\Settings::class],
-            'isDefault' => ['type' => 'boolean']
+            'settings' => ['$ref' => Dto\Settings::class, 'skipValidation' => true],
         ],
         'additionalProperties' => true
     ];

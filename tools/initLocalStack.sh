@@ -45,6 +45,7 @@ docker-compose $DOCKER_COMPOSE_PARAMETERS up -d mysql
 
 docker-compose $DOCKER_COMPOSE_PARAMETERS up -d etcd
 docker-compose $DOCKER_COMPOSE_PARAMETERS up -d googlepubsub-emulator
+docker-compose $DOCKER_COMPOSE_PARAMETERS up -d redis
 
 docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T php56 php ./tools/pubsubfiller.php
 docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T php56 php ./tools/etcdfiller.php
@@ -54,12 +55,13 @@ retry "MySQL" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T mysql mysql -ur
 
 docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T mysql mysql -u root -psecret < ./fixtures/schema.sql
 
-docker-compose $DOCKER_COMPOSE_PARAMETERS stop user customer catalog import import-script order && docker-compose $DOCKER_COMPOSE_PARAMETERS up -d user customer catalog import import-script order
+docker-compose $DOCKER_COMPOSE_PARAMETERS stop user customer catalog import import-script order webhook && docker-compose $DOCKER_COMPOSE_PARAMETERS up -d user customer catalog import import-script order webhook
 retry "UserService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T user curl http://localhost/health -o /dev/null 2>&1"
 retry "CustomerService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T customer curl http://localhost/health -o /dev/null 2>&1"
 retry "CatalogService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T catalog curl http://localhost/health -o /dev/null 2>&1"
 retry "ImportService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T import curl http://localhost/health -o /dev/null 2>&1"
 retry "OrderService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T order curl http://localhost/health -o /dev/null 2>&1"
+retry "WebhookService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T webhook curl http://localhost/health -o /dev/null 2>&1"
 
 docker-compose $DOCKER_COMPOSE_PARAMETERS up -d event-receiver
 retry "EventReceiver" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T event-receiver curl http://localhost/health -o /dev/null 2>&1"

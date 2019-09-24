@@ -11,6 +11,7 @@ development:
       import: "http://import/"
       omni-order: "http://order/"
       user: "http://user/"
+      webhook: "http://webhook/"
     services-v2:
       omni-worker: "http://omni-worker/"
       event-receiver: "http://event-receiver/"
@@ -21,6 +22,7 @@ development:
       import: "http://import/"
       order: "http://order/"
       user: "http://user/"
+      webhook: "http://webhook/"
 
   settings:
     OmniAuthService:
@@ -125,5 +127,16 @@ development:
         port: 3306
         user: root
         autoCreateDatabase: true
+      googleCloud:
+        projectId: test-project
+
+    OmniWebhookService:
+      mysql:
+        connectionLimit: 1
+        database: webhook
+        host: mysql
+        user: root
+        password: secret
+        port: 3306
       googleCloud:
         projectId: test-project

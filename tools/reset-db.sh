@@ -23,12 +23,13 @@ DOCKER_COMPOSE_PARAMETERS="-f docker-compose.yml -f docker-compose.dev.yml"
 
 docker-compose ${DOCKER_COMPOSE_PARAMETERS} exec -T elasticsearch curl -X DELETE 'http://localhost:9200/_all'
 docker-compose ${DOCKER_COMPOSE_PARAMETERS} exec -T mysql mysql -uroot -psecret < ./fixtures/schema.sql
-docker-compose ${DOCKER_COMPOSE_PARAMETERS} stop customer catalog import import-script order && docker-compose ${DOCKER_COMPOSE_PARAMETERS} up -d customer catalog import import-script order
+docker-compose ${DOCKER_COMPOSE_PARAMETERS} stop customer catalog import import-script order webhook && docker-compose ${DOCKER_COMPOSE_PARAMETERS} up -d customer catalog import import-script order webhook
 
 retry "CustomerService" "docker-compose ${DOCKER_COMPOSE_PARAMETERS} exec -T customer curl http://localhost/health -o /dev/null 2>&1"
 retry "CatalogService" "docker-compose ${DOCKER_COMPOSE_PARAMETERS} exec -T catalog curl http://localhost/health -o /dev/null 2>&1"
 retry "ImportService" "docker-compose ${DOCKER_COMPOSE_PARAMETERS} exec -T import curl http://localhost/health -o /dev/null 2>&1"
 retry "OrderService" "docker-compose ${DOCKER_COMPOSE_PARAMETERS} exec -T order curl http://localhost/health -o /dev/null 2>&1"
+retry "WebhookService" "docker-compose ${DOCKER_COMPOSE_PARAMETERS} exec -T webhook curl http://localhost/health -o /dev/null 2>&1"
 
 # add DE postalcodes
 docker-compose $DOCKER_COMPOSE_PARAMETERS  exec -T mysql sh -c "curl http://download.geonames.org/export/zip/DE.zip --output de.zip && unzip -o de.zip"

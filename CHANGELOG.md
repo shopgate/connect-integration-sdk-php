@@ -11,7 +11,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - getFulfillmentOrders direct call
 
 ### Changed
-- catalogCode is no logner needed when creating an inventory feed
+- catalogCode is no longer needed when creating an inventory feed
 
 ## [0.9.0] - 2019-09-13
 ### Added

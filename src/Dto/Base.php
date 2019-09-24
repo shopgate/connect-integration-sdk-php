@@ -57,7 +57,7 @@ class Base extends Dto
             /**
              * Null values are skipped to simplify validation.
              */
-            if (isset($schema['type']) && !is_array($schema['type']) && $input !== null && !isset($schema['skipValidation'])) {
+            if (isset($schema['type']) && !is_array($schema['type']) && $input !== null) {
                 switch ($schema['type']) {
                     case 'array':
                         if (!is_array($input)) {

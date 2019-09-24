@@ -200,7 +200,7 @@ class BulkImportTest extends CatalogTest
 
         // Act
         $handler = $this->sdk->getBulkImportService()->createFileImport();
-        $inventoryHandler = $handler->createInventoryFeed(self::SAMPLE_CATALOG_CODE);
+        $inventoryHandler = $handler->createInventoryFeed();
         $inventoryHandler->add($inventories[0]);
         $inventoryHandler->add($inventories[1]);
         $inventoryHandler->end();
@@ -243,7 +243,7 @@ class BulkImportTest extends CatalogTest
 
         // Act
         $handler = $this->sdk->getBulkImportService()->createStreamImport();
-        $inventoryHandler = $handler->createInventoryFeed(self::SAMPLE_CATALOG_CODE);
+        $inventoryHandler = $handler->createInventoryFeed();
         $inventoryHandler->add($inventories[0]);
         $inventoryHandler->add($inventories[1]);
         $inventoryHandler->end();
@@ -307,7 +307,7 @@ class BulkImportTest extends CatalogTest
         $productHandler->add($products[0]);
         $productHandler->add($products[1]);
         $productHandler->end();
-        $inventoryHandler = $handler->createInventoryFeed(self::SAMPLE_CATALOG_CODE);
+        $inventoryHandler = $handler->createInventoryFeed();
         $inventoryHandler->add($inventories[0]);
         $inventoryHandler->add($inventories[1]);
         $inventoryHandler->add($inventories[2]);

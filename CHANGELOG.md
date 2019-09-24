@@ -5,8 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [1.0.0] - 2019-09-24
 ### Added
 - getFulfillmentOrders direct call
+
+### Changed
+- catalogCode is no logner needed when creating an inventory feed
 
 ## [0.9.0] - 2019-09-13
 ### Added
@@ -125,13 +130,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - createCategory event & direct call
 - deleteCategory event & direct call
 
-[Unreleased]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.9.0...HEAD
-[0.9.0]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.8.0...0.9.0
-[0.8.0]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.7.0...0.8.0
-[0.7.0]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.6.0...0.7.0
-[0.6.0]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.5.0...0.6.0
-[0.5.0]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.4.0...0.5.0
-[0.4.0]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.3.0...0.4.0
-[0.3.0]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.2.1...0.3.0
-[0.2.1]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.2.0...0.2.1
-[0.2.0]: https://github.com/shopgate/cart-integration-sdk-php/compare/0.1.0...0.2.0
+[Unreleased]: https://github.com/shopgate/connect-integration-sdk/compare/v1.0.0-rc.1...HEAD
+[1.0.0]: https://github.com/shopgate/connect-integration-sdk/compare/v0.9.0...v1.0.0-rc.1
+[0.9.0]: https://github.com/shopgate/connect-integration-sdk/compare/v0.8.0...v0.9.0
+[0.8.0]: https://github.com/shopgate/connect-integration-sdk/compare/v0.7.0...v0.8.0
+[0.7.0]: https://github.com/shopgate/connect-integration-sdk/compare/v0.6.0...v0.7.0
+[0.6.0]: https://github.com/shopgate/connect-integration-sdk/compare/v0.5.0...v0.6.0
+[0.5.0]: https://github.com/shopgate/connect-integration-sdk/compare/v0.4.0...v0.5.0
+[0.4.0]: https://github.com/shopgate/connect-integration-sdk/compare/v0.3.0...v0.4.0
+[0.3.0]: https://github.com/shopgate/connect-integration-sdk/compare/v0.2.1...v0.3.0
+[0.2.1]: https://github.com/shopgate/connect-integration-sdk/compare/v0.2.0...v0.2.1
+[0.2.0]: https://github.com/shopgate/connect-integration-sdk/compare/v0.1.0...v0.2.0

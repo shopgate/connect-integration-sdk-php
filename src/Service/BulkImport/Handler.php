@@ -68,7 +68,10 @@ class Handler
             $this->client,
             $this->importReference,
             $this::HANDLER_TYPE,
-            array_merge(['entity' => 'category'], ['catalogCode' => $catalogCode])
+            [
+                'entity' => 'category',
+                'catalogCode' => $catalogCode
+            ]
         );
     }
 
@@ -89,7 +92,10 @@ class Handler
             $this->client,
             $this->importReference,
             $this::HANDLER_TYPE,
-            array_merge(['entity' => 'product'], ['catalogCode' => $catalogCode])
+            [
+                'entity' => 'product',
+                'catalogCode' => $catalogCode
+            ]
         );
     }
 
@@ -110,13 +116,14 @@ class Handler
             $this->client,
             $this->importReference,
             $this::HANDLER_TYPE,
-            array_merge(['entity' => 'attribute'], ['catalogCode' => $catalogCode])
+            [
+                'entity' => 'attribute',
+                'catalogCode' => $catalogCode
+            ]
         );
     }
 
     /**
-     * @param string $catalogCode
-     *
      * @return Feed\Inventory
      *
      * @throws AuthenticationInvalidException
@@ -125,13 +132,13 @@ class Handler
      * @throws UnknownException
      * @throws InvalidDataTypeException
      */
-    public function createInventoryFeed($catalogCode)
+    public function createInventoryFeed()
     {
         return new Feed\Inventory(
             $this->client,
             $this->importReference,
             $this::HANDLER_TYPE,
-            array_merge(['entity' => 'inventory'], ['catalogCode' => $catalogCode])
+            ['entity' => 'inventory']
         );
     }
 

@@ -20,39 +20,20 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Catalog\ParentCatalog;
+namespace Shopgate\ConnectSdk\Dto\Catalog\Catalog;
 
 use Shopgate\ConnectSdk\Dto\Base;
 
 /**
- * @method Create setCode(string $code)
- * @method Create setName(string $name)
- * @method Create setIsDefault(boolean $isDefault)
- * @method Create setDefaultLocaleCode(string $defaultLocaleCode)
- * @method Create setDefaultCurrencyCode(string $defaultCurrencyCode)
- *
  * @method string getCode()
  * @method string getName()
- * @method boolean getIsDefault()
  * @method string getDefaultLocaleCode()
  * @method string getDefaultCurrencyCode()
+ * @method boolean getIsDefault()
+ * @method string getParentCatalogCode()
  *
- * @codeCoverageIgnore
+ * @inheritdoc
  */
-class Create extends Base
+class Get extends Base
 {
-    /**
-     * @var array
-     */
-    protected $schema = [
-        'type' => 'object',
-        'properties' => [
-            'code' => ['type' => 'string'],
-            'name' => ['type' => 'string'],
-            'isDefault' => ['type' => 'boolean'],
-            'defaultLocaleCode' => ['type' => 'string'],
-            'defaultCurrencyCode' => ['type' => 'string'],
-        ],
-        'additionalProperties' => true
-    ];
 }

@@ -20,22 +20,24 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Catalog\ParentCatalog;
+namespace Shopgate\ConnectSdk\Dto\Catalog\Catalog;
 
 use Shopgate\ConnectSdk\Dto\Base;
 
 /**
- * @method Create setCode(string $code)
- * @method Create setName(string $name)
- * @method Create setIsDefault(boolean $isDefault)
- * @method Create setDefaultLocaleCode(string $defaultLocaleCode)
- * @method Create setDefaultCurrencyCode(string $defaultCurrencyCode)
- *
  * @method string getCode()
  * @method string getName()
- * @method boolean getIsDefault()
  * @method string getDefaultLocaleCode()
  * @method string getDefaultCurrencyCode()
+ * @method boolean getIsDefault()
+ * @method string getParentCatalogCode()
+ *
+ * @method Create setCode(string $code)
+ * @method Create setName(string $name)
+ * @method Create setDefaultLocaleCode(string $defaultLocaleCode)
+ * @method Create setDefaultCurrencyCode(string $defaultCurrencyCode)
+ * @method Create setIsDefault(boolean $isDefault)
+ * @method Create setParentCatalogCode(string $parentCatalogCode)
  *
  * @codeCoverageIgnore
  */
@@ -49,9 +51,10 @@ class Create extends Base
         'properties' => [
             'code' => ['type' => 'string'],
             'name' => ['type' => 'string'],
-            'isDefault' => ['type' => 'boolean'],
             'defaultLocaleCode' => ['type' => 'string'],
             'defaultCurrencyCode' => ['type' => 'string'],
+            'isDefault' => ['type' => 'boolean'],
+            'parentCatalogCode' => ['type' => 'string']
         ],
         'additionalProperties' => true
     ];

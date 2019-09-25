@@ -25,6 +25,13 @@ namespace Shopgate\ConnectSdk\Dto\Catalog\Catalog;
 use Shopgate\ConnectSdk\Dto\Base;
 
 /**
+ * @method string getCode()
+ * @method string getName()
+ * @method string getDefaultLocaleCode()
+ * @method string getDefaultCurrencyCode()
+ * @method boolean getIsDefault()
+ * @method string getParentCatalogCode()
+ *
  * @method Create setCode(string $code)
  * @method Create setName(string $name)
  * @method Create setDefaultLocaleCode(string $defaultLocaleCode)

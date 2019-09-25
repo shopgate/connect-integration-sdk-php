@@ -31,6 +31,12 @@ use Shopgate\ConnectSdk\Dto\Base;
  * @method Create setDefaultLocaleCode(string $defaultLocaleCode)
  * @method Create setDefaultCurrencyCode(string $defaultCurrencyCode)
  *
+ * @method string getCode()
+ * @method string getName()
+ * @method boolean getIsDefault()
+ * @method string getDefaultLocaleCode()
+ * @method string getDefaultCurrencyCode()
+ *
  * @codeCoverageIgnore
  */
 class Create extends Base

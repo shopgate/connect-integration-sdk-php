@@ -36,8 +36,8 @@ if [[ -n "$CI_STACK" ]]; then
     docker-compose $DOCKER_COMPOSE_PARAMETERS build --no-cache php56
     docker-compose $DOCKER_COMPOSE_PARAMETERS build --no-cache php73
     docker-compose $DOCKER_COMPOSE_PARAMETERS up -d --remove-orphans php73
-#else
-#    docker-compose $DOCKER_COMPOSE_PARAMETERS build php56
+else
+    docker-compose $DOCKER_COMPOSE_PARAMETERS build php56
 fi
 
 docker-compose $DOCKER_COMPOSE_PARAMETERS up -d --remove-orphans php56

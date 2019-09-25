@@ -61,32 +61,32 @@ class Base extends Dto
                 switch ($schema['type']) {
                     case 'array':
                         if (!is_array($input)) {
-                            throw new InvalidDataTypeException('wrong data type: array needed but got: ' . gettype($input));
+                            throw new InvalidDataTypeException('Incorrect data type: Expected array, but got: ' . gettype($input));
                         }
                         break;
                     case 'integer':
                         if (!is_int($input)) {
-                            throw new InvalidDataTypeException('wrong data type: integer needed but got: ' . gettype($input));
+                            throw new InvalidDataTypeException('Incorrect data type: Expected integer, but got: ' . gettype($input));
                         }
                         break;
                     case 'number':
                         if (!is_numeric($input)) {
-                            throw new InvalidDataTypeException('wrong data type: number needed but got: ' . gettype($input));
+                            throw new InvalidDataTypeException('Incorrect data type: Expected number, but got: ' . gettype($input));
                         }
                         break;
                     case 'string':
                         if (!is_string($input)) {
-                            throw new InvalidDataTypeException('wrong data type: string needed but got: ' . gettype($input));
+                            throw new InvalidDataTypeException('Incorrect data type: Expected string, but got: ' . gettype($input));
                         }
                         break;
                     case 'boolean':
                         if (!is_bool($input)) {
-                            throw new InvalidDataTypeException('wrong data type: boolean needed but got: ' . gettype($input));
+                            throw new InvalidDataTypeException('Incorrect data type: Expected boolean, but got: ' . gettype($input));
                         }
                         break;
                     case 'null':
                         if (!is_null($input)) {
-                            throw new InvalidDataTypeException('wrong data type: null needed but got: ' . gettype($input));
+                            throw new InvalidDataTypeException('Incorrect data type: Expected null, but got: ' . gettype($input));
                         }
                         break;
                 }

@@ -31,7 +31,7 @@ use Shopgate\ConnectSdk\Dto\Base;
  * @method Create setDefaultLocaleCode(string $defaultLocaleCode)
  * @method Create setDefaultCurrencyCode(string $defaultCurrencyCode)
  *
- * @inheritdoc
+ * @codeCoverageIgnore
  */
 class Create extends Base
 {

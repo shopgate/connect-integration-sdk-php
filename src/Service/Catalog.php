@@ -27,6 +27,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
+use Shopgate\ConnectSdk\Dto\Catalog\ParentCatalog;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
 use Shopgate\ConnectSdk\Dto\Catalog\ProductDescriptions;
 use Shopgate\ConnectSdk\Dto\Catalog\Reservation;
@@ -735,8 +736,8 @@ class Catalog
     }
 
     /**
-     * @param Reservation\Create[]  $reservations
-     * @param array                 $query
+     * @param Reservation\Create[] $reservations
+     * @param array                $query
      *
      * @return ResponseInterface
      *
@@ -881,5 +882,31 @@ class Catalog
         $response['reservations'] = $reservations;
 
         return new Reservation\GetList($response);
+    }
+
+    /**
+     * @param ParentCatalog\Create[] $parentCatalogs
+     * @param array                  $query
+     *
+     * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     * @throws InvalidDataTypeException
+     */
+    public function addParentCatalogs(array $parentCatalogs, array $query = [])
+    {
+        return $this->client->doRequest(
+            [
+                'service' => self::SERVICE_CATALOG,
+                'method' => 'post',
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
+                'json' => ['parentCatalogs' => $parentCatalogs],
+                'query' => $query,
+                'path' => 'parentCatalogs',
+            ]
+        );
     }
 }

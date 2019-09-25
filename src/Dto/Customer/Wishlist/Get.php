@@ -37,10 +37,10 @@ class Get extends Wishlist
      * @var array
      */
     protected $schema = [
-        'type' => 'object',
-        'properties' => [
+        'type'                 => 'object',
+        'properties'           => [
             'items' => [
-                'type' => 'array',
+                'type'  => 'array',
                 'items' => ['$ref' => Dto\Item::class, 'skipValidation' => true]
             ]
         ],

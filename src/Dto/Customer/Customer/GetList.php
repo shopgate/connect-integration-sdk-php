@@ -36,7 +36,7 @@ class GetList extends Customer
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'meta'       => ['$ref' => Meta::class, 'skipValidation' => true],
+            'meta'      => ['$ref' => Meta::class, 'skipValidation' => true],
             'customers' => [
                 'type'  => 'array',
                 'items' => ['$ref' => Get::class, 'skipValidation' => true],

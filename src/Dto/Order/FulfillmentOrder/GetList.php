@@ -38,11 +38,11 @@ class GetList extends Order
      * @var array
      */
     protected $schema = [
-        'type' => 'object',
-        'properties' => [
-            'meta' => ['$ref' => Meta::class, 'skipValidation' => true],
+        'type'                 => 'object',
+        'properties'           => [
+            'meta'              => ['$ref' => Meta::class, 'skipValidation' => true],
             'fulfillmentOrders' => [
-                'type' => 'array',
+                'type'  => 'array',
                 'items' => ['$ref' => SimpleFulfillmentOrder::class, 'skipValidation' => true]
             ]
         ],

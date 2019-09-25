@@ -49,15 +49,15 @@ class HistoryItem extends Base
      * @var array
      */
     protected $schema = [
-        'type' => 'object',
-        'properties' => [
-            'id' => ['type' => 'number'],
-            'eventName' => ['type' => 'string'],
-            'eventDetails' => ['type' => 'string'],
+        'type'                 => 'object',
+        'properties'           => [
+            'id'            => ['type' => 'number'],
+            'eventName'     => ['type' => 'string'],
+            'eventDetails'  => ['type' => 'string'],
             'eventNewValue' => ['type' => 'object'],
             'eventOldValue' => ['type' => 'string'],
             'eventDateTime' => ['type' => 'string'],
-            'eventUser' => ['type' => 'string']
+            'eventUser'     => ['type' => 'string']
         ],
         'additionalProperties' => true,
     ];

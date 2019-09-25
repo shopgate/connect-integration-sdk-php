@@ -40,20 +40,20 @@ class FulfillmentOrder extends SimpleFulfillmentOrder
      * @var array
      */
     protected $schema = [
-        'type' => 'object',
+        'type'       => 'object',
         'properties' => [
-            'channel' => ['$ref' => Dto\Channel::class, 'skipValidation' => true],
+            'channel'                 => ['$ref' => Dto\Channel::class, 'skipValidation' => true],
             'fulfillmentOrderAddress' => ['$ref' => Dto\FulfillmentOrderAddress::class, 'skipValidation' => true],
-            'fulfillments' => [
-                'type' => 'array',
+            'fulfillments'            => [
+                'type'  => 'array',
                 'items' => ['$ref' => Fulfillment::class, 'skipValidation' => true],
             ],
-            'lineItems' => [
-                'type' => 'array',
+            'lineItems'               => [
+                'type'  => 'array',
                 'items' => ['$ref' => Dto\LineItem::class, 'skipValidation' => true],
             ],
-            'history' => [
-                'type' => 'array',
+            'history'                 => [
+                'type'  => 'array',
                 'items' => ['$ref' => Dto\HistoryItem::class, 'skipValidation' => true],
             ]
         ]

@@ -33,24 +33,24 @@ class Get extends Order
      * @var array
      */
     protected $schema = [
-        'type' => 'object',
-        'properties' => [
+        'type'                 => 'object',
+        'properties'           => [
             'specialInstructions' => ['$ref' => Dto\SpecialInstructions::class, 'skipValidation' => true],
-            'data' => ['$ref' => Dto\Data::class, 'skipValidation' => true],
-            'addressSequences' => [
-                'type' => 'array',
+            'data'                => ['$ref' => Dto\Data::class, 'skipValidation' => true],
+            'addressSequences'    => [
+                'type'  => 'array',
                 'items' => ['$ref' => Dto\Address::class, 'skipValidation' => true]
             ],
-            'fulfillmentGroups' => [
-                'type' => 'array',
+            'fulfillmentGroups'   => [
+                'type'  => 'array',
                 'items' => ['$ref' => Dto\FulfillmentGroup::class, 'skipValidation' => true]
             ],
-            'lineItems' => [
-                'type' => 'array',
+            'lineItems'           => [
+                'type'  => 'array',
                 'items' => ['$ref' => Dto\LineItem::class, 'skipValidation' => true]
             ],
-            'history' => [
-                'type' => 'array',
+            'history'             => [
+                'type'  => 'array',
                 'items' => ['$ref' => Dto\HistoryItem::class, 'skipValidation' => true],
             ]
         ],

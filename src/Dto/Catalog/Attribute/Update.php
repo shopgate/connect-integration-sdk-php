@@ -48,11 +48,11 @@ class Update extends Attribute
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'type'               => ['type' => 'string'],
-            'use'                => ['type' => 'string'],
-            'name'               => ['$ref' => Dto\Name::class],
-            'values'             => [
-                'type' => 'array',
+            'type'   => ['type' => 'string'],
+            'use'    => ['type' => 'string'],
+            'name'   => ['$ref' => Dto\Name::class],
+            'values' => [
+                'type'  => 'array',
                 'items' => ['$ref' => AttributeValue\Update::class]
             ],
         ],

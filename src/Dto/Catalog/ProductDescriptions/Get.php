@@ -22,7 +22,7 @@
 
 namespace Shopgate\ConnectSdk\Dto\Catalog\ProductDescriptions;
 
-use Shopgate\ConnectSdk\Dto\Catalog\Product;
+use Shopgate\ConnectSdk\Dto\Base;
 
 /**
  * DTO for product descriptions response
@@ -32,6 +32,6 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product;
  *
  * @codeCoverageIgnore
  */
-class Get extends Product
+class Get extends Base
 {
 }

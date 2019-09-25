@@ -49,21 +49,21 @@ class Get extends Location
      * @var array
      */
     protected $schema = [
-        'type' => 'object',
-        'properties' => [
-            'type' => ['$ref' => Dto\Type::class, 'skipValidation' => true],
-            'operationHours' => ['$ref' => Dto\OperationHours::class, 'skipValidation' => true],
-            'details' => ['$ref' => Dto\Details::class, 'skipValidation' => true],
-            'addresses' => [
-                'type' => 'array',
+        'type'                 => 'object',
+        'properties'           => [
+            'type'                        => ['$ref' => Dto\Type::class, 'skipValidation' => true],
+            'operationHours'              => ['$ref' => Dto\OperationHours::class, 'skipValidation' => true],
+            'details'                     => ['$ref' => Dto\Details::class, 'skipValidation' => true],
+            'addresses'                   => [
+                'type'  => 'array',
                 'items' => ['$ref' => Dto\Address::class, 'skipValidation' => true]
             ],
-            'inventory' => ['$ref' => Dto\Inventory::class, 'skipValidation' => true],
+            'inventory'                   => ['$ref' => Dto\Inventory::class, 'skipValidation' => true],
             'supportedFulfillmentMethods' => [
-                'type' => 'array',
+                'type'  => 'array',
                 'items' => ['type' => 'string', 'skipValidation' => true]
             ],
-            'settings' => ['$ref' => Dto\Settings::class, 'skipValidation' => true],
+            'settings'                    => ['$ref' => Dto\Settings::class, 'skipValidation' => true],
         ],
         'additionalProperties' => true
     ];

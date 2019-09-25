@@ -7,6 +7,7 @@ DROP DATABASE IF EXISTS location;
 DROP DATABASE IF EXISTS merchant;
 DROP DATABASE IF EXISTS customer;
 DROP DATABASE IF EXISTS import;
+DROP DATABASE IF EXISTS webhook;
 DROP DATABASE IF EXISTS omnichannel_order;
 DROP DATABASE IF EXISTS omnichannel;
 DROP DATABASE IF EXISTS omnichannel_auth;
@@ -18,6 +19,7 @@ CREATE DATABASE omnichannel;
 CREATE DATABASE omnichannel_auth;
 CREATE DATABASE import;
 CREATE DATABASE omnichannel_order;
+CREATE DATABASE webhook;
 
 DROP TABLE IF EXISTS location.`Location`;
 
@@ -617,4 +619,3 @@ CREATE TABLE omnichannel_user.`UserMerchant`
     CONSTRAINT `UserMerchant_ibfk_2` FOREIGN KEY (`UserID`) REFERENCES `User` (`UserID`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
-

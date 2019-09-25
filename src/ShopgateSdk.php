@@ -31,6 +31,7 @@ use Shopgate\ConnectSdk\Service\Catalog;
 use Shopgate\ConnectSdk\Service\Customer;
 use Shopgate\ConnectSdk\Service\Location;
 use Shopgate\ConnectSdk\Service\Order;
+use Shopgate\ConnectSdk\Service\Webhook;
 
 class ShopgateSdk
 {
@@ -53,6 +54,9 @@ class ShopgateSdk
 
     /** @var Order */
     private $order;
+
+    /** @var Webhook */
+    private $webhook;
 
     /** @var BulkImport */
     private $bulkImport;
@@ -144,6 +148,18 @@ class ShopgateSdk
         }
 
         return $this->order;
+    }
+
+    /**
+     * @return Webhook
+     */
+    public function getWebhooksService()
+    {
+        if (!$this->webhook) {
+            $this->webhook = new Webhook($this->client, $this->jsonHelper);
+        }
+
+        return $this->webhook;
     }
 
     /**

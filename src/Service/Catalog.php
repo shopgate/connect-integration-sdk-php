@@ -735,8 +735,8 @@ class Catalog
     }
 
     /**
-     * @param Reservation\Create[]  $reservations
-     * @param array                 $query
+     * @param Reservation\Create[] $reservations
+     * @param array                $query
      *
      * @return ResponseInterface
      *
@@ -881,5 +881,30 @@ class Catalog
         $response['reservations'] = $reservations;
 
         return new Reservation\GetList($response);
+    }
+
+    /**
+     * @param string $catalogCode
+     * @param array  $query
+     *
+     * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     * @throws InvalidDataTypeException
+     */
+    public function deleteCatalog($catalogCode, array $query = [])
+    {
+        return $this->client->doRequest(
+            [
+                'service' => self::SERVICE_CATALOG,
+                'method' => 'delete',
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
+                'query' => $query,
+                'path' => 'catalogs/' . $catalogCode,
+            ]
+        );
     }
 }

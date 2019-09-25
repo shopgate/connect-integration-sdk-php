@@ -26,9 +26,9 @@ namespace Shopgate\ConnectSdk\Tests\Integration\Dto\Catalog;
 
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\LongDescription;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\ShortDescription;
-use Shopgate\ConnectSdk\Tests\Integration\CatalogTest;
+use Shopgate\ConnectSdk\Tests\Integration\AbstractCatalogTest;
 
-class ProductDescriptionsTest extends CatalogTest
+class ProductDescriptionsTest extends AbstractCatalogTest
 {
     /**
      * Testing description pulling via endpoint

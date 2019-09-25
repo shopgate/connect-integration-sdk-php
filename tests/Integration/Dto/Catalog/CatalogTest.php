@@ -24,11 +24,17 @@
 
 namespace Shopgate\ConnectSdk\Tests\Integration\Dto\Catalog;
 
+use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Tests\Integration\AbstractCatalogTest;
 
 class CatalogTest extends AbstractCatalogTest
 {
+    /**
+     * @throws Exception
+     *
+     * @doesNotPerformAssertions
+     */
     public function testDeleteCatalog()
     {
         $this->markTestSkipped('will continue working on this test when the other methods are available');
@@ -51,7 +57,6 @@ class CatalogTest extends AbstractCatalogTest
         try {
             $this->sdk->getCatalogService()->getCatalog($catalog->getCode());
         } catch (NotFoundException $exception) {
-
             return;
         }
 

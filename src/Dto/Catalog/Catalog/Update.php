@@ -34,7 +34,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Name;
  * @method Update setName(Name $name)
  * @method Update setDefaultLocaleCode(string $defaultLocaleCode)
  * @method Update setDefaultCurrencyCode(string $defaultCurrencyCode)
- * @method Update setIsDefault(boolean $sequenceId)
+ * @method Update setIsDefault(boolean $isDefault)
  *
  * @codeCoverageIgnore
  */

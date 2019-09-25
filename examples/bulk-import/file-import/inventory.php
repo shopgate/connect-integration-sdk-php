@@ -8,9 +8,10 @@ require_once(dirname(__FILE__) . '/../../bootstrap.php');
  * - product PRODUCT_CODE and PRODUCT_CODE_SECOND exists
  * - catalog CATALOG_CODE exists
  */
-$inventory = provideSampleInventories();
 
 try {
+    $inventory = provideSampleInventories();
+
     $handler = $sdk->getBulkImportService()->createFileImport();
     $inventoryHandler = $handler->createInventoryFeed(CATALOG_CODE);
     $inventoryHandler->add($inventory[0]);

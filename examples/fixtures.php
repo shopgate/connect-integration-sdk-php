@@ -8,6 +8,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
 use Shopgate\ConnectSdk\Dto\Order\Order;
+use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 
 const PARENT_CATALOG_CODE = 'BANA';
 const CATALOG_CODE = 'NARetail';
@@ -31,25 +32,26 @@ const INVENTORY_SKU_SECOND = 'Second Test';
 
 /**
  * @return array
+ *
+ * @throws InvalidDataTypeException
  */
 function provideParentCatalogs()
 {
     $parentCatalogs = [
-        'parentCatalogs' => [
-            new Base([
-                'code' => PARENT_CATALOG_CODE,
-                'name' => 'Team Banana Parent Catalog',
-                'isDefault' => true,
-                'defaultLocaleCode' => 'en-us',
-                'defaultCurrencyCode' => 'USD',
-            ])
-        ]
+        (new Shopgate\ConnectSdk\Dto\Catalog\ParentCatalog\Create())
+            ->setCode(PARENT_CATALOG_CODE)
+            ->setName('Team Banana Parent Catalog')
+            ->setIsDefault(true)
+            ->setDefaultCurrencyCode('USD')
+            ->setDefaultLocaleCode('en-us')
     ];
     return $parentCatalogs;
 }
 
 /**
  * @return array
+ *
+ * @throws InvalidDataTypeException
  */
 function provideCatalogs()
 {
@@ -70,6 +72,8 @@ function provideCatalogs()
 
 /**
  * @return Category\Create[]
+ *
+ * @throws InvalidDataTypeException
  */
 function provideSampleCategories()
 {
@@ -102,6 +106,8 @@ function provideSampleCategories()
 
 /**
  * @return Attribute\Create[]
+ *
+ * @throws InvalidDataTypeException
  */
 function provideSampleAttributes()
 {
@@ -156,6 +162,8 @@ function provideSampleAttributes()
 
 /**
  * @return Inventory\Create[]
+ *
+ * @throws InvalidDataTypeException
  */
 function provideSampleInventories()
 {
@@ -222,6 +230,8 @@ function provideSampleDeleteInventories()
 
 /**
  * @return Product\Create[]
+ *
+ * @throws InvalidDataTypeException
  */
 function provideSampleProducts()
 {
@@ -248,6 +258,8 @@ function provideSampleProducts()
 
 /**
  * @return array
+ *
+ * @throws InvalidDataTypeException
  */
 function provideLocations()
 {
@@ -265,6 +277,11 @@ function provideLocations()
     ];
 }
 
+/**
+ * @return array
+ *
+ * @throws InvalidDataTypeException
+ */
 function provideSampleOrders()
 {
     $order = new Order\Create([

@@ -26,7 +26,7 @@ use Shopgate\ConnectSdk\Dto\Webhook\Webhook;
 
 /**
  * @method Update setName(string $name)
- * @method Update setEndpoints(string $endpoints)
+ * @method Update setEndpoint(string $endpoint)
  * @method Update setActive(bool $active)
  * @method Update setEvents(Dto\Event[] $events)
  *
@@ -45,7 +45,7 @@ class Update extends Webhook
             'active' => ['type' => 'boolean'],
             'events' => [
                 'type' => 'array',
-                'items' => ['$ref']
+                'items' => ['$ref' => Dto\Event::class]
             ]
         ]
     ];

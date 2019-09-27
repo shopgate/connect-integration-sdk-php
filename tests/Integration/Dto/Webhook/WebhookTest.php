@@ -3,7 +3,6 @@
 
 namespace Shopgate\ConnectSdk\Tests\Integration\Dto\Webhook;
 
-use Shopgate\ConnectSdk\Dto\Webhook\WebhookToken;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
@@ -208,7 +207,7 @@ class WebhookTest extends WebhookBaseTest
      */
     public function testGetWebhookToken()
     {
-        // Arrange
+        // Act
         $response = $this->sdk->getWebhooksService()->getWebhookToken();
 
         // Assert

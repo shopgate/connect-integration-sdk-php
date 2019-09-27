@@ -25,7 +25,7 @@ namespace Shopgate\ConnectSdk\Dto\Webhook\Webhook;
 use Shopgate\ConnectSdk\Dto\Webhook\Webhook;
 
 /**
- * @method array getWebhooks()
+ * @method Get[] getWebhooks()
  *
  * @codeCoverageIgnore
  */

@@ -15,6 +15,7 @@ class WebhookTest extends WebhookBaseTest
 {
     /**
      * @param array $webhooksData
+     *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
@@ -165,7 +166,6 @@ class WebhookTest extends WebhookBaseTest
             $totalEvents += count($change['eventsData']);
         }
         $this->assertCount($totalEvents, $changedWebhook->getEvents());
-
     }
 
     /**
@@ -225,12 +225,14 @@ class WebhookTest extends WebhookBaseTest
     public function testTriggerWebhookEvent()
     {
         // Arrange
-        $code = $this->sendCreateWebhooks([[
-            'name' => 'test_webhook_one_to_be_triggered',
-            'endpoint' => 'test/trigger/one',
-            'active' => true,
-            'eventsData' => ['salesOrderStatusUpdated']
-        ]])[0];
+        $code = $this->sendCreateWebhooks([
+            [
+                'name' => 'test_webhook_one_to_be_triggered',
+                'endpoint' => 'test/trigger/one',
+                'active' => true,
+                'eventsData' => ['salesOrderStatusUpdated']
+            ]
+        ])[0];
         // Act
         $response = $this->sdk->getWebhooksService()->triggerWebhook($code);
 
@@ -256,12 +258,14 @@ class WebhookTest extends WebhookBaseTest
     public function testDeleteWebhook()
     {
         // Arrange
-        $code = $this->sendCreateWebhooks([[
-            'name' => 'test_webhook_one_to_be_deleted',
-            'endpoint' => 'test/delete/one',
-            'active' => true,
-            'eventsData' => ['salesOrderAdded']
-        ]])[0];
+        $code = $this->sendCreateWebhooks([
+            [
+                'name' => 'test_webhook_one_to_be_deleted',
+                'endpoint' => 'test/delete/one',
+                'active' => true,
+                'eventsData' => ['salesOrderAdded']
+            ]
+        ])[0];
         // Act
         $this->sdk->getWebhooksService()->deleteWebhook($code);
 

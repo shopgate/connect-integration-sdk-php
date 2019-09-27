@@ -27,7 +27,7 @@ use Shopgate\ConnectSdk\Dto\Webhook\Webhook;
 
 class WebhookTest extends ShopgateSdkTest
 {
-    const WEBHOOK_SERVICE       = 'webook';
+    const WEBHOOK_SERVICE = 'webook';
     const METHOD_DELETE_WEBHOOK = 'deleteWebhook';
     const WEBHOOK_SIMPLE_PROPS = ['name', 'endpoint', 'active'];
 
@@ -39,7 +39,7 @@ class WebhookTest extends ShopgateSdkTest
             self::WEBHOOK_SERVICE,
             $this->sdk->getWebhooksService(),
             [
-                self::METHOD_DELETE_WEBHOOK  => []
+                self::METHOD_DELETE_WEBHOOK => []
             ]
         );
     }
@@ -103,7 +103,7 @@ class WebhookTest extends ShopgateSdkTest
 
     /**
      * @param Webhook $webhook
-     * @param $webhookData
+     * @param         $webhookData
      *
      * @return mixed
      * @throws InvalidDataTypeException
@@ -142,7 +142,7 @@ class WebhookTest extends ShopgateSdkTest
     }
 
     /**
-     * @param string $name
+     * @param string        $name
      * @param Webhook\Get[] $webhooks
      *
      * @return Webhook\Get|null
@@ -158,7 +158,7 @@ class WebhookTest extends ShopgateSdkTest
     }
 
     /**
-     * @param string $code
+     * @param string        $code
      * @param Webhook\Get[] $webhooks
      *
      * @return Webhook\Get|null

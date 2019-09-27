@@ -51,7 +51,7 @@ class Webhook
      */
     public function __construct(ClientInterface $client, Json $jsonHelper)
     {
-        $this->client     = $client;
+        $this->client = $client;
         $this->jsonHelper = $jsonHelper;
     }
 
@@ -68,21 +68,23 @@ class Webhook
      */
     public function addWebhooks(array $webhooks)
     {
-        return $this->client->doRequest(
+        $response = $this->client->doRequest(
             [
                 // general
-                'method'      => 'post',
+                'method' => 'post',
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'json'        => ['webhooks' => $webhooks],
+                'json' => ['webhooks' => $webhooks],
                 // direct
-                'service'     => self::SERVICE_WEBHOOK,
-                'path'        => self::WEBHOOK_PATH
+                'service' => self::SERVICE_WEBHOOK,
+                'path' => self::WEBHOOK_PATH
             ]
         );
+
+        return $this->jsonHelper->decode($response->getBody(), true);
     }
 
     /**
-     * @param  string $code
+     * @param string            $code
      * @param WebhookDto\Update $webhook
      *
      * @return ResponseInterface
@@ -99,11 +101,11 @@ class Webhook
             [
                 // general
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'json'        => $webhook,
+                'json' => $webhook,
                 // direct
-                'method'      => 'post',
-                'service'     => self::SERVICE_WEBHOOK,
-                'path'        => self::WEBHOOK_PATH .'/' . $code
+                'method' => 'post',
+                'service' => self::SERVICE_WEBHOOK,
+                'path' => self::WEBHOOK_PATH . '/' . $code
             ]
         );
     }
@@ -129,9 +131,9 @@ class Webhook
             [
                 // direct only
                 'service' => self::SERVICE_WEBHOOK,
-                'method'  => 'get',
-                'path'    => self::WEBHOOK_PATH,
-                'query'   => $query,
+                'method' => 'get',
+                'path' => self::WEBHOOK_PATH,
+                'query' => $query,
             ]
         );
         $response = $this->jsonHelper->decode($response->getBody(), true);
@@ -162,16 +164,15 @@ class Webhook
                 // general
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
                 // direct
-                'method'      => 'delete',
-                'service'     => self::SERVICE_WEBHOOK,
-                'path'        => self::WEBHOOK_PATH . '/' . $code,
+                'method' => 'delete',
+                'service' => self::SERVICE_WEBHOOK,
+                'path' => self::WEBHOOK_PATH . '/' . $code,
             ]
         );
     }
 
     /**
      * @param string $code
-     * @param string $trace
      *
      * @return ResponseInterface
      *
@@ -181,18 +182,21 @@ class Webhook
      * @throws RequestException
      * @throws UnknownException
      */
-    public function triggerWebhook($code, $trace)
+    public function triggerWebhook($code)
     {
-        return $this->client->doRequest(
+        $response = $this->client->doRequest(
             [
                 // general
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
                 // direct
-                'method'      => 'post',
-                'service'     => self::SERVICE_WEBHOOK,
-                'path'        =>  self::WEBHOOK_PATH . '/' . $code . '/' . $trace,
+                'method' => 'post',
+                'json' => [],
+                'service' => self::SERVICE_WEBHOOK,
+                'path' => self::WEBHOOK_PATH . '/' . $code . '/test',
             ]
         );
+
+        return $this->jsonHelper->decode($response->getBody(), true);
     }
 
     /**
@@ -210,8 +214,8 @@ class Webhook
             [
                 // direct only
                 'service' => self::SERVICE_WEBHOOK,
-                'method'  => 'get',
-                'path'    => 'webhookToken',
+                'method' => 'get',
+                'path' => 'webhookToken',
             ]
         );
 

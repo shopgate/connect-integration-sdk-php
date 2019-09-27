@@ -3,6 +3,7 @@
 
 namespace Shopgate\ConnectSdk\Tests\Integration\Dto\Webhook;
 
+use Shopgate\ConnectSdk\Dto\Webhook\WebhookToken;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
@@ -113,6 +114,9 @@ class WebhookTest extends WebhookBaseTest
     }
 
     /**
+     * @param array $original
+     * @param array $change
+     *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
@@ -127,24 +131,21 @@ class WebhookTest extends WebhookBaseTest
             'Something unexpected is happening with event changes'
         );
         // Arrange
-        $createWebhook = $this->createSampleWebhook($original);
+        $code = $this->sendCreateWebhooks([$original])[0];
         $updateWebhook = $this->createWebhookUpdate(array_merge($original, $change));
-        $this->sdk->getWebhooksService()->addWebhooks([$createWebhook]);
-        $response = $this->sdk->getWebhooksService()->getWebhooks();
-        $orignalWebhook = $this->findWebhookByName($original['name'], $response->getWebhooks());
 
         // Act
-        $this->sdk->getWebhooksService()->updateWebhook($orignalWebhook->getCode(), $updateWebhook);
+        $this->sdk->getWebhooksService()->updateWebhook($code, $updateWebhook);
 
         // Arrange
         $secondResponse = $this->sdk->getWebhooksService()->getWebhooks();
-        $changedWebhook = $this->findWebhookByName($updateWebhook->get('name'), $secondResponse->getWebhooks());
+        $changedWebhook = $this->findWebhookByCode($code, $secondResponse->getWebhooks());
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(
             self::WEBHOOK_SERVICE,
             self::METHOD_DELETE_WEBHOOK,
-            array_unique([$orignalWebhook->getCode(), $changedWebhook->getCode()])
+            [$code]
         );
 
         // Assert
@@ -167,6 +168,9 @@ class WebhookTest extends WebhookBaseTest
 
     }
 
+    /**
+     * @return array
+     */
     public function provideWebhookDataUpdate()
     {
         return [
@@ -193,5 +197,97 @@ class WebhookTest extends WebhookBaseTest
                 ]
             ]
         ];
+    }
+
+    /**
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function testGetWebhookToken()
+    {
+        // Arrange
+        $response = $this->sdk->getWebhooksService()->getWebhookToken();
+
+        // Assert
+        $this->assertNotEmpty($response->getWebhookToken());
+    }
+
+    /**
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function testTriggerWebhookEvent()
+    {
+        // Arrange
+        $code = $this->sendCreateWebhooks([[
+            'name' => 'test_webhook_one_to_be_triggered',
+            'endpoint' => 'test/trigger/one',
+            'active' => true,
+            'eventsData' => ['salesOrderStatusUpdated']
+        ]])[0];
+        // Act
+        $response = $this->sdk->getWebhooksService()->triggerWebhook($code);
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(
+            self::WEBHOOK_SERVICE,
+            self::METHOD_DELETE_WEBHOOK,
+            [$code]
+        );
+
+        // Assert
+        $this->assertNotEmpty($response);
+        $this->assertCount(0, $response['error']);
+    }
+
+    /**
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function testDeleteWebhook()
+    {
+        // Arrange
+        $code = $this->sendCreateWebhooks([[
+            'name' => 'test_webhook_one_to_be_deleted',
+            'endpoint' => 'test/delete/one',
+            'active' => true,
+            'eventsData' => ['salesOrderAdded']
+        ]])[0];
+        // Act
+        $this->sdk->getWebhooksService()->deleteWebhook($code);
+
+        // Arrange
+        $response = $this->sdk->getWebhooksService()->getWebhooks();
+
+        // Assert
+        $foundWebook = $this->findWebhookByCode($code, $response->getWebhooks());
+        $this->assertEmpty($foundWebook);
+    }
+
+    /**
+     * @param array $webhooksData
+     *
+     * @return string[]
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    protected function sendCreateWebhooks($webhooksData)
+    {
+        $createWebhooks = $this->createSampleWebhooks($webhooksData);
+        $response = $this->sdk->getWebhooksService()->addWebhooks($createWebhooks);
+
+        return $response['codes'];
     }
 }

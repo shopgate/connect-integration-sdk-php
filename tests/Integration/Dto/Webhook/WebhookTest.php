@@ -127,12 +127,10 @@ class WebhookTest extends WebhookBaseTest
      */
     public function testWebhookUpdate($original, $change)
     {
-        $this->markTestSkipped(
-            'Something unexpected is happening with event changes'
-        );
         // Arrange
         $code = $this->sendCreateWebhooks([$original])[0];
-        $updateWebhook = $this->createWebhookUpdate(array_merge($original, $change));
+        $updateData = array_merge($original, $change);
+        $updateWebhook = $this->createWebhookUpdate($change);
 
         // Act
         $this->sdk->getWebhooksService()->updateWebhook($code, $updateWebhook);
@@ -150,21 +148,15 @@ class WebhookTest extends WebhookBaseTest
 
         // Assert
         $this->assertNotEmpty($changedWebhook);
-        $mergedOriginalChange = array_merge($original, $change);
+
         foreach (self::WEBHOOK_SIMPLE_PROPS as $simpleProp) {
-            if (empty($mergedOriginalChange[$simpleProp])) {
+            if (empty($updateData[$simpleProp])) {
                 continue;
             }
-            $this->assertEquals($mergedOriginalChange[$simpleProp], $changedWebhook->get($simpleProp));
+            $this->assertEquals($updateData[$simpleProp], $changedWebhook->get($simpleProp));
         }
-        $totalEvents = 0;
-        if (!empty($original['eventsData'])) {
-            $totalEvents += count($original['eventsData']);
-        }
-        if (!empty($change['eventsData'])) {
-            $totalEvents += count($change['eventsData']);
-        }
-        $this->assertCount($totalEvents, $changedWebhook->getEvents());
+
+        $this->assertCount(count($updateData['eventsData']), $changedWebhook->getEvents());
     }
 
     /**
@@ -193,6 +185,28 @@ class WebhookTest extends WebhookBaseTest
                 ],
                 'change' => [
                     'eventsData' => ['orderNotPickedUp', 'salesOrderFulfillmentAdded']
+                ]
+            ],
+            'change active' => [
+                'original' => [
+                    'name' => 'test_webhook_three',
+                    'endpoint' => 'test/endpoint/three',
+                    'active' => true,
+                    'eventsData' => ['fulfillmentOrderStatusUpdated']
+                ],
+                'change' => [
+                    'active' => false
+                ]
+            ],
+            'change endpoint' => [
+                'original' => [
+                    'name' => 'test_webhook_four',
+                    'endpoint' => 'test/endpoint/four',
+                    'active' => true,
+                    'eventsData' => ['fulfillmentOrderStatusUpdated']
+                ],
+                'change' => [
+                    'endpoint' => 'test/endpoint/four_new'
                 ]
             ]
         ];

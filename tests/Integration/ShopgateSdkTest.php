@@ -49,6 +49,10 @@ abstract class ShopgateSdkTest extends TestCase
     const METHOD_DELETE_RESERVATIONS = 'deleteReservations';
     const METHOD_DELETE_CUSTOMER = 'deleteCustomer';
     const METHOD_DELETE_CATALOG = 'deleteCatalog';
+    const METHOD_DELETE_CUSTOMER_ATTRIBUTE = 'deleteAttribute';
+    const METHOD_DELETE_CUSTOMER_CONTACT = 'deleteContact';
+    const METHOD_DELETE_CUSTOMER_WISHLIST = 'deleteWishlist';
+
 
     const SAMPLE_CATALOG_CODE = 'NARetail';
     const SAMPLE_CATALOG_CODE_NON_DEFAULT = 'NAWholesale';
@@ -129,9 +133,27 @@ abstract class ShopgateSdkTest extends TestCase
             self::CUSTOMER_SERVICE,
             $this->sdk->getCustomerService(),
             [
-                self::METHOD_DELETE_CUSTOMER => []
+                self::METHOD_DELETE_CUSTOMER_CONTACT => [],
+                self::METHOD_DELETE_CUSTOMER => [],
+                self::METHOD_DELETE_CUSTOMER_ATTRIBUTE => [],
+                self::METHOD_DELETE_CUSTOMER_WISHLIST => []
             ]
         );
+    }
+
+    /**
+     * @param string   $serviceKey
+     * @param          $service
+     * @param string[] $deleteMethods
+     */
+    protected function registerForCleanUp($serviceKey, $service, $deleteMethods)
+    {
+        $this->services[$serviceKey]['service'] = $service;
+        foreach ($deleteMethods as $deleteMethod => $parameters) {
+            $this->services[$serviceKey][$deleteMethod] = [];
+            $this->services[$serviceKey][$deleteMethod]['ids'] = [];
+            $this->services[$serviceKey][$deleteMethod]['parameters'] = $parameters;
+        }
     }
 
     public function tearDown()
@@ -229,21 +251,6 @@ abstract class ShopgateSdkTest extends TestCase
             }
 
             $this->services[$service][$deleteMethod]['ids'][] = $entry;
-        }
-    }
-
-    /**
-     * @param string   $serviceKey
-     * @param          $service
-     * @param string[] $deleteMethods
-     */
-    protected function registerForCleanUp($serviceKey, $service, $deleteMethods)
-    {
-        $this->services[$serviceKey]['service'] = $service;
-        foreach ($deleteMethods as $deleteMethod => $parameters) {
-            $this->services[$serviceKey][$deleteMethod] = [];
-            $this->services[$serviceKey][$deleteMethod]['ids'] = [];
-            $this->services[$serviceKey][$deleteMethod]['parameters'] = $parameters;
         }
     }
 }

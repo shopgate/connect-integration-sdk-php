@@ -39,7 +39,6 @@ class CategoryTest extends AbstractCatalogTest
     public function testCreateCategoryDirect()
     {
         // Arrange
-        $this->createDefaultCatalogs();
         $sampleCategories = $this->provideSampleCategories();
         $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
 

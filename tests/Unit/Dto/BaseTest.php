@@ -23,6 +23,7 @@
 namespace Shopgate\ConnectSdk\Tests\Unit\Dto;
 
 use PHPUnit\Framework\TestCase;
+use Shopgate\ConnectSdk\Dto\Base;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Name;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties\Name as PropertyName;
 use Shopgate\ConnectSdk\Exception\Exception;
@@ -46,6 +47,7 @@ class BaseTest extends TestCase
             ],
             'additionalProperties' => true
         ];
+        /** @var Base $base */
         $base = $this
             ->getMockBuilder('Shopgate\ConnectSdk\Dto\Base')
             ->setConstructorArgs([null, $schema])
@@ -84,6 +86,7 @@ class BaseTest extends TestCase
     public function testInvalidArgumentExceptionWithInvalidDataType()
     {
         // Arrange
+        /** @var Base $base */
         $base = $this
             ->getMockBuilder('Shopgate\ConnectSdk\Dto\Base')
             ->getMockForAbstractClass();

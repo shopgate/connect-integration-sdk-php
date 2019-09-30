@@ -575,7 +575,7 @@ class WishlistTest extends CustomerIntegrationTest
     ) {
         $this->deleteEntitiesAfterTestRun(
             self::CUSTOMER_SERVICE,
-            self::METHOD_DELETE_WISHLIST,
+            self::METHOD_DELETE_CUSTOMER_WISHLIST,
             $deleteIds
         );
 

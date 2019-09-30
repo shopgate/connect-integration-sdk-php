@@ -37,7 +37,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Shopgate\ConnectSdk\Dto\Async\Factory;
 use Shopgate\ConnectSdk\Dto\Base;
-use Shopgate\ConnectSdk\Dto\Object as dtoObject;
+use Shopgate\ConnectSdk\Dto\dtoObject;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;

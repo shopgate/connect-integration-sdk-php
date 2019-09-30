@@ -23,7 +23,7 @@
 namespace Shopgate\ConnectSdk\Dto\Order\Order\Dto;
 
 use Shopgate\ConnectSdk\Dto\Base;
-use Shopgate\ConnectSdk\Dto\Object as dtoObject;
+use Shopgate\ConnectSdk\Dto\dtoObject;
 
 /**
  * @method HistoryItem setId(integer $id)

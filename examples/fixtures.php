@@ -7,7 +7,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
-use Shopgate\ConnectSdk\Dto\Object as dtoObject;
+use Shopgate\ConnectSdk\Dto\dtoObject;
 use Shopgate\ConnectSdk\Dto\Order\Order;
 
 const PARENT_CATALOG_CODE = 'BANA';

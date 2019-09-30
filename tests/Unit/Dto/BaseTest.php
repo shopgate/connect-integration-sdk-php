@@ -37,7 +37,7 @@ class BaseTest extends TestCase
      */
     public function testInvalidKeyExceptionWithoutValueSet()
     {
-        //Arrange
+        // Arrange
         $schema = [
             'type' => 'object',
             'properties' => [
@@ -65,7 +65,7 @@ class BaseTest extends TestCase
      */
     public function testInvalidDataTypeExceptionWithGetValueOnScalar()
     {
-        //Arrange
+        // Arrange
         $base = $this
             ->getMockBuilder('Shopgate\ConnectSdk\Dto\Base')
             ->getMockForAbstractClass();
@@ -83,7 +83,7 @@ class BaseTest extends TestCase
      */
     public function testInvalidArgumentExceptionWithInvalidDataType()
     {
-        //Arrange
+        // Arrange
         $base = $this
             ->getMockBuilder('Shopgate\ConnectSdk\Dto\Base')
             ->getMockForAbstractClass();
@@ -109,7 +109,7 @@ class BaseTest extends TestCase
             'This case is currently irrelevant since all our DTO\'s allow additionalProperties'
         );
 
-        //Arrange
+        // Arrange
         $schema = [
             'type' => 'object',
             'properties' => [
@@ -137,7 +137,7 @@ class BaseTest extends TestCase
      */
     public function testInvalidKeyExceptionWithSetValueOnScalarObject()
     {
-        //Arrange
+        // Arrange
         $base = $this
             ->getMockBuilder('Shopgate\ConnectSdk\Dto\Base')
             ->getMockForAbstractClass();
@@ -158,7 +158,7 @@ class BaseTest extends TestCase
      */
     public function testNonExistingMethodCall()
     {
-        //Arrange
+        // Arrange
         $base = $this
             ->getMockBuilder('Shopgate\ConnectSdk\Dto\Base')
             ->getMockForAbstractClass();
@@ -178,7 +178,7 @@ class BaseTest extends TestCase
      */
     public function testShouldThrowExceptionWhenAnyDtoExceptionIsThrown()
     {
-        //Arrange
+        // Arrange
         $schema = [
             'anyOf' => [
                 'type' => 'array'
@@ -202,7 +202,7 @@ class BaseTest extends TestCase
      */
     public function testShouldThrowExceptionWhenDataTypeIsInvalidClassReference()
     {
-        //Arrange
+        // Arrange
         $schema = [
             'type' => ['$ref' => PropertyName::class],
         ];
@@ -229,7 +229,7 @@ class BaseTest extends TestCase
      */
     public function testShouldThrowExceptionWhenDataTypeIsInvalid($dataType, $data)
     {
-        //Arrange
+        // Arrange
         $schema = [
             'type' => 'object',
             'properties' => [
@@ -331,7 +331,7 @@ class BaseTest extends TestCase
      */
     public function testShouldNotThrowExceptionWhenDataTypeIsValid($dataType, $data)
     {
-        //Arrange
+        // Arrange
         $schema = [
             'type' => 'object',
             'properties' => [

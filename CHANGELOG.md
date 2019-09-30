@@ -7,6 +7,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## [Unreleased]
 ### Added
 - getFulfillmentOrders direct call
+- webhook services added
+- webhook create, get, getList, webhook event DTOs
+- webhook unit and integration tests
 
 ### Changed
 - catalogCode is no longer needed when creating an inventory feed

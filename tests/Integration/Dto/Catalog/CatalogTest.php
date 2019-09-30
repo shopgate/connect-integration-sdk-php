@@ -25,6 +25,7 @@
 namespace Shopgate\ConnectSdk\Tests\Integration\Dto\Catalog;
 
 use Shopgate\ConnectSdk\Exception\Exception;
+use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Tests\Integration\AbstractCatalogTest;
 
 class CatalogTest extends AbstractCatalogTest
@@ -34,8 +35,6 @@ class CatalogTest extends AbstractCatalogTest
      */
     public function testCreateCatalog()
     {
-        $this->markTestSkipped('will continue working on this test when the other methods are available');
-
         // Arrange
         $catalog = $this->provideSampleCatalog();
 
@@ -50,13 +49,30 @@ class CatalogTest extends AbstractCatalogTest
         );
 
         // Assert
-//        $catalog = $this->sdk->getCatalogService()->getCatalog($catalog->getCode());
-//
-//        $this->assertEquals('TestCatalogCode', $catalog->getCode());
+        $catalog = $this->sdk->getCatalogService()->getCatalog($catalog->getCode());
+
+        $this->assertEquals('TestCatalogCode', $catalog->getCode());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testGetCatalogShouldThrowNotFoundException()
+    {
+        // Arrange
+        $catalog = $this->provideSampleCatalog();
+
+        // Assert
+        $this->expectException(NotFoundException::class);
+
+        // Act
+        $this->sdk->getCatalogService()->getCatalog($catalog->getCode());
+
     }
 
     /**
      * @depends testCreateCatalog
+     * @depends testGetCatalogShouldThrowNotFoundException
      *
      * @throws Exception
      *
@@ -64,8 +80,6 @@ class CatalogTest extends AbstractCatalogTest
      */
     public function testDeleteCatalog()
     {
-        $this->markTestSkipped('will continue working on this test when the other methods are available');
-
         // Arrange
         $catalog = $this->provideSampleCatalog();
         $this->sdk->getCatalogService()->addCatalogs([$catalog]);
@@ -74,12 +88,12 @@ class CatalogTest extends AbstractCatalogTest
         $this->sdk->getCatalogService()->deleteCatalog($catalog->getCode());
 
         // Assert
-//        try {
-//            $this->sdk->getCatalogService()->getCatalog($catalog->getCode());
-//        } catch (NotFoundException $exception) {
-//            return;
-//        }
+        try {
+            $this->sdk->getCatalogService()->getCatalog($catalog->getCode());
+        } catch (NotFoundException $exception) {
+            return;
+        }
 
-//        $this->fail('NotFoundException was not thrown!');
+        $this->fail('NotFoundException was not thrown!');
     }
 }

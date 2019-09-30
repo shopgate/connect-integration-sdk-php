@@ -1026,4 +1026,31 @@ class Catalog
 
         return new CatalogDto\GetList($response);
     }
+
+    /**
+     * @param string            $code - catalog code
+     * @param CatalogDto\Update $catalog
+     * @param array             $query
+     *
+     * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     * @throws InvalidDataTypeException
+     */
+    public function updateCatalog($code, CatalogDto\Update $catalog, array $query = [])
+    {
+        return $this->client->doRequest(
+            [
+                'service' => self::SERVICE_CATALOG,
+                'method' => 'post',
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
+                'json' => $catalog,
+                'query' => $query,
+                'path' => 'catalogs/' . $code,
+            ]
+        );
+    }
 }

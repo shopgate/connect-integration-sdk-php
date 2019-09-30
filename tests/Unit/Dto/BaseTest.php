@@ -23,7 +23,6 @@
 namespace Shopgate\ConnectSdk\Tests\Unit\Dto;
 
 use PHPUnit\Framework\TestCase;
-use Shopgate\ConnectSdk\Dto\Base;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Name;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties\Name as PropertyName;
 use Shopgate\ConnectSdk\Exception\Exception;
@@ -47,7 +46,10 @@ class BaseTest extends TestCase
             ],
             'additionalProperties' => true
         ];
-        $base = new Base(null, $schema);
+        $base = $this
+            ->getMockBuilder('Shopgate\ConnectSdk\Dto\Base')
+            ->setConstructorArgs([null, $schema])
+            ->getMockForAbstractClass();
 
         // Act
         /** @noinspection PhpUndefinedMethodInspection */
@@ -64,7 +66,9 @@ class BaseTest extends TestCase
     public function testInvalidDataTypeExceptionWithGetValueOnScalar()
     {
         //Arrange
-        $base = new Base();
+        $base = $this
+            ->getMockBuilder('Shopgate\ConnectSdk\Dto\Base')
+            ->getMockForAbstractClass();
 
         // Act
         /** @noinspection PhpUndefinedMethodInspection */
@@ -80,7 +84,9 @@ class BaseTest extends TestCase
     public function testInvalidArgumentExceptionWithInvalidDataType()
     {
         //Arrange
-        $base = new Base();
+        $base = $this
+            ->getMockBuilder('Shopgate\ConnectSdk\Dto\Base')
+            ->getMockForAbstractClass();
 
         // Act
         $result = $base->get([]);
@@ -112,7 +118,11 @@ class BaseTest extends TestCase
             ],
             'additionalProperties' => false
         ];
-        $base = new Base(null, $schema);
+
+        $base = $this
+            ->getMockBuilder('Shopgate\ConnectSdk\Dto\Base')
+            ->setConstructorArgs([null, $schema])
+            ->getMockForAbstractClass();
 
         // Act
         /** @noinspection PhpUndefinedMethodInspection */
@@ -128,7 +138,9 @@ class BaseTest extends TestCase
     public function testInvalidKeyExceptionWithSetValueOnScalarObject()
     {
         //Arrange
-        $base = new Base();
+        $base = $this
+            ->getMockBuilder('Shopgate\ConnectSdk\Dto\Base')
+            ->getMockForAbstractClass();
 
         // Assert
         $this->expectException(InvalidDataTypeException::class);
@@ -147,7 +159,9 @@ class BaseTest extends TestCase
     public function testNonExistingMethodCall()
     {
         //Arrange
-        $base = new Base();
+        $base = $this
+            ->getMockBuilder('Shopgate\ConnectSdk\Dto\Base')
+            ->getMockForAbstractClass();
 
         // Assert
         $this->expectException(InvalidDataTypeException::class);
@@ -175,7 +189,10 @@ class BaseTest extends TestCase
         $this->expectException(InvalidDataTypeException::class);
 
         // Act
-        new Base(123, $schema);
+        $this
+            ->getMockBuilder('Shopgate\ConnectSdk\Dto\Base')
+            ->setConstructorArgs([123, $schema])
+            ->getMockForAbstractClass();
     }
 
     /**
@@ -194,7 +211,10 @@ class BaseTest extends TestCase
         $this->expectException(InvalidDataTypeException::class);
 
         // Act
-        new Base(true, $schema);
+        $this
+            ->getMockBuilder('Shopgate\ConnectSdk\Dto\Base')
+            ->setConstructorArgs([true, $schema])
+            ->getMockForAbstractClass();
     }
 
     /**
@@ -216,7 +236,10 @@ class BaseTest extends TestCase
                 'testProperty' => ['type' => $dataType, 'strict' => true]
             ]
         ];
-        $dto = new Base(null, $schema);
+        $dto = $this
+            ->getMockBuilder('Shopgate\ConnectSdk\Dto\Base')
+            ->setConstructorArgs([null, $schema])
+            ->getMockForAbstractClass();
 
         // Assert
         $this->expectException(InvalidDataTypeException::class);
@@ -315,7 +338,10 @@ class BaseTest extends TestCase
                 'testProperty' => ['type' => $dataType]
             ]
         ];
-        $dto = new Base(null, $schema);
+        $dto = $this
+            ->getMockBuilder('Shopgate\ConnectSdk\Dto\Base')
+            ->setConstructorArgs([null, $schema])
+            ->getMockForAbstractClass();
 
         // Act
         /** @noinspection PhpUndefinedMethodInspection */

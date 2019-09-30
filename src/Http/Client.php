@@ -37,6 +37,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Shopgate\ConnectSdk\Dto\Async\Factory;
 use Shopgate\ConnectSdk\Dto\Base;
+use Shopgate\ConnectSdk\Dto\Object as dtoObject;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
@@ -259,7 +260,7 @@ class Client implements ClientInterface
                 $parameters['body'] = $params['body'];
             } elseif (isset($params['json'])) {
                 $json = !empty($params['json']) ? $params['json'] : [];
-                $parameters['json'] = $json instanceof Base ? $json->toJson() : (new Base($json))->toJson();
+                $parameters['json'] = $json instanceof Base ? $json->toJson() : (new dtoObject($json))->toJson();
             }
 
             $response = $this->client->request(
@@ -361,7 +362,7 @@ class Client implements ClientInterface
     private function triggerEvent(array $params)
     {
         $values = [
-            isset($params['json']) ? $params['json'] : new Base([], [
+            isset($params['json']) ? $params['json'] : new dtoObject([], [
                 'type' => 'object',
                 'additionalProperties' => true
             ]),

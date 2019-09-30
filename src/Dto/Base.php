@@ -31,7 +31,7 @@ use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 /**
  * @codeCoverageIgnore
  */
-class Base extends Dto
+abstract class Base extends Dto
 {
     const STORAGE_TYPE_SCALAR = 'scalar';
     const STORAGE_TYPE_ARRAY = 'array';

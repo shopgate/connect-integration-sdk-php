@@ -78,6 +78,9 @@ class PropertiesTest extends TestCase
         $this->assertEquals('Wert', $property->getValue()->{'de-de'});
     }
 
+    /**
+     * @throws Exception
+     */
     public function testPropertyEmptyNameInitialization()
     {
         $name = (new Dto\Properties\Name())

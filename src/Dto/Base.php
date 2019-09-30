@@ -22,17 +22,16 @@
 
 namespace Shopgate\ConnectSdk\Dto;
 
-use Shopgate\ConnectSdk\Exception\InvalidDataTypeException as ShopgateInvalidDataTypeException;
 use Dto\Dto;
-use Dto\Exceptions\InvalidDataTypeException;
 use Dto\RegulatorInterface;
 use Dto\ServiceContainer;
 use Exception;
+use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 
 /**
  * @codeCoverageIgnore
  */
-class Base extends Dto
+abstract class Base extends Dto
 {
     const STORAGE_TYPE_SCALAR = 'scalar';
     const STORAGE_TYPE_ARRAY = 'array';
@@ -42,14 +41,60 @@ class Base extends Dto
      *
      * @inheritDoc
      *
-     * @throws ShopgateInvalidDataTypeException
+     * @throws InvalidDataTypeException
      */
     public function __construct($input = null, $schema = null, RegulatorInterface $regulator = null)
     {
         try {
+            /**
+             * The property 'skipValidation' is passed along to all child definitions.
+             * 'skipValidation' also should skip the conversion of property values
+             */
+            if (isset($schema['skipValidation']) && isset($schema['type'])) {
+                unset($schema['type']);
+            }
+
+            /**
+             * Null values are skipped to simplify validation.
+             */
+            if (isset($schema['type']) && !is_array($schema['type']) && $input !== null) {
+                switch ($schema['type']) {
+                    case 'array':
+                        if (!is_array($input)) {
+                            throw new InvalidDataTypeException('Incorrect data type: Expected array, but got: ' . gettype($input));
+                        }
+                        break;
+                    case 'integer':
+                        if (!is_int($input)) {
+                            throw new InvalidDataTypeException('Incorrect data type: Expected integer, but got: ' . gettype($input));
+                        }
+                        break;
+                    case 'number':
+                        if (!is_numeric($input)) {
+                            throw new InvalidDataTypeException('Incorrect data type: Expected number, but got: ' . gettype($input));
+                        }
+                        break;
+                    case 'string':
+                        if (!is_string($input)) {
+                            throw new InvalidDataTypeException('Incorrect data type: Expected string, but got: ' . gettype($input));
+                        }
+                        break;
+                    case 'boolean':
+                        if (!is_bool($input)) {
+                            throw new InvalidDataTypeException('Incorrect data type: Expected boolean, but got: ' . gettype($input));
+                        }
+                        break;
+                    case 'null':
+                        if (!is_null($input)) {
+                            throw new InvalidDataTypeException('Incorrect data type: Expected null, but got: ' . gettype($input));
+                        }
+                        break;
+                }
+            }
+
             parent::__construct($input, null === $schema ? $this->getDefaultSchema() : $schema, $regulator);
         } catch (Exception $exception) {
-            throw new ShopgateInvalidDataTypeException($exception->getMessage());
+            throw new InvalidDataTypeException($exception->getMessage());
         }
     }
 
@@ -82,6 +127,8 @@ class Base extends Dto
      * @param array  $args
      *
      * @return mixed
+     *
+     * @throws InvalidDataTypeException
      */
     public function __call($method, $args)
     {
@@ -102,12 +149,21 @@ class Base extends Dto
      * @param $value mixed
      *
      * @return $this
+     *
+     * @throws InvalidDataTypeException
      */
     public function set($key, $value)
     {
         try {
             parent::set($key, $value);
         } catch (Exception $exception) {
+            /**
+             * This could be for example:
+             * - Dto\Exceptions\InvalidDataTypeException : Properties can only be set on objects.
+             * - Dto\Exceptions\InvalidKeyException : Key not allowed by "properties", "patternProperties", or
+             * "additionalProperties": test
+             */
+            throw new InvalidDataTypeException($exception->getMessage());
         }
 
         return $this;

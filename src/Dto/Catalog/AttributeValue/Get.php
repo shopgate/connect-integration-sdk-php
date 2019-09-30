@@ -42,7 +42,7 @@ class Get extends AttributeValue
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'swatch' => ['$ref' => Dto\Swatch::class]
+            'swatch' => ['$ref' => Dto\Swatch::class, 'skipValidation' => true]
         ],
         'additionalProperties' => true,
     ];

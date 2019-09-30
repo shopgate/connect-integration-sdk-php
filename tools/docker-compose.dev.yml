@@ -84,6 +84,10 @@ services:
     ports:
       - 5108:80
 
+  webhook:
+    ports:
+      - 5109:80
+
   s3:
     ports:
       - '4569:4569'

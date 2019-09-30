@@ -76,7 +76,7 @@ class GetTest extends TestCase
                 "address4" => "Unknown Type: string,null",
                 "city" => "Austin",
                 "region" => "TX",
-                "postalCode" => 78732,
+                "postalCode" => '78732',
                 "country" => "US",
                 "phone" => "+1 000-000-0000",
                 "fax" => "+1 000-000-0000",

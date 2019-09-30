@@ -22,7 +22,6 @@
 
 namespace Shopgate\ConnectSdk\Dto\Order;
 
-use Dto\RegulatorInterface;
 use Shopgate\ConnectSdk\Dto\Order\Dto\Fulfillment;
 use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder\Dto;
 
@@ -38,27 +37,25 @@ use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder\Dto;
 class FulfillmentOrder extends SimpleFulfillmentOrder
 {
     /**
-     * Rewritten to provide inheritance of payload structure
-     *
-     * @inheritDoc
+     * @var array
      */
-    public function __construct($input = null, $schema = null, RegulatorInterface $regulator = null)
-    {
-        $this->schema['properties']['channel'] = ['$ref' => Dto\Channel::class];
-        $this->schema['properties']['fulfillmentOrderAddress'] = ['$ref' => Dto\FulfillmentOrderAddress::class];
-        $this->schema['properties']['fulfillments'] = [
-            'type' => 'array',
-            'items' => ['$ref' => Fulfillment::class],
-        ];
-        $this->schema['properties']['lineItems'] = [
-            'type' => 'array',
-            'items' => ['$ref' => Dto\LineItem::class],
-        ];
-        $this->schema['properties']['history'] = [
-            'type' => 'array',
-            'items' => ['$ref' => Dto\HistoryItem::class],
-        ];
-
-        parent::__construct($input, $schema, $regulator);
-    }
+    protected $schema = [
+        'type'       => 'object',
+        'properties' => [
+            'channel'                 => ['$ref' => Dto\Channel::class, 'skipValidation' => true],
+            'fulfillmentOrderAddress' => ['$ref' => Dto\FulfillmentOrderAddress::class, 'skipValidation' => true],
+            'fulfillments'            => [
+                'type'  => 'array',
+                'items' => ['$ref' => Fulfillment::class, 'skipValidation' => true],
+            ],
+            'lineItems'               => [
+                'type'  => 'array',
+                'items' => ['$ref' => Dto\LineItem::class, 'skipValidation' => true],
+            ],
+            'history'                 => [
+                'type'  => 'array',
+                'items' => ['$ref' => Dto\HistoryItem::class, 'skipValidation' => true],
+            ]
+        ]
+    ];
 }

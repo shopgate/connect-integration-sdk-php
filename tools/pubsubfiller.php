@@ -83,6 +83,9 @@ $topics = [
     'webhookRouted-development' => [
         'webhookTransWebhookRouted-development',
     ],
+    'orderNotPickedUp-development' => [
+        'webhookTransOrderNotPickedUp-development',
+    ]
 ];
 
 foreach ($topics as $topic => $subscriptions) {

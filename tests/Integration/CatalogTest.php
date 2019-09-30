@@ -25,6 +25,7 @@ namespace Shopgate\ConnectSdk\Tests\Integration;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute\Dto\Name;
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
+use Shopgate\ConnectSdk\Dto\Catalog\Catalog;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
@@ -42,7 +43,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Update;
 use Shopgate\ConnectSdk\Dto\Location\Location;
 use Shopgate\ConnectSdk\Exception\Exception;
 
-abstract class CatalogTest extends ShopgateSdkTest
+abstract class AbstractCatalogTest extends ShopgateSdkTest
 {
     const CATALOG_SERVICE = 'catalog';
     const LOCATION_SERVICE = 'location';
@@ -54,6 +55,7 @@ abstract class CatalogTest extends ShopgateSdkTest
     const METHOD_DELETE_INVENTORIES = 'deleteInventories';
     const METHOD_DELETE_RESERVATIONS = 'deleteReservations';
     const METHOD_DELETE_CUSTOMER = 'deleteCustomer';
+    const METHOD_DELETE_CATALOG = 'deleteCatalog';
 
     const SAMPLE_CATALOG_CODE = 'NARetail';
     const SAMPLE_CATALOG_CODE_NON_DEFAULT = 'NAWholesale';
@@ -114,6 +116,22 @@ abstract class CatalogTest extends ShopgateSdkTest
             $this->provideSampleCreateCategory(self::CATEGORY_CODE, 'Integration Test Category 1', 1),
             $this->provideSampleCreateCategory(self::CATEGORY_CODE_SECOND, 'Integration Test Category 2', 2),
         ];
+    }
+
+    /**
+     * @return Catalog\Create
+     *
+     * @throws Exception
+     */
+    protected function provideSampleCatalog()
+    {
+        return
+            (new Catalog\Create())
+            ->setCode(self::SAMPLE_CATALOG_CODE)
+            ->setName('North American Retail')
+            ->setDefaultLocaleCode('en-us')
+            ->setDefaultCurrencyCode('USD')
+            ->setIsDefault(true);
     }
 
     /**

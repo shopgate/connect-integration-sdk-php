@@ -909,4 +909,29 @@ class Catalog
             ]
         );
     }
+
+    /**
+     * @param string $catalogCode
+     * @param array  $query
+     *
+     * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     * @throws InvalidDataTypeException
+     */
+    public function deleteCatalog($catalogCode, array $query = [])
+    {
+        return $this->client->doRequest(
+            [
+                'service' => self::SERVICE_CATALOG,
+                'method' => 'delete',
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
+                'query' => $query,
+                'path' => 'catalogs/' . $catalogCode,
+            ]
+        );
+    }
 }

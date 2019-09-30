@@ -26,6 +26,7 @@ use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Name;
 use Shopgate\ConnectSdk\Exception\Exception;
+use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Tests\Integration\CatalogTest;
@@ -590,8 +591,8 @@ class CategoryTest extends CatalogTest
     }
 
     /**
-     * @param array            $categoryData
-     * @param RequestException $expectedException
+     * @param array     $categoryData
+     * @param Exception $expectedException
      *
      * @throws Exception
      *
@@ -599,11 +600,9 @@ class CategoryTest extends CatalogTest
      */
     public function testCreateCategoryDirectWithInvalidDataTypes($categoryData, $expectedException)
     {
-        // Arrange
-        $category = new Category\Create($categoryData);
-
         // Act
         try {
+            $category = new Category\Create($categoryData);
             $this->createCategories(
                 [$category],
                 ['requestType' => 'direct']
@@ -612,6 +611,10 @@ class CategoryTest extends CatalogTest
             // Assert
             $this->assertInstanceOf(get_class($expectedException), $exception);
             $this->assertEquals($expectedException->getStatusCode(), $exception->getStatusCode());
+
+            return;
+        } catch (InvalidDataTypeException $invalidDataTypeException) {
+            $this->assertInstanceOf(get_class($expectedException), $invalidDataTypeException);
 
             return;
         }
@@ -641,7 +644,7 @@ class CategoryTest extends CatalogTest
                     'code' => 123456,
                     'sequenceId' => 1006
                 ],
-                'expectedException' => new RequestException(400)
+                'expectedException' => new InvalidDataTypeException()
             ],
             'wrong sequenceId data type' => [
                 'categoryData' => [
@@ -649,7 +652,7 @@ class CategoryTest extends CatalogTest
                     'code' => 'category-test-code',
                     'sequenceId' => '1006'
                 ],
-                'expectedException' => new RequestException(400)
+                'expectedException' => new InvalidDataTypeException()
             ],
             'wrong parentCategoryCode data type' => [
                 'categoryData' => [
@@ -658,7 +661,7 @@ class CategoryTest extends CatalogTest
                     'sequenceId' => 1006,
                     'parentCategoryCode' => 12345
                 ],
-                'expectedException' => new RequestException(400)
+                'expectedException' => new InvalidDataTypeException()
             ],
             'wrong image data type' => [
                 'categoryData' => [
@@ -702,7 +705,7 @@ class CategoryTest extends CatalogTest
         $existingCategory = $this->provideSampleCreateCategory(
             $categoryCode,
             'test category',
-            '1',
+            1,
             new Category\Dto\Image(['en-us' => 'http://www.google.de']),
             new Category\Dto\Url(['en-us' => 'http://www.google.de/image.png']),
             'test description'
@@ -896,7 +899,7 @@ class CategoryTest extends CatalogTest
             );
         }
 
-        usleep(self::SLEEP_TIME_AFTER_EVENT*5);
+        usleep(self::SLEEP_TIME_AFTER_EVENT * 5);
 
         // Assert
         $categories = $this->getCategories($this->getCategoryCodes($sampleCategories), [

@@ -81,7 +81,7 @@ class GetListTest extends TestCase
     }
 
     /**
-     * Checking typecasting if properties provided are of incorrect format or missing
+     * There should be no typecasting for Get/GetList classes
      *
      * @throws Exception
      */
@@ -108,17 +108,17 @@ class GetListTest extends TestCase
         $getList = new GetList($entry);
         $limit = $getList->getMeta()->getLimit();
         $this->assertInstanceOf(Meta::class, $getList->getMeta());
-        $this->assertInternalType('int', $limit);
-        $this->assertEquals(1, $limit);
+        $this->assertInternalType('string', $limit);
+        $this->assertEquals('1', $limit);
         $categories = $getList->getCategories()[0];
-        $this->assertEquals('0', $categories->getStatus());
-        $this->assertEquals('23.4', $categories->getCode());
-        $this->assertEquals('16', $categories->getParentCategoryCode());
-        $this->assertEquals('', $categories->getCatalogCode());
-        $this->assertEquals('1', $categories->getImage());
-        $this->assertEquals('', $categories->getName());
-        $this->assertEquals('', $categories->getDescription());
-        $this->assertEquals('', $categories->getExternalUpdateDate());
+        $this->assertEquals(0, $categories->getStatus());
+        $this->assertEquals(23.4, $categories->getCode());
+        $this->assertEquals(16, $categories->getParentCategoryCode());
+        $this->assertEquals(false, $categories->getCatalogCode());
+        $this->assertEquals(true, $categories->getImage());
+        $this->assertEquals(['test' => 't'], $categories->getName()->toArray());
+        $this->assertEquals([], $categories->getDescription());
+        $this->assertEquals([], $categories->getExternalUpdateDate());
         $this->assertNull($categories->getUrl());
     }
 }

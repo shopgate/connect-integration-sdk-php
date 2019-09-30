@@ -55,7 +55,10 @@ class Create extends Attribute
             'use'                => ['type' => 'string'],
             'name'               => ['$ref' => Dto\Name::class],
             'externalUpdateDate' => ['type' => 'string'],
-            'values'             => ['type' => 'array'],
+            'values'             => [
+                'type'  => 'array',
+                'items' => ['$ref' => AttributeValue\Create::class]
+            ],
         ],
         'additionalProperties' => true,
     ];

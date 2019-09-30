@@ -100,7 +100,7 @@ class BaseTest extends TestCase
     public function testInvalidKeyExceptionWithAdditionalPropertiesNotAllowed()
     {
         $this->markTestSkipped(
-            'This case is currently irrelevant since we have no dto which permits having additionalProperties'
+            'This case is currently irrelevant since all our DTO\'s allow additionalProperties'
         );
 
         //Arrange

@@ -43,6 +43,7 @@ class OrderTest extends OrderBaseTest
     public function testCreateOrder($productIds, $locationCode, $orders)
     {
         // Arrange
+        $this->createDefaultCatalogs();
         $customerId = $this->createCustomer();
         $this->addSampleLocation($locationCode);
         $this->addSampleProducts($productIds);
@@ -101,6 +102,7 @@ class OrderTest extends OrderBaseTest
     public function testGetOrder()
     {
         // Arrange
+        $this->createDefaultCatalogs();
         $customerId = $this->createCustomer();
         $this->addSampleLocation(self::LOCATION_CODE);
         $productIds = ['987'];
@@ -145,6 +147,7 @@ class OrderTest extends OrderBaseTest
     public function testGetOrdersByCustomerId()
     {
         // Arrange
+        $this->createDefaultCatalogs();
         $customerOneId = $this->createCustomer();
         $customerTwoId = $this->createCustomer();
         $this->addSampleLocation(self::LOCATION_CODE);
@@ -182,6 +185,7 @@ class OrderTest extends OrderBaseTest
     public function testGetOrdersByExternalCode()
     {
         // Arrange
+        $this->createDefaultCatalogs();
         $customerId = $this->createCustomer();
         $this->addSampleLocation(self::LOCATION_CODE);
         $productIds = ['951', '753'];
@@ -233,6 +237,7 @@ class OrderTest extends OrderBaseTest
     public function testGetOrdersLimitOffset()
     {
         // Arrange
+        $this->createDefaultCatalogs();
         $customerId = $this->createCustomer();
         $this->addSampleLocation(self::LOCATION_CODE);
         $productIds = ['123', '321'];

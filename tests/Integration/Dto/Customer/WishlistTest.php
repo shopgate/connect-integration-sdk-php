@@ -43,6 +43,7 @@ class WishlistTest extends CustomerIntegrationTest
     public function testCreateWishlist($sampleWishlists)
     {
         // Arrange
+        $this->createDefaultCatalogs();
         $customerId = $this->createCustomer();
         $productCodes = [];
         foreach ($sampleWishlists as $sampleWishlist) {
@@ -217,6 +218,7 @@ class WishlistTest extends CustomerIntegrationTest
     public function testUpdateWishlist($original, $updated)
     {
         // Arrange
+        $this->createDefaultCatalogs();
         $defaultFields = ['code' => self::WISHLIST_CODE];
         $originalCreateFields = array_merge($defaultFields, $original);
         $customerId = $this->createCustomer();
@@ -385,6 +387,7 @@ class WishlistTest extends CustomerIntegrationTest
     public function testAddWishlistItems($productCodes)
     {
         // Arrange
+        $this->createDefaultCatalogs();
         $customerId = $this->createCustomer();
         $sampleWishlist = new Wishlist\Create(
             [
@@ -444,6 +447,7 @@ class WishlistTest extends CustomerIntegrationTest
     public function testDeleteWishlistItems()
     {
         // Arrange
+        $this->createDefaultCatalogs();
         $customerId = $this->createCustomer();
         $productCodes = [
             self::WISHLIST_PRODUCT_CODE,

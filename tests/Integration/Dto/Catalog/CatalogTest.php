@@ -67,7 +67,6 @@ class CatalogTest extends AbstractCatalogTest
 
         // Act
         $this->sdk->getCatalogService()->getCatalog($catalog->getCode());
-
     }
 
     /**

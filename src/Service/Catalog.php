@@ -25,10 +25,10 @@ namespace Shopgate\ConnectSdk\Service;
 use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
+use Shopgate\ConnectSdk\Dto\Catalog\Catalog as CatalogDto;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 use Shopgate\ConnectSdk\Dto\Catalog\ParentCatalog;
-use Shopgate\ConnectSdk\Dto\Catalog\Catalog as CatalogDto;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
 use Shopgate\ConnectSdk\Dto\Catalog\ProductDescriptions;
 use Shopgate\ConnectSdk\Dto\Catalog\Reservation;
@@ -938,7 +938,7 @@ class Catalog
 
     /**
      * @param CatalogDto\Create[] $catalogs
-     * @param array                  $query
+     * @param array               $query
      *
      * @return ResponseInterface
      *

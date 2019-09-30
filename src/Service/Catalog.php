@@ -25,6 +25,7 @@ namespace Shopgate\ConnectSdk\Service;
 use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
+use Shopgate\ConnectSdk\Dto\Catalog\Catalog as CatalogDto;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 use Shopgate\ConnectSdk\Dto\Catalog\ParentCatalog;
@@ -931,6 +932,32 @@ class Catalog
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'query' => $query,
                 'path' => 'catalogs/' . $catalogCode,
+            ]
+        );
+    }
+
+    /**
+     * @param CatalogDto\Create[] $catalogs
+     * @param array               $query
+     *
+     * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     * @throws InvalidDataTypeException
+     */
+    public function addCatalogs(array $catalogs, array $query = [])
+    {
+        return $this->client->doRequest(
+            [
+                'service' => self::SERVICE_CATALOG,
+                'method' => 'post',
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
+                'json' => ['catalogs' => $catalogs],
+                'query' => $query,
+                'path' => 'catalogs',
             ]
         );
     }

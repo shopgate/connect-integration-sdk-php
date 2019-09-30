@@ -59,6 +59,7 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
 
     const SAMPLE_CATALOG_CODE = 'NARetail';
     const SAMPLE_CATALOG_CODE_NON_DEFAULT = 'NAWholesale';
+    const TEST_CATALOG_CODE = 'TestCatalogCode';
 
     const PRODUCT_CODE = 'integration-test';
     const PRODUCT_CODE_SECOND = 'integration-test-2';
@@ -87,6 +88,7 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
                 self::METHOD_DELETE_ATTRIBUTE => [],
                 self::METHOD_DELETE_RESERVATIONS => [],
                 self::METHOD_DELETE_INVENTORIES => [],
+                self::METHOD_DELETE_CATALOG => [],
             ]
         );
         $this->registerForCleanUp(
@@ -127,7 +129,7 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
     {
         return
             (new Catalog\Create())
-            ->setCode(self::SAMPLE_CATALOG_CODE)
+            ->setCode(self::TEST_CATALOG_CODE)
             ->setName('North American Retail')
             ->setDefaultLocaleCode('en-us')
             ->setDefaultCurrencyCode('USD')

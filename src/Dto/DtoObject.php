@@ -25,6 +25,6 @@ namespace Shopgate\ConnectSdk\Dto;
 /**
  * @codeCoverageIgnore
  */
-class dtoObject extends Base
+class DtoObject extends Base
 {
 }

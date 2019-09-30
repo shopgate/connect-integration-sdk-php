@@ -7,7 +7,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
-use Shopgate\ConnectSdk\Dto\dtoObject;
+use Shopgate\ConnectSdk\Dto\DtoObject;
 use Shopgate\ConnectSdk\Dto\Order\Order;
 
 const PARENT_CATALOG_CODE = 'BANA';
@@ -37,7 +37,7 @@ function provideParentCatalogs()
 {
     $parentCatalogs = [
         'parentCatalogs' => [
-            new dtoObject([
+            new DtoObject([
                 'code' => PARENT_CATALOG_CODE,
                 'name' => 'Team Banana Parent Catalog',
                 'isDefault' => true,
@@ -56,7 +56,7 @@ function provideCatalogs()
 {
     $catalogs = [
         'catalogs' => [
-            new dtoObject([
+            new DtoObject([
                 'code' => CATALOG_CODE,
                 'parentCatalogCode' => PARENT_CATALOG_CODE,
                 'name' => 'North American Wholesale',
@@ -253,7 +253,7 @@ function provideSampleProducts()
 function provideLocations()
 {
     return [
-        new dtoObject([
+        new DtoObject([
             'code' => LOCATION_CODE,
             'name' => 'Warehouse 1',
             'status' => 'active',

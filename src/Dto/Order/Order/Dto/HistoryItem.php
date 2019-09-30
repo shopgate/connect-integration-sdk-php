@@ -23,7 +23,7 @@
 namespace Shopgate\ConnectSdk\Dto\Order\Order\Dto;
 
 use Shopgate\ConnectSdk\Dto\Base;
-use Shopgate\ConnectSdk\Dto\dtoObject;
+use Shopgate\ConnectSdk\Dto\DtoObject;
 
 /**
  * @method HistoryItem setId(integer $id)
@@ -36,7 +36,7 @@ use Shopgate\ConnectSdk\Dto\dtoObject;
  * @method integer getId()
  * @method string getEventName()
  * @method string getEventDetails()
- * @method dtoObject getEventNewValue()
+ * @method DtoObject getEventNewValue()
  * @method string getEventOldValue()
  * @method string getEventDateTime()
  * @method string getEventUser()

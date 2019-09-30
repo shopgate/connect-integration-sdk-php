@@ -22,7 +22,9 @@
 
 namespace Shopgate\ConnectSdk\Dto\Order;
 
+use Dto\RegulatorInterface;
 use Shopgate\ConnectSdk\Dto\Base;
+use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder\Dto\FulfillmentOrderAddress;
 
 /**
  * @method string getOrderNumber()
@@ -46,10 +48,11 @@ use Shopgate\ConnectSdk\Dto\Base;
  * @method string getCurrencyCode()
  * @method string getNotes()
  * @method string getSpecialInstructions()
- * @method string getOrderSubmittedDate()
- * @method string getAcceptedDate()
+ * @method string getSubmitDate()
+ * @method string getAcceptDate()
  * @method string getReadyDate()
- * @method string getCompletedDate()
+ * @method string getCompleteDate()
+ * @method FulfillmentOrderAddress getFulfillmentOrderAddress()
  *
  * @codeCoverageIgnore
  */
@@ -78,6 +81,18 @@ class SimpleFulfillmentOrder extends Base
     const STATUS_FULFILLED = 'fulfilled';
 
     /**
+     * Rewritten to provide inheritance of payload structure
+     *
+     * @inheritDoc
+     */
+    public function __construct($input = null, $schema = null, RegulatorInterface $regulator = null)
+    {
+        $this->schema['properties']['fulfillmentOrderAddress'] = ['$ref' => FulfillmentOrderAddress::class];
+
+        parent::__construct($input, $schema, $regulator);
+    }
+
+    /**
      * @var array
      */
     protected $schema = [
@@ -104,10 +119,12 @@ class SimpleFulfillmentOrder extends Base
             'currencyCode' => ['type' => 'string'],
             'notes' => ['type' => 'string'],
             'specialInstructions' => ['type' => 'string'],
-            'orderSubmittedDate' => ['type' => 'string'],
-            'acceptedDate' => ['type' => 'string'],
+            'submitDate' => ['type' => 'string'],
+            'updateDate' => ['type' => 'string'],
+            'acceptDate' => ['type' => 'string'],
             'readyDate' => ['type' => 'string'],
-            'completedDate' => ['type' => 'string']
+            'completeDate' => ['type' => 'string'],
+            //'fulfillmentOrderAddress' => ['type' => 'object']
         ],
         'additionalProperties' => true
     ];

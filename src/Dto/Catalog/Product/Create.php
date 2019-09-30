@@ -60,6 +60,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product;
  * @method Create setMinQty(float $minQty)
  * @method Create setMaxQty(float $maxQty)
  * @method Create setExternalUpdateDate(string $externalUpdateDate)
+ * @method Create setSequenceId(int $sequenceId)
  *
  * @inheritdoc
  */
@@ -122,6 +123,7 @@ class Create extends Product
             'minQty'              => ['type' => 'number'],
             'maxQty'              => ['type' => 'number'],
             'externalUpdateDate'  => ['type' => 'string'],
+            'sequenceId' => ['type' => 'number']
         ],
         'additionalProperties' => true,
     ];

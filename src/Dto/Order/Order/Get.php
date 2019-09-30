@@ -67,7 +67,7 @@ class Get extends Order
             'total' => ['type' =>'number'],
             'date' => ['type' => 'string'],
             'submitDate' => ['type' => 'string'],
-            'acceptDate' => ['type' => 'string'],
+            'updateDate' => ['type' => 'string'],
             'completeDate' => ['type' => 'string'],
             'sourceDevice' => ['type' => 'string'],
             'sourceIp' => ['type' => 'string'],

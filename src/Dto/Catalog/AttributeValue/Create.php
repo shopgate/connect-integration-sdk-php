@@ -42,7 +42,7 @@ class Create extends AttributeValue
         'properties'           => [
             'code'       => ['type' => 'string'],
             'sequenceId' => ['type' => 'integer'],
-            'name'       => ['type' => 'object'],
+            'name'       => ['type' => 'object'], //todo-sg: map to localized translation object
             'swatch'     => ['type' => 'object'],
         ],
         'additionalProperties' => true,

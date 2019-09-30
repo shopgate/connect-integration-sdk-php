@@ -26,6 +26,8 @@ use Shopgate\ConnectSdk\Dto\Base;
 
 /**
  * @package Shopgate\ConnectSdk\Dto\Catalog
+ *
+ * @todo-sg : add getters
  */
 class AttributeValue extends Base
 {

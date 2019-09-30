@@ -48,13 +48,13 @@ class Get extends Customer
         'properties'           => [
             'contacts'   => [
                 'type'  => 'array',
-                'items' => ['$ref' => Contact::class],
+                'items' => ['$ref' => Contact::class, 'skipValidation' => true],
             ],
             'attributes' => [
                 'type'  => 'array',
-                'items' => ['$ref' => Attribute::class],
+                'items' => ['$ref' => Attribute::class, 'skipValidation' => true],
             ],
-            'settings'   => ['$ref' => Settings::class],
+            'settings'   => ['$ref' => Settings::class, 'skipValidation' => true],
         ],
         'additionalProperties' => true,
     ];

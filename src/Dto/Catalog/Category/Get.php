@@ -29,22 +29,4 @@ use Shopgate\ConnectSdk\Dto\Catalog\Category;
  */
 class Get extends Category
 {
-    /**
-     * @var array
-     */
-    protected $schema = [
-        'type'                 => 'object',
-        'properties'           => [
-            'code'               => ['type' => 'string'],
-            'parentCategoryCode' => ['type' => 'string'],
-            'catalogCode'        => ['type' => 'string'],
-            'image'              => ['type' => 'string'],
-            'name'               => ['type' => 'string'],
-            'description'        => ['type' => 'string'],
-            'url'                => ['type' => 'string'],
-            'externalUpdateDate' => ['type' => 'string'],
-            'status'             => ['type' => 'string']
-        ],
-        'additionalProperties' => true
-    ];
 }

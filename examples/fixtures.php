@@ -7,6 +7,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
+use Shopgate\ConnectSdk\Dto\DtoObject;
 use Shopgate\ConnectSdk\Dto\Order\Order;
 use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 
@@ -57,7 +58,7 @@ function provideCatalogs()
 {
     $catalogs = [
         'catalogs' => [
-            new Base([
+            new DtoObject([
                 'code' => CATALOG_CODE,
                 'parentCatalogCode' => PARENT_CATALOG_CODE,
                 'name' => 'North American Wholesale',
@@ -264,7 +265,7 @@ function provideSampleProducts()
 function provideLocations()
 {
     return [
-        new Base([
+        new DtoObject([
             'code' => LOCATION_CODE,
             'name' => 'Warehouse 1',
             'status' => 'active',

@@ -39,32 +39,32 @@ class Get extends ProductBase
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'identifiers'         => ['$ref' => Dto\Identifiers::class],
-            'price'               => ['$ref' => Dto\Price::class],
-            'shippingInformation' => ['$ref' => Dto\ShippingInformation::class],
+            'identifiers'         => ['$ref' => Dto\Identifiers::class, 'skipValidation' => true],
+            'price'               => ['$ref' => Dto\Price::class, 'skipValidation' => true],
+            'shippingInformation' => ['$ref' => Dto\ShippingInformation::class, 'skipValidation' => true],
             'categories'          => [
                 'type'  => 'array',
-                'items' => ['$ref' => Dto\Categories::class]
+                'items' => ['$ref' => Dto\Categories::class, 'skipValidation' => true]
             ],
             'properties'          => [
                 'type'  => 'array',
-                'items' => ['$ref' => Dto\Properties::class]
+                'items' => ['$ref' => Dto\Properties::class, 'skipValidation' => true]
             ],
             'media'               => [
                 'type'  => 'array',
-                'items' => ['$ref' => Dto\MediaList\Media::class]
+                'items' => ['$ref' => Dto\MediaList\Media::class, 'skipValidation' => true]
             ],
             'inventories'         => [
                 'type'  => 'array',
-                'items' => ['$ref' => Dto\Inventory::class]
+                'items' => ['$ref' => Dto\Inventory::class, 'skipValidation' => true]
             ],
             'options'             => [
                 'type'  => 'array',
-                'items' => ['$ref' => Dto\Options::class]
+                'items' => ['$ref' => Dto\Options::class, 'skipValidation' => true]
             ],
             'extras'              => [
                 'type'  => 'array',
-                'items' => ['$ref' => Dto\Extras::class]
+                'items' => ['$ref' => Dto\Extras::class, 'skipValidation' => true]
             ],
         ],
         'additionalProperties' => true

@@ -25,6 +25,7 @@ namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 use Dto\RegulatorInterface;
 use Shopgate\ConnectSdk\Dto\Base;
 use \Exception;
+use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 
 class LocalizationType extends Base
 {
@@ -61,6 +62,8 @@ class LocalizationType extends Base
      * @param string $string
      *
      * @return $this
+     *
+     * @throws InvalidDataTypeException
      */
     public function add($locale, $string)
     {

@@ -23,19 +23,20 @@
 namespace Shopgate\ConnectSdk\Dto\Order\Order\Dto;
 
 use Shopgate\ConnectSdk\Dto\Base;
+use Shopgate\ConnectSdk\Dto\DtoObject;
 
 /**
- * @method HistoryItem setId(string $id)
+ * @method HistoryItem setId(integer $id)
  * @method HistoryItem setEventName(string $eventName)
  * @method HistoryItem setEventDetails(string $eventDetails)
  * @method HistoryItem setEventNewValue(string $eventNewValue)
  * @method HistoryItem setEventOldValue(string $eventOldValue)
  * @method HistoryItem setEventDateTime(string $eventDateTime)
  * @method HistoryItem setEventUser(string $eventUser)
- * @method string getId()
+ * @method integer getId()
  * @method string getEventName()
  * @method string getEventDetails()
- * @method string getEventNewValue()
+ * @method DtoObject getEventNewValue()
  * @method string getEventOldValue()
  * @method string getEventDateTime()
  * @method string getEventUser()
@@ -48,15 +49,15 @@ class HistoryItem extends Base
      * @var array
      */
     protected $schema = [
-        'type' => 'object',
-        'properties' => [
-            'id' => ['type' => 'string'],
-            'eventName' => ['type' => 'string'],
-            'eventDetails' => ['type' => 'string'],
-            'eventNewValue' => ['type' => 'string'],
+        'type'                 => 'object',
+        'properties'           => [
+            'id'            => ['type' => 'number'],
+            'eventName'     => ['type' => 'string'],
+            'eventDetails'  => ['type' => 'string'],
+            'eventNewValue' => ['type' => 'object'],
             'eventOldValue' => ['type' => 'string'],
             'eventDateTime' => ['type' => 'string'],
-            'eventUser' => ['type' => 'string']
+            'eventUser'     => ['type' => 'string']
         ],
         'additionalProperties' => true,
     ];

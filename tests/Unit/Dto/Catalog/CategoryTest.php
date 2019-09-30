@@ -24,12 +24,16 @@ namespace Shopgate\ConnectSdk\Tests\Unit\Dto\Catalog;
 
 use PHPUnit\Framework\TestCase;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
+use Shopgate\ConnectSdk\Exception\Exception;
 
 /**
  * @coversDefaultClass \Shopgate\ConnectSdk\Dto\Catalog\Category
  */
 class CategoryTest extends TestCase
 {
+    /**
+     * @throws Exception
+     */
     public function testAddingLocalesOnGet()
     {
         // Arrange

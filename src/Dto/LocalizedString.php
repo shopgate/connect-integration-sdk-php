@@ -23,6 +23,7 @@
 namespace Shopgate\ConnectSdk\Dto;
 
 use Shopgate\ConnectSdk\Dto\Base as DtoBase;
+use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 
 /**
  * Default class that handles localized strings in Dtos
@@ -44,6 +45,8 @@ class LocalizedString extends DtoBase
      * @param string $string
      *
      * @return $this
+     *
+     * @throws InvalidDataTypeException
      */
     public function add($locale, $string)
     {

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright Shopgate Inc.
  *
@@ -19,29 +20,11 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Customer\Customer;
-
-use Shopgate\ConnectSdk\Dto\Customer\Customer;
-use Shopgate\ConnectSdk\Dto\Meta;
+namespace Shopgate\ConnectSdk\Dto;
 
 /**
- * @method Meta getMeta()
- * @method Get[] getCustomers()
+ * @codeCoverageIgnore
  */
-class GetList extends Customer
+class DtoObject extends Base
 {
-    /**
-     * @var array
-     */
-    protected $schema = [
-        'type'                 => 'object',
-        'properties'           => [
-            'meta'      => ['$ref' => Meta::class, 'skipValidation' => true],
-            'customers' => [
-                'type'  => 'array',
-                'items' => ['$ref' => Get::class, 'skipValidation' => true],
-            ],
-        ],
-        'additionalProperties' => true,
-    ];
 }

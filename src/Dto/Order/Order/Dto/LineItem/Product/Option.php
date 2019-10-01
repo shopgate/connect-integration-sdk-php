@@ -28,7 +28,7 @@ use Shopgate\ConnectSdk\Dto\Order\Order\Dto\LineItem\Product\Option\Value;
 /**
  * @method Option setCode(string $code)
  * @method Option setName(string $name)
- * @method Option setValue(string $value)
+ * @method Option setValue(Value $value)
  * @method string getCode()
  * @method string getName()
  * @method Value|string getValue()

@@ -31,7 +31,7 @@ use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder\Dto\LineItem\Product\Option\V
  * @method Option setValue(string $value)
  * @method string getCode()
  * @method string getName()
- * @method Value|string getValue()
+ * @method Value getValue()
  *
  * @codeCoverageIgnore
  */

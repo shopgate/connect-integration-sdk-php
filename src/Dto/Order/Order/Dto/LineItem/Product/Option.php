@@ -20,29 +20,22 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder\Dto\LineItem;
+namespace Shopgate\ConnectSdk\Dto\Order\Order\Dto\LineItem\Product;
 
 use Shopgate\ConnectSdk\Dto\Base;
-use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder\Dto\LineItem\Product\Option;
+use Shopgate\ConnectSdk\Dto\Order\Order\Dto\LineItem\Product\Option\Value;
 
 /**
- * @method Product setCode(string $code)
- * @method Product setName(string $name)
- * @method Product setImage(string $image)
- * @method Product setPrice(float $price)
- * @method Product setCurrencyCode(string $currencyCode)
- * @method Product setOptions(Option[] $options)
- *
+ * @method Option setCode(string $code)
+ * @method Option setName(string $name)
+ * @method Option setValue(string $value)
  * @method string getCode()
  * @method string getName()
- * @method string getImage()
- * @method float getPrice()
- * @method string getCurrencyCode()
- * @method Option[] getOptions()
+ * @method Value|string getValue()
  *
  * @codeCoverageIgnore
  */
-class Product extends Base
+class Option extends Base
 {
     /**
      * @var array
@@ -52,13 +45,7 @@ class Product extends Base
         'properties' => [
             'code' => ['type' => 'string'],
             'name' => ['type' => 'string'],
-            'image' => ['type' => 'string'],
-            'price' => ['type' => 'number'],
-            'currencyCode' => ['type' => 'string'],
-            'options' => [
-                'type' => 'array',
-                'items' => ['$ref' => Product\Option::class]
-            ]
+            'value' => ['$ref' => Value::class],
         ],
         'additionalProperties' => true,
     ];

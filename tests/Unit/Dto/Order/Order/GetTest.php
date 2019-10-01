@@ -136,7 +136,14 @@ class GetTest extends TestCase
                         'name' => 'Product One',
                         'image' => 'image-url',
                         'price' => 100,
-                        'currencyCode' => 'USD'
+                        'currencyCode' => 'USD',
+                        'options' => [
+                            [
+                                'code' => '146',
+                                'name' => 'Color',
+                                'value' => 'Red',
+                            ]
+                        ]
                     ],
                     'currencyCode' => 'USD',
                     'shippingAmount' => 5,
@@ -292,15 +299,22 @@ class GetTest extends TestCase
         $this->assertEquals($expectedLineItem['overrideAmount'], $actualLineItem->getOverrideAmount());
         $this->assertEquals($expectedLineItem['extendedPrice'], $actualLineItem->getExtendedPrice());
         $this->assertEquals($expectedLineItem['price'], $actualLineItem->getPrice());
+
+        $actualProduct = $actualLineItem->getProduct();
         $this->assertInstanceOf(OrderDto\LineItem\Product::class, $actualLineItem->getProduct());
-        $this->assertEquals($expectedLineItem['product']['code'], $actualLineItem->getProduct()->getCode());
-        $this->assertEquals($expectedLineItem['product']['name'], $actualLineItem->getProduct()->getName());
-        $this->assertEquals($expectedLineItem['product']['image'], $actualLineItem->getProduct()->getImage());
-        $this->assertEquals($expectedLineItem['product']['price'], $actualLineItem->getProduct()->getPrice());
-        $this->assertEquals(
-            $expectedLineItem['product']['currencyCode'],
-            $actualLineItem->getProduct()->getCurrencyCode()
-        );
+        $this->assertEquals($expectedLineItem['product']['code'], $actualProduct->getCode());
+        $this->assertEquals($expectedLineItem['product']['name'], $actualProduct->getName());
+        $this->assertEquals($expectedLineItem['product']['image'], $actualProduct->getImage());
+        $this->assertEquals($expectedLineItem['product']['price'], $actualProduct->getPrice());
+        $this->assertEquals($expectedLineItem['product']['currencyCode'], $actualProduct->getCurrencyCode());
+
+        $productOptions = $actualProduct->getOptions();
+        $this->assertTrue(is_array($productOptions));
+        $productOption = $productOptions[0];
+        $this->assertEquals($expectedLineItem['product']['options'][0]['code'], $productOption->getCode());
+        $this->assertEquals($expectedLineItem['product']['options'][0]['name'], $productOption->getName());
+        $this->assertEquals($expectedLineItem['product']['options'][0]['value'], $productOption->getValue());
+
         $actualHistoryItem = $get->getHistory()[0];
         $expectedHistoryItem = $entry['history'][0];
         $this->assertInstanceOf(OrderDto\HistoryItem::class, $actualHistoryItem);

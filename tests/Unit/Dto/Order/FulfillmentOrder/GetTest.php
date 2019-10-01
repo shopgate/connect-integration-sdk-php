@@ -135,7 +135,14 @@ class GetTest extends TestCase
                         "name" => "Fusion Backpack",
                         "image" => "https://myawesomeshop.com/images/img1.jpg",
                         "price" => 59.5,
-                        "currencyCode" => "USD"
+                        "currencyCode" => "USD",
+                        'options' => [
+                            [
+                                'code' => '146',
+                                'name' => 'Color',
+                                'value' => 'Red',
+                            ]
+                        ]
                     ]
                 ]
             ],
@@ -288,6 +295,13 @@ class GetTest extends TestCase
         $this->assertEquals($entry['lineItems'][0]['product']['image'], $lineItemProduct->getImage());
         $this->assertEquals($entry['lineItems'][0]['product']['price'], $lineItemProduct->getPrice());
         $this->assertEquals($entry['lineItems'][0]['product']['currencyCode'], $lineItemProduct->getCurrencyCode());
+
+        $productOptions = $lineItemProduct->getOptions();
+        $this->assertTrue(is_array($productOptions));
+        $productOption = $productOptions[0];
+        $this->assertEquals($entry['lineItems'][0]['product']['options'][0]['code'], $productOption->getCode());
+        $this->assertEquals($entry['lineItems'][0]['product']['options'][0]['name'], $productOption->getName());
+        $this->assertEquals($entry['lineItems'][0]['product']['options'][0]['value'], $productOption->getValue());
 
         // History
         $history = $get->getHistory();

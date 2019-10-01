@@ -27,9 +27,9 @@ use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
-use Shopgate\ConnectSdk\Tests\Integration\CatalogTest;
+use Shopgate\ConnectSdk\Tests\Integration\AbstractCatalogTest;
 
-class AttributeValueTest extends CatalogTest
+class AttributeValueTest extends AbstractCatalogTest
 {
 
     /**

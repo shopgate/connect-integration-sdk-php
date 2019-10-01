@@ -26,11 +26,25 @@ use Shopgate\ConnectSdk\Dto\Base;
 
 /**
  * @package Shopgate\ConnectSdk\Dto\Catalog
- *
- * @todo-sg : add getters
  */
 class AttributeValue extends Base
 {
     const SWATCH_TYPE_IMAGE   = 'image';
     const SWATCH_TYPE_COLOR   = 'color';
+
+    /**
+     * @return string
+     */
+    public function getSwatchTypeImage()
+    {
+        return self::SWATCH_TYPE_IMAGE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSwatchTypeColor()
+    {
+        return self::SWATCH_TYPE_COLOR;
+    }
 }

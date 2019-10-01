@@ -29,7 +29,6 @@ use Shopgate\ConnectSdk\Dto\Catalog\Catalog;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
-use Shopgate\ConnectSdk\Dto\Catalog\Reservation;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Categories;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Extras;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\LongDescription;
@@ -40,25 +39,12 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Price\VolumePricing;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\ShortDescription;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Update;
+use Shopgate\ConnectSdk\Dto\Catalog\Reservation;
 use Shopgate\ConnectSdk\Dto\Location\Location;
 use Shopgate\ConnectSdk\Exception\Exception;
 
 abstract class AbstractCatalogTest extends ShopgateSdkTest
 {
-    const CATALOG_SERVICE = 'catalog';
-    const LOCATION_SERVICE = 'location';
-    const CUSTOMER_SERVICE = 'customer';
-    const METHOD_DELETE_CATEGORY = 'deleteCategory';
-    const METHOD_DELETE_PRODUCT = 'deleteProduct';
-    const METHOD_DELETE_ATTRIBUTE = 'deleteAttribute';
-    const METHOD_DELETE_LOCATION = 'deleteLocation';
-    const METHOD_DELETE_INVENTORIES = 'deleteInventories';
-    const METHOD_DELETE_RESERVATIONS = 'deleteReservations';
-    const METHOD_DELETE_CUSTOMER = 'deleteCustomer';
-    const METHOD_DELETE_CATALOG = 'deleteCatalog';
-
-    const SAMPLE_CATALOG_CODE = 'NARetail';
-    const SAMPLE_CATALOG_CODE_NON_DEFAULT = 'NAWholesale';
     const TEST_CATALOG_CODE = 'TestCatalogCode';
 
     const PRODUCT_CODE = 'integration-test';
@@ -79,45 +65,7 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
     {
         parent::setUp();
 
-        $this->registerForCleanUp(
-            self::CATALOG_SERVICE,
-            $this->sdk->getCatalogService(),
-            [
-                self::METHOD_DELETE_CATEGORY => ['force' => true],
-                self::METHOD_DELETE_PRODUCT => [],
-                self::METHOD_DELETE_ATTRIBUTE => [],
-                self::METHOD_DELETE_RESERVATIONS => [],
-                self::METHOD_DELETE_INVENTORIES => [],
-                self::METHOD_DELETE_CATALOG => [],
-            ]
-        );
-        $this->registerForCleanUp(
-            self::LOCATION_SERVICE,
-            $this->sdk->getLocationService(),
-            [
-                self::METHOD_DELETE_LOCATION => []
-            ]
-        );
-        $this->registerForCleanUp(
-            self::CUSTOMER_SERVICE,
-            $this->sdk->getCustomerService(),
-            [
-                self::METHOD_DELETE_CUSTOMER => []
-            ]
-        );
-    }
-
-    /**
-     * @return Category\Create[]
-     *
-     * @throws Exception
-     */
-    protected function provideSampleCategories()
-    {
-        return [
-            $this->provideSampleCreateCategory(self::CATEGORY_CODE, 'Integration Test Category 1', 1),
-            $this->provideSampleCreateCategory(self::CATEGORY_CODE_SECOND, 'Integration Test Category 2', 2),
-        ];
+        $this->createDefaultCatalogs();
     }
 
     /**
@@ -129,82 +77,11 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
     {
         return
             (new Catalog\Create())
-            ->setCode(self::TEST_CATALOG_CODE)
-            ->setName('North American Retail')
-            ->setDefaultLocaleCode('en-us')
-            ->setDefaultCurrencyCode('USD')
-            ->setIsDefault(true);
-    }
-
-    /**
-     * @param string                  $code
-     * @param string                  $name
-     * @param int                     $sequenceId
-     * @param Category\Dto\Image|null $image
-     * @param Category\Dto\Url|null   $url
-     * @param string|null             $description
-     * @param string|null             $parentCategoryCode
-     * @param string|null             $externalUpdateDate
-     * @param string|null             $status
-     *
-     * @return Category\Create
-     *
-     * @throws Exception
-     */
-    protected function provideSampleCreateCategory(
-        $code,
-        $name,
-        $sequenceId,
-        $image = null,
-        $url = null,
-        $description = null,
-        $parentCategoryCode = null,
-        $externalUpdateDate = null,
-        $status = null
-    ) {
-        $category = new Category\Create();
-        $category->setCode($code)
-            ->setName(new Category\Dto\Name(['en-us' => $name]))
-            ->setSequenceId($sequenceId);
-        if ($description) {
-            $translatedDescription = new Category\Dto\Description(['en-us' => $description]);
-            $category->setDescription($translatedDescription);
-        }
-        $url ? $category->setUrl($url) : null;
-        $image ? $category->setImage($image) : null;
-        $parentCategoryCode ? $category->setParentCategoryCode($parentCategoryCode) : null;
-        $externalUpdateDate ? $category->setExternalUpdateDate($externalUpdateDate) : null;
-        $status ? $category->setStatus($status) : null;
-
-        return $category;
-    }
-
-    /**
-     * @throws Exception
-     */
-    protected function createSampleAttribute()
-    {
-        $attribute = new Attribute\Create;
-        $attribute->setCode(self::SAMPLE_ATTRIBUTE_CODE)
-            ->setType(Attribute\Create::TYPE_TEXT)
-            ->setUse(Attribute\Create::USE_OPTION)
-            ->setExternalUpdateDate('2018-12-15T00:00:23.114Z');
-
-        $attributeName = new Name();
-        $attributeName->add('de-de', 'Attribute de');
-        $attributeName->add('en-us', 'Attribute en');
-        $attribute->setName($attributeName);
-
-        $attribute->setValues([$this->provideSampleAttributeValue()]);
-
-        $this->sdk->getCatalogService()->addAttributes([$attribute], ['requestType' => 'direct']);
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_ATTRIBUTE,
-            [self::SAMPLE_ATTRIBUTE_CODE]
-        );
+                ->setCode(self::TEST_CATALOG_CODE)
+                ->setName('North American Retail')
+                ->setDefaultLocaleCode('en-us')
+                ->setDefaultCurrencyCode('USD')
+                ->setIsDefault(true);
     }
 
     /**‚
@@ -315,270 +192,101 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
     }
 
     /**
-     * @return Categories[]
+     * @return Category\Create[]
      *
      * @throws Exception
      */
-    protected function provideCategoryMapping()
+    protected function provideSampleCategories()
     {
-        $categoryMapping = new Product\Dto\Categories();
-        $categoryMapping->setCode(self::CATEGORY_CODE)
-            ->setIsPrimary(true);
-
-        $categoryMapping2 = new Product\Dto\Categories();
-        $categoryMapping2->setCode(self::CATEGORY_CODE_SECOND)
-            ->setIsPrimary(false);
-
-        return [$categoryMapping, $categoryMapping2];
-    }
-
-    protected function provideIdentifiers()
-    {
-        return (new Product\Dto\Identifiers())->setMfgPartNum('someMfgPartNum')
-            ->setUpc('Universal-Product-Code')
-            ->setEan('European Article Number')
-            ->setIsbn('978-3-16-148410-0')
-            ->setSku('stock_keeping_unit');
+        return [
+            $this->provideSampleCreateCategory(self::CATEGORY_CODE, 'Integration Test Category 1', 1),
+            $this->provideSampleCreateCategory(self::CATEGORY_CODE_SECOND, 'Integration Test Category 2', 2),
+        ];
     }
 
     /**
-     * @return VolumePricing[]
+     * @param string                  $code
+     * @param string                  $name
+     * @param int                     $sequenceId
+     * @param Category\Dto\Image|null $image
+     * @param Category\Dto\Url|null   $url
+     * @param string|null             $description
+     * @param string|null             $parentCategoryCode
+     * @param string|null             $externalUpdateDate
+     * @param string|null             $status
+     *
+     * @return Category\Create
      *
      * @throws Exception
      */
-    protected function provideVolumePricing()
-    {
-        $volumePricing1 = new Product\Dto\Price\VolumePricing();
-        $volumePricing1->setMinQty(5)
-            ->setMaxQty(20)
-            ->setPrice(84.99)
-            ->setSalePrice(83.99)
-            ->setUnit('kg')
-            ->setPriceType(Product\Dto\Price\VolumePricing::PRICE_TYPE_FIXED);
+    protected function provideSampleCreateCategory(
+        $code,
+        $name,
+        $sequenceId,
+        $image = null,
+        $url = null,
+        $description = null,
+        $parentCategoryCode = null,
+        $externalUpdateDate = null,
+        $status = null
+    ) {
+        $category = new Category\Create();
+        $category->setCode($code)
+            ->setName(new Category\Dto\Name(['en-us' => $name]))
+            ->setSequenceId($sequenceId);
+        if ($description) {
+            $translatedDescription = new Category\Dto\Description(['en-us' => $description]);
+            $category->setDescription($translatedDescription);
+        }
+        $url ? $category->setUrl($url) : null;
+        $image ? $category->setImage($image) : null;
+        $parentCategoryCode ? $category->setParentCategoryCode($parentCategoryCode) : null;
+        $externalUpdateDate ? $category->setExternalUpdateDate($externalUpdateDate) : null;
+        $status ? $category->setStatus($status) : null;
 
-        $volumePricing2 = new Product\Dto\Price\VolumePricing();
-        $volumePricing2->setMinQty(21)
-            ->setMaxQty(100)
-            ->setPrice(84.99)
-            ->setSalePrice(-2)
-            ->setUnit('kg')
-            ->setPriceType(Product\Dto\Price\VolumePricing::PRICE_TYPE_RELATIVE);
-
-        return [$volumePricing1, $volumePricing2];
+        return $category;
     }
 
     /**
-     * @return MapPricing[]
+     * @param Category\Create[] $categories
      *
-     * @throws Exception
+     * @return string[]
      */
-    protected function provideMapPricing()
+    protected function getCategoryCodes($categories)
     {
-        $mapPricing1 = new Product\Dto\Price\MapPricing();
-        $mapPricing1->setStartDate('2019-06-01T00:00:00.000Z')
-            ->setEndDate('2019-09-01T00:00:00.000Z')
-            ->setPrice(84.49);
+        $categoryCodes = [];
+        foreach ($categories as $category) {
+            $categoryCodes[] = $category->getCode();
+        }
 
-        $mapPricing2 = new Product\Dto\Price\MapPricing();
-        $mapPricing2->setStartDate('2019-09-01T00:00:01.000Z')
-            ->setEndDate('2019-10-01T00:00:00.000Z')
-            ->setPrice(84.49);
-
-        return [$mapPricing1, $mapPricing2];
-    }
-
-    /**
-     * @return Price
-     *
-     * @throws Exception
-     */
-    protected function providePricing()
-    {
-        $volumePricing = $this->provideVolumePricing();
-        $mapPricing = $this->provideMapPricing();
-
-        return (new Product\Dto\Price())->setCurrencyCode(Product\Dto\Price::CURRENCY_CODE_USD)
-            ->setCost(50)
-            ->setPrice(90)
-            ->setSalePrice(84.99)
-            ->setVolumePricing($volumePricing)
-            ->setUnit('kg')
-            ->setMsrp(100)
-            ->setMinPrice(80)
-            ->setMaxPrice(90)
-            ->setMapPricing($mapPricing);
-    }
-
-    /**
-     * @return Properties\SubDisplayGroup
-     *
-     * @throws Exception
-     */
-    protected function provideSubDisplayGroup()
-    {
-        return (new Properties\SubDisplayGroup())
-            ->add('de-de', 'deutsch')
-            ->add('en-en', 'english');
-    }
-
-    /**
-     * @return Product\Dto\Properties[]
-     *
-     * @throws Exception
-     */
-    protected function provideProperties()
-    {
-        $subDisplayGroup = $this->provideSubDisplayGroup();
-
-        $property1 = new Product\Dto\Properties\Product();
-        $property1->setCode('property_code_1')
-            ->setName(new Properties\Name(['en-us' => 'property 1 english', 'de-de' => 'property 1 deutsch']))
-            ->setValue(new Properties\Value(['stuff' => 'stuff value', 'other stuff' => 'other stuff value']))
-            ->setDisplayGroup(Properties::DISPLAY_GROUP_FEATURES)
-            ->setSubDisplayGroup($subDisplayGroup);
-
-        $property2 = (new Product\Dto\Properties\Simple())->setCode('property_code_2')
-            ->setName(
-                new Properties\Name(
-                    [
-                        'en-us' => 'Color',
-                        'de-de' => 'Farbe'
-                    ]
-                )
-            )
-            ->setValue(new Properties\Value())
-            ->setDisplayGroup('features')
-            ->setSubDisplayGroup($subDisplayGroup);
-
-        return [$property1, $property2];
-    }
-
-    /**
-     * @return Product\Dto\ShippingInformation
-     *
-     * @throws Exception
-     */
-    protected function provideShippingInformation()
-    {
-        return (new Product\Dto\ShippingInformation())
-            ->setIsShippedAlone(false)
-            ->setHeight(0.5)
-            ->setHeightUnit('m')
-            ->setWidth(10)
-            ->setWidthUnit('cm')
-            ->setLength(5)
-            ->setLengthUnit('dm')
-            ->setWeight(5)
-            ->setWeightUnit('kg');
-    }
-
-    /**
-     * @return MediaList
-     *
-     * @throws Exception
-     */
-    private function provideMedia()
-    {
-        $media1 = new Product\Dto\MediaList\Media();
-        $media1->setCode('media_code_1')
-            ->setType(Product\Dto\MediaList\Media::TYPE_IMAGE)
-            ->setUrl('example.com/media1.jpg')
-            ->setAltText('alt text 1')
-            ->setTitle('Title Media 1')
-            ->setSequenceId(0);
-
-        $media2 = new Product\Dto\MediaList\Media();
-        $media2->setCode('media_code_2')
-            ->setType(Product\Dto\MediaList\Media::TYPE_VIDEO)
-            ->setUrl('example.com/media2.mov')
-            ->setAltText('alt text 2')
-            ->setTitle('Title Media 2')
-            ->setSequenceId(5);
-
-        $media = new MediaList();
-        $media->add('en-us', [$media1, $media2]);
-
-        return $media;
-    }
-
-    /**
-     * @return array
-     *
-     * @throws Exception
-     */
-    protected function provideOptions()
-    {
-        list($value1) = $this->provideOptionsValues();
-
-        $option1 = new Product\Dto\Options();
-        $option1->setCode(self::SAMPLE_ATTRIBUTE_CODE)
-            ->setValues([$value1]);
-
-        return [$option1];
-    }
-
-    /**
-     * @return Extras[]
-     *
-     * @throws Exception
-     */
-    protected function provideExtras()
-    {
-        list($value1, $value2) = $this->provideExtraValues();
-        $extra1 = new Product\Dto\Extras();
-        $extra1->setCode(self::SAMPLE_EXTRA_CODE)
-            ->setValues([$value1, $value2]);
-
-        $extra2 = new Product\Dto\Extras();
-        $extra2->setCode(self::SAMPLE_EXTRA_CODE_2)
-            ->setValues([$value2]);
-
-        return [$extra1, $extra2];
-    }
-
-    /**
-     * @return array
-     *
-     * @throws Exception
-     */
-    protected function provideOptionsValues()
-    {
-        $value1 = new Product\Dto\Options\Values();
-        $value1->setCode(self::SAMPLE_ATTRIBUTE_VALUE_CODE)
-            ->setAdditionalPrice(5);
-
-        return [$value1];
-    }
-
-    /**
-     * @return array
-     *
-     * @throws Exception
-     */
-    protected function provideExtraValues()
-    {
-        $value1 = new Product\Dto\Options\Values();
-        $value1->setCode(self::SAMPLE_EXTRA_VALUE_CODE)
-            ->setAdditionalPrice(5);
-        $value2 = new Product\Dto\Options\Values();
-        $value2->setCode(self::SAMPLE_EXTRA_VALUE_CODE_2)
-            ->setAdditionalPrice(10);
-
-        return [$value1, $value2];
+        return $categoryCodes;
     }
 
     /**
      * @throws Exception
      */
-    protected function createSampleExtras()
+    protected function createSampleAttribute()
     {
-        $this->sdk->getCatalogService()->addAttributes($this->provideSampleExtras(), ['requestType' => 'direct']);
+        $attribute = new Attribute\Create;
+        $attribute->setCode(self::SAMPLE_ATTRIBUTE_CODE)
+            ->setType(Attribute\Create::TYPE_TEXT)
+            ->setUse(Attribute\Create::USE_OPTION)
+            ->setExternalUpdateDate('2018-12-15T00:00:23.114Z');
+
+        $attributeName = new Name();
+        $attributeName->add('de-de', 'Attribute de');
+        $attributeName->add('en-us', 'Attribute en');
+        $attribute->setName($attributeName);
+
+        $attribute->setValues([$this->provideSampleAttributeValue()]);
+
+        $this->sdk->getCatalogService()->addAttributes([$attribute], ['requestType' => 'direct']);
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(
             self::CATALOG_SERVICE,
             self::METHOD_DELETE_ATTRIBUTE,
-            [self::SAMPLE_EXTRA_CODE, self::SAMPLE_EXTRA_CODE_2]
+            [self::SAMPLE_ATTRIBUTE_CODE]
         );
     }
 
@@ -604,6 +312,51 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
         $attributeValue->setSwatch($attributeValueSwatch);
 
         return $attributeValue;
+    }
+
+    /**
+     * @return array
+     *
+     * @throws Exception
+     */
+    protected function provideOptions()
+    {
+        list($value1) = $this->provideOptionsValues();
+
+        $option1 = new Product\Dto\Options();
+        $option1->setCode(self::SAMPLE_ATTRIBUTE_CODE)
+            ->setValues([$value1]);
+
+        return [$option1];
+    }
+
+    /**
+     * @return array
+     *
+     * @throws Exception
+     */
+    protected function provideOptionsValues()
+    {
+        $value1 = new Product\Dto\Options\Values();
+        $value1->setCode(self::SAMPLE_ATTRIBUTE_VALUE_CODE)
+            ->setAdditionalPrice(5);
+
+        return [$value1];
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function createSampleExtras()
+    {
+        $this->sdk->getCatalogService()->addAttributes($this->provideSampleExtras(), ['requestType' => 'direct']);
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_ATTRIBUTE,
+            [self::SAMPLE_EXTRA_CODE, self::SAMPLE_EXTRA_CODE_2]
+        );
     }
 
     /**
@@ -661,18 +414,226 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
     }
 
     /**
-     * @param Category\Create[] $categories
+     * @return Extras[]
      *
-     * @return string[]
+     * @throws Exception
      */
-    protected function getCategoryCodes($categories)
+    protected function provideExtras()
     {
-        $categoryCodes = [];
-        foreach ($categories as $category) {
-            $categoryCodes[] = $category->getCode();
-        }
+        list($value1, $value2) = $this->provideExtraValues();
+        $extra1 = new Product\Dto\Extras();
+        $extra1->setCode(self::SAMPLE_EXTRA_CODE)
+            ->setValues([$value1, $value2]);
 
-        return $categoryCodes;
+        $extra2 = new Product\Dto\Extras();
+        $extra2->setCode(self::SAMPLE_EXTRA_CODE_2)
+            ->setValues([$value2]);
+
+        return [$extra1, $extra2];
+    }
+
+    /**
+     * @return array
+     *
+     * @throws Exception
+     */
+    protected function provideExtraValues()
+    {
+        $value1 = new Product\Dto\Options\Values();
+        $value1->setCode(self::SAMPLE_EXTRA_VALUE_CODE)
+            ->setAdditionalPrice(5);
+        $value2 = new Product\Dto\Options\Values();
+        $value2->setCode(self::SAMPLE_EXTRA_VALUE_CODE_2)
+            ->setAdditionalPrice(10);
+
+        return [$value1, $value2];
+    }
+
+    /**
+     * @return Categories[]
+     *
+     * @throws Exception
+     */
+    protected function provideCategoryMapping()
+    {
+        $categoryMapping = new Product\Dto\Categories();
+        $categoryMapping->setCode(self::CATEGORY_CODE)
+            ->setIsPrimary(true);
+
+        $categoryMapping2 = new Product\Dto\Categories();
+        $categoryMapping2->setCode(self::CATEGORY_CODE_SECOND)
+            ->setIsPrimary(false);
+
+        return [$categoryMapping, $categoryMapping2];
+    }
+
+    protected function provideIdentifiers()
+    {
+        return (new Product\Dto\Identifiers())->setMfgPartNum('someMfgPartNum')
+            ->setUpc('Universal-Product-Code')
+            ->setEan('European Article Number')
+            ->setIsbn('978-3-16-148410-0')
+            ->setSku('stock_keeping_unit');
+    }
+
+    /**
+     * @return Price
+     *
+     * @throws Exception
+     */
+    protected function providePricing()
+    {
+        $volumePricing = $this->provideVolumePricing();
+        $mapPricing = $this->provideMapPricing();
+
+        return (new Product\Dto\Price())->setCurrencyCode(Product\Dto\Price::CURRENCY_CODE_USD)
+            ->setCost(50)
+            ->setPrice(90)
+            ->setSalePrice(84.99)
+            ->setVolumePricing($volumePricing)
+            ->setUnit('kg')
+            ->setMsrp(100)
+            ->setMinPrice(80)
+            ->setMaxPrice(90)
+            ->setMapPricing($mapPricing);
+    }
+
+    /**
+     * @return VolumePricing[]
+     *
+     * @throws Exception
+     */
+    protected function provideVolumePricing()
+    {
+        $volumePricing1 = new Product\Dto\Price\VolumePricing();
+        $volumePricing1->setMinQty(5)
+            ->setMaxQty(20)
+            ->setPrice(84.99)
+            ->setSalePrice(83.99)
+            ->setUnit('kg')
+            ->setPriceType(Product\Dto\Price\VolumePricing::PRICE_TYPE_FIXED);
+
+        $volumePricing2 = new Product\Dto\Price\VolumePricing();
+        $volumePricing2->setMinQty(21)
+            ->setMaxQty(100)
+            ->setPrice(84.99)
+            ->setSalePrice(-2)
+            ->setUnit('kg')
+            ->setPriceType(Product\Dto\Price\VolumePricing::PRICE_TYPE_RELATIVE);
+
+        return [$volumePricing1, $volumePricing2];
+    }
+
+    /**
+     * @return MapPricing[]
+     *
+     * @throws Exception
+     */
+    protected function provideMapPricing()
+    {
+        $mapPricing1 = new Product\Dto\Price\MapPricing();
+        $mapPricing1->setStartDate('2019-06-01T00:00:00.000Z')
+            ->setEndDate('2019-09-01T00:00:00.000Z')
+            ->setPrice(84.49);
+
+        $mapPricing2 = new Product\Dto\Price\MapPricing();
+        $mapPricing2->setStartDate('2019-09-01T00:00:01.000Z')
+            ->setEndDate('2019-10-01T00:00:00.000Z')
+            ->setPrice(84.49);
+
+        return [$mapPricing1, $mapPricing2];
+    }
+
+    /**
+     * @return Product\Dto\Properties[]
+     *
+     * @throws Exception
+     */
+    protected function provideProperties()
+    {
+        $subDisplayGroup = $this->provideSubDisplayGroup();
+
+        $property1 = new Product\Dto\Properties\Product();
+        $property1->setCode('property_code_1')
+            ->setName(new Properties\Name(['en-us' => 'property 1 english', 'de-de' => 'property 1 deutsch']))
+            ->setValue(new Properties\Value(['stuff' => 'stuff value', 'other stuff' => 'other stuff value']))
+            ->setDisplayGroup(Properties::DISPLAY_GROUP_FEATURES)
+            ->setSubDisplayGroup($subDisplayGroup);
+
+        $property2 = (new Product\Dto\Properties\Simple())->setCode('property_code_2')
+            ->setName(
+                new Properties\Name(
+                    [
+                        'en-us' => 'Color',
+                        'de-de' => 'Farbe'
+                    ]
+                )
+            )
+            ->setValue(new Properties\Value())
+            ->setDisplayGroup('features')
+            ->setSubDisplayGroup($subDisplayGroup);
+
+        return [$property1, $property2];
+    }
+
+    /**
+     * @return Properties\SubDisplayGroup
+     *
+     * @throws Exception
+     */
+    protected function provideSubDisplayGroup()
+    {
+        return (new Properties\SubDisplayGroup())
+            ->add('de-de', 'deutsch')
+            ->add('en-en', 'english');
+    }
+
+    /**
+     * @return Product\Dto\ShippingInformation
+     *
+     * @throws Exception
+     */
+    protected function provideShippingInformation()
+    {
+        return (new Product\Dto\ShippingInformation())
+            ->setIsShippedAlone(false)
+            ->setHeight(0.5)
+            ->setHeightUnit('m')
+            ->setWidth(10)
+            ->setWidthUnit('cm')
+            ->setLength(5)
+            ->setLengthUnit('dm')
+            ->setWeight(5)
+            ->setWeightUnit('kg');
+    }
+
+    /**
+     * @return MediaList
+     *
+     * @throws Exception
+     */
+    private function provideMedia()
+    {
+        $media1 = new Product\Dto\MediaList\Media();
+        $media1->setCode('media_code_1')
+            ->setType(Product\Dto\MediaList\Media::TYPE_IMAGE)
+            ->setUrl('example.com/media1.jpg')
+            ->setAltText('alt text 1')
+            ->setTitle('Title Media 1')
+            ->setSequenceId(0);
+
+        $media2 = new Product\Dto\MediaList\Media();
+        $media2->setCode('media_code_2')
+            ->setType(Product\Dto\MediaList\Media::TYPE_VIDEO)
+            ->setUrl('example.com/media2.mov')
+            ->setAltText('alt text 2')
+            ->setTitle('Title Media 2')
+            ->setSequenceId(5);
+
+        $media = new MediaList();
+        $media->add('en-us', [$media1, $media2]);
+
+        return $media;
     }
 
     /**

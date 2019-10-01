@@ -989,4 +989,41 @@ class Catalog
 
         return new CatalogDto\Get($response['catalog']);
     }
+
+    /**
+     * @param array $query
+     *
+     * @return CatalogDto\GetList
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     * @throws InvalidDataTypeException
+     */
+    public function getCatalogs(array $query = [])
+    {
+        if (isset($query['filters'])) {
+            $query['filters'] = $this->jsonHelper->encode($query['filters']);
+        }
+
+        $response = $this->client->doRequest(
+            [
+                'service' => self::SERVICE_CATALOG,
+                'method' => 'get',
+                'path' => 'catalogs',
+                'query' => $query,
+            ]
+        );
+        $response = $this->jsonHelper->decode($response->getBody(), true);
+
+        $catalogs = [];
+        foreach ($response['catalogs'] as $catalog) {
+            $catalogs[] = new Reservation\Get($catalog);
+        }
+        $response['meta'] = new Meta($response['meta']);
+        $response['catalogs'] = $catalogs;
+
+        return new CatalogDto\GetList($response);
+    }
 }

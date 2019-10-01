@@ -25,9 +25,13 @@ namespace Shopgate\ConnectSdk\Tests\Unit\Dto\Catalog\Product;
 use PHPUnit\Framework\TestCase;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto;
 use Shopgate\ConnectSdk\Exception\Exception;
+use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 
 class PropertiesTest extends TestCase
 {
+    /**
+     * @throws InvalidDataTypeException
+     */
     public function testPropertiesEmptyValueInitializationLaterSetLocalization()
     {
         $propertyValue = new Dto\Properties\Value();
@@ -110,6 +114,9 @@ class PropertiesTest extends TestCase
         $this->assertEquals('Test Property', $property->getName()->{'en-us'});
     }
 
+    /**
+     * @throws InvalidDataTypeException
+     */
     public function testPropertyEmptySubDisplayGroupInitialization()
     {
         $subDisplayGroup = (new Dto\Properties\SubDisplayGroup())

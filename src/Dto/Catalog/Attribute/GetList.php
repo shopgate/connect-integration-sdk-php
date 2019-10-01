@@ -41,10 +41,10 @@ class GetList extends Attribute
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'meta'       => ['$ref' => Meta::class],
+            'meta'       => ['$ref' => Meta::class, 'skipValidation' => true],
             'attributes' => [
                 'type'  => 'array',
-                'items' => ['$ref' => Get::class]
+                'items' => ['$ref' => Get::class, 'skipValidation' => true]
             ]
         ],
         'additionalProperties' => true

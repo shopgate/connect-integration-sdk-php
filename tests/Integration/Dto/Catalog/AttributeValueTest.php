@@ -24,6 +24,7 @@ namespace Shopgate\ConnectSdk\Tests\Integration\Dto\Catalog;
 
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 use Shopgate\ConnectSdk\Exception\Exception;
+use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Tests\Integration\CatalogTest;
@@ -105,7 +106,7 @@ class AttributeValueTest extends CatalogTest
         // Assert
         $updatedAttributeValues = $this->sdk->getCatalogService()
             ->getAttribute(self::SAMPLE_ATTRIBUTE_CODE)->getValues();
-        $updatedAttributeValue  = $updatedAttributeValues[0];
+        $updatedAttributeValue = $updatedAttributeValues[0];
 
         $this->assertCount(1, $updatedAttributeValues);
         $this->assertEquals('Attribute Value 2 en update', $updatedAttributeValue->getName());
@@ -203,9 +204,9 @@ class AttributeValueTest extends CatalogTest
     }
 
     /**
-     * @param array            $attributeValueData
-     * @param RequestException $expectedException
-     * @param string           $missingItem
+     * @param array     $attributeValueData
+     * @param Exception $expectedException
+     * @param string    $missingItem
      *
      * @throws Exception
      *
@@ -231,11 +232,15 @@ class AttributeValueTest extends CatalogTest
             );
         } catch (RequestException $exception) {
             // Assert
-            $errors  = \GuzzleHttp\json_decode($exception->getMessage(), false);
+            $errors = \GuzzleHttp\json_decode($exception->getMessage(), false);
             $message = $errors->error->results->errors[0]->message;
             $this->assertInstanceOf(get_class($expectedException), $exception);
             $this->assertEquals('Missing required property: ' . $missingItem, $message);
             $this->assertEquals($expectedException->getStatusCode(), $exception->getStatusCode());
+
+            return;
+        } catch (InvalidDataTypeException $exception) {
+            $this->assertInstanceOf(get_class($expectedException), $exception);
 
             return;
         }
@@ -244,9 +249,9 @@ class AttributeValueTest extends CatalogTest
     }
 
     /**
-     * @param array            $attributeValueData
-     * @param RequestException $expectedException
-     * @param string           $expectedMessage
+     * @param array     $attributeValueData
+     * @param Exception $expectedException
+     * @param string    $expectedMessage
      *
      * @throws Exception
      *
@@ -254,15 +259,15 @@ class AttributeValueTest extends CatalogTest
      */
     public function testAddAttributeValueDirectWithInvalidFields(
         array $attributeValueData,
-        RequestException $expectedException,
+        Exception $expectedException,
         $expectedMessage
     ) {
         // Arrange
         $this->createSampleAttribute();
-        $attributeValue = new AttributeValue\Create($attributeValueData);
 
         // Act
         try {
+            $attributeValue = new AttributeValue\Create($attributeValueData);
             $this->sdk->getCatalogService()->addAttributeValue(
                 self::SAMPLE_ATTRIBUTE_CODE,
                 [$attributeValue],
@@ -270,13 +275,18 @@ class AttributeValueTest extends CatalogTest
                     'requestType' => 'direct',
                 ]
             );
-        } catch (RequestException $exception) {
+        } catch (RequestException $requestException) {
             // Assert
-            $errors  = \GuzzleHttp\json_decode($exception->getMessage(), false);
+            $errors = \GuzzleHttp\json_decode($requestException->getMessage(), false);
             $message = $errors->error->results->errors[0]->message;
-            $this->assertInstanceOf(get_class($expectedException), $exception);
+
+            $this->assertInstanceOf(get_class($expectedException), $requestException);
             $this->assertEquals($expectedMessage, $message);
-            $this->assertEquals($expectedException->getStatusCode(), $exception->getStatusCode());
+            $this->assertEquals($expectedException->getStatusCode(), $requestException->getStatusCode());
+
+            return;
+        } catch (InvalidDataTypeException $invalidDataTypeException) {
+            $this->assertInstanceOf(get_class($expectedException), $invalidDataTypeException);
 
             return;
         }
@@ -296,34 +306,34 @@ class AttributeValueTest extends CatalogTest
         $swatch = new AttributeValue\Dto\Swatch();
 
         return [
-            'missing code'       => [
+            'missing code' => [
                 'attributeValueData' => [
                     'sequenceId' => 1006,
-                    'swatch'     => $swatch,
-                    'name'       => $name,
+                    'swatch' => $swatch,
+                    'name' => $name,
                 ],
                 'expectedException'  => new RequestException(400),
                 'missingItem'        => 'code',
             ],
             'missing sequenceId' => [
-                'attributeData'     => [
-                    'code'   => 'code',
-                    'name'   => $name,
+                'attributeData' => [
+                    'code' => 'code',
+                    'name' => $name,
                     'swatch' => $swatch,
 
                 ],
                 'expectedException' => new RequestException(400),
                 'missingItem'       => 'sequenceId',
             ],
-            'missing name'       => [
-                'attributeData'     => [
-                    'code'       => 'code',
+            'missing name' => [
+                'attributeData' => [
+                    'code' => 'code',
                     'sequenceId' => 1006,
-                    'swatch'     => $swatch,
+                    'swatch' => $swatch,
 
                 ],
                 'expectedException' => new RequestException(400),
-                'missingItem'       => 'name',
+                'missingItem' => 'name',
             ],
         ];
     }
@@ -340,46 +350,45 @@ class AttributeValueTest extends CatalogTest
         $swatch = new AttributeValue\Dto\Swatch();
 
         return [
-
             'invalid code' => [
                 'attributeValueData' => [
-                    'code'       => 1234,
+                    'code' => 1234,
                     'sequenceId' => 1006,
-                    'swatch'     => $swatch,
-                    'name'       => $name,
+                    'swatch' => $swatch,
+                    'name' => $name,
                 ],
-                'expectedException'  => new RequestException(400),
-                'message'            => 'Expected type object but found type array',
+                'expectedException' => new InvalidDataTypeException(),
+                'message' => '',
             ],
             'invalid sequenceId' => [
                 'attributeValueData' => [
-                    'code'       => 'code',
+                    'code' => 'code',
                     'sequenceId' => 'INVALID',
-                    'swatch'     => $swatch,
-                    'name'       => $name,
+                    'swatch' => $swatch,
+                    'name' => $name,
                 ],
-                'expectedException'  => new RequestException(400),
-                'message'            => 'Expected type object but found type array',
+                'expectedException' => new InvalidDataTypeException(),
+                'message' => '',
             ],
             'invalid name' => [
                 'attributeValueData' => [
-                    'code'       => 'code',
+                    'code' => 'code',
                     'sequenceId' => 1006,
-                    'swatch'     => $swatch,
-                    'name'       => 'INVALID',
+                    'swatch' => $swatch,
+                    'name' => 'INVALID',
                 ],
-                'expectedException'  => new RequestException(400),
-                'message'            => 'Expected type object but found type array',
+                'expectedException' => new RequestException(400),
+                'message' => 'Expected type object but found type array',
             ],
             'invalid swatch' => [
                 'attributeValueData' => [
-                    'code'       => 'code',
+                    'code' => 'code',
                     'sequenceId' => 1006,
-                    'swatch'     => 'INVALID',
-                    'name'       => $name,
+                    'swatch' => 'INVALID',
+                    'name' => $name,
                 ],
-                'expectedException'  => new RequestException(400),
-                'message'            => 'Expected type object but found type array',
+                'expectedException' => new RequestException(400),
+                'message' => 'Expected type object but found type array',
             ],
         ];
     }

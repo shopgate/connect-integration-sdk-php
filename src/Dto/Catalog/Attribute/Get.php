@@ -40,15 +40,15 @@ class Get extends Attribute
      * @var array
      */
     protected $schema = [
-        'type' => 'object',
-        'properties' => [
-            'name' => [
-                'type' => 'string',
-                'items' => ['$ref' => Dto\Name::class]
+        'type'                 => 'object',
+        'properties'           => [
+            'name'   => [
+                'type'  => 'string',
+                'items' => ['$ref' => Dto\Name::class, 'skipValidation' => true]
             ],
             'values' => [
-                'type' => 'array',
-                'items' => ['$ref' => AttributeValue\Get::class]
+                'type'  => 'array',
+                'items' => ['$ref' => AttributeValue\Get::class, 'skipValidation' => true]
             ]
         ],
         'additionalProperties' => true,

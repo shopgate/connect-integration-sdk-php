@@ -33,55 +33,25 @@ class Get extends Order
      * @var array
      */
     protected $schema = [
-        'type' => 'object',
-        'properties' => [
-            'orderNumber' => ['type' => 'string'],
-            'externalCode' => ['type' => 'string'],
-            'type' => ['type' => 'string'],
-            'customerId' => ['type' => 'string'],
-            'externalCustomerNumber' => ['type' => 'string'],
-            'status' => ['type' => 'string'],
-            'expedited' => ['type' => 'boolean'],
-            'localeCode' => ['type' => 'string'],
-            'currencyCode' => ['type' => 'string'],
-            'taxExempt' => ['type' => 'boolean'],
-            'notes' => ['type' => 'string'],
-            'specialInstructions' => ['$ref' => Dto\SpecialInstructions::class],
-            'data' => ['$ref' => Dto\Data::class],
-            'fulfillmentStatus' => ['type' => 'string'],
-            'primaryBillToAddressSequenceIndex' => ['type' =>'number'],
-            'primaryShipToAddressSequenceIndex' => ['type' => 'number'],
-            'addressSequences' => [
-                'type' => 'array',
-                'items' => ['$ref' => Dto\Address::class]
+        'type'                 => 'object',
+        'properties'           => [
+            'specialInstructions' => ['$ref' => Dto\SpecialInstructions::class, 'skipValidation' => true],
+            'data'                => ['$ref' => Dto\Data::class, 'skipValidation' => true],
+            'addressSequences'    => [
+                'type'  => 'array',
+                'items' => ['$ref' => Dto\Address::class, 'skipValidation' => true]
             ],
-            'subTotal' => ['type' =>'number'],
-            'discountAmount' => ['type' =>'number'],
-            'promoAmount' => ['type' =>'number'],
-            'taxAmount' => ['type' =>'number'],
-            'tax2Amount' => ['type' =>'number'],
-            'shippingSubTotal' => ['type' =>'number'],
-            'shippingDiscountAmount' => ['type' =>'number'],
-            'shippingPromoAmount' => ['type' =>'number'],
-            'shippingTotal' => ['type' =>'number'],
-            'total' => ['type' =>'number'],
-            'date' => ['type' => 'string'],
-            'submitDate' => ['type' => 'string'],
-            'updateDate' => ['type' => 'string'],
-            'completeDate' => ['type' => 'string'],
-            'sourceDevice' => ['type' => 'string'],
-            'sourceIp' => ['type' => 'string'],
-            'fulfillmentGroups' => [
-                'type' => 'array',
-                'items' => ['$ref' => Dto\FulfillmentGroup::class]
+            'fulfillmentGroups'   => [
+                'type'  => 'array',
+                'items' => ['$ref' => Dto\FulfillmentGroup::class, 'skipValidation' => true]
             ],
-            'lineItems' => [
-                'type' => 'array',
-                'items' => ['$ref' => Dto\LineItem::class]
+            'lineItems'           => [
+                'type'  => 'array',
+                'items' => ['$ref' => Dto\LineItem::class, 'skipValidation' => true]
             ],
-            'history' => [
-                'type' => 'array',
-                'items' => ['$ref' => Dto\HistoryItem::class]
+            'history'             => [
+                'type'  => 'array',
+                'items' => ['$ref' => Dto\HistoryItem::class, 'skipValidation' => true],
             ]
         ],
         'additionalProperties' => true

@@ -37,7 +37,7 @@ use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder\Dto\FulfillmentOrderAddress;
  * @method string getCustomerId()
  * @method string getExternalCustomerNumber()
  * @method string getRouteType()
- * @method string getExpedited()
+ * @method bool getExpedited()
  * @method string getStatus()
  * @method float getSubTotal()
  * @method float getTaxAmount()

@@ -41,14 +41,10 @@ class Get extends Webhook
     protected $schema = [
         'type' => 'object',
         'properties' => [
-            'name' => ['type' => 'string'],
-            'endpoint' => ['type' => 'string'],
-            'active' => ['type' => 'boolean'],
             'events' => [
                 'type' => 'array',
-                'items' => ['$ref' => Dto\Event::class]
-            ],
-            'code' => ['type' => 'string']
+                'items' => ['$ref' => Dto\Event::class, 'skipValidation' => true]
+            ]
         ]
    ];
 }

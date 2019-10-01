@@ -39,7 +39,7 @@ class GetList extends Webhook
         'properties' => [
             'webhooks' => [
                 'type' => 'array',
-                'items' => ['$ref' => Get::class]
+                'items' => ['$ref' => Get::class, 'skipValidation' => true]
             ]
         ]
     ];

@@ -28,7 +28,7 @@ use Shopgate\ConnectSdk\Dto\Webhook\Webhook\Get;
 use Shopgate\ConnectSdk\Dto\Webhook\Webhook\Dto\Event;
 use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 
-class CreateGetList extends TestCase
+class GetListTest extends TestCase
 {
     /**
      * @throws InvalidDataTypeException

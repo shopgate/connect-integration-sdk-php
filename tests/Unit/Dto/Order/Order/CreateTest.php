@@ -109,7 +109,7 @@ class CreateTest extends TestCase
                                     'tracking' => 'test-tracking-code-two',
                                     'pickUpBy' => 'Johnny Bravo',
                                     'labelUrl' => 'test-label-url',
-                                    'fulfilledDate' => 'tomorrow',
+                                    'fulfillmentDate' => 'tomorrow',
                                     'packageItems' => [
                                         [
                                             'id' => 'product-id-one',
@@ -254,8 +254,8 @@ class CreateTest extends TestCase
         $this->assertEquals($expectedFulfillmentPackage['pickUpBy'], $actualFulfillmentPackage->getPickUpBy());
         $this->assertEquals($expectedFulfillmentPackage['labelUrl'], $actualFulfillmentPackage->getLabelUrl());
         $this->assertEquals(
-            $expectedFulfillmentPackage['fulfilledDate'],
-            $actualFulfillmentPackage->getFulfilledDate()
+            $expectedFulfillmentPackage['fulfillmentDate'],
+            $actualFulfillmentPackage->getFulfillmentDate()
         );
         $actualPackageItems = $actualFulfillmentPackage->getPackageItems()[0];
         $expectedPackageItems = $expectedFulfillmentPackage['packageItems'][0];

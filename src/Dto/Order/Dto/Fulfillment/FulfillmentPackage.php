@@ -34,7 +34,7 @@ use Shopgate\ConnectSdk\Dto\Base;
  * @method FulfillmentPackage setTracking(string $tracking)
  * @method FulfillmentPackage setPickUpBy(string $pickUpBy)
  * @method FulfillmentPackage setLabelUrl(string $labelUrl)
- * @method FulfillmentPackage setFulfilledDate(string $fulfilledDate)
+ * @method FulfillmentPackage setFulfillmentDate(string $fulfillmentDate)
  * @method FulfillmentPackage setPackageItems(FulfillmentPackage\PackageItem[] $packageItems)
  * @method string getId()
  * @method string getStatus()
@@ -45,7 +45,7 @@ use Shopgate\ConnectSdk\Dto\Base;
  * @method string getTracking()
  * @method string getPickUpBy()
  * @method string getLabelUrl()
- * @method string getFulfilledDate()
+ * @method string getFulfillmentDate()
  * @method FulfillmentPackage\PackageItem[] getPackageItems()
  *
  * @codeCoverageIgnore
@@ -72,7 +72,7 @@ class FulfillmentPackage extends Base
             'tracking' => ['type' => 'string'],
             'pickUpBy' => ['type' => 'string'],
             'labelUrl' => ['type' => 'string'],
-            'fulfilledDate' => ['type' => 'string'],
+            'fulfillmentDate' => ['type' => 'string'],
             'packageItems' => [
                 'type' => 'array',
                 'items' => ['$ref' => FulfillmentPackage\PackageItem::class]

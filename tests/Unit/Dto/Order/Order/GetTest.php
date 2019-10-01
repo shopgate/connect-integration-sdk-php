@@ -83,6 +83,7 @@ class GetTest extends TestCase
             'total' => 105,
             'date' => 'today',
             'submitDate' => 'today',
+            'updateDate' => 'today',
             'sourceDevice' => 'mobile',
             'sourceIp' => '111.111.111.111',
             'fulfillmentGroups' => [
@@ -109,7 +110,7 @@ class GetTest extends TestCase
                                     'tracking' => 'test-tracking-code-two',
                                     'pickUpBy' => 'Johnny Bravo',
                                     'labelUrl' => 'test-label-url',
-                                    'fulfilledDate' => 'tomorrow',
+                                    'fulfillmentDate' => 'tomorrow',
                                     'packageItems' => [
                                         [
                                             'id' => 'product-id-one',
@@ -209,6 +210,7 @@ class GetTest extends TestCase
         $this->assertEquals($entry['total'], $get->getTotal());
         $this->assertEquals($entry['date'], $get->getDate());
         $this->assertEquals($entry['submitDate'], $get->getSubmitDate());
+        $this->assertEquals($entry['updateDate'], $get->getUpdateDate());
         $this->assertEquals($entry['sourceDevice'], $get->getSourceDevice());
         $this->assertEquals($entry['sourceIp'], $get->getSourceIp());
         $actualFulfillmentGroup = $get->getFulfillmentGroups()[0];
@@ -254,8 +256,8 @@ class GetTest extends TestCase
         $this->assertEquals($expectedFulfillmentPackage['pickUpBy'], $actualFulfillmentPackage->getPickUpBy());
         $this->assertEquals($expectedFulfillmentPackage['labelUrl'], $actualFulfillmentPackage->getLabelUrl());
         $this->assertEquals(
-            $expectedFulfillmentPackage['fulfilledDate'],
-            $actualFulfillmentPackage->getFulfilledDate()
+            $expectedFulfillmentPackage['fulfillmentDate'],
+            $actualFulfillmentPackage->getFulfillmentDate()
         );
         $actualPackageItems = $actualFulfillmentPackage->getPackageItems()[0];
         $expectedPackageItems = $expectedFulfillmentPackage['packageItems'][0];

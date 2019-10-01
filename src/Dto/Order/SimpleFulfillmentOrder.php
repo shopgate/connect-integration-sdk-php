@@ -22,7 +22,6 @@
 
 namespace Shopgate\ConnectSdk\Dto\Order;
 
-use Dto\RegulatorInterface;
 use Shopgate\ConnectSdk\Dto\Base;
 use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder\Dto\FulfillmentOrderAddress;
 
@@ -81,50 +80,12 @@ class SimpleFulfillmentOrder extends Base
     const STATUS_FULFILLED = 'fulfilled';
 
     /**
-     * Rewritten to provide inheritance of payload structure
-     *
-     * @inheritDoc
-     */
-    public function __construct($input = null, $schema = null, RegulatorInterface $regulator = null)
-    {
-        $this->schema['properties']['fulfillmentOrderAddress'] = ['$ref' => FulfillmentOrderAddress::class];
-
-        parent::__construct($input, $schema, $regulator);
-    }
-
-    /**
      * @var array
      */
     protected $schema = [
         'type' => 'object',
         'properties' => [
-            'orderNumber' => ['type' => 'string'],
-            'externalCode' => ['type' => 'string'],
-            'posTransactionId' => ['type' => 'string'],
-            'cancellationReason' => ['type' => 'string'],
-            'salesOrderNumber' => ['type' => 'string'],
-            'locationCode' => ['type' => 'string'],
-            'type' => ['type' => 'string'],
-            'customerId' => ['type' => 'string'],
-            'externalCustomerNumber' => ['type' => 'string'],
-            'routeType' => ['type' => 'string'],
-            'expedited' => ['type' => 'string'],
-            'status' => ['type' => 'string'],
-            'subTotal' => ['type' => 'number'],
-            'taxAmount' => ['type' => 'number'],
-            'tax2Amount' => ['type' => 'number'],
-            'total' => ['type' => 'number'],
-            'shippingTotal' => ['type' => 'number'],
-            'localeCode' => ['type' => 'string'],
-            'currencyCode' => ['type' => 'string'],
-            'notes' => ['type' => 'string'],
-            'specialInstructions' => ['type' => 'string'],
-            'submitDate' => ['type' => 'string'],
-            'updateDate' => ['type' => 'string'],
-            'acceptDate' => ['type' => 'string'],
-            'readyDate' => ['type' => 'string'],
-            'completeDate' => ['type' => 'string'],
-            //'fulfillmentOrderAddress' => ['type' => 'object']
+            'fulfillmentOrderAddress' => ['$ref' => FulfillmentOrderAddress::class, 'skipValidation' => true]
         ],
         'additionalProperties' => true
     ];

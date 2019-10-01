@@ -44,10 +44,10 @@ class GetListTest extends TestCase
                     'currencyCode' => 'USD',
                     'notes' => 'Some note',
                     'specialInstructions' => '',
-                    "orderSubmittedDate" => "2019-09-04T07:26:42.535Z",
-                    "acceptedDate" => "2019-09-04T07:26:42.535Z",
+                    "submitDate" => "2019-09-04T07:26:42.535Z",
+                    "acceptDate" => "2019-09-04T07:26:42.535Z",
                     "readyDate" => "2019-09-04T07:26:42.535Z",
-                    "completedDate" => "2019-09-04T07:26:42.535Z"
+                    "completeDate" => "2019-09-04T07:26:42.535Z"
                 ]
             ]
         ];
@@ -82,5 +82,9 @@ class GetListTest extends TestCase
         $this->assertEquals($entry['fulfillmentOrders'][0]['currencyCode'], $get->getCurrencyCode());
         $this->assertEquals($entry['fulfillmentOrders'][0]['notes'], $get->getNotes());
         $this->assertEquals($entry['fulfillmentOrders'][0]['specialInstructions'], $get->getSpecialInstructions());
+        $this->assertEquals($entry['fulfillmentOrders'][0]['submitDate'], $get->getSubmitDate());
+        $this->assertEquals($entry['fulfillmentOrders'][0]['acceptDate'], $get->getAcceptDate());
+        $this->assertEquals($entry['fulfillmentOrders'][0]['readyDate'], $get->getReadyDate());
+        $this->assertEquals($entry['fulfillmentOrders'][0]['completeDate'], $get->getCompleteDate());
     }
 }

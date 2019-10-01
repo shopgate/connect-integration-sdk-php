@@ -25,6 +25,7 @@ namespace Shopgate\ConnectSdk\Tests\Integration;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute\Dto\Name;
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
+use Shopgate\ConnectSdk\Dto\Catalog\Catalog;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
@@ -42,21 +43,9 @@ use Shopgate\ConnectSdk\Dto\Catalog\Reservation;
 use Shopgate\ConnectSdk\Dto\Location\Location;
 use Shopgate\ConnectSdk\Exception\Exception;
 
-abstract class CatalogTest extends ShopgateSdkTest
+abstract class AbstractCatalogTest extends ShopgateSdkTest
 {
-    const CATALOG_SERVICE = 'catalog';
-    const LOCATION_SERVICE = 'location';
-    const CUSTOMER_SERVICE = 'customer';
-    const METHOD_DELETE_CATEGORY = 'deleteCategory';
-    const METHOD_DELETE_PRODUCT = 'deleteProduct';
-    const METHOD_DELETE_ATTRIBUTE = 'deleteAttribute';
-    const METHOD_DELETE_LOCATION = 'deleteLocation';
-    const METHOD_DELETE_INVENTORIES = 'deleteInventories';
-    const METHOD_DELETE_RESERVATIONS = 'deleteReservations';
-    const METHOD_DELETE_CUSTOMER = 'deleteCustomer';
-
-    const SAMPLE_CATALOG_CODE = 'NARetail';
-    const SAMPLE_CATALOG_CODE_NON_DEFAULT = 'NAWholesale';
+    const TEST_CATALOG_CODE = 'TestCatalogCode';
 
     const PRODUCT_CODE = 'integration-test';
     const PRODUCT_CODE_SECOND = 'integration-test-2';
@@ -76,31 +65,23 @@ abstract class CatalogTest extends ShopgateSdkTest
     {
         parent::setUp();
 
-        $this->registerForCleanUp(
-            self::CATALOG_SERVICE,
-            $this->sdk->getCatalogService(),
-            [
-                self::METHOD_DELETE_CATEGORY => ['force' => true],
-                self::METHOD_DELETE_PRODUCT => [],
-                self::METHOD_DELETE_ATTRIBUTE => [],
-                self::METHOD_DELETE_RESERVATIONS => [],
-                self::METHOD_DELETE_INVENTORIES => [],
-            ]
-        );
-        $this->registerForCleanUp(
-            self::LOCATION_SERVICE,
-            $this->sdk->getLocationService(),
-            [
-                self::METHOD_DELETE_LOCATION => []
-            ]
-        );
-        $this->registerForCleanUp(
-            self::CUSTOMER_SERVICE,
-            $this->sdk->getCustomerService(),
-            [
-                self::METHOD_DELETE_CUSTOMER => []
-            ]
-        );
+        $this->createDefaultCatalogs();
+    }
+
+    /**
+     * @return Catalog\Create
+     *
+     * @throws Exception
+     */
+    protected function provideSampleCatalog()
+    {
+        return
+            (new Catalog\Create())
+                ->setCode(self::TEST_CATALOG_CODE)
+                ->setName('North American Retail')
+                ->setDefaultLocaleCode('en-us')
+                ->setDefaultCurrencyCode('USD')
+                ->setIsDefault(true);
     }
 
     /**‚

@@ -20,9 +20,31 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Tests\Integration;
+namespace Shopgate\ConnectSdk\Dto\Catalog\Catalog;
 
-abstract class OrderTest extends ShopgateSdkTest
+use Shopgate\ConnectSdk\Dto\Base;
+use Shopgate\ConnectSdk\Dto\Meta;
+
+/**
+ * @method Meta getMeta()
+ * @method Get[] getCatalogs()
+ *
+ * @codeCoverageIgnore
+ */
+class GetList extends Base
 {
-    const LOCATION_CODE = 'integration-test';
+    /**
+     * @var array
+     */
+    protected $schema = [
+        'type'                 => 'object',
+        'properties'           => [
+            'meta'       => ['$ref' => Meta::class, 'skipValidation' => true],
+            'catalogs' => [
+                'type'  => 'array',
+                'items' => ['$ref' => Get::class, 'skipValidation' => true]
+            ]
+        ],
+        'additionalProperties' => true
+    ];
 }

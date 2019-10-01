@@ -20,9 +20,20 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Tests\Integration;
+namespace Shopgate\ConnectSdk\Dto\Catalog\Catalog;
 
-abstract class OrderTest extends ShopgateSdkTest
+use Shopgate\ConnectSdk\Dto\Base;
+
+/**
+ * @method string getCode()
+ * @method string getName()
+ * @method string getDefaultLocaleCode()
+ * @method string getDefaultCurrencyCode()
+ * @method boolean getIsDefault()
+ * @method string getParentCatalogCode()
+ *
+ * @inheritdoc
+ */
+class Get extends Base
 {
-    const LOCATION_CODE = 'integration-test';
 }

@@ -2,9 +2,9 @@
 
 require_once(dirname(__FILE__) . '/../../bootstrap.php');
 
-$categories = provideSampleCategories();
-
 try {
+    $categories = provideSampleCategories();
+
     $handler = $sdk->getBulkImportService()->createFileImport();
     $categoryHandler = $handler->createCategoryFeed(CATALOG_CODE);
     $categoryHandler->add($categories[0]);

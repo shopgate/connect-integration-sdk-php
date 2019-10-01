@@ -26,39 +26,8 @@ namespace Shopgate\ConnectSdk\Tests\Integration;
 
 abstract class CustomerTest extends ShopgateSdkTest
 {
-    const CUSTOMER_SERVICE          = 'customer';
-    const CATALOG_SERVICE           = 'catalog';
-    const METHOD_DELETE_ATTRIBUTE   = 'deleteAttribute';
-    const METHOD_DELETE_CONTACT     = 'deleteContact';
-    const METHOD_DELETE_CUSTOMER    = 'deleteCustomer';
-    const METHOD_DELETE_WISHLIST    = 'deleteWishlist';
-    const METHOD_DELETE_PRODUCT     = 'deleteProduct';
     const CONTACT_CODE              = 'integration-test';
     const WISHLIST_CODE             = 'integration-test-wishlist';
     const WISHLIST_PRODUCT_CODE     = 'wishlist-product-1';
     const WISHLIST_PRODUCT_CODE_TWO = 'wishlist-product-2';
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->registerForCleanUp(
-            self::CUSTOMER_SERVICE,
-            $this->sdk->getCustomerService(),
-            [
-                self::METHOD_DELETE_CONTACT   => [],
-                self::METHOD_DELETE_CUSTOMER  => [],
-                self::METHOD_DELETE_ATTRIBUTE => [],
-                self::METHOD_DELETE_WISHLIST  => []
-            ]
-        );
-
-        $this->registerForCleanUp(
-            self::CATALOG_SERVICE,
-            $this->sdk->getCatalogService(),
-            [
-                self::METHOD_DELETE_PRODUCT => []
-            ]
-        );
-    }
 }

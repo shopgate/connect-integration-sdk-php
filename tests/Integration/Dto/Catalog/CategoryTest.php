@@ -29,9 +29,9 @@ use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
-use Shopgate\ConnectSdk\Tests\Integration\CatalogTest;
+use Shopgate\ConnectSdk\Tests\Integration\AbstractCatalogTest;
 
-class CategoryTest extends CatalogTest
+class CategoryTest extends AbstractCatalogTest
 {
     /**
      * @throws Exception
@@ -55,6 +55,38 @@ class CategoryTest extends CatalogTest
         $categories = $this->getCategories($sampleCategoryCodes);
         /** @noinspection PhpParamsInspection */
         $this->assertCount(2, $categories->getCategories());
+    }
+
+    /**
+     * @param Category\Create[] $sampleCategories
+     * @param array             $meta
+     *
+     * @return ResponseInterface
+     * @throws RequestException
+     * @throws Exception
+     *
+     */
+    private function createCategories(array $sampleCategories, array $meta = [])
+    {
+        return $this->sdk->getCatalogService()->addCategories($sampleCategories, $meta);
+    }
+
+    /**
+     * @param array $categoryCodes
+     * @param array $meta
+     *
+     * @return Category\GetList
+     * @throws Exception
+     *
+     */
+    private function getCategories($categoryCodes = [], $meta = [])
+    {
+        return $this->sdk->getCatalogService()->getCategories(
+            array_merge(
+                ['filters' => ['code' => ['$in' => $categoryCodes]]],
+                $meta
+            )
+        );
     }
 
     /**
@@ -180,7 +212,7 @@ class CategoryTest extends CatalogTest
                 'limit' => 1,
                 'offset' => 1,
                 'expectedCount' => 1,
-                'expectedCategoryCodes' => [
+                'expectedCodes' => [
                     self::CATEGORY_CODE_SECOND
                 ]
             ],
@@ -751,6 +783,48 @@ class CategoryTest extends CatalogTest
     }
 
     /**
+     * @param string             $name
+     * @param Category\Dto\Image $image
+     * @param Category\Dto\Url   $url
+     * @param string             $description
+     * @param string             $parentCategoryCode
+     *
+     * @return Category\Update
+     *
+     * @throws Exception
+     */
+    private function provideSampleUpdateCategory(
+        $name = null,
+        $image = null,
+        $url = null,
+        $description = null,
+        $parentCategoryCode = null
+
+    ) {
+        $category = new Category\Update();
+
+        if ($name) {
+            $translatedName = new Category\Dto\Name(['en-us' => $name]);
+            $category->setName($translatedName);
+        }
+        if ($url) {
+            $category->setUrl($url);
+        }
+        if ($description) {
+            $translatedDescription = new Category\Dto\Description($description);
+            $category->setDescription($translatedDescription);
+        }
+        if ($image) {
+            $category->setImage($image);
+        }
+        if ($parentCategoryCode) {
+            $category->setParentCategoryCode($parentCategoryCode);
+        }
+
+        return $category;
+    }
+
+    /**
      * @depends testCreateCategoryDirect
      * @depends testGetCategories
      *
@@ -959,79 +1033,5 @@ class CategoryTest extends CatalogTest
 
         // Act
         $this->createCategories([$category]);
-    }
-
-    /**
-     * @param array $categoryCodes
-     * @param array $meta
-     *
-     * @return Category\GetList
-     * @throws Exception
-     *
-     */
-    private function getCategories($categoryCodes = [], $meta = [])
-    {
-        return $this->sdk->getCatalogService()->getCategories(
-            array_merge(
-                ['filters' => ['code' => ['$in' => $categoryCodes]]],
-                $meta
-            )
-        );
-    }
-
-    /**
-     * @param Category\Create[] $sampleCategories
-     * @param array             $meta
-     *
-     * @return ResponseInterface
-     * @throws RequestException
-     * @throws Exception
-     *
-     */
-    private function createCategories(array $sampleCategories, array $meta = [])
-    {
-        return $this->sdk->getCatalogService()->addCategories($sampleCategories, $meta);
-    }
-
-    /**
-     * @param string             $name
-     * @param Category\Dto\Image $image
-     * @param Category\Dto\Url   $url
-     * @param string             $description
-     * @param string             $parentCategoryCode
-     *
-     * @return Category\Update
-     *
-     * @throws Exception
-     */
-    private function provideSampleUpdateCategory(
-        $name = null,
-        $image = null,
-        $url = null,
-        $description = null,
-        $parentCategoryCode = null
-
-    ) {
-        $category = new Category\Update();
-
-        if ($name) {
-            $translatedName = new Category\Dto\Name(['en-us' => $name]);
-            $category->setName($translatedName);
-        }
-        if ($url) {
-            $category->setUrl($url);
-        }
-        if ($description) {
-            $translatedDescription = new Category\Dto\Description($description);
-            $category->setDescription($translatedDescription);
-        }
-        if ($image) {
-            $category->setImage($image);
-        }
-        if ($parentCategoryCode) {
-            $category->setParentCategoryCode($parentCategoryCode);
-        }
-
-        return $category;
     }
 }

@@ -9,9 +9,10 @@ use \Shopgate\ConnectSdk\Exception\Exception;
  * preconditions:
  * - parentCatalog PARENT_CATALOG_CODE exists
  */
-$catalogs = provideCatalogs();
 
 try {
+    $catalogs = provideCatalogs();
+
     $sdk->getClient()->doRequest(
         [
             // general

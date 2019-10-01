@@ -7,6 +7,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## [Unreleased]
 ### Added
 - getFulfillmentOrders direct call
+- addCatalog direct call
+- addParentCatalog direct call
+- updateCatalog direct call
+- getCatalog
+- getCatalogs
 
 ### Changed
 - catalogCode is no longer needed when creating an inventory feed

@@ -10,9 +10,10 @@ use \Shopgate\ConnectSdk\ShopgateSdk;
  * - product PRODUCT_CODE and PRODUCT_CODE_SECOND exists
  * - catalog CATALOG_CODE exists
  */
-$inventory = provideSampleInventories();
 
 try {
+    $inventory = provideSampleInventories();
+
     $sdk->getCatalogService()->addInventories($inventory, [
         'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT
     ]);

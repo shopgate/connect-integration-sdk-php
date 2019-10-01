@@ -29,19 +29,6 @@ class WebhookTest extends ShopgateSdkTest
 {
     const WEBHOOK_SIMPLE_PROPS = ['name', 'endpoint', 'active'];
 
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->registerForCleanUp(
-            self::WEBHOOK_SERVICE,
-            $this->sdk->getWebhooksService(),
-            [
-                self::METHOD_DELETE_WEBHOOK => []
-            ]
-        );
-    }
-
     /**
      * @param Webhook\Get[] $webhooks
      *

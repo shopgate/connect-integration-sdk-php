@@ -141,6 +141,14 @@ abstract class ShopgateSdkTest extends TestCase
                 self::METHOD_DELETE_CUSTOMER_WISHLIST => []
             ]
         );
+
+        $this->registerForCleanUp(
+            self::WEBHOOK_SERVICE,
+            $this->sdk->getWebhooksService(),
+            [
+                self::METHOD_DELETE_WEBHOOK => []
+            ]
+        );
     }
 
     /**

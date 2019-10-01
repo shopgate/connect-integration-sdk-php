@@ -59,7 +59,7 @@ class ContactTest extends CustomerTest
 
         $this->deleteEntitiesAfterTestRun(
             self::CUSTOMER_SERVICE,
-            self::METHOD_DELETE_CONTACT,
+            self::METHOD_DELETE_CUSTOMER_CONTACT,
             $deleteIds
         );
 
@@ -169,7 +169,7 @@ class ContactTest extends CustomerTest
         // CleanUp
         $this->deleteEntitiesAfterTestRun(
             self::CUSTOMER_SERVICE,
-            self::METHOD_DELETE_CONTACT,
+            self::METHOD_DELETE_CUSTOMER_CONTACT,
             [[$contact->getId(), $customerId]]
         );
 

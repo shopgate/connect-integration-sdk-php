@@ -10,6 +10,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - webhook services added
 - webhook create, get, getList, webhook event DTOs
 - webhook unit and integration tests
+- addCatalog direct call
+- addParentCatalog direct call
+- updateCatalog direct call
+- getCatalog
+- getCatalogs
 
 ### Changed
 - catalogCode is no longer needed when creating an inventory feed

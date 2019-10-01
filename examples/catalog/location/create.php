@@ -8,9 +8,10 @@ use \Shopgate\ConnectSdk\ShopgateSdk;
  * preconditions:
  * - a default catalog exists
  */
-$locations = provideLocations();
 
 try {
+    $locations = provideLocations();
+
     $sdk->getClient()->doRequest(
         [
             // general

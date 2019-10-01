@@ -2,12 +2,12 @@
 
 require_once(dirname(__FILE__) . '/../../bootstrap.php');
 
-$inventory = provideSampleInventories();
-$attributes = provideSampleAttributes();
-$categories = provideSampleCategories();
-$products = provideSampleProducts();
-
 try {
+    $inventory = provideSampleInventories();
+    $attributes = provideSampleAttributes();
+    $categories = provideSampleCategories();
+    $products = provideSampleProducts();
+
     $handler = $sdk->getBulkImportService()->createFileImport();
     $attributeHandler = $handler->createAttributeFeed(CATALOG_CODE);
     $attributeHandler->add($attributes[0]);

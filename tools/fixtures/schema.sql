@@ -619,3 +619,24 @@ CREATE TABLE omnichannel_user.`UserMerchant`
     CONSTRAINT `UserMerchant_ibfk_2` FOREIGN KEY (`UserID`) REFERENCES `User` (`UserID`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
+
+DROP TABLE IF EXISTS omnichannel_user.`UserMetric`;
+
+CREATE TABLE omnichannel_user.`UserMetric`
+(
+    `UserMetricID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+    `UserID`       char(36)            NOT NULL,
+    `MerchantID`   char(36)                     DEFAULT NULL,
+    `Key`          varchar(255)        NOT NULL DEFAULT '',
+    `Value`        varchar(255)                 DEFAULT NULL,
+    `CreateBy`     varchar(255)        NOT NULL DEFAULT '',
+    `CreateDate`   datetime            NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `UpdateBy`     varchar(255)                 DEFAULT NULL,
+    `UpdateDate`   datetime                     DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    `DeleteBy`     varchar(255)                 DEFAULT NULL,
+    `DeleteDate`   datetime                     DEFAULT NULL,
+    PRIMARY KEY (`UserMetricID`),
+    UNIQUE KEY `UserMetric_Key` (`UserID`, `MerchantID`, `Key`),
+    CONSTRAINT `UserMetric_UserID` FOREIGN KEY (`UserID`) REFERENCES `User` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;

@@ -2,9 +2,9 @@
 
 require_once(dirname(__FILE__) . '/../../bootstrap.php');
 
-$products = provideSampleProducts();
-
 try {
+    $products = provideSampleProducts();
+
     $handler = $sdk->getBulkImportService()->createFileImport();
     $productHandler = $handler->createProductFeed(CATALOG_CODE);
     $productHandler->add($products[0]);

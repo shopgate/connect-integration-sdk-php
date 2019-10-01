@@ -4,9 +4,9 @@
 namespace Shopgate\ConnectSdk\Tests\Integration\Http;
 
 use Shopgate\ConnectSdk\Exception\Exception;
-use Shopgate\ConnectSdk\Tests\Integration\CatalogTest;
+use Shopgate\ConnectSdk\Tests\Integration\AbstractCatalogTest;
 
-class BulkImportTest extends CatalogTest
+class BulkImportTest extends AbstractCatalogTest
 {
     const SLEEP_TIME_AFTER_BULK = 12000000;
     const LOCATION_CODE = 'WHS1';

@@ -25,8 +25,10 @@ namespace Shopgate\ConnectSdk\Service;
 use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
+use Shopgate\ConnectSdk\Dto\Catalog\Catalog as CatalogDto;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
+use Shopgate\ConnectSdk\Dto\Catalog\ParentCatalog;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
 use Shopgate\ConnectSdk\Dto\Catalog\ProductDescriptions;
 use Shopgate\ConnectSdk\Dto\Catalog\Reservation;
@@ -330,7 +332,7 @@ class Catalog
     }
 
     /**
-     * @param string $code -  product code
+     * @param string $code - product code
      * @param array  $query
      *
      * @return Product\Get
@@ -358,7 +360,7 @@ class Catalog
     }
 
     /**
-     * @param string $code -  product code
+     * @param string $code - product code
      * @param array  $query
      *
      * @return ProductDescriptions\Get
@@ -735,8 +737,8 @@ class Catalog
     }
 
     /**
-     * @param Reservation\Create[]  $reservations
-     * @param array                 $query
+     * @param Reservation\Create[] $reservations
+     * @param array                $query
      *
      * @return ResponseInterface
      *
@@ -881,5 +883,174 @@ class Catalog
         $response['reservations'] = $reservations;
 
         return new Reservation\GetList($response);
+    }
+
+    /**
+     * @param ParentCatalog\Create[] $parentCatalogs
+     * @param array                  $query
+     *
+     * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     * @throws InvalidDataTypeException
+     */
+    public function addParentCatalogs(array $parentCatalogs, array $query = [])
+    {
+        return $this->client->doRequest(
+            [
+                'service' => self::SERVICE_CATALOG,
+                'method' => 'post',
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
+                'json' => ['parentCatalogs' => $parentCatalogs],
+                'query' => $query,
+                'path' => 'parentCatalogs',
+            ]
+        );
+    }
+
+    /**
+     * @param string $catalogCode
+     * @param array  $query
+     *
+     * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     * @throws InvalidDataTypeException
+     */
+    public function deleteCatalog($catalogCode, array $query = [])
+    {
+        return $this->client->doRequest(
+            [
+                'service' => self::SERVICE_CATALOG,
+                'method' => 'delete',
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
+                'query' => $query,
+                'path' => 'catalogs/' . $catalogCode,
+            ]
+        );
+    }
+
+    /**
+     * @param CatalogDto\Create[] $catalogs
+     * @param array               $query
+     *
+     * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     * @throws InvalidDataTypeException
+     */
+    public function addCatalogs(array $catalogs, array $query = [])
+    {
+        return $this->client->doRequest(
+            [
+                'service' => self::SERVICE_CATALOG,
+                'method' => 'post',
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
+                'json' => ['catalogs' => $catalogs],
+                'query' => $query,
+                'path' => 'catalogs',
+            ]
+        );
+    }
+
+    /**
+     * @param string $code - catalog code
+     * @param array  $query
+     *
+     * @return CatalogDto\Get
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     * @throws InvalidDataTypeException
+     */
+    public function getCatalog($code, array $query = [])
+    {
+        $response = $this->client->doRequest(
+            [
+                // direct only
+                'service' => self::SERVICE_CATALOG,
+                'method' => 'get',
+                'path' => 'catalogs/' . $code,
+                'query' => $query
+            ]
+        );
+        $response = $this->jsonHelper->decode($response->getBody(), true);
+
+        return new CatalogDto\Get($response['catalog']);
+    }
+
+    /**
+     * @param array $query
+     *
+     * @return CatalogDto\GetList
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     * @throws InvalidDataTypeException
+     */
+    public function getCatalogs(array $query = [])
+    {
+        if (isset($query['filters'])) {
+            $query['filters'] = $this->jsonHelper->encode($query['filters']);
+        }
+
+        $response = $this->client->doRequest(
+            [
+                'service' => self::SERVICE_CATALOG,
+                'method' => 'get',
+                'path' => 'catalogs',
+                'query' => $query,
+            ]
+        );
+        $response = $this->jsonHelper->decode($response->getBody(), true);
+
+        $catalogs = [];
+        foreach ($response['catalogs'] as $catalog) {
+            $catalogs[] = new Reservation\Get($catalog);
+        }
+        $response['meta'] = new Meta($response['meta']);
+        $response['catalogs'] = $catalogs;
+
+        return new CatalogDto\GetList($response);
+    }
+
+    /**
+     * @param string            $code - catalog code
+     * @param CatalogDto\Update $catalog
+     * @param array             $query
+     *
+     * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     * @throws InvalidDataTypeException
+     */
+    public function updateCatalog($code, CatalogDto\Update $catalog, array $query = [])
+    {
+        return $this->client->doRequest(
+            [
+                'service' => self::SERVICE_CATALOG,
+                'method' => 'post',
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
+                'json' => $catalog,
+                'query' => $query,
+                'path' => 'catalogs/' . $code,
+            ]
+        );
     }
 }

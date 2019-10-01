@@ -31,7 +31,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Name;
  * @method string getDefaultCurrencyCode()
  * @method boolean getIsDefault()
  *
- * @method Update setName(Name $name)
+ * @method Update setName(string $name)
  * @method Update setDefaultLocaleCode(string $defaultLocaleCode)
  * @method Update setDefaultCurrencyCode(string $defaultCurrencyCode)
  * @method Update setIsDefault(boolean $isDefault)

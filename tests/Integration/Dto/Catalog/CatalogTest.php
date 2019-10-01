@@ -25,6 +25,7 @@
 namespace Shopgate\ConnectSdk\Tests\Integration\Dto\Catalog;
 
 use Shopgate\ConnectSdk\Dto\Catalog\Catalog\Get;
+use Shopgate\ConnectSdk\Dto\Catalog\Catalog\Update;
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Tests\Integration\AbstractCatalogTest;
@@ -121,6 +122,33 @@ class CatalogTest extends AbstractCatalogTest
         // Assert
         $this->assertCount(3, $catalogs->getCatalogs());
         $this->assertInstanceOf(Get::class, $catalogs->getCatalogs()[0]);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testUpdateCatalog()
+    {
+        // Arrange
+        $catalog = $this->provideSampleCatalog();
+        $this->sdk->getCatalogService()->addCatalogs([$catalog]);
+        $updatedName = 'Updated Name';
+        $catalog->setName($updatedName);
+
+        // Act
+        $this->sdk->getCatalogService()->updateCatalog($catalog->getCode(), (new Update())->setName($updatedName));
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_CATALOG,
+            [$catalog->getCode()]
+        );
+
+        // Assert
+        $catalog = $this->sdk->getCatalogService()->getCatalog($catalog->getCode());
+
+        $this->assertEquals($updatedName, $catalog->getName());
     }
 
     /**

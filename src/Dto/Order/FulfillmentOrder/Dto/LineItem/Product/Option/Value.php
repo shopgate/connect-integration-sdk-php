@@ -38,7 +38,6 @@ class Value extends Base
         'anyOf' => [
             [
                 'type' => 'string',
-                'additionalProperties' => true,
             ],
             [
                 'type' => 'object',

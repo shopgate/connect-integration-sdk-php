@@ -121,8 +121,7 @@ class Create extends Product
             'taxClass' => ['type' => 'string'],
             'minQty' => ['type' => 'number'],
             'maxQty' => ['type' => 'number'],
-            'externalUpdateDate' => ['type' => 'string'],
-            'sequenceId' => ['type' => 'number']
+            'externalUpdateDate' => ['type' => 'string']
         ],
         'additionalProperties' => true,
     ];

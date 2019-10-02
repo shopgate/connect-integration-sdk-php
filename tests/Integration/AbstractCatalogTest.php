@@ -462,7 +462,8 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
 
         $categoryMapping2 = new Product\Dto\Categories();
         $categoryMapping2->setCode(self::CATEGORY_CODE_SECOND)
-            ->setIsPrimary(false);
+            ->setIsPrimary(false)
+            ->setSequenceId(5);
 
         return [$categoryMapping, $categoryMapping2];
     }

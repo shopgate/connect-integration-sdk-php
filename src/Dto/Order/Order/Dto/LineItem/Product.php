@@ -23,6 +23,7 @@
 namespace Shopgate\ConnectSdk\Dto\Order\Order\Dto\LineItem;
 
 use Shopgate\ConnectSdk\Dto\Base;
+use Shopgate\ConnectSdk\Dto\Order\Order\Dto\LineItem\Product\Option;
 
 /**
  * @method Product setCode(string $code)
@@ -30,11 +31,14 @@ use Shopgate\ConnectSdk\Dto\Base;
  * @method Product setImage(string $image)
  * @method Product setPrice(float $price)
  * @method Product setCurrencyCode(string $currencyCode)
+ * @method Product setOptions(Option[] $options)
+ *
  * @method string getCode()
  * @method string getName()
  * @method string getImage()
  * @method float getPrice()
  * @method string getCurrencyCode()
+ * @method Option[] getOptions()
  *
  * @codeCoverageIgnore
  */
@@ -50,7 +54,11 @@ class Product extends Base
             'name' => ['type' => 'string'],
             'image' => ['type' => 'string'],
             'price' => ['type' => 'number'],
-            'currencyCode' => ['type' => 'string']
+            'currencyCode' => ['type' => 'string'],
+            'options' => [
+                'type' => 'array',
+                'items' => ['$ref' => Product\Option::class]
+            ]
         ],
         'additionalProperties' => true,
     ];

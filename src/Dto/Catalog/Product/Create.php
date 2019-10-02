@@ -70,58 +70,58 @@ class Create extends Product
      * @codeCoverageIgnore
      */
     protected $schema = [
-        'type'                 => 'object',
-        'properties'           => [
-            'name'                => ['$ref' => Dto\Name::class],
-            'longName'            => ['$ref' => Dto\LongName::class],
-            'shortDescription'    => ['$ref' => Dto\ShortDescription::class],
-            'longDescription'     => ['$ref' => Dto\LongDescription::class],
-            'categories'          => [
-                'type'  => 'array',
+        'type' => 'object',
+        'properties' => [
+            'name' => ['$ref' => Dto\Name::class],
+            'longName' => ['$ref' => Dto\LongName::class],
+            'shortDescription' => ['$ref' => Dto\ShortDescription::class],
+            'longDescription' => ['$ref' => Dto\LongDescription::class],
+            'categories' => [
+                'type' => 'array',
                 'items' => ['$ref' => Dto\Categories::class]
             ],
-            'properties'          => [
-                'type'  => 'array',
+            'properties' => [
+                'type' => 'array',
                 'items' => ['$ref' => Dto\Properties::class]
             ],
-            'media'               => ['$ref' => Dto\MediaList::class],
-            'options'             => [
-                'type'  => 'array',
+            'media' => ['$ref' => Dto\MediaList::class],
+            'options' => [
+                'type' => 'array',
                 'items' => ['$ref' => Dto\Options::class]
             ],
-            'extras'              => [
-                'type'  => 'array',
+            'extras' => [
+                'type' => 'array',
                 'items' => ['$ref' => Dto\Extras::class]
             ],
-            'code'                => ['type' => 'string'],
-            'parentProductCode'   => ['type' => 'string'],
-            'catalogCode'         => ['type' => 'string'],
-            'modelType'           => ['type' => 'string'],
-            'identifiers'         => ['$ref' => Dto\Identifiers::class],
-            'price'               => ['$ref' => Dto\Price::class],
-            'fulfillmentMethods'  => [
-                'type'  => 'array',
+            'code' => ['type' => 'string'],
+            'parentProductCode' => ['type' => 'string'],
+            'catalogCode' => ['type' => 'string'],
+            'modelType' => ['type' => 'string'],
+            'identifiers' => ['$ref' => Dto\Identifiers::class],
+            'price' => ['$ref' => Dto\Price::class],
+            'fulfillmentMethods' => [
+                'type' => 'array',
                 'items' => [
                     'type' => 'string',
                 ],
             ],
-            'unit'                => ['type' => 'string'],
-            'isSerialized'        => ['type' => 'boolean'],
-            'status'              => ['type' => 'string'],
-            'startDate'           => ['type' => 'string'],
-            'endDate'             => ['type' => 'string'],
-            'firstAvailableDate'  => ['type' => 'string'],
-            'eolDate'             => ['type' => 'string'],
-            'isInventoryManaged'  => ['type' => 'boolean'],
-            'inventoryTreatment'  => ['type' => 'string'],
+            'unit' => ['type' => 'string'],
+            'isSerialized' => ['type' => 'boolean'],
+            'status' => ['type' => 'string'],
+            'startDate' => ['type' => 'string'],
+            'endDate' => ['type' => 'string'],
+            'firstAvailableDate' => ['type' => 'string'],
+            'eolDate' => ['type' => 'string'],
+            'isInventoryManaged' => ['type' => 'boolean'],
+            'inventoryTreatment' => ['type' => 'string'],
             'shippingInformation' => ['$ref' => Dto\ShippingInformation::class],
-            'rating'              => ['type' => 'number'],
-            'url'                 => ['type' => 'string'],
-            'isTaxed'             => ['type' => 'boolean'],
-            'taxClass'            => ['type' => 'string'],
-            'minQty'              => ['type' => 'number'],
-            'maxQty'              => ['type' => 'number'],
-            'externalUpdateDate'  => ['type' => 'string'],
+            'rating' => ['type' => 'number'],
+            'url' => ['type' => 'string'],
+            'isTaxed' => ['type' => 'boolean'],
+            'taxClass' => ['type' => 'string'],
+            'minQty' => ['type' => 'number'],
+            'maxQty' => ['type' => 'number'],
+            'externalUpdateDate' => ['type' => 'string']
         ],
         'additionalProperties' => true,
     ];

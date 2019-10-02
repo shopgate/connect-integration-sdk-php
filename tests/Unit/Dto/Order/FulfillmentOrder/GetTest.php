@@ -101,7 +101,7 @@ class GetTest extends TestCase
                             "tracking" => "JJD000390007882823450",
                             "pickUpBy" => "Jane Doe",
                             "labelUrl" => "https://documentserver.internal/label/label.pdf",
-                            "fulfilledDate" => "2019-09-04T07=>26=>42.535Z",
+                            "fulfillmentDate" => "2019-09-04T07=>26=>42.535Z",
                             "packageItems" => [
                                 [
                                     "id" => "3fa85f64-5717-4562-b3fc-2c963f66afa6",
@@ -135,7 +135,22 @@ class GetTest extends TestCase
                         "name" => "Fusion Backpack",
                         "image" => "https://myawesomeshop.com/images/img1.jpg",
                         "price" => 59.5,
-                        "currencyCode" => "USD"
+                        "currencyCode" => "USD",
+                        'options' => [
+                            [
+                                'code' => '146',
+                                'name' => 'Color',
+                                'value' => 'Red',
+                            ],
+                            [
+                                'code' => '677',
+                                'name' => 'Value option',
+                                'value' => [
+                                    'name' => 'Option value name',
+                                    'code' => '23987'
+                                ]
+                            ]
+                        ]
                     ]
                 ]
             ],
@@ -150,10 +165,10 @@ class GetTest extends TestCase
                     "eventUser" => "string4"
                 ]
             ],
-            "orderSubmittedDate" => "2019-09-04T07:26:42.535Z",
-            "acceptedDate" => "2019-09-04T07:26:42.535Z",
+            "submitDate" => "2019-09-04T07:26:42.535Z",
+            "acceptDate" => "2019-09-04T07:26:42.535Z",
             "readyDate" => "2019-09-04T07:26:42.535Z",
-            "completedDate" => "2019-09-04T07:26:42.535Z"
+            "completeDate" => "2019-09-04T07:26:42.535Z"
         ];
 
         // Act
@@ -172,6 +187,10 @@ class GetTest extends TestCase
         $this->assertEquals($entry['routeType'], $get->getRouteType());
         $this->assertEquals($entry['expedited'], $get->getExpedited());
         $this->assertEquals($entry['status'], $get->getStatus());
+        $this->assertEquals($entry['submitDate'], $get->getSubmitDate());
+        $this->assertEquals($entry['acceptDate'], $get->getAcceptDate());
+        $this->assertEquals($entry['readyDate'], $get->getReadyDate());
+        $this->assertEquals($entry['completeDate'], $get->getCompleteDate());
 
         $channel = $get->getChannel();
         $this->assertInstanceOf(FulfillmentOrderDto\Channel::class, $channel);
@@ -240,8 +259,8 @@ class GetTest extends TestCase
             $fulfillmentPackage->getPickUpBy());
         $this->assertEquals($entry['fulfillments'][0]['fulfillmentPackages'][0]['labelUrl'],
             $fulfillmentPackage->getLabelUrl());
-        $this->assertEquals($entry['fulfillments'][0]['fulfillmentPackages'][0]['fulfilledDate'],
-            $fulfillmentPackage->getFulfilledDate());
+        $this->assertEquals($entry['fulfillments'][0]['fulfillmentPackages'][0]['fulfillmentDate'],
+            $fulfillmentPackage->getFulfillmentDate());
 
         // FulfillmentPackageItem
         $fulfillmentPackageItems = $fulfillmentPackage->getPackageItems();
@@ -284,6 +303,19 @@ class GetTest extends TestCase
         $this->assertEquals($entry['lineItems'][0]['product']['image'], $lineItemProduct->getImage());
         $this->assertEquals($entry['lineItems'][0]['product']['price'], $lineItemProduct->getPrice());
         $this->assertEquals($entry['lineItems'][0]['product']['currencyCode'], $lineItemProduct->getCurrencyCode());
+
+        $productOptions = $lineItemProduct->getOptions();
+        $this->assertTrue(is_array($productOptions));
+        $productOption = $productOptions[0];
+        $this->assertInstanceOf(FulfillmentOrderDto\LineItem\Product\Option::class, $productOption);
+        $this->assertEquals($entry['lineItems'][0]['product']['options'][0]['code'], $productOption->getCode());
+        $this->assertEquals($entry['lineItems'][0]['product']['options'][0]['name'], $productOption->getName());
+        $this->assertEquals($entry['lineItems'][0]['product']['options'][0]['value'], $productOption->getValue());
+
+        $productOption = $productOptions[1];
+        $this->assertInstanceOf(FulfillmentOrderDto\LineItem\Product\Option\Value::class, $productOption->getValue());
+        $this->assertEquals($entry['lineItems'][0]['product']['options'][1]['value']['name'], $productOption->getValue()->getName());
+        $this->assertEquals($entry['lineItems'][0]['product']['options'][1]['value']['code'], $productOption->getValue()->getCode());
 
         // History
         $history = $get->getHistory();

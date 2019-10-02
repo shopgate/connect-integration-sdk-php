@@ -42,7 +42,7 @@ class Create extends AttributeValue
         'properties'           => [
             'code'       => ['type' => 'string'],
             'sequenceId' => ['type' => 'integer'],
-            'name'       => ['type' => 'object'],
+            'name'       => ['$ref' => Dto\Name::class],
             'swatch'     => ['type' => 'object'],
         ],
         'additionalProperties' => true,

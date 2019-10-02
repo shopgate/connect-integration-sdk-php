@@ -55,7 +55,7 @@ use Shopgate\ConnectSdk\Dto\Order\Order\Dto;
  * @method float getTotal()
  * @method string getDate()
  * @method string getSubmitDate()
- * @method string getAcceptDate()
+ * @method string getUpdateDate()
  * @method string getCompleteDate()
  * @method string getSourceDevice()
  * @method string getSourceIp()

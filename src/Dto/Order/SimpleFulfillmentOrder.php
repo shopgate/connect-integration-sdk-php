@@ -23,6 +23,7 @@
 namespace Shopgate\ConnectSdk\Dto\Order;
 
 use Shopgate\ConnectSdk\Dto\Base;
+use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder\Dto\FulfillmentOrderAddress;
 
 /**
  * @method string getOrderNumber()
@@ -46,10 +47,11 @@ use Shopgate\ConnectSdk\Dto\Base;
  * @method string getCurrencyCode()
  * @method string getNotes()
  * @method string getSpecialInstructions()
- * @method string getOrderSubmittedDate()
- * @method string getAcceptedDate()
+ * @method string getSubmitDate()
+ * @method string getAcceptDate()
  * @method string getReadyDate()
- * @method string getCompletedDate()
+ * @method string getCompleteDate()
+ * @method FulfillmentOrderAddress getFulfillmentOrderAddress()
  *
  * @codeCoverageIgnore
  */
@@ -76,4 +78,15 @@ class SimpleFulfillmentOrder extends Base
     const STATUS_CANCELED = 'canceled';
     const STATUS_REJECTED = 'rejected';
     const STATUS_FULFILLED = 'fulfilled';
+
+    /**
+     * @var array
+     */
+    protected $schema = [
+        'type' => 'object',
+        'properties' => [
+            'fulfillmentOrderAddress' => ['$ref' => FulfillmentOrderAddress::class, 'skipValidation' => true]
+        ],
+        'additionalProperties' => true
+    ];
 }

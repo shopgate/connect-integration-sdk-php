@@ -5,15 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-
-## [1.0.0] - 2019-10-02
 ### Added
-- getFulfillmentOrders direct call
 - addCatalog direct call
 - addParentCatalog direct call
 - updateCatalog direct call
 - getCatalog
 - getCatalogs
+
+## [1.0.0] - 2019-10-02
+### Added
+- getFulfillmentOrders direct call
 
 ### Changed
 - catalogCode is no longer needed when creating an inventory feed

@@ -6,12 +6,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 ### Added
-- getFulfillmentOrders direct call
 - addCatalog direct call
 - addParentCatalog direct call
 - updateCatalog direct call
 - getCatalog
 - getCatalogs
+
+## [1.0.0] - 2019-10-02
+### Added
+- getFulfillmentOrders direct call
 
 ### Changed
 - catalogCode is no longer needed when creating an inventory feed
@@ -133,7 +136,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - createCategory event & direct call
 - deleteCategory event & direct call
 
-[Unreleased]: https://github.com/shopgate/connect-integration-sdk/compare/v0.9.0...HEAD
+[Unreleased]: https://github.com/shopgate/connect-integration-sdk/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/shopgate/connect-integration-sdk/compare/v0.9.0...v1.0.0
 [0.9.0]: https://github.com/shopgate/connect-integration-sdk/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/shopgate/connect-integration-sdk/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/shopgate/connect-integration-sdk/compare/v0.6.0...v0.7.0

@@ -378,7 +378,6 @@ class Customer
     /**
      * @param CustomerDto\Create[] $customers
      * @param array                $query
-     * @param string               $requestType
      *
      * @return array
      *
@@ -388,7 +387,7 @@ class Customer
      * @throws UnknownException
      * @throws InvalidDataTypeException
      */
-    public function addCustomers(array $customers, array $query = [], $requestType = ShopgateSdk::REQUEST_TYPE_DIRECT)
+    public function addCustomers(array $customers, array $query = [])
     {
         $requestCustomers = [];
         foreach ($customers as $customer) {
@@ -398,7 +397,7 @@ class Customer
         $response = $this->client->doRequest(
             [
                 'method' => 'post',
-                'requestType' => $requestType,
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'json' => ['customers' => $requestCustomers],
                 'query' => $query,
                 'service' => self::SERVICE_CUSTOMER,

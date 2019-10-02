@@ -141,6 +141,14 @@ class GetTest extends TestCase
                                 'code' => '146',
                                 'name' => 'Color',
                                 'value' => 'Red',
+                            ],
+                            [
+                                'code' => '677',
+                                'name' => 'Value option',
+                                'value' => [
+                                    'name' => 'Option value name',
+                                    'code' => '23987'
+                                ]
                             ]
                         ]
                     ]
@@ -303,6 +311,9 @@ class GetTest extends TestCase
         $this->assertEquals($entry['lineItems'][0]['product']['options'][0]['code'], $productOption->getCode());
         $this->assertEquals($entry['lineItems'][0]['product']['options'][0]['name'], $productOption->getName());
         $this->assertEquals($entry['lineItems'][0]['product']['options'][0]['value'], $productOption->getValue());
+
+        $productOption = $productOptions[1];
+        $this->assertInstanceOf(FulfillmentOrderDto\LineItem\Product\Option\Value::class, $productOption->getValue());
 
         // History
         $history = $get->getHistory();

@@ -13,12 +13,6 @@
     <filter>
         <whitelist>
             <directory suffix=".php">src</directory>
-            <exclude>
-                <file>src/Services/Events/DTO/Base.php</file>
-                <file>src/Services/Events/DTO/Async/Request.php</file>
-                <file>src/Services/Events/DTO/Async/Event.php</file>
-                <file>src/Services/Events/DTO/Payload/Catalog/Category/Update.php</file>
-            </exclude>
         </whitelist>
     </filter>
 </phpunit>

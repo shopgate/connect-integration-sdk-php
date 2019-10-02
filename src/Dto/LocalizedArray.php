@@ -41,7 +41,7 @@ class LocalizedArray extends Base
      * @param string $locale
      * @param string[] $array
      *
-     * @return LocalizedArray
+     * @return $this
      */
     public function add($locale, $array)
     {

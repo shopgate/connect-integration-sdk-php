@@ -56,14 +56,17 @@ run_unit_tests:
     - $(aws ecr get-login --region=us-east-1 --no-include-email --registry-ids 602824140852)
   script:
     - cd tools
-    - docker-compose up -d php56
-    - docker-compose up -d php73
+    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-unit" up -d --build php56
+    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-unit" up -d --build php73
     - echo '******************** Unit Tests PHP 5.6 ********************'
-    - docker-compose exec -T php56 php -v
-    - docker-compose exec -T php56 composer unit-tests
+    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-unit" exec -T php56 php -v
+    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-unit" exec -T php56 composer unit-tests
     - echo '******************** Unit Tests PHP 7.3 ********************'
-    - docker-compose exec -T php73 php -v
-    - docker-compose exec -T php73 composer unit-tests
+    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-unit" exec -T php73 php -v
+    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-unit" exec -T php73 composer unit-tests
+  after_script:
+    - cd tools
+    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-unit" down
   cache:
     key: $BUILD_PREREQUISITES_CACHE_KEY
     paths:
@@ -80,14 +83,16 @@ run_integration_tests:
     - $(aws ecr get-login --region=us-east-1 --no-include-email --registry-ids 602824140852)
   script:
     - cd tools
-    - docker-compose down
-    - CI_STACK=1 ./initLocalStack.sh
+    - CI_STACK=1 DOCKER_PREFIX="${CI_COMMIT_SHORT_SHA}-integration" ./initLocalStack.sh
     - echo '******************** Integration Tests PHP 5.6 ********************'
-    - docker-compose exec -T php56 php -v
-    - docker-compose exec -T php56 composer integration-tests-local
+    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-integration" exec -T php56 php -v
+    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-integration" exec -T php56 composer integration-tests-local
     - echo '******************** Integration Tests PHP 7.3 ********************'
-    - docker-compose exec -T php73 php -v
-    - docker-compose exec -T php73 composer integration-tests-local
+    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-integration" exec -T php73 php -v
+    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-integration" exec -T php73 composer integration-tests-local
+  after_script:
+    - cd tools
+    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-integration" down
   cache:
     key: $BUILD_PREREQUISITES_CACHE_KEY
     paths:
@@ -107,8 +112,8 @@ sync_to_github:
   script:
     - git remote add github git@github.com:shopgate/connect-integration-sdk-php.git || true
     - git checkout master
-    - git push github $CI_COMMIT_REF_NAME:master --force
     - git push --tags github
+    - git push github $CI_COMMIT_REF_NAME:master --force
   tags:
     - docker
   when: manual

@@ -69,18 +69,24 @@ clicking the `Start Listening for PHP Debug Connections` icon and setting up pat
 Create the file `tests/Integration/.env` and put the following into it:
 
     accessTokenPath="./access_token.txt"
-    baseUri="http://{service}.shopgatedev.services:8080"
-    clientId="integration-tests"
-    clientSecret="integration-tests"
+    baseUri="http://{service}.shopgatedev.io:8080"
+    clientId="bananas"
+    clientSecret="bananas"
     merchantCode="TM2"
+    username="team-bananas@shopgate.com"
+    password="test"
 
 In your `/etc/hosts` file (usually `C:\Windows\System32\Drivers\etc\hosts` on Windows) add the following entries:
 
-    127.0.0.1       auth.shopgatedev.services
-    127.0.0.1       catalog.shopgatedev.services
-    127.0.0.1       omni-customer.shopgatedev.services
-    127.0.0.1       import.shopgatedev.services
-    127.0.0.1       omni-event-receiver.shopgatedev.services
+    127.0.0.1       auth.shopgatedev.io
+    127.0.0.1       catalog.shopgatedev.io
+    127.0.0.1       customer.shopgatedev.io
+    127.0.0.1       import.shopgatedev.io
+    127.0.0.1       event-receiver.shopgatedev.io
+    127.0.0.1       location.shopgatedev.io
+    127.0.0.1       shopgate-import.s3
+    127.0.0.1       order.shopgatedev.io
+    127.0.0.1       user.shopgatedev.io
 
 Log in to ECR and boot up the local stack using ```composer start```.
 
@@ -90,6 +96,17 @@ Execute the tests in you preferred IDE or by executing ```composer integration-t
 ## Local Stack Of Shopgate Services
 ### ECR Login
 On the first boot-up or upon updates you'll need to log in to ECR in your preferred CLI.
+
+### Composer timeout
+Sometimes composer times out cause its default timeout is about 300 seconds and 
+the boot up of the service stack might take longer depending on the performance of your machine.
+You might want to change this globally for composer by increasing the timeout:
+
+    composer config --global process-timeout 2000
+
+or just before you run the inital set up script via environment variable
+
+    export COMPOSER_PROCESS_TIMEOUT=600 
 
 ### Composer Commands
 Composer commands are available for the most commonly used actions:

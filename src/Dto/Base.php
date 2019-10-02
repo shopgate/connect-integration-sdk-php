@@ -22,7 +22,9 @@
 
 namespace Shopgate\ConnectSdk\Dto;
 
+use Shopgate\ConnectSdk\Exception\InvalidDataTypeException as ShopgateInvalidDataTypeException;
 use Dto\Dto;
+use Dto\Exceptions\InvalidDataTypeException;
 use Dto\RegulatorInterface;
 use Dto\ServiceContainer;
 use Exception;
@@ -33,15 +35,22 @@ use Exception;
 class Base extends Dto
 {
     const STORAGE_TYPE_SCALAR = 'scalar';
+    const STORAGE_TYPE_ARRAY = 'array';
 
     /**
      * Rewritten to provide inheritance of payload structure
      *
      * @inheritDoc
+     *
+     * @throws ShopgateInvalidDataTypeException
      */
     public function __construct($input = null, $schema = null, RegulatorInterface $regulator = null)
     {
-        parent::__construct($input, null === $schema ? $this->getDefaultSchema() : $schema, $regulator);
+        try {
+            parent::__construct($input, null === $schema ? $this->getDefaultSchema() : $schema, $regulator);
+        } catch (Exception $exception) {
+            throw new ShopgateInvalidDataTypeException($exception->getMessage());
+        }
     }
 
     /**
@@ -92,7 +101,7 @@ class Base extends Dto
      * @param $key   mixed
      * @param $value mixed
      *
-     * @return Base
+     * @return $this
      */
     public function set($key, $value)
     {
@@ -117,6 +126,19 @@ class Base extends Dto
 
             if ($result->getStorageType() === self::STORAGE_TYPE_SCALAR) {
                 return $result->toScalar();
+            }
+
+            if ($result->getStorageType() === self::STORAGE_TYPE_ARRAY) {
+                $items = [];
+                foreach ($result as $item) {
+                    /** @var Base $item */
+                    if ($item->getStorageType() === self::STORAGE_TYPE_SCALAR) {
+                        $items[] = $item->toScalar();
+                    } else {
+                        $items[] = $item;
+                    }
+                }
+                return $items;
             }
 
             return $result;

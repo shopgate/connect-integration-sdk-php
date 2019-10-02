@@ -140,7 +140,7 @@ class AttributeValueTest extends CatalogTest
      */
     public function testDeleteAttributeValueEvent()
     {
-        $this->markTestSkipped('Skipped due to bug in worker service');
+        $this->markTestSkipped('Skipped due to missing implementation in worker service');
 
         // Arrange
         $this->createSampleAttribute();
@@ -151,7 +151,7 @@ class AttributeValueTest extends CatalogTest
             self::SAMPLE_ATTRIBUTE_VALUE_CODE
         );
 
-        sleep(self::SLEEP_TIME_AFTER_EVENT);
+        usleep(self::SLEEP_TIME_AFTER_EVENT);
 
         // Assert
         $removedAttributeValues = $this->sdk->getCatalogService()
@@ -286,6 +286,8 @@ class AttributeValueTest extends CatalogTest
 
     /**
      * @return array
+     *
+     * @throws Exception
      */
     public function provideAddAttributeValueWithMissingRequiredFields()
     {
@@ -328,6 +330,8 @@ class AttributeValueTest extends CatalogTest
 
     /**
      * @return array
+     *
+     * @throws Exception
      */
     public function provideAddAttributeValuesWithInvalidFields()
     {

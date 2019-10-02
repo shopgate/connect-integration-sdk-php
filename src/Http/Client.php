@@ -30,7 +30,6 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
 use kamermans\OAuth2\Exception\AccessTokenRequestException;
-use kamermans\OAuth2\GrantType\ClientCredentials;
 use kamermans\OAuth2\OAuth2Middleware;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -39,13 +38,17 @@ use Psr\Log\LoggerInterface;
 use Shopgate\ConnectSdk\Dto\Async\Factory;
 use Shopgate\ConnectSdk\Dto\Base;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
+use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Helper\Json;
+use Shopgate\ConnectSdk\Http\Client\GrantType\ShopgateCredentials;
 use Shopgate\ConnectSdk\Http\Persistence\EncryptedFile;
 use Shopgate\ConnectSdk\Http\Persistence\PersistenceChain;
+use Shopgate\ConnectSdk\Http\Persistence\TokenPersistenceException;
 use Shopgate\ConnectSdk\ShopgateSdk;
+use function json_decode;
 
 class Client implements ClientInterface
 {
@@ -58,25 +61,33 @@ class Client implements ClientInterface
     /** @var string */
     private $merchantCode;
 
+    /** @var OAuth2Middleware */
+    private $OAuthMiddleware;
+
     /**
      * @param GuzzleClientInterface $client
+     * @param OAuth2Middleware      $OAuth2Middleware
      * @param string                $baseUri
      * @param string                $merchantCode
      */
     public function __construct(
         GuzzleClientInterface $client,
+        OAuth2Middleware $OAuth2Middleware,
         $baseUri,
         $merchantCode
     ) {
-        $this->client       = $client;
-        $this->baseUri      = rtrim($baseUri, '/');
+        $this->client = $client;
+        $this->baseUri = rtrim($baseUri, '/');
         $this->merchantCode = $merchantCode;
+        $this->OAuthMiddleware = $OAuth2Middleware;
     }
 
     /**
      * @param string $clientId
      * @param string $clientSecret
      * @param string $merchantCode
+     * @param string $username
+     * @param string $password
      * @param string $baseUri
      * @param string $env
      * @param string $accessTokenPath
@@ -87,50 +98,54 @@ class Client implements ClientInterface
         $clientId,
         $clientSecret,
         $merchantCode,
+        $username,
+        $password,
         $baseUri = '',
         $env = '',
         $accessTokenPath = ''
     ) {
-        $env = $env === 'live' ? '' : $env;
+        $env = $env === 'production' ? '' : $env;
 
         if (empty($baseUri)) {
-            $baseUri = str_replace('{env}', $env, 'https://{service}.shopgate{env}.services');
+            $baseUri = str_replace('{env}', $env, 'https://{service}.shopgate{env}.io');
         }
 
         if (empty($accessTokenPath)) {
             $accessTokenPath = __DIR__ . ($env !== '' ? '/../access_token_' . $env : '/../access_token.txt');
         }
 
-        $reauthClient = new \GuzzleHttp\Client(
+        $reAuthClient = new \GuzzleHttp\Client(
             [
                 'base_uri' => rtrim(str_replace('{service}', 'auth', $baseUri), '/') . '/oauth/token'
             ]
         );
 
-        $oauth = new OAuth2Middleware(
-            new ClientCredentials(
-                $reauthClient,
+        $OAuthMiddleware = new OAuth2Middleware(
+            new ShopgateCredentials(
+                $reAuthClient,
                 [
-                    'client_id'     => $clientId,
-                    'client_secret' => $clientSecret
+                    'client_id' => $clientId,
+                    'client_secret' => $clientSecret,
+                    'merchant_code' => $merchantCode,
+                    'username' => $username,
+                    'password' => $password
                 ]
             )
         );
 
-        $oauth->setTokenPersistence(new PersistenceChain([
+        $OAuthMiddleware->setTokenPersistence(new PersistenceChain([
             new EncryptedFile(new Json(), $accessTokenPath, $clientSecret)
         ]));
 
         $handlerStack = HandlerStack::create();
-        $handlerStack->push($oauth);
         $client = new \GuzzleHttp\Client(
             [
-                'auth'    => 'oauth',
+                'auth' => 'oauth',
                 'handler' => $handlerStack
             ]
         );
 
-        return new self($client, $baseUri, $merchantCode);
+        return new self($client, $OAuthMiddleware, $baseUri, $merchantCode);
     }
 
     /**
@@ -156,7 +171,7 @@ class Client implements ClientInterface
         }
 
         if (!$template) {
-            $template = 'URL: {hostname}/{target} Method: {method} RequestBody: {req_body} ResponseBody: {res_body}';
+            $template = 'URL: {url} Method: {method} RequestBody: {req_body} ResponseBody: {res_body}';
         }
 
         $handler->push(Middleware::log($logger, new MessageFormatter($template)));
@@ -177,39 +192,80 @@ class Client implements ClientInterface
     }
 
     /**
-     * @param array $params
+     * @param callable $middleware
+     */
+    public function addMiddleware(callable $middleware)
+    {
+        /** @var HandlerStack $handlerStack */
+        $handlerStack = $this->client->getConfig('handler');
+        $handlerStack->push($middleware);
+    }
+
+    protected function addOAuthAuthentication()
+    {
+        /** @var HandlerStack $handlerStack */
+        $handlerStack = $this->client->getConfig('handler');
+        $handlerStack->push($this->OAuthMiddleware, 'oauth');
+    }
+
+    protected function removeOAuthAuthentication()
+    {
+        /** @var HandlerStack $handlerStack */
+        $handlerStack = $this->client->getConfig('handler');
+        $handlerStack->remove('oauth');
+    }
+
+    /**
+     * @param array $params ['url' => .., 'query' => .., 'body' => .., 'method' => .., 'service' => .., 'path' => ..]
+     *                      parameter 'body' or 'json' can not be set both at a time
+     *                      if parameter 'url' is set the oauth authentication will be deactivated
      *
-     * @return ResponseInterface
+     * @return ResponseInterface|array
      *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
+     * @throws TokenPersistenceException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function doRequest(array $params)
     {
-        if (!$this->isDirect($params)) {
-            return $this->triggerEvent($params);
-        }
+        $this->removeOAuthAuthentication();
 
         if (isset($params['query']['requestType'])) {
             unset($params['query']['requestType']);
         }
 
+        $parameters = [];
+        if (isset($params['query'])) {
+            $parameters['query'] = $this->fixBoolValuesInQuery($params['query']);
+        }
+
+        if (!isset($params['url'])) {
+            $this->addOAuthAuthentication();
+        }
+
+        if (!$this->isDirect($params)) {
+            return $this->triggerEvent($params);
+        }
+
         $response = null;
-        $body     = isset($params['body']) ? $params['body'] : [];
+        $defaultConfigs = [
+            'connect_timeout' => 5.0
+        ];
         try {
+            if (isset($params['body'])) {
+                $parameters['body'] = $params['body'];
+            } elseif (isset($params['json'])) {
+                $json = !empty($params['json']) ? $params['json'] : [];
+                $parameters['json'] = $json instanceof Base ? $json->toJson() : (new Base($json))->toJson();
+            }
+
             $response = $this->client->request(
                 $params['method'],
-                $this->buildServiceUrl($params['service'], $params['path']),
-                [
-                    'query' => isset($params['query'])
-                        ? $this->fixBoolValuesInQuery($params['query'])
-                        : [],
-                    'json'  => $body instanceof Base
-                        ? $body->toJson()
-                        : (new Base($body))->toJson(),
-                ]
+                isset($params['url']) ? $params['url'] : $this->buildServiceUrl($params['service'], $params['path']),
+                array_merge($defaultConfigs, $parameters)
             );
         } catch (GuzzleRequestException $e) {
             $statusCode = $e->getResponse() ? $e->getResponse()->getStatusCode() : 0;
@@ -230,11 +286,47 @@ class Client implements ClientInterface
             throw new UnknownException($e->getMessage());
         } catch (AccessTokenRequestException $e) {
             throw new AuthenticationInvalidException($e->getMessage());
+        } catch (TokenPersistenceException $e) {
+            throw $e;
         } catch (Exception $e) {
             throw new UnknownException($e->getMessage());
         }
 
+        if ($response instanceof ResponseInterface) {
+            $this->checkForErrorsInResponse($response);
+        }
+
         return $response;
+    }
+
+    /**
+     * @param ResponseInterface $response
+     *
+     * @throws NotFoundException
+     * @throws RequestException
+     */
+    private function checkForErrorsInResponse($response)
+    {
+        if ($body = $response->getBody()) {
+            $responseContent = json_decode((string)$body, true);
+
+            if (!isset($responseContent['errors']) || empty($responseContent['errors'])) {
+                return;
+            }
+
+            foreach ($responseContent['errors'] as $error) {
+                if ($error['code'] === 404) {
+                    throw new NotFoundException(
+                        $error['reason']
+                    );
+                }
+
+                throw new RequestException(
+                    $error['code'],
+                    $error['reason']
+                );
+            }
+        }
     }
 
     /**
@@ -264,19 +356,25 @@ class Client implements ClientInterface
      * @throws AuthenticationInvalidException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     private function triggerEvent(array $params)
     {
         $values = [
-            isset($params['body']) ? $params['body'] : new Base(),
+            isset($params['json']) ? $params['json'] : new Base([], [
+                'type' => 'object',
+                'additionalProperties' => true
+            ]),
         ];
         if ($params['action'] === 'create') {
-            $key    = array_keys($params['body'])[0];
-            $values = $params['body'][$key];
+            $key = array_keys($params['json'])[0];
+            $values = $params['json'][$key];
         }
 
         $factory = new Factory();
         foreach ($values as $payload) {
+            $payload = $this->prepareEventPayload($params, $payload);
+
             $entityId = isset($params['entityId']) ? $params['entityId'] : null;
             $factory->addEvent($params['action'], $params['entity'], $payload, $entityId);
         }
@@ -284,10 +382,11 @@ class Client implements ClientInterface
         try {
             return $this->client->request(
                 'post',
-                $this->buildServiceUrl('omni-event-receiver', 'events'),
+                $this->buildServiceUrl('event-receiver', 'events'),
                 [
-                    'json'        => $factory->getRequest()->toJson(),
+                    'json' => $factory->getRequest()->toJson(),
                     'http_errors' => false,
+                    'connect_timeout' => 5.0
                 ]
             );
         } catch (GuzzleRequestException $e) {
@@ -310,12 +409,26 @@ class Client implements ClientInterface
      * @param array $params
      *
      * @return bool
-     * @todo-sg: unit tests
      */
     public function isDirect(array $params)
     {
         return
             (!isset($params['requestType']) && $params['method'] === 'get')
             || $params['requestType'] === ShopgateSdk::REQUEST_TYPE_DIRECT;
+    }
+
+    /**
+     * @param array $params
+     * @param Base  $payload
+     *
+     * @return Base
+     */
+    private function prepareEventPayload(array $params, Base $payload)
+    {
+        if (isset($params['query']['catalogCode'])) {
+            $payload->setCatalogCode($params['query']['catalogCode']);
+        }
+
+        return $payload;
     }
 }

@@ -1,6 +1,8 @@
 accessTokenPath="./access_token.txt"
-baseUri="http://{service}.shopgatedev.services"
-clientId="integration-tests"
-clientSecret="integration-tests"
+baseUri="http://{service}.shopgatedev.io"
+clientId="bananas"
+clientSecret="bananas"
 merchantCode="TM2"
 requestLogging=0
+username="team-bananas@shopgate.com"
+password="test"

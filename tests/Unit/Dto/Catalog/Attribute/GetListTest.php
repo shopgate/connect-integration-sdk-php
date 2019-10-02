@@ -27,24 +27,27 @@ use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute\Get;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute\GetList;
 use Shopgate\ConnectSdk\Dto\Meta;
+use Shopgate\ConnectSdk\Exception\Exception;
 
 class GetListTest extends TestCase
 {
     /**
      * Tests basic DTO structure return
+     *
+     * @throws Exception
      */
     public function testCategoryDto()
     {
         $entry = [
-            'meta'       => [
+            'meta' => [
                 'limit' => 2,
             ],
             'attributes' => [
                 [
-                    'code'   => 'color',
-                    'type'   => Attribute::TYPE_TEXT,
-                    'use'    => Attribute::USE_OPTION,
-                    'name'   => 'Color'
+                    'code' => 'color',
+                    'type' => Attribute::TYPE_TEXT,
+                    'use' => Attribute::USE_OPTION,
+                    'name' => 'Color'
                 ],
                 [
                     'code' => 'size'
@@ -58,7 +61,7 @@ class GetListTest extends TestCase
 
         $attributes = $getList->getAttributes();
         $this->assertCount(2, $attributes);
-        $this->assertInstanceOf(Get::class, $attributes);
+        $this->assertTrue(is_array($attributes));
         $this->assertInstanceOf(Get::class, $attributes[0]);
         $this->assertInstanceOf(Get::class, $attributes[1]);
         $this->assertEquals('color', $attributes[0]->getCode());

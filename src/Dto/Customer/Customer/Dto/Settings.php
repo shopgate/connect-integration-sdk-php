@@ -24,31 +24,30 @@ namespace Shopgate\ConnectSdk\Dto\Customer\Customer\Dto;
 use Shopgate\ConnectSdk\Dto\Base;
 
 /**
- * Dto for customer settings.
- *
- * @method setDefaultLocale(string $defaultLocale)
- * @method setDefaultCurrency(string $defaultCurrency)
- * @method setCommunicationPreferences([] $communicationPreferences)
- * @method setDefaultLocationCode(string $defaultLocationCode)
- * @method setMarketingOptIn(boolean $marketingOptIn)
+ * @method Settings setDefaultLocale(string $defaultLocale)
+ * @method Settings setDefaultCurrency(string $defaultCurrency)
+ * @method Settings setCommunicationPreferences(string[] $communicationPreferences)
+ * @method Settings setDefaultLocationCode(string $defaultLocationCode)
+ * @method Settings setMarketingOptIn(boolean $marketingOptIn)
  * @method string getDefaultLocale()
  * @method string getDefaultCurrency()
- * @method array getCommunicationPreferences()
+ * @method string[] getCommunicationPreferences()
  * @method string getDefaultLocationCode()
  * @method string getMarketingOptIn()
+ *
+ * @codeCoverageIgnore
  */
 class Settings extends Base
 {
     /**
      * @var array
-     * @codeCoverageIgnore
      */
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
             'defaultLocale'            => ['type' => 'string'],
             'defaultCurrency'          => ['type' => 'string'],
-            'communicationPreferences' => ['type' => 'array'],
+            'communicationPreferences' => ['type' => 'array', 'items' => ['type' => 'string']],
             'defaultLocationCode'      => ['type' => 'string'],
             'marketingOptIn'           => ['type' => 'boolean'],
         ],

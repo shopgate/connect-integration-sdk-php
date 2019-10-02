@@ -23,14 +23,17 @@
 namespace Shopgate\ConnectSdk\Tests\Unit\Http;
 
 use Exception;
+use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\ClientInterface as GuzzleClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
+use kamermans\OAuth2\OAuth2Middleware;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 use Psr\Log\LoggerInterface;
+use Shopgate\ConnectSdk\Dto\Catalog\Category\Update;
 use Shopgate\ConnectSdk\Exception\Exception as ShopgateSdkException;
 use Shopgate\ConnectSdk\Http\Client;
 use Shopgate\ConnectSdk\Http\ClientInterface;
@@ -50,6 +53,9 @@ class ClientTest extends TestCase
     /** @var MockHandler */
     private $mockHandler;
 
+    /** @var OAuth2Middleware */
+    private $OAuthMiddleware;
+
     /** @var LoggerInterface|PHPUnit_Framework_MockObject_MockObject */
     private $logger;
 
@@ -59,7 +65,7 @@ class ClientTest extends TestCase
         $this->handlerStack = HandlerStack::create($this->mockHandler);
 
         $this->client = $this
-            ->getMockBuilder(\GuzzleHttp\Client::class)
+            ->getMockBuilder(GuzzleClient::class)
             ->setConstructorArgs([['handler' => $this->handlerStack]])
             ->setMethods(null)
             ->getMock();
@@ -68,8 +74,14 @@ class ClientTest extends TestCase
             ->getMockBuilder(LoggerInterface::class)
             ->getMock();
 
+        /** @var OAuth2Middleware $OAuthMiddleware */
+        $this->OAuthMiddleware = $this->getMockBuilder(OAuth2Middleware::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->subjectUnderTest = new Client(
             $this->client,
+            $this->OAuthMiddleware,
             'http://{service}.local',
             'TM2'
         );
@@ -84,7 +96,9 @@ class ClientTest extends TestCase
         $this->assertInstanceOf(ClientInterface::class, Client::createInstance(
             'test',
             'secret',
-            'TM2'
+            'TM2',
+            'username',
+            'password'
         ));
     }
 
@@ -121,7 +135,7 @@ class ClientTest extends TestCase
      */
     public function testEnableRequestLoggingShouldNotFailIfNothingWasPassed()
     {
-        $subjectUnderTest = Client::createInstance('123', '123', '123');
+        $subjectUnderTest = Client::createInstance('123', '123', '123', 'username', 'password');
         $subjectUnderTest->enableRequestLogging();
     }
 
@@ -163,7 +177,7 @@ class ClientTest extends TestCase
     {
         // Arrange
         $this->client = $this
-            ->getMockBuilder(\GuzzleHttp\Client::class)
+            ->getMockBuilder(GuzzleClient::class)
             ->setConstructorArgs([['handler' => $this->handlerStack]])
             ->setMethods(['request'])
             ->getMock();
@@ -171,15 +185,17 @@ class ClientTest extends TestCase
             ->expects($this->once())
             ->method('request')->with(
                 'post',
-                'http://omni-event-receiver.local/v1/merchants/TM2/events',
+                'http://event-receiver.local/v1/merchants/TM2/events',
                 [
                     'json' => '{"events":[{"event":"entityUpdated","entity":"category","payload":{}}]}',
                     'http_errors' => false,
+                    'connect_timeout' => 5.0
                 ]
             )->willReturn([]);
 
         $this->subjectUnderTest = new Client(
             $this->client,
+            $this->OAuthMiddleware,
             'http://{service}.local',
             'TM2'
         );
@@ -196,27 +212,29 @@ class ClientTest extends TestCase
     /**
      * @throws ShopgateSdkException
      */
-    public function testRequestShouldBeSentAsDirectRequest()
+    public function testParameterCatalogCodeIsPassedAlongInThePayload()
     {
         // Arrange
         $this->client = $this
-            ->getMockBuilder(\GuzzleHttp\Client::class)
+            ->getMockBuilder(GuzzleClient::class)
             ->setConstructorArgs([['handler' => $this->handlerStack]])
             ->setMethods(['request'])
             ->getMock();
         $this->client
             ->expects($this->once())
             ->method('request')->with(
-                $this->equalTo('post'),
-                $this->equalTo('http://catalog.local/v1/merchants/TM2/categories/'),
-                $this->equalTo([
-                    'query' => [],
-                    'json' => "[]",
-                ])
+                'post',
+                'http://event-receiver.local/v1/merchants/TM2/events',
+                [
+                    'json' => '{"events":[{"event":"entityUpdated","entity":"category","payload":{"catalogCode":"ABCD"}}]}',
+                    'http_errors' => false,
+                    'connect_timeout' => 5.0
+                ]
             )->willReturn([]);
 
         $this->subjectUnderTest = new Client(
             $this->client,
+            $this->OAuthMiddleware,
             'http://{service}.local',
             'TM2'
         );
@@ -226,8 +244,47 @@ class ClientTest extends TestCase
             'action' => 'update',
             'method' => 'post',
             'entity' => 'category',
-            'service'     => 'catalog',
-            'path'        => 'categories/',
+            'json' => new Update(),
+            'requestType' => ShopgateSdk::REQUEST_TYPE_EVENT,
+            'query' => [
+                'catalogCode' => 'ABCD',
+            ]
+        ]);
+    }
+
+    /**
+     * @throws ShopgateSdkException
+     */
+    public function testRequestShouldBeSentAsDirectRequest()
+    {
+        // Arrange
+        $this->client = $this
+            ->getMockBuilder(GuzzleClient::class)
+            ->setConstructorArgs([['handler' => $this->handlerStack]])
+            ->setMethods(['request'])
+            ->getMock();
+        $this->client
+            ->expects($this->once())
+            ->method('request')->with(
+                $this->equalTo('post'),
+                $this->equalTo('http://catalog.local/v1/merchants/TM2/categories/'),
+                $this->equalTo(['connect_timeout' => 5.0])
+            )->willReturn([]);
+
+        $this->subjectUnderTest = new Client(
+            $this->client,
+            $this->OAuthMiddleware,
+            'http://{service}.local',
+            'TM2'
+        );
+
+        // Act
+        $this->subjectUnderTest->doRequest([
+            'action' => 'update',
+            'method' => 'post',
+            'entity' => 'category',
+            'service' => 'catalog',
+            'path' => 'categories/',
             'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT
         ]);
     }
@@ -239,7 +296,7 @@ class ClientTest extends TestCase
     {
         // Arrange
         $this->client = $this
-            ->getMockBuilder(\GuzzleHttp\Client::class)
+            ->getMockBuilder(GuzzleClient::class)
             ->setConstructorArgs([['handler' => $this->handlerStack]])
             ->setMethods(['request'])
             ->getMock();
@@ -254,6 +311,7 @@ class ClientTest extends TestCase
 
         $this->subjectUnderTest = new Client(
             $this->client,
+            $this->OAuthMiddleware,
             'http://{service}.local',
             'TM2'
         );
@@ -261,8 +319,49 @@ class ClientTest extends TestCase
         // Act
         $this->subjectUnderTest->doRequest([
             'service' => 'catalog',
-            'method'  => 'get',
-            'path'    => 'categories'
+            'method' => 'get',
+            'path' => 'categories'
+        ]);
+    }
+
+    /**
+     * @throws ShopgateSdkException
+     */
+    public function testRequestTypeParameterGetsRemoved()
+    {
+        // Arrange
+        $this->client = $this
+            ->getMockBuilder(GuzzleClient::class)
+            ->setConstructorArgs([['handler' => $this->handlerStack]])
+            ->setMethods(['request'])
+            ->getMock();
+
+        $this->client
+            ->expects($this->once())
+            ->method('request')->with(
+                $this->equalTo('get'),
+                $this->equalTo('http://catalog.local/v1/merchants/TM2/categories'),
+                $this->equalTo([
+                    'query' => [],
+                    'connect_timeout' => 5.0
+                ])
+            )->willReturn([]);
+
+        $this->subjectUnderTest = new Client(
+            $this->client,
+            $this->OAuthMiddleware,
+            'http://{service}.local',
+            'TM2'
+        );
+
+        // Act
+        $this->subjectUnderTest->doRequest([
+            'service' => 'catalog',
+            'method' => 'get',
+            'path' => 'categories',
+            'query' => [
+                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
+            ]
         ]);
     }
 }

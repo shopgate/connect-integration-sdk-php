@@ -27,8 +27,21 @@ use Shopgate\ConnectSdk\Dto\Meta;
 /**
  * @method Meta getMeta()
  * @method Get[] getCustomers()
- *
  */
 class GetList extends Customer
 {
+    /**
+     * @var array
+     */
+    protected $schema = [
+        'type'                 => 'object',
+        'properties'           => [
+            'meta'       => ['$ref' => Meta::class],
+            'customers' => [
+                'type'  => 'array',
+                'items' => ['$ref' => Get::class],
+            ],
+        ],
+        'additionalProperties' => true,
+    ];
 }

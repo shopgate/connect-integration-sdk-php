@@ -24,6 +24,7 @@ namespace Shopgate\ConnectSdk\Service\BulkImport;
 
 use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
+use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
@@ -59,6 +60,7 @@ class Handler
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function createCategoryFeed($catalogCode)
     {
@@ -66,7 +68,10 @@ class Handler
             $this->client,
             $this->importReference,
             $this::HANDLER_TYPE,
-            array_merge(['entity' => 'category'], ['catalogCode' => $catalogCode])
+            [
+                'entity' => 'category',
+                'catalogCode' => $catalogCode
+            ]
         );
     }
 
@@ -79,6 +84,7 @@ class Handler
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function createProductFeed($catalogCode)
     {
@@ -86,7 +92,10 @@ class Handler
             $this->client,
             $this->importReference,
             $this::HANDLER_TYPE,
-            array_merge(['entity' => 'product'], ['catalogCode' => $catalogCode])
+            [
+                'entity' => 'product',
+                'catalogCode' => $catalogCode
+            ]
         );
     }
 
@@ -99,6 +108,7 @@ class Handler
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function createAttributeFeed($catalogCode)
     {
@@ -106,7 +116,29 @@ class Handler
             $this->client,
             $this->importReference,
             $this::HANDLER_TYPE,
-            array_merge(['entity' => 'attribute'], ['catalogCode' => $catalogCode])
+            [
+                'entity' => 'attribute',
+                'catalogCode' => $catalogCode
+            ]
+        );
+    }
+
+    /**
+     * @return Feed\Inventory
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     * @throws InvalidDataTypeException
+     */
+    public function createInventoryFeed()
+    {
+        return new Feed\Inventory(
+            $this->client,
+            $this->importReference,
+            $this::HANDLER_TYPE,
+            ['entity' => 'inventory']
         );
     }
 
@@ -137,6 +169,7 @@ class Handler
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws InvalidDataTypeException
      */
     public function trigger()
     {
@@ -144,7 +177,7 @@ class Handler
             [
                 // general
                 'method' => 'post',
-                'body' => [],
+                'json' => [],
                 'requestType' => 'direct',
                 'service' => 'import',
                 'path' => 'imports/' . $this->importReference,

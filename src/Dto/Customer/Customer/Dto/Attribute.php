@@ -23,22 +23,20 @@ namespace Shopgate\ConnectSdk\Dto\Customer\Customer\Dto;
 
 use Shopgate\ConnectSdk\Dto\Base;
 use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Attribute\Value;
+use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 
 /**
- * Dto for customer attribute.
- *
- * @method setCode(string $code)
- * @method setValue(string|Value $value)
- * @method setName(string $name)
+ * @method Attribute setCode(string $code)
+ * @method Attribute setName(string $name)
  * @method string getCode()
- * @method string|Value getValue()
  * @method string getName()
+ *
+ * @codeCoverageIgnore
  */
 class Attribute extends Base
 {
     /**
      * @var array
-     * @codeCoverageIgnore
      */
     protected $schema = [
         'type'                 => 'object',
@@ -49,4 +47,35 @@ class Attribute extends Base
         ],
         'additionalProperties' => true,
     ];
+
+    /**
+     * @param Value|string $value
+     *
+     * @return Attribute
+     *
+     * @throws InvalidDataTypeException
+     */
+    public function setValue($value)
+    {
+        if (is_object($value)) {
+            return $this::set('value', new Value($value));
+        }
+
+        return $this::set('value', $value);
+    }
+
+    /**
+     * @return Value|string|null
+     *
+     * @throws InvalidDataTypeException
+     */
+    public function getValue()
+    {
+        $value = $this::get('value');
+        if (is_object($value)) {
+            return new Value($value);
+        }
+
+        return $value;
+    }
 }

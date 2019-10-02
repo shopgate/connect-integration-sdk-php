@@ -23,9 +23,23 @@
 namespace Shopgate\ConnectSdk\Dto\Catalog;
 
 use Shopgate\ConnectSdk\Dto\Base;
+use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto;
 
 /**
+ * @method string getCode()
+ * @method string getCatalogCode()
+ * @method string getParentCategoryCode()
+ * @method Dto\Image getImage()
+ * @method Dto\Name getName()
+ * @method Dto\Description getDescription()
+ * @method Dto\Url getUrl()
+ * @method int getSequenceId()
+ * @method string getExternalUpdateDate()
+ * @method string getStatus()
+ *
  * @package Shopgate\ConnectSdk\Dto\Catalog
+ *
+ * @codeCoverageIgnore
  */
 class Category extends Base
 {

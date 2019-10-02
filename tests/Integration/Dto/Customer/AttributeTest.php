@@ -23,15 +23,12 @@
 namespace Shopgate\ConnectSdk\Tests\Integration\Dto\Customer;
 
 use Psr\Http\Message\ResponseInterface;
-use Shopgate\ConnectSdk\Dto\Catalog\Attribute\Dto\Name;
 use Shopgate\ConnectSdk\Dto\Customer\Attribute;
 use Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
 
-use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
-use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Tests\Integration\CustomerTest;
 
 class AttributeTest extends CustomerTest
@@ -121,15 +118,13 @@ class AttributeTest extends CustomerTest
      */
     public function testCreateAttributesEvent()
     {
-        $this->markTestSkipped('Skipped - not working yet');
-
         // Arrange
         $createdItemCount = 10;
         $sampleAttributes = $this->provideSampleAttributes($createdItemCount);
 
         // Act
         $this->createAttributes($sampleAttributes);
-        sleep(self::SLEEP_TIME_AFTER_EVENT);
+        usleep(self::SLEEP_TIME_AFTER_EVENT);
 
         $attributes = $this->getAttributes();
 
@@ -253,15 +248,13 @@ class AttributeTest extends CustomerTest
      */
     public function testUpdateAttributeEvent()
     {
-        $this->markTestSkipped('Skipped - not working yet');
-
         // Arrange
         $sampleAttributes = $this->provideSampleAttributes(1);
         $this->createAttributes($sampleAttributes);
 
         // Act
         $newName         = 'Renamed Attribute (Event)';
-        $attributeUpdate = new Attribute\Update(['name' => new Name(['en-us' => $newName])]);
+        $attributeUpdate = new Attribute\Update(['name' => $newName]);
 
         // Act
         $this->sdk->getCustomerService()->updateAttribute(
@@ -269,7 +262,7 @@ class AttributeTest extends CustomerTest
             $attributeUpdate
         );
 
-        sleep(self::SLEEP_TIME_AFTER_EVENT);
+        usleep(self::SLEEP_TIME_AFTER_EVENT);
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(
@@ -310,8 +303,6 @@ class AttributeTest extends CustomerTest
         // Act
         $this->sdk->getCustomerService()->deleteAttribute('code_1');
 
-        sleep(self::SLEEP_TIME_AFTER_EVENT);
-
         // Assert
         try {
             $this->getAttribute('code_1');
@@ -325,8 +316,6 @@ class AttributeTest extends CustomerTest
      */
     public function testDeleteAttributeEvent()
     {
-        $this->markTestSkipped('Skipped - not working yet');
-
         // Arrange
         $sampleAttributes = $this->provideSampleAttributes(1);
         $this->createAttributes($sampleAttributes);
@@ -334,7 +323,7 @@ class AttributeTest extends CustomerTest
         // Act
         $this->sdk->getCustomerService()->deleteAttribute('code_1');
 
-        sleep(self::SLEEP_TIME_AFTER_EVENT);
+        usleep(self::SLEEP_TIME_AFTER_EVENT);
 
         // Assert
         try {
@@ -490,6 +479,8 @@ class AttributeTest extends CustomerTest
      * @param int $itemCount
      *
      * @return Attribute\Create[]
+     *
+     * @throws Exception
      */
     private function provideSampleAttributes($itemCount = 2)
     {
@@ -520,10 +511,8 @@ class AttributeTest extends CustomerTest
      *
      * @return ResponseInterface
      *
-     * @throws AuthenticationInvalidException
-     * @throws NotFoundException
      * @throws RequestException
-     * @throws UnknownException
+     * @throws Exception
      */
     private function createAttributes(array $sampleAttributes, array $meta = [])
     {
@@ -548,10 +537,8 @@ class AttributeTest extends CustomerTest
      *
      * @return Attribute\Get
      *
-     * @throws AuthenticationInvalidException
      * @throws NotFoundException
-     * @throws RequestException
-     * @throws UnknownException
+     * @throws Exception
      */
     private function getAttribute($attributeCode, $localeCode = '')
     {

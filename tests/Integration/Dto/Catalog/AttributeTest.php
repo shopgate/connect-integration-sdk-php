@@ -26,11 +26,9 @@ use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute\Dto\Name;
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
-use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
-use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Tests\Integration\CatalogTest;
 
 class AttributeTest extends CatalogTest
@@ -75,15 +73,13 @@ class AttributeTest extends CatalogTest
      */
     public function testCreateAttributesEvent()
     {
-        $this->markTestSkipped('Skipped due to bug in worker service');
-
         // Arrange
         $createdItemCount = 10;
         $sampleAttributes = $this->provideSampleAttributes($createdItemCount);
 
         // Act
         $this->createAttributes($sampleAttributes);
-        sleep(self::SLEEP_TIME_AFTER_EVENT);
+        usleep(self::SLEEP_TIME_AFTER_EVENT);
 
         $attributes = $this->getAttributes();
 
@@ -239,7 +235,7 @@ class AttributeTest extends CatalogTest
             $attributeUpdate
         );
 
-        sleep(self::SLEEP_TIME_AFTER_EVENT);
+        usleep(self::SLEEP_TIME_AFTER_EVENT);
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(
@@ -293,7 +289,7 @@ class AttributeTest extends CatalogTest
             ]
         );
 
-        sleep(self::SLEEP_TIME_AFTER_EVENT);
+        usleep(self::SLEEP_TIME_AFTER_EVENT);
 
         // Assert
         try {
@@ -320,7 +316,7 @@ class AttributeTest extends CatalogTest
         // Act
         $this->sdk->getCatalogService()->deleteAttribute('code_1');
 
-        sleep(self::SLEEP_TIME_AFTER_EVENT);
+        usleep(self::SLEEP_TIME_AFTER_EVENT);
 
         // Assert
         try {
@@ -346,6 +342,10 @@ class AttributeTest extends CatalogTest
         $createdItemCount = 10;
         $sampleAttributes = $this->provideSampleAttributes($createdItemCount);
 
+        $deleteCodes = [];
+        foreach ($sampleAttributes as $attribute) {
+            $deleteCodes[] = $attribute->getCode();
+        }
         // Act
         $this->createAttributes(
             $sampleAttributes,
@@ -365,11 +365,12 @@ class AttributeTest extends CatalogTest
         // Assert
         $attributes = $this->getAttributes($parameters);
 
-        // CleanUp
-        $deleteCodes = [];
+        $fetchedCodes = [];
         foreach ($attributes->getAttributes() as $attribute) {
-            $deleteCodes[] = $attribute->getCode();
+            $fetchedCodes[] = $attribute->getCode();
         }
+
+        // CleanUp
         $this->deleteEntitiesAfterTestRun(
             self::CATALOG_SERVICE,
             self::METHOD_DELETE_ATTRIBUTE,
@@ -377,7 +378,7 @@ class AttributeTest extends CatalogTest
         );
 
         $this->assertCount($expectedAttributeCount, $attributes->getAttributes());
-        $this->assertEquals($expectedAttributeCodes, $deleteCodes);
+        $this->assertEquals($expectedAttributeCodes, $fetchedCodes);
         if (isset($limit)) {
             $this->assertEquals($limit, $attributes->getMeta()->getLimit());
         }
@@ -431,6 +432,8 @@ class AttributeTest extends CatalogTest
      * @param string           $expectedMessage
      *
      * @dataProvider provideCreateAttributeWithInvalidFields
+     *
+     * @throws Exception
      */
     public function testCreateAttributeDirectWithInvalidFields(
         array $attributeData,
@@ -466,6 +469,8 @@ class AttributeTest extends CatalogTest
 
     /**
      * @return array
+     *
+     * @throws Exception
      */
     public function provideCreateAttributeWithMissingRequiredFields()
     {
@@ -522,6 +527,8 @@ class AttributeTest extends CatalogTest
 
     /**
      * @return array
+     *
+     * @throws Exception
      */
     public function provideCreateAttributeWithInvalidFields()
     {
@@ -651,6 +658,8 @@ class AttributeTest extends CatalogTest
      * @param int  $itemCount
      *
      * @return Attribute\Create[]
+     *
+     * @throws Exception
      */
     private function provideSampleAttributes($itemCount = 2)
     {
@@ -695,10 +704,8 @@ class AttributeTest extends CatalogTest
      *
      * @return ResponseInterface
      *
-     * @throws AuthenticationInvalidException
-     * @throws NotFoundException
+     * @throws Exception
      * @throws RequestException
-     * @throws UnknownException
      */
     private function createAttributes(array $sampleAttributes, array $meta = [])
     {
@@ -709,8 +716,8 @@ class AttributeTest extends CatalogTest
      * @param array $meta
      *
      * @return Attribute\GetList
-     * @throws Exception
      *
+     * @throws Exception
      */
     private function getAttributes($meta = [])
     {
@@ -723,11 +730,8 @@ class AttributeTest extends CatalogTest
      *
      * @return Attribute\Get
      *
-     * @throws AuthenticationInvalidException
+     * @throws Exception
      * @throws NotFoundException
-     * @throws RequestException
-     * @throws UnknownException
-     *
      */
     private function getAttribute($attributeCode, $localeCode = '')
     {

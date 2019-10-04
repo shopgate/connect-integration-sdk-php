@@ -7,7 +7,6 @@ use Shopgate\ConnectSdk\Tests\Integration\CustomerTest;
 
 class BulkImportCustomerTest extends CustomerTest
 {
-
     const SLEEP_TIME_AFTER_BULK = 12000000;
 
     /**
@@ -65,5 +64,4 @@ class BulkImportCustomerTest extends CustomerTest
         $availableCustomers = $this->sdk->getCustomerService()->getCustomers();
         $this->assertCount(2, $availableCustomers->getCustomers());
     }
-
 }

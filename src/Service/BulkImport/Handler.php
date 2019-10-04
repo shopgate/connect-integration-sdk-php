@@ -146,8 +146,8 @@ class Handler
      * @param string $catalogCode
      *
      * @return Feed\Customer
-     *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException

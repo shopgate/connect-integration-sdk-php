@@ -5,7 +5,8 @@ namespace Shopgate\ConnectSdk\Tests\Integration\Http;
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Tests\Integration\CustomerTest;
 
-class BulkImportCustomerTest extends CustomerTest {
+class BulkImportCustomerTest extends CustomerTest
+{
 
     const SLEEP_TIME_AFTER_BULK = 12000000;
 

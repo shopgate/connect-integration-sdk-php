@@ -107,7 +107,7 @@ class CustomerTest extends CustomerBaseTest
         // Assert
         /** @noinspection PhpParamsInspection */
         $this->assertEquals(
-            self::CUSTOMER_CUSTOMER_EXTERNAL_CUSTOMER_CODE . '2',
+            self::CUSTOMER_EXTERNAL_CUSTOMER_CODE . '2',
             $customer->getExternalCustomerNumber()
         );
     }
@@ -144,11 +144,11 @@ class CustomerTest extends CustomerBaseTest
     {
         // Arrange
         $customer = new Customer\Create();
-        $customer->setExternalCustomerNumber(self::CUSTOMER_CUSTOMER_EXTERNAL_CUSTOMER_CODE);
-        $customer->setFirstName(self::CUSTOMER_CUSTOMER_FIRSTNAME);
-        $customer->setMiddleName(self::CUSTOMER_CUSTOMER_MIDDLE_NAME);
-        $customer->setLastName(self::CUSTOMER_CUSTOMER_LASTNAME);
-        $customer->setEmailAddress(sprintf(self::CUSTOMER_CUSTOMER_EMAIL, 1));
+        $customer->setExternalCustomerNumber(self::CUSTOMER_EXTERNAL_CUSTOMER_CODE);
+        $customer->setFirstName(self::CUSTOMER_FIRSTNAME);
+        $customer->setMiddleName(self::CUSTOMER_MIDDLE_NAME);
+        $customer->setLastName(self::CUSTOMER_LASTNAME);
+        $customer->setEmailAddress(sprintf(self::CUSTOMER_EMAIL, 1));
         $customer->setStatus(Customer\Create::STATUS_ACTIVE);
         $customer->setIsAnonymous(false);
 
@@ -238,10 +238,10 @@ class CustomerTest extends CustomerBaseTest
         /** @noinspection PhpParamsInspection */
         // General
         $this->assertEquals(Customer\Create::STATUS_ACTIVE, $customer->getStatus());
-        $this->assertEquals(self::CUSTOMER_CUSTOMER_FIRSTNAME, $customer->getFirstName());
-        $this->assertEquals(self::CUSTOMER_CUSTOMER_LASTNAME, $customer->getLastName());
-        $this->assertEquals(self::CUSTOMER_CUSTOMER_MIDDLE_NAME, $customer->getMiddleName());
-        $this->assertEquals(sprintf(self::CUSTOMER_CUSTOMER_EMAIL, 1), $customer->getEmailAddress());
+        $this->assertEquals(self::CUSTOMER_FIRSTNAME, $customer->getFirstName());
+        $this->assertEquals(self::CUSTOMER_LASTNAME, $customer->getLastName());
+        $this->assertEquals(self::CUSTOMER_MIDDLE_NAME, $customer->getMiddleName());
+        $this->assertEquals(sprintf(self::CUSTOMER_EMAIL, 1), $customer->getEmailAddress());
         $this->assertFalse($customer->getIsAnonymous());
 
         // Settings
@@ -326,10 +326,10 @@ class CustomerTest extends CustomerBaseTest
         $response = $this->sdk->getCustomerService()->addCustomers($sampleCustomers);
 
         $customerUpdate = new Customer\Update();
-        $customerUpdate->setFirstName(self::CUSTOMER_CUSTOMER_FIRSTNAME . ' Update');
-        $customerUpdate->setMiddleName(self::CUSTOMER_CUSTOMER_MIDDLE_NAME . ' Update');
-        $customerUpdate->setLastName(self::CUSTOMER_CUSTOMER_LASTNAME . ' Update');
-        $customerUpdate->setEmailAddress(sprintf(self::CUSTOMER_CUSTOMER_EMAIL, 'update'));
+        $customerUpdate->setFirstName(self::CUSTOMER_FIRSTNAME . ' Update');
+        $customerUpdate->setMiddleName(self::CUSTOMER_MIDDLE_NAME . ' Update');
+        $customerUpdate->setLastName(self::CUSTOMER_LASTNAME . ' Update');
+        $customerUpdate->setEmailAddress(sprintf(self::CUSTOMER_EMAIL, 'update'));
         $customerUpdate->setStatus(Customer\Create::STATUS_INACTIVE);
         $customerUpdate->setIsAnonymous(true);
 
@@ -360,10 +360,10 @@ class CustomerTest extends CustomerBaseTest
 
         // General
         $this->assertEquals(Customer\Create::STATUS_INACTIVE, $customer->getStatus());
-        $this->assertEquals(self::CUSTOMER_CUSTOMER_FIRSTNAME . ' Update', $customer->getFirstName());
-        $this->assertEquals(self::CUSTOMER_CUSTOMER_LASTNAME . ' Update', $customer->getLastName());
-        $this->assertEquals(self::CUSTOMER_CUSTOMER_MIDDLE_NAME . ' Update', $customer->getMiddleName());
-        $this->assertEquals(sprintf(self::CUSTOMER_CUSTOMER_EMAIL, 'update'), $customer->getEmailAddress());
+        $this->assertEquals(self::CUSTOMER_FIRSTNAME . ' Update', $customer->getFirstName());
+        $this->assertEquals(self::CUSTOMER_LASTNAME . ' Update', $customer->getLastName());
+        $this->assertEquals(self::CUSTOMER_MIDDLE_NAME . ' Update', $customer->getMiddleName());
+        $this->assertEquals(sprintf(self::CUSTOMER_EMAIL, 'update'), $customer->getEmailAddress());
         $this->assertTrue($customer->getIsAnonymous());
 
         // Settings

@@ -24,40 +24,5 @@ namespace Shopgate\ConnectSdk\Tests\Integration;
 
 abstract class OrderTest extends ShopgateSdkTest
 {
-    const CUSTOMER_SERVICE = 'customer';
-    const CATALOG_SERVICE = 'catalog';
-    const LOCATION_SERVICE = 'location';
-    const METHOD_DELETE_CUSTOMER = 'deleteCustomer';
-    const METHOD_DELETE_PRODUCT = 'deleteProduct';
-    const METHOD_DELETE_LOCATION = 'deleteLocation';
     const LOCATION_CODE = 'integration-test';
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->registerForCleanUp(
-            self::CUSTOMER_SERVICE,
-            $this->sdk->getCustomerService(),
-            [
-                self::METHOD_DELETE_CUSTOMER => []
-            ]
-        );
-
-        $this->registerForCleanUp(
-            self::CATALOG_SERVICE,
-            $this->sdk->getCatalogService(),
-            [
-                self::METHOD_DELETE_PRODUCT => []
-            ]
-        );
-
-        $this->registerForCleanUp(
-            self::LOCATION_SERVICE,
-            $this->sdk->getLocationService(),
-            [
-                self::METHOD_DELETE_LOCATION => []
-            ]
-        );
-    }
 }

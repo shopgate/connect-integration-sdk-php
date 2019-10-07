@@ -39,10 +39,10 @@ class GetList extends ReservationBase
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'meta'         => ['$ref' => Meta::class],
+            'meta'         => ['$ref' => Meta::class, 'skipValidation' => true],
             'reservations' => [
                 'type'  => 'array',
-                'items' => ['$ref' => Get::class]
+                'items' => ['$ref' => Get::class, 'skipValidation' => true]
             ]
         ],
         'additionalProperties' => true

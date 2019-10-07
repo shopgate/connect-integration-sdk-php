@@ -23,6 +23,7 @@
 namespace Shopgate\ConnectSdk\Dto\Location\Location\Dto;
 
 use Shopgate\ConnectSdk\Dto\Base;
+use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 
 /**
  * @method OperationHours setSun(string $sun)
@@ -67,6 +68,8 @@ class OperationHours extends Base
      * @param string $hours
      *
      * @return $this
+     *
+     * @throws InvalidDataTypeException
      */
     public function add($day, $hours)
     {

@@ -53,7 +53,6 @@ use Shopgate\ConnectSdk\Dto\Order\Order;
  * @method Create setTotal(float $total)
  * @method Create setDate(string $date)
  * @method Create setSubmitDate(string $submitDate)
- * @method Create setAcceptDate(string $acceptDate)
  * @method Create setCompleteDate(string $completeDate)
  * @method Create setSourceDevice(string $sourceDevice)
  * @method Create setSourceIp(string $sourceIp)
@@ -102,7 +101,6 @@ class Create extends Order
             'total' => ['type' => 'number'],
             'date' => ['type' => 'string'],
             'submitDate' => ['type' => 'string'],
-            'acceptDate' => ['type' => 'string'],
             'completeDate' => ['type' => 'string'],
             'sourceDevice' => ['type' => 'string'],
             'sourceIp' => ['type' => 'string'],

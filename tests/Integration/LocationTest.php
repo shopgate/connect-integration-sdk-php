@@ -27,25 +27,11 @@ use Shopgate\ConnectSdk\Exception\Exception;
 
 abstract class LocationTest extends ShopgateSdkTest
 {
-    const LOCATION_SERVICE       = 'location';
     const METHOD_DELETE_LOCATION = 'deleteLocation';
     const LOCATION_CODE          = 'integration-test';
     const LOCATION_CODE_SECOND   = 'integration-test-2';
     const LOCATION_CODE_THIRD    = 'integration-test-3';
     const LOCATION_CODE_FOURTH    = 'integration-test-4';
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->registerForCleanUp(
-            self::LOCATION_SERVICE,
-            $this->sdk->getLocationService(),
-            [
-                self::METHOD_DELETE_LOCATION  => []
-            ]
-        );
-    }
 
     /**
      * @return Location\Create[]

@@ -29,6 +29,9 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=secret
 
+  redis:
+    image: redis:5.0.5
+
   reverse-proxy:
     build:
       context: ../
@@ -45,6 +48,7 @@ services:
           - order.shopgatedev.io
           - user.shopgatedev.io
           - event-receiver.shopgatedev.io
+          - webhook.shopgatedev.io
 
   ### https://gitlab.localdev.cc/omnichannel/services/auth
   auth:
@@ -148,7 +152,19 @@ services:
 
 ### https://gitlab.localdev.cc/omnichannel/services/order
   order:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/order:v1.0.0-alpha.21
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/order:v1.0.0-alpha.34
+    restart: always
+    environment:
+      - NODE_ENV=development
+      - APP_PORT=80
+      - LOG_TO_SYSLOG=false
+      - PUBSUB_EMULATOR_HOST=googlepubsub-emulator:8085
+    links:
+      - etcd
+
+### https://gitlab.localdev.cc/omnichannel/services/webhook
+  webhook:
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/webhook:v1.0.0-alpha.10
     restart: always
     environment:
       - NODE_ENV=development

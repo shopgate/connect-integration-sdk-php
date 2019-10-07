@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- addCatalog direct call
+- addParentCatalog direct call
+- updateCatalog direct call
+- getCatalog
+- getCatalogs
+- SimpleFulfillmentOrder - add property fulfillmentOrderAddress
+- Order - add property updateDate
+- LineItem - add property options
+
+### Changed
+- SimpleFulfillmentOrder - rename property orderSubmittedDate to submitDate
+- SimpleFulfillmentOrder - rename property acceptedDate to acceptDate
+- SimpleFulfillmentOrder - rename property completedDate to completeDate
+- Order - remove property acceptDate
+- FulfillmentPackage - rename property fulfilledDate to fulfillmentDate
 
 ## [1.0.0] - 2019-10-02
 ### Added

@@ -26,11 +26,12 @@ use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Name;
 use Shopgate\ConnectSdk\Exception\Exception;
+use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
-use Shopgate\ConnectSdk\Tests\Integration\CatalogTest;
+use Shopgate\ConnectSdk\Tests\Integration\AbstractCatalogTest;
 
-class CategoryTest extends CatalogTest
+class CategoryTest extends AbstractCatalogTest
 {
     /**
      * @throws Exception
@@ -54,6 +55,38 @@ class CategoryTest extends CatalogTest
         $categories = $this->getCategories($sampleCategoryCodes);
         /** @noinspection PhpParamsInspection */
         $this->assertCount(2, $categories->getCategories());
+    }
+
+    /**
+     * @param Category\Create[] $sampleCategories
+     * @param array             $meta
+     *
+     * @return ResponseInterface
+     * @throws RequestException
+     * @throws Exception
+     *
+     */
+    private function createCategories(array $sampleCategories, array $meta = [])
+    {
+        return $this->sdk->getCatalogService()->addCategories($sampleCategories, $meta);
+    }
+
+    /**
+     * @param array $categoryCodes
+     * @param array $meta
+     *
+     * @return Category\GetList
+     * @throws Exception
+     *
+     */
+    private function getCategories($categoryCodes = [], $meta = [])
+    {
+        return $this->sdk->getCatalogService()->getCategories(
+            array_merge(
+                ['filters' => ['code' => ['$in' => $categoryCodes]]],
+                $meta
+            )
+        );
     }
 
     /**
@@ -179,7 +212,7 @@ class CategoryTest extends CatalogTest
                 'limit' => 1,
                 'offset' => 1,
                 'expectedCount' => 1,
-                'expectedCategoryCodes' => [
+                'expectedCodes' => [
                     self::CATEGORY_CODE_SECOND
                 ]
             ],
@@ -590,8 +623,8 @@ class CategoryTest extends CatalogTest
     }
 
     /**
-     * @param array            $categoryData
-     * @param RequestException $expectedException
+     * @param array     $categoryData
+     * @param Exception $expectedException
      *
      * @throws Exception
      *
@@ -599,11 +632,9 @@ class CategoryTest extends CatalogTest
      */
     public function testCreateCategoryDirectWithInvalidDataTypes($categoryData, $expectedException)
     {
-        // Arrange
-        $category = new Category\Create($categoryData);
-
         // Act
         try {
+            $category = new Category\Create($categoryData);
             $this->createCategories(
                 [$category],
                 ['requestType' => 'direct']
@@ -612,6 +643,10 @@ class CategoryTest extends CatalogTest
             // Assert
             $this->assertInstanceOf(get_class($expectedException), $exception);
             $this->assertEquals($expectedException->getStatusCode(), $exception->getStatusCode());
+
+            return;
+        } catch (InvalidDataTypeException $invalidDataTypeException) {
+            $this->assertInstanceOf(get_class($expectedException), $invalidDataTypeException);
 
             return;
         }
@@ -641,7 +676,7 @@ class CategoryTest extends CatalogTest
                     'code' => 123456,
                     'sequenceId' => 1006
                 ],
-                'expectedException' => new RequestException(400)
+                'expectedException' => new InvalidDataTypeException()
             ],
             'wrong sequenceId data type' => [
                 'categoryData' => [
@@ -649,7 +684,7 @@ class CategoryTest extends CatalogTest
                     'code' => 'category-test-code',
                     'sequenceId' => '1006'
                 ],
-                'expectedException' => new RequestException(400)
+                'expectedException' => new InvalidDataTypeException()
             ],
             'wrong parentCategoryCode data type' => [
                 'categoryData' => [
@@ -658,7 +693,7 @@ class CategoryTest extends CatalogTest
                     'sequenceId' => 1006,
                     'parentCategoryCode' => 12345
                 ],
-                'expectedException' => new RequestException(400)
+                'expectedException' => new InvalidDataTypeException()
             ],
             'wrong image data type' => [
                 'categoryData' => [
@@ -702,7 +737,7 @@ class CategoryTest extends CatalogTest
         $existingCategory = $this->provideSampleCreateCategory(
             $categoryCode,
             'test category',
-            '1',
+            1,
             new Category\Dto\Image(['en-us' => 'http://www.google.de']),
             new Category\Dto\Url(['en-us' => 'http://www.google.de/image.png']),
             'test description'
@@ -745,6 +780,48 @@ class CategoryTest extends CatalogTest
             $category,
             ['requestType' => 'direct']
         );
+    }
+
+    /**
+     * @param string             $name
+     * @param Category\Dto\Image $image
+     * @param Category\Dto\Url   $url
+     * @param string             $description
+     * @param string             $parentCategoryCode
+     *
+     * @return Category\Update
+     *
+     * @throws Exception
+     */
+    private function provideSampleUpdateCategory(
+        $name = null,
+        $image = null,
+        $url = null,
+        $description = null,
+        $parentCategoryCode = null
+
+    ) {
+        $category = new Category\Update();
+
+        if ($name) {
+            $translatedName = new Category\Dto\Name(['en-us' => $name]);
+            $category->setName($translatedName);
+        }
+        if ($url) {
+            $category->setUrl($url);
+        }
+        if ($description) {
+            $translatedDescription = new Category\Dto\Description($description);
+            $category->setDescription($translatedDescription);
+        }
+        if ($image) {
+            $category->setImage($image);
+        }
+        if ($parentCategoryCode) {
+            $category->setParentCategoryCode($parentCategoryCode);
+        }
+
+        return $category;
     }
 
     /**
@@ -896,7 +973,7 @@ class CategoryTest extends CatalogTest
             );
         }
 
-        usleep(self::SLEEP_TIME_AFTER_EVENT*5);
+        usleep(self::SLEEP_TIME_AFTER_EVENT * 5);
 
         // Assert
         $categories = $this->getCategories($this->getCategoryCodes($sampleCategories), [
@@ -956,79 +1033,5 @@ class CategoryTest extends CatalogTest
 
         // Act
         $this->createCategories([$category]);
-    }
-
-    /**
-     * @param array $categoryCodes
-     * @param array $meta
-     *
-     * @return Category\GetList
-     * @throws Exception
-     *
-     */
-    private function getCategories($categoryCodes = [], $meta = [])
-    {
-        return $this->sdk->getCatalogService()->getCategories(
-            array_merge(
-                ['filters' => ['code' => ['$in' => $categoryCodes]]],
-                $meta
-            )
-        );
-    }
-
-    /**
-     * @param Category\Create[] $sampleCategories
-     * @param array             $meta
-     *
-     * @return ResponseInterface
-     * @throws RequestException
-     * @throws Exception
-     *
-     */
-    private function createCategories(array $sampleCategories, array $meta = [])
-    {
-        return $this->sdk->getCatalogService()->addCategories($sampleCategories, $meta);
-    }
-
-    /**
-     * @param string             $name
-     * @param Category\Dto\Image $image
-     * @param Category\Dto\Url   $url
-     * @param string             $description
-     * @param string             $parentCategoryCode
-     *
-     * @return Category\Update
-     *
-     * @throws Exception
-     */
-    private function provideSampleUpdateCategory(
-        $name = null,
-        $image = null,
-        $url = null,
-        $description = null,
-        $parentCategoryCode = null
-
-    ) {
-        $category = new Category\Update();
-
-        if ($name) {
-            $translatedName = new Category\Dto\Name(['en-us' => $name]);
-            $category->setName($translatedName);
-        }
-        if ($url) {
-            $category->setUrl($url);
-        }
-        if ($description) {
-            $translatedDescription = new Category\Dto\Description($description);
-            $category->setDescription($translatedDescription);
-        }
-        if ($image) {
-            $category->setImage($image);
-        }
-        if ($parentCategoryCode) {
-            $category->setParentCategoryCode($parentCategoryCode);
-        }
-
-        return $category;
     }
 }

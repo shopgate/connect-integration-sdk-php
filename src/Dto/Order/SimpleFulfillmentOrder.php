@@ -23,6 +23,7 @@
 namespace Shopgate\ConnectSdk\Dto\Order;
 
 use Shopgate\ConnectSdk\Dto\Base;
+use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder\Dto\FulfillmentOrderAddress;
 
 /**
  * @method string getOrderNumber()
@@ -35,7 +36,7 @@ use Shopgate\ConnectSdk\Dto\Base;
  * @method string getCustomerId()
  * @method string getExternalCustomerNumber()
  * @method string getRouteType()
- * @method string getExpedited()
+ * @method bool getExpedited()
  * @method string getStatus()
  * @method float getSubTotal()
  * @method float getTaxAmount()
@@ -46,10 +47,11 @@ use Shopgate\ConnectSdk\Dto\Base;
  * @method string getCurrencyCode()
  * @method string getNotes()
  * @method string getSpecialInstructions()
- * @method string getOrderSubmittedDate()
- * @method string getAcceptedDate()
+ * @method string getSubmitDate()
+ * @method string getAcceptDate()
  * @method string getReadyDate()
- * @method string getCompletedDate()
+ * @method string getCompleteDate()
+ * @method FulfillmentOrderAddress getFulfillmentOrderAddress()
  *
  * @codeCoverageIgnore
  */
@@ -83,31 +85,7 @@ class SimpleFulfillmentOrder extends Base
     protected $schema = [
         'type' => 'object',
         'properties' => [
-            'orderNumber' => ['type' => 'string'],
-            'externalCode' => ['type' => 'string'],
-            'posTransactionId' => ['type' => 'string'],
-            'cancellationReason' => ['type' => 'string'],
-            'salesOrderNumber' => ['type' => 'string'],
-            'locationCode' => ['type' => 'string'],
-            'type' => ['type' => 'string'],
-            'customerId' => ['type' => 'string'],
-            'externalCustomerNumber' => ['type' => 'string'],
-            'routeType' => ['type' => 'string'],
-            'expedited' => ['type' => 'string'],
-            'status' => ['type' => 'string'],
-            'subTotal' => ['type' => 'number'],
-            'taxAmount' => ['type' => 'number'],
-            'tax2Amount' => ['type' => 'number'],
-            'total' => ['type' => 'number'],
-            'shippingTotal' => ['type' => 'number'],
-            'localeCode' => ['type' => 'string'],
-            'currencyCode' => ['type' => 'string'],
-            'notes' => ['type' => 'string'],
-            'specialInstructions' => ['type' => 'string'],
-            'orderSubmittedDate' => ['type' => 'string'],
-            'acceptedDate' => ['type' => 'string'],
-            'readyDate' => ['type' => 'string'],
-            'completedDate' => ['type' => 'string']
+            'fulfillmentOrderAddress' => ['$ref' => FulfillmentOrderAddress::class, 'skipValidation' => true]
         ],
         'additionalProperties' => true
     ];

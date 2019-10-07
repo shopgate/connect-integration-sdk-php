@@ -23,9 +23,15 @@
 namespace Shopgate\ConnectSdk\Dto\Catalog;
 
 use Shopgate\ConnectSdk\Dto\Base;
+use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue\Dto;
 
 /**
  * @package Shopgate\ConnectSdk\Dto\Catalog
+ *
+ * @method string getCode()
+ * @method int getSequenceId()
+ * @method Dto\Name getName()
+ * @method Dto\Swatch getSwatch()
  */
 class AttributeValue extends Base
 {

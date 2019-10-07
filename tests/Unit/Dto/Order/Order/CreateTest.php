@@ -109,7 +109,7 @@ class CreateTest extends TestCase
                                     'tracking' => 'test-tracking-code-two',
                                     'pickUpBy' => 'Johnny Bravo',
                                     'labelUrl' => 'test-label-url',
-                                    'fulfilledDate' => 'tomorrow',
+                                    'fulfillmentDate' => 'tomorrow',
                                     'packageItems' => [
                                         [
                                             'id' => 'product-id-one',
@@ -135,7 +135,17 @@ class CreateTest extends TestCase
                         'name' => 'Product One',
                         'image' => 'image-url',
                         'price' => 100,
-                        'currencyCode' => 'USD'
+                        'currencyCode' => 'USD',
+                        'options' => [
+                            [
+                                'code' => '146',
+                                'name' => 'Color',
+                                'value' => [
+                                    'code' => '432',
+                                    'name' => 'Red',
+                                ],
+                            ]
+                        ]
                     ],
                     'currencyCode' => 'USD',
                     'shippingAmount' => 5,
@@ -151,10 +161,10 @@ class CreateTest extends TestCase
             ],
             'history' => [
                 [
-                    'id' => 'test-history-item-one',
+                    'id' => 123,
                     'eventName' => 'created',
                     'eventDetails' => 'test event details',
-                    'eventNewValue' => 'test event new value',
+                    'eventNewValue' => ['test' => 'newValue'],
                     'eventOldValue' => 'test event old value',
                     'eventDateTime' => 'right now',
                     'eventUser' => 'Dana Scully'
@@ -254,8 +264,8 @@ class CreateTest extends TestCase
         $this->assertEquals($expectedFulfillmentPackage['pickUpBy'], $actualFulfillmentPackage->getPickUpBy());
         $this->assertEquals($expectedFulfillmentPackage['labelUrl'], $actualFulfillmentPackage->getLabelUrl());
         $this->assertEquals(
-            $expectedFulfillmentPackage['fulfilledDate'],
-            $actualFulfillmentPackage->getFulfilledDate()
+            $expectedFulfillmentPackage['fulfillmentDate'],
+            $actualFulfillmentPackage->getFulfillmentDate()
         );
         $actualPackageItems = $actualFulfillmentPackage->getPackageItems()[0];
         $expectedPackageItems = $expectedFulfillmentPackage['packageItems'][0];
@@ -290,22 +300,30 @@ class CreateTest extends TestCase
         $this->assertEquals($expectedLineItem['overrideAmount'], $actualLineItem->getOverrideAmount());
         $this->assertEquals($expectedLineItem['extendedPrice'], $actualLineItem->getExtendedPrice());
         $this->assertEquals($expectedLineItem['price'], $actualLineItem->getPrice());
-        $this->assertInstanceOf(OrderDto\LineItem\Product::class, $actualLineItem->getProduct());
-        $this->assertEquals($expectedLineItem['product']['code'], $actualLineItem->getProduct()->getCode());
-        $this->assertEquals($expectedLineItem['product']['name'], $actualLineItem->getProduct()->getName());
-        $this->assertEquals($expectedLineItem['product']['image'], $actualLineItem->getProduct()->getImage());
-        $this->assertEquals($expectedLineItem['product']['price'], $actualLineItem->getProduct()->getPrice());
-        $this->assertEquals(
-            $expectedLineItem['product']['currencyCode'],
-            $actualLineItem->getProduct()->getCurrencyCode()
-        );
+
+        $lineItemProduct = $actualLineItem->getProduct();
+        $this->assertInstanceOf(OrderDto\LineItem\Product::class, $lineItemProduct);
+        $this->assertEquals($expectedLineItem['product']['code'], $lineItemProduct->getCode());
+        $this->assertEquals($expectedLineItem['product']['name'], $lineItemProduct->getName());
+        $this->assertEquals($expectedLineItem['product']['image'], $lineItemProduct->getImage());
+        $this->assertEquals($expectedLineItem['product']['price'], $lineItemProduct->getPrice());
+        $this->assertEquals($expectedLineItem['product']['currencyCode'], $lineItemProduct->getCurrencyCode());
+
+        $productOptions = $lineItemProduct->getOptions();
+        $this->assertTrue(is_array($productOptions));
+        $productOption = $productOptions[0];
+        $this->assertEquals($expectedLineItem['product']['options'][0]['code'], $productOption->getCode());
+        $this->assertEquals($expectedLineItem['product']['options'][0]['name'], $productOption->getName());
+        $this->assertEquals($expectedLineItem['product']['options'][0]['value']['code'], $productOption->getValue()->getCode());
+        $this->assertEquals($expectedLineItem['product']['options'][0]['value']['name'], $productOption->getValue()->getName());
+
         $actualHistoryItem = $get->getHistory()[0];
         $expectedHistoryItem = $entry['history'][0];
         $this->assertInstanceOf(OrderDto\HistoryItem::class, $actualHistoryItem);
         $this->assertEquals($expectedHistoryItem['id'], $actualHistoryItem->getId());
         $this->assertEquals($expectedHistoryItem['eventName'], $actualHistoryItem->getEventName());
         $this->assertEquals($expectedHistoryItem['eventDetails'], $actualHistoryItem->getEventDetails());
-        $this->assertEquals($expectedHistoryItem['eventNewValue'], $actualHistoryItem->getEventNewValue());
+        $this->assertEquals($expectedHistoryItem['eventNewValue'], $actualHistoryItem->getEventNewValue()->toArray());
         $this->assertEquals($expectedHistoryItem['eventOldValue'], $actualHistoryItem->getEventOldValue());
         $this->assertEquals($expectedHistoryItem['eventDateTime'], $actualHistoryItem->getEventDateTime());
         $this->assertEquals($expectedHistoryItem['eventUser'], $actualHistoryItem->getEventUser());

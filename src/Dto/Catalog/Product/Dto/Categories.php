@@ -27,9 +27,11 @@ use Shopgate\ConnectSdk\Dto\Base as DtoBase;
 /**
  * @method Categories setCode(string $code)
  * @method Categories setIsPrimary(boolean $isPrimary)
+ * @method Categories setSequenceId(int $sequenceId)
  *
  * @method string getCode()
  * @method boolean getIsPrimary()
+ * @method int getSequenceId()
  */
 class Categories extends DtoBase
 {
@@ -38,10 +40,11 @@ class Categories extends DtoBase
      * @codeCoverageIgnore
      */
     protected $schema = [
-        'type'                 => 'object',
-        'properties'           => [
-            'code'      => ['type' => 'string'],
+        'type' => 'object',
+        'properties' => [
+            'code' => ['type' => 'string'],
             'isPrimary' => ['type' => 'boolean'],
+            'sequenceId' => ['type' => 'integer'],
         ],
         'additionalProperties' => true,
     ];

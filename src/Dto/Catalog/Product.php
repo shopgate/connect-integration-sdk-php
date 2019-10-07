@@ -26,6 +26,15 @@ use Shopgate\ConnectSdk\Dto\Base as DtoBase;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto;
 
 /**
+ * @method Dto\Name getName()
+ * @method Dto\LongName getLongName()
+ * @method Dto\LongDescription getLongDescription()
+ * @method Dto\ShortDescription getShortDescription()
+ * @method Dto\Categories[] getCategories()
+ * @method Dto\Properties[] getProperties()
+ * @method Dto\MediaList getMedia()
+ * @method Dto\Options[] getOptions()
+ * @method Dto\Extras[] getExtras()
  * @method string getCode()
  * @method string getParentProductCode()
  * @method string getCatalogCode()
@@ -45,23 +54,16 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto;
  * @method Dto\ShippingInformation getShippingInformation()
  * @method float getRating()
  * @method string getUrl()
- * @method boolean getTaxClass()
+ * @method boolean getIsTaxed()
+ * @method string getTaxClass()
  * @method float getMinQty()
  * @method float getMaxQty()
- * @method Dto\Name getName()
- * @method Dto\LongName getLongName()
- * @method Dto\ShortDescription getShortDescription()
- * @method Dto\LongDescription getLongDescription()
- * @method Dto\Categories[] getCategories()
- * @method Dto\Properties[] getProperties()
- * @method Dto\MediaList getMedia()
- * @method Dto\Inventory[] getInventories()
- * @method Dto\Options[] getOptions()
- * @method Dto\Extras[] getExtras()
+ * @method string getExternalUpdateDate()
+ * @method int getSequenceId()
+ *
+ * @method Dto\Inventory[] getInventories() - for getter only
  *
  * @codeCoverageIgnore
- *
- * @package Shopgate\ConnectSdk\Dto\Catalog
  */
 class Product extends DtoBase
 {

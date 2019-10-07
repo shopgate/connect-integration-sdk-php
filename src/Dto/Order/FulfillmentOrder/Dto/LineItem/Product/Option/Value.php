@@ -20,21 +20,33 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Catalog;
+namespace Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder\Dto\LineItem\Product\Option;
 
 use Shopgate\ConnectSdk\Dto\Base;
-use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue\Dto;
 
 /**
- * @package Shopgate\ConnectSdk\Dto\Catalog
- *
+ * @method Value setCode(string $code)
+ * @method Value setName(string $name)
  * @method string getCode()
- * @method int getSequenceId()
- * @method Dto\Name getName()
- * @method Dto\Swatch getSwatch()
+ * @method string getName()
+ *
+ * @codeCoverageIgnore
  */
-class AttributeValue extends Base
+class Value extends Base
 {
-    const SWATCH_TYPE_IMAGE   = 'image';
-    const SWATCH_TYPE_COLOR   = 'color';
+    protected $schema = [
+        'anyOf' => [
+            [
+                'type' => 'string',
+            ],
+            [
+                'type' => 'object',
+                'properties' => [
+                    'code' => ['type' => 'string'],
+                    'name' => ['type' => 'string'],
+                ],
+                'additionalProperties' => true,
+            ]
+        ]
+    ];
 }

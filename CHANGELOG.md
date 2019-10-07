@@ -14,6 +14,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - webhook services added
 - webhook create, get, getList, webhook event DTOs
 - webhook unit and integration tests
+- SimpleFulfillmentOrder - add property fulfillmentOrderAddress
+- Order - add property updateDate
+- LineItem - add property options
+
+### Changed
+- SimpleFulfillmentOrder - rename property orderSubmittedDate to submitDate
+- SimpleFulfillmentOrder - rename property acceptedDate to acceptDate
+- SimpleFulfillmentOrder - rename property completedDate to completeDate
+- Order - remove property acceptDate
+- FulfillmentPackage - rename property fulfilledDate to fulfillmentDate
 
 ## [1.0.0] - 2019-10-02
 ### Added

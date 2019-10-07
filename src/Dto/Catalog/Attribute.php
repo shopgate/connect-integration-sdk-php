@@ -39,7 +39,7 @@ class Attribute extends Base
     const USE_EXTRA         = 'extra';
     const USE_PROPERTY      = 'property';
     const TYPE_TEXT         = 'text';
-    const TYPE_PRODUCT_LIST = 'product_list';
+    const TYPE_PRODUCT_LIST = 'productList';
     const TYPE_INPUT        = 'input';
     const TYPE_NUMBER       = 'number';
 }

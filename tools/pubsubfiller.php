@@ -41,6 +41,7 @@ $topics = [
         'webhookTransInventoryReservationSettled-development',
     ],
     'salesOrderAdded-development' => [
+        'orderSvcSalesOrderAdded-development',
         'routingSvcSalesOrderAdded-development',
         'webhookSalesOrderAdded-development',
         'webhookTransSalesOrderAdded-development',

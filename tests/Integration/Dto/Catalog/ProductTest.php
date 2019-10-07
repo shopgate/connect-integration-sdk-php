@@ -528,7 +528,7 @@ class ProductTest extends AbstractCatalogTest
         $product = $this->prepareProductMinimum();
 
         // Act
-        $this->sdk->getCatalogService()->addProducts([$product],[
+        $this->sdk->getCatalogService()->addProducts([$product], [
             'catalogCode' => self::SAMPLE_CATALOG_CODE_NON_DEFAULT
         ]);
         usleep(self::SLEEP_TIME_AFTER_EVENT);

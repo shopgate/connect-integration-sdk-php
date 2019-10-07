@@ -243,36 +243,60 @@ class GetTest extends TestCase
         $fulfillmentPackage = $fulfillmentPackages[0];
         $this->assertInstanceOf(Fulfillment\FulfillmentPackage::class, $fulfillmentPackage);
         $this->assertEquals($entry['fulfillments'][0]['fulfillmentPackages'][0]['id'], $fulfillmentPackage->getId());
-        $this->assertEquals($entry['fulfillments'][0]['fulfillmentPackages'][0]['status'],
-            $fulfillmentPackage->getStatus());
-        $this->assertEquals($entry['fulfillments'][0]['fulfillmentPackages'][0]['serviceLevel'],
-            $fulfillmentPackage->getServiceLevel());
-        $this->assertEquals($entry['fulfillments'][0]['fulfillmentPackages'][0]['fulfilledFromLocationCode'],
-            $fulfillmentPackage->getFulfilledFromLocationCode());
-        $this->assertEquals($entry['fulfillments'][0]['fulfillmentPackages'][0]['weight'],
-            $fulfillmentPackage->getWeight());
-        $this->assertEquals($entry['fulfillments'][0]['fulfillmentPackages'][0]['dimensions'],
-            $fulfillmentPackage->getDimensions());
-        $this->assertEquals($entry['fulfillments'][0]['fulfillmentPackages'][0]['tracking'],
-            $fulfillmentPackage->getTracking());
-        $this->assertEquals($entry['fulfillments'][0]['fulfillmentPackages'][0]['pickUpBy'],
-            $fulfillmentPackage->getPickUpBy());
-        $this->assertEquals($entry['fulfillments'][0]['fulfillmentPackages'][0]['labelUrl'],
-            $fulfillmentPackage->getLabelUrl());
-        $this->assertEquals($entry['fulfillments'][0]['fulfillmentPackages'][0]['fulfillmentDate'],
-            $fulfillmentPackage->getFulfillmentDate());
+        $this->assertEquals(
+            $entry['fulfillments'][0]['fulfillmentPackages'][0]['status'],
+            $fulfillmentPackage->getStatus()
+        );
+        $this->assertEquals(
+            $entry['fulfillments'][0]['fulfillmentPackages'][0]['serviceLevel'],
+            $fulfillmentPackage->getServiceLevel()
+        );
+        $this->assertEquals(
+            $entry['fulfillments'][0]['fulfillmentPackages'][0]['fulfilledFromLocationCode'],
+            $fulfillmentPackage->getFulfilledFromLocationCode()
+        );
+        $this->assertEquals(
+            $entry['fulfillments'][0]['fulfillmentPackages'][0]['weight'],
+            $fulfillmentPackage->getWeight()
+        );
+        $this->assertEquals(
+            $entry['fulfillments'][0]['fulfillmentPackages'][0]['dimensions'],
+            $fulfillmentPackage->getDimensions()
+        );
+        $this->assertEquals(
+            $entry['fulfillments'][0]['fulfillmentPackages'][0]['tracking'],
+            $fulfillmentPackage->getTracking()
+        );
+        $this->assertEquals(
+            $entry['fulfillments'][0]['fulfillmentPackages'][0]['pickUpBy'],
+            $fulfillmentPackage->getPickUpBy()
+        );
+        $this->assertEquals(
+            $entry['fulfillments'][0]['fulfillmentPackages'][0]['labelUrl'],
+            $fulfillmentPackage->getLabelUrl()
+        );
+        $this->assertEquals(
+            $entry['fulfillments'][0]['fulfillmentPackages'][0]['fulfillmentDate'],
+            $fulfillmentPackage->getFulfillmentDate()
+        );
 
         // FulfillmentPackageItem
         $fulfillmentPackageItems = $fulfillmentPackage->getPackageItems();
         $this->assertTrue(is_array($fulfillmentPackageItems));
         $fulfillmentPackageItem = $fulfillmentPackageItems[0];
         $this->assertInstanceOf(Fulfillment\FulfillmentPackage\PackageItem::class, $fulfillmentPackageItem);
-        $this->assertEquals($entry['fulfillments'][0]['fulfillmentPackages'][0]['packageItems'][0]['id'],
-            $fulfillmentPackageItem->getId());
-        $this->assertEquals($entry['fulfillments'][0]['fulfillmentPackages'][0]['packageItems'][0]['lineItemId'],
-            $fulfillmentPackageItem->getLineItemId());
-        $this->assertEquals($entry['fulfillments'][0]['fulfillmentPackages'][0]['packageItems'][0]['quantity'],
-            $fulfillmentPackageItem->getQuantity());
+        $this->assertEquals(
+            $entry['fulfillments'][0]['fulfillmentPackages'][0]['packageItems'][0]['id'],
+            $fulfillmentPackageItem->getId()
+        );
+        $this->assertEquals(
+            $entry['fulfillments'][0]['fulfillmentPackages'][0]['packageItems'][0]['lineItemId'],
+            $fulfillmentPackageItem->getLineItemId()
+        );
+        $this->assertEquals(
+            $entry['fulfillments'][0]['fulfillmentPackages'][0]['packageItems'][0]['quantity'],
+            $fulfillmentPackageItem->getQuantity()
+        );
 
         // LineItems
         $lineItems = $get->getLineItems();

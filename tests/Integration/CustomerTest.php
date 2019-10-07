@@ -100,5 +100,4 @@ abstract class CustomerTest extends ShopgateSdkTest
 
         return $result;
     }
-
 }

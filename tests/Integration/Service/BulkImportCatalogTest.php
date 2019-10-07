@@ -289,8 +289,10 @@ class BulkImportTest extends AbstractCatalogTest
         $products[] = $this->prepareProductMinimum();
         $products[] = $this->prepareProductMaximum(null, $categories, $extras, []);
         $inventories =
-            array_merge($this->provideSampleInventories(2, $products[0]->getCode()),
-                $this->provideSampleInventories(1, $products[1]->getCode()));
+            array_merge(
+                $this->provideSampleInventories(2, $products[0]->getCode()),
+                $this->provideSampleInventories(1, $products[1]->getCode())
+            );
         $this->createLocation(self::LOCATION_CODE);
 
         // Act

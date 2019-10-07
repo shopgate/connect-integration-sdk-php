@@ -126,8 +126,11 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
             $sampleCategories = $this->provideSampleCategories();
             $this->sdk->getCatalogService()->addCategories($sampleCategories, ['requestType' => 'direct']);
             $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
-            $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY,
-                $sampleCategoryCodes);
+            $this->deleteEntitiesAfterTestRun(
+                self::CATALOG_SERVICE,
+                self::METHOD_DELETE_CATEGORY,
+                $sampleCategoryCodes
+            );
         }
 
         if ($sampleOptions === null) {

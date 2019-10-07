@@ -11,6 +11,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - updateCatalog direct call
 - getCatalog
 - getCatalogs
+- webhook services added
+- webhook create, get, getList, webhook event DTOs
+- webhook unit and integration tests
 - SimpleFulfillmentOrder - add property fulfillmentOrderAddress
 - Order - add property updateDate
 - LineItem - add property options

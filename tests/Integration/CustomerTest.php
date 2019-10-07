@@ -40,6 +40,7 @@ abstract class CustomerTest extends ShopgateSdkTest
     const CUSTOMER_LASTNAME = 'Lastname';
     const CUSTOMER_MIDDLE_NAME = 'Middlename';
     const CUSTOMER_EMAIL = 'example+%s@mail.com';
+    const CUSTOMER_SETTINGS_DEFAULT_LOCALE = 'en-us';
     const CUSTOMER_SETTINGS_DEFAULT_CURRENCY = 'USD';
     const CUSTOMER_SETTINGS_DEFAULT_COMMUNICATION_PREFERENCES = ['email', 'sms'];
     const CUSTOMER_SETTINGS_DEFAULT_LOCATION_CODE = 'DERetail001';

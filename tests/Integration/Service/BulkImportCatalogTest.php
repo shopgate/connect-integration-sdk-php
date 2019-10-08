@@ -8,7 +8,7 @@ use Shopgate\ConnectSdk\Tests\Integration\AbstractCatalogTest;
 
 class BulkImportTest extends AbstractCatalogTest
 {
-    const SLEEP_TIME_AFTER_BULK = 12000000;
+    const SLEEP_TIME_AFTER_BULK = 20000000;
     const LOCATION_CODE = 'WHS1';
 
     /**

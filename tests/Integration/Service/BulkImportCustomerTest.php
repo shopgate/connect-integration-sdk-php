@@ -25,16 +25,19 @@ class BulkImportCustomerTest extends CustomerTest
         $customerHandler->end();
         $handler->trigger();
 
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(self::CUSTOMER_SERVICE, self::METHOD_DELETE_CUSTOMER, [
-            //todo-sg: figure out how we get the created ids
-        ]);
-
         usleep(self::SLEEP_TIME_AFTER_BULK);
 
         // Assert
         $availableCustomers = $this->sdk->getCustomerService()->getCustomers();
         $this->assertCount(2, $availableCustomers->getCustomers());
+
+        // CleanUp
+        $deleteIds = [];
+        foreach ($availableCustomers->getCustomers() as $customer) {
+            $deleteIds[] = $customer->getId();
+        }
+
+        $this->deleteEntitiesAfterTestRun(self::CUSTOMER_SERVICE, self::METHOD_DELETE_CUSTOMER, $deleteIds);
     }
 
     /**
@@ -53,15 +56,17 @@ class BulkImportCustomerTest extends CustomerTest
         $customerHandler->end();
         $handler->trigger();
 
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(self::CUSTOMER_SERVICE, self::METHOD_DELETE_CUSTOMER, [
-            //todo-sg: figure out how we get the created ids
-        ]);
-
         usleep(self::SLEEP_TIME_AFTER_BULK);
 
         // Assert
         $availableCustomers = $this->sdk->getCustomerService()->getCustomers();
         $this->assertCount(2, $availableCustomers->getCustomers());
+
+        $deleteIds = [];
+        foreach ($availableCustomers->getCustomers() as $customer) {
+            $deleteIds[] = $customer->getId();
+        }
+
+        $this->deleteEntitiesAfterTestRun(self::CUSTOMER_SERVICE, self::METHOD_DELETE_CUSTOMER, $deleteIds);
     }
 }

@@ -31,6 +31,13 @@ class BulkImportCustomerTest extends CustomerTest
         $availableCustomers = $this->sdk->getCustomerService()->getCustomers();
         $this->assertCount(2, $availableCustomers->getCustomers());
 
+        foreach ($availableCustomers->getCustomers() as $availableCustomer) {
+            $fullCustomer = $this->sdk->getCustomerService()->getCustomer($availableCustomer->getId());
+
+            $this->assertCount(1, $fullCustomer->getContacts());
+            $this->assertEquals(self::CUSTOMER_CONTACT_FIRSTNAME, $fullCustomer->getContacts()[0]->getFirstName());
+        }
+
         // CleanUp
         $deleteIds = [];
         foreach ($availableCustomers->getCustomers() as $customer) {

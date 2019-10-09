@@ -24,9 +24,8 @@
 
 namespace Shopgate\ConnectSdk\Tests\Integration;
 
-use Shopgate\ConnectSdk\Dto\Customer\Customer;
 use Shopgate\ConnectSdk\Dto\Customer\Contact;
-use Shopgate\ConnectSdk\Exception;
+use Shopgate\ConnectSdk\Dto\Customer\Customer;
 
 abstract class CustomerTest extends ShopgateSdkTest
 {
@@ -95,6 +94,31 @@ abstract class CustomerTest extends ShopgateSdkTest
             $setting->setMarketingOptIn(true);
 
             $customer->setSettings($setting);
+
+            // Contact
+            $contact = new Contact\Create();
+            $contact->setExternalContactCode(self::CUSTOMER_CONTACT_EXTERNAL_CUSTOMER_CODE);
+            $contact->setStatus(Contact\Create::STATUS_ACTIVE);
+            $contact->setFirstName(self::CUSTOMER_CONTACT_FIRSTNAME);
+            $contact->setMiddleName(self::CUSTOMER_CONTACT_MIDDLE_NAME);
+            $contact->setLastName(self::CUSTOMER_CONTACT_LAST_NAME);
+            $contact->setCompanyName(self::CUSTOMER_CONTACT_COMPANY);
+            $contact->setAddress1(self::CUSTOMER_CONTACT_ADDRESS_1);
+            $contact->setAddress2(self::CUSTOMER_CONTACT_ADDRESS_2);
+            $contact->setAddress3(self::CUSTOMER_CONTACT_ADDRESS_3);
+            $contact->setAddress4(self::CUSTOMER_CONTACT_ADDRESS_4);
+            $contact->setCity(self::CUSTOMER_CONTACT_CITY);
+            $contact->setPostalCode(self::CUSTOMER_CONTACT_POSTAL_CODE);
+            $contact->setRegion(self::CUSTOMER_CONTACT_REGION);
+            $contact->setCountry(self::CUSTOMER_CONTACT_COUNTRY);
+            $contact->setPhone(self::CUSTOMER_CONTACT_PHONE);
+            $contact->setFax(self::CUSTOMER_CONTACT_FAX);
+            $contact->setMobile(self::CUSTOMER_CONTACT_MOBILE);
+            $contact->setEmailAddress(sprintf(self::CUSTOMER_CONTACT_EMAIL, 1));
+            $contact->setIsDefaultShipping(true);
+            $contact->setIsDefaultBilling(true);
+
+            $customer->setContacts([$contact]);
 
             $result[] = $customer;
         }

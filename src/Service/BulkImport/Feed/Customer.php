@@ -29,6 +29,9 @@ use Shopgate\ConnectSdk\Service\BulkImport\Handler\File;
 
 class Customer extends Feed
 {
+    /**
+     * @param Create $customer
+     */
     public function add(Create $customer)
     {
         /**

@@ -158,7 +158,10 @@ class Handler
             $this->client,
             $this->importReference,
             $this::HANDLER_TYPE,
-            array_merge(['entity' => 'customer'], ['catalogCode' => $catalogCode])
+            [
+                'entity' => 'customer',
+                'catalogCode' => $catalogCode
+            ]
         );
     }
 

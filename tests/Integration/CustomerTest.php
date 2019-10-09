@@ -65,7 +65,6 @@ abstract class CustomerTest extends ShopgateSdkTest
     const CUSTOMER_CONTACT_MOBILE = '+1000000003';
     const CUSTOMER_CONTACT_EMAIL = 'somelocation+%s@someRetailer.com';
 
-
     /**
      * @param int $itemCount
      *

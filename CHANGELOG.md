@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - SimpleFulfillmentOrder - add property fulfillmentOrderAddress
 - Order - add property updateDate
 - LineItem - add property options
+- bulkImport for customer
 
 ### Changed
 - SimpleFulfillmentOrder - rename property orderSubmittedDate to submitDate

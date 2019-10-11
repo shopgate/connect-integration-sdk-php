@@ -27,6 +27,8 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product;
 /**
  * @method Update setName(Dto\Name $name)
  * @method Update setLongName(Dto\LongName $longName)
+ * @method Update setShortDescription(Dto\ShortDescription $name)
+ * @method Update setLongDescription(Dto\LongDescription $longName)
  * @method Update setCategories(Dto\Categories[] $categories)
  * @method Update setProperties(Dto\Properties[] $properties)
  * @method Update setMedia(Dto\MediaList $media)
@@ -70,6 +72,8 @@ class Update extends Product
         'properties'           => [
             'name'                => ['$ref' => Dto\Name::class],
             'longName'            => ['$ref' => Dto\LongName::class],
+            'shortDescription'    => ['$ref' => Dto\ShortDescription::class],
+            'longDescription'     => ['$ref' => Dto\LongDescription::class],
             'categories'          => [
                 'type'  => 'array',
                 'items' => ['$ref' => Dto\Categories::class]

@@ -27,6 +27,9 @@ use Shopgate\ConnectSdk\Dto\Meta;
 use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder;
 use Shopgate\ConnectSdk\Dto\Order\Order as OrderDto;
 use Shopgate\ConnectSdk\Dto\Order\SimpleFulfillmentOrder;
+use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrderStatusCount;
+use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrderBreakdown;
+use Shopgate\ConnectSdk\Dto\Order\CycleTime;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
@@ -218,5 +221,110 @@ class Order
         $response['fulfillmentOrders'] = $orders;
 
         return new FulfillmentOrder\GetList($response);
+    }
+
+    /**
+     * @param array $query
+     *
+     * @return FulfillmentOrderStatusCount[]
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     * @throws InvalidDataTypeException
+     */
+    public function getFulfillmentOrderStatusCount(array $query = [])
+    {
+        if (isset($query['filters'])) {
+            $query['filters'] = $this->jsonHelper->encode($query['filters']);
+        }
+
+        $response = $this->client->doRequest(
+            [
+                // direct only
+                'service' => self::SERVICE_ORDER,
+                'method' => 'get',
+                'path' => 'analytics/fulfillmentOrderStatusCount',
+                'query' => $query,
+            ]
+        );
+        $response = $this->jsonHelper->decode($response->getBody(), true);
+
+        $orderStatusCount = [];
+        foreach ($response['orderStatusCount'] as $statusCount) {
+            $orderStatusCount[] = new FulfillmentOrderStatusCount($statusCount);
+        }
+
+        return $orderStatusCount;
+    }
+
+    /**
+     * @param string $interval
+     * @param array $query
+     *
+     * @return FulfillmentOrderBreakdown
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     * @throws InvalidDataTypeException
+     */
+    public function getFulfillmentOrderBreakdown($interval, array $query = [])
+    {
+        if (isset($query['filters'])) {
+            $query['filters'] = $this->jsonHelper->encode($query['filters']);
+        }
+
+        $response = $this->client->doRequest(
+            [
+                // direct only
+                'service' => self::SERVICE_ORDER,
+                'method' => 'get',
+                'path' => 'analytics/fulfillmentOrderBreakdown/intervals/' . $interval,
+                'query' => $query,
+            ]
+        );
+        $response = $this->jsonHelper->decode($response->getBody(), true);
+
+        return new FulfillmentOrderBreakdown($response['orderBreakdown']);
+    }
+
+    /**
+     * @param string $interval
+     * @param array $query
+     *
+     * @return CycleTime[]
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     * @throws InvalidDataTypeException
+     */
+    public function getCycleTimes($interval, array $query = [])
+    {
+        if (isset($query['filters'])) {
+            $query['filters'] = $this->jsonHelper->encode($query['filters']);
+        }
+
+        $response = $this->client->doRequest(
+            [
+                // direct only
+                'service' => self::SERVICE_ORDER,
+                'method' => 'get',
+                'path' => 'analytics/cycleTimes/intervals/' . $interval,
+                'query' => $query,
+            ]
+        );
+        $response = $this->jsonHelper->decode($response->getBody(), true);
+
+        $cycleTimes = [];
+        foreach ($response['cycleTime'] as $cycleTime) {
+            $cycleTimes[] = new CycleTime($cycleTime);
+        }
+
+        return $cycleTimes;
     }
 }

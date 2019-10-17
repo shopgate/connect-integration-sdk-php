@@ -250,7 +250,6 @@ class Order
             ]
         );
         $response = $this->jsonHelper->decode($response->getBody(), true);
-
         $orderStatusCount = [];
         foreach ($response['orderStatusCount'] as $statusCount) {
             $orderStatusCount[] = new FulfillmentOrderStatusCount\Get($statusCount);
@@ -258,7 +257,7 @@ class Order
 
         $response['orderStatusCount'] = $orderStatusCount;
 
-        return new FulfillmentOrderStatusCount\Getlist($orderStatusCount);
+        return new FulfillmentOrderStatusCount\Getlist($response);
     }
 
     /**
@@ -323,10 +322,10 @@ class Order
         $response = $this->jsonHelper->decode($response->getBody(), true);
 
         $cycleTimes = [];
-        foreach ($response['cycleTime'] as $cycleTime) {
+        foreach ($response['cycleTimes'] as $cycleTime) {
             $cycleTimes[] = new CycleTime\Get($cycleTime);
         }
-        $response['cycleTime'] = $cycleTimes;
+        $response['cycleTimes'] = $cycleTimes;
 
         return new CycleTime\GetList($response);
     }

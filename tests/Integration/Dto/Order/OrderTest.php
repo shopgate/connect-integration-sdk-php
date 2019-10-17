@@ -271,6 +271,57 @@ class OrderTest extends OrderBaseTest
     }
 
     /**
+     * @throws Exception
+     */
+    public function testGetFulfillmentOrderStatusCount()
+    {
+        // Act
+        $response = $this->sdk->getOrderService()->getFulfillmentOrderStatusCount();
+        $orderStatusCount = $response->getOrderStatusCount();
+
+        // Assert
+        $this->assertCount(1, $orderStatusCount);
+        $this->assertEquals('fulfilled', $orderStatusCount[0]->getStatus());
+        $this->assertEquals(1, $orderStatusCount[0]->getCount());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testGetFulfillmentOrderBreakdown()
+    {
+        // Act
+        $response = $this->sdk->getOrderService()->getFulfillmentOrderBreakdown('today');
+
+        // Assert
+        $this->assertEquals(0, $response->getNumberOfOrders());
+        $this->assertEquals(0, $response->getAverageNumberOfItems());
+        $this->assertEquals(0, $response->getAverageOrderValue());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testGetCycleTimes()
+    {
+        // Arrange
+        $possibleTypes = ['timeToAccept', 'timeToPick', 'timeToPack', 'timeToComplete', 'timeToCycleEnd'];
+
+        // Act
+        $response = $this->sdk->getOrderService()->getCycleTimes('today');
+        $cycleTimes = $response->getCycleTimes();
+
+        // Assert
+        $this->assertCount(5, $cycleTimes);
+        $this->assertEquals(1, 1);
+        foreach ($cycleTimes as $cycleTime) {
+            $this->assertTrue(in_array($cycleTime->getType(), $possibleTypes));
+            $this->assertEquals(0, $cycleTime->getTime());
+            $this->assertEquals(0, $cycleTime->getDifference());
+        }
+    }
+
+    /**
      * @param string[] $productIds
      * @param string $locationCode
      * @param array $fields

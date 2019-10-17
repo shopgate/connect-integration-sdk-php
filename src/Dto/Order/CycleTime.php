@@ -26,9 +26,12 @@ use Shopgate\ConnectSdk\Dto\Base;
 
 /**
  * @method string getType()
- * @method int getTime()
+ * @method int getItem()
  * @method int getDifference()
  */
 class CycleTime extends Base
 {
+    const INTERVAL_TODAY = 'today';
+    const INTERVAL_YESTERDAY = 'yesterday';
+    const INTERVAL_MONTH = 'month';
 }

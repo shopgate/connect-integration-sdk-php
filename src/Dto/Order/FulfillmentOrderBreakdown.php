@@ -31,4 +31,7 @@ use Shopgate\ConnectSdk\Dto\Base;
  */
 class FulfillmentOrderBreakdown extends Base
 {
+    const INTERVAL_TODAY = 'today';
+    const INTERVAL_YESTERDAY = 'yesterday';
+    const INTERVAL_MONTH = 'month';
 }

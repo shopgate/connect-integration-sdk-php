@@ -35,10 +35,10 @@ class GetList extends FulfillmentOrderStatusCount
      * @var array
      */
     protected $schema = [
-        'type'                 => 'object',
-        'properties'           => [
+        'type' => 'object',
+        'properties' => [
             'orderStatusCount' => [
-                'type'  => 'array',
+                'type' => 'array',
                 'items' => ['$ref' => Get::class, 'skipValidation' => true]
             ]
         ],

@@ -25,7 +25,7 @@ namespace Shopgate\ConnectSdk\Dto\Order\CycleTime;
 use Shopgate\ConnectSdk\Dto\Order\CycleTime;
 
 /**
- * @method Get[] getCycleTime()
+ * @method Get[] getCycleTimes()
  *
  * @codeCoverageIgnore
  */
@@ -35,10 +35,10 @@ class GetList extends CycleTime
      * @var array
      */
     protected $schema = [
-        'type'                 => 'object',
-        'properties'           => [
-            'cycleTime' => [
-                'type'  => 'array',
+        'type' => 'object',
+        'properties' => [
+            'cycleTimes' => [
+                'type' => 'array',
                 'items' => ['$ref' => Get::class, 'skipValidation' => true]
             ]
         ],

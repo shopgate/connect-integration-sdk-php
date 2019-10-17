@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Added support for the order analytic endpoints
+
+### Changed
+- Updated fulfillment order DTO to reflect the addition of heldUntil and pickupReminderApplicableAt properties
 
 ## [1.1.0] - 2019-10-16
 ### Added

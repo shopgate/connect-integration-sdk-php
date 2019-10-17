@@ -275,6 +275,9 @@ class OrderTest extends OrderBaseTest
      */
     public function testGetFulfillmentOrderStatusCount()
     {
+        $this->markTestSkipped(
+            'Skipping as part of debugging effort'
+        );
         // Act
         $response = $this->sdk->getOrderService()->getFulfillmentOrderStatusCount();
         $orderStatusCount = $response->getOrderStatusCount();
@@ -290,6 +293,9 @@ class OrderTest extends OrderBaseTest
      */
     public function testGetFulfillmentOrderBreakdown()
     {
+        $this->markTestSkipped(
+            'Skipping as part of debugging effort'
+        );
         // Act
         $response = $this->sdk->getOrderService()->getFulfillmentOrderBreakdown('today');
 
@@ -304,6 +310,9 @@ class OrderTest extends OrderBaseTest
      */
     public function testGetCycleTimes()
     {
+        $this->markTestSkipped(
+            'Skipping as part of debugging effort'
+        );
         // Arrange
         $possibleTypes = ['timeToAccept', 'timeToPick', 'timeToPack', 'timeToComplete', 'timeToCycleEnd'];
 

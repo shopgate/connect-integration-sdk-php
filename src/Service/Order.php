@@ -226,7 +226,7 @@ class Order
     /**
      * @param array $query
      *
-     * @return FulfillmentOrderStatusCount[]
+     * @return FulfillmentOrderStatusCount\GetList
      *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
@@ -253,10 +253,12 @@ class Order
 
         $orderStatusCount = [];
         foreach ($response['orderStatusCount'] as $statusCount) {
-            $orderStatusCount[] = new FulfillmentOrderStatusCount($statusCount);
+            $orderStatusCount[] = new FulfillmentOrderStatusCount\Get($statusCount);
         }
 
-        return $orderStatusCount;
+        $response['orderStatusCount'] = $orderStatusCount;
+
+        return new FulfillmentOrderStatusCount\Getlist($orderStatusCount);
     }
 
     /**
@@ -295,7 +297,7 @@ class Order
      * @param string $interval
      * @param array $query
      *
-     * @return CycleTime[]
+     * @return CycleTime/GetList
      *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
@@ -322,9 +324,10 @@ class Order
 
         $cycleTimes = [];
         foreach ($response['cycleTime'] as $cycleTime) {
-            $cycleTimes[] = new CycleTime($cycleTime);
+            $cycleTimes[] = new CycleTime\Get($cycleTime);
         }
+        $response['cycleTime'] = $cycleTimes;
 
-        return $cycleTimes;
+        return new CycleTime\GetList($response);
     }
 }

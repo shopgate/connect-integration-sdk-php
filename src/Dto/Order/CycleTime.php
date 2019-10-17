@@ -26,7 +26,7 @@ use Shopgate\ConnectSdk\Dto\Base;
 
 /**
  * @method string getType()
- * @method int getItem()
+ * @method int getTime()
  * @method int getDifference()
  */
 class CycleTime extends Base

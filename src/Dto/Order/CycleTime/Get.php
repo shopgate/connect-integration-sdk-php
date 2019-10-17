@@ -26,7 +26,7 @@ use Shopgate\ConnectSdk\Dto\Order\CycleTime;
 
 /**
  * @method string getType()
- * @method int getItem()
+ * @method int getTime()
  * @method int getDifference()
  *
  * @codeCoverageIgnore

@@ -275,9 +275,6 @@ class OrderTest extends OrderBaseTest
      */
     public function testGetFulfillmentOrderStatusCount()
     {
-        $this->markTestSkipped(
-            'Skipping as part of debugging effort'
-        );
         // Act
         $response = $this->sdk->getOrderService()->getFulfillmentOrderStatusCount();
         $orderStatusCount = $response->getOrderStatusCount();

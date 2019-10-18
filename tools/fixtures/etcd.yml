@@ -129,6 +129,8 @@ development:
         autoCreateDatabase: true
       googleCloud:
         projectId: test-project
+      datawarehouse:
+        endpoint: http://host-based-1460236270.eu-west-1.elb.amazonaws.com:8048/query.json
 
     OmniWebhookService:
       mysql:

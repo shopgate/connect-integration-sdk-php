@@ -30,6 +30,8 @@ use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder\Dto\FulfillmentOrderAddress;
  * @method string getExternalCode()
  * @method string getPosTransactionId()
  * @method string getCancellationReason()
+ * @method string getHeldUntil()
+ * @method string getPickupReminderApplicableAt()
  * @method string getSalesOrderNumber()
  * @method string getLocationCode()
  * @method string getType()

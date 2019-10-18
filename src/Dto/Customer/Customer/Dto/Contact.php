@@ -45,6 +45,7 @@ use Shopgate\ConnectSdk\Dto\Customer\Contact as ContactBase;
  * @method string getEmailAddress()
  * @method boolean getIsDefaultShipping()
  * @method boolean getIsDefaultBilling()
+ * @method string getExternalUpdateDate()
  */
 class Contact extends ContactBase
 {

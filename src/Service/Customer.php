@@ -236,7 +236,7 @@ class Customer
             [
                 'service' => self::SERVICE_CUSTOMER,
                 'method' => 'post',
-                'path' => 'attributes/' . $code . '/values/',
+                'path' => 'attributes/' . $code . '/values',
                 'entity' => 'attributes',
                 'action' => 'create',
                 'json' => ['values' => $attributeValues],

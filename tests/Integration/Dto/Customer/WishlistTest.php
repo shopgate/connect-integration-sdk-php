@@ -53,7 +53,8 @@ class WishlistTest extends CustomerIntegrationTest
             $productCodes = array_merge(
                 $productCodes,
                 array_map(
-                    [$this, 'getItemProductCode'], $sampleWishlist['items']
+                    [$this, 'getItemProductCode'],
+                    $sampleWishlist['items']
                 )
             );
         }
@@ -62,10 +63,12 @@ class WishlistTest extends CustomerIntegrationTest
 
         // Act
         $this->sdk->getCustomerService()->addWishlists(
-            $customerId, array_map(
+            $customerId,
+            array_map(
                 function ($sampleWishlist) {
                     return new Wishlist\Create($sampleWishlist);
-                }, $sampleWishlists
+                },
+                $sampleWishlists
             )
         );
 
@@ -77,7 +80,8 @@ class WishlistTest extends CustomerIntegrationTest
         // CleanUp
         $this->cleanupWishlists(
             $this->getWishlistsDeleteIdsForCleanup(
-                $wishlistGetList, $customerId
+                $wishlistGetList,
+                $customerId
             ),
             $customerId,
             $productCodes
@@ -88,21 +92,25 @@ class WishlistTest extends CustomerIntegrationTest
         // must call each individual wishlist to get items
         foreach ($sampleWishlists as $sampleWishlist) {
             $wishlists[] = $this->sdk->getCustomerService()->getWishlist(
-                $sampleWishlist['code'], $customerId
+                $sampleWishlist['code'],
+                $customerId
             );
         }
         $this->assertCount(
-            count($sampleWishlists), $wishlistGetList->getWishlists()
+            count($sampleWishlists),
+            $wishlistGetList->getWishlists()
         );
         foreach ($sampleWishlists as $sampleWishlist) {
             $actualWishlist = $this->findWishListByCode(
-                $sampleWishlist['code'], $wishlists
+                $sampleWishlist['code'],
+                $wishlists
             );
             $sampleWishlistAsGet = new Wishlist\Get($sampleWishlist);
             // must evaluate piece by piece
             foreach ($sampleWishlist as $key => $parts) {
                 $this->assertEquals(
-                    $sampleWishlistAsGet->get($key), $actualWishlist->get($key)
+                    $sampleWishlistAsGet->get($key),
+                    $actualWishlist->get($key)
                 );
             }
         }
@@ -186,12 +194,14 @@ class WishlistTest extends CustomerIntegrationTest
             ]
         );
         $this->sdk->getCustomerService()->addWishlists(
-            $customerId, [$sampleWishlist]
+            $customerId,
+            [$sampleWishlist]
         );
 
         // Act
         $wishlist = $this->sdk->getCustomerService()->getWishlist(
-            self::WISHLIST_CODE, $customerId
+            self::WISHLIST_CODE,
+            $customerId
         );
 
         // CleanUp
@@ -236,18 +246,22 @@ class WishlistTest extends CustomerIntegrationTest
         );
         $this->addSampleProducts($productCodes);
         $this->sdk->getCustomerService()->addWishlists(
-            $customerId, [$sampleWishlist]
+            $customerId,
+            [$sampleWishlist]
         );
         $updateWishlist = new Wishlist\Update($updated);
 
         // Act
         $this->sdk->getCustomerService()->updateWishlist(
-            $originalCreateFields['code'], $customerId, $updateWishlist
+            $originalCreateFields['code'],
+            $customerId,
+            $updateWishlist
         );
 
         // Assert
         $wishlistAfterUpdate = $this->sdk->getCustomerService()->getWishlist(
-            $updatedCode, $customerId
+            $updatedCode,
+            $customerId
         );
 
         // CleanUp
@@ -261,7 +275,8 @@ class WishlistTest extends CustomerIntegrationTest
         $expectedGet = new Wishlist\Get($updated);
         foreach ($updated as $key => $value) {
             $this->assertEquals(
-                $expectedGet->get($key), $wishlistAfterUpdate->get($key)
+                $expectedGet->get($key),
+                $wishlistAfterUpdate->get($key)
             );
         }
     }
@@ -342,7 +357,8 @@ class WishlistTest extends CustomerIntegrationTest
 
         ];
         $this->sdk->getCustomerService()->addWishlists(
-            $customerId, $sampleWishlists
+            $customerId,
+            $sampleWishlists
         );
 
         // Assert
@@ -352,7 +368,8 @@ class WishlistTest extends CustomerIntegrationTest
 
         // Act
         $this->sdk->getCustomerService()->deleteWishlist(
-            self::WISHLIST_CODE, $customerId
+            self::WISHLIST_CODE,
+            $customerId
         );
 
         // Assert
@@ -363,7 +380,8 @@ class WishlistTest extends CustomerIntegrationTest
         // CleanUp
         $this->cleanupWishlists(
             $this->getWishlistsDeleteIdsForCleanup(
-                $wishlistsAfterDelete, $customerId
+                $wishlistsAfterDelete,
+                $customerId
             ),
             $customerId
         );
@@ -398,19 +416,23 @@ class WishlistTest extends CustomerIntegrationTest
         $this->addSampleProducts($productCodes);
 
         $this->sdk->getCustomerService()->addWishlists(
-            $customerId, [$sampleWishlist]
+            $customerId,
+            [$sampleWishlist]
         );
         $sampleItems = $this->createWishlistItems($productCodes);
 
         // Act
         $this->sdk->getCustomerService()->addWishlistItems(
-            $customerId, self::WISHLIST_CODE, $sampleItems
+            $customerId,
+            self::WISHLIST_CODE,
+            $sampleItems
         );
 
         // Assert
         $wishlist = $this->sdk->getCustomerService()
             ->getWishlist(
-                self::WISHLIST_CODE, $customerId
+                self::WISHLIST_CODE,
+                $customerId
             );
         $returnedWishlistProductCodes = $this->getWishlistItemsProductCodes(
             $wishlist
@@ -462,12 +484,15 @@ class WishlistTest extends CustomerIntegrationTest
             ]
         );
         $this->sdk->getCustomerService()->addWishlists(
-            $customerId, [$sampleWishlist]
+            $customerId,
+            [$sampleWishlist]
         );
 
         // Act
         $this->sdk->getCustomerService()->deleteWishlistItem(
-            self::WISHLIST_PRODUCT_CODE, self::WISHLIST_CODE, $customerId
+            self::WISHLIST_PRODUCT_CODE,
+            self::WISHLIST_CODE,
+            $customerId
         );
 
         // CleanUp
@@ -480,14 +505,16 @@ class WishlistTest extends CustomerIntegrationTest
         // Assert
         $wishlist = $this->sdk->getCustomerService()
             ->getWishlist(
-                self::WISHLIST_CODE, $customerId
+                self::WISHLIST_CODE,
+                $customerId
             );
         $returnedWishlistProductCodes = $this->getWishlistItemsProductCodes(
             $wishlist
         );
 
         $this->assertEquals(
-            [self::WISHLIST_PRODUCT_CODE_TWO], $returnedWishlistProductCodes
+            [self::WISHLIST_PRODUCT_CODE_TWO],
+            $returnedWishlistProductCodes
         );
     }
 
@@ -507,7 +534,8 @@ class WishlistTest extends CustomerIntegrationTest
             ]
         );
         $this->sdk->getCustomerService()->addWishlists(
-            $customerId, [$sampleWishlist]
+            $customerId,
+            [$sampleWishlist]
         );
 
         // CleanUp
@@ -520,7 +548,9 @@ class WishlistTest extends CustomerIntegrationTest
         $sampleItem = new Wishlist\Dto\Item\Create();
         try {
             $this->sdk->getCustomerService()->addWishlistItems(
-                $customerId, self::WISHLIST_CODE, [$sampleItem]
+                $customerId,
+                self::WISHLIST_CODE,
+                [$sampleItem]
             );
         } catch (Exception $exception) {
 

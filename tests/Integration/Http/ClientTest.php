@@ -64,8 +64,16 @@ class ClientTest extends ShopgateSdkTest
         $env,
         $accessTokenPath
     ) {
-        $sdk = $this->createNewSdk($clientId, $clientSecret, $merchantCode, $username, $password, $baseUri, $env,
-            $accessTokenPath);
+        $sdk = $this->createNewSdk(
+            $clientId,
+            $clientSecret,
+            $merchantCode,
+            $username,
+            $password,
+            $baseUri,
+            $env,
+            $accessTokenPath
+        );
         try {
             $sdk->getClient()->doRequest([
                 'method'      => 'get',
@@ -122,8 +130,10 @@ class ClientTest extends ShopgateSdkTest
         );
 
         if ((int)getenv('requestLogging')) {
-            $client->enableRequestLogging(new Logger('request_logger_integration_tests',
-                [new StreamHandler('php://stdout')]));
+            $client->enableRequestLogging(new Logger(
+                'request_logger_integration_tests',
+                [new StreamHandler('php://stdout')]
+            ));
         }
 
         return new ShopgateSdk(['client' => $client]);

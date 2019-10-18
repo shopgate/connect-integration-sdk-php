@@ -25,9 +25,7 @@ namespace Shopgate\ConnectSdk\Dto\Order;
 use Shopgate\ConnectSdk\Dto\Base;
 
 /**
- * @method string getType()
- * @method int getItem()
- * @method int getDifference()
+ * @codeCoverageIgnore
  */
 class CycleTime extends Base
 {

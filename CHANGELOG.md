@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## [Unreleased]
 ### Added
 - bulkImport for customer
-- Added support for the order analytic endpoints
+- support for the order analytic endpoints
 
 ### Changed
 - Updated fulfillment order DTO to reflect the addition of heldUntil and pickupReminderApplicableAt properties

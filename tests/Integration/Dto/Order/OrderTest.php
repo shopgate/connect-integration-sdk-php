@@ -314,8 +314,8 @@ class OrderTest extends OrderBaseTest
         // Assert
         $this->assertCount(5, $cycleTimes);
         $this->assertEquals(1, 1);
-        foreach ($cycleTimes as $cycleTime) {
-            $this->assertTrue(in_array($cycleTime->getType(), $possibleTypes));
+        foreach ($cycleTimes as $index => $cycleTime) {
+            $this->assertEquals($possibleTypes[$index], $cycleTime->getType());
             $this->assertEquals(0, $cycleTime->getTime());
             $this->assertEquals(0, $cycleTime->getDifference());
         }

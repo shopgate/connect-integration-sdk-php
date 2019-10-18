@@ -25,8 +25,7 @@ namespace Shopgate\ConnectSdk\Dto\Order;
 use Shopgate\ConnectSdk\Dto\Base;
 
 /**
- * @method string getStatus()
- * @method int getCount()
+ * @codeCoverageIgnore
  */
 class FulfillmentOrderStatusCount extends Base
 {

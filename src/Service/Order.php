@@ -296,7 +296,7 @@ class Order
      * @param string $interval
      * @param array $query
      *
-     * @return CycleTime/GetList
+     * @return CycleTime\GetList
      *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException

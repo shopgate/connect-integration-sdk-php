@@ -799,7 +799,6 @@ class CategoryTest extends AbstractCatalogTest
         $url = null,
         $description = null,
         $parentCategoryCode = null
-
     ) {
         $category = new Category\Update();
 

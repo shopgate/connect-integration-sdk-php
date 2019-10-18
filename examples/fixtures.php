@@ -8,6 +8,8 @@ use Shopgate\ConnectSdk\Dto\Location\Location;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
+use Shopgate\ConnectSdk\Dto\Customer\Contact;
+use Shopgate\ConnectSdk\Dto\Customer\Customer;
 use Shopgate\ConnectSdk\Dto\Order\Order;
 use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 
@@ -317,4 +319,57 @@ function provideSampleOrders()
     $order->setLineItems([$lineItem]);
 
     return [$order];
+}
+
+/**
+ * @return array
+ *
+ * @throws InvalidDataTypeException
+ */
+function provideSampleCustomers()
+{
+    $customer = new Customer\Create();
+    $customer->setExternalCustomerNumber('external_customer_code');
+    $customer->setFirstName('firstname');
+    $customer->setMiddleName('middlename');
+    $customer->setLastName('lastname');
+    $customer->setEmailAddress('info@shopgate.com');
+    $customer->setStatus(Customer\Create::STATUS_ACTIVE);
+    $customer->setIsAnonymous(false);
+
+    $setting = new Customer\Dto\Settings();
+    $setting->setDefaultLocale('en-us');
+    $setting->setDefaultCurrency('USD');
+    $setting->setCommunicationPreferences(['email']);
+    $setting->setDefaultLocationCode('DERetail001');
+    $setting->setMarketingOptIn(true);
+
+    $customer->setSettings($setting);
+
+    // Contact
+    $contact = new Contact\Create();
+    $contact->setExternalContactCode('external_contact_code');
+    $contact->setStatus(Contact\Create::STATUS_ACTIVE);
+    $contact->setFirstName('firstname');
+    $contact->setMiddleName('middlename');
+    $contact->setLastName('lastname');
+    $contact->setCompanyName('company');
+    $contact->setAddress1('address 1');
+    $contact->setAddress2('address 2');
+    $contact->setAddress3('address 3');
+    $contact->setAddress4('address 4');
+    $contact->setCity('Austin');
+    $contact->setPostalCode('78732');
+    $contact->setRegion('TX');
+    $contact->setCountry('US');
+    $contact->setPhone('123456789');
+    $contact->setFax('987654321');
+    $contact->setMobile('123123123');
+    $contact->setEmailAddress('info@shopgate.com');
+    $contact->setIsDefaultShipping(true);
+    $contact->setIsDefaultBilling(true);
+
+    $customer->setContacts([$contact]);
+
+    return [$customer];
 }

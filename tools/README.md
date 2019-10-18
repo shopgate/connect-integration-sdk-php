@@ -76,6 +76,8 @@ Create the file `tests/Integration/.env` and put the following into it:
     username="team-bananas@shopgate.com"
     password="test"
 
+Optionally `requestLogging=1` can be added to the `tests/Integration/.env` file to log requests during testing
+
 In your `/etc/hosts` file (usually `C:\Windows\System32\Drivers\etc\hosts` on Windows) add the following entries:
 
     127.0.0.1       auth.shopgatedev.io

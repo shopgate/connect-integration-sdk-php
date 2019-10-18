@@ -143,6 +143,29 @@ class Handler
     }
 
     /**
+     * @param string $catalogCode
+     *
+     * @return Feed\Customer
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function createCustomerFeed($catalogCode)
+    {
+        return new Feed\Customer(
+            $this->client,
+            $this->importReference,
+            $this::HANDLER_TYPE,
+            [
+                'entity' => 'customer',
+                'catalogCode' => $catalogCode
+            ]
+        );
+    }
+
+    /**
      * @return ResponseInterface
      *
      * @throws AuthenticationInvalidException

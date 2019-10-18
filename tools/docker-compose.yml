@@ -140,7 +140,7 @@ services:
 
   ### https://gitlab.localdev.cc/omnichannel/services/customer
   customer:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/customer:v1.0.0-alpha.33-google-cloud.1
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/customer:v1.0.0-rc.2
     restart: always
     environment:
       - NODE_ENV=development
@@ -152,7 +152,7 @@ services:
 
 ### https://gitlab.localdev.cc/omnichannel/services/order
   order:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/order:v1.0.0-alpha.34
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/order:v1.1.0-beta.2
     restart: always
     environment:
       - NODE_ENV=development
@@ -205,7 +205,7 @@ services:
 
   ### https://gitlab.localdev.cc/big-api/services/import
   import:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/import:v1.0.0-alpha.7
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/import:v1.1.0-beta.1
     environment:
       - AWS_ACCESS_KEY_ID=foo
       - AWS_SECRET_ACCESS_KEY=bar

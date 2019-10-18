@@ -93,7 +93,6 @@ class ShopgateSdk
                 isset($config['env'])
                     ? $config['env']
                     : ''
-
             );
         $this->jsonHelper = new Json();
 

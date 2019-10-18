@@ -307,9 +307,6 @@ class OrderTest extends OrderBaseTest
      */
     public function testGetCycleTimes()
     {
-        $this->markTestSkipped(
-            'Skipping as part of debugging effort'
-        );
         // Arrange
         $possibleTypes = ['timeToAccept', 'timeToPick', 'timeToPack', 'timeToComplete', 'timeToCycleEnd'];
 

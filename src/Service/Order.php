@@ -257,7 +257,7 @@ class Order
 
         $response['orderStatusCount'] = $orderStatusCount;
 
-        return new FulfillmentOrderStatusCount\Getlist($response);
+        return new FulfillmentOrderStatusCount\GetList($response);
     }
 
     /**

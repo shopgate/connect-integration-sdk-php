@@ -26,6 +26,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product;
 use Shopgate\ConnectSdk\Dto\Customer\Customer;
 use Shopgate\ConnectSdk\Dto\Location\Location;
 use Shopgate\ConnectSdk\Dto\Order\Order;
+use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrderStatusCount;
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Tests\Integration\OrderTest as OrderBaseTest;
 
@@ -275,17 +276,11 @@ class OrderTest extends OrderBaseTest
      */
     public function testGetFulfillmentOrderStatusCount()
     {
-        $this->markTestSkipped(
-            'Skipping as part of debugging effort'
-        );
         // Act
         $response = $this->sdk->getOrderService()->getFulfillmentOrderStatusCount();
-        $orderStatusCount = $response->getOrderStatusCount();
 
         // Assert
-        $this->assertCount(1, $orderStatusCount);
-        $this->assertEquals('fulfilled', $orderStatusCount[0]->getStatus());
-        $this->assertEquals(1, $orderStatusCount[0]->getCount());
+        $this->assertInstanceOf(FulfillmentOrderStatusCount\GetList::class, $response);
     }
 
     /**

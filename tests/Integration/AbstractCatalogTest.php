@@ -126,8 +126,11 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
             $sampleCategories = $this->provideSampleCategories();
             $this->sdk->getCatalogService()->addCategories($sampleCategories, ['requestType' => 'direct']);
             $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
-            $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_CATEGORY,
-                $sampleCategoryCodes);
+            $this->deleteEntitiesAfterTestRun(
+                self::CATALOG_SERVICE,
+                self::METHOD_DELETE_CATEGORY,
+                $sampleCategoryCodes
+            );
         }
 
         if ($sampleOptions === null) {
@@ -388,7 +391,7 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
 
         $extraSecondValue = new AttributeValue\Create();
         $extraSecondValue->setCode(self::SAMPLE_EXTRA_VALUE_CODE_2);
-        $extraSecondValue->setSequenceId(1);
+        $extraSecondValue->setSequenceId(2);
 
         $extraSecondValueName = new AttributeValue\Dto\Name();
         $extraSecondValueName->add('de-de', 'Extra 2 Attribute de');

@@ -40,6 +40,7 @@ abstract class ShopgateSdkTest extends TestCase
     const CATALOG_SERVICE = 'catalog';
     const LOCATION_SERVICE = 'location';
     const CUSTOMER_SERVICE = 'customer';
+    const WEBHOOK_SERVICE = 'webhook';
 
     const METHOD_DELETE_CATEGORY = 'deleteCategory';
     const METHOD_DELETE_PRODUCT = 'deleteProduct';
@@ -52,6 +53,7 @@ abstract class ShopgateSdkTest extends TestCase
     const METHOD_DELETE_CUSTOMER_ATTRIBUTE = 'deleteAttribute';
     const METHOD_DELETE_CUSTOMER_CONTACT = 'deleteContact';
     const METHOD_DELETE_CUSTOMER_WISHLIST = 'deleteWishlist';
+    const METHOD_DELETE_WEBHOOK = 'deleteWebhook';
 
 
     const SAMPLE_CATALOG_CODE = 'NARetail';
@@ -137,6 +139,14 @@ abstract class ShopgateSdkTest extends TestCase
                 self::METHOD_DELETE_CUSTOMER => [],
                 self::METHOD_DELETE_CUSTOMER_ATTRIBUTE => [],
                 self::METHOD_DELETE_CUSTOMER_WISHLIST => []
+            ]
+        );
+
+        $this->registerForCleanUp(
+            self::WEBHOOK_SERVICE,
+            $this->sdk->getWebhooksService(),
+            [
+                self::METHOD_DELETE_WEBHOOK => []
             ]
         );
     }

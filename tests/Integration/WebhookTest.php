@@ -25,7 +25,7 @@ namespace Shopgate\ConnectSdk\Tests\Integration;
 use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Dto\Webhook\Webhook;
 
-class WebhookTest extends ShopgateSdkTest
+abstract class WebhookTest extends ShopgateSdkTest
 {
     const WEBHOOK_SIMPLE_PROPS = ['name', 'endpoint', 'active'];
 

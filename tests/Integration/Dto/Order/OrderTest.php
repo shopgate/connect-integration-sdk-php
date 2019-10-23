@@ -126,50 +126,6 @@ class OrderTest extends OrderBaseTest
     /**
      * @throws Exception
      */
-    public function testGetFulfillmentOrder()
-    {
-        $returnedFulfillmentOrder = $this->sdk->getOrderService()->getFulfillmentOrder('10138-0001');
-        $this->assertEquals('10138-0001', $returnedFulfillmentOrder->getOrderNumber());
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function testGetFulfillmentItem()
-    {
-        $returnedFulfillmentOrder = $this->sdk->getOrderService()->getFulfillmentOrder('10076-0001');
-        $fulfillmentItem             = $returnedFulfillmentOrder->getFulfillments()[0];
-        $this->assertEquals('124', $fulfillmentItem->getId());
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function testGetFulfillmentItemPackage()
-    {
-        $returnedFulfillmentOrder       = $this->sdk->getOrderService()->getFulfillmentOrder('10076-0001');
-        $fulfillmentItem                = $returnedFulfillmentOrder->getFulfillments()[0];
-        $fulfillmentItemPackage         = $fulfillmentItem->getFulfillmentPackages()[0];
-        $fulfillmentItemPackageLineItem = $fulfillmentItemPackage->getPackageItems()[0];
-
-        $this->assertEquals(233, $fulfillmentItemPackage->getId());
-        $this->assertEquals(34, $fulfillmentItemPackageLineItem->getId());
-        $this->assertEquals(94, $fulfillmentItemPackageLineItem->getLineItemId());
-        $this->assertEquals(1.0, $fulfillmentItemPackageLineItem->getQuantity());
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function testGetFulfillmentOrders()
-    {
-        $returnedFulfillmentOrder = $this->sdk->getOrderService()->getFulfillmentOrders();
-        $this->assertEquals('10138-0001', $returnedFulfillmentOrder->getFulfillmentOrders()[0]->getOrderNumber());
-    }
-
-    /**
-     * @throws Exception
-     */
     public function testGetOrdersByCustomerId()
     {
         // Arrange
@@ -294,57 +250,6 @@ class OrderTest extends OrderBaseTest
         $this->assertCount(6, $responseThree->getOrders());
         $this->assertEquals($responseOne->getOrders()[1], $responseTwo->getOrders()[0]);
         $this->assertEquals($responseOne->getOrders()[2], $responseThree->getOrders()[0]);
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function testGetFulfillmentOrderStatusCount()
-    {
-        // Act
-        $response = $this->sdk->getOrderService()->getFulfillmentOrderStatusCount();
-        $orderStatusCount = $response->getOrderStatusCount();
-
-        // Assert
-        $this->assertCount(1, $orderStatusCount);
-        $this->assertEquals('fulfilled', $orderStatusCount[0]->getStatus());
-        $this->assertEquals(1, $orderStatusCount[0]->getCount());
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function testGetFulfillmentOrderBreakdown()
-    {
-        // Act
-        $response = $this->sdk->getOrderService()->getFulfillmentOrderBreakdown('today');
-
-        // Assert
-        $this->assertEquals(0, $response->getNumberOfOrders());
-        $this->assertEquals(0, $response->getAverageNumberOfItems());
-        $this->assertEquals(0, $response->getAverageOrderValue());
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function testGetCycleTimes()
-    {
-        // Arrange
-        $possibleTypes = ['timeToAccept', 'timeToPick', 'timeToPack', 'timeToComplete', 'timeToCycleEnd'];
-
-        // Act
-        $response = $this->sdk->getOrderService()->getCycleTimes('today');
-        $cycleTimes = $response->getCycleTimes();
-
-        // Assert
-        $this->assertCount(5, $cycleTimes);
-        $this->assertEquals(1, 1);
-        foreach ($cycleTimes as $index => $cycleTime) {
-            $this->assertEquals($possibleTypes[$index], $cycleTime->getType());
-            $this->assertEquals(0, $cycleTime->getTime());
-            $this->assertEquals(0, $cycleTime->getDifference());
-        }
     }
 
     /**

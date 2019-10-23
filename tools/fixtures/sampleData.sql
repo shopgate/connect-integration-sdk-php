@@ -201,30 +201,27 @@ VALUES
 ('727698a3-e321-421c-934b-8e9c818042a9','0f6e3169-0e28-4e17-a68e-0c5fb77e7267','1','active',NULL,'','2019-05-10 12:19:33',NULL,NULL,NULL,NULL),
 ('f1ba3640-cb1c-424e-aa78-e98a7777ba3d','0f6e3169-0e28-4e17-a68e-0c5fb77e7267','2','active',NULL,'','2019-05-10 12:19:33',NULL,NULL,NULL,NULL);
 
-INSERT INTO `FulfillmentOrder` (`FulfillmentOrderID`,`SalesOrderID`,`MerchantID`,`CustomerID`,`CustomerNumber`,`ChannelID`,`LocationID`,`RouteTypeID`,`OrderTypeID`,`Status`,`CancellationReason`,`OrderNumber`,`ExternalCode`,`POSTransactionId`,`SequenceID`,`AcceptedDate`,`ReadyDate`,`CompletedDate`,`OrderSubmittedDate`,`PricelistCode`,`Expedited`,`OrderSubTotal`,`OrderTaxTotal`,`OrderTax2Total`,`OrderShippingTotal`,`OrderTotal`,`LocaleCode`,`CurrencyCode`,`OrderNotes`,`OrderSpecialInstructions`,`CreateBy`,`CreateDate`,`UpdateBy`,`UpdateDate`,`DeleteBy`)
+INSERT INTO `FOFulfillment` (`FulfillmentOrderID`,`MerchantID`,`Status`,`Carrier`,`ServiceLevel`,`Tracking`,`CreateBy`,`CreateDate`,`UpdateBy`,`UpdateDate`,`DeleteBy`,`DeleteDate`)
 VALUES
-(247,2,'2','670fcb9e-4169-4dab-9652-65dfb039f6b9',NULL,1,'a7fa3279-4680-4413-8a84-88b97a6deaa1',8,3,'fulfilled',NULL,'10076-0001',NULL,NULL,0,'2018-12-05 10:50:18','2018-12-07 07:58:35',NULL,'2018-12-04 10:44:20',NULL,0,59,0,NULL,0,59,'en-US','USD','{\"message\": \"\"}','{}','','2018-12-04 10:44:21','pascal.vomhoff+testadmin@shopgate.com','2018-12-07 07:59:00',NULL);
+(1,'1','open',NULL,NULL,NULL,'','2018-12-04 10:44:21',NULL,NULL,NULL,NULL);
 
-INSERT INTO `FOFulfillment` (`FOFulfillmentID`,`FulfillmentOrderID`,`MerchantID`,`Status`,`Carrier`,`ServiceLevel`,`Tracking`,`CreateBy`,`CreateDate`,`UpdateBy`,`UpdateDate`,`DeleteBy`,`DeleteDate`)
+INSERT INTO `FOFulfillmentPackage` (`FulfillmentOrderID`,`FOFulfillmentID`,`Status`,`ServiceLevel`,`FulfilledFromLocationCode`,`Weight`,`Dimensions`,`Tracking`,`PickUpBy`,`LabelURL`,`FulfilledDate`,`CreateBy`,`CreateDate`,`UpdateBy`,`UpdateDate`,`DeleteBy`,`DeleteDate`)
 VALUES
-(124,247,'1','open',NULL,NULL,NULL,'','2018-12-04 10:44:21',NULL,NULL,NULL,NULL);
+(1,1,'open',NULL,'DERetail001',NULL,NULL,NULL,NULL,NULL,NULL,'','2018-12-04 10:44:21',NULL,NULL,NULL,NULL);
 
-INSERT INTO `FOFulfillmentPackage` (`FOFulfillmentPackageID`,`FulfillmentOrderID`,`FOFulfillmentID`,`Status`,`ServiceLevel`,`FulfilledFromLocationCode`,`Weight`,`Dimensions`,`Tracking`,`PickUpBy`,`LabelURL`,`FulfilledDate`,`CreateBy`,`CreateDate`,`UpdateBy`,`UpdateDate`,`DeleteBy`,`DeleteDate`)
+INSERT INTO `SalesOrder` (`MerchantID`, `CustomerID`, `CustomerNumber`, `OrderType`, `ChannelID`, `Status`, `OrderNumber`, `ExternalCode`, `Expedited`, `OrderDate`, `OrderSubmitDate`, `OrderCompleteDate`, `PriceListCode`, `PrimaryBillToAddressSequenceIndex`, `PrimaryShipToAddressSequenceIndex`, `OrderSubTotal`, `OrderDiscountAmount`, `OrderPromoAmount`, `OrderTaxAmount`, `OrderTax2Amount`, `OrderTotal`, `ShippingSubTotal`, `ShippingDiscountAmount`, `ShippingPromoAmount`, `ShippingTotal`, `LocaleCode`, `CurrencyCode`, `TaxExempt`, `Notes`, `SpecialInstructions`, `OrderData`, `Platform`, `Domain`, `UserAgent`, `SourceIP`, `CreateBy`, `CreateDate`, `UpdateBy`, `UpdateDate`, `DeleteBy`, `DeleteDate`)
 VALUES
-(233,247,124,'open',NULL,'DERetail001',NULL,NULL,NULL,NULL,NULL,NULL,'','2018-12-04 10:44:21',NULL,NULL,NULL,NULL);
+('2', 'fcae5c41-b256-4f9d-848a-f02a104f6a38', NULL, 'standard', NULL, 'open', '3', 'a90742e401b6265c5eefbb6be1f6f046', 0, '2019-10-23 12:10:05', '2019-10-23 12:10:04', NULL, NULL, 0, NULL, 180, 0, 0, 0, 0, 180, 0, 0, 0, 0, 'en-us', 'USD', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0f6e3169-0e28-4e17-a68e-0c5fb77e7267', '2019-10-23 12:10:04', NULL, NULL, NULL, NULL);
 
-INSERT INTO `SalesOrder` (`SalesOrderID`, `MerchantID`, `CustomerID`, `CustomerNumber`, `OrderType`, `ChannelID`, `Status`, `OrderNumber`, `ExternalCode`, `Expedited`, `OrderDate`, `OrderSubmitDate`, `OrderCompleteDate`, `PriceListCode`, `PrimaryBillToAddressSequenceIndex`, `PrimaryShipToAddressSequenceIndex`, `OrderSubTotal`, `OrderDiscountAmount`, `OrderPromoAmount`, `OrderTaxAmount`, `OrderTax2Amount`, `OrderTotal`, `ShippingSubTotal`, `ShippingDiscountAmount`, `ShippingPromoAmount`, `ShippingTotal`, `LocaleCode`, `CurrencyCode`, `TaxExempt`, `Notes`, `SpecialInstructions`, `OrderData`, `Platform`, `Domain`, `UserAgent`, `SourceIP`, `CreateBy`, `CreateDate`, `UpdateBy`, `UpdateDate`, `DeleteBy`, `DeleteDate`)
+INSERT INTO `SalesOrderLineItem` (`SalesOrderID`, `LineItemCode`, `Quantity`, `CurrencyCode`, `Price`, `Cost`, `ShippingAmount`, `TaxAmount`, `Tax2Amount`, `TaxExempt`, `DiscountAmount`, `PromoAmount`, `OverrideAmount`, `FulfillmentMethod`, `FulfillmentLocationId`, `ShipToAddressSequenceIndex`, `ExtendedPrice`, `Product`, `CreateBy`, `CreateDate`, `UpdateBy`, `UpdateDate`, `DeleteBy`, `DeleteDate`)
 VALUES
-	(3, '2', 'fcae5c41-b256-4f9d-848a-f02a104f6a38', NULL, 'standard', NULL, 'open', '3', 'a90742e401b6265c5eefbb6be1f6f046', 0, '2019-10-23 12:10:05', '2019-10-23 12:10:04', NULL, NULL, 0, NULL, 180, 0, 0, 0, 0, 180, 0, 0, 0, 0, 'en-us', 'USD', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0f6e3169-0e28-4e17-a68e-0c5fb77e7267', '2019-10-23 12:10:04', NULL, NULL, NULL, NULL);
+(1, 'lineItem-321', 1, 'USD', 90, NULL, 0, 0, 0, 0, 0, 0, 0, 'directShip', 'f431e8a2-ebd7-49da-acd6-d3dbf7b979a0', 0, 0, '{"code": "321", "name": "product name 321", "image": "https://myawesomeshop.com/images/img1.jpg", "price": 90, "currencyCode": "USD"}', '0f6e3169-0e28-4e17-a68e-0c5fb77e7267', '2019-10-23 12:10:04', NULL, NULL, NULL, NULL);
 
-INSERT INTO `SalesOrderLineItem` (`SOLineItemID`, `SalesOrderID`, `LineItemCode`, `Quantity`, `CurrencyCode`, `Price`, `Cost`, `ShippingAmount`, `TaxAmount`, `Tax2Amount`, `TaxExempt`, `DiscountAmount`, `PromoAmount`, `OverrideAmount`, `FulfillmentMethod`, `FulfillmentLocationId`, `ShipToAddressSequenceIndex`, `ExtendedPrice`, `Product`, `CreateBy`, `CreateDate`, `UpdateBy`, `UpdateDate`, `DeleteBy`, `DeleteDate`)
+INSERT INTO `FulfillmentOrderLineItem` (`FulfillmentOrderID`,`SOLineItemID`,`SKU`,`Status`,`Quantity`,`CurrencyCode`,`Price`,`Cost`,`ShippingAmount`,`TaxAmount`,`Tax2Amount`,`TaxExempt`,`DiscountAmount`,`PromoAmount`,`OverrideAmount`,`ExtendedPrice`,`Product`,`CreateBy`,`CreateDate`,`UpdateBy`,`UpdateDate`,`DeleteBy`,`DeleteDate`)
 VALUES
-	(5, 3, 'lineItem-321', 1, 'USD', 90, NULL, 0, 0, 0, 0, 0, 0, 0, 'directShip', 'f431e8a2-ebd7-49da-acd6-d3dbf7b979a0', 0, 0, '{"code": "321", "name": "product name 321", "image": "https://myawesomeshop.com/images/img1.jpg", "price": 90, "currencyCode": "USD"}', '0f6e3169-0e28-4e17-a68e-0c5fb77e7267', '2019-10-23 12:10:04', NULL, NULL, NULL, NULL);
+(1,1,'','picked',1,'USD',59,NULL,0,0,0,0,0,0,NULL,0,'{\"sku\": \"24-MB02\", \"name\": \"Fusion Backpack\", \"price\": 59, \"productCode\": 6, \"currencyCode\": \"USD\", \"productImage\": \"https://magento-omnichannel2.shopgatedev.com/pub/media/catalog/product/m/b/mb02-gray-0.jpg\"}','','2018-12-04 10:44:21','pascal.vomhoff+testadmin@shopgate.com','2018-12-07 07:58:59',NULL,NULL);
 
-INSERT INTO `FulfillmentOrderLineItem` (`FOLineItemID`,`FulfillmentOrderID`,`SOLineItemID`,`SKU`,`Status`,`Quantity`,`CurrencyCode`,`Price`,`Cost`,`ShippingAmount`,`TaxAmount`,`Tax2Amount`,`TaxExempt`,`DiscountAmount`,`PromoAmount`,`OverrideAmount`,`ExtendedPrice`,`Product`,`CreateBy`,`CreateDate`,`UpdateBy`,`UpdateDate`,`DeleteBy`,`DeleteDate`)
+INSERT INTO `FOFulfillmentPackageLI` (`FOFulfillmentPackageID`,`FulfillmentOrderLineItemID`,`Quantity`,`CreateBy`,`CreateDate`,`UpdateBy`,`UpdateDate`,`DeleteBy`,`DeleteDate`)
 VALUES
-(94,247,5,'','picked',1,'USD',59,NULL,0,0,0,0,0,0,NULL,0,'{\"sku\": \"24-MB02\", \"name\": \"Fusion Backpack\", \"price\": 59, \"productCode\": 6, \"currencyCode\": \"USD\", \"productImage\": \"https://magento-omnichannel2.shopgatedev.com/pub/media/catalog/product/m/b/mb02-gray-0.jpg\"}','','2018-12-04 10:44:21','pascal.vomhoff+testadmin@shopgate.com','2018-12-07 07:58:59',NULL,NULL);
+(1,1,1,'','2018-12-04 10:44:21',NULL,NULL,NULL,NULL);
 
-INSERT INTO `FOFulfillmentPackageLI` (`FOFulfillmentPackageLIID`,`FOFulfillmentPackageID`,`FulfillmentOrderLineItemID`,`Quantity`,`CreateBy`,`CreateDate`,`UpdateBy`,`UpdateDate`,`DeleteBy`,`DeleteDate`)
-VALUES
-(34,233,94,1,'','2018-12-04 10:44:21',NULL,NULL,NULL,NULL);

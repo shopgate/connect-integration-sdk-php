@@ -26,8 +26,6 @@ use Shopgate\ConnectSdk\Dto\Base;
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue\Dto;
 
 /**
- * @package Shopgate\ConnectSdk\Dto\Catalog
- *
  * @method string getCode()
  * @method int getSequenceId()
  * @method Dto\Name getName()
@@ -35,6 +33,6 @@ use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue\Dto;
  */
 class AttributeValue extends Base
 {
-    const SWATCH_TYPE_IMAGE   = 'image';
-    const SWATCH_TYPE_COLOR   = 'color';
+    const SWATCH_TYPE_IMAGE = 'image';
+    const SWATCH_TYPE_COLOR = 'color';
 }

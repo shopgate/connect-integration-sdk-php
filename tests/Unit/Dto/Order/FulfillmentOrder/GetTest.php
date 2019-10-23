@@ -92,7 +92,7 @@ class GetTest extends TestCase
                     "tracking" => "JJD000390007882823450",
                     "fulfillmentPackages" => [
                         [
-                            "id" => "925b80bc-e76c-11e8-8115-063a60f67055",
+                            "id" => 789865,
                             "status" => Fulfillment\FulfillmentPackage::STATUS_OPEN,
                             "serviceLevel" => "string",
                             "fulfilledFromLocationCode" => "DERetail001",
@@ -104,8 +104,8 @@ class GetTest extends TestCase
                             "fulfillmentDate" => "2019-09-04T07=>26=>42.535Z",
                             "packageItems" => [
                                 [
-                                    "id" => "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                                    "lineItemId" => "8eb3ba18-e76c-11e8-8115-063a60f67055",
+                                    "id" => 4438756,
+                                    "lineItemId" => 3498345,
                                     "quantity" => 5
                                 ],
                             ],

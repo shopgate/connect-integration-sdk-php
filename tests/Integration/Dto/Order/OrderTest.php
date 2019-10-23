@@ -135,6 +135,32 @@ class OrderTest extends OrderBaseTest
     /**
      * @throws Exception
      */
+    public function testGetFulfillmentItem()
+    {
+        $returnedFulfillmentOrder = $this->sdk->getOrderService()->getFulfillmentOrder('10076-0001');
+        $fulfillmentItem             = $returnedFulfillmentOrder->getFulfillments()[0];
+        $this->assertEquals('124', $fulfillmentItem->getId());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testGetFulfillmentItemPackage()
+    {
+        $returnedFulfillmentOrder       = $this->sdk->getOrderService()->getFulfillmentOrder('10076-0001');
+        $fulfillmentItem                = $returnedFulfillmentOrder->getFulfillments()[0];
+        $fulfillmentItemPackage         = $fulfillmentItem->getFulfillmentPackages()[0];
+        $fulfillmentItemPackageLineItem = $fulfillmentItemPackage->getPackageItems()[0];
+
+        $this->assertEquals(233, $fulfillmentItemPackage->getId());
+        $this->assertEquals(34, $fulfillmentItemPackageLineItem->getId());
+        $this->assertEquals(94, $fulfillmentItemPackageLineItem->getLineItemId());
+        $this->assertEquals(1.0, $fulfillmentItemPackageLineItem->getQuantity());
+    }
+
+    /**
+     * @throws Exception
+     */
     public function testGetFulfillmentOrders()
     {
         $returnedFulfillmentOrder = $this->sdk->getOrderService()->getFulfillmentOrders();

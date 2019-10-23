@@ -22,22 +22,29 @@
 
 namespace Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 
-class Value extends LocalizationType
+/**
+ * The extension is needed because we need the specialized Add method for the object case
+ */
+class Value extends LocalizationArray
 {
+    /**
+     * @var array
+     */
     protected $schema = [
         'anyOf' => [
             [
-                'type' => 'string',
-                'additionalProperties' => true,
+                'type' => 'string' // may not be a possible case
             ],
             [
-                'type' => 'object',
-                'additionalProperties' => true,
+                'type' => 'object', // a list of translations for simple type, e.g. {'en-us': {'Green', 'Red'}}
+                'additionalProperties' => true
             ],
             [
                 'type' => 'array',
-                'additionalProperties' => true,
-            ],
+                'items' => [
+                    'type' => 'string' // a list of attribute codes, translation is done at attribute level
+                ]
+            ]
         ]
     ];
 }

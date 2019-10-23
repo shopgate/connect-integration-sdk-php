@@ -38,10 +38,10 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Price\MapPricing;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Price\VolumePricing;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\ShortDescription;
-use Shopgate\ConnectSdk\Dto\Catalog\Product\Update;
 use Shopgate\ConnectSdk\Dto\Catalog\Reservation;
 use Shopgate\ConnectSdk\Dto\Location\Location;
 use Shopgate\ConnectSdk\Exception\Exception;
+use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 
 abstract class AbstractCatalogTest extends ShopgateSdkTest
 {
@@ -61,6 +61,11 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
     const LOCATION_CODE = 'WHS1';
 
 
+    /**
+     * @throws Exception
+     * @throws InvalidDataTypeException
+     * @throws \Exception
+     */
     public function setUp()
     {
         parent::setUp();
@@ -103,17 +108,17 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
     }
 
     /**
-     * @param Product               $product
-     * @param Category\Create[]     $sampleCategories
-     * @param Attribute\Create[]    $sampleExtras
+     * @param Product\Update $product
+     * @param Category\Create[] $sampleCategories
+     * @param Attribute\Create[] $sampleExtras
      * @param Product\Dto\Options[] $sampleOptions
      *
-     * @return Update
+     * @return Product\Create|Product\Update
      *
      * @throws Exception
      */
     protected function prepareProductMaximum(
-        $product = null,
+        Product\Update $product = null,
         $sampleCategories = null,
         $sampleExtras = null,
         $sampleOptions = null
@@ -208,15 +213,15 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
     }
 
     /**
-     * @param string                  $code
-     * @param string                  $name
-     * @param int                     $sequenceId
+     * @param string $code
+     * @param string $name
+     * @param int $sequenceId
      * @param Category\Dto\Image|null $image
-     * @param Category\Dto\Url|null   $url
-     * @param string|null             $description
-     * @param string|null             $parentCategoryCode
-     * @param string|null             $externalUpdateDate
-     * @param string|null             $status
+     * @param Category\Dto\Url|null $url
+     * @param string|null $description
+     * @param string|null $parentCategoryCode
+     * @param string|null $externalUpdateDate
+     * @param string|null $status
      *
      * @return Category\Create
      *
@@ -641,7 +646,7 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
     }
 
     /**
-     * @param int    $count
+     * @param int $count
      * @param string $productCode
      *
      * @return Inventory\Create[]
@@ -667,8 +672,8 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
     }
 
     /**
-     * @param int    $orderNumber
-     * @param int    $count
+     * @param int $orderNumber
+     * @param int $count
      * @param string $productCode
      *
      * @return Reservation\Create[]

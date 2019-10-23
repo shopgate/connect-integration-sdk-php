@@ -22,10 +22,10 @@
 
 namespace Shopgate\ConnectSdk\Dto\Location\Location;
 
+use phpDocumentor\Reflection\Types\Boolean;
 use Shopgate\ConnectSdk\Dto\Location\Location;
 
 /**
- * @method Update setCode(string $code)
  * @method Update setName(string $name)
  * @method Update setType(Dto\Type $type)
  * @method Update setStatus(string $status)
@@ -39,6 +39,7 @@ use Shopgate\ConnectSdk\Dto\Location\Location;
  * @method Update setInventory(Dto\Inventory $inventory)
  * @method Update setSupportedFulfillmentMethods(string[] $supportedFulfillmentMethods)
  * @method Update setSettings(Dto\Settings $settings)
+ * @method Update setIsComingSoon(bool $isComingSoon)
  * @method Update setIsDefault(bool $isDefault)
  *
  * @codeCoverageIgnore
@@ -51,27 +52,15 @@ class Update extends Location
     protected $schema = [
         'type' => 'object',
         'properties' => [
-            'code' => ['type' => 'string'],
-            'name' => ['type' => 'string'],
             'type' => ['$ref' => Dto\Type::class],
-            'status' => ['type' => 'string'],
-            'latitude' => ['type' => 'number'],
-            'longitude' => ['type' => 'number'],
             'operationHours' => ['$ref' => Dto\OperationHours::class],
-            'localeCode' => ['type' => 'string'],
-            'timeZone' => ['type' => 'string'],
             'details' => ['$ref' => Dto\Details::class],
             'addresses' => [
                 'type' => 'array',
                 'items' => ['$ref' => Dto\Address::class]
             ],
             'inventory' => ['$ref' => Dto\Inventory::class],
-            'supportedFulfillmentMethods' => [
-                'type' => 'array',
-                'items' => ['type' => 'string']
-            ],
-            'settings' => ['$ref' => Dto\Settings::class],
-            'isDefault' => ['type' => 'boolean']
+            'settings' => ['$ref' => Dto\Settings::class]
         ],
         'additionalProperties' => true
     ];

@@ -204,4 +204,31 @@ class Location
 
         return new LocationDto\Get($response['location']);
     }
+
+    /**
+     * @param string $code
+     *
+     * @return string
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     */
+    public function getLocationId($code)
+    {
+        $response = $this->client->doRequest(
+            [
+                // direct only
+                'service' => self::SERVICE_LOCATION,
+                'method'  => 'get',
+                'path'    => 'locations/' . $code . '/id',
+            ]
+        );
+
+        $response = $this->jsonHelper->decode($response->getBody(), true);
+        print_r($response);
+        return $response['id'];
+    }
 }

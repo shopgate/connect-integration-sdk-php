@@ -260,9 +260,8 @@ class LocationTest extends LocationBaseTest
                     'longitude'  => 87.6298,
                     'localeCode' => 'en-US',
                     'timeZone'   => 'America/Chicago',
-                    'isDefault'  => true
-
-
+                    'isDefault'  => true,
+                    'isComingSoon' => true
                 ],
                 'update'   => [
                     'name'       => 'new location name',
@@ -270,7 +269,8 @@ class LocationTest extends LocationBaseTest
                     'longitude'  => 31.1367,
                     'localeCode' => 'en-ZA',
                     'timeZone'   => 'Africa/Mbabane',
-                    'isDefault'  => false
+                    'isDefault'  => false,
+                    'isComingSoon' => false
                 ]
             ],
             'change detail'                      => [
@@ -517,6 +517,29 @@ class LocationTest extends LocationBaseTest
         $this->sdk->getLocationService()->updateLocation('nonexistent', $updateLocation);
     }
 
+    /**
+     * @throws Exception
+     */
+    public function testGetLocationId()
+    {
+        $this->markTestSkipped('Skipped due to endpoint error');
+        // Arrange
+        $sampleLocation = $this->provideSampleCreateLocation(
+            self::LOCATION_CODE,
+            'Integration Test Location Store',
+            Location::TYPE_STORE
+        );
+
+        // Act
+        $this->createLocations([$sampleLocation]);
+        $locationId = $this->sdk->getLocationService()->getLocationId(self::LOCATION_CODE);
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(self::LOCATION_SERVICE, self::METHOD_DELETE_LOCATION, [self::LOCATION_CODE]);
+
+        //Assert
+        $this->assertNotEmpty($locationId);
+    }
     /**
      * @param array $locationCodes
      * @param array $meta

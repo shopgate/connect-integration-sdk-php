@@ -4,7 +4,7 @@
 namespace Shopgate\ConnectSdk\Tests\Integration\Http;
 
 use Shopgate\ConnectSdk\Exception\Exception;
-use Shopgate\ConnectSdk\Tests\Integration\AbstractCatalogTest;
+use Shopgate\ConnectSdk\Tests\Integration\CatalogTest as AbstractCatalogTest;
 
 class BulkImportCatalogTest extends AbstractCatalogTest
 {

@@ -41,7 +41,6 @@ class CycleTimeTest extends OrderTest
 
         // Assert
         $this->assertCount(5, $cycleTimes);
-        $this->assertEquals(1, 1);
         foreach ($cycleTimes as $index => $cycleTime) {
             $this->assertEquals($possibleTypes[$index], $cycleTime->getType());
             $this->assertEquals(0, $cycleTime->getTime());

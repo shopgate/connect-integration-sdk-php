@@ -22,7 +22,6 @@
 
 namespace Shopgate\ConnectSdk\Dto\Location\Location;
 
-use phpDocumentor\Reflection\Types\Boolean;
 use Shopgate\ConnectSdk\Dto\Location\Location;
 
 /**

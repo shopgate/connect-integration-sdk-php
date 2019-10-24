@@ -25,7 +25,7 @@ namespace Shopgate\ConnectSdk\Tests\Integration;
 use Shopgate\ConnectSdk\Dto\Location\Location;
 use Shopgate\ConnectSdk\Exception\Exception;
 
-abstract class LocationTest extends ShopgateSdkTest
+abstract class LocationUtility extends ShopgateSdkUtility
 {
     const METHOD_DELETE_LOCATION = 'deleteLocation';
     const LOCATION_CODE          = 'integration-test';

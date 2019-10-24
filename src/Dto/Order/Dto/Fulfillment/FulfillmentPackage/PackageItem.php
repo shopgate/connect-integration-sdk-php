@@ -42,8 +42,8 @@ class PackageItem extends Base
     protected $schema = [
         'type' => 'object',
         'properties' => [
-            'id' => ['type' => 'string'],
-            'lineItemId' => ['type' => 'string'],
+            'id' => ['type' => 'integer'],
+            'lineItemId' => ['type' => 'integer'],
             'quantity' => ['type' => 'number']
         ],
         'additionalProperties' => true,

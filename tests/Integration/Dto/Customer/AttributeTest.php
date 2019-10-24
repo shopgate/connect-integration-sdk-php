@@ -29,9 +29,9 @@ use Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
-use Shopgate\ConnectSdk\Tests\Integration\CustomerTest;
+use Shopgate\ConnectSdk\Tests\Integration\CustomerUtility;
 
-class AttributeTest extends CustomerTest
+class AttributeTest extends CustomerUtility
 {
     /**
      * @param int      $limit

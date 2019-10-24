@@ -101,7 +101,7 @@ class GetTest extends TestCase
                             'tracking' => 'test-tracking-number',
                             'fulfillmentPackages' => [
                                 [
-                                    'id' => 'fulfillment-package-id',
+                                    'id' => 34665,
                                     'status' => 'open',
                                     'serviceLevel' => 'twoDay',
                                     'fulfilledFromLocationCode' => 'test-warehouse-one',
@@ -113,8 +113,8 @@ class GetTest extends TestCase
                                     'fulfillmentDate' => 'tomorrow',
                                     'packageItems' => [
                                         [
-                                            'id' => 'product-id-one',
-                                            'lineItemId' => 'test-line-item-one',
+                                            'id' => 445687,
+                                            'lineItemId' => 44112237,
                                             'quantity' => 1
                                         ]
                                     ]

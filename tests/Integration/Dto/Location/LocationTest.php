@@ -518,29 +518,6 @@ class LocationTest extends LocationBaseTest
     }
 
     /**
-     * @throws Exception
-     */
-    public function testGetLocationId()
-    {
-        $this->markTestSkipped('Skipped due to endpoint error');
-        // Arrange
-        $sampleLocation = $this->provideSampleCreateLocation(
-            self::LOCATION_CODE,
-            'Integration Test Location Store',
-            Location::TYPE_STORE
-        );
-
-        // Act
-        $this->createLocations([$sampleLocation]);
-        $locationId = $this->sdk->getLocationService()->getLocationId(self::LOCATION_CODE);
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(self::LOCATION_SERVICE, self::METHOD_DELETE_LOCATION, [self::LOCATION_CODE]);
-
-        //Assert
-        $this->assertNotEmpty($locationId);
-    }
-    /**
      * @param array $locationCodes
      * @param array $meta
      *

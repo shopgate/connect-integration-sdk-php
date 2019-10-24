@@ -67,10 +67,8 @@ abstract class Base extends Dto
                         break;
                     case 'integer':
                         if (!is_int($input)) {
-                            if (!is_array($input)) {
-                                throw new InvalidDataTypeException($this->renderInvalidDataTypeException('integer',
-                                    gettype($input)));
-                            }
+                            throw new InvalidDataTypeException($this->renderInvalidDataTypeException('integer',
+                                gettype($input)));
                         }
                         break;
                     case 'number':
@@ -119,6 +117,7 @@ abstract class Base extends Dto
     /**
      * @param string $expected
      * @param string $current
+     * @param $class
      *
      * @return string
      */

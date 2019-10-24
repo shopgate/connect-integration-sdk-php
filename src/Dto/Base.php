@@ -66,27 +66,27 @@ abstract class Base extends Dto
                         break;
                     case 'integer':
                         if (!is_int($input)) {
-                            throw new InvalidDataTypeException('Incorrect data type: Expected integer, but got: ' . ' in ' . get_class($this));
+                            throw new InvalidDataTypeException('Incorrect data type: Expected integer, but got: ' . gettype($input) . ' in ' . get_class($this));
                         }
                         break;
                     case 'number':
                         if (!is_numeric($input)) {
-                            throw new InvalidDataTypeException('Incorrect data type: Expected number, but got: ' . ' in ' . get_class($this));
+                            throw new InvalidDataTypeException('Incorrect data type: Expected number, but got: ' . gettype($input) . ' in ' . get_class($this));
                         }
                         break;
                     case 'string':
                         if (!is_string($input)) {
-                            throw new InvalidDataTypeException('Incorrect data type: Expected string, but got: ' . ' in ' . get_class($this));
+                            throw new InvalidDataTypeException('Incorrect data type: Expected string, but got: ' . gettype($input) . ' in ' . get_class($this));
                         }
                         break;
                     case 'boolean':
                         if (!is_bool($input)) {
-                            throw new InvalidDataTypeException('Incorrect data type: Expected boolean, but got: ' . ' in ' . get_class($this));
+                            throw new InvalidDataTypeException('Incorrect data type: Expected boolean, but got: ' . gettype($input) . ' in ' . get_class($this));
                         }
                         break;
                     case 'null':
                         if (!is_null($input)) {
-                            throw new InvalidDataTypeException('Incorrect data type: Expected null, but got: ' . ' in ' . get_class($this));
+                            throw new InvalidDataTypeException('Incorrect data type: Expected null, but got: ' . gettype($input) . ' in ' . get_class($this));
                         }
                         break;
                 }

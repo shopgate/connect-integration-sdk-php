@@ -33,29 +33,13 @@ class FulfillmentTest extends FulfillmentBaseTest
     public function testGetFulfillmentOrder()
     {
         $returnedFulfillmentOrder = $this->sdk->getOrderService()->getFulfillmentOrder('10138-0001');
-        $this->assertEquals('10138-0001', $returnedFulfillmentOrder->getOrderNumber());
-    }
 
-    /**
-     * @throws Exception
-     */
-    public function testGetFulfillmentItem()
-    {
-        $returnedFulfillmentOrder = $this->sdk->getOrderService()->getFulfillmentOrder('10138-0001');
-        $fulfillmentItem             = $returnedFulfillmentOrder->getFulfillments()[0];
-        $this->assertEquals('1', $fulfillmentItem->getId());
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function testGetFulfillmentItemPackage()
-    {
-        $returnedFulfillmentOrder = $this->sdk->getOrderService()->getFulfillmentOrder('10138-0001');
-        $fulfillmentItem          = $returnedFulfillmentOrder->getFulfillments()[0];
-        $fulfillmentItemPackage   = $fulfillmentItem->getFulfillmentPackages()[0];
+        $fulfillmentItem                = $returnedFulfillmentOrder->getFulfillments()[0];
+        $fulfillmentItemPackage         = $fulfillmentItem->getFulfillmentPackages()[0];
         $fulfillmentItemPackageLineItem = $fulfillmentItemPackage->getPackageItems()[0];
 
+        $this->assertEquals('10138-0001', $returnedFulfillmentOrder->getOrderNumber());
+        $this->assertEquals(1, $fulfillmentItem->getId());
         $this->assertEquals(1, $fulfillmentItemPackage->getId());
         $this->assertEquals(1, $fulfillmentItemPackageLineItem->getId());
         $this->assertEquals(1, $fulfillmentItemPackageLineItem->getLineItemId());

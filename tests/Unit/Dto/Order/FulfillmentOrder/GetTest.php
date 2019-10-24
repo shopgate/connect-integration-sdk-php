@@ -64,78 +64,78 @@ class GetTest extends TestCase
             'notes' => 'Some note',
             'specialInstructions' => '',
             'fulfillmentOrderAddress' => [
-                "orderIndex" => "123",
-                "type" => "pickup",
-                "firstName" => "John",
-                "middleName" => "D.",
-                "lastName" => "Doe",
-                "company" => "Shopgate Inc",
-                "address1" => "12 Somestreet",
-                "address2" => "Unknown Type: string,null",
-                "address3" => "Unknown Type: string,null",
-                "address4" => "Unknown Type: string,null",
-                "city" => "Austin",
-                "region" => "TX",
-                "postalCode" => '78732',
-                "country" => "US",
-                "phone" => "+1 000-000-0000",
-                "fax" => "+1 000-000-0000",
-                "mobile" => "+1 000-000-0000",
-                "emailAddress" => "john@doe.com"
+                'orderIndex' => '123',
+                'type' => 'pickup',
+                'firstName' => 'John',
+                'middleName' => 'D.',
+                'lastName' => 'Doe',
+                'company' => 'Shopgate Inc',
+                'address1' => '12 Somestreet',
+                'address2' => 'Unknown Type: string,null',
+                'address3' => 'Unknown Type: string,null',
+                'address4' => 'Unknown Type: string,null',
+                'city' => 'Austin',
+                'region' => 'TX',
+                'postalCode' => '78732',
+                'country' => 'US',
+                'phone' => '+1 000-000-0000',
+                'fax' => '+1 000-000-0000',
+                'mobile' => '+1 000-000-0000',
+                'emailAddress' => 'john@doe.com'
             ],
-            "fulfillments" => [
+            'fulfillments' => [
                 [
-                    "id" => "975edd0a-e76c-11e8-8115-063a60f67055",
-                    "status" => Fulfillment::STATUS_OPEN,
-                    "carrier" => "DHL",
-                    "serviceLevel" => "sameDay",
-                    "tracking" => "JJD000390007882823450",
-                    "fulfillmentPackages" => [
+                    'id' => '975edd0a-e76c-11e8-8115-063a60f67055',
+                    'status' => Fulfillment::STATUS_OPEN,
+                    'carrier' => 'DHL',
+                    'serviceLevel' => 'sameDay',
+                    'tracking' => 'JJD000390007882823450',
+                    'fulfillmentPackages' => [
                         [
-                            "id" => 789865,
-                            "status" => Fulfillment\FulfillmentPackage::STATUS_OPEN,
-                            "serviceLevel" => "string",
-                            "fulfilledFromLocationCode" => "DERetail001",
-                            "weight" => 0,
-                            "dimensions" => "string",
-                            "tracking" => "JJD000390007882823450",
-                            "pickUpBy" => "Jane Doe",
-                            "labelUrl" => "https://documentserver.internal/label/label.pdf",
-                            "fulfillmentDate" => "2019-09-04T07=>26=>42.535Z",
-                            "packageItems" => [
+                            'id' => 789865,
+                            'status' => Fulfillment\FulfillmentPackage::STATUS_OPEN,
+                            'serviceLevel' => 'string',
+                            'fulfilledFromLocationCode' => 'DERetail001',
+                            'weight' => 0,
+                            'dimensions' => 'string',
+                            'tracking' => 'JJD000390007882823450',
+                            'pickUpBy' => 'Jane Doe',
+                            'labelUrl' => 'https://documentserver.internal/label/label.pdf',
+                            'fulfillmentDate' => '2019-09-04T07=>26=>42.535Z',
+                            'packageItems' => [
                                 [
-                                    "id" => 4438756,
-                                    "lineItemId" => 3498345,
-                                    "quantity" => 5
+                                    'id' => 4438756,
+                                    'lineItemId' => 3498345,
+                                    'quantity' => 5
                                 ],
                             ],
                         ],
                     ],
                 ],
             ],
-            "lineItems" => [
+            'lineItems' => [
                 [
-                    "id" => "8eb3ba18-e76c-11e8-8115-063a60f67055",
-                    "salesOrderLineItemCode" => "386",
-                    "sku" => "1337-hoodie-dark-green",
-                    "quantity" => 5,
-                    "status" => "string",
-                    "currencyCode" => "USD",
-                    "price" => 59.5,
-                    "shippingAmount" => 0,
-                    "taxAmount" => 0,
-                    "tax2Amount" => 0,
-                    "taxExempt" => true,
-                    "discountAmount" => 0,
-                    "promoAmount" => 0,
-                    "overrideAmount" => 0,
-                    "extendedPrice" => 0,
-                    "product" => [
-                        "code" => "24-MB02",
-                        "name" => "Fusion Backpack",
-                        "image" => "https://myawesomeshop.com/images/img1.jpg",
-                        "price" => 59.5,
-                        "currencyCode" => "USD",
+                    'id' => '8eb3ba18-e76c-11e8-8115-063a60f67055',
+                    'salesOrderLineItemCode' => '386',
+                    'sku' => '1337-hoodie-dark-green',
+                    'quantity' => 5,
+                    'status' => 'string',
+                    'currencyCode' => 'USD',
+                    'price' => 59.5,
+                    'shippingAmount' => 0,
+                    'taxAmount' => 0,
+                    'tax2Amount' => 0,
+                    'taxExempt' => true,
+                    'discountAmount' => 0,
+                    'promoAmount' => 0,
+                    'overrideAmount' => 0,
+                    'extendedPrice' => 0,
+                    'product' => [
+                        'code' => '24-MB02',
+                        'name' => 'Fusion Backpack',
+                        'image' => 'https://myawesomeshop.com/images/img1.jpg',
+                        'price' => 59.5,
+                        'currencyCode' => 'USD',
                         'options' => [
                             [
                                 'code' => '146',
@@ -154,21 +154,21 @@ class GetTest extends TestCase
                     ]
                 ]
             ],
-            "history" => [
+            'history' => [
                 [
-                    "id" => "050ca496-e74c-11e8-8115-063a60f67055",
-                    "eventName" => "string",
-                    "eventDetails" => "string1",
-                    "eventNewValue" => "string2",
-                    "eventOldValue" => "string3",
-                    "eventDateTime" => "2019-09-04T07:26:42.535Z",
-                    "eventUser" => "string4"
+                    'id' => '050ca496-e74c-11e8-8115-063a60f67055',
+                    'eventName' => 'string',
+                    'eventDetails' => 'string1',
+                    'eventNewValue' => 'string2',
+                    'eventOldValue' => 'string3',
+                    'eventDateTime' => '2019-09-04T07:26:42.535Z',
+                    'eventUser' => 'string4'
                 ]
             ],
-            "submitDate" => "2019-09-04T07:26:42.535Z",
-            "acceptDate" => "2019-09-04T07:26:42.535Z",
-            "readyDate" => "2019-09-04T07:26:42.535Z",
-            "completeDate" => "2019-09-04T07:26:42.535Z"
+            'submitDate' => '2019-09-04T07:26:42.535Z',
+            'acceptDate' => '2019-09-04T07:26:42.535Z',
+            'readyDate' => '2019-09-04T07:26:42.535Z',
+            'completeDate' => '2019-09-04T07:26:42.535Z'
         ];
 
         // Act

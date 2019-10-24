@@ -23,9 +23,9 @@
 namespace Shopgate\ConnectSdk\Tests\Integration\Dto\CycleTime;
 
 use Shopgate\ConnectSdk\Exception\Exception;
-use Shopgate\ConnectSdk\Tests\Integration\OrderTest as CycleTimeBaseTest;
+use Shopgate\ConnectSdk\Tests\Integration\OrderTest;
 
-class CycleTimeTest extends CycleTimeBaseTest
+class CycleTimeTest extends OrderTest
 {
     /**
      * @throws Exception

@@ -27,9 +27,9 @@ use Shopgate\ConnectSdk\Dto\Customer\Customer;
 use Shopgate\ConnectSdk\Dto\Location\Location;
 use Shopgate\ConnectSdk\Dto\Order\Order;
 use Shopgate\ConnectSdk\Exception\Exception;
-use Shopgate\ConnectSdk\Tests\Integration\OrderTest as OrderBaseTest;
+use Shopgate\ConnectSdk\Tests\Integration\OrderUtility;
 
-class OrderTest extends OrderBaseTest
+class OrderTest extends OrderUtility
 {
     /**
      * @param string[] $productIds

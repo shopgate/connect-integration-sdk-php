@@ -43,7 +43,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Reservation;
 use Shopgate\ConnectSdk\Dto\Location\Location;
 use Shopgate\ConnectSdk\Exception\Exception;
 
-abstract class CatalogTest extends ShopgateSdkTest
+abstract class CatalogUtility extends ShopgateSdkUtility
 {
     const TEST_CATALOG_CODE = 'TestCatalogCode';
 

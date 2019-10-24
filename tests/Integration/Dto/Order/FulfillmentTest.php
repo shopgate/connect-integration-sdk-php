@@ -23,9 +23,9 @@
 namespace Shopgate\ConnectSdk\Tests\Integration\Dto\Fulfillment;
 
 use Shopgate\ConnectSdk\Exception\Exception;
-use Shopgate\ConnectSdk\Tests\Integration\OrderTest as FulfillmentBaseTest;
+use Shopgate\ConnectSdk\Tests\Integration\OrderUtility;
 
-class FulfillmentTest extends FulfillmentBaseTest
+class FulfillmentTest extends OrderUtility
 {
     /**
      * @throws Exception

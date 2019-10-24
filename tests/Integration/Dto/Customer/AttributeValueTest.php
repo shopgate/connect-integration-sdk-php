@@ -26,9 +26,9 @@ use Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
 
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\RequestException;
-use Shopgate\ConnectSdk\Tests\Integration\CustomerTest;
+use Shopgate\ConnectSdk\Tests\Integration\CustomerUtility;
 
-class AttributeValueTest extends CustomerTest
+class AttributeValueTest extends CustomerUtility
 {
     const SAMPLE_ATTRIBUTE_CODE       = 'attribute_code_1';
     const SAMPLE_ATTRIBUTE_VALUE_CODE = 'attribute_value_code_1';

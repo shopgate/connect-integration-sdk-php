@@ -21,9 +21,9 @@ use Shopgate\ConnectSdk\Http\Client;
 use Shopgate\ConnectSdk\Http\Client as SdkClient;
 use Shopgate\ConnectSdk\Http\Persistence\TokenPersistenceException;
 use Shopgate\ConnectSdk\ShopgateSdk;
-use Shopgate\ConnectSdk\Tests\Integration\ShopgateSdkTest;
+use Shopgate\ConnectSdk\Tests\Integration\ShopgateSdkUtility;
 
-class ClientTest extends ShopgateSdkTest
+class ClientTest extends ShopgateSdkUtility
 {
     private $accessTokenPath = './access_token_client_test.txt';
 

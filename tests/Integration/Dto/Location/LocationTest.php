@@ -27,9 +27,9 @@ use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Dto\Location\Location;
-use Shopgate\ConnectSdk\Tests\Integration\LocationTest as LocationBaseTest;
+use Shopgate\ConnectSdk\Tests\Integration\LocationUtility;
 
-class LocationTest extends LocationBaseTest
+class LocationTest extends LocationUtility
 {
     /**
      * @param int $limit

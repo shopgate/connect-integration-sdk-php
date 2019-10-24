@@ -26,9 +26,9 @@ use Shopgate\ConnectSdk\Dto\Customer\Contact as ContactDto;
 use Shopgate\ConnectSdk\Dto\Customer\Customer;
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\RequestException;
-use Shopgate\ConnectSdk\Tests\Integration\CustomerTest;
+use Shopgate\ConnectSdk\Tests\Integration\CustomerUtility;
 
-class ContactTest extends CustomerTest
+class ContactTest extends CustomerUtility
 {
     /**
      * @param ContactDto\Create[] $sampleContacts

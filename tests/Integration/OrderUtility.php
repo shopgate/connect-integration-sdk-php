@@ -22,7 +22,7 @@
 
 namespace Shopgate\ConnectSdk\Tests\Integration;
 
-abstract class OrderTest extends ShopgateSdkTest
+abstract class OrderUtility extends ShopgateSdkUtility
 {
     const LOCATION_CODE = 'integration-test';
 }

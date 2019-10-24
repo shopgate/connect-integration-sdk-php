@@ -25,13 +25,13 @@
 namespace Shopgate\ConnectSdk\Tests\Integration\Dto\Customer;
 
 use Shopgate\ConnectSdk\Exception\Exception;
-use Shopgate\ConnectSdk\Tests\Integration\CustomerTest as CustomerIntegrationTest;
+use Shopgate\ConnectSdk\Tests\Integration\CustomerUtility;
 use Shopgate\ConnectSdk\Dto\Customer\Customer;
 use Shopgate\ConnectSdk\Dto\Customer\Wishlist;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
 use Shopgate\ConnectSdk\Exception\RequestException;
 
-class WishlistTest extends CustomerIntegrationTest
+class WishlistTest extends CustomerUtility
 {
     /**
      * @param array $sampleWishlists

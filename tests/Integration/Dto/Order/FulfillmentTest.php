@@ -57,8 +57,8 @@ class FulfillmentTest extends FulfillmentBaseTest
         $fulfillmentItemPackageLineItem = $fulfillmentItemPackage->getPackageItems()[0];
 
         $this->assertEquals(1, $fulfillmentItemPackage->getId());
-        $this->assertEquals(3, $fulfillmentItemPackageLineItem->getId());
-        $this->assertEquals(2, $fulfillmentItemPackageLineItem->getLineItemId());
+        $this->assertEquals(1, $fulfillmentItemPackageLineItem->getId());
+        $this->assertEquals(1, $fulfillmentItemPackageLineItem->getLineItemId());
         $this->assertEquals(1.0, $fulfillmentItemPackageLineItem->getQuantity());
     }
 

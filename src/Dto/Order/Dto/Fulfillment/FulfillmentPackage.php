@@ -63,7 +63,7 @@ class FulfillmentPackage extends Base
     protected $schema = [
         'type' => 'object',
         'properties' => [
-            'id' => ['type' => 'string'],
+            'id' => ['type' => 'integer'],
             'status' => ['type' => 'string'],
             'serviceLevel' => ['type' => 'string'],
             'fulfilledFromLocationCode' => ['type' => 'string'],

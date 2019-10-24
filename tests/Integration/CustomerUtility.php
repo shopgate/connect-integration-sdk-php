@@ -27,7 +27,7 @@ namespace Shopgate\ConnectSdk\Tests\Integration;
 use Shopgate\ConnectSdk\Dto\Customer\Contact;
 use Shopgate\ConnectSdk\Dto\Customer\Customer;
 
-abstract class CustomerTest extends ShopgateSdkTest
+abstract class CustomerUtility extends ShopgateSdkUtility
 {
     const CONTACT_CODE              = 'integration-test';
     const WISHLIST_CODE             = 'integration-test-wishlist';

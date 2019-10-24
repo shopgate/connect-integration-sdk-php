@@ -44,7 +44,7 @@ use Shopgate\ConnectSdk\Dto\Location\Location;
 use Shopgate\ConnectSdk\Exception\Exception as ShopgateException;
 use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 
-abstract class AbstractCatalogTest extends ShopgateSdkTest
+abstract class CatalogUtility extends ShopgateSdkUtility
 {
     const TEST_CATALOG_CODE = 'TestCatalogCode';
 

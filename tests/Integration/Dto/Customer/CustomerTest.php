@@ -30,9 +30,9 @@ use Shopgate\ConnectSdk\Dto\Customer\Note\Create;
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
-use Shopgate\ConnectSdk\Tests\Integration\CustomerTest as CustomerBaseTest;
+use Shopgate\ConnectSdk\Tests\Integration\CustomerUtility;
 
-class CustomerTest extends CustomerBaseTest
+class CustomerTest extends CustomerUtility
 {
     /**
      * @throws Exception

@@ -3,9 +3,9 @@
 namespace Shopgate\ConnectSdk\Tests\Integration\Http;
 
 use Shopgate\ConnectSdk\Exception\Exception;
-use Shopgate\ConnectSdk\Tests\Integration\CustomerTest;
+use Shopgate\ConnectSdk\Tests\Integration\CustomerUtility;
 
-class BulkImportCustomerTest extends CustomerTest
+class BulkImportCustomerTest extends CustomerUtility
 {
     const SLEEP_TIME_AFTER_BULK = 12000000;
 

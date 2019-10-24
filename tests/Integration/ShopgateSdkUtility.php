@@ -33,7 +33,7 @@ use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Http\Client;
 use Shopgate\ConnectSdk\ShopgateSdk;
 
-abstract class ShopgateSdkTest extends TestCase
+abstract class ShopgateSdkUtility extends TestCase
 {
     const SLEEP_TIME_AFTER_EVENT = 300000;
 

@@ -61,32 +61,44 @@ abstract class Base extends Dto
                 switch ($schema['type']) {
                     case 'array':
                         if (!is_array($input)) {
-                            throw new InvalidDataTypeException('Incorrect data type: Expected array, but got: ' . gettype($input));
+                            throw new InvalidDataTypeException(
+                                $this->renderInvalidDataTypeException('array', gettype($input))
+                            );
                         }
                         break;
                     case 'integer':
                         if (!is_int($input)) {
-                            throw new InvalidDataTypeException('Incorrect data type: Expected integer, but got: ' . gettype($input));
+                            throw new InvalidDataTypeException(
+                                $this->renderInvalidDataTypeException('integer', gettype($input))
+                            );
                         }
                         break;
                     case 'number':
                         if (!is_numeric($input)) {
-                            throw new InvalidDataTypeException('Incorrect data type: Expected number, but got: ' . gettype($input));
+                            throw new InvalidDataTypeException(
+                                $this->renderInvalidDataTypeException('number', gettype($input))
+                            );
                         }
                         break;
                     case 'string':
                         if (!is_string($input)) {
-                            throw new InvalidDataTypeException('Incorrect data type: Expected string, but got: ' . gettype($input));
+                            throw new InvalidDataTypeException(
+                                $this->renderInvalidDataTypeException('string', gettype($input))
+                            );
                         }
                         break;
                     case 'boolean':
                         if (!is_bool($input)) {
-                            throw new InvalidDataTypeException('Incorrect data type: Expected boolean, but got: ' . gettype($input));
+                            throw new InvalidDataTypeException(
+                                $this->renderInvalidDataTypeException('boolean', gettype($input))
+                            );
                         }
                         break;
                     case 'null':
                         if (!is_null($input)) {
-                            throw new InvalidDataTypeException('Incorrect data type: Expected null, but got: ' . gettype($input));
+                            throw new InvalidDataTypeException(
+                                $this->renderInvalidDataTypeException('null', gettype($input))
+                            );
                         }
                         break;
                 }
@@ -106,6 +118,17 @@ abstract class Base extends Dto
     public function getDefaultSchema()
     {
         return null;
+    }
+
+    /**
+     * @param string $expected
+     * @param string $current
+     *
+     * @return string
+     */
+    protected function renderInvalidDataTypeException($expected, $current)
+    {
+        return sprintf('Incorrect data type: Expected %s, but got: %s in %s', $expected, $current, get_class($this));
     }
 
     /**

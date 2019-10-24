@@ -28,7 +28,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Catalog\Get;
 use Shopgate\ConnectSdk\Dto\Catalog\Catalog\Update;
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
-use Shopgate\ConnectSdk\Tests\Integration\AbstractCatalogTest;
+use Shopgate\ConnectSdk\Tests\Integration\CatalogTest as AbstractCatalogTest;
 
 class CatalogTest extends AbstractCatalogTest
 {

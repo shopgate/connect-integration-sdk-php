@@ -34,8 +34,8 @@ class FulfillmentTest extends FulfillmentBaseTest
     {
         $returnedFulfillmentOrder = $this->sdk->getOrderService()->getFulfillmentOrder('10138-0001');
 
-        $fulfillmentItem                = $returnedFulfillmentOrder->getFulfillments()[0];
-        $fulfillmentItemPackage         = $fulfillmentItem->getFulfillmentPackages()[0];
+        $fulfillmentItem = $returnedFulfillmentOrder->getFulfillments()[0];
+        $fulfillmentItemPackage = $fulfillmentItem->getFulfillmentPackages()[0];
         $fulfillmentItemPackageLineItem = $fulfillmentItemPackage->getPackageItems()[0];
 
         $this->assertEquals('10138-0001', $returnedFulfillmentOrder->getOrderNumber());

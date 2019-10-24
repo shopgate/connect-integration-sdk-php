@@ -61,38 +61,44 @@ abstract class Base extends Dto
                 switch ($schema['type']) {
                     case 'array':
                         if (!is_array($input)) {
-                            throw new InvalidDataTypeException($this->renderInvalidDataTypeException('array',
-                                gettype($input)));
+                            throw new InvalidDataTypeException(
+                                $this->renderInvalidDataTypeException('array', gettype($input))
+                            );
                         }
                         break;
                     case 'integer':
                         if (!is_int($input)) {
-                            throw new InvalidDataTypeException($this->renderInvalidDataTypeException('integer',
-                                gettype($input)));
+                            throw new InvalidDataTypeException(
+                                $this->renderInvalidDataTypeException('integer', gettype($input))
+                            );
                         }
                         break;
                     case 'number':
                         if (!is_numeric($input)) {
-                            throw new InvalidDataTypeException($this->renderInvalidDataTypeException('number',
-                                gettype($input)));
+                            throw new InvalidDataTypeException(
+                                $this->renderInvalidDataTypeException('number', gettype($input))
+                            );
                         }
                         break;
                     case 'string':
                         if (!is_string($input)) {
-                            throw new InvalidDataTypeException($this->renderInvalidDataTypeException('string',
-                                gettype($input)));
+                            throw new InvalidDataTypeException(
+                                $this->renderInvalidDataTypeException('string', gettype($input))
+                            );
                         }
                         break;
                     case 'boolean':
                         if (!is_bool($input)) {
-                            throw new InvalidDataTypeException($this->renderInvalidDataTypeException('boolean',
-                                gettype($input)));
+                            throw new InvalidDataTypeException(
+                                $this->renderInvalidDataTypeException('boolean', gettype($input))
+                            );
                         }
                         break;
                     case 'null':
                         if (!is_null($input)) {
-                            throw new InvalidDataTypeException($this->renderInvalidDataTypeException('null',
-                                gettype($input)));
+                            throw new InvalidDataTypeException(
+                                $this->renderInvalidDataTypeException('null', gettype($input))
+                            );
                         }
                         break;
                 }
@@ -117,7 +123,6 @@ abstract class Base extends Dto
     /**
      * @param string $expected
      * @param string $current
-     * @param $class
      *
      * @return string
      */

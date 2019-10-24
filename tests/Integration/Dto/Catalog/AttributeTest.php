@@ -29,9 +29,9 @@ use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
-use Shopgate\ConnectSdk\Tests\Integration\CatalogTest;
+use Shopgate\ConnectSdk\Tests\Integration\CatalogTest as AbstractCatalogTest;
 
-class AttributeTest extends CatalogTest
+class AttributeTest extends AbstractCatalogTest
 {
     /**
      * @throws Exception

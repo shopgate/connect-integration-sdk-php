@@ -62,39 +62,39 @@ abstract class Base extends Dto
                     case 'array':
                         if (!is_array($input)) {
                             throw new InvalidDataTypeException($this->renderInvalidDataTypeException('array',
-                                gettype($input), get_class($this)));
+                                gettype($input)));
                         }
                         break;
                     case 'integer':
                         if (!is_int($input)) {
                             if (!is_array($input)) {
                                 throw new InvalidDataTypeException($this->renderInvalidDataTypeException('integer',
-                                    gettype($input), get_class($this)));
+                                    gettype($input)));
                             }
                         }
                         break;
                     case 'number':
                         if (!is_numeric($input)) {
                             throw new InvalidDataTypeException($this->renderInvalidDataTypeException('number',
-                                gettype($input), get_class($this)));
+                                gettype($input)));
                         }
                         break;
                     case 'string':
                         if (!is_string($input)) {
                             throw new InvalidDataTypeException($this->renderInvalidDataTypeException('string',
-                                gettype($input), get_class($this)));
+                                gettype($input)));
                         }
                         break;
                     case 'boolean':
                         if (!is_bool($input)) {
                             throw new InvalidDataTypeException($this->renderInvalidDataTypeException('boolean',
-                                gettype($input), get_class($this)));
+                                gettype($input)));
                         }
                         break;
                     case 'null':
                         if (!is_null($input)) {
                             throw new InvalidDataTypeException($this->renderInvalidDataTypeException('null',
-                                gettype($input), get_class($this)));
+                                gettype($input)));
                         }
                         break;
                 }
@@ -119,13 +119,12 @@ abstract class Base extends Dto
     /**
      * @param string $expected
      * @param string $current
-     * @param $class
      *
      * @return string
      */
-    protected function renderInvalidDataTypeException($expected, $current, $class)
+    protected function renderInvalidDataTypeException($expected, $current)
     {
-        return sprintf('Incorrect data type: Expected %s, but got: %s in %s', $expected, $current, $class);
+        return sprintf('Incorrect data type: Expected %s, but got: %s in %s', $expected, $current, get_class($this));
     }
 
     /**

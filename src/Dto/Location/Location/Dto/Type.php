@@ -32,14 +32,4 @@ use Shopgate\ConnectSdk\Dto\Base;
  */
 class Type extends Base
 {
-    /**
-     * @var array
-     */
-    protected $schema = [
-        'type' => 'object',
-        'properties'           => [
-            'code' => ['type' => 'string'],
-        ],
-        'additionalProperties' => true,
-    ];
 }

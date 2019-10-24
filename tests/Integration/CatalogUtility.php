@@ -22,6 +22,7 @@
 
 namespace Shopgate\ConnectSdk\Tests\Integration;
 
+use Exception;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute\Dto\Name;
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
@@ -38,10 +39,10 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Price\MapPricing;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Price\VolumePricing;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\ShortDescription;
-use Shopgate\ConnectSdk\Dto\Catalog\Product\Update;
 use Shopgate\ConnectSdk\Dto\Catalog\Reservation;
 use Shopgate\ConnectSdk\Dto\Location\Location;
-use Shopgate\ConnectSdk\Exception\Exception;
+use Shopgate\ConnectSdk\Exception\Exception as ShopgateException;
+use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 
 abstract class CatalogUtility extends ShopgateSdkUtility
 {
@@ -60,7 +61,11 @@ abstract class CatalogUtility extends ShopgateSdkUtility
     const SAMPLE_EXTRA_VALUE_CODE_2 = 'extra_value_code_2';
     const LOCATION_CODE = 'WHS1';
 
-
+    /**
+     * @throws ShopgateException
+     * @throws InvalidDataTypeException
+     * @throws Exception
+     */
     public function setUp()
     {
         parent::setUp();
@@ -71,7 +76,7 @@ abstract class CatalogUtility extends ShopgateSdkUtility
     /**
      * @return Catalog\Create
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideSampleCatalog()
     {
@@ -89,7 +94,7 @@ abstract class CatalogUtility extends ShopgateSdkUtility
      *
      * @return Product\Create
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function prepareProductMinimum()
     {
@@ -103,17 +108,17 @@ abstract class CatalogUtility extends ShopgateSdkUtility
     }
 
     /**
-     * @param Product               $product
-     * @param Category\Create[]     $sampleCategories
-     * @param Attribute\Create[]    $sampleExtras
+     * @param Product\Update $product
+     * @param Category\Create[] $sampleCategories
+     * @param Attribute\Create[] $sampleExtras
      * @param Product\Dto\Options[] $sampleOptions
      *
-     * @return Update
+     * @return Product\Create|Product\Update
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function prepareProductMaximum(
-        $product = null,
+        Product\Update $product = null,
         $sampleCategories = null,
         $sampleExtras = null,
         $sampleOptions = null
@@ -197,7 +202,7 @@ abstract class CatalogUtility extends ShopgateSdkUtility
     /**
      * @return Category\Create[]
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideSampleCategories()
     {
@@ -208,19 +213,19 @@ abstract class CatalogUtility extends ShopgateSdkUtility
     }
 
     /**
-     * @param string                  $code
-     * @param string                  $name
-     * @param int                     $sequenceId
+     * @param string $code
+     * @param string $name
+     * @param int $sequenceId
      * @param Category\Dto\Image|null $image
-     * @param Category\Dto\Url|null   $url
-     * @param string|null             $description
-     * @param string|null             $parentCategoryCode
-     * @param string|null             $externalUpdateDate
-     * @param string|null             $status
+     * @param Category\Dto\Url|null $url
+     * @param string|null $description
+     * @param string|null $parentCategoryCode
+     * @param string|null $externalUpdateDate
+     * @param string|null $status
      *
      * @return Category\Create
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideSampleCreateCategory(
         $code,
@@ -266,7 +271,7 @@ abstract class CatalogUtility extends ShopgateSdkUtility
     }
 
     /**
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function createSampleAttribute()
     {
@@ -296,7 +301,7 @@ abstract class CatalogUtility extends ShopgateSdkUtility
     /**
      * @return AttributeValue\Create
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideSampleAttributeValue()
     {
@@ -320,7 +325,7 @@ abstract class CatalogUtility extends ShopgateSdkUtility
     /**
      * @return array
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideOptions()
     {
@@ -336,7 +341,7 @@ abstract class CatalogUtility extends ShopgateSdkUtility
     /**
      * @return array
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideOptionsValues()
     {
@@ -348,7 +353,7 @@ abstract class CatalogUtility extends ShopgateSdkUtility
     }
 
     /**
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function createSampleExtras()
     {
@@ -365,7 +370,7 @@ abstract class CatalogUtility extends ShopgateSdkUtility
     /**
      * @return Attribute\Create[]
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideSampleExtras()
     {
@@ -419,7 +424,7 @@ abstract class CatalogUtility extends ShopgateSdkUtility
     /**
      * @return Extras[]
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideExtras()
     {
@@ -438,7 +443,7 @@ abstract class CatalogUtility extends ShopgateSdkUtility
     /**
      * @return array
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideExtraValues()
     {
@@ -455,7 +460,7 @@ abstract class CatalogUtility extends ShopgateSdkUtility
     /**
      * @return Categories[]
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideCategoryMapping()
     {
@@ -483,7 +488,7 @@ abstract class CatalogUtility extends ShopgateSdkUtility
     /**
      * @return Price
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function providePricing()
     {
@@ -505,7 +510,7 @@ abstract class CatalogUtility extends ShopgateSdkUtility
     /**
      * @return VolumePricing[]
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideVolumePricing()
     {
@@ -531,7 +536,7 @@ abstract class CatalogUtility extends ShopgateSdkUtility
     /**
      * @return MapPricing[]
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideMapPricing()
     {
@@ -551,7 +556,7 @@ abstract class CatalogUtility extends ShopgateSdkUtility
     /**
      * @return Product\Dto\Properties[]
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideProperties()
     {
@@ -583,7 +588,7 @@ abstract class CatalogUtility extends ShopgateSdkUtility
     /**
      * @return Properties\SubDisplayGroup
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideSubDisplayGroup()
     {
@@ -595,7 +600,7 @@ abstract class CatalogUtility extends ShopgateSdkUtility
     /**
      * @return Product\Dto\ShippingInformation
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideShippingInformation()
     {
@@ -614,7 +619,7 @@ abstract class CatalogUtility extends ShopgateSdkUtility
     /**
      * @return MediaList
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     private function provideMedia()
     {
@@ -641,12 +646,12 @@ abstract class CatalogUtility extends ShopgateSdkUtility
     }
 
     /**
-     * @param int    $count
+     * @param int $count
      * @param string $productCode
      *
      * @return Inventory\Create[]
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideSampleInventories($count = 1, $productCode = self::PRODUCT_CODE)
     {
@@ -667,13 +672,13 @@ abstract class CatalogUtility extends ShopgateSdkUtility
     }
 
     /**
-     * @param int    $orderNumber
-     * @param int    $count
+     * @param int $orderNumber
+     * @param int $count
      * @param string $productCode
      *
      * @return Reservation\Create[]
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideSampleReservations($orderNumber, $count = 1, $productCode = self::PRODUCT_CODE)
     {
@@ -697,7 +702,7 @@ abstract class CatalogUtility extends ShopgateSdkUtility
     /**
      * @param string $locationCode
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function createLocation($locationCode)
     {
@@ -721,7 +726,7 @@ abstract class CatalogUtility extends ShopgateSdkUtility
      *
      * @return Inventory\Delete[]
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function getDeleteInventories(array $createInventories)
     {

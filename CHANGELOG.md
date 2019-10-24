@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [1.1.2] - 2019-10-24
+### Fixed
+- Data types for fulfillment package and fulfillment package line items  
+
+### Added
+- Integration tests for fulfillment package
+
+### Changed
+- Updated location DTOs to include isComingSoon property
+
 ## [1.1.1] - 2019-10-18
 ### Added
 - bulkImport for customer
@@ -159,7 +169,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - createCategory event & direct call
 - deleteCategory event & direct call
 
-[Unreleased]: https://github.com/shopgate/connect-integration-sdk/compare/v1.1.1...HEAD
+[Unreleased]: https://github.com/shopgate/connect-integration-sdk/compare/v1.1.2...HEAD
+[1.1.2]: https://github.com/shopgate/connect-integration-sdk/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/shopgate/connect-integration-sdk/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/shopgate/connect-integration-sdk/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/shopgate/connect-integration-sdk/compare/v0.9.0...v1.0.0

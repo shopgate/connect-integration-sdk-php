@@ -25,9 +25,9 @@ namespace Shopgate\ConnectSdk\Dto\Location\Location;
 use Shopgate\ConnectSdk\Dto\Location\Location;
 
 /**
+ * @method Dto\Type getType()
  * @method string getCode()
  * @method string getName()
- * @method Dto\Type getType()
  * @method string getStatus()
  * @method string getLatitude()
  * @method string getLongitude()
@@ -39,6 +39,7 @@ use Shopgate\ConnectSdk\Dto\Location\Location;
  * @method Dto\Inventory getInventory()
  * @method string[] getSupportedFulfillmentMethods()
  * @method Dto\Settings getSettings()
+ * @method bool getIsComingSoon()
  * @method bool getIsDefault()
  *
  * @codeCoverageIgnore
@@ -49,21 +50,17 @@ class Get extends Location
      * @var array
      */
     protected $schema = [
-        'type'                 => 'object',
-        'properties'           => [
-            'type'                        => ['$ref' => Dto\Type::class, 'skipValidation' => true],
-            'operationHours'              => ['$ref' => Dto\OperationHours::class, 'skipValidation' => true],
-            'details'                     => ['$ref' => Dto\Details::class, 'skipValidation' => true],
-            'addresses'                   => [
-                'type'  => 'array',
+        'type' => 'object',
+        'properties' => [
+            'type' => ['$ref' => Dto\Type::class, 'skipValidation' => true],
+            'operationHours' => ['$ref' => Dto\OperationHours::class, 'skipValidation' => true],
+            'details' => ['$ref' => Dto\Details::class, 'skipValidation' => true],
+            'addresses' => [
+                'type' => 'array',
                 'items' => ['$ref' => Dto\Address::class, 'skipValidation' => true]
             ],
-            'inventory'                   => ['$ref' => Dto\Inventory::class, 'skipValidation' => true],
-            'supportedFulfillmentMethods' => [
-                'type'  => 'array',
-                'items' => ['type' => 'string', 'skipValidation' => true]
-            ],
-            'settings'                    => ['$ref' => Dto\Settings::class, 'skipValidation' => true],
+            'inventory' => ['$ref' => Dto\Inventory::class, 'skipValidation' => true],
+            'settings' => ['$ref' => Dto\Settings::class, 'skipValidation' => true],
         ],
         'additionalProperties' => true
     ];

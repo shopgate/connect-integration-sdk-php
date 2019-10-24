@@ -4,13 +4,15 @@ use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute\Dto\Name;
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 use Shopgate\ConnectSdk\Dto\Catalog\Catalog;
-use Shopgate\ConnectSdk\Dto\Location\Location;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
 use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
 use Shopgate\ConnectSdk\Dto\Customer\Contact;
 use Shopgate\ConnectSdk\Dto\Customer\Customer;
+use Shopgate\ConnectSdk\Dto\Location\Location;
 use Shopgate\ConnectSdk\Dto\Order\Order;
+use Shopgate\ConnectSdk\Dto\Webhook\Webhook\Create as WebhookCreate;
+use Shopgate\ConnectSdk\Dto\Webhook\Webhook\Dto\Event as WebhookEvent;
 use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 
 const PARENT_CATALOG_CODE = 'BANA';
@@ -372,4 +374,19 @@ function provideSampleCustomers()
     $customer->setContacts([$contact]);
 
     return [$customer];
+}
+
+/**
+ * @return WebhookCreate[]
+ * @throws InvalidDataTypeException
+ */
+function provideSampleWebhooks()
+{
+    return [
+        (new WebhookCreate())
+            ->setName('Some webhook name')
+            ->setActive(true)
+            ->setEndpoint('https://endpoint-to-call.com/whenFullfillementOrderIsAdded')
+            ->setEvents([(new WebhookEvent())->setCode(WebhookEvent::FULFILL_ORDER_ADDED)])
+    ];
 }

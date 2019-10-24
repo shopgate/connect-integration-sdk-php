@@ -1,8 +1,28 @@
 <?php
 
+/**
+ * Copyright Shopgate Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * @author    Shopgate Inc, 804 Congress Ave, Austin, Texas 78701 <interfaces@shopgate.com>
+ * @copyright 2019 Shopgate Inc
+ * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
+ */
 
 namespace Shopgate\ConnectSdk\Tests\Integration\Dto\Webhook;
 
+use Shopgate\ConnectSdk\Dto\Webhook\Webhook\Dto\Event;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
@@ -26,10 +46,10 @@ class WebhookTest extends WebhookUtility
     public function testWebhookCreate($webhooksData)
     {
         // Arrange
-        $requestWebooks = $this->createSampleWebhooks($webhooksData);
+        $requestWebhooks = $this->createSampleWebhooks($webhooksData);
 
         // Act
-        $this->sdk->getWebhooksService()->addWebhooks($requestWebooks);
+        $this->sdk->getWebhooksService()->addWebhooks($requestWebhooks);
         $response = $this->sdk->getWebhooksService()->getWebhooks();
 
         $responseWebhooks = $response->getWebhooks();
@@ -61,7 +81,7 @@ class WebhookTest extends WebhookUtility
                         'name' => 'test_webhook_one',
                         'endpoint' => 'test/endpoint/one',
                         'active' => true,
-                        'eventsData' => ['fulfillmentOrderStatusUpdated']
+                        'eventsData' => [Event::FULFILL_ORDER_STATUS_UPDATED]
                     ]
                 ]
             ],
@@ -72,9 +92,9 @@ class WebhookTest extends WebhookUtility
                         'endpoint' => 'test/endpoint/one',
                         'active' => true,
                         'eventsData' => [
-                            'fulfillmentOrderStatusUpdated',
-                            'inventoryReservationDeleted',
-                            'inventoryReservationSettled'
+                            Event::FULFILL_ORDER_STATUS_UPDATED,
+                            Event::INVENTORY_RESERVATION_DELETED,
+                            Event::INVENTORY_RESERVATION_SETTLED
                         ]
                     ]
                 ]
@@ -85,16 +105,16 @@ class WebhookTest extends WebhookUtility
                         'name' => 'test_webhook_one',
                         'endpoint' => 'test/endpoint/one',
                         'active' => true,
-                        'eventsData' => ['fulfillmentOrderStatusUpdated']
+                        'eventsData' => [Event::FULFILL_ORDER_STATUS_UPDATED]
                     ],
                     [
                         'name' => 'test_webhook_two',
                         'endpoint' => 'test/endpoint/two',
                         'active' => true,
                         'eventsData' => [
-                            'fulfillmentOrderStatusUpdated',
-                            'inventoryReservationDeleted',
-                            'inventoryReservationSettled'
+                            Event::FULFILL_ORDER_STATUS_UPDATED,
+                            Event::INVENTORY_RESERVATION_DELETED,
+                            Event::INVENTORY_RESERVATION_SETTLED
                         ]
                     ],
                     [
@@ -102,10 +122,10 @@ class WebhookTest extends WebhookUtility
                         'endpoint' => 'test/endpoint/free',
                         'active' => true,
                         'eventsData' => [
-                            'orderNotPickedUp',
-                            'salesOrderAdded',
-                            'salesOrderFulfillmentAdded',
-                            'salesOrderStatusUpdated'
+                            Event::ORDER_NOT_PICKED_UP,
+                            Event::SALES_ORDER_ADDED,
+                            Event::SALES_ORDER_FULFILLMENT_ADDED,
+                            Event::SALES_ORDER_STATUS_UPDATED
                         ]
                     ]
                 ]
@@ -170,7 +190,7 @@ class WebhookTest extends WebhookUtility
                     'name' => 'test_webhook_one',
                     'endpoint' => 'test/endpoint/one',
                     'active' => true,
-                    'eventsData' => ['fulfillmentOrderStatusUpdated']
+                    'eventsData' => [Event::FULFILL_ORDER_STATUS_UPDATED]
                 ],
                 'change' => [
                     'name' => 'test_webhook_one_new'
@@ -181,10 +201,10 @@ class WebhookTest extends WebhookUtility
                     'name' => 'test_webhook_two',
                     'endpoint' => 'test/endpoint/two',
                     'active' => true,
-                    'eventsData' => ['fulfillmentOrderStatusUpdated']
+                    'eventsData' => [Event::FULFILL_ORDER_STATUS_UPDATED]
                 ],
                 'change' => [
-                    'eventsData' => ['orderNotPickedUp', 'salesOrderFulfillmentAdded']
+                    'eventsData' => [Event::ORDER_NOT_PICKED_UP, Event::SALES_ORDER_FULFILLMENT_ADDED]
                 ]
             ],
             'change active' => [
@@ -192,7 +212,7 @@ class WebhookTest extends WebhookUtility
                     'name' => 'test_webhook_three',
                     'endpoint' => 'test/endpoint/three',
                     'active' => true,
-                    'eventsData' => ['fulfillmentOrderStatusUpdated']
+                    'eventsData' => [Event::FULFILL_ORDER_STATUS_UPDATED]
                 ],
                 'change' => [
                     'active' => false
@@ -203,7 +223,7 @@ class WebhookTest extends WebhookUtility
                     'name' => 'test_webhook_four',
                     'endpoint' => 'test/endpoint/four',
                     'active' => true,
-                    'eventsData' => ['fulfillmentOrderStatusUpdated']
+                    'eventsData' => [Event::FULFILL_ORDER_STATUS_UPDATED]
                 ],
                 'change' => [
                     'endpoint' => 'test/endpoint/four_new'
@@ -243,7 +263,7 @@ class WebhookTest extends WebhookUtility
                 'name' => 'test_webhook_one_to_be_triggered',
                 'endpoint' => 'test/trigger/one',
                 'active' => true,
-                'eventsData' => ['salesOrderStatusUpdated']
+                'eventsData' => [Event::SALES_ORDER_STATUS_UPDATED]
             ]
         ])[0];
         // Act
@@ -276,7 +296,7 @@ class WebhookTest extends WebhookUtility
                 'name' => 'test_webhook_one_to_be_deleted',
                 'endpoint' => 'test/delete/one',
                 'active' => true,
-                'eventsData' => ['salesOrderAdded']
+                'eventsData' => [Event::SALES_ORDER_ADDED]
             ]
         ])[0];
         // Act
@@ -286,8 +306,8 @@ class WebhookTest extends WebhookUtility
         $response = $this->sdk->getWebhooksService()->getWebhooks();
 
         // Assert
-        $foundWebook = $this->findWebhookByCode($code, $response->getWebhooks());
-        $this->assertEmpty($foundWebook);
+        $foundWebhook = $this->findWebhookByCode($code, $response->getWebhooks());
+        $this->assertEmpty($foundWebhook);
     }
 
     /**

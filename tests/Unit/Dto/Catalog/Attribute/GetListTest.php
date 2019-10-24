@@ -26,6 +26,7 @@ use PHPUnit\Framework\TestCase;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute\Get;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute\GetList;
+use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 use Shopgate\ConnectSdk\Dto\Meta;
 use Shopgate\ConnectSdk\Exception\Exception;
 
@@ -47,7 +48,18 @@ class GetListTest extends TestCase
                     'code' => 'color',
                     'type' => Attribute::TYPE_TEXT,
                     'use' => Attribute::USE_OPTION,
-                    'name' => 'Color'
+                    'name' => 'Color',
+                    'values' => [
+                        [
+                            'code' => 'black',
+                            'sequenceId' => 0,
+                            'name' => 'Black',
+                            'swatch' => [
+                                'type' => 'image',
+                                'value' => 'https://some.url/image.jpg'
+                            ]
+                        ]
+                    ]
                 ],
                 [
                     'code' => 'size'
@@ -61,7 +73,7 @@ class GetListTest extends TestCase
 
         $attributes = $getList->getAttributes();
         $this->assertCount(2, $attributes);
-        $this->assertTrue(is_array($attributes));
+        $this->assertInternalType('array', $attributes);
         $this->assertInstanceOf(Get::class, $attributes[0]);
         $this->assertInstanceOf(Get::class, $attributes[1]);
         $this->assertEquals('color', $attributes[0]->getCode());
@@ -69,5 +81,12 @@ class GetListTest extends TestCase
         $this->assertEquals(Attribute::USE_OPTION, $attributes[0]->getUse());
         $this->assertEquals('Color', $attributes[0]->getName());
         $this->assertEquals('size', $attributes[1]->getCode());
+
+        $attributeValue = $attributes[0]->getValues()[0];
+        $this->assertCount(1, $attributes[0]->getValues());
+        $this->assertInstanceOf(AttributeValue\Get::class, $attributeValue);
+        $this->assertInstanceOf(AttributeValue\Dto\Swatch::class, $attributeValue->getSwatch());
+        $this->assertEquals(AttributeValue::SWATCH_TYPE_IMAGE, $attributeValue->getSwatch()->getType());
+        $this->assertEquals('https://some.url/image.jpg', $attributeValue->getSwatch()->getValue());
     }
 }

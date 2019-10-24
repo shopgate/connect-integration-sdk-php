@@ -42,19 +42,4 @@ use Shopgate\ConnectSdk\Dto\Base;
  */
 class Settings extends Base
 {
-    /**
-     * @var array
-     */
-    protected $schema = [
-        'type' => 'object',
-        'properties'           => [
-            'enableInStorePickup'    => ['type' => 'boolean'],
-            'enableShipFromStore'    => ['type' => 'boolean'],
-            'enableInLocationFinder' => ['type' => 'boolean'],
-            'enableInventoryBrowse'  => ['type' => 'boolean'],
-            'enableForRelate'        => ['type' => 'boolean'],
-            'showStoreHours'         => ['type' => 'boolean'],
-        ],
-        'additionalProperties' => true,
-    ];
 }

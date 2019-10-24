@@ -27,13 +27,15 @@ use Exception;
 use Shopgate\ConnectSdk\Dto\Base;
 use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 
-class LocalizationType extends Base
+class LocalizationArray extends Base
 {
     protected $schema = [
         'anyOf' => [
             [
-                'type' => 'string',
-                'additionalProperties' => true,
+                'type' => 'array',
+                'items' => [
+                    'type' => 'string'
+                ]
             ],
             [
                 'type' => 'object',
@@ -59,13 +61,13 @@ class LocalizationType extends Base
 
     /**
      * @param string $locale
-     * @param string $string
+     * @param string[] $array
      *
      * @return $this
      *
      * @throws InvalidDataTypeException
      */
-    public function add($locale, $string)
+    public function add($locale, $array)
     {
         /**
          * We want to make sure when the dto was initialized as scalar type to hydrate the new value correctly
@@ -73,13 +75,13 @@ class LocalizationType extends Base
          */
         if ($this->getStorageType() === self::STORAGE_TYPE_SCALAR) {
             try {
-                $this->hydrate([$locale => $string]);
+                $this->hydrate([$locale => $array]);
             } catch (Exception $ex) {
             }
             return $this;
         }
 
-        $this->set((string)$locale, (string)$string);
+        $this->set((string)$locale, (array)$array);
 
         return $this;
     }

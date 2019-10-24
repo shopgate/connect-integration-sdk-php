@@ -38,24 +38,4 @@ use Shopgate\ConnectSdk\Dto\Base;
  */
 class Details extends Base
 {
-    /**
-     * @var array
-     */
-    protected $schema
-        = [
-            'type'                 => 'object',
-            'properties'           => [
-                'manager'     => ['type' => 'string'],
-                'image'       => ['type' => 'string'],
-                'departments' => [
-                    'type'  => 'array',
-                    'items' => ['type' => 'string']
-                ],
-                'services'    => [
-                    'type' => 'array',
-                    'items' => ['type' => 'string']
-                ]
-            ],
-            'additionalProperties' => true,
-        ];
 }

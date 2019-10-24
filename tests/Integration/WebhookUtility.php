@@ -22,8 +22,8 @@
 
 namespace Shopgate\ConnectSdk\Tests\Integration;
 
-use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Dto\Webhook\Webhook;
+use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 
 abstract class WebhookUtility extends ShopgateSdkUtility
 {

@@ -60,10 +60,6 @@ class Get extends Location
                 'items' => ['$ref' => Dto\Address::class, 'skipValidation' => true]
             ],
             'inventory' => ['$ref' => Dto\Inventory::class, 'skipValidation' => true],
-            'supportedFulfillmentMethods' => [
-                'type' => 'array',
-                'items' => ['type' => 'string', 'skipValidation' => true]
-            ],
             'settings' => ['$ref' => Dto\Settings::class, 'skipValidation' => true],
         ],
         'additionalProperties' => true

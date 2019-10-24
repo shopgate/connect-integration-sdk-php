@@ -22,6 +22,7 @@
 
 namespace Shopgate\ConnectSdk\Tests\Integration;
 
+use Exception;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 use Shopgate\ConnectSdk\Dto\Catalog\Attribute\Dto\Name;
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
@@ -40,7 +41,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\ShortDescription;
 use Shopgate\ConnectSdk\Dto\Catalog\Reservation;
 use Shopgate\ConnectSdk\Dto\Location\Location;
-use Shopgate\ConnectSdk\Exception\Exception;
+use Shopgate\ConnectSdk\Exception\Exception as ShopgateException;
 use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 
 abstract class AbstractCatalogTest extends ShopgateSdkTest
@@ -60,11 +61,10 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
     const SAMPLE_EXTRA_VALUE_CODE_2 = 'extra_value_code_2';
     const LOCATION_CODE = 'WHS1';
 
-
     /**
-     * @throws Exception
+     * @throws ShopgateException
      * @throws InvalidDataTypeException
-     * @throws \Exception
+     * @throws Exception
      */
     public function setUp()
     {
@@ -76,7 +76,7 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
     /**
      * @return Catalog\Create
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideSampleCatalog()
     {
@@ -94,7 +94,7 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
      *
      * @return Product\Create
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function prepareProductMinimum()
     {
@@ -115,7 +115,7 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
      *
      * @return Product\Create|Product\Update
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function prepareProductMaximum(
         Product\Update $product = null,
@@ -202,7 +202,7 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
     /**
      * @return Category\Create[]
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideSampleCategories()
     {
@@ -225,7 +225,7 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
      *
      * @return Category\Create
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideSampleCreateCategory(
         $code,
@@ -271,7 +271,7 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
     }
 
     /**
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function createSampleAttribute()
     {
@@ -301,7 +301,7 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
     /**
      * @return AttributeValue\Create
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideSampleAttributeValue()
     {
@@ -325,7 +325,7 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
     /**
      * @return array
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideOptions()
     {
@@ -341,7 +341,7 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
     /**
      * @return array
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideOptionsValues()
     {
@@ -353,7 +353,7 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
     }
 
     /**
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function createSampleExtras()
     {
@@ -370,7 +370,7 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
     /**
      * @return Attribute\Create[]
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideSampleExtras()
     {
@@ -424,7 +424,7 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
     /**
      * @return Extras[]
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideExtras()
     {
@@ -443,7 +443,7 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
     /**
      * @return array
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideExtraValues()
     {
@@ -460,7 +460,7 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
     /**
      * @return Categories[]
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideCategoryMapping()
     {
@@ -488,7 +488,7 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
     /**
      * @return Price
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function providePricing()
     {
@@ -510,7 +510,7 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
     /**
      * @return VolumePricing[]
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideVolumePricing()
     {
@@ -536,7 +536,7 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
     /**
      * @return MapPricing[]
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideMapPricing()
     {
@@ -556,7 +556,7 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
     /**
      * @return Product\Dto\Properties[]
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideProperties()
     {
@@ -588,7 +588,7 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
     /**
      * @return Properties\SubDisplayGroup
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideSubDisplayGroup()
     {
@@ -600,7 +600,7 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
     /**
      * @return Product\Dto\ShippingInformation
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideShippingInformation()
     {
@@ -619,7 +619,7 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
     /**
      * @return MediaList
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     private function provideMedia()
     {
@@ -651,7 +651,7 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
      *
      * @return Inventory\Create[]
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideSampleInventories($count = 1, $productCode = self::PRODUCT_CODE)
     {
@@ -678,7 +678,7 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
      *
      * @return Reservation\Create[]
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function provideSampleReservations($orderNumber, $count = 1, $productCode = self::PRODUCT_CODE)
     {
@@ -702,7 +702,7 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
     /**
      * @param string $locationCode
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function createLocation($locationCode)
     {
@@ -726,7 +726,7 @@ abstract class AbstractCatalogTest extends ShopgateSdkTest
      *
      * @return Inventory\Delete[]
      *
-     * @throws Exception
+     * @throws ShopgateException
      */
     protected function getDeleteInventories(array $createInventories)
     {

@@ -8,9 +8,9 @@ use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
-use Shopgate\ConnectSdk\Tests\Integration\WebhookTest as WebhookBaseTest;
+use Shopgate\ConnectSdk\Tests\Integration\WebhookUtility;
 
-class WebhookTest extends WebhookBaseTest
+class WebhookTest extends WebhookUtility
 {
     /**
      * @param array $webhooksData

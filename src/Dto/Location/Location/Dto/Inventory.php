@@ -46,19 +46,4 @@ class Inventory extends Base
     const SAFETY_STOCK_MODE_DISABLED = 'disabled';
     const SAFETY_STOCK_TYPE_PERCENT  = 'percentage';
     const SAFETY_STOCK_TYPE_COUNT    = 'count';
-
-    /**
-     * @var array
-     */
-    protected $schema = [
-            'type'                 => 'object',
-            'properties'           => [
-                'isManaged'       => ['type' => 'boolean'],
-                'mode'            => ['type' => 'string'],
-                'safetyStockMode' => ['type' => 'string'],
-                'safetyStock'     => ['type' => 'number'],
-                'safetyStockType' => ['type' => 'string']
-            ],
-            'additionalProperties' => true,
-        ];
 }

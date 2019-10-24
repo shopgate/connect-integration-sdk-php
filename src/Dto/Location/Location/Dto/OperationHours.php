@@ -46,28 +46,10 @@ use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 class OperationHours extends Base
 {
     /**
-     * @var array
-     */
-    protected $schema
-        = [
-            'type'                 => 'object',
-            'properties'           => [
-                'sun' => ['type' => 'string'],
-                'mon' => ['type' => 'string'],
-                'tue' => ['type' => 'string'],
-                'wed' => ['type' => 'string'],
-                'thu' => ['type' => 'string'],
-                'fri' => ['type' => 'string'],
-                'sat' => ['type' => 'string'],
-            ],
-            'additionalProperties' => true,
-        ];
-
-    /**
      * @param string $day
      * @param string $hours
      *
-     * @return $this
+     * @return OperationHours
      *
      * @throws InvalidDataTypeException
      */

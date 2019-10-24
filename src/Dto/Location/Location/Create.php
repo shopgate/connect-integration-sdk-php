@@ -25,9 +25,9 @@ namespace Shopgate\ConnectSdk\Dto\Location\Location;
 use Shopgate\ConnectSdk\Dto\Location\Location;
 
 /**
+ * @method Create setType(Dto\Type $type)
  * @method Create setCode(string $code)
  * @method Create setName(string $name)
- * @method Create setType(Dto\Type $type)
  * @method Create setStatus(string $status)
  * @method Create setLatitude(string $latitude)
  * @method Create setLongitude(string $longitude)
@@ -39,6 +39,7 @@ use Shopgate\ConnectSdk\Dto\Location\Location;
  * @method Create setInventory(Dto\Inventory $inventory)
  * @method Create setSupportedFulfillmentMethods(string[] $supportedFulfillmentMethods)
  * @method Create setSettings(Dto\Settings $settings)
+ * @method Create setIsComingSoon(bool $isComingSoon)
  * @method Create setIsDefault(bool $isDefault)
  *
  * @codeCoverageIgnore
@@ -51,27 +52,15 @@ class Create extends Location
     protected $schema = [
         'type' => 'object',
         'properties' => [
-            'code' => ['type' => 'string'],
-            'name' => ['type' => 'string'],
             'type' => ['$ref' => Dto\Type::class],
-            'status' => ['type' => 'string'],
-            'latitude' => ['type' => 'number'],
-            'longitude' => ['type' => 'number'],
             'operationHours' => ['$ref' => Dto\OperationHours::class],
-            'localeCode' => ['type' => 'string'],
-            'timeZone' => ['type' => 'string'],
             'details' => ['$ref' => Dto\Details::class],
             'addresses' => [
                 'type' => 'array',
                 'items' => ['$ref' => Dto\Address::class]
             ],
             'inventory' => ['$ref' => Dto\Inventory::class],
-            'supportedFulfillmentMethods' => [
-                'type' => 'array',
-                'items' => ['type' => 'string']
-            ],
-            'settings' => ['$ref' => Dto\Settings::class],
-            'isDefault' => ['type' => 'boolean']
+            'settings' => ['$ref' => Dto\Settings::class]
         ],
         'additionalProperties' => true
     ];

@@ -58,28 +58,4 @@ use Shopgate\ConnectSdk\Dto\Base;
  */
 class Address extends Base
 {
-    /**
-     * @var array
-     */
-    protected $schema = [
-            'type'                 => 'object',
-            'properties'           => [
-                'code'         => ['type' => 'string'],
-                'name'         => ['type' => 'string'],
-                'street'       => ['type' => 'string'],
-                'street1'      => ['type' => 'string'],
-                'street2'      => ['type' => 'string'],
-                'street3'      => ['type' => 'string'],
-                'street4'      => ['type' => 'string'],
-                'postalCode'   => ['type' => 'string'],
-                'city'         => ['type' => 'string'],
-                'region'       => ['type' => 'string'],
-                'country'      => ['type' => 'string'],
-                'phoneNumber'  => ['type' => 'string'],
-                'faxNumber'    => ['type' => 'string'],
-                'emailAddress' => ['type' => 'string'],
-                'isPrimary'    => ['type' => 'boolean']
-            ],
-            'additionalProperties' => true,
-        ];
 }

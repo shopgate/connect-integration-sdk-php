@@ -26,12 +26,12 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties;
 
 /**
  * @method Attribute setCode(string $code)
- * @method Attribute setValue(string[] $value)
+ * @method Attribute setValue(Value $value)
  * @method Attribute setDisplayGroup(string $displayGroup)
  * @method Attribute setSubDisplayGroup(SubDisplayGroup $subDisplayGroup)
  *
  * @method string getCode()
- * @method string[] getValue()
+ * @method Value getValue()
  * @method string getDisplayGroup()
  * @method SubDisplayGroup getSubDisplayGroup()
  */
@@ -46,13 +46,10 @@ class Attribute extends Properties
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'code'            => ['type' => 'string'],
-            'value'           => [
-                'type'  => 'array',
-                'items' => ['type' => 'string',]
-            ],
-            'type'            => ['type' => 'string'],
-            'displayGroup'    => ['type' => 'string'],
+            'code' => ['type' => 'string'],
+            'value' => ['$ref' => Value::class],
+            'type' => ['type' => 'string'],
+            'displayGroup' => ['type' => 'string'],
             'subDisplayGroup' => ['type' => SubDisplayGroup::class],
         ],
         'additionalProperties' => true

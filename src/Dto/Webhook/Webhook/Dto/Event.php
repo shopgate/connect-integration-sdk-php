@@ -26,12 +26,22 @@ use Shopgate\ConnectSdk\Dto\Base;
 
 /**
  * @method Event setCode(string $code)
- * @method string getCode()
+ * @method string getCode() - event code to subscribe to, e.g. salesOrderAdded - when order is created
  *
  * @codeCoverageIgnore
  */
 class Event extends Base
 {
+    const SALES_ORDER_ADDED = 'salesOrderAdded';
+    const SALES_ORDER_STATUS_UPDATED = 'salesOrderStatusUpdated';
+    const SALES_ORDER_FULFILLMENT_ADDED = 'salesOrderFulfillmentAdded';
+    const FULFILL_ORDER_ADDED = 'fulfillmentOrderAdded';
+    const FULFILL_ORDER_UPDATED = 'fulfillmentOrderUpdated';
+    const FULFILL_ORDER_STATUS_UPDATED = 'fulfillmentOrderStatusUpdated';
+    const ORDER_NOT_PICKED_UP = 'orderNotPickedUp';
+    const INVENTORY_RESERVATION_DELETED = 'inventoryReservationDeleted';
+    const INVENTORY_RESERVATION_SETTLED = 'inventoryReservationSettled';
+
     /**
      * @var array
      */

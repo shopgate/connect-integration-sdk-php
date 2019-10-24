@@ -24,6 +24,7 @@ namespace Shopgate\ConnectSdk\Tests\Unit\Dto\Catalog\Product;
 
 use PHPUnit\Framework\TestCase;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto;
+use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties\Value as PropertyValue;
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 
@@ -41,7 +42,7 @@ class PropertiesTest extends TestCase
     }
 
     /**
-     * @param mixed $value
+     * @param string|array $value
      *
      * @dataProvider providePropertyValues
      *
@@ -52,6 +53,24 @@ class PropertiesTest extends TestCase
         $property = new Dto\Properties(['value' => $value]);
 
         $this->assertEquals($value, $property->getValue());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testTranslatedPropertyValueInitialization()
+    {
+        $locale = 'en-us';
+        $values = ['red', 'green', 'blue'];
+        $value = (new PropertyValue())->add($locale, $values);
+        $property = new Dto\Properties(['value' => $value]);
+
+        $this->assertEquals($value, $property->getValue());
+        $this->assertInstanceOf(PropertyValue::class, $value);
+
+        $property2 = new Dto\Properties(['value' => [$locale => $values]]);
+        $this->assertEquals($values, $property2->getValue()->get($locale));
+        $this->assertInstanceOf(PropertyValue::class, $value);
     }
 
     /**

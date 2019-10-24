@@ -46,6 +46,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Properties\Value;
  * @method boolean getIsPriced()
  * @method float getAttributePrice()
  * @method string getUnit()
+ * @method string getType()
  *
  * @codeCoverageIgnore
  */

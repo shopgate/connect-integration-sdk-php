@@ -30,16 +30,14 @@ use Shopgate\ConnectSdk\Dto\Base;
  * @method string getUse()
  * @method string getName()
  * @method AttributeValue\Get[] getValues()
- *
- * @package Shopgate\ConnectSdk\Dto\Catalog
  */
 class Attribute extends Base
 {
-    const USE_OPTION        = 'option';
-    const USE_EXTRA         = 'extra';
-    const USE_PROPERTY      = 'property';
-    const TYPE_TEXT         = 'text';
+    const USE_OPTION = 'option';
+    const USE_EXTRA = 'extra';
+    const USE_PROPERTY = 'property';
+    const TYPE_TEXT = 'text';
     const TYPE_PRODUCT_LIST = 'productList';
-    const TYPE_INPUT        = 'input';
-    const TYPE_NUMBER       = 'number';
+    const TYPE_INPUT = 'input';
+    const TYPE_NUMBER = 'number';
 }

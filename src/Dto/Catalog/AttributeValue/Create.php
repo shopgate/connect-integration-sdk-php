@@ -40,10 +40,10 @@ class Create extends AttributeValue
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
-            'code'       => ['type' => 'string'],
+            'code' => ['type' => 'string'],
             'sequenceId' => ['type' => 'integer'],
-            'name'       => ['$ref' => Dto\Name::class],
-            'swatch'     => ['type' => 'object'],
+            'name' => ['$ref' => Dto\Name::class],
+            'swatch' => ['$ref' => Dto\Swatch::class],
         ],
         'additionalProperties' => true,
     ];

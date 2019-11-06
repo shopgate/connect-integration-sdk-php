@@ -32,7 +32,7 @@ retry "OrderService" "docker-compose ${DOCKER_COMPOSE_PARAMETERS} exec -T order 
 retry "WebhookService" "docker-compose ${DOCKER_COMPOSE_PARAMETERS} exec -T webhook curl http://localhost/health -o /dev/null 2>&1"
 
 # add DE postalcodes
-docker-compose $DOCKER_COMPOSE_PARAMETERS  exec -T mysql sh -c "curl http://download.geonames.org/export/zip/DE.zip --output de.zip && unzip -o de.zip"
+docker-compose $DOCKER_COMPOSE_PARAMETERS  exec -T mysql sh -c "curl https://download.geonames.org/export/dump/DE.zip --output de.zip && unzip -o de.zip"
 docker-compose $DOCKER_COMPOSE_PARAMETERS  exec -T mysql sh -c "echo \"LOAD DATA LOCAL INFILE 'DE.txt' INTO TABLE Postalcode (CountryCode,PostalCode,PlaceName,AdminName1,AdminCode1,AdminName2,AdminCode2,AdminName3,AdminCode3,Latitude,Longitude,Accuracy);\" | mysql  -u root -psecret location"
 
 docker-compose ${DOCKER_COMPOSE_PARAMETERS} exec -T mysql mysql -uroot -psecret < ./fixtures/sampleData.sql

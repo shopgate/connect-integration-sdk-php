@@ -25,14 +25,10 @@ namespace Shopgate\ConnectSdk\Dto\Location\Location\Dto;
 use Shopgate\ConnectSdk\Dto\Base;
 
 /**
- * @method Settings setEnableInStorePickup(bool $enableInStorePickup)
- * @method Settings setEnableShipFromStore(bool $enableShipFromStore)
  * @method Settings setEnableInLocationFinder(bool $enableInLocationFinder)
  * @method Settings setEnableInventoryBrowse(bool $enableInventoryBrowse)
  * @method Settings setEnableForRelate(bool $enableForRelate)
  * @method Settings setShowStoreHours(bool $showStoreHours)
- * @method bool getEnableInStorePickup()
- * @method bool getEnableShipFromStore()
  * @method bool getEnableInLocationFinder()
  * @method bool getEnableInventoryBrowse()
  * @method bool getEnableForRelate()

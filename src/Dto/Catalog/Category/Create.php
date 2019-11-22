@@ -31,6 +31,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Url;
 /**
  * @method Create setCode(string $code)
  * @method Create setParentCategoryCode(string $parentCategoryCode)
+ * @method Create setCatalogCode(string $catalogCode)
  * @method Create setImage(Image $image)
  * @method Create setName(Name $name)
  * @method Create setUrl(Url $url)
@@ -51,6 +52,7 @@ class Create extends Category
         'properties'           => [
             'code'               => ['type' => 'string'],
             'parentCategoryCode' => ['type' => 'string'],
+            'catalogCode'        => ['type' => 'string'],
             'image'              => ['$ref' => Dto\Image::class],
             'name'               => ['$ref' => Dto\Name::class],
             'url'                => ['$ref' => Dto\Url::class],

@@ -100,8 +100,6 @@ class Handler
     }
 
     /**
-     * @param string $catalogCode
-     *
      * @return Feed\Attribute
      *
      * @throws AuthenticationInvalidException
@@ -110,15 +108,14 @@ class Handler
      * @throws UnknownException
      * @throws InvalidDataTypeException
      */
-    public function createAttributeFeed($catalogCode)
+    public function createAttributeFeed()
     {
         return new Feed\Attribute(
             $this->client,
             $this->importReference,
             $this::HANDLER_TYPE,
             [
-                'entity' => 'attribute',
-                'catalogCode' => $catalogCode
+                'entity' => 'attribute'
             ]
         );
     }
@@ -143,8 +140,6 @@ class Handler
     }
 
     /**
-     * @param string $catalogCode
-     *
      * @return Feed\Customer
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
@@ -152,15 +147,14 @@ class Handler
      * @throws RequestException
      * @throws UnknownException
      */
-    public function createCustomerFeed($catalogCode)
+    public function createCustomerFeed()
     {
         return new Feed\Customer(
             $this->client,
             $this->importReference,
             $this::HANDLER_TYPE,
             [
-                'entity' => 'customer',
-                'catalogCode' => $catalogCode
+                'entity' => 'customer'
             ]
         );
     }

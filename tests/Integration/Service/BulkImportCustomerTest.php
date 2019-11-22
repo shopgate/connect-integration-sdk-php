@@ -19,7 +19,7 @@ class BulkImportCustomerTest extends CustomerUtility
 
         // Act
         $handler = $this->sdk->getBulkImportService()->createFileImport();
-        $customerHandler = $handler->createCustomerFeed(self::SAMPLE_CATALOG_CODE);
+        $customerHandler = $handler->createCustomerFeed();
         $customerHandler->add($customers[0]);
         $customerHandler->add($customers[1]);
         $customerHandler->end();
@@ -57,7 +57,7 @@ class BulkImportCustomerTest extends CustomerUtility
 
         // Act
         $handler = $this->sdk->getBulkImportService()->createStreamImport();
-        $customerHandler = $handler->createCustomerFeed(self::SAMPLE_CATALOG_CODE);
+        $customerHandler = $handler->createCustomerFeed();
         $customerHandler->add($customers[0]);
         $customerHandler->add($customers[1]);
         $customerHandler->end();

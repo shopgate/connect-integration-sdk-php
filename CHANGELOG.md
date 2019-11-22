@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## [Unreleased]
 ### Removed
 - Fields enableInStorePickup & enableShipFromStore from location settings
+- Unnecessary constructors for attribute and customer feeds
 
 ## [1.1.2] - 2019-10-24
 ### Fixed

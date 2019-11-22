@@ -139,7 +139,7 @@ class BulkImportCatalogTest extends CatalogUtility
 
         // Act
         $handler = $this->sdk->getBulkImportService()->createFileImport();
-        $attributeHandler = $handler->createAttributeFeed(self::SAMPLE_CATALOG_CODE);
+        $attributeHandler = $handler->createAttributeFeed();
         $attributeHandler->add($attributes[0]);
         $attributeHandler->add($attributes[1]);
         $attributeHandler->end();
@@ -168,7 +168,7 @@ class BulkImportCatalogTest extends CatalogUtility
 
         // Act
         $handler = $this->sdk->getBulkImportService()->createStreamImport();
-        $attributeHandler = $handler->createAttributeFeed(self::SAMPLE_CATALOG_CODE);
+        $attributeHandler = $handler->createAttributeFeed();
         $attributeHandler->add($attributes[0]);
         $attributeHandler->add($attributes[1]);
         $attributeHandler->end();
@@ -301,7 +301,7 @@ class BulkImportCatalogTest extends CatalogUtility
         $categoryHandler->add($categories[0]);
         $categoryHandler->add($categories[1]);
         $categoryHandler->end();
-        $attributeHandler = $handler->createAttributeFeed(self::SAMPLE_CATALOG_CODE);
+        $attributeHandler = $handler->createAttributeFeed();
         $attributeHandler->add($extras[0]);
         $attributeHandler->add($extras[1]);
         $attributeHandler->end();

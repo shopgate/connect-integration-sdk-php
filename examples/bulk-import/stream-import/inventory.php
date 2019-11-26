@@ -12,7 +12,7 @@ $inventory = provideSampleInventories();
 
 try {
     $handler = $sdk->getBulkImportService()->createStreamImport();
-    $inventoryHandler = $handler->createInventoryFeed(CATALOG_CODE);
+    $inventoryHandler = $handler->createInventoryFeed();
     $inventoryHandler->add($inventory[0]);
     $inventoryHandler->add($inventory[1]);
     $inventoryHandler->end();

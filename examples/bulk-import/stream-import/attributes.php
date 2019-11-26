@@ -6,7 +6,7 @@ $attributes = provideSampleAttributes();
 
 try {
     $handler = $sdk->getBulkImportService()->createStreamImport();
-    $attributeHandler = $handler->createAttributeFeed(CATALOG_CODE);
+    $attributeHandler = $handler->createAttributeFeed();
     $attributeHandler->add($attributes[0]);
     $attributeHandler->add($attributes[1]);
     $attributeHandler->end();

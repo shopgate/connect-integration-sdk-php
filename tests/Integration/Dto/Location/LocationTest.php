@@ -365,7 +365,7 @@ class LocationTest extends LocationUtility
                 'original' => [],
                 'update'   => [
                     'settings' => new Location\Dto\Settings(
-                        ['enableInStorePickup' => true, 'enableShipFromStore' => false, 'enableInLocationFinder' => false, 'enableInventoryBrowse' => false, 'enableForRelate' => false,
+                        ['enableInLocationFinder' => false, 'enableInventoryBrowse' => false, 'enableForRelate' => false,
                          'showStoreHours'      => false]
                     )
                 ]
@@ -373,13 +373,13 @@ class LocationTest extends LocationUtility
             'change settings'                    => [
                 'original' => [
                     'settings' => new Location\Dto\Settings(
-                        ['enableInStorePickup' => true, 'enableShipFromStore' => false, 'enableInLocationFinder' => false, 'enableInventoryBrowse' => false, 'enableForRelate' => false,
+                        ['enableInLocationFinder' => false, 'enableInventoryBrowse' => false, 'enableForRelate' => false,
                          'showStoreHours'      => false]
                     )
                 ],
                 'update'   => [
                     'settings' => new Location\Dto\Settings(
-                        ['enableInStorePickup' => true, 'enableShipFromStore' => true, 'enableInLocationFinder' => false, 'enableInventoryBrowse' => true, 'enableForRelate' => false,
+                        ['enableInLocationFinder' => false, 'enableInventoryBrowse' => true, 'enableForRelate' => false,
                          'showStoreHours'      => false]
                     )
                 ]
@@ -415,7 +415,7 @@ class LocationTest extends LocationUtility
                     'supportedFulfillmentMethods' => ['directShip']
                 ],
                 'update'   => [
-                    'supportedFulfillmentMethods' => ['directShip', 'pickUpInStore']
+                    'supportedFulfillmentMethods' => ['directShip', 'BOPIS']
                 ]
             ],
             'change detail but not inventory'    => [

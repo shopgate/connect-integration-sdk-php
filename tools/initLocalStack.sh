@@ -73,7 +73,7 @@ docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T elasticsearch curl -X DELETE '
 docker-compose $DOCKER_COMPOSE_PARAMETERS up -d mysql sqs reverse-proxy auth omni-worker merchant location s3
 
 # add DE postalcodes
-docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T mysql sh -c "apt-get update && apt-get install -y curl unzip && curl http://download.geonames.org/export/zip/DE.zip --output de.zip && unzip -o de.zip"
+docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T mysql sh -c "apt-get update && apt-get install -y curl unzip && curl https://download.geonames.org/export/dump/DE.zip --output de.zip && unzip -o de.zip"
 docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T mysql sh -c "echo \"LOAD DATA LOCAL INFILE 'DE.txt' INTO TABLE Postalcode (CountryCode,PostalCode,PlaceName,AdminName1,AdminCode1,AdminName2,AdminCode2,AdminName3,AdminCode3,Latitude,Longitude,Accuracy);\" | mysql  -u root -psecret location"
 
 retry "AuthService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T auth curl http://localhost/health -o /dev/null 2>&1"

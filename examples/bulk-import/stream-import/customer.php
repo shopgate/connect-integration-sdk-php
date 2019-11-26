@@ -6,7 +6,7 @@ try {
     $customers = provideSampleCustomers();
 
     $handler = $sdk->getBulkImportService()->createStreamImport();
-    $customerHandler = $handler->createCustomerFeed(CATALOG_CODE);
+    $customerHandler = $handler->createCustomerFeed();
     $customerHandler->add($customers[0]);
     $customerHandler->end();
     $handler->trigger();

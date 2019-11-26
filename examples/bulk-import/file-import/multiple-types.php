@@ -9,7 +9,7 @@ try {
     $products = provideSampleProducts();
 
     $handler = $sdk->getBulkImportService()->createFileImport();
-    $attributeHandler = $handler->createAttributeFeed(CATALOG_CODE);
+    $attributeHandler = $handler->createAttributeFeed();
     $attributeHandler->add($attributes[0]);
     $attributeHandler->add($attributes[1]);
     $attributeHandler->end();
@@ -21,7 +21,7 @@ try {
     $categoryHandler->add($categories[0]);
     $categoryHandler->add($categories[1]);
     $categoryHandler->end();
-    $inventoryHandler = $handler->createInventoryFeed(CATALOG_CODE);
+    $inventoryHandler = $handler->createInventoryFeed();
     $inventoryHandler->add($inventory[0]);
     $inventoryHandler->add($inventory[1]);
     $inventoryHandler->end();

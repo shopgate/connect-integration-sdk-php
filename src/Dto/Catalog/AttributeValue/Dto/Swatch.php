@@ -41,10 +41,6 @@ class Swatch extends Base
      */
     protected $schema = [
         'type'                 => 'object',
-        'properties'           => [
-            'type'  => ['type' => 'string'],
-            'value' => ['type' => 'string'],
-        ],
         'additionalProperties' => true,
     ];
 }

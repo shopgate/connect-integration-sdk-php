@@ -40,6 +40,7 @@ class Update extends AttributeValue
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
+            'sequenceId' => ['type' => 'integer'],
             'name' => ['$ref' => Dto\Name::class, 'skipValidation' => true],
             'swatch' => ['$ref' => Dto\Swatch::class, 'skipValidation' => true]
         ],

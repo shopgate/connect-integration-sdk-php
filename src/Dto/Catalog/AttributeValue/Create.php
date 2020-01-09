@@ -40,6 +40,8 @@ class Create extends AttributeValue
     protected $schema = [
         'type'                 => 'object',
         'properties'           => [
+            'code' => ['type' => 'string'],
+            'sequenceId' => ['type' => 'integer'],
             'name' => ['$ref' => Dto\Name::class, 'skipValidation' => true],
             'swatch' => ['$ref' => Dto\Swatch::class, 'skipValidation' => true]
         ],

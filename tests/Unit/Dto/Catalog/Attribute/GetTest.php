@@ -34,16 +34,16 @@ class GetTest extends TestCase
      *
      * @throws Exception
      */
-    public function testCategoryDto()
+    public function testGetDto()
     {
         $entry = [
             'values' => [
                 [
-                    'code'       => 'black',
+                    'code' => 'black',
                     'sequenceId' => 0,
-                    'name'       => 'Black',
-                    'swatch'     => [
-                        'type'  => AttributeValue::SWATCH_TYPE_IMAGE,
+                    'name' => 'Black',
+                    'swatch' => [
+                        'type' => AttributeValue::SWATCH_TYPE_IMAGE,
                         'value' => 'https://some.url/image.jpg',
                     ],
                 ],
@@ -55,6 +55,9 @@ class GetTest extends TestCase
         $this->assertCount(1, $get->getValues());
         $this->assertInstanceOf(AttributeValue\Get::class, $attributeValue);
         $this->assertInstanceOf(AttributeValue\Dto\Swatch::class, $attributeValue->getSwatch());
+        $this->assertSame(0, $attributeValue->getSequenceId());
+        $this->assertSame('Black', $attributeValue->getName());
+        $this->assertSame('black', $attributeValue->getCode());
         $this->assertEquals(AttributeValue::SWATCH_TYPE_IMAGE, $attributeValue->getSwatch()->getType());
         $this->assertEquals('https://some.url/image.jpg', $attributeValue->getSwatch()->getValue());
     }

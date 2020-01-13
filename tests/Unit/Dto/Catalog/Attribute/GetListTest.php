@@ -37,7 +37,7 @@ class GetListTest extends TestCase
      *
      * @throws Exception
      */
-    public function testCategoryDto()
+    public function testGetListDto()
     {
         $entry = [
             'meta' => [

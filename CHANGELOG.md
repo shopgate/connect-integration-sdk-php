@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [1.1.4] - 2020-01-13
+### Fixed
+- A bug in AttributeValue\Name that would not allow proper locale assignment
+
 ## [1.1.3] - 2019-11-26
 ### Removed
 - Fields enableInStorePickup & enableShipFromStore from location settings
@@ -174,7 +178,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - createCategory event & direct call
 - deleteCategory event & direct call
 
-[Unreleased]: https://github.com/shopgate/connect-integration-sdk/compare/v1.1.3...HEAD
+[Unreleased]: https://github.com/shopgate/connect-integration-sdk/compare/v1.1.4...HEAD
+[1.1.4]: https://github.com/shopgate/connect-integration-sdk/compare/v1.1.3...v1.1.4
 [1.1.3]: https://github.com/shopgate/connect-integration-sdk/compare/v1.1.2...v1.1.3
 [1.1.2]: https://github.com/shopgate/connect-integration-sdk/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/shopgate/connect-integration-sdk/compare/v1.1.0...v1.1.1

@@ -25,6 +25,7 @@ $topics = [
     ],
     'fulfillmentOrderAdded-development' => [
         'webhookTransSalesOrderFulfillmentAdded-development',
+        'webhookTransFulfillmentOrderAdded-development',
     ],
     'fulfillmentOrderStatusUpdated-development' => [
         'orderSvcFulfillmentOrderStatusUpdated-development',

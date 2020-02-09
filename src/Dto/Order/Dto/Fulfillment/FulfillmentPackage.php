@@ -63,19 +63,9 @@ class FulfillmentPackage extends Base
     protected $schema = [
         'type' => 'object',
         'properties' => [
-            'id' => ['type' => 'integer'],
-            'status' => ['type' => 'string'],
-            'serviceLevel' => ['type' => 'string'],
-            'fulfilledFromLocationCode' => ['type' => 'string'],
-            'weight' => ['type' => 'number'],
-            'dimensions' => ['type' => 'string'],
-            'tracking' => ['type' => 'string'],
-            'pickUpBy' => ['type' => 'string'],
-            'labelUrl' => ['type' => 'string'],
-            'fulfillmentDate' => ['type' => 'string'],
             'packageItems' => [
                 'type' => 'array',
-                'items' => ['$ref' => FulfillmentPackage\PackageItem::class]
+                'items' => ['$ref' => FulfillmentPackage\PackageItem::class, 'skipValidation' => true]
             ]
         ],
         'additionalProperties' => true,

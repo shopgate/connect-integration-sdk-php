@@ -36,16 +36,4 @@ use Shopgate\ConnectSdk\Dto\Base;
  */
 class PackageItem extends Base
 {
-    /**
-     * @var array
-     */
-    protected $schema = [
-        'type' => 'object',
-        'properties' => [
-            'id' => ['type' => 'integer'],
-            'lineItemId' => ['type' => 'integer'],
-            'quantity' => ['type' => 'number']
-        ],
-        'additionalProperties' => true,
-    ];
 }

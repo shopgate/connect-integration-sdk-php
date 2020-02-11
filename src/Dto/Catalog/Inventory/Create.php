@@ -25,13 +25,9 @@ namespace Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 
 /**
- * @method Create setProductCode(string $productCode)
- * @method Create setLocationCode(string $locationCode)
- * @method Create setSku(string $sku)
- * @method Create setOnHand(integer $onHand)
  * @method Create setSafetyStock(integer $safetyStock)
- * @method Create setBin(string $bin)
- * @method Create setBinLocation(string $binLocation)
+ *
+ * @inheritDoc
  */
 class Create extends Inventory
 {

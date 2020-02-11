@@ -25,40 +25,7 @@ namespace Shopgate\ConnectSdk\Dto\Order\Order;
 use Shopgate\ConnectSdk\Dto\Order\Order;
 
 /**
- * @method Create setExternalCode(string $externalCode)
- * @method Create setType(string $type)
- * @method Create setCustomerId(string $customerId)
- * @method Create setExternalCustomerNumber(string $externalCustomerNumber)
- * @method Create setStatus(string $status)
- * @method Create setExpedited(bool $expedited)
- * @method Create setLocaleCode(string $localCode)
- * @method Create setCurrencyCode(string $currencyCode)
- * @method Create setTaxExempt(bool $taxExempt)
- * @method Create setNotes(string $notes)
- * @method Create setSpecialInstructions(Dto\SpecialInstructions $specialInstructions)
- * @method Create setData(Dto\Data $data)
- * @method Create setFulfillmentStatus(string $fulfillmentStatus)
- * @method Create setPrimaryBillToAddressSequenceIndex(int $primaryBillToAddressSequenceIndex)
- * @method Create setPrimaryShipToAddressSequenceIndex(int $primaryShipToAddressSequenceIndex)
- * @method Create setAddressSequences(Dto\Address[] $addressSequences)
- * @method Create setSubTotal(float $subTotal)
- * @method Create setDiscountAmount(float $discountAmount)
- * @method Create setPromoAmount(float $promoAmount)
- * @method Create setTaxAmount(float $taxAmount)
- * @method Create setTax2Amount(float $tax2Amount)
- * @method Create setShippingSubTotal(float $shippingSubTotal)
- * @method Create setShippingDiscountAmount(float $shippingDiscountAmount)
- * @method Create setShippingPromoAmount(float $shippingPromoAmount)
- * @method Create setShippingTotal(float $shippingTotal)
- * @method Create setTotal(float $total)
- * @method Create setDate(string $date)
- * @method Create setSubmitDate(string $submitDate)
- * @method Create setCompleteDate(string $completeDate)
- * @method Create setSourceDevice(string $sourceDevice)
- * @method Create setSourceIp(string $sourceIp)
- * @method Create setFulfillmentGroups(Dto\FulfillmentGroup[] $fulfillmentGroups)
- * @method Create setLineItems(Dto\LineItem[] $lineItems)
- * @method Create setHistory(Dto\HistoryItem[] $history)
+ * @inheritDoc
  *
  * @codeCoverageIgnore
  */

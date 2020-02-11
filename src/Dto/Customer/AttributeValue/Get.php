@@ -27,10 +27,7 @@ use Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
 /**
  * Dto for attribute values response.
  *
- * @method string getCode()
- * @method int getSequenceId()
- * @method string getName()
- *
+ * @inheritDoc
  */
 class Get extends AttributeValue
 {

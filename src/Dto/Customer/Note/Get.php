@@ -25,11 +25,7 @@ namespace Shopgate\ConnectSdk\Dto\Customer\Note;
 use Shopgate\ConnectSdk\Dto\Customer\Note;
 
 /**
- * @method string getId()
- * @method string getExternalCode()
- * @method string getNote()
- * @method string getDate()
- * @method string getCreator()
+ * @inheritDoc
  */
 class Get extends Note
 {

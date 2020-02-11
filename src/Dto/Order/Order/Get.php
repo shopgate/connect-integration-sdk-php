@@ -25,6 +25,7 @@ namespace Shopgate\ConnectSdk\Dto\Order\Order;
 use Shopgate\ConnectSdk\Dto\Order\Order;
 
 /**
+ * @inheritDoc
  * @codeCoverageIgnore
  */
 class Get extends Order

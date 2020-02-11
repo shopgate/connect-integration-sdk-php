@@ -25,26 +25,7 @@ namespace Shopgate\ConnectSdk\Dto\Customer\Contact;
 use Shopgate\ConnectSdk\Dto\Customer\Contact;
 
 /**
- * @method Update setExternalContactCode(string $externalContactCode)
- * @method Update setStatus(string $status)
- * @method Update setFirstName(string $firstName)
- * @method Update setMiddleName(string $middleName)
- * @method Update setLastName(string $lastName)
- * @method Update setCompanyName(string $companyName)
- * @method Update setAddress1(string $address1)
- * @method Update setAddress2(string $address2)
- * @method Update setAddress3(string $address3)
- * @method Update setAddress4(string $address4)
- * @method Update setCity(string $city)
- * @method Update setPostalCode(string $postalCode)
- * @method Update setRegion(string $region)
- * @method Update setCountry(string $country)
- * @method Update setPhone(string $phone)
- * @method Update setFax(string $fax)
- * @method Update setMobile(string $mobile)
- * @method Update setEmailAddress(string $emailAddress)
- * @method Update setIsDefaultShipping(boolean $isDefaultShipping)
- * @method Update setIsDefaultBilling(boolean $isDefaultBilling)
+ * @inheritDoc
  */
 class Update extends Contact
 {

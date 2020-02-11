@@ -25,9 +25,7 @@ namespace Shopgate\ConnectSdk\Dto\Customer\Wishlist;
 use Shopgate\ConnectSdk\Dto\Customer\Wishlist;
 
 /**
- * @method Update setCode(string $code)
- * @method Update setName(string $name)
- * @method Update setItems(Dto\Item[] $items)
+ * @inheritDoc
  *
  * @codeCoverageIgnore
  */

@@ -25,11 +25,7 @@ namespace Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 
 /**
- * @method Delete setProductCode(string $productCode)
- * @method Delete setLocationCode(string $locationCode)
- * @method Delete setSku(string $bin)
- * @method Delete setBin(string $sku)
- * @method Delete setBinLocation(string $binLocation)
+ * @inheritDoc
  */
 class Delete extends Inventory
 {

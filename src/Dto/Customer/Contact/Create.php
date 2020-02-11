@@ -25,26 +25,7 @@ namespace Shopgate\ConnectSdk\Dto\Customer\Contact;
 use Shopgate\ConnectSdk\Dto\Customer\Contact;
 
 /**
- * @method Create setExternalContactCode(string $externalContactCode)
- * @method Create setStatus(string $status)
- * @method Create setFirstName(string $firstName)
- * @method Create setMiddleName(string $middleName)
- * @method Create setLastName(string $lastName)
- * @method Create setCompanyName(string $companyName)
- * @method Create setAddress1(string $address1)
- * @method Create setAddress2(string $address2)
- * @method Create setAddress3(string $address3)
- * @method Create setAddress4(string $address4)
- * @method Create setCity(string $city)
- * @method Create setPostalCode(string $postalCode)
- * @method Create setRegion(string $region)
- * @method Create setCountry(string $country)
- * @method Create setPhone(string $phone)
- * @method Create setFax(string $fax)
- * @method Create setMobile(string $mobile)
- * @method Create setEmailAddress(string $emailAddress)
- * @method Create setIsDefaultShipping(boolean $isDefaultShipping)
- * @method Create setIsDefaultBilling(boolean $isDefaultBilling)
+ * @inheritDoc
  */
 class Create extends Contact
 {

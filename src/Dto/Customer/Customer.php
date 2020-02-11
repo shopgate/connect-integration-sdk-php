@@ -23,6 +23,33 @@ namespace Shopgate\ConnectSdk\Dto\Customer;
 
 use Shopgate\ConnectSdk\Dto\Base;
 
+/**
+ * @method string getId()
+ * @method string getExternalCustomerNumber()
+ * @method string getFirstName()
+ * @method string getMiddleName()
+ * @method string getLastName()
+ * @method string getEmailAddress()
+ * @method string getStatus()
+ * @method boolean getIsAnonymous()
+ * @method string getExternalUpdateDate()
+ * @method Contact[] getContacts()
+ * @method Customer\Dto\Attribute[] getAttributes()
+ * @method Customer\Dto\Settings getSettings()
+ *
+ * @method $this setExternalCustomerNumber(string $externalCustomerNumber)
+ * @method $this setFirstName(string $firstName)
+ * @method $this setMiddleName(string $middleName)
+ * @method $this setLastName(string $lastName)
+ * @method $this setEmailAddress(string $emailAddress)
+ * @method $this setStatus(string $status)
+ * @method $this setIsAnonymous(boolean $isAnonymous)
+ * @method $this setContacts(Contact[] $contacts)
+ * @method $this setAttributes(Customer\Dto\Attribute[] $attributes)
+ * @method $this setSettings(Customer\Dto\Settings $settings)
+ *
+ * @package Shopgate\ConnectSdk\Dto\Customer
+ */
 class Customer extends Base
 {
     const STATUS_ACTIVE   = 'active';

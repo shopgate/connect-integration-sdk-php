@@ -27,18 +27,7 @@ use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Contact;
 use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Settings;
 
 /**
- * @method string getId()
- * @method string getExternalCustomerNumber()
- * @method string getFirstName()
- * @method string getMiddleName()
- * @method string getLastName()
- * @method string getEmailAddress()
- * @method string getStatus()
- * @method boolean getIsAnonymous()
- * @method string getExternalUpdateDate()
- * @method Contact[] getContacts()
- * @method Attribute[] getAttributes()
- * @method Settings getSettings()
+ * @inheritDoc
  */
 class Get extends Customer
 {

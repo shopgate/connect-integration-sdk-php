@@ -36,6 +36,17 @@ use Shopgate\ConnectSdk\Dto\Base;
  * @method int getQuantity()
  * @method string getCode()
  *
+ * @method $this setProductCode(string $productCode)
+ * @method $this setLocationCode(string $locationCode)
+ * @method $this setSku(string $sku)
+ * @method $this setSalesOrderLineItemCode(string $salesOrderLineItemCode)
+ * @method $this setSalesOrderNumber(string $salesOrderNumber)
+ * @method $this setFulfillmentOrderNumber(string $fulfillmentOrderId)
+ * @method $this setBin(string $bin)
+ * @method $this setBinLocation(string $binLocation)
+ * @method $this setQuantity(int $quantity)
+ * @method $this setCode(string $code)
+ *
  * @package Shopgate\ConnectSdk\Dto\Catalog
  *
  * @codeCoverageIgnore

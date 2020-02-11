@@ -28,8 +28,8 @@ use Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
  * Default class that handles validation for attribute values Create payloads.
  *
  * @method string setCode(string $code)
- * @method string setSequenceId(int $sequenceId)
- * @method string setName(string $name)
+ *
+ * @inheritDoc
  */
 class Create extends AttributeValue
 {

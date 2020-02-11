@@ -24,6 +24,43 @@ namespace Shopgate\ConnectSdk\Dto\Location;
 
 use Shopgate\ConnectSdk\Dto\Base;
 
+/**
+ * @method Location\Dto\Type getType()
+ * @method string getCode()
+ * @method string getName()
+ * @method string getStatus()
+ * @method string getLatitude()
+ * @method string getLongitude()
+ * @method Location\Dto\OperationHours getOperationHours()
+ * @method string getLocaleCode()
+ * @method string getTimeZone()
+ * @method Location\Dto\Details getDetails()
+ * @method Location\Dto\Address[] getAddresses()
+ * @method Location\Dto\Inventory getInventory()
+ * @method string[] getSupportedFulfillmentMethods()
+ * @method Location\Dto\Settings getSettings()
+ * @method bool getIsComingSoon()
+ * @method bool getIsDefault()
+ *
+ * @method $this setType(Location\Dto\Type $type)
+ * @method $this setCode(string $code)
+ * @method $this setName(string $name)
+ * @method $this setStatus(string $status)
+ * @method $this setLatitude(string $latitude)
+ * @method $this setLongitude(string $longitude)
+ * @method $this setOperationHours(Location\Dto\OperationHours $operationHours)
+ * @method $this setLocaleCode(string $localeCode)
+ * @method $this setTimeZone(string $timeZone)
+ * @method $this setDetails(Location\Dto\Details $details)
+ * @method $this setAddresses(Location\Dto\Address[] $addresses)
+ * @method $this setInventory(Location\Dto\Inventory $inventory)
+ * @method $this setSupportedFulfillmentMethods(string[] $supportedFulfillmentMethods)
+ * @method $this setSettings(Location\Dto\Settings $settings)
+ * @method $this setIsComingSoon(bool $isComingSoon)
+ * @method $this setIsDefault(bool $isDefault)
+ *
+ * @package Shopgate\ConnectSdk\Dto\Location
+ */
 class Location extends Base
 {
     const STATUS_ACTIVE = 'active';

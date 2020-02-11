@@ -28,10 +28,7 @@ use Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
 /**
  * Default class that handles validation for attribute Update payloads.
  *
- * @method string setType(string $type)
- * @method string setIsRequired(string $isRequired)
- * @method string setName(string $name)
- * @method string setValues(AttributeValue\Update[] $values)
+ * @inheritDoc
  */
 class Update extends Attribute
 {

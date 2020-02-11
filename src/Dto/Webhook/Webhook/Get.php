@@ -25,12 +25,7 @@ namespace Shopgate\ConnectSdk\Dto\Webhook\Webhook;
 use Shopgate\ConnectSdk\Dto\Webhook\Webhook;
 
 /**
- * @method string getName()
- * @method string getEndpoint()
- * @method bool getActive()
- * @method Dto\Event[] getEvents()
- * @method string getCode()
- *
+ * @inheritDoc
  * @codeCoverageIgnore
  */
 class Get extends Webhook

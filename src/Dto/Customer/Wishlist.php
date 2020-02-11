@@ -24,6 +24,17 @@ namespace Shopgate\ConnectSdk\Dto\Customer;
 
 use Shopgate\ConnectSdk\Dto\Base;
 
+/**
+ * @method string getCode()
+ * @method string getName()
+ * @method Dto\Item[] getItems()
+ *
+ * @method $this setCode(string $code)
+ * @method $this setName(string $name)
+ * @method $this setItems(Dto\Item[] $items)
+ *
+ * @package Shopgate\ConnectSdk\Dto\Customer
+ */
 class Wishlist extends Base
 {
 }

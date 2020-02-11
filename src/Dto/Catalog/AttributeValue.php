@@ -30,6 +30,12 @@ use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue\Dto;
  * @method int getSequenceId()
  * @method Dto\Name getName()
  * @method Dto\Swatch getSwatch()
+ *
+ * @method $this setCode(string $code)
+ * @method $this setSequenceId(int $sequenceId)
+ * @method $this setName(Dto\Name $name)
+ * @method $this setSwatch(Dto\Swatch $swatch)
+ *
  */
 class AttributeValue extends Base
 {

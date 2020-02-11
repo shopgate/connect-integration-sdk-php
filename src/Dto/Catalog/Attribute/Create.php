@@ -26,20 +26,14 @@ use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 
 /**
- * @method string getCode()
- * @method string getType()
- * @method string getUse()
- * @method Dto\Name getName()
  * @method string getExternalUpdateDate()
  * @method AttributeValue\Create[] getValues()
  *
  * @method Create setCode(string $code)
- * @method Create setType(string $type)
- * @method Create setUse(string $use)
- * @method Create setName(Attribute\Dto\Name $name)
  * @method Create setExternalUpdateDate(string $externalUpdateDate)
  * @method Create setValues(AttributeValue\Create[] $values)
  *
+ * @inheritDoc
  * @codeCoverageIgnore
  */
 class Create extends Attribute

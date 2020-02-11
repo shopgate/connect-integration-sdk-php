@@ -25,11 +25,7 @@ namespace Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 
 /**
- * @method Update setCode(string $code)
- * @method Update setSequenceId(int $sequenceId)
- * @method Update setName(Dto\Name $name)
- * @method Update setSwatch(Dto\Swatch $swatch)
- *
+ * @inheritDoc
  * @codeCoverageIgnore
  */
 class Update extends AttributeValue

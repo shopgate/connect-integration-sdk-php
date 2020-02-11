@@ -25,17 +25,6 @@ namespace Shopgate\ConnectSdk\Dto\Catalog\Reservation;
 use Shopgate\ConnectSdk\Dto\Catalog\Reservation as ReservationBase;
 
 /**
- * @method Create setProductCode(string $productCode)
- * @method Create setLocationCode(string $locationCode)
- * @method Create setSku(string $sku)
- * @method Create setSalesOrderLineItemCode(string $salesOrderLineItemCode)
- * @method Create setSalesOrderNumber(string $salesOrderNumber)
- * @method Create setFulfillmentOrderNumber(string $fulfillmentOrderId)
- * @method Create setBin(string $bin)
- * @method Create setBinLocation(string $binLocation)
- * @method Create setQuantity(int $quantity)
- * @method Create setCode(string $code)
- *
  * @inheritdoc
  */
 class Create extends ReservationBase

@@ -25,7 +25,14 @@ namespace Shopgate\ConnectSdk\Dto\Customer;
 use Shopgate\ConnectSdk\Dto\Base;
 
 /**
- * * @package Shopgate\ConnectSdk\Dto\Customer
+ * @method string getCode()
+ * @method int getSequenceId()
+ * @method string getName()
+ *
+ * @method string setSequenceId(int $sequenceId)
+ * @method string setName(string $name)
+ *
+ * @package Shopgate\ConnectSdk\Dto\Customer
  */
 class AttributeValue extends Base
 {

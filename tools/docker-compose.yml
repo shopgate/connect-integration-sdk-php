@@ -164,7 +164,7 @@ services:
 
 ### https://gitlab.localdev.cc/omnichannel/services/webhook
   webhook:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/webhook:v2.0.0-alpha.1
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/webhook:v2.0.0-alpha.2
     restart: always
     environment:
       - NODE_ENV=development

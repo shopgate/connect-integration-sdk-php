@@ -25,6 +25,8 @@ namespace Shopgate\ConnectSdk\Dto\Webhook\Webhook;
 use Shopgate\ConnectSdk\Dto\Webhook\Webhook;
 
 /**
+ * @method Create setCode(string $code)
+ *
  * @inheritDoc
  *
  * @codeCoverageIgnore
@@ -38,6 +40,7 @@ class Create extends Webhook
         'type' => 'object',
         'properties' => [
             'name' => ['type' => 'string'],
+            'code' => ['type' => 'string'],
             'endpoint' => ['type' => 'string'],
             'active' => ['type' => 'boolean'],
             'events' => [

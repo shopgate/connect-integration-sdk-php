@@ -43,7 +43,7 @@ class WebhookTest extends WebhookUtility
      *
      * @dataProvider provideWebhooksDataCreate
      */
-    public function testWebhookCreateWithout($webhooksData)
+    public function testWebhookCreate($webhooksData)
     {
         // Arrange
         $requestWebhooks = $this->createSampleWebhooks($webhooksData);

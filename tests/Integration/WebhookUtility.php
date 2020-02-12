@@ -27,7 +27,7 @@ use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 
 abstract class WebhookUtility extends ShopgateSdkUtility
 {
-    const WEBHOOK_SIMPLE_PROPS = ['name', 'endpoint', 'active'];
+    const WEBHOOK_SIMPLE_PROPS = ['name', 'endpoint', 'active', 'code'];
 
     /**
      * @param Webhook\Get[] $webhooks

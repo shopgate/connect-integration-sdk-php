@@ -43,7 +43,7 @@ class WebhookTest extends WebhookUtility
      *
      * @dataProvider provideWebhooksDataCreate
      */
-    public function testWebhookCreate($webhooksData)
+    public function testWebhookCreateWithout($webhooksData)
     {
         // Arrange
         $requestWebhooks = $this->createSampleWebhooks($webhooksData);
@@ -69,6 +69,10 @@ class WebhookTest extends WebhookUtility
             $this->assertEquals($webhookData['endpoint'], $foundWebhook->getEndpoint());
             $this->assertEquals($webhookData['active'], $foundWebhook->getActive());
             $this->assertCount(count($webhookData['eventsData']), $foundWebhook->getEvents());
+
+            if (isset($webhookData['code'])) {
+                $this->assertEquals($webhookData['code'], $foundWebhook->getCode());
+            }
         }
     }
 
@@ -78,6 +82,17 @@ class WebhookTest extends WebhookUtility
             'create one' => [
                 'webhooksData' => [
                     [
+                        'name' => 'test_webhook_one',
+                        'endpoint' => 'test/endpoint/one',
+                        'active' => true,
+                        'eventsData' => [Event::FULFILL_ORDER_STATUS_UPDATED]
+                    ]
+                ]
+            ],
+            'create one with code' => [
+                'webhooksData' => [
+                    [
+                        'code' => 'unique-code',
                         'name' => 'test_webhook_one',
                         'endpoint' => 'test/endpoint/one',
                         'active' => true,
@@ -126,6 +141,49 @@ class WebhookTest extends WebhookUtility
                             Event::SALES_ORDER_ADDED,
                             Event::SALES_ORDER_FULFILLMENT_ADDED,
                             Event::SALES_ORDER_STATUS_UPDATED
+                        ]
+                    ]
+                ]
+            ],
+            'create more than one with codes' => [
+                'webhooksData' => [
+                    [
+                        'code' => 'unique-code-1',
+                        'name' => 'test_webhook_one',
+                        'endpoint' => 'test/endpoint/one',
+                        'active' => true,
+                        'eventsData' => [Event::FULFILL_ORDER_STATUS_UPDATED]
+                    ],
+                    [
+                        'code' => 'unique-code-2',
+                        'name' => 'test_webhook_two',
+                        'endpoint' => 'test/endpoint/two',
+                        'active' => true,
+                        'eventsData' => [
+                            Event::FULFILL_ORDER_STATUS_UPDATED,
+                            Event::INVENTORY_RESERVATION_DELETED,
+                            Event::INVENTORY_RESERVATION_SETTLED
+                        ]
+                    ]
+                ]
+            ],
+            'create more than one mixed (with and without code)' => [
+                'webhooksData' => [
+                    [
+                        'code' => 'unique-code-1',
+                        'name' => 'test_webhook_one',
+                        'endpoint' => 'test/endpoint/one',
+                        'active' => true,
+                        'eventsData' => [Event::FULFILL_ORDER_STATUS_UPDATED]
+                    ],
+                    [
+                        'name' => 'test_webhook_two',
+                        'endpoint' => 'test/endpoint/two',
+                        'active' => true,
+                        'eventsData' => [
+                            Event::FULFILL_ORDER_STATUS_UPDATED,
+                            Event::INVENTORY_RESERVATION_DELETED,
+                            Event::INVENTORY_RESERVATION_SETTLED
                         ]
                     ]
                 ]

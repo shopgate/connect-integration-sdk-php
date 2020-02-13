@@ -30,6 +30,11 @@ use Shopgate\ConnectSdk\Dto\Base;
  * @method string getUse()
  * @method string getName()
  * @method AttributeValue\Get[] getValues()
+ *
+ * @method $this setType(string $type)
+ * @method $this setUse(string $use)
+ * @method $this setName(Attribute\Dto\Name $name)
+ * @method $this setValues(AttributeValue\Get[] $values)
  */
 class Attribute extends Base
 {

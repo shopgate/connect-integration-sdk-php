@@ -24,6 +24,30 @@ namespace Shopgate\ConnectSdk\Dto\Customer;
 
 use Shopgate\ConnectSdk\Dto\Base;
 
+/**
+ * @method $this setExternalContactCode(string $externalContactCode)
+ * @method $this setStatus(string $status)
+ * @method $this setFirstName(string $firstName)
+ * @method $this setMiddleName(string $middleName)
+ * @method $this setLastName(string $lastName)
+ * @method $this setCompanyName(string $companyName)
+ * @method $this setAddress1(string $address1)
+ * @method $this setAddress2(string $address2)
+ * @method $this setAddress3(string $address3)
+ * @method $this setAddress4(string $address4)
+ * @method $this setCity(string $city)
+ * @method $this setPostalCode(string $postalCode)
+ * @method $this setRegion(string $region)
+ * @method $this setCountry(string $country)
+ * @method $this setPhone(string $phone)
+ * @method $this setFax(string $fax)
+ * @method $this setMobile(string $mobile)
+ * @method $this setEmailAddress(string $emailAddress)
+ * @method $this setIsDefaultShipping(boolean $isDefaultShipping)
+ * @method $this setIsDefaultBilling(boolean $isDefaultBilling)
+ *
+ * @package Shopgate\ConnectSdk\Dto\Customer
+ */
 class Contact extends Base
 {
     const STATUS_ACTIVE   = 'active';

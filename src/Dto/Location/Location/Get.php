@@ -25,22 +25,7 @@ namespace Shopgate\ConnectSdk\Dto\Location\Location;
 use Shopgate\ConnectSdk\Dto\Location\Location;
 
 /**
- * @method Dto\Type getType()
- * @method string getCode()
- * @method string getName()
- * @method string getStatus()
- * @method string getLatitude()
- * @method string getLongitude()
- * @method Dto\OperationHours getOperationHours()
- * @method string getLocaleCode()
- * @method string getTimeZone()
- * @method Dto\Details getDetails()
- * @method Dto\Address[] getAddresses()
- * @method Dto\Inventory getInventory()
- * @method string[] getSupportedFulfillmentMethods()
- * @method Dto\Settings getSettings()
- * @method bool getIsComingSoon()
- * @method bool getIsDefault()
+ * @inheritDoc
  *
  * @codeCoverageIgnore
  */

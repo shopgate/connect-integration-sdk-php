@@ -23,6 +23,7 @@
 namespace Shopgate\ConnectSdk\Dto\Order;
 
 use Shopgate\ConnectSdk\Dto\Base;
+use Shopgate\ConnectSdk\Dto\Order\Order\Create;
 use Shopgate\ConnectSdk\Dto\Order\Order\Dto;
 
 /**
@@ -62,6 +63,41 @@ use Shopgate\ConnectSdk\Dto\Order\Order\Dto;
  * @method Dto\FulfillmentGroup[] getFulfillmentGroups()
  * @method Dto\LineItem[] getLineItems()
  * @method Dto\HistoryItem[] getHistory()
+ *
+ * @method $this setExternalCode(string $externalCode)
+ * @method $this setType(string $type)
+ * @method $this setCustomerId(string $customerId)
+ * @method $this setExternalCustomerNumber(string $externalCustomerNumber)
+ * @method $this setStatus(string $status)
+ * @method $this setExpedited(bool $expedited)
+ * @method $this setLocaleCode(string $localCode)
+ * @method $this setCurrencyCode(string $currencyCode)
+ * @method $this setTaxExempt(bool $taxExempt)
+ * @method $this setNotes(string $notes)
+ * @method $this setSpecialInstructions(Dto\SpecialInstructions $specialInstructions)
+ * @method $this setData(Dto\Data $data)
+ * @method $this setFulfillmentStatus(string $fulfillmentStatus)
+ * @method $this setPrimaryBillToAddressSequenceIndex(int $primaryBillToAddressSequenceIndex)
+ * @method $this setPrimaryShipToAddressSequenceIndex(int $primaryShipToAddressSequenceIndex)
+ * @method $this setAddressSequences(Dto\Address[] $addressSequences)
+ * @method $this setSubTotal(float $subTotal)
+ * @method $this setDiscountAmount(float $discountAmount)
+ * @method $this setPromoAmount(float $promoAmount)
+ * @method $this setTaxAmount(float $taxAmount)
+ * @method $this setTax2Amount(float $tax2Amount)
+ * @method $this setShippingSubTotal(float $shippingSubTotal)
+ * @method $this setShippingDiscountAmount(float $shippingDiscountAmount)
+ * @method $this setShippingPromoAmount(float $shippingPromoAmount)
+ * @method $this setShippingTotal(float $shippingTotal)
+ * @method $this setTotal(float $total)
+ * @method $this setDate(string $date)
+ * @method $this setSubmitDate(string $submitDate)
+ * @method $this setCompleteDate(string $completeDate)
+ * @method $this setSourceDevice(string $sourceDevice)
+ * @method $this setSourceIp(string $sourceIp)
+ * @method $this setFulfillmentGroups(Dto\FulfillmentGroup[] $fulfillmentGroups)
+ * @method $this setLineItems(Dto\LineItem[] $lineItems)
+ * @method $this setHistory(Dto\HistoryItem[] $history)
  */
 class Order extends Base
 {

@@ -37,6 +37,17 @@ use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto;
  * @method string getExternalUpdateDate()
  * @method string getStatus()
  *
+ * @method $this setCode(string $code)
+ * @method $this setCatalogCode(string $catalogCode)
+ * @method $this setParentCategoryCode(string $parentCategoryCode)
+ * @method $this setImage(Image $image)
+ * @method $this setName(Name $name)
+ * @method $this setDescription(Description $description)
+ * @method $this setUrl(Url $url)
+ * @method $this setSequenceId(int $sequenceId)
+ * @method $this setExternalUpdateDate(string $externalUpdateDate)
+ * @method $this setStatus(string $status)
+ *
  * @package Shopgate\ConnectSdk\Dto\Catalog
  *
  * @codeCoverageIgnore

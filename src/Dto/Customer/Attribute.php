@@ -25,6 +25,17 @@ namespace Shopgate\ConnectSdk\Dto\Customer;
 use Shopgate\ConnectSdk\Dto\Base;
 
 /**
+ * @method string getCode()
+ * @method string getType()
+ * @method string getName()
+ * @method string getIsRequired()
+ * @method AttributeValue\Get[] getValues()
+ *
+ * @method $this setType(string $type)
+ * @method $this setName(string $name)
+ * @method $this setIsRequired(boolean $isRequired)
+ * @method $this setValues(AttributeValue\Create[] $values)
+ *
  * @package Shopgate\ConnectSdk\Dto\Customer
  */
 class Attribute extends Base

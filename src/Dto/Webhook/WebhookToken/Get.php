@@ -25,8 +25,7 @@ namespace Shopgate\ConnectSdk\Dto\Webhook\WebhookToken;
 use Shopgate\ConnectSdk\Dto\Webhook\WebhookToken;
 
 /**
- * @method string getWebhookToken()
- *
+ * @inheritDoc
  * @codeCoverageIgnore
  */
 class Get extends WebhookToken

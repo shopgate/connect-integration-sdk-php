@@ -27,6 +27,8 @@ use Shopgate\ConnectSdk\Dto\Webhook\Webhook;
 /**
  * @method Get[] getWebhooks()
  *
+ * @method GetList setWebhooks(Get[] $webhooks)
+ *
  * @codeCoverageIgnore
  */
 class GetList extends Webhook

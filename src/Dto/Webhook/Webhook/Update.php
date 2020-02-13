@@ -25,10 +25,7 @@ namespace Shopgate\ConnectSdk\Dto\Webhook\Webhook;
 use Shopgate\ConnectSdk\Dto\Webhook\Webhook;
 
 /**
- * @method Update setName(string $name)
- * @method Update setEndpoint(string $endpoint)
- * @method Update setActive(bool $active)
- * @method Update setEvents(Dto\Event[] $events)
+ * @inheritDoc
  *
  * @codeCoverageIgnore
  */

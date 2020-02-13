@@ -26,12 +26,7 @@ use Shopgate\ConnectSdk\Dto\Catalog\Attribute;
 use Shopgate\ConnectSdk\Dto\Catalog\AttributeValue;
 
 /**
- * @method string getCode()
- * @method string getType()
- * @method string getUse()
- * @method string getName()
- * @method AttributeValue\Get[] getValues()
- *
+ * @inheritDoc
  * @codeCoverageIgnore
  */
 class Get extends Attribute

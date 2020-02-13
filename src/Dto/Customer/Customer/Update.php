@@ -27,16 +27,7 @@ use Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Settings;
 use Shopgate\ConnectSdk\Dto\Customer\Contact;
 
 /**
- * @method Update setExternalCustomerNumber(string $externalCustomerNumber)
- * @method Update setFirstName(string $firstName)
- * @method Update setMiddleName(string $middleName)
- * @method Update setLastName(string $lastName)
- * @method Update setEmailAddress(string $emailAddress)
- * @method Update setStatus(string $status)
- * @method Update setIsAnonymous(boolean $isAnonymous)
- * @method Update setContacts(Contact[] $contacts)
- * @method Update setAttributes(Attribute[] $attributes)
- * @method Update setSettings(Settings $settings)
+ * @inheritDoc
  */
 class Update extends Customer
 {

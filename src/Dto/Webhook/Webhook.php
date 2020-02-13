@@ -31,6 +31,7 @@ use Shopgate\ConnectSdk\Dto\Webhook\Webhook\Dto\Event;
  * @method bool getActive()
  * @method Event[] getEvents()
  * @method string getCode()
+ * @method string getId()
  *
  * @method $this setName(string $name)
  * @method $this setEndpoint(string $endpoint) - full endpoint URI to call once an event gets triggered

@@ -84,7 +84,7 @@ class Webhook
     }
 
     /**
-     * @param string            $code
+     * @param string            $id
      * @param WebhookDto\Update $webhook
      *
      * @return ResponseInterface
@@ -95,7 +95,7 @@ class Webhook
      * @throws RequestException
      * @throws UnknownException
      */
-    public function updateWebhook($code, WebhookDto\Update $webhook)
+    public function updateWebhook($id, WebhookDto\Update $webhook)
     {
         return $this->client->doRequest(
             [
@@ -105,7 +105,7 @@ class Webhook
                 // direct
                 'method' => 'post',
                 'service' => self::SERVICE_WEBHOOK,
-                'path' => self::WEBHOOK_PATH . '/' . $code
+                'path' => self::WEBHOOK_PATH . '/' . $id
             ]
         );
     }
@@ -147,7 +147,7 @@ class Webhook
     }
 
     /**
-     * @param string $code
+     * @param string $id
      *
      * @return ResponseInterface
      *
@@ -157,7 +157,7 @@ class Webhook
      * @throws RequestException
      * @throws UnknownException
      */
-    public function deleteWebhook($code)
+    public function deleteWebhook($id)
     {
         return $this->client->doRequest(
             [
@@ -166,7 +166,7 @@ class Webhook
                 // direct
                 'method' => 'delete',
                 'service' => self::SERVICE_WEBHOOK,
-                'path' => self::WEBHOOK_PATH . '/' . $code,
+                'path' => self::WEBHOOK_PATH . '/' . $id,
             ]
         );
     }

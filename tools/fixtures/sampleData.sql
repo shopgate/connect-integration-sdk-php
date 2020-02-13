@@ -57,29 +57,6 @@ INSERT INTO omnichannel_order.`FulfillmentOrder` (`FulfillmentOrderID`, `SalesOr
 VALUES
 	(1, 207, '2', '50ed505b-1d7e-4240-af9d-f5f8d6316cf6', NULL, 1, '1', 8, 3, 'fulfilled', NULL, '10138-0001', NULL, NULL, 0, '2018-12-21 12:28:55', '2018-12-21 12:29:38', NULL, '2018-12-20 19:19:50', NULL, 0, 59, 0, NULL, 0, 59, 'en-US', 'USD', X'7B226D657373616765223A2022227D', '{}', '', '2018-12-20 19:22:21', 'pascal.vomhoff+testadmin@shopgate.com', '2018-12-21 12:29:39', NULL);
 
-# How to update the permissions:
-# 1. Checkout project omni-user (https://gitlab.localdev.cc/omnichannel/services/user/tree/add-permissions-update-script) branch: add-permissions-update-script
-# 2. Change file scripts/_connectionPool.js
-# host: 'localhost',
-# user: 'root',
-# password: 'secret',
-# database: 'omnichannel_user',
-# waitForConnections: true,
-# port: 3306,
-# 3. Replace dependingApiCodes with the codes you created via the scratch file
-# Replace all entries with just this one:
-#   {
-#     permissionCode: 'APIALL',
-#     application: 'api',
-#     module: 'api',
-#     submodule: 'api',
-#     function: 'edit',
-#     dependingApiCodes: [PUT IN HERE THE CODES FROM THE FILE]
-#   }
-# 4. Execute scripts/insertPermissions.js
-# 5. Truncate table PermissionMapping in your local(!) MySQL database and execute scripts/updatePermissionMapping.js
-# 6. Export both tables and replace the already here existing entries: (replace CreatedBy with 'Me')
-
 INSERT INTO omnichannel_user.`Permission` (`PermissionID`,`PermissionStatus`,`PermissionCode`,`Application`,`Module`,`Submodule`,`Function`,`CreateBy`,`CreateDate`,`UpdateBy`,`UpdateDate`,`DeleteBy`,`DeleteDate`)
 VALUES
 ('08ccdd99-63ea-4047-86b5-6b23af4ad533','active','SOV','api',NULL,NULL,NULL,'','2019-06-03 09:10:57',NULL,NULL,NULL,NULL),

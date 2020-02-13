@@ -58,7 +58,7 @@ class WebhookTest extends WebhookUtility
         $this->deleteEntitiesAfterTestRun(
             self::WEBHOOK_SERVICE,
             self::METHOD_DELETE_WEBHOOK,
-            $this->getWebhookCodes($responseWebhooks)
+            $this->getWebhookIds($responseWebhooks)
         );
 
         // Assert
@@ -69,6 +69,10 @@ class WebhookTest extends WebhookUtility
             $this->assertEquals($webhookData['endpoint'], $foundWebhook->getEndpoint());
             $this->assertEquals($webhookData['active'], $foundWebhook->getActive());
             $this->assertCount(count($webhookData['eventsData']), $foundWebhook->getEvents());
+
+            if (isset($webhookData['code'])) {
+                $this->assertEquals($webhookData['code'], $foundWebhook->getCode());
+            }
         }
     }
 
@@ -78,6 +82,17 @@ class WebhookTest extends WebhookUtility
             'create one' => [
                 'webhooksData' => [
                     [
+                        'name' => 'test_webhook_one',
+                        'endpoint' => 'test/endpoint/one',
+                        'active' => true,
+                        'eventsData' => [Event::FULFILL_ORDER_STATUS_UPDATED]
+                    ]
+                ]
+            ],
+            'create one with code' => [
+                'webhooksData' => [
+                    [
+                        'code' => 'unique-code',
                         'name' => 'test_webhook_one',
                         'endpoint' => 'test/endpoint/one',
                         'active' => true,
@@ -130,6 +145,49 @@ class WebhookTest extends WebhookUtility
                     ]
                 ]
             ],
+            'create more than one with codes' => [
+                'webhooksData' => [
+                    [
+                        'code' => 'unique-code-1',
+                        'name' => 'test_webhook_one',
+                        'endpoint' => 'test/endpoint/one',
+                        'active' => true,
+                        'eventsData' => [Event::FULFILL_ORDER_STATUS_UPDATED]
+                    ],
+                    [
+                        'code' => 'unique-code-2',
+                        'name' => 'test_webhook_two',
+                        'endpoint' => 'test/endpoint/two',
+                        'active' => true,
+                        'eventsData' => [
+                            Event::FULFILL_ORDER_STATUS_UPDATED,
+                            Event::INVENTORY_RESERVATION_DELETED,
+                            Event::INVENTORY_RESERVATION_SETTLED
+                        ]
+                    ]
+                ]
+            ],
+            'create more than one mixed (with and without code)' => [
+                'webhooksData' => [
+                    [
+                        'code' => 'unique-code-1',
+                        'name' => 'test_webhook_one',
+                        'endpoint' => 'test/endpoint/one',
+                        'active' => true,
+                        'eventsData' => [Event::FULFILL_ORDER_STATUS_UPDATED]
+                    ],
+                    [
+                        'name' => 'test_webhook_two',
+                        'endpoint' => 'test/endpoint/two',
+                        'active' => true,
+                        'eventsData' => [
+                            Event::FULFILL_ORDER_STATUS_UPDATED,
+                            Event::INVENTORY_RESERVATION_DELETED,
+                            Event::INVENTORY_RESERVATION_SETTLED
+                        ]
+                    ]
+                ]
+            ],
         ];
     }
 
@@ -148,22 +206,22 @@ class WebhookTest extends WebhookUtility
     public function testWebhookUpdate($original, $change)
     {
         // Arrange
-        $code = $this->sendCreateWebhooks([$original])[0];
+        $id = $this->sendCreateWebhooks([$original])[0];
         $updateData = array_merge($original, $change);
         $updateWebhook = $this->createWebhookUpdate($change);
 
         // Act
-        $this->sdk->getWebhooksService()->updateWebhook($code, $updateWebhook);
+        $this->sdk->getWebhooksService()->updateWebhook($id, $updateWebhook);
 
         // Arrange
         $secondResponse = $this->sdk->getWebhooksService()->getWebhooks();
-        $changedWebhook = $this->findWebhookByCode($code, $secondResponse->getWebhooks());
+        $changedWebhook = $this->findWebhookById($id, $secondResponse->getWebhooks());
 
         // CleanUp
         $this->deleteEntitiesAfterTestRun(
             self::WEBHOOK_SERVICE,
             self::METHOD_DELETE_WEBHOOK,
-            [$code]
+            [$id]
         );
 
         // Assert
@@ -291,7 +349,7 @@ class WebhookTest extends WebhookUtility
     public function testDeleteWebhook()
     {
         // Arrange
-        $code = $this->sendCreateWebhooks([
+        $id = $this->sendCreateWebhooks([
             [
                 'name' => 'test_webhook_one_to_be_deleted',
                 'endpoint' => 'test/delete/one',
@@ -300,13 +358,13 @@ class WebhookTest extends WebhookUtility
             ]
         ])[0];
         // Act
-        $this->sdk->getWebhooksService()->deleteWebhook($code);
+        $this->sdk->getWebhooksService()->deleteWebhook($id);
 
         // Arrange
         $response = $this->sdk->getWebhooksService()->getWebhooks();
 
         // Assert
-        $foundWebhook = $this->findWebhookByCode($code, $response->getWebhooks());
+        $foundWebhook = $this->findWebhookById($id, $response->getWebhooks());
         $this->assertEmpty($foundWebhook);
     }
 
@@ -325,6 +383,6 @@ class WebhookTest extends WebhookUtility
         $createWebhooks = $this->createSampleWebhooks($webhooksData);
         $response = $this->sdk->getWebhooksService()->addWebhooks($createWebhooks);
 
-        return $response['codes'];
+        return $response['ids'];
     }
 }

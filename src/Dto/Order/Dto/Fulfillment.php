@@ -53,14 +53,9 @@ class Fulfillment extends Base
     protected $schema = [
         'type' => 'object',
         'properties' => [
-            'id' => ['type' => 'string'],
-            'status' => ['type' => 'string'],
-            'carrier' => ['type' => 'string'],
-            'serviceLevel' => ['type' => 'string'],
-            'tracking' => ['type' => 'string'],
             'fulfillmentPackages' => [
                 'type' => 'array',
-                'items' => ['$ref' => Fulfillment\FulfillmentPackage::class]
+                'items' => ['$ref' => Fulfillment\FulfillmentPackage::class, 'skipValidation' => true]
             ]
         ],
         'additionalProperties' => true,

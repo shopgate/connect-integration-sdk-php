@@ -25,40 +25,6 @@ namespace Shopgate\ConnectSdk\Dto\Catalog\Product;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
 
 /**
- * @method Update setName(Dto\Name $name)
- * @method Update setLongName(Dto\LongName $longName)
- * @method Update setShortDescription(Dto\ShortDescription $name)
- * @method Update setLongDescription(Dto\LongDescription $longName)
- * @method Update setCategories(Dto\Categories[] $categories)
- * @method Update setProperties(Dto\Properties[] $properties)
- * @method Update setMedia(Dto\MediaList $media)
- * @method Update setOptions(Dto\Options[] $options)
- * @method Update setExtras(Dto\Extras[] $extras)
- * @method Update setCode(string $code)
- * @method Update setParentProductCode(string $parentProductCode)
- * @method Update setCatalogCode(string $catalogCode)
- * @method Update setModelType(string $modelType)
- * @method Update setIdentifiers(Dto\Identifiers $identifiers)
- * @method Update setPrice(Dto\Price $price)
- * @method Update setFulfillmentMethods(string[] $fulfillmentMethods)
- * @method Update setUnit(string $unit)
- * @method Update setIsSerialized(boolean $isSerialized)
- * @method Update setStatus(string $status)
- * @method Update setStartDate(string $startDate)
- * @method Update setEndDate(string $endDate)
- * @method Update setFirstAvailableDate(string $firstAvailableDate)
- * @method Update setEolDate(string $eolDate)
- * @method Update setIsInventoryManaged(boolean $isInventoryManaged)
- * @method Update setInventoryTreatment(string $inventoryTreatment)
- * @method Update setShippingInformation(Dto\ShippingInformation $shippingInformation)
- * @method Update setRating(float $rating)
- * @method Update setUrl(string $url)
- * @method Update setIsTaxed(boolean $isTaxed)
- * @method Update setTaxClass(string $taxClass)
- * @method Update setMinQty(float $minQty)
- * @method Update setMaxQty(float $maxQty)
- * @method Update setExternalUpdateDate(string $externalUpdateDate)
- *
  * @inheritdoc
  */
 class Update extends Product

@@ -29,16 +29,6 @@ use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Name;
 use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Url;
 
 /**
- * @method Update setImage(Image $image)
- * @method Update setName(Name $name)
- * @method Update setParentCategoryCode(string $parentCategoryCode)
- * @method Update setCatalogCode(string $catalogCode)
- * @method Update setUrl(Url $url)
- * @method Update setDescription(Description $description)
- * @method Update setExternalUpdateDate(string $date)
- * @method Update setStatus(string $status)
- * @method Update setSequenceId(int $sequenceId)
- *
  * @inheritdoc
  */
 class Update extends Category

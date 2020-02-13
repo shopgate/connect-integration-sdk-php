@@ -24,6 +24,12 @@ namespace Shopgate\ConnectSdk\Dto\Webhook;
 
 use Shopgate\ConnectSdk\Dto\Base;
 
+/**
+ * @method string getWebhookToken()
+ * @method $this setWebhookToken(string $token)
+ *
+ * @package Shopgate\ConnectSdk\Dto\Webhook
+ */
 class WebhookToken extends Base
 {
 }

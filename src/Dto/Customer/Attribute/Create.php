@@ -28,11 +28,9 @@ use Shopgate\ConnectSdk\Dto\Customer\AttributeValue;
 /**
  * Default class that handles validation for attribute Create payloads.
  *
- * @method Create setType(string $type)
- * @method Create setIsRequired(boolean $isRequired)
- * @method Create setName(string $name)
  * @method Create setCode(string $code)
- * @method Create setValues(AttributeValue\Create[] $values)
+ *
+ * @inheritDoc
  */
 class Create extends Attribute
 {

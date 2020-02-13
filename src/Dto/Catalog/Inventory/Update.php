@@ -25,13 +25,9 @@ namespace Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 use Shopgate\ConnectSdk\Dto\Catalog\Inventory;
 
 /**
- * @method Update setProductCode(string $productCode)
- * @method Update setLocationCode(string $locationCode)
- * @method Update setBin(string $bin)
- * @method Update setBinLocation(string $binLocation)
- * @method Update setSku(string $sku)
  * @method Update setOperationType(string $operationType)
- * @method Update setOnHand(integer $onHand)
+ *
+ * @inheritDoc
  */
 class Update extends Inventory
 {

@@ -27,21 +27,21 @@ use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 
 abstract class WebhookUtility extends ShopgateSdkUtility
 {
-    const WEBHOOK_SIMPLE_PROPS = ['name', 'endpoint', 'active'];
+    const WEBHOOK_SIMPLE_PROPS = ['name', 'endpoint', 'active', 'code'];
 
     /**
      * @param Webhook\Get[] $webhooks
      *
      * @return array
      */
-    protected function getWebhookCodes($webhooks)
+    protected function getWebhookIds($webhooks)
     {
-        $webhookCodes = [];
+        $webhookIds = [];
         foreach ($webhooks as $webhook) {
-            $webhookCodes[] = $webhook->getCode();
+            $webhookIds[] = $webhook->getId();
         }
 
-        return $webhookCodes;
+        return $webhookIds;
     }
 
     /**
@@ -148,10 +148,10 @@ abstract class WebhookUtility extends ShopgateSdkUtility
      *
      * @return Webhook\Get|null
      */
-    protected function findWebhookByCode($code, $webhooks)
+    protected function findWebhookById($code, $webhooks)
     {
         foreach ($webhooks as $webhook) {
-            if ($code === $webhook->getCode()) {
+            if ($code === $webhook->getId()) {
                 return $webhook;
             }
         }

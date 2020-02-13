@@ -25,10 +25,7 @@ namespace Shopgate\ConnectSdk\Dto\Customer\Note;
 use Shopgate\ConnectSdk\Dto\Customer\Note;
 
 /**
- * @method Create setExternalCode(string $externalCode)
- * @method Create setNote(string $note)
- * @method Create setDate(string $date)
- * @method Create setCreator(string $creator)
+ * @inheritDoc
  *
  * @codeCoverageIgnore
  */

@@ -24,6 +24,20 @@ namespace Shopgate\ConnectSdk\Dto\Customer;
 
 use Shopgate\ConnectSdk\Dto\Base;
 
+/**
+ * @method $this setExternalCode(string $externalCode)
+ * @method $this setNote(string $note)
+ * @method $this setDate(string $date)
+ * @method $this setCreator(string $creator)
+ *
+ * @method string getId()
+ * @method string getExternalCode()
+ * @method string getNote()
+ * @method string getDate()
+ * @method string getCreator()
+ *
+ * @package Shopgate\ConnectSdk\Dto\Customer
+ */
 class Note extends Base
 {
 }

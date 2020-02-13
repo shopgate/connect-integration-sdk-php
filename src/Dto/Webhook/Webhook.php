@@ -23,7 +23,23 @@
 namespace Shopgate\ConnectSdk\Dto\Webhook;
 
 use Shopgate\ConnectSdk\Dto\Base;
+use Shopgate\ConnectSdk\Dto\Webhook\Webhook\Dto\Event;
 
+/**
+ * @method string getName()
+ * @method string getEndpoint()
+ * @method bool getActive()
+ * @method Event[] getEvents()
+ * @method string getCode()
+ * @method string getId()
+ *
+ * @method $this setName(string $name)
+ * @method $this setEndpoint(string $endpoint) - full endpoint URI to call once an event gets triggered
+ * @method $this setActive(bool $active)
+ * @method $this setEvents(Webhook\Dto\Event[] $events)
+ *
+ * @codeCoverageIgnore
+ */
 class Webhook extends Base
 {
 }

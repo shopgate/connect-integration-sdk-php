@@ -25,6 +25,13 @@ namespace Shopgate\ConnectSdk\Dto\Catalog;
 use Shopgate\ConnectSdk\Dto\Base;
 
 /**
+ * @method $this setProductCode(string $productCode)
+ * @method $this setLocationCode(string $locationCode)
+ * @method $this setSku(string $sku)
+ * @method $this setOnHand(integer $onHand)
+ * @method $this setBin(string $bin)
+ * @method $this setBinLocation(string $binLocation)
+ *
  * @package Shopgate\ConnectSdk\Dto\Catalog
  */
 class Inventory extends Base

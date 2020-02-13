@@ -25,21 +25,7 @@ namespace Shopgate\ConnectSdk\Dto\Location\Location;
 use Shopgate\ConnectSdk\Dto\Location\Location;
 
 /**
- * @method Update setName(string $name)
- * @method Update setType(Dto\Type $type)
- * @method Update setStatus(string $status)
- * @method Update setLatitude(float $latitude)
- * @method Update setLongitude(float $longitude)
- * @method Update setOperationHours(Dto\OperationHours $operationHours)
- * @method Update setLocaleCode(string $localeCode)
- * @method Update setTimeZone(string $timeZone)
- * @method Update setDetails(Dto\Details $details)
- * @method Update setAddresses(Dto\Address[] $addresses)
- * @method Update setInventory(Dto\Inventory $inventory)
- * @method Update setSupportedFulfillmentMethods(string[] $supportedFulfillmentMethods)
- * @method Update setSettings(Dto\Settings $settings)
- * @method Update setIsComingSoon(bool $isComingSoon)
- * @method Update setIsDefault(bool $isDefault)
+ * @inheritDoc
  *
  * @codeCoverageIgnore
  */

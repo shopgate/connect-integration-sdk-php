@@ -25,9 +25,7 @@ namespace Shopgate\ConnectSdk\Dto\Customer\Wishlist;
 use Shopgate\ConnectSdk\Dto\Customer\Wishlist;
 
 /**
- * @method string getCode()
- * @method string getName()
- * @method Dto\Item[] getItems()
+ * @inheritDoc
  *
  * @codeCoverageIgnore
  */

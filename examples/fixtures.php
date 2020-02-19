@@ -390,3 +390,19 @@ function provideSampleWebhooks()
             ->setEvents([(new WebhookEvent())->setCode(WebhookEvent::FULFILL_ORDER_ADDED)])
     ];
 }
+
+/**
+ * @return WebhookCreate[]
+ * @throws InvalidDataTypeException
+ */
+function provideSampleWebhooksWithCode()
+{
+    return [
+        (new WebhookCreate())
+            ->setName('Some webhook name')
+            ->setCode('unique-code-' . random_int(1, 10000))
+            ->setActive(true)
+            ->setEndpoint('https://endpoint-to-call.com/whenFullfillementOrderIsAdded')
+            ->setEvents([(new WebhookEvent())->setCode(WebhookEvent::FULFILL_ORDER_ADDED)])
+    ];
+}

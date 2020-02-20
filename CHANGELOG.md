@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [1.2.0] - 2020-02-20
+### Added
+- Support for Webhook Service 1.1.0+ including optional code field for Webhooks
+- Missing getter/setter for DTOs
 
 ## [1.1.4] - 2020-01-13
 ### Fixed
@@ -178,7 +182,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - createCategory event & direct call
 - deleteCategory event & direct call
 
-[Unreleased]: https://github.com/shopgate/connect-integration-sdk/compare/v1.1.4...HEAD
+[Unreleased]: https://github.com/shopgate/connect-integration-sdk/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/shopgate/connect-integration-sdk/compare/v1.1.4...v1.2.0
 [1.1.4]: https://github.com/shopgate/connect-integration-sdk/compare/v1.1.3...v1.1.4
 [1.1.3]: https://github.com/shopgate/connect-integration-sdk/compare/v1.1.2...v1.1.3
 [1.1.2]: https://github.com/shopgate/connect-integration-sdk/compare/v1.1.1...v1.1.2

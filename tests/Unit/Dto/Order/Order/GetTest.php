@@ -317,7 +317,7 @@ class GetTest extends TestCase
 
         $actualHistoryItem = $get->getHistory()[0];
         $expectedHistoryItem = $entry['history'][0];
-        $this->assertInstanceOf(OrderDto\HistoryItem::class, $actualHistoryItem);
+        $this->assertInstanceOf(OrderDto\History::class, $actualHistoryItem);
         $this->assertEquals($expectedHistoryItem['id'], $actualHistoryItem->getId());
         $this->assertEquals($expectedHistoryItem['eventName'], $actualHistoryItem->getEventName());
         $this->assertEquals($expectedHistoryItem['eventDetails'], $actualHistoryItem->getEventDetails());

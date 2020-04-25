@@ -25,6 +25,7 @@ namespace Shopgate\ConnectSdk\Service;
 use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Dto\Meta;
 use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder;
+use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrderHistory;
 use Shopgate\ConnectSdk\Dto\Order\Order as OrderDto;
 use Shopgate\ConnectSdk\Dto\Order\SimpleFulfillmentOrder;
 use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrderStatusCount;
@@ -183,6 +184,35 @@ class Order
         $response = $this->jsonHelper->decode($response->getBody(), true);
 
         return new FulfillmentOrder\Get($response['fulfillmentOrder']);
+    }
+
+    /**
+     * @param string $orderNumber
+     * @param array  $query
+     *
+     * @return FulfillmentOrderHistory\GetList
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     * @throws InvalidDataTypeException
+     */
+    public function getFulfillmentOrderHistory($orderNumber, array $query = [])
+    {
+        $response = $this->client->doRequest(
+            [
+                // direct only
+                'service' => self::SERVICE_ORDER,
+                'method' => 'get',
+                'path' => 'fulfillmentOrders/' . $orderNumber . '/history',
+                'query' => $query,
+            ]
+        );
+
+        $response = $this->jsonHelper->decode($response->getBody(), true);
+
+        return new FulfillmentOrderHistory\GetList($response);
     }
 
     /**

@@ -20,35 +20,26 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Order\Order;
+namespace Shopgate\ConnectSdk\Dto\Order\FulfillmentOrderHistory;
 
-use Shopgate\ConnectSdk\Dto\Order\Order;
+use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrderHistory;
 
 /**
- * @inheritDoc
+ * @method FulfillmentOrderHistory[] getHistory()
+ *
  * @codeCoverageIgnore
  */
-class Get extends Order
+class GetList extends FulfillmentOrderHistory
 {
     /**
      * @var array
      */
     protected $schema = [
-        'type'                 => 'object',
-        'properties'           => [
-            'specialInstructions' => ['$ref' => Dto\SpecialInstructions::class, 'skipValidation' => true],
-            'data'                => ['$ref' => Dto\Data::class, 'skipValidation' => true],
-            'addressSequences'    => [
-                'type'  => 'array',
-                'items' => ['$ref' => Dto\Address::class, 'skipValidation' => true]
-            ],
-            'fulfillmentGroups'   => [
-                'type'  => 'array',
-                'items' => ['$ref' => Dto\FulfillmentGroup::class, 'skipValidation' => true]
-            ],
-            'lineItems'           => [
-                'type'  => 'array',
-                'items' => ['$ref' => Dto\LineItem::class, 'skipValidation' => true]
+        'type' => 'object',
+        'properties' => [
+            'history' => [
+                'type' => 'array',
+                'items' => ['$ref' => FulfillmentOrderHistory::class, 'skipValidation' => true]
             ]
         ],
         'additionalProperties' => true

@@ -158,17 +158,6 @@ class CreateTest extends TestCase
                     'extendedPrice' => 0,
                     'price' => 100
                 ]
-            ],
-            'history' => [
-                [
-                    'id' => 123,
-                    'eventName' => 'created',
-                    'eventDetails' => 'test event details',
-                    'eventNewValue' => ['test' => 'newValue'],
-                    'eventOldValue' => 'test event old value',
-                    'eventDateTime' => 'right now',
-                    'eventUser' => 'Dana Scully'
-                ]
             ]
         ];
         $get = new Create($entry);
@@ -317,15 +306,5 @@ class CreateTest extends TestCase
         $this->assertEquals($expectedLineItem['product']['options'][0]['value']['code'], $productOption->getValue()->getCode());
         $this->assertEquals($expectedLineItem['product']['options'][0]['value']['name'], $productOption->getValue()->getName());
 
-        $actualHistoryItem = $get->getHistory()[0];
-        $expectedHistoryItem = $entry['history'][0];
-        $this->assertInstanceOf(OrderDto\HistoryItem::class, $actualHistoryItem);
-        $this->assertEquals($expectedHistoryItem['id'], $actualHistoryItem->getId());
-        $this->assertEquals($expectedHistoryItem['eventName'], $actualHistoryItem->getEventName());
-        $this->assertEquals($expectedHistoryItem['eventDetails'], $actualHistoryItem->getEventDetails());
-        $this->assertEquals($expectedHistoryItem['eventNewValue'], $actualHistoryItem->getEventNewValue()->toArray());
-        $this->assertEquals($expectedHistoryItem['eventOldValue'], $actualHistoryItem->getEventOldValue());
-        $this->assertEquals($expectedHistoryItem['eventDateTime'], $actualHistoryItem->getEventDateTime());
-        $this->assertEquals($expectedHistoryItem['eventUser'], $actualHistoryItem->getEventUser());
     }
 }

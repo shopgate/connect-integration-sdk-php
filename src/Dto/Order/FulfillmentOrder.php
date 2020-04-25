@@ -30,7 +30,6 @@ use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder\Dto;
  * @method Dto\FulfillmentOrderAddress getFulfillmentOrderAddress()
  * @method Fulfillment[] getFulfillments()
  * @method Dto\LineItem[] getLineItems()
- * @method Dto\HistoryItem[] getHistory()
  *
  * @codeCoverageIgnore
  */
@@ -51,10 +50,6 @@ class FulfillmentOrder extends SimpleFulfillmentOrder
             'lineItems'               => [
                 'type'  => 'array',
                 'items' => ['$ref' => Dto\LineItem::class, 'skipValidation' => true],
-            ],
-            'history'                 => [
-                'type'  => 'array',
-                'items' => ['$ref' => Dto\HistoryItem::class, 'skipValidation' => true],
             ]
         ]
     ];

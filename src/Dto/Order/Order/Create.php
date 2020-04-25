@@ -81,7 +81,7 @@ class Create extends Order
             ],
             'history' => [
                 'type' => 'array',
-                'items' => ['$ref' => Dto\HistoryItem::class]
+                'items' => ['$ref' => Dto\History::class]
             ]
         ],
         'additionalProperties' => true

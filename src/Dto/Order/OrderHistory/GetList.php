@@ -20,7 +20,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Dto\Order\FulfillmentOrderHistory;
+namespace Shopgate\ConnectSdk\Dto\Order\OrderHistory;
 
 use Shopgate\ConnectSdk\Dto\Order\OrderHistory;
 

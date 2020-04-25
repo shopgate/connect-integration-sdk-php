@@ -62,7 +62,6 @@ use Shopgate\ConnectSdk\Dto\Order\Order\Dto;
  * @method string getSourceIp()
  * @method Dto\FulfillmentGroup[] getFulfillmentGroups()
  * @method Dto\LineItem[] getLineItems()
- * @method Dto\History[] getHistory()
  *
  * @method $this setExternalCode(string $externalCode)
  * @method $this setType(string $type)
@@ -97,7 +96,6 @@ use Shopgate\ConnectSdk\Dto\Order\Order\Dto;
  * @method $this setSourceIp(string $sourceIp)
  * @method $this setFulfillmentGroups(Dto\FulfillmentGroup[] $fulfillmentGroups)
  * @method $this setLineItems(Dto\LineItem[] $lineItems)
- * @method $this setHistory(Dto\History[] $history)
  */
 class Order extends Base
 {

@@ -26,13 +26,13 @@ use Shopgate\ConnectSdk\Dto\Base;
 use Shopgate\ConnectSdk\Dto\DtoObject;
 
 /**
- * @method FulfillmentOrderHistory setId(integer $id)
- * @method FulfillmentOrderHistory setType(string $eventName)
- * @method FulfillmentOrderHistory setDetails(string $details)
- * @method FulfillmentOrderHistory setNewValue(string $newValue)
- * @method FulfillmentOrderHistory setOldValue(string $oldValue)
- * @method FulfillmentOrderHistory setCreateDate(string $dateTime)
- * @method FulfillmentOrderHistory setEventUser(string $user)
+ * @method OrderHistory setId(integer $id)
+ * @method OrderHistory setType(string $eventName)
+ * @method OrderHistory setDetails(string $details)
+ * @method OrderHistory setNewValue(string $newValue)
+ * @method OrderHistory setOldValue(string $oldValue)
+ * @method OrderHistory setCreateDate(string $dateTime)
+ * @method OrderHistory setEventUser(string $user)
  * @method integer getId()
  * @method string getType()
  * @method string getDetails()
@@ -43,7 +43,7 @@ use Shopgate\ConnectSdk\Dto\DtoObject;
  *
  * @codeCoverageIgnore
  */
-class FulfillmentOrderHistory extends Base
+class OrderHistory extends Base
 {
     /**
      * @var array

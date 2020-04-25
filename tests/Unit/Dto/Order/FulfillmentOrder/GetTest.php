@@ -154,17 +154,6 @@ class GetTest extends TestCase
                     ]
                 ]
             ],
-            'history' => [
-                [
-                    'id' => '050ca496-e74c-11e8-8115-063a60f67055',
-                    'eventName' => 'string',
-                    'eventDetails' => 'string1',
-                    'eventNewValue' => 'string2',
-                    'eventOldValue' => 'string3',
-                    'eventDateTime' => '2019-09-04T07:26:42.535Z',
-                    'eventUser' => 'string4'
-                ]
-            ],
             'submitDate' => '2019-09-04T07:26:42.535Z',
             'acceptDate' => '2019-09-04T07:26:42.535Z',
             'readyDate' => '2019-09-04T07:26:42.535Z',
@@ -341,17 +330,5 @@ class GetTest extends TestCase
         $this->assertEquals($entry['lineItems'][0]['product']['options'][1]['value']['name'], $productOption->getValue()->getName());
         $this->assertEquals($entry['lineItems'][0]['product']['options'][1]['value']['code'], $productOption->getValue()->getCode());
 
-        // History
-        $history = $get->getHistory();
-        $this->assertTrue(is_array($history));
-        $historyItem = $history[0];
-        $this->assertInstanceOf(FulfillmentOrderDto\HistoryItem::class, $historyItem);
-        $this->assertEquals($entry['history'][0]['id'], $historyItem->getId());
-        $this->assertEquals($entry['history'][0]['eventName'], $historyItem->getEventName());
-        $this->assertEquals($entry['history'][0]['eventDetails'], $historyItem->getEventDetails());
-        $this->assertEquals($entry['history'][0]['eventNewValue'], $historyItem->getEventNewValue());
-        $this->assertEquals($entry['history'][0]['eventOldValue'], $historyItem->getEventOldValue());
-        $this->assertEquals($entry['history'][0]['eventDateTime'], $historyItem->getEventDateTime());
-        $this->assertEquals($entry['history'][0]['eventUser'], $historyItem->getEventUser());
     }
 }

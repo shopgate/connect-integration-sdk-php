@@ -329,6 +329,5 @@ class GetTest extends TestCase
         $this->assertInstanceOf(FulfillmentOrderDto\LineItem\Product\Option\Value::class, $productOption->getValue());
         $this->assertEquals($entry['lineItems'][0]['product']['options'][1]['value']['name'], $productOption->getValue()->getName());
         $this->assertEquals($entry['lineItems'][0]['product']['options'][1]['value']['code'], $productOption->getValue()->getCode());
-
     }
 }

@@ -305,6 +305,5 @@ class CreateTest extends TestCase
         $this->assertEquals($expectedLineItem['product']['options'][0]['name'], $productOption->getName());
         $this->assertEquals($expectedLineItem['product']['options'][0]['value']['code'], $productOption->getValue()->getCode());
         $this->assertEquals($expectedLineItem['product']['options'][0]['value']['name'], $productOption->getValue()->getName());
-
     }
 }

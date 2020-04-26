@@ -46,6 +46,8 @@ class BulkImport
     }
 
     /**
+     * @param string $source
+     *
      * @return string
      *
      * @throws AuthenticationInvalidException
@@ -54,12 +56,12 @@ class BulkImport
      * @throws NotFoundException
      * @throws InvalidDataTypeException
      */
-    protected function getImportReference()
+    protected function getImportReference($source = '')
     {
         $response = $this->client->doRequest(
             [
                 'method'      => 'post',
-                'json'        => [],
+                'json'        => ['source' => $source],
                 'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
                 'service'     => 'import',
                 'path'        => 'imports',

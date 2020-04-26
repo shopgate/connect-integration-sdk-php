@@ -5,7 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-## [1.3.0] - 2020-03-19 
+## [1.3.1] - 2020-04-26 
+
+## Added
+- Source parameter to getImportReference
+
+### Fixed
+- A bug in getting a new import reference that would lead to a validation error
+
+## [1.3.0] - 2020-04-25
 ### Added
 - Add history to Fulfillment Orders and Sales Orders
 
@@ -186,7 +194,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - createCategory event & direct call
 - deleteCategory event & direct call
 
-[Unreleased]: https://github.com/shopgate/connect-integration-sdk/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/shopgate/connect-integration-sdk/compare/v1.2.1...HEAD
+[1.3.1]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/shopgate/connect-integration-sdk/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/shopgate/connect-integration-sdk/compare/v1.1.4...v1.2.0
 [1.1.4]: https://github.com/shopgate/connect-integration-sdk/compare/v1.1.3...v1.1.4

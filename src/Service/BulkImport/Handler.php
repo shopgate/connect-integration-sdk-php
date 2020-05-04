@@ -52,6 +52,14 @@ class Handler
     }
 
     /**
+     * @return string
+     */
+    public function getImportReference()
+    {
+        return $this->importReference;
+    }
+
+    /**
      * @param string $catalogCode
      *
      * @return Feed\Category

@@ -50,7 +50,7 @@ class Request extends Base
     /**
      * @param Event $event
      */
-    public function append($event)
+    public function addEvent($event)
     {
         $currentEvents = $this->getEvents();
         $currentEvents[] = $event;

@@ -123,6 +123,6 @@ class SchemaRegulator extends JsonSchemaRegulator
      */
     private function isProductAttribute($value)
     {
-        return isset($value['type']) && $value['type'] === Attribute::TYPE;
+        return isset($value->type) && $value->type === Attribute::TYPE;
     }
 }

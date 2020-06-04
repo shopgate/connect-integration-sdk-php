@@ -51,6 +51,7 @@ check_code_style:
 run_unit_tests:
   stage: test
   before_script:
+    - apk update
     - apk add --no-cache bash curl python3 jq python make g++
     - pip3 install docker-compose==1.23.2 awscli
     - $(aws ecr get-login --region=us-east-1 --no-include-email --registry-ids 602824140852)
@@ -78,6 +79,7 @@ run_unit_tests:
 run_integration_tests:
   stage: test
   before_script:
+    - apk update
     - apk add --no-cache bash curl python3 jq python make g++
     - pip3 install docker-compose==1.23.2 awscli
     - $(aws ecr get-login --region=us-east-1 --no-include-email --registry-ids 602824140852)

@@ -54,7 +54,7 @@ class Factory
         $event = new Event();
         $event->setEvent('entity' . ucfirst($type) . 'd')
               ->setEntity($entity)
-              ->setPayload($payload ? : new Payload());
+              ->setPayload($payload);
         if ($entityId) {
             $event->setEntityId($entityId);
         }

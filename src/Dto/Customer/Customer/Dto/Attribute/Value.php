@@ -38,11 +38,18 @@ class Value extends Base
      * @var array
      */
     protected $schema = [
-        'type' => 'object',
-        'properties' => [
-            'code' => ['type' => 'string'],
-            'name' => ['type' => 'string'],
-        ],
-        'additionalProperties' => true,
+        'anyOf' => [
+            [
+                'type' => 'string' // may not be a possible case
+            ],
+            [
+                'type' => 'object',
+                'properties' => [
+                    'code' => ['type' => 'string'],
+                    'name' => ['type' => 'string'],
+                ],
+                'additionalProperties' => true
+            ]
+        ]
     ];
 }

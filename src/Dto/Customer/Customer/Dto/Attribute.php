@@ -42,7 +42,7 @@ class Attribute extends Base
         'type'                 => 'object',
         'properties'           => [
             'code'  => ['type' => 'string'],
-            'value' => ['type' => ['string', 'object']],
+            'value' => ['$ref' => Value::class],
             'name'  => ['type' => 'string'],
         ],
         'additionalProperties' => true,
@@ -58,10 +58,10 @@ class Attribute extends Base
     public function setValue($value)
     {
         if (is_object($value)) {
-            return $this::set('value', new Value($value));
+            return $this->set('value', new Value($value));
         }
 
-        return $this::set('value', $value);
+        return $this->set('value', $value);
     }
 
     /**
@@ -71,7 +71,7 @@ class Attribute extends Base
      */
     public function getValue()
     {
-        $value = $this::get('value');
+        $value = $this->get('value');
         if (is_object($value)) {
             return new Value($value);
         }

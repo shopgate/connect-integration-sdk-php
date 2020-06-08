@@ -37,11 +37,11 @@ abstract class Base extends Dto
     const STORAGE_TYPE_ARRAY = 'array';
 
     private static $typeCheckers = [
-        'boolean' => ['checker' => 'is_bool', 'resolver' => 'toScalar'],
-        'integer' => ['checker' => 'is_int', 'resolver' => 'toScalar'],
-        'number' => ['checker' => 'is_numeric', 'resolver' => 'toScalar'],
-        'string' => ['checker' => 'is_string', 'resolver' => 'toScalar'],
-        'array' => ['checker' => 'is_array', 'resolver' => 'toArray']
+        'boolean' => 'is_bool',
+        'integer' => 'is_int',
+        'number' => 'is_numeric',
+        'string' => 'is_string',
+        'array' => 'is_array'
     ];
 
     /**
@@ -67,8 +67,15 @@ abstract class Base extends Dto
              */
             if (isset($schema['type']) && !is_array($schema['type']) && $input !== null) {
                 switch ($schema['type']) {
-                    case 'array': case 'boolean': case 'integer': case 'number': case 'string':
-                        if (!$this->validateScalar($input, $schema['type'])) {
+                    case 'array':
+                        if (!$this->validateType($input, self::$typeCheckers[$schema['type']], 'toArray', self::STORAGE_TYPE_ARRAY)) {
+                            throw new InvalidDataTypeException(
+                                $this->renderInvalidDataTypeException($schema['type'], gettype($input))
+                            );
+                        }
+                        break;
+                    case 'boolean': case 'integer': case 'number': case 'string':
+                        if (!$this->validateType($input, self::$typeCheckers[$schema['type']], 'toScalar', self::STORAGE_TYPE_SCALAR)) {
                             throw new InvalidDataTypeException(
                                 $this->renderInvalidDataTypeException($schema['type'], gettype($input))
                             );
@@ -238,15 +245,13 @@ abstract class Base extends Dto
         return parent::toJson(true);
     }
 
-    private function validateScalar($input, $type)
+    private function validateType($input, $nativeCheckFunction, $unfoldMethod, $storageType)
     {
-        $typeFunctions = self::$typeCheckers[$type];
-
-        return $typeFunctions['checker']($input) ||
+        return $nativeCheckFunction($input) ||
         (
             ($input instanceof Dto) &&
-            ($input->getStorageType() === self::STORAGE_TYPE_SCALAR) &&
-            $typeFunctions['checker']($input->{$typeFunctions['resolver']}())
+            ($input->getStorageType() === $storageType) &&
+            $nativeCheckFunction($input->{$unfoldMethod}())
         );
     }
 }

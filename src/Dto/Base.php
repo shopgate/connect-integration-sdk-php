@@ -273,6 +273,5 @@ abstract class Base extends Dto
             ($input instanceof Dto) &&
             ($input->getStorageType() === self::STORAGE_TYPE_SCALAR) &&
             $typeChecker($input->toScalar());
-
     }
 }

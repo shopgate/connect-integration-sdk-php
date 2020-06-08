@@ -37,10 +37,11 @@ abstract class Base extends Dto
     const STORAGE_TYPE_ARRAY = 'array';
 
     private static $typeCheckers = [
-        'boolean' => 'is_bool',
-        'integer' => 'is_int',
-        'number' => 'is_numeric',
-        'string' => 'is_string',
+        'boolean' => ['checker' => 'is_bool', 'resolver' => 'toScalar'],
+        'integer' => ['checker' => 'is_int', 'resolver' => 'toScalar'],
+        'number' => ['checker' => 'is_numeric', 'resolver' => 'toScalar'],
+        'string' => ['checker' => 'is_string', 'resolver' => 'toScalar'],
+        'array' => ['checker' => 'is_array', 'resolver' => 'toArray']
     ];
 
     /**
@@ -66,14 +67,7 @@ abstract class Base extends Dto
              */
             if (isset($schema['type']) && !is_array($schema['type']) && $input !== null) {
                 switch ($schema['type']) {
-                    case 'array':
-                        if (!is_array($input)) {
-                            throw new InvalidDataTypeException(
-                                $this->renderInvalidDataTypeException('array', gettype($input))
-                            );
-                        }
-                        break;
-                    case 'integer': case 'number': case 'string': case 'boolean':
+                    case 'array': case 'boolean': case 'integer': case 'number': case 'string':
                         if (!$this->validateScalar($input, $schema['type'])) {
                             throw new InvalidDataTypeException(
                                 $this->renderInvalidDataTypeException($schema['type'], gettype($input))
@@ -246,13 +240,13 @@ abstract class Base extends Dto
 
     private function validateScalar($input, $type)
     {
-        $typeChecker = self::$typeCheckers[$type];
+        $typeFunctions = self::$typeCheckers[$type];
 
-        return $typeChecker($input) ||
+        return $typeFunctions['checker']($input) ||
         (
             ($input instanceof Dto) &&
             ($input->getStorageType() === self::STORAGE_TYPE_SCALAR) &&
-            $typeChecker($input->toScalar())
+            $typeFunctions['checker']($input->{$typeFunctions['resolver']}())
         );
     }
 }

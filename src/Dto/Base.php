@@ -73,31 +73,10 @@ abstract class Base extends Dto
                             );
                         }
                         break;
-                    case 'integer':
-                        if (!is_int($input) && !$this->validateScalar($input, 'integer')) {
+                    case 'integer': case 'number': case 'string': case 'boolean':
+                        if (!$this->validateScalar($input, $schema['type'])) {
                             throw new InvalidDataTypeException(
-                                $this->renderInvalidDataTypeException('integer', gettype($input))
-                            );
-                        }
-                        break;
-                    case 'number':
-                        if (!is_numeric($input) && !$this->validateScalar($input, 'number')) {
-                            throw new InvalidDataTypeException(
-                                $this->renderInvalidDataTypeException('number', gettype($input))
-                            );
-                        }
-                        break;
-                    case 'string':
-                        if (!is_string($input) && !$this->validateScalar($input, 'string')) {
-                            throw new InvalidDataTypeException(
-                                $this->renderInvalidDataTypeException('string', gettype($input))
-                            );
-                        }
-                        break;
-                    case 'boolean':
-                        if (!is_bool($input) && !$this->validateScalar($input, 'boolean')) {
-                            throw new InvalidDataTypeException(
-                                $this->renderInvalidDataTypeException('boolean', gettype($input))
+                                $this->renderInvalidDataTypeException($schema['type'], gettype($input))
                             );
                         }
                         break;
@@ -269,9 +248,11 @@ abstract class Base extends Dto
     {
         $typeChecker = self::$typeCheckers[$type];
 
-        return
+        return $typeChecker($input) ||
+        (
             ($input instanceof Dto) &&
             ($input->getStorageType() === self::STORAGE_TYPE_SCALAR) &&
-            $typeChecker($input->toScalar());
+            $typeChecker($input->toScalar())
+        );
     }
 }

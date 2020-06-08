@@ -36,6 +36,13 @@ abstract class Base extends Dto
     const STORAGE_TYPE_SCALAR = 'scalar';
     const STORAGE_TYPE_ARRAY = 'array';
 
+    private static $typeCheckers = [
+        'boolean' => 'is_bool',
+        'integer' => 'is_int',
+        'number' => 'is_numeric',
+        'string' => 'is_string',
+    ];
+
     /**
      * Rewritten to provide inheritance of payload structure
      *
@@ -67,28 +74,28 @@ abstract class Base extends Dto
                         }
                         break;
                     case 'integer':
-                        if (!is_int($input)) {
+                        if (!is_int($input) && !$this->validateScalar($input, 'integer')) {
                             throw new InvalidDataTypeException(
                                 $this->renderInvalidDataTypeException('integer', gettype($input))
                             );
                         }
                         break;
                     case 'number':
-                        if (!is_numeric($input)) {
+                        if (!is_numeric($input) && !$this->validateScalar($input, 'number')) {
                             throw new InvalidDataTypeException(
                                 $this->renderInvalidDataTypeException('number', gettype($input))
                             );
                         }
                         break;
                     case 'string':
-                        if (!is_string($input)) {
+                        if (!is_string($input) && !$this->validateScalar($input, 'string')) {
                             throw new InvalidDataTypeException(
                                 $this->renderInvalidDataTypeException('string', gettype($input))
                             );
                         }
                         break;
                     case 'boolean':
-                        if (!is_bool($input)) {
+                        if (!is_bool($input) && !$this->validateScalar($input, 'boolean')) {
                             throw new InvalidDataTypeException(
                                 $this->renderInvalidDataTypeException('boolean', gettype($input))
                             );
@@ -106,7 +113,7 @@ abstract class Base extends Dto
 
             parent::__construct($input, null === $schema ? $this->getDefaultSchema() : $schema, $regulator);
         } catch (Exception $exception) {
-            throw new InvalidDataTypeException($exception->getMessage());
+            throw new InvalidDataTypeException($exception->getMessage(), $exception->getCode(), $exception);
         }
     }
 
@@ -186,7 +193,7 @@ abstract class Base extends Dto
              * - Dto\Exceptions\InvalidKeyException : Key not allowed by "properties", "patternProperties", or
              * "additionalProperties": test
              */
-            throw new InvalidDataTypeException($exception->getMessage());
+            throw new InvalidDataTypeException($exception->getMessage(), $exception->getCode(), $exception);
         }
 
         return $this;
@@ -256,5 +263,16 @@ abstract class Base extends Dto
     public function __toString()
     {
         return parent::toJson(true);
+    }
+
+    private function validateScalar($input, $type)
+    {
+        $typeChecker = self::$typeCheckers[$type];
+
+        return
+            ($input instanceof Dto) &&
+            ($input->getStorageType() === self::STORAGE_TYPE_SCALAR) &&
+            $typeChecker($input->toScalar());
+
     }
 }

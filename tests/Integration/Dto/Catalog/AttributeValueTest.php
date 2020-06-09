@@ -370,26 +370,6 @@ class AttributeValueTest extends CatalogUtility
                 'expectedException' => new InvalidDataTypeException(),
                 'message' => '',
             ],
-            'invalid name' => [
-                'attributeValueData' => [
-                    'code' => 'code',
-                    'sequenceId' => 1006,
-                    'swatch' => $swatch,
-                    'name' => 'INVALID',
-                ],
-                'expectedException' => new RequestException(400),
-                'message' => 'Expected type object but found type array',
-            ],
-            'invalid swatch' => [
-                'attributeValueData' => [
-                    'code' => 'code',
-                    'sequenceId' => 1006,
-                    'swatch' => 'INVALID',
-                    'name' => $name,
-                ],
-                'expectedException' => new RequestException(400),
-                'message' => 'Expected type object but found type array',
-            ],
         ];
     }
 }

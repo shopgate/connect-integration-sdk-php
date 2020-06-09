@@ -22,6 +22,7 @@
 
 namespace Shopgate\ConnectSdk\Dto\Customer\Customer\Dto\Attribute;
 
+use Dto\RegulatorInterface;
 use Shopgate\ConnectSdk\Dto\Base;
 
 /**
@@ -34,6 +35,11 @@ use Shopgate\ConnectSdk\Dto\Base;
  */
 class Value extends Base
 {
+    public function __construct($input = ['code' => null], $schema = null, RegulatorInterface $regulator = null)
+    {
+        parent::__construct($input, $schema, $regulator);
+    }
+
     /**
      * @var array
      */

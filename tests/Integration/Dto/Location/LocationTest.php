@@ -22,6 +22,7 @@
 
 namespace Shopgate\ConnectSdk\Tests\Integration\Dto\Location;
 
+use Dto\Dto;
 use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
@@ -215,8 +216,14 @@ class LocationTest extends LocationUtility
             $testValue     = $locations->getLocations()[0]->get($index);
             if (is_numeric($expectedValue)) {
                 $this->assertTrue(is_numeric($testValue));
-                $this->assertEquals(floor($value), floor($testValue));
+                $this->assertEquals(floor($expectedValue), floor($testValue));
                 return;
+            }
+
+            if ($expectedValue instanceof Dto) {
+                $this->assertInstanceOf(Dto::class, $testValue);
+                $expectedValue = $expectedValue->toArray();
+                $testValue = $testValue->toArray();
             }
 
             $this->assertEquals($expectedValue, $testValue);

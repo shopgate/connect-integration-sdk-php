@@ -662,17 +662,9 @@ class CategoryTest extends CatalogUtility
     public function provideCreateCategoryWithInvalidDataTypes()
     {
         return [
-            'wrong name data type' => [
-                'categoryData' => [
-                    'name' => 12345,
-                    'code' => 'category-test-code',
-                    'sequenceId' => 1006
-                ],
-                'expectedException' => new RequestException(400)
-            ],
             'wrong code data type' => [
                 'categoryData' => [
-                    'name' => 'Test Category',
+                    'name' => ['en-us' => 'Test Category'],
                     'code' => 123456,
                     'sequenceId' => 1006
                 ],
@@ -680,7 +672,7 @@ class CategoryTest extends CatalogUtility
             ],
             'wrong sequenceId data type' => [
                 'categoryData' => [
-                    'name' => 'Test Category',
+                    'name' => ['en-us' => 'Test Category'],
                     'code' => 'category-test-code',
                     'sequenceId' => '1006'
                 ],
@@ -688,34 +680,16 @@ class CategoryTest extends CatalogUtility
             ],
             'wrong parentCategoryCode data type' => [
                 'categoryData' => [
-                    'name' => 'Test Category',
+                    'name' => ['en-us' => 'Test Category'],
                     'code' => 'category-test-code',
                     'sequenceId' => 1006,
                     'parentCategoryCode' => 12345
                 ],
                 'expectedException' => new InvalidDataTypeException()
             ],
-            'wrong image data type' => [
-                'categoryData' => [
-                    'name' => 'Test Category',
-                    'code' => 'category-test-code',
-                    'sequenceId' => 1006,
-                    'image' => 12345
-                ],
-                'expectedException' => new RequestException(400)
-            ],
-            'wrong url type' => [
-                'categoryData' => [
-                    'name' => 'Test Category',
-                    'code' => 'category-test-code',
-                    'sequenceId' => 1006,
-                    'url' => 123456
-                ],
-                'expectedException' => new RequestException(400)
-            ],
             'wrong description type' => [
                 'categoryData' => [
-                    'name' => 'Test Category',
+                    'name' => ['en-us' => 'Test Category'],
                     'code' => 'category-test-code',
                     'sequenceId' => 1006,
                     'description' => new Category\Dto\Description(['en-US' => 12345])

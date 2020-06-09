@@ -536,18 +536,6 @@ class AttributeTest extends CatalogUtility
         $name->add('de-de', 'Example');
 
         return [
-            'invalid name' => [
-                'attributeData'     => [
-                    'name'       => 'INVALID',
-                    'values'     => [],
-                    'use'        => Attribute\Create::USE_OPTION,
-                    'type'       => Attribute\Create::TYPE_TEXT,
-                    'code'       => 'code',
-                    'sequenceId' => 1006,
-                ],
-                'expectedException' => new RequestException(400),
-                'message'           => 'Expected type object but found type array',
-            ],
             'invalid use'  => [
                 'attributeData'     => [
                     'name'       => $name,

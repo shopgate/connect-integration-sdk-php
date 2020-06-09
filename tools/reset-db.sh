@@ -22,7 +22,7 @@ function retry {
 DOCKER_COMPOSE_PARAMETERS="-f docker-compose.yml -f docker-compose.dev.yml"
 
 docker-compose ${DOCKER_COMPOSE_PARAMETERS} exec -T elasticsearch curl -X DELETE 'http://localhost:9200/_all'
-docker-compose ${DOCKER_COMPOSE_PARAMETERS} exec -T mysql mysql -uroot -psecret < ./fixtures/schema.sql
+docker-compose ${DOCKER_COMPOSE_PARAMETERS} exec -T mysql sh -c "mysql -uroot -psecret < /schema.sql"
 docker-compose ${DOCKER_COMPOSE_PARAMETERS} stop customer catalog import import-script order webhook && docker-compose ${DOCKER_COMPOSE_PARAMETERS} up -d customer catalog import import-script order webhook
 
 retry "CustomerService" "docker-compose ${DOCKER_COMPOSE_PARAMETERS} exec -T customer curl http://localhost/health -o /dev/null 2>&1"
@@ -35,4 +35,4 @@ retry "WebhookService" "docker-compose ${DOCKER_COMPOSE_PARAMETERS} exec -T webh
 docker-compose $DOCKER_COMPOSE_PARAMETERS  exec -T mysql sh -c "curl https://download.geonames.org/export/dump/DE.zip --output de.zip && unzip -o de.zip"
 docker-compose $DOCKER_COMPOSE_PARAMETERS  exec -T mysql sh -c "echo \"LOAD DATA LOCAL INFILE 'DE.txt' INTO TABLE Postalcode (CountryCode,PostalCode,PlaceName,AdminName1,AdminCode1,AdminName2,AdminCode2,AdminName3,AdminCode3,Latitude,Longitude,Accuracy);\" | mysql  -u root -psecret location"
 
-docker-compose ${DOCKER_COMPOSE_PARAMETERS} exec -T mysql mysql -uroot -psecret < ./fixtures/sampleData.sql
+docker-compose ${DOCKER_COMPOSE_PARAMETERS} exec -T mysql sh -c "mysql -uroot -psecret < /sampleData.sql"

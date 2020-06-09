@@ -1,0 +1,4 @@
+FROM mysql:5.7
+
+COPY ./tools/fixtures/schema.sql /schema.sql
+COPY ./tools/fixtures/sampleData.sql /sampleData.sql

@@ -53,7 +53,7 @@ docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T php56 php ./tools/etcdfiller.p
 docker-compose $DOCKER_COMPOSE_PARAMETERS build import-script reverse-proxy
 retry "MySQL" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T mysql mysql -uroot -psecret -e \"select 1 from dual\" 2>&1"
 
-docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T mysql mysql -u root -psecret < ./fixtures/schema.sql
+docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T mysql sh -c "mysql -u root -psecret < /schema.sql"
 
 docker-compose $DOCKER_COMPOSE_PARAMETERS stop user customer catalog import import-script order webhook && docker-compose $DOCKER_COMPOSE_PARAMETERS up -d user customer catalog import import-script order webhook
 retry "UserService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T user curl http://localhost/health -o /dev/null 2>&1"
@@ -83,4 +83,4 @@ docker-compose $DOCKER_COMPOSE_PARAMETERS up -d reverse-proxy
 retry "MerchantService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T merchant curl http://localhost/health -o /dev/null 2>&1"
 retry "LocationService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T location curl http://localhost/health -o /dev/null 2>&1"
 
-retry "SampleData" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T mysql mysql -u root -psecret < ./fixtures/sampleData.sql 2>&1"
+retry "SampleData" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T mysql sh -c \"mysql -u root -psecret < /sampleData.sql\" 2>&1"

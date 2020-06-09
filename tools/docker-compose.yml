@@ -25,7 +25,9 @@ services:
       - 'ETCD_ADVERTISE_CLIENT_URLS=http://etcd:2379,http://etcd:4001'
 
   mysql:
-    image: mysql:5.7
+    build:
+      context: ../
+      dockerfile: tools/dockerfiles/Mysql
     environment:
       - MYSQL_ROOT_PASSWORD=secret
 

@@ -123,24 +123,27 @@ abstract class CatalogUtility extends ShopgateSdkUtility
         $sampleExtras = null,
         $sampleOptions = null
     ) {
+        // todo change
+
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [self::PRODUCT_CODE_SECOND]);
         if ($product === null) {
             $product = new Product\Create();
         }
 
         if ($sampleCategories === null) {
             $sampleCategories = $this->provideSampleCategories();
-            $this->sdk->getCatalogService()->addCategories($sampleCategories, ['requestType' => 'direct']);
             $sampleCategoryCodes = $this->getCategoryCodes($sampleCategories);
             $this->deleteEntitiesAfterTestRun(
                 self::CATALOG_SERVICE,
                 self::METHOD_DELETE_CATEGORY,
                 $sampleCategoryCodes
             );
+            $this->sdk->getCatalogService()->addCategories($sampleCategories, ['requestType' => 'direct']);
         }
 
         if ($sampleOptions === null) {
-            /** @var Product\Dto\Options $sampleOptions */
             $this->createSampleAttribute();
+            /** @var Product\Dto\Options $sampleOptions */
             $sampleOptions = $this->provideOptions();
         }
 
@@ -275,6 +278,13 @@ abstract class CatalogUtility extends ShopgateSdkUtility
      */
     protected function createSampleAttribute()
     {
+        // prepare for cleanup
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_ATTRIBUTE,
+            [self::SAMPLE_ATTRIBUTE_CODE]
+        );
+
         $attribute = new Attribute\Create;
         $attribute->setCode(self::SAMPLE_ATTRIBUTE_CODE)
             ->setType(Attribute\Create::TYPE_TEXT)
@@ -289,13 +299,6 @@ abstract class CatalogUtility extends ShopgateSdkUtility
         $attribute->setValues([$this->provideSampleAttributeValue()]);
 
         $this->sdk->getCatalogService()->addAttributes([$attribute], ['requestType' => 'direct']);
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_ATTRIBUTE,
-            [self::SAMPLE_ATTRIBUTE_CODE]
-        );
     }
 
     /**
@@ -357,14 +360,14 @@ abstract class CatalogUtility extends ShopgateSdkUtility
      */
     protected function createSampleExtras()
     {
-        $this->sdk->getCatalogService()->addAttributes($this->provideSampleExtras(), ['requestType' => 'direct']);
-
         // CleanUp
         $this->deleteEntitiesAfterTestRun(
             self::CATALOG_SERVICE,
             self::METHOD_DELETE_ATTRIBUTE,
             [self::SAMPLE_EXTRA_CODE, self::SAMPLE_EXTRA_CODE_2]
         );
+
+        $this->sdk->getCatalogService()->addAttributes($this->provideSampleExtras(), ['requestType' => 'direct']);
     }
 
     /**
@@ -494,7 +497,7 @@ abstract class CatalogUtility extends ShopgateSdkUtility
     {
         $volumePricing = $this->provideVolumePricing();
         $mapPricing = $this->provideMapPricing();
-
+// todo change
         return (new Product\Dto\Price())->setCurrencyCode(Product\Dto\Price::CURRENCY_CODE_USD)
             ->setCost(50)
             ->setPrice(90)
@@ -565,7 +568,7 @@ abstract class CatalogUtility extends ShopgateSdkUtility
         $property1 = new Product\Dto\Properties\Product();
         $property1->setCode('property_code_1')
             ->setName(new Properties\Name(['en-us' => 'property 1 english', 'de-de' => 'property 1 deutsch']))
-            ->setValue(new Properties\Value(['stuff' => 'stuff value', 'other stuff' => 'other stuff value']))
+            ->setValue(new Properties\Value(['en-us' => 'stuff value', 'de-de' => 'other stuff value']))
             ->setDisplayGroup(Properties::DISPLAY_GROUP_FEATURES)
             ->setSubDisplayGroup($subDisplayGroup);
 

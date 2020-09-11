@@ -39,6 +39,7 @@ use Shopgate\ConnectSdk\Dto\Base;
  * @method float getCost()
  * @method float getPrice()
  * @method string getUnit()
+ * @method float getPricePerMeasureUnit()
  * @method float getSalePrice()
  * @method float getMsrp()
  * @method float getMinPrice()
@@ -62,6 +63,9 @@ class Price extends Base
             'cost'          => ['type' => 'number'],
             'price'         => ['type' => 'number'],
             'unit'          => ['type' => 'string'],
+            'unitValue'     => ['type' => 'number'],
+            'unitPriceRefUom'   => ['type' => 'string'],
+            'unitPriceRefValue' => ['type' => 'number'],
             'salePrice'     => ['type' => 'number'],
             'msrp'          => ['type' => 'number'],
             'minPrice'      => ['type' => 'number'],

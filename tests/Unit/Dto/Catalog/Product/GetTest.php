@@ -60,6 +60,7 @@ class GetTest extends TestCase
     {
         $entry = [
             'price' => [
+                'pricePerMeasureUnit' => 1.51,
                 'salePrice' => 5.51,
                 'volumePricing' => [
                     ['minQty' => 1],
@@ -74,7 +75,7 @@ class GetTest extends TestCase
         $get = new Get($entry);
         $price = $get->getPrice();
         $volume = $price->getVolumePricing();
-        $map = $price->getMapPricing();
+        $map = $price->getMapPricing();;
 
         $this->assertInstanceOf(Dto\Price::class, $price);
         $this->assertTrue(is_array($volume));
@@ -84,6 +85,7 @@ class GetTest extends TestCase
         $this->assertInstanceOf(Dto\Price\MapPricing::class, $map[0]);
         $this->assertInstanceOf(Dto\Price\MapPricing::class, $map[1]);
 
+        $this->assertEquals(1.51, $price->getPricePerMeasureUnit());
         $this->assertEquals(5.51, $price->getSalePrice());
         $this->assertEquals(1, $volume[0]->getMinQty());
         $this->assertEquals(Dto\Price\VolumePricing::PRICE_TYPE_FIXED, $volume[1]->getPriceType());
@@ -308,5 +310,40 @@ class GetTest extends TestCase
         ], $properties[1]->getValue());
         $this->assertEquals('Some name', $properties[2]->getValue()->{'en-us'});
         $this->assertEquals('Ein name', $properties[2]->getValue()->{'de-de'});
+    }
+
+    public function testGetBasePriceProperties()
+    {
+        $entry = [
+            'unit' => 'kg',
+            'unitValue' => 15.0,
+            'unitPriceRefUom' => 'kg',
+            'unitPriceRefValue' => 15.0,
+            'hasCatchWeight' => false,
+        ];
+
+        $product = new Get($entry);
+        
+        $this->assertEquals('kg', $product->getUnit());
+        $this->assertEquals(15, $product->getUnitValue());
+        $this->assertEquals('kg', $product->getUnitPriceRefUom());
+        $this->assertEquals(15, $product->getUnitPriceRefValue());
+        $this->assertEquals(false, $product->getHasCatchWeight());
+    }
+
+    public function testSetBasePriceProperties()
+    {
+        $product = new Get();
+        $product->setUnit('kg');
+        $product->setUnitValue(15);
+        $product->setUnitPriceRefUom('kg');
+        $product->setUnitPriceRefValue(15);
+        $product->setHasCatchWeight(false);
+        
+        $this->assertEquals('kg', $product->getUnit());
+        $this->assertEquals(15, $product->getUnitValue());
+        $this->assertEquals('kg', $product->getUnitPriceRefUom());
+        $this->assertEquals(15, $product->getUnitPriceRefValue());
+        $this->assertEquals(false, $product->getHasCatchWeight());
     }
 }

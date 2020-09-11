@@ -278,6 +278,7 @@ class Client implements ClientInterface
                 );
             }
 
+//            print_r(json_encode($e->getResponse()->getBody()->getContents()));
             throw new RequestException(
                 $statusCode,
                 $e->getResponse() && $e->getResponse()->getBody() ? $e->getResponse()->getBody()->getContents()

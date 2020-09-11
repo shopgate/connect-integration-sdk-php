@@ -176,7 +176,15 @@ abstract class ShopgateSdkUtility extends TestCase
                     continue;
                 }
                 foreach ($values['ids'] as $parameters) {
-                    call_user_func_array([$service['service'], $deleteMethodName], $parameters);
+                    try {
+                        call_user_func_array([$service['service'], $deleteMethodName], $parameters);
+                    } catch (\Exception $err) {
+                        // ignore not found errors as this actually is about deletions
+                        if (!($err instanceof \Shopgate\ConnectSdk\Exception\NotFoundException)) {
+                            echo 'Not a 404: ' . print_r(get_class($err), true);
+                            throw $err;
+                        }
+                    }
                 }
             }
         }
@@ -190,14 +198,14 @@ abstract class ShopgateSdkUtility extends TestCase
     protected function createDefaultCatalogs()
     {
         $catalogs = $this->defaultCatalogs();
-        $this->sdk->getCatalogService()->addCatalogs($catalogs);
-
-        // CleanUp
+        // add to cleanUp
         $this->deleteEntitiesAfterTestRun(
             self::CATALOG_SERVICE,
             self::METHOD_DELETE_CATALOG,
             [$catalogs[0]->getCode(), $catalogs[1]->getCode()]
         );
+
+        $this->sdk->getCatalogService()->addCatalogs($catalogs);
 
         return $catalogs;
     }

@@ -117,6 +117,8 @@ development:
         password: secret
         port: 3306
         user: root
+      googleCloud:
+        projectId: test-project
 
     OmniOrderService:
       mysql:

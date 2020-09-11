@@ -42,6 +42,18 @@ class AttributeTest extends CatalogUtility
         $createdItemCount = 10;
         $sampleAttributes = $this->provideSampleAttributes($createdItemCount);
 
+        $deleteCodes = [];
+        foreach ($sampleAttributes as $attribute) {
+            $deleteCodes[] = $attribute->getCode();
+        }
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_ATTRIBUTE,
+            $deleteCodes
+        );
+
         // Act
         $this->createAttributes(
             $sampleAttributes,
@@ -52,17 +64,6 @@ class AttributeTest extends CatalogUtility
 
         // Assert
         $attributes = $this->getAttributes();
-
-        // CleanUp
-        $deleteCodes = [];
-        foreach ($attributes->getAttributes() as $attribute) {
-            $deleteCodes[] = $attribute->getCode();
-        }
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_ATTRIBUTE,
-            $deleteCodes
-        );
 
         /** @noinspection PhpParamsInspection */
         $this->assertCount($createdItemCount, $attributes->getAttributes());
@@ -77,22 +78,23 @@ class AttributeTest extends CatalogUtility
         $createdItemCount = 10;
         $sampleAttributes = $this->provideSampleAttributes($createdItemCount);
 
-        // Act
-        $this->createAttributes($sampleAttributes);
-        usleep(self::SLEEP_TIME_AFTER_EVENT);
-
-        $attributes = $this->getAttributes();
-
-        // CleanUp
         $deleteCodes = [];
-        foreach ($attributes->getAttributes() as $attribute) {
+        foreach ($sampleAttributes as $attribute) {
             $deleteCodes[] = $attribute->getCode();
         }
+
+        // CleanUp
         $this->deleteEntitiesAfterTestRun(
             self::CATALOG_SERVICE,
             self::METHOD_DELETE_ATTRIBUTE,
             $deleteCodes
         );
+
+        // Act
+        $this->createAttributes($sampleAttributes);
+        usleep(self::SLEEP_TIME_AFTER_EVENT);
+
+        $attributes = $this->getAttributes();
 
         // Assert
         /** @noinspection PhpParamsInspection */
@@ -104,6 +106,13 @@ class AttributeTest extends CatalogUtility
      */
     public function testGetAttributeDirect()
     {
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_ATTRIBUTE,
+            ['code_1']
+        );
+
         // Arrange
         $createdItemCount = 1;
         $sampleAttributes = $this->provideSampleAttributes($createdItemCount);
@@ -114,13 +123,6 @@ class AttributeTest extends CatalogUtility
             [
                 'requestType' => 'direct',
             ]
-        );
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_ATTRIBUTE,
-            ['code_1']
         );
 
         // Assert
@@ -148,6 +150,14 @@ class AttributeTest extends CatalogUtility
      */
     public function testGetAttributeByLocaleDirect()
     {
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_ATTRIBUTE,
+            ['code_1']
+        );
+
         // Arrange
         $createdItemCount = 1;
         $sampleAttributes = $this->provideSampleAttributes($createdItemCount);
@@ -158,13 +168,6 @@ class AttributeTest extends CatalogUtility
             [
                 'requestType' => 'direct',
             ]
-        );
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_ATTRIBUTE,
-            ['code_1']
         );
 
         // Assert
@@ -179,6 +182,13 @@ class AttributeTest extends CatalogUtility
      */
     public function testUpdateAttributeDirect()
     {
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_ATTRIBUTE,
+            ['code_1']
+        );
+
         // Arrange
         $sampleAttributes = $this->provideSampleAttributes(1);
         $this->createAttributes(
@@ -199,13 +209,6 @@ class AttributeTest extends CatalogUtility
             ]
         );
 
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_ATTRIBUTE,
-            ['code_1']
-        );
-
         // Assert
         $updatedAttribute = $this->getAttribute('code_1');
         $this->assertEquals($newName, $updatedAttribute->getName());
@@ -216,6 +219,13 @@ class AttributeTest extends CatalogUtility
      */
     public function testUpdateAttributeEvent()
     {
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_ATTRIBUTE,
+            ['code_1']
+        );
+
         // Arrange
         $sampleAttributes = $this->provideSampleAttributes(1);
         $this->createAttributes(
@@ -236,13 +246,6 @@ class AttributeTest extends CatalogUtility
         );
 
         usleep(self::SLEEP_TIME_AFTER_EVENT);
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_ATTRIBUTE,
-            ['code_1']
-        );
 
         // Assert
         $updatedAttribute = $this->getAttribute('code_1');
@@ -346,6 +349,14 @@ class AttributeTest extends CatalogUtility
         foreach ($sampleAttributes as $attribute) {
             $deleteCodes[] = $attribute->getCode();
         }
+
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_ATTRIBUTE,
+            $deleteCodes
+        );
+
         // Act
         $this->createAttributes(
             $sampleAttributes,
@@ -369,13 +380,6 @@ class AttributeTest extends CatalogUtility
         foreach ($attributes->getAttributes() as $attribute) {
             $fetchedCodes[] = $attribute->getCode();
         }
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_ATTRIBUTE,
-            $deleteCodes
-        );
 
         $this->assertCount($expectedAttributeCount, $attributes->getAttributes());
         $this->assertEquals($expectedAttributeCodes, $fetchedCodes);

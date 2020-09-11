@@ -192,11 +192,29 @@ class BulkImportCatalogTest extends CatalogUtility
      */
     public function testInventoryBulkFileImport()
     {
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_PRODUCT,
+            [self::PRODUCT_CODE]
+        );
+        $this->deleteEntitiesAfterTestRun(
+            self::LOCATION_SERVICE,
+            self::METHOD_DELETE_LOCATION,
+            [self::LOCATION_CODE]
+        );
+
         // Arrange
         $product = $this->prepareProductMinimum();
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
         $this->createLocation(self::LOCATION_CODE);
         $inventories = $this->provideSampleInventories(2, $product->getCode());
+
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_INVENTORIES,
+            $this->getDeleteInventories($inventories)
+        );
 
         // Act
         $handler = $this->sdk->getBulkImportService()->createFileImport();
@@ -205,23 +223,6 @@ class BulkImportCatalogTest extends CatalogUtility
         $inventoryHandler->add($inventories[1]);
         $inventoryHandler->end();
         $handler->trigger();
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_PRODUCT,
-            [$product->getCode()]
-        );
-        $this->deleteEntitiesAfterTestRun(
-            self::LOCATION_SERVICE,
-            self::METHOD_DELETE_LOCATION,
-            [self::LOCATION_CODE]
-        );
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_INVENTORIES,
-            $this->getDeleteInventories($inventories)
-        );
 
         usleep(self::SLEEP_TIME_AFTER_BULK);
 

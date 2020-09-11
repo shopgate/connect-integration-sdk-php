@@ -38,14 +38,14 @@ class ProductTest extends CatalogUtility
      */
     public function testCreateProductMinimumDirect()
     {
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [self::PRODUCT_CODE]);
+
         // Arrange
         $product = $this->prepareProductMinimum();
 
         // Act
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [$product->getCode()]);
 
         // Assert
         $product = $this->sdk->getCatalogService()->getProduct($product->getCode());
@@ -57,15 +57,15 @@ class ProductTest extends CatalogUtility
      */
     public function testCreateProductMaximumDirect()
     {
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [self::PRODUCT_CODE_SECOND]);
+
         // Arrange
         $product = $this->prepareProductMaximum();
 
         // Act
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [$product->getCode()]);
-
+        
         // Assert
         $product = $this->sdk->getCatalogService()->getProduct($product->getCode());
         $this->assertEquals($product->getCode(), $product->getCode());
@@ -78,6 +78,16 @@ class ProductTest extends CatalogUtility
      */
     public function testGetProductsWithSpecificCatalogCode()
     {
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_PRODUCT,
+            [
+                self::PRODUCT_CODE,
+            ],
+            self::SAMPLE_CATALOG_CODE_NON_DEFAULT
+        );
+
         // Arrange
         $productMinimum = $this->prepareProductMinimum();
         $this->sdk->getCatalogService()->addProducts([$productMinimum], [
@@ -89,16 +99,6 @@ class ProductTest extends CatalogUtility
         $products = $this->sdk->getCatalogService()->getProducts([
             'catalogCode' => self::SAMPLE_CATALOG_CODE_NON_DEFAULT
         ]);
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_PRODUCT,
-            [
-                $productMinimum->getCode(),
-            ],
-            self::SAMPLE_CATALOG_CODE_NON_DEFAULT
-        );
 
         // Assert
         $productCodes = [];
@@ -123,6 +123,16 @@ class ProductTest extends CatalogUtility
      */
     public function testGetProducts()
     {
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_PRODUCT,
+            [
+                self::PRODUCT_CODE,
+                self::PRODUCT_CODE_SECOND,
+            ]
+        );
+
         // Arrange
         $productMinimum = $this->prepareProductMinimum();
         $productMaximum = $this->prepareProductMaximum();
@@ -130,16 +140,6 @@ class ProductTest extends CatalogUtility
 
         // Act
         $products = $this->sdk->getCatalogService()->getProducts();
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_PRODUCT,
-            [
-                $productMaximum->getCode(),
-                $productMinimum->getCode(),
-            ]
-        );
 
         // Assert
         $productCodes = [];
@@ -162,6 +162,15 @@ class ProductTest extends CatalogUtility
      */
     public function testProductAlreadyUpdatedDirect()
     {
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_PRODUCT,
+            [
+                self::PRODUCT_CODE_SECOND,
+            ]
+        );
+
         // Arrange
         $productMaximum = $this->prepareProductMaximum(new Update());
         $productMaximum->setExternalUpdateDate('2019-01-01T00:00:00.000Z');
@@ -175,15 +184,6 @@ class ProductTest extends CatalogUtility
         $product = new Product\Update(
             [
                 'externalUpdateDate' => '2018-12-31T23:59:59.000Z',
-            ]
-        );
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_PRODUCT,
-            [
-                $productMaximum->getCode(),
             ]
         );
 
@@ -211,6 +211,15 @@ class ProductTest extends CatalogUtility
      */
     public function testUpdateProductPricingDirect()
     {
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_PRODUCT,
+            [
+                self::PRODUCT_CODE_SECOND,
+            ]
+        );
+
         // Arrange
         $productMaximum = $this->prepareProductMaximum(new Update());
         $productMaximum->setModelType(Product::MODEL_TYPE_CONFIGURABLE);
@@ -255,15 +264,6 @@ class ProductTest extends CatalogUtility
             ]
         );
 
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_PRODUCT,
-            [
-                $productMaximum->getCode(),
-            ]
-        );
-
         // Assert
         $product = $this->sdk->getCatalogService()->getProduct($productMaximum->getCode());
         $updatedProductPrice = $product->getPrice();
@@ -297,6 +297,15 @@ class ProductTest extends CatalogUtility
      */
     public function testUpdateProductPropertyDirect(array $updateProductData, $expectedValue)
     {
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_PRODUCT,
+            [
+                self::PRODUCT_CODE_SECOND,
+            ]
+        );
+
         // Arrange
         $productMaximum = $this->prepareProductMaximum(new Update());
         $this->sdk->getCatalogService()->addProducts(
@@ -314,15 +323,6 @@ class ProductTest extends CatalogUtility
             $product,
             [
                 'requestType' => 'direct',
-            ]
-        );
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_PRODUCT,
-            [
-                $productMaximum->getCode(),
             ]
         );
 
@@ -504,15 +504,15 @@ class ProductTest extends CatalogUtility
      */
     public function testCreateProductMinimumEvent()
     {
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [self::PRODUCT_CODE]);
+
         // Arrange
         $product = $this->prepareProductMinimum();
 
         // Act
         $this->sdk->getCatalogService()->addProducts([$product]);
         usleep(self::SLEEP_TIME_AFTER_EVENT);
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [$product->getCode()]);
 
         // Assert
         $product = $this->sdk->getCatalogService()->getProduct($product->getCode());
@@ -524,6 +524,14 @@ class ProductTest extends CatalogUtility
      */
     public function testCreateProductMinimumEventInSpecificCatalogCode()
     {
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(
+            self::CATALOG_SERVICE,
+            self::METHOD_DELETE_PRODUCT,
+            [self::PRODUCT_CODE],
+            self::SAMPLE_CATALOG_CODE_NON_DEFAULT
+        );
+
         // Arrange
         $product = $this->prepareProductMinimum();
 
@@ -532,14 +540,6 @@ class ProductTest extends CatalogUtility
             'catalogCode' => self::SAMPLE_CATALOG_CODE_NON_DEFAULT
         ]);
         usleep(self::SLEEP_TIME_AFTER_EVENT);
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_PRODUCT,
-            [$product->getCode()],
-            self::SAMPLE_CATALOG_CODE_NON_DEFAULT
-        );
 
         // Assert
         $product = $this->sdk->getCatalogService()->getProduct(
@@ -556,15 +556,15 @@ class ProductTest extends CatalogUtility
      */
     public function testCreateProductMaximumEvent()
     {
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [self::PRODUCT_CODE_SECOND]);
+
         // Arrange
         $product = $this->prepareProductMaximum();
 
         // Act
         $this->sdk->getCatalogService()->addProducts([$product]);
         usleep(self::SLEEP_TIME_AFTER_EVENT);
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [$product->getCode()]);
 
         // Assert
         $product = $this->sdk->getCatalogService()->getProduct($product->getCode());
@@ -644,21 +644,15 @@ class ProductTest extends CatalogUtility
      */
     public function testGetProduct()
     {
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [self::PRODUCT_CODE]);
+
         // Arrange
         $productMinimum = $this->prepareProductMinimum();
         $this->sdk->getCatalogService()->addProducts([$productMinimum], ['requestType' => 'direct']);
 
         // Act
         $product = $this->sdk->getCatalogService()->getProduct($productMinimum->getCode());
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_PRODUCT,
-            [
-                $productMinimum->getCode(),
-            ]
-        );
 
         // Assert
         $this->assertEquals($productMinimum->getCode(), $product->getCode());
@@ -669,21 +663,15 @@ class ProductTest extends CatalogUtility
      */
     public function testGetProductWithSingleFieldCode()
     {
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [self::PRODUCT_CODE]);
+
         // Arrange
         $productMinimum = $this->prepareProductMinimum();
         $this->sdk->getCatalogService()->addProducts([$productMinimum], ['requestType' => 'direct']);
 
         // Act
         $product = $this->sdk->getCatalogService()->getProduct($productMinimum->getCode(), ['fields' => 'code']);
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_PRODUCT,
-            [
-                $productMinimum->getCode(),
-            ]
-        );
 
         // Assert
         $this->assertEquals($productMinimum->getCode(), $product->getCode());
@@ -702,6 +690,9 @@ class ProductTest extends CatalogUtility
      */
     public function testProductLimit($limit, $offset, $expectedProductCount, $expectedProductCodes)
     {
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [self::PRODUCT_CODE, self::PRODUCT_CODE_SECOND]);
+
         // Arrange
         $productMinimum = $this->prepareProductMinimum();
         $productMaximum = $this->prepareProductMaximum();
@@ -718,16 +709,6 @@ class ProductTest extends CatalogUtility
         // Act
         $products = $this->sdk->getCatalogService()->getProducts(
             $parameters
-        );
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(
-            self::CATALOG_SERVICE,
-            self::METHOD_DELETE_PRODUCT,
-            [
-                $productMaximum->getCode(),
-                $productMinimum->getCode(),
-            ]
         );
 
         // Assert

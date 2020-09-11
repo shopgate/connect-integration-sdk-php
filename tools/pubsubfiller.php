@@ -46,48 +46,46 @@ $topics = [
         'routingSvcSalesOrderAdded-development',
         'webhookSalesOrderAdded-development',
         'webhookTransSalesOrderAdded-development',
-        'testerSalesOrderAdded-development', # maybe not needed
     ],
     'salesOrderFulfillmentAdded-development' => [
         'webhookSalesOrderFulfillmentAdded-development',
-        'testerSOFulfillmentAdded-development', # maybe not needed
     ],
     'salesOrderStatusUpdated-development' => [
         'orderSvcSalesOrderStatusUpdated-development',
         'webhookSalesOrderStatusUpdated-development',
         'webhookTransSalesOrderStatusUpdated-development',
-        'testerSalesOrderStatusUpdated-development', # maybe not needed
     ],
     'userAssigned-development' => [
         'notificationSvcUserAssigned-development',
-        'testerUserAssigned-development', # maybe not needed
     ],
     'userAuthorizationFailed-development' => [
         'userSvcUserAuthorizationFailed-development',
-        'testerUserAuthorizationFailed-development', # maybe not needed
     ],
     'userAuthorized-development' => [
         'userSvcUserAuthorized-development',
-        'testerUserAuthorized-development', # maybe not needed
     ],
     'userCreated-development' => [
         'notificationSvcUserCreated-development',
-        'testerUserCreated-development', # maybe not needed
     ],
     'userPasswordChanged-development' => [
         'userSvcUserPasswordChanged-development',
-        'testerUserPasswordChanged-development', #maybe not needed
     ],
     'userPasswordReset-development' => [
         'userSvcUserPasswordReset-development',
-        'testerUserPasswordReset-development', # maybe not needed
     ],
     'webhookRouted-development' => [
         'webhookTransWebhookRouted-development',
     ],
     'orderNotPickedUp-development' => [
         'webhookTransOrderNotPickedUp-development',
-    ]
+    ],
+    'productCreated-development' => [],
+    'productUpdated-development' => [],
+    'segmentChanged-development' => [],
+    'importCompleted-development' => [],
+    'importDone-development' => [
+        'workerSvcImportDone-development',
+    ],
 ];
 
 foreach ($topics as $topic => $subscriptions) {
@@ -102,9 +100,9 @@ foreach ($topics as $topic => $subscriptions) {
 function createTopic($pubSub, $topic, $subscriptions)
 {
     $createdTopic = null;
-    $subscriptionCreated = 0;
     $tries = 0;
-    while (!$createdTopic && $subscriptionCreated != count($subscriptions) && $tries < 15) {
+
+    while ($createdTopic === null && $tries < 15) {
         try {
             echo "Creating Google PubSub topic '$topic' . . . ";
             $createdTopic = $pubSub->createTopic($topic);
@@ -116,36 +114,32 @@ function createTopic($pubSub, $topic, $subscriptions)
                 $createdTopic = $pubSub->topic($topic);
             }
         }
+    }
 
-        if (!$createdTopic) {
-            echo "[FAILED] Retrying in 1s.\n";
+    if (!$createdTopic) return;
+
+    foreach ($subscriptions as $subscription) {
+        $tries = 0;
+        $subscriptionCreated = false;
+        while (!$subscriptionCreated && $tries < 15) {
+            if ($tries > 0) {
+                echo "[FAILED] Retrying in 1s.\n";
+                sleep(1);
+            }
+
             $tries++;
-            sleep(1);
-            continue;
-        }
-
-        foreach ($subscriptions as $subscription) {
             try {
                 echo "Creating Google PubSub subscription '$subscription' to topic $topic . . . ";
                 $pubSub->subscribe($subscription, $topic);
-                $subscriptionCreated++;
+                $subscriptionCreated = true;
                 echo "[OK]\n";
-                continue;
             } catch (Exception $e) {
                 var_dump($e->getMessage());
                 if ($e->getCode() === 409) {
                     echo "[OK] Already exists.\n";
-                    $subscriptionCreated++;
-                    continue;
+                    $subscriptionCreated = true;
                 }
             }
-        }
-
-        if ($subscriptionCreated != count($subscriptions)) {
-            echo "[FAILED] Retrying in 1s.\n";
-            $subscriptionCreated = 0;
-            $tries++;
-            sleep(1);
         }
     }
 }

@@ -573,7 +573,7 @@ class Catalog
             [
                 'service' => self::SERVICE_CATALOG,
                 'method' => 'post',
-                'path' => 'attributes/' . $attributeCode . '/values/',
+                'path' => 'attributes/' . $attributeCode . '/values',
                 'entity' => 'attributes',
                 'action' => 'create',
                 'json' => ['values' => $attributeValues],

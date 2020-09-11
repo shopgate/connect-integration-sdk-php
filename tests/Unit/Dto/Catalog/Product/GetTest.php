@@ -75,7 +75,7 @@ class GetTest extends TestCase
         $get = new Get($entry);
         $price = $get->getPrice();
         $volume = $price->getVolumePricing();
-        $map = $price->getMapPricing();;
+        $map = $price->getMapPricing();
 
         $this->assertInstanceOf(Dto\Price::class, $price);
         $this->assertTrue(is_array($volume));

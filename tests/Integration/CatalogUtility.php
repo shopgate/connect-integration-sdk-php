@@ -184,6 +184,10 @@ abstract class CatalogUtility extends ShopgateSdkUtility
             ->setPrice($price)// required
             ->setFulfillmentMethods(['one method', 'another method'])
             ->setUnit('kg')
+            ->setUnitValue(1)
+            ->setUnitPriceRefUom('kg')
+            ->setUnitPriceRefValue(1)
+            ->setHasCatchWeight(true)
             ->setIsSerialized(false)
             ->setStatus(Product\Create::STATUS_ACTIVE)// required
             ->setStartDate('2018-12-01T00:00:00.000Z')
@@ -497,7 +501,7 @@ abstract class CatalogUtility extends ShopgateSdkUtility
     {
         $volumePricing = $this->provideVolumePricing();
         $mapPricing = $this->provideMapPricing();
-// todo change
+
         return (new Product\Dto\Price())->setCurrencyCode(Product\Dto\Price::CURRENCY_CODE_USD)
             ->setCost(50)
             ->setPrice(90)

@@ -116,7 +116,9 @@ function createTopic($pubSub, $topic, $subscriptions)
         }
     }
 
-    if (!$createdTopic) return;
+    if (!$createdTopic) {
+        return;
+    }
 
     foreach ($subscriptions as $subscription) {
         $tries = 0;

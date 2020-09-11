@@ -48,8 +48,8 @@ class ProductTest extends CatalogUtility
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
 
         // Assert
-        $product = $this->sdk->getCatalogService()->getProduct($product->getCode());
-        $this->assertEquals($product->getCode(), $product->getCode());
+        $productActual = $this->sdk->getCatalogService()->getProduct($product->getCode());
+        $this->assertEquals($product->getCode(), $productActual->getCode());
     }
 
     /**
@@ -67,8 +67,180 @@ class ProductTest extends CatalogUtility
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
         
         // Assert
-        $product = $this->sdk->getCatalogService()->getProduct($product->getCode());
-        $this->assertEquals($product->getCode(), $product->getCode());
+        $productActual = $this->sdk->getCatalogService()->getProduct($product->getCode());
+        $this->assertEquals($product->getCode(), $productActual->getCode());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testCreateProductWithBasePricePropsDirect()
+    {
+        $productCode = 'base-price-product';
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [$productCode]);
+
+        // Arrange
+        $price = $this->providePricing();
+        $product = new Product\Create();
+        $product->setCode($productCode)
+            ->setCatalogCode(self::SAMPLE_CATALOG_CODE)
+            ->setModelType(Product\Create::MODEL_TYPE_STANDARD)
+            ->setPrice($price)
+            ->setName(new Product\Dto\Name(['en-us' => 'Product with base prices']))
+            ->setIsInventoryManaged(false)
+            ->setUnit('kg')
+            ->setUnitValue(1)
+            ->setUnitPriceRefUom('kg')
+            ->setUnitPriceRefValue(1)
+            ->setHasCatchWeight(true);
+
+        // Act
+        $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
+
+        // Assert
+        $productActual = $this->sdk->getCatalogService()->getProduct($product->getCode());
+        $this->assertEquals($product->getCode(), $productActual->getCode());
+        $this->assertEquals($product->getUnit(), $productActual->getUnit());
+        $this->assertEquals($product->getUnitValue(), $productActual->getUnitValue());
+        $this->assertEquals($product->getUnitPriceRefUom(), $productActual->getUnitPriceRefUom());
+        $this->assertEquals($product->getUnitPriceRefValue(), $productActual->getUnitPriceRefValue());
+        $this->assertEquals($product->getHasCatchWeight(), $productActual->getHasCatchWeight());
+
+        // test the price per measurement unit that is read only (calculated field)
+        $this->assertEquals(84.99, $productActual->getPrice()->getPricePerMeasureUnit());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testCreateProductWithBasePricePropsEvent()
+    {
+        $productCode = 'base-price-product';
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [$productCode]);
+
+        // Arrange
+        $price = $this->providePricing();
+        $product = new Product\Create();
+        $product->setCode($productCode)
+            ->setCatalogCode(self::SAMPLE_CATALOG_CODE)
+            ->setModelType(Product\Create::MODEL_TYPE_STANDARD)
+            ->setPrice($price)
+            ->setName(new Product\Dto\Name(['en-us' => 'Product with base prices']))
+            ->setIsInventoryManaged(false)
+            ->setUnit('kg')
+            ->setUnitValue(1)
+            ->setUnitPriceRefUom('kg')
+            ->setUnitPriceRefValue(1)
+            ->setHasCatchWeight(true);
+
+        // Act
+        $this->sdk->getCatalogService()->addProducts([$product]);
+
+        usleep(self::SLEEP_TIME_AFTER_EVENT);
+
+        // Assert
+        $productActual = $this->sdk->getCatalogService()->getProduct($product->getCode());
+        $this->assertEquals($product->getCode(), $productActual->getCode());
+        $this->assertEquals($product->getUnit(), $productActual->getUnit());
+        $this->assertEquals($product->getUnitValue(), $productActual->getUnitValue());
+        $this->assertEquals($product->getUnitPriceRefUom(), $productActual->getUnitPriceRefUom());
+        $this->assertEquals($product->getUnitPriceRefValue(), $productActual->getUnitPriceRefValue());
+        $this->assertEquals($product->getHasCatchWeight(), $productActual->getHasCatchWeight());
+
+        // test the price per measurement unit that is read only (calculated field)
+        $this->assertEquals(84.99, $productActual->getPrice()->getPricePerMeasureUnit());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testUpdateBasePricePropsDirect()
+    {
+        $productCode = 'base-price-product';
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [$productCode]);
+
+        // Arrange - create
+        $price = $this->providePricing();
+        $product = new Product\Create();
+        $product->setCode($productCode)
+            ->setCatalogCode(self::SAMPLE_CATALOG_CODE)
+            ->setModelType(Product\Create::MODEL_TYPE_STANDARD)
+            ->setPrice($price)
+            ->setName(new Product\Dto\Name(['en-us' => 'Product with base prices']))
+            ->setIsInventoryManaged(false);
+
+        // Act - create
+        $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
+        
+        // Act - update
+        $update = new Product\Update();
+        $update->setUnit('kg')
+            ->setUnitValue(1)
+            ->setUnitPriceRefUom('kg')
+            ->setUnitPriceRefValue(1)
+            ->setHasCatchWeight(true);
+        $this->sdk->getCatalogService()->updateProduct($product->getCode(), $update, ['requestType' => 'direct']);
+
+        // Assert
+        $productActual = $this->sdk->getCatalogService()->getProduct($product->getCode());
+
+        $this->assertEquals($product->getCode(), $productActual->getCode());
+        $this->assertEquals($update->getUnit(), $productActual->getUnit());
+        $this->assertEquals($update->getUnitValue(), $productActual->getUnitValue());
+        $this->assertEquals($update->getUnitPriceRefUom(), $productActual->getUnitPriceRefUom());
+        $this->assertEquals($update->getUnitPriceRefValue(), $productActual->getUnitPriceRefValue());
+        $this->assertEquals($update->getHasCatchWeight(), $productActual->getHasCatchWeight());
+        // test the price per measurement unit that is read only (calculated field)
+        $this->assertEquals(84.99, $productActual->getPrice()->getPricePerMeasureUnit());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testUpdateBasePricePropsEvent()
+    {
+        $productCode = 'base-price-product';
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(self::CATALOG_SERVICE, self::METHOD_DELETE_PRODUCT, [$productCode]);
+
+        // Arrange - create
+        $price = $this->providePricing();
+        $product = new Product\Create();
+        $product->setCode($productCode)
+            ->setCatalogCode(self::SAMPLE_CATALOG_CODE)
+            ->setModelType(Product\Create::MODEL_TYPE_STANDARD)
+            ->setPrice($price)
+            ->setName(new Product\Dto\Name(['en-us' => 'Product with base prices']))
+            ->setIsInventoryManaged(false);
+
+        // Act - create
+        $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
+        
+        // Act - update
+        $update = new Product\Update();
+        $update->setCatalogCode(self::SAMPLE_CATALOG_CODE)
+            ->setUnit('kg')
+            ->setUnitValue(1)
+            ->setUnitPriceRefUom('kg')
+            ->setUnitPriceRefValue(1)
+            ->setHasCatchWeight(true);
+        $this->sdk->getCatalogService()->updateProduct($product->getCode(), $update);
+        usleep(self::SLEEP_TIME_AFTER_EVENT);
+
+        // Assert
+        $productActual = $this->sdk->getCatalogService()->getProduct($product->getCode());
+
+        $this->assertEquals($product->getCode(), $productActual->getCode());
+        $this->assertEquals($update->getUnit(), $productActual->getUnit());
+        $this->assertEquals($update->getUnitValue(), $productActual->getUnitValue());
+        $this->assertEquals($update->getUnitPriceRefUom(), $productActual->getUnitPriceRefUom());
+        $this->assertEquals($update->getUnitPriceRefValue(), $productActual->getUnitPriceRefValue());
+        $this->assertEquals($update->getHasCatchWeight(), $productActual->getHasCatchWeight());
+        // test the price per measurement unit that is read only (calculated field)
+        $this->assertEquals(84.99, $productActual->getPrice()->getPricePerMeasureUnit());
     }
 
     /**
@@ -265,8 +437,8 @@ class ProductTest extends CatalogUtility
         );
 
         // Assert
-        $product = $this->sdk->getCatalogService()->getProduct($productMaximum->getCode());
-        $updatedProductPrice = $product->getPrice();
+        $productActual = $this->sdk->getCatalogService()->getProduct($productMaximum->getCode());
+        $updatedProductPrice = $productActual->getPrice();
         $this->assertEquals($price->getCurrencyCode(), $updatedProductPrice->getCurrencyCode());
         $this->assertEquals($price->getCost(), $updatedProductPrice->getCost());
         $this->assertEquals($price->getPrice(), $updatedProductPrice->getPrice());

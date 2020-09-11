@@ -54,7 +54,7 @@ services:
 
   ### https://gitlab.localdev.cc/omnichannel/services/auth
   auth:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/auth:v1.0.0-alpha-google-cloud.2
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/auth:v1.0.0
     restart: always
     links:
       - etcd
@@ -79,7 +79,7 @@ services:
 
   ### https://gitlab.localdev.cc/omnichannel/services/user
   user:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/user:v1.0.0-beta.37-google-cloud.4
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/user:v1.1.2-beta.6
     restart: always
     links:
       - etcd
@@ -89,7 +89,6 @@ services:
       - LOG_TO_SYSLOG=false
       - PUBSUB_EMULATOR_HOST=googlepubsub-emulator:8085
       - INTEGRATION=1
-
   ### https://gitlab.localdev.cc/omnichannel/services/worker
   omni-worker:
     image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/worker:v1.3.0-alpha.16
@@ -107,7 +106,7 @@ services:
 
   ### https://gitlab.localdev.cc/omnichannel/services/event-receiver
   event-receiver:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/event-receiver:v1.0.0-beta.14-google-cloud.1
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/event-receiver:v1.0.0-rc.1
     links:
       - etcd
     environment:
@@ -131,7 +130,7 @@ services:
 
   ### https://gitlab.localdev.cc/omnichannel/services/location
   location:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/location:v1.1.0-alpha.1
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/location:v1.2.0-beta.17
     links:
       - etcd
     environment:
@@ -186,7 +185,7 @@ services:
 
   ### https://gitlab.localdev.cc/omnichannel/services/products
   catalog:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/catalog:v1.0.1-alpha.68
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/catalog:v1.0.1-alpha.71
     restart: always
     links:
       - etcd

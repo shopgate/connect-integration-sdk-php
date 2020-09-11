@@ -5,9 +5,9 @@ VALUES
 (19,'integration-tests','integration-tests','client_credentials,refresh_token',13,3600,7776000,NULL),
 (20,'bananas','bananas','password,refresh_token',NULL,3600,7776000,NULL);
 
-INSERT INTO omnichannel.`User` (`UserID`, `UserEmail`, `FirstName`, `LastName`, `ProfileImage`, `CreateBy`, `CreateDate`, `UpdateBy`, `UpdateDate`, `DeleteBy`, `DeleteDate`, `UserCode`)
+INSERT INTO omnichannel_user.`User` (`UserID`, `UserEmail`, `FirstName`, `LastName`, `ProfileImage`, `CreateBy`, `CreateDate`, `UpdateBy`, `UpdateDate`, `DeleteBy`, `DeleteDate`)
 VALUES
-('4b4b51ce-a4de-4e48-9cf4-ade08de2cc02', 'test@test.com', 'test', 'test', NULL, '', '2018-11-13 18:57:40', NULL, NULL, NULL, NULL, '64981c63-e909-47aa-95ab-a7e6ee2a6e50');
+('4b4b51ce-a4de-4e48-9cf4-ade08de2cc02', 'test@test.com', 'test', 'test', NULL, '', '2018-11-13 18:57:40', NULL, NULL, NULL, NULL);
 
 INSERT IGNORE INTO omnichannel.`Merchant` (`MerchantID`, `OwnerUserID`, `MerchantName`, `MerchantCode`, `Region`, `AppLogo`, `CreateBy`)
 VALUES

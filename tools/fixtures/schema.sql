@@ -1,7 +1,6 @@
 SET GLOBAL sql_mode = 'NO_ENGINE_SUBSTITUTION';
 SET FOREIGN_KEY_CHECKS = 0;
 
-DROP DATABASE IF EXISTS omnichannel_user;
 DROP DATABASE IF EXISTS catalog;
 DROP DATABASE IF EXISTS location;
 DROP DATABASE IF EXISTS merchant;
@@ -9,16 +8,17 @@ DROP DATABASE IF EXISTS customer;
 DROP DATABASE IF EXISTS import;
 DROP DATABASE IF EXISTS webhook;
 DROP DATABASE IF EXISTS omnichannel_order;
+DROP DATABASE IF EXISTS omnichannel_user;
 DROP DATABASE IF EXISTS omnichannel;
 DROP DATABASE IF EXISTS omnichannel_auth;
 
-CREATE DATABASE omnichannel_user;
 CREATE DATABASE catalog;
 CREATE DATABASE location;
 CREATE DATABASE omnichannel;
 CREATE DATABASE omnichannel_auth;
 CREATE DATABASE import;
 CREATE DATABASE omnichannel_order;
+CREATE DATABASE omnichannel_user;
 CREATE DATABASE webhook;
 
 DROP TABLE IF EXISTS location.`Location`;
@@ -291,8 +291,7 @@ CREATE TABLE omnichannel.`Merchant`
     `DeleteDate`   datetime                                 DEFAULT NULL,
     PRIMARY KEY (`MerchantID`),
     UNIQUE KEY `UKMerchantCode` (`MerchantCode`),
-    KEY `FKOwnerID_UserID` (`OwnerUserID`),
-    CONSTRAINT `FKOwnerID_UserID` FOREIGN KEY (`OwnerUserID`) REFERENCES `User` (`UserID`)
+    KEY `FKOwnerID_UserID` (`OwnerUserID`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
@@ -394,51 +393,6 @@ CREATE TABLE omnichannel.`MerchantPartner`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
-DROP TABLE IF EXISTS omnichannel.`User`;
-
-CREATE TABLE omnichannel.`User`
-(
-    `UserID`       char(36)                        NOT NULL DEFAULT '',
-    `UserEmail`    varchar(255) CHARACTER SET utf8 NOT NULL,
-    `FirstName`    varchar(255) CHARACTER SET utf8          DEFAULT NULL,
-    `LastName`     varchar(255) CHARACTER SET utf8          DEFAULT NULL,
-    `ProfileImage` varchar(255)                             DEFAULT NULL,
-    `CreateBy`     varchar(255) CHARACTER SET utf8 NOT NULL,
-    `CreateDate`   datetime                        NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `UpdateBy`     varchar(255) CHARACTER SET utf8          DEFAULT NULL,
-    `UpdateDate`   datetime                                 DEFAULT NULL,
-    `DeleteBy`     varchar(255) CHARACTER SET utf8          DEFAULT NULL,
-    `DeleteDate`   datetime                                 DEFAULT NULL,
-    `UserCode`     varchar(64) CHARACTER SET utf8  NOT NULL,
-    PRIMARY KEY (`UserID`),
-    UNIQUE KEY `UKUserCode` (`UserCode`),
-    UNIQUE KEY `UserEmail` (`UserEmail`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;
-
-DROP TABLE IF EXISTS omnichannel.`UserRole`;
-
-CREATE TABLE omnichannel.`UserRole`
-(
-    `UserRoleID` char(36)                        NOT NULL DEFAULT '',
-    `UserID`     char(36)                        NOT NULL DEFAULT '',
-    `MerchantID` char(36)                        NOT NULL DEFAULT '',
-    `RoleID`     char(36)                        NOT NULL DEFAULT '',
-    `LocationID` char(36)                        NOT NULL DEFAULT '',
-    `CreateBy`   varchar(255) CHARACTER SET utf8 NOT NULL,
-    `CreateDate` datetime                        NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `UpdateBy`   varchar(255) CHARACTER SET utf8          DEFAULT NULL,
-    `UpdateDate` datetime                                 DEFAULT NULL,
-    `DeleteBy`   varchar(255) CHARACTER SET utf8          DEFAULT NULL,
-    `DeleteDate` datetime                                 DEFAULT NULL,
-    PRIMARY KEY (`UserRoleID`),
-    KEY `FKMerchantID_UR` (`MerchantID`),
-    KEY `UserID_LocationID` (`UserID`, `LocationID`),
-    CONSTRAINT `FKMerchantID_UR` FOREIGN KEY (`MerchantID`) REFERENCES `Merchant` (`MerchantID`),
-    CONSTRAINT `FKUserRoleID_UserID` FOREIGN KEY (`UserID`) REFERENCES `User` (`UserID`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;
-
 DROP TABLE IF EXISTS omnichannel_auth.`Client`;
 
 CREATE TABLE omnichannel_auth.`Client`
@@ -473,170 +427,3 @@ CREATE TABLE omnichannel_auth.`RefreshToken`
     CONSTRAINT `RefreshToken_ibfk_1` FOREIGN KEY (`ClientId`) REFERENCES `Client` (`ClientId`) ON DELETE CASCADE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
-
-DROP TABLE IF EXISTS omnichannel_user.`Permission`;
-CREATE TABLE omnichannel_user.`Permission`
-(
-    `PermissionID`     char(36)                                NOT NULL DEFAULT '',
-    `PermissionStatus` enum ('active','inactive','deleted')    NOT NULL DEFAULT 'active',
-    `PermissionCode`   varchar(10)                             NOT NULL DEFAULT '',
-    `Application`      enum ('admin','relate','deliver','api') NOT NULL,
-    `Module`           varchar(100)                                     DEFAULT '',
-    `Submodule`        varchar(100)                                     DEFAULT '',
-    `Function`         enum ('view','edit','create','delete')           DEFAULT NULL,
-    `CreateBy`         varchar(255) CHARACTER SET utf8         NOT NULL,
-    `CreateDate`       datetime                                NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `UpdateBy`         varchar(255) CHARACTER SET utf8                  DEFAULT NULL,
-    `UpdateDate`       datetime                                         DEFAULT NULL,
-    `DeleteBy`         varchar(255) CHARACTER SET utf8                  DEFAULT NULL,
-    `DeleteDate`       datetime                                         DEFAULT NULL,
-    PRIMARY KEY (`PermissionID`),
-    UNIQUE KEY `UNQ_Func` (`Application`, `Module`, `Submodule`, `Function`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;
-
-DROP TABLE IF EXISTS omnichannel_user.`PermissionMapping`;
-CREATE TABLE omnichannel_user.`PermissionMapping`
-(
-    `PermissionMappingId`   char(36) NOT NULL DEFAULT '',
-    `PermissionId`          char(36) NOT NULL DEFAULT '',
-    `DependingPermissionId` char(36) NOT NULL DEFAULT '',
-    `CreateBy`              varchar(255)      DEFAULT NULL,
-    `CreateDate`            datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `UpdateBy`              varchar(255)      DEFAULT NULL,
-    `UpdateDate`            datetime          DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-    `DeleteBy`              varchar(255)      DEFAULT '',
-    `DeleteDate`            datetime          DEFAULT NULL,
-    PRIMARY KEY (`PermissionMappingId`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;
-
-DROP TABLE IF EXISTS omnichannel_user.`Role`;
-CREATE TABLE omnichannel_user.`Role`
-(
-    `RoleID`          char(36)                             NOT NULL DEFAULT '',
-    `MerchantID`      char(36)                                      DEFAULT '',
-    `RoleCode`        varchar(100) CHARACTER SET utf8      NOT NULL,
-    `RoleName`        varchar(255) CHARACTER SET utf8      NOT NULL,
-    `RoleStatus`      enum ('active','inactive','deleted') NOT NULL DEFAULT 'active',
-    `ApplicationType` enum ('admin','relate&deliver')      NOT NULL,
-    `CreateBy`        varchar(255) CHARACTER SET utf8      NOT NULL,
-    `CreateDate`      datetime                             NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `UpdateBy`        varchar(255) CHARACTER SET utf8               DEFAULT NULL,
-    `UpdateDate`      datetime                                      DEFAULT NULL,
-    `DeleteBy`        varchar(255) CHARACTER SET utf8               DEFAULT NULL,
-    `DeleteDate`      datetime                                      DEFAULT NULL,
-    PRIMARY KEY (`RoleID`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;
-
-DROP TABLE IF EXISTS omnichannel_user.`RolePermission`;
-
-CREATE TABLE omnichannel_user.`RolePermission`
-(
-    `RolePermissionID` char(36)                        NOT NULL DEFAULT '',
-    `RoleID`           char(36)                        NOT NULL DEFAULT '',
-    `PermissionID`     char(36)                        NOT NULL DEFAULT '',
-    `CreateBy`         varchar(255) CHARACTER SET utf8 NOT NULL,
-    `CreateDate`       datetime                        NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `UpdateBy`         varchar(255) CHARACTER SET utf8          DEFAULT NULL,
-    `UpdateDate`       datetime                                 DEFAULT NULL,
-    `DeleteBy`         varchar(255) CHARACTER SET utf8          DEFAULT NULL,
-    `DeleteDate`       datetime                                 DEFAULT NULL,
-    PRIMARY KEY (`RolePermissionID`, `RoleID`, `PermissionID`),
-    KEY `PermissionID_idx` (`PermissionID`),
-    KEY `RoleID_idx` (`RoleID`),
-    CONSTRAINT `FK_Permission` FOREIGN KEY (`PermissionID`) REFERENCES omnichannel_user.`Permission` (`PermissionID`),
-    CONSTRAINT `FK_Role` FOREIGN KEY (`RoleID`) REFERENCES `Role` (`RoleID`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;
-
-DROP TABLE IF EXISTS omnichannel_user.`User`;
-
-CREATE TABLE omnichannel_user.`User`
-(
-    `UserID`         char(36)                        NOT NULL DEFAULT '',
-    `UserEmail`      varchar(255) CHARACTER SET utf8 NOT NULL,
-    `UserPassword`   varchar(100) CHARACTER SET utf8          DEFAULT NULL,
-    `UserStatus`     enum ('active', 'inactive')     not null DEFAULT 'active',
-    `FirstName`      varchar(255) CHARACTER SET utf8          DEFAULT NULL,
-    `LastName`       varchar(255) CHARACTER SET utf8          DEFAULT NULL,
-    `ProfileImage`   varchar(255)                             DEFAULT NULL,
-    `Token`          varchar(255)                             DEFAULT NULL,
-    `TokenExpiresAt` dateTime                                 DEFAULT NULL,
-    `CreateBy`       varchar(255) CHARACTER SET utf8 NOT NULL,
-    `CreateDate`     datetime                        NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `UpdateBy`       varchar(255) CHARACTER SET utf8          DEFAULT NULL,
-    `UpdateDate`     datetime                                 DEFAULT NULL,
-    `DeleteBy`       varchar(255) CHARACTER SET utf8          DEFAULT NULL,
-    `DeleteDate`     datetime                                 DEFAULT NULL,
-    PRIMARY KEY (`UserID`),
-    UNIQUE KEY `UserEmail` (`UserEmail`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;
-
-DROP TABLE IF EXISTS omnichannel_user.`UserRole`;
-
-CREATE TABLE omnichannel_user.`UserRole`
-(
-    `UserRoleID`  char(36)                        NOT NULL DEFAULT '',
-    `UserID`      char(36)                        NOT NULL DEFAULT '',
-    `MerchantID`  char(36)                        NOT NULL DEFAULT '',
-    `RoleID`      char(36)                        NOT NULL DEFAULT '',
-    `ContextType` varchar(255)                             DEFAULT NULL,
-    `ContextId`   varchar(255)                             DEFAULT NULL,
-    `CreateBy`    varchar(255) CHARACTER SET utf8 NOT NULL,
-    `CreateDate`  datetime                        NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `UpdateBy`    varchar(255) CHARACTER SET utf8          DEFAULT NULL,
-    `UpdateDate`  datetime                                 DEFAULT NULL,
-    `DeleteBy`    varchar(255) CHARACTER SET utf8          DEFAULT NULL,
-    `DeleteDate`  datetime                                 DEFAULT NULL,
-    PRIMARY KEY (`UserRoleID`),
-    KEY `UserID_LocationID` (`UserID`, `ContextType`),
-    KEY `FKRoleID` (`RoleID`),
-    CONSTRAINT `FKRoleID` FOREIGN KEY (`RoleID`) REFERENCES `Role` (`RoleID`),
-    CONSTRAINT `FKUserRoleID_UserID` FOREIGN KEY (`UserID`) REFERENCES `User` (`UserID`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;
-
-DROP TABLE IF EXISTS omnichannel_user.`UserMerchant`;
-
-CREATE TABLE omnichannel_user.`UserMerchant`
-(
-    `UserMerchantID` char(36)                             NOT NULL DEFAULT '',
-    `UserID`         char(36)                             NOT NULL DEFAULT '',
-    `MerchantID`     char(36)                             NOT NULL DEFAULT '',
-    `Status`         enum ('active','inactive','deleted') NOT NULL DEFAULT 'active',
-    `LastLoginDate`  datetime                                      DEFAULT NULL,
-    `CreateBy`       varchar(255) CHARACTER SET utf8      NOT NULL,
-    `CreateDate`     datetime                             NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `UpdateBy`       varchar(255) CHARACTER SET utf8               DEFAULT NULL,
-    `UpdateDate`     datetime                                      DEFAULT NULL,
-    `DeleteBy`       varchar(255) CHARACTER SET utf8               DEFAULT NULL,
-    `DeleteDate`     datetime                                      DEFAULT NULL,
-    PRIMARY KEY (`UserMerchantID`),
-    KEY `UserID_LocationID` (`UserID`, `Status`),
-    CONSTRAINT `UserMerchant_ibfk_2` FOREIGN KEY (`UserID`) REFERENCES `User` (`UserID`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;
-
-DROP TABLE IF EXISTS omnichannel_user.`UserMetric`;
-
-CREATE TABLE omnichannel_user.`UserMetric`
-(
-    `UserMetricID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-    `UserID`       char(36)            NOT NULL,
-    `MerchantID`   char(36)                     DEFAULT NULL,
-    `Key`          varchar(255)        NOT NULL DEFAULT '',
-    `Value`        varchar(255)                 DEFAULT NULL,
-    `CreateBy`     varchar(255)        NOT NULL DEFAULT '',
-    `CreateDate`   datetime            NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `UpdateBy`     varchar(255)                 DEFAULT NULL,
-    `UpdateDate`   datetime                     DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-    `DeleteBy`     varchar(255)                 DEFAULT NULL,
-    `DeleteDate`   datetime                     DEFAULT NULL,
-    PRIMARY KEY (`UserMetricID`),
-    UNIQUE KEY `UserMetric_Key` (`UserID`, `MerchantID`, `Key`),
-    CONSTRAINT `UserMetric_UserID` FOREIGN KEY (`UserID`) REFERENCES `User` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;

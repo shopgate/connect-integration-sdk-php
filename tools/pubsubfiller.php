@@ -82,6 +82,9 @@ $topics = [
     'productCreated-development' => [],
     'productUpdated-development' => [],
     'segmentChanged-development' => [],
+    'locationCreated-development' => [],
+    'locationUpdated-development' => [],
+    'locationDeleted-development' => [],
     'importCompleted-development' => [],
     'importDone-development' => [
         'workerSvcImportDone-development',

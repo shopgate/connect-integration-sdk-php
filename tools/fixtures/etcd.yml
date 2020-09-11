@@ -40,6 +40,7 @@ development:
       mysql:
         connectionLimit: 1
         database: omnichannel_user
+        autoCreateDatabase: true
         host: mysql
         password: secret
         port: 3306

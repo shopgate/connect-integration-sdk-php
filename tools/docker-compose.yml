@@ -9,6 +9,7 @@ services:
     environment:
       - ETCD_HOST=http://etcd:2379
       - PUBSUB_EMULATOR_HOST=googlepubsub-emulator:8085
+      - COMPOSER_PROCESS_TIMEOUT=600
     tty: true
 
   php73:

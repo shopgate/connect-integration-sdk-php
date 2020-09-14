@@ -63,7 +63,9 @@ class WishlistTest extends CustomerUtility
 
         // CleanUp
         $this->cleanupWishlists(
-            array_map(function ($el) use($customerId) { return [$el['code'], $customerId]; }, $sampleWishlists),
+            array_map(function ($el) use ($customerId) {
+                return [$el['code'], $customerId];
+            }, $sampleWishlists),
             $customerId,
             $productCodes
         );
@@ -228,7 +230,6 @@ class WishlistTest extends CustomerUtility
      */
     public function testUpdateWishlist($original, $updated)
     {
-
         $defaultFields = ['code' => self::WISHLIST_CODE];
         $originalCreateFields = array_merge($defaultFields, $original);
 

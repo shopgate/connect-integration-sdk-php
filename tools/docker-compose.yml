@@ -17,6 +17,8 @@ services:
       context: ../
       dockerfile: tools/dockerfiles/Php73
     tty: true
+    environment:
+      - COMPOSER_PROCESS_TIMEOUT=600
 
   ### infra-structure
   etcd:

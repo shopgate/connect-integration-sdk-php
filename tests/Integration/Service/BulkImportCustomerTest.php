@@ -7,7 +7,7 @@ use Shopgate\ConnectSdk\Tests\Integration\CustomerUtility;
 
 class BulkImportCustomerTest extends CustomerUtility
 {
-    const SLEEP_TIME_AFTER_BULK = 14000000;
+    const SLEEP_TIME_AFTER_BULK = 12000000;
 
     /**
      * @throws Exception
@@ -29,6 +29,7 @@ class BulkImportCustomerTest extends CustomerUtility
 
         // Assert
         $availableCustomers = $this->sdk->getCustomerService()->getCustomers();
+
         // CleanUp
         $deleteIds = [];
         foreach ($availableCustomers->getCustomers() as $customer) {

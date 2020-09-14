@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- base price properties to a product `unitValue`, `unitPriceRefUom`, `unitPriceRefValue`
+- indicator if a product `hasCatchWeight`
+- calculated property on the product price `pricePerMeasureUnit`
+### Removed
+- location settings `enableInventoryBrowse`, `enableForRelate`
+
 ## [1.3.3] - 2020-06-04
 ### Changed
 - using a fork of the dto/dto library now

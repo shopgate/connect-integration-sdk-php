@@ -314,7 +314,7 @@ class Client implements ClientInterface
             if (!isset($responseContent['errors']) || empty($responseContent['errors'])) {
                 return;
             }
-            var_export($responseContent['errors']);
+
             foreach ($responseContent['errors'] as $error) {
                 if ($error['code'] === 404) {
                     throw new NotFoundException(

@@ -68,11 +68,24 @@ development:
     OmniMerchantService:
       mysql:
         connectionLimit: 1
-        database: omnichannel
+        database: merchant
         host: mysql
         password: secret
         port: 3306
         user: root
+        autoCreateDatabase: true
+
+      jsonToken:
+        secretKey: php-sdk-tests
+        expireSeconds: 60
+      aws:
+        accessKeyId: fake
+        bucket: shopgatedevcloud-omni-merchant-development
+        region: eu-central-1
+        s3Endpoint: http://s3:4569
+        secretAccessKey: secret
+      googleCloud:
+        projectId: test-project
 
     OmniLocationService:
       mysql:
@@ -88,6 +101,8 @@ development:
         authPassword: omni
         authRequired: false
         requireValidSSL: false
+      googleCloud:
+        projectId: test-project
 
     OmniCustomerService:
       mysql:
@@ -98,6 +113,27 @@ development:
         password: secret
         port: 3306
         autoCreateDatabase: "true"
+      elasticSearch:
+        url: http://elasticsearch:9200
+        authUser: elastic
+        authPassword: omni
+        authRequired: true
+        requireValidSSL: false
+      streamingOptions:
+        highWaterMarkText: 102400
+        highWaterMarkObject: 50000
+      memory:
+        collectMemory: true
+      googleCloud:
+        projectId: test-project
+      sqs:
+        region: eu-central-1
+        queueUrl: http://sqs:4100/queue/send-mail
+      cakeConfig:
+        cakeUrl: api.shopgate.com
+        apiKey: xxx
+      resetUI:
+        baseUrl: xxx
 
     CatalogService:
       mysql:
@@ -134,6 +170,9 @@ development:
         projectId: test-project
       datawarehouse:
         endpoint: http://host-based-1460236270.eu-west-1.elb.amazonaws.com:8048/query.json
+      urlshortener:
+        url: urlshortener
+        signature: d726845957
 
     OmniWebhookService:
       mysql:

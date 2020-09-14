@@ -42,9 +42,17 @@ class OrderTest extends OrderUtility
      */
     public function testCreateOrder($productIds, $locationCode, $orders)
     {
+        // CleanUp
+        $this->cleanUp([], $productIds, [$locationCode]);
+
         // Arrange
         $this->createDefaultCatalogs();
         $customerId = $this->createCustomer();
+        $this->deleteEntitiesAfterTestRun(
+            self::CUSTOMER_SERVICE,
+            self::METHOD_DELETE_CUSTOMER,
+            [$customerId]
+        );
         $this->addSampleLocation($locationCode);
         $this->addSampleProducts($productIds);
         $createOrders = [];
@@ -52,9 +60,6 @@ class OrderTest extends OrderUtility
             $order['customerId'] = $customerId;
             $createOrders[] = $this->createSampleOrder($productIds, $locationCode, $order);
         }
-
-        // CleanUp
-        $this->cleanUp([$customerId], $productIds, [$locationCode]);
 
         // Assert
         $response = $this->sdk->getOrderService()->addOrders($createOrders);
@@ -101,11 +106,21 @@ class OrderTest extends OrderUtility
      */
     public function testGetOrder()
     {
+        $productIds = ['987'];
+
+        // CleanUp
+        $this->cleanUp([], $productIds, [self::LOCATION_CODE]);
+
         // Arrange
         $this->createDefaultCatalogs();
         $customerId = $this->createCustomer();
+        $this->deleteEntitiesAfterTestRun(
+            self::CUSTOMER_SERVICE,
+            self::METHOD_DELETE_CUSTOMER,
+            [$customerId]
+        );
+
         $this->addSampleLocation(self::LOCATION_CODE);
-        $productIds = ['987'];
         $this->addSampleProducts($productIds);
         $externalCode = 'external-get-test-code';
         $order = $this->createSampleOrder(
@@ -115,8 +130,6 @@ class OrderTest extends OrderUtility
         );
         $response = $this->sdk->getOrderService()->addOrders([$order]);
         $orderId = array_pop($response['orderNumbers']);
-        // CleanUp
-        $this->cleanUp([$customerId], $productIds, [self::LOCATION_CODE]);
 
         // Assert
         $returnedOrder = $this->sdk->getOrderService()->getOrder($orderId);
@@ -128,12 +141,24 @@ class OrderTest extends OrderUtility
      */
     public function testGetOrdersByCustomerId()
     {
+        $productIds = ['951', '753'];
+        // CleanUp
+        $this->cleanUp(
+            [],
+            $productIds,
+            [self::LOCATION_CODE]
+        );
+
         // Arrange
         $this->createDefaultCatalogs();
         $customerOneId = $this->createCustomer();
         $customerTwoId = $this->createCustomer();
+        $this->deleteEntitiesAfterTestRun(
+            self::CUSTOMER_SERVICE,
+            self::METHOD_DELETE_CUSTOMER,
+            [$customerOneId, $customerTwoId]
+        );
         $this->addSampleLocation(self::LOCATION_CODE);
-        $productIds = ['951', '753'];
         $this->addSampleProducts($productIds);
         $orders = [
             $this->createSampleOrder($productIds, self::LOCATION_CODE, ['customerId' => $customerOneId]),
@@ -141,13 +166,6 @@ class OrderTest extends OrderUtility
             $this->createSampleOrder($productIds, self::LOCATION_CODE, ['customerId' => $customerTwoId]),
         ];
         $this->sdk->getOrderService()->addOrders($orders);
-
-        // CleanUp
-        $this->cleanUp(
-            [$customerOneId, $customerTwoId],
-            $productIds,
-            [self::LOCATION_CODE]
-        );
 
         // Assert
         $responseForCustomerOne = $this->sdk->getOrderService()->getOrders(
@@ -166,11 +184,22 @@ class OrderTest extends OrderUtility
      */
     public function testGetOrdersByExternalCode()
     {
+        $productIds = ['951', '753'];
+        // CleanUp
+        $this->cleanUp(
+            [],
+            $productIds,
+            [self::LOCATION_CODE]
+        );
         // Arrange
         $this->createDefaultCatalogs();
         $customerId = $this->createCustomer();
+        $this->deleteEntitiesAfterTestRun(
+            self::CUSTOMER_SERVICE,
+            self::METHOD_DELETE_CUSTOMER,
+            [$customerId]
+        );
         $this->addSampleLocation(self::LOCATION_CODE);
-        $productIds = ['951', '753'];
         $externalCodeOne = md5(date('c') . '1');
         $externalCodeTwo = md5(date('c') . '2');
         $this->addSampleProducts($productIds);
@@ -194,13 +223,6 @@ class OrderTest extends OrderUtility
         ];
         $this->sdk->getOrderService()->addOrders($orders);
 
-        // CleanUp
-        $this->cleanUp(
-            [$customerId],
-            $productIds,
-            [self::LOCATION_CODE]
-        );
-
         // Assert
         $responseForExternalCodeOne = $this->sdk->getOrderService()->getOrders(
             ['filters' => ['externalCode' => $externalCodeOne]]
@@ -218,11 +240,24 @@ class OrderTest extends OrderUtility
      */
     public function testGetOrdersLimitOffset()
     {
+        $productIds = ['123', '321'];
+
+        // CleanUp
+        $this->cleanUp(
+            [],
+            $productIds,
+            [self::LOCATION_CODE]
+        );
+
         // Arrange
         $this->createDefaultCatalogs();
         $customerId = $this->createCustomer();
+        $this->deleteEntitiesAfterTestRun(
+            self::CUSTOMER_SERVICE,
+            self::METHOD_DELETE_CUSTOMER,
+            [$customerId]
+        );
         $this->addSampleLocation(self::LOCATION_CODE);
-        $productIds = ['123', '321'];
         $this->addSampleProducts($productIds);
         $orders = [];
         for ($num = 0; $num < 10; $num++) {
@@ -233,13 +268,6 @@ class OrderTest extends OrderUtility
             );
         }
         $this->sdk->getOrderService()->addOrders($orders);
-
-        // CleanUp
-        $this->cleanUp(
-            [$customerId],
-            $productIds,
-            [self::LOCATION_CODE]
-        );
 
         // Assert
         $responseOne = $this->sdk->getOrderService()->getOrders(['limit' => 3]);
@@ -409,9 +437,10 @@ class OrderTest extends OrderUtility
     private function addSampleLocation($code)
     {
         $location = new Location\Create([
-            'code' => $code,
-            'name' => 'Test Location Name',
-            'type' => new Location\Dto\Type(['code' => Location::TYPE_STORE])
+            'code'      => $code,
+            'name'      => 'Test Location Name',
+            'type'      => new Location\Dto\Type(['code' => Location::TYPE_STORE]),
+            'isDefault' => true
         ]);
         $this->sdk->getLocationService()->addLocations([$location]);
     }

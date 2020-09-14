@@ -7,7 +7,7 @@ use Shopgate\ConnectSdk\Tests\Integration\CustomerUtility;
 
 class BulkImportCustomerTest extends CustomerUtility
 {
-    const SLEEP_TIME_AFTER_BULK = 12000000;
+    const SLEEP_TIME_AFTER_BULK = 14000000;
 
     /**
      * @throws Exception
@@ -29,6 +29,13 @@ class BulkImportCustomerTest extends CustomerUtility
 
         // Assert
         $availableCustomers = $this->sdk->getCustomerService()->getCustomers();
+        // CleanUp
+        $deleteIds = [];
+        foreach ($availableCustomers->getCustomers() as $customer) {
+            $deleteIds[] = $customer->getId();
+        }
+        $this->deleteEntitiesAfterTestRun(self::CUSTOMER_SERVICE, self::METHOD_DELETE_CUSTOMER, $deleteIds);
+
         $this->assertCount(2, $availableCustomers->getCustomers());
 
         foreach ($availableCustomers->getCustomers() as $availableCustomer) {
@@ -37,14 +44,6 @@ class BulkImportCustomerTest extends CustomerUtility
             $this->assertCount(1, $fullCustomer->getContacts());
             $this->assertEquals(self::CUSTOMER_CONTACT_FIRSTNAME, $fullCustomer->getContacts()[0]->getFirstName());
         }
-
-        // CleanUp
-        $deleteIds = [];
-        foreach ($availableCustomers->getCustomers() as $customer) {
-            $deleteIds[] = $customer->getId();
-        }
-
-        $this->deleteEntitiesAfterTestRun(self::CUSTOMER_SERVICE, self::METHOD_DELETE_CUSTOMER, $deleteIds);
     }
 
     /**
@@ -67,13 +66,13 @@ class BulkImportCustomerTest extends CustomerUtility
 
         // Assert
         $availableCustomers = $this->sdk->getCustomerService()->getCustomers();
-        $this->assertCount(2, $availableCustomers->getCustomers());
-
         $deleteIds = [];
         foreach ($availableCustomers->getCustomers() as $customer) {
             $deleteIds[] = $customer->getId();
         }
 
         $this->deleteEntitiesAfterTestRun(self::CUSTOMER_SERVICE, self::METHOD_DELETE_CUSTOMER, $deleteIds);
+
+        $this->assertCount(2, $availableCustomers->getCustomers());
     }
 }

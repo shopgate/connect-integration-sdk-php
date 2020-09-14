@@ -40,6 +40,8 @@ else
     docker-compose $DOCKER_COMPOSE_PARAMETERS build php56
 fi
 
+docker-compose $DOCKER_COMPOSE_PARAMETERS build elasticsearch-filler
+
 docker-compose $DOCKER_COMPOSE_PARAMETERS up -d --remove-orphans php56
 docker-compose $DOCKER_COMPOSE_PARAMETERS up -d mysql
 
@@ -79,6 +81,8 @@ docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T mysql sh -c "echo \"LOAD DATA 
 retry "AuthService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T auth curl http://localhost/health -o /dev/null 2>&1"
 
 docker-compose $DOCKER_COMPOSE_PARAMETERS up -d reverse-proxy
+
+docker-compose $DOCKER_COMPOSE_PARAMETERS run --rm -T elasticsearch-filler
 
 retry "MerchantService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T merchant curl http://localhost/health -o /dev/null 2>&1"
 retry "LocationService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T location curl http://localhost/health -o /dev/null 2>&1"

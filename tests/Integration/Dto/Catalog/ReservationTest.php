@@ -42,14 +42,23 @@ class ReservationTest extends CatalogUtility
      */
     public function testCreateGetDeleteReservation()
     {
+        $inventories = $this->provideSampleInventories(1);
+        // CleanUp
+        $this->cleanUp([self::PRODUCT_CODE], [self::LOCATION_CODE], [], $this->getDeleteInventories($inventories));
+        
         // Arrange
         $product = $this->prepareProductMinimum();
         $this->sdk->getCatalogService()->addProducts([$product], ['requestType' => 'direct']);
         $this->createLocation(self::LOCATION_CODE);
-        $inventories = $this->provideSampleInventories(1);
+        
         $this->sdk->getCatalogService()->addInventories($inventories);
 
         $order['customerId'] = $this->createCustomer();
+        $this->deleteEntitiesAfterTestRun(
+            self::CUSTOMER_SERVICE,
+            self::METHOD_DELETE_CUSTOMER,
+            [$order['customerId']]
+        );
         $orderNumber = $this->createSampleOrder([self::PRODUCT_CODE], self::LOCATION_CODE, $order);
 
         $reservations = $this->provideSampleReservations($orderNumber, 1, self::PRODUCT_CODE);

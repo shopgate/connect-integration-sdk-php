@@ -44,15 +44,15 @@ class CustomerTest extends CustomerUtility
         $sampleCustomers = $this->provideSampleCustomers($createdItemCount);
         $response = $this->sdk->getCustomerService()->addCustomers($sampleCustomers);
 
-        // Act
-        $customers = $this->sdk->getCustomerService()->getCustomers()->getCustomers();
-
         // CleanUp
         $this->deleteEntitiesAfterTestRun(
             self::CUSTOMER_SERVICE,
             self::METHOD_DELETE_CUSTOMER,
             $response['ids']
         );
+
+        // Act
+        $customers = $this->sdk->getCustomerService()->getCustomers()->getCustomers();
 
         // Assert
         /** @noinspection PhpParamsInspection */
@@ -69,15 +69,15 @@ class CustomerTest extends CustomerUtility
         $sampleCustomers = $this->provideSampleCustomers($createdItemCount);
         $response = $this->sdk->getCustomerService()->addCustomers($sampleCustomers);
 
-        // Act
-        $meta = $this->sdk->getCustomerService()->getCustomers()->getMeta();
-
         // CleanUp
         $this->deleteEntitiesAfterTestRun(
             self::CUSTOMER_SERVICE,
             self::METHOD_DELETE_CUSTOMER,
             $response['ids']
         );
+
+        // Act
+        $meta = $this->sdk->getCustomerService()->getCustomers()->getMeta();
 
         // Assert
         /** @noinspection PhpParamsInspection */
@@ -94,15 +94,15 @@ class CustomerTest extends CustomerUtility
         $sampleCustomers = $this->provideSampleCustomers($createdItemCount);
         $response = $this->sdk->getCustomerService()->addCustomers($sampleCustomers);
 
-        // Act
-        $customer = $this->sdk->getCustomerService()->getCustomer($response['ids'][1]);
-
         // CleanUp
         $this->deleteEntitiesAfterTestRun(
             self::CUSTOMER_SERVICE,
             self::METHOD_DELETE_CUSTOMER,
             $response['ids']
         );
+
+        // Act
+        $customer = $this->sdk->getCustomerService()->getCustomer($response['ids'][1]);
 
         // Assert
         /** @noinspection PhpParamsInspection */
@@ -142,6 +142,12 @@ class CustomerTest extends CustomerUtility
      */
     public function testCreateCustomersFullDirect()
     {
+        $this->deleteEntitiesAfterTestRun(
+            self::CUSTOMER_SERVICE,
+            self::METHOD_DELETE_ATTRIBUTE,
+            [self::CUSTOMER_ATTRIBUTE_CODE]
+        );
+    
         // Arrange
         $customer = new Customer\Create();
         $customer->setExternalCustomerNumber(self::CUSTOMER_EXTERNAL_CUSTOMER_CODE);
@@ -180,7 +186,6 @@ class CustomerTest extends CustomerUtility
 
         $attribute = new Customer\Dto\Attribute();
         $attribute->setCode(self::CUSTOMER_ATTRIBUTE_CODE);
-        $attribute->setName('Attribute Name');
         $value = new Customer\Dto\Attribute\Value();
         $value->setCode(self::CUSTOMER_ATTRIBUTE_VALUE_CODE);
         $attribute->setValue($value);
@@ -221,12 +226,6 @@ class CustomerTest extends CustomerUtility
             self::CUSTOMER_SERVICE,
             self::METHOD_DELETE_CUSTOMER,
             $response['ids']
-        );
-
-        $this->deleteEntitiesAfterTestRun(
-            self::CUSTOMER_SERVICE,
-            self::METHOD_DELETE_ATTRIBUTE,
-            [self::CUSTOMER_ATTRIBUTE_CODE]
         );
 
         // Assert
@@ -303,6 +302,14 @@ class CustomerTest extends CustomerUtility
 
         $response = $this->sdk->getCustomerService()->addCustomers($sampleCustomers);
 
+        // CleanUp (regardless of this being a delete method cleanup should take plain in case of errors in the service)
+        // the other problem is that this will use the same method to delete as in this test, but I'd still let it be and hopfully someone will one day rewrite cleanup to not use the sdk
+        $this->deleteEntitiesAfterTestRun(
+            self::CUSTOMER_SERVICE,
+            self::METHOD_DELETE_CUSTOMER,
+            $response['ids']
+        );
+
         // Act
         $this->sdk->getCustomerService()->deleteCustomer($response['ids'][0]);
 
@@ -325,6 +332,13 @@ class CustomerTest extends CustomerUtility
 
         $response = $this->sdk->getCustomerService()->addCustomers($sampleCustomers);
 
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(
+            self::CUSTOMER_SERVICE,
+            self::METHOD_DELETE_CUSTOMER,
+            $response['ids']
+        );
+
         $customerUpdate = new Customer\Update();
         $customerUpdate->setFirstName(self::CUSTOMER_FIRSTNAME . ' Update');
         $customerUpdate->setMiddleName(self::CUSTOMER_MIDDLE_NAME . ' Update');
@@ -345,13 +359,6 @@ class CustomerTest extends CustomerUtility
         $this->sdk->getCustomerService()->updateCustomer(
             $response['ids'][0],
             $customerUpdate
-        );
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(
-            self::CUSTOMER_SERVICE,
-            self::METHOD_DELETE_CUSTOMER,
-            $response['ids']
         );
 
         // Assert

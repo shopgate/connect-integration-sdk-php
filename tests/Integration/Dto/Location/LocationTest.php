@@ -46,6 +46,9 @@ class LocationTest extends LocationUtility
         // Arrange
         $sampleLocations     = $this->provideSampleLocations();
         $sampleLocationCodes = $this->getLocationCodes($sampleLocations);
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(self::LOCATION_SERVICE, self::METHOD_DELETE_LOCATION, $sampleLocationCodes);
+
         $this->createLocations($sampleLocations);
 
         $params = [];
@@ -58,9 +61,6 @@ class LocationTest extends LocationUtility
 
         // Act
         $locations = $this->getLocations([], $params);
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(self::LOCATION_SERVICE, self::METHOD_DELETE_LOCATION, $sampleLocationCodes);
 
         // Assert
         $this->assertCount($expectedLocationCount, $locations->getLocations());
@@ -119,13 +119,12 @@ class LocationTest extends LocationUtility
         // Arrange
         $sampleLocations     = $this->provideSampleLocations();
         $sampleLocationCodes = $this->getLocationCodes($sampleLocations);
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(self::LOCATION_SERVICE, self::METHOD_DELETE_LOCATION, $sampleLocationCodes);
 
         // Act
         $this->createLocations($sampleLocations);
         $locations = $this->getLocations($sampleLocationCodes);
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(self::LOCATION_SERVICE, self::METHOD_DELETE_LOCATION, $sampleLocationCodes);
 
         //Assert
         $this->assertCount(count($sampleLocationCodes), $locations->getLocations());
@@ -136,6 +135,8 @@ class LocationTest extends LocationUtility
      */
     public function testGetLocation()
     {
+        $this->deleteEntitiesAfterTestRun(self::LOCATION_SERVICE, self::METHOD_DELETE_LOCATION, [self::LOCATION_CODE]);
+
         // Arrange
         $sampleLocation = $this->provideSampleCreateLocation(
             self::LOCATION_CODE,
@@ -146,9 +147,6 @@ class LocationTest extends LocationUtility
         // Act
         $this->createLocations([$sampleLocation]);
         $location = $this->getLocation(self::LOCATION_CODE);
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(self::LOCATION_SERVICE, self::METHOD_DELETE_LOCATION, [self::LOCATION_CODE]);
 
         //Assert
         $this->assertEquals(self::LOCATION_CODE, $location->getCode());
@@ -162,6 +160,9 @@ class LocationTest extends LocationUtility
         // Arrange
         $sampleLocations     = $this->provideSampleLocations();
         $sampleLocationCodes = $this->getLocationCodes($sampleLocations);
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(self::LOCATION_SERVICE, self::METHOD_DELETE_LOCATION, $sampleLocations);
+
         $this->createLocations($sampleLocations);
 
         // Act
@@ -169,9 +170,6 @@ class LocationTest extends LocationUtility
         array_shift($expectedLocationCodes);
         $this->sdk->getLocationService()->deleteLocation($sampleLocationCodes[0]);
         $locations = $this->getLocations($sampleLocationCodes);
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(self::LOCATION_SERVICE, self::METHOD_DELETE_LOCATION, $expectedLocationCodes);
 
         // Assert
         /** @noinspection PhpParamsInspection */
@@ -189,6 +187,9 @@ class LocationTest extends LocationUtility
      */
     public function testUpdateLocation(array $original, array $updated)
     {
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(self::LOCATION_SERVICE, self::METHOD_DELETE_LOCATION, [self::LOCATION_CODE]);
+
         // Arrange
         $requiredLocationFields = [
             'code' => self::LOCATION_CODE,
@@ -204,9 +205,6 @@ class LocationTest extends LocationUtility
         $this->sdk->getLocationService()->updateLocation($locationCode, $updateLocation);
         $requestFields = array_keys(array_merge($original, $updated));
         $locations     = $this->getLocations([$locationCode], ['fields' => implode(',', $requestFields)]);
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(self::LOCATION_SERVICE, self::METHOD_DELETE_LOCATION, [$locationCode]);
 
         // Assert
         // check values that should have changed
@@ -372,22 +370,31 @@ class LocationTest extends LocationUtility
                 'original' => [],
                 'update'   => [
                     'settings' => new Location\Dto\Settings(
-                        ['enableInLocationFinder' => false, 'enableInventoryBrowse' => false, 'enableForRelate' => false,
-                         'showStoreHours'      => false]
+                        [
+                            'enableInLocationFinder'            => false, 'showStoreHours' => false,
+                            'enableInFulfillmentLocationFinder' => false,
+                            'enableAutoFOReady'                 => false,
+                        ]
                     )
                 ]
             ],
             'change settings'                    => [
                 'original' => [
                     'settings' => new Location\Dto\Settings(
-                        ['enableInLocationFinder' => false, 'enableInventoryBrowse' => false, 'enableForRelate' => false,
-                         'showStoreHours'      => false]
+                        [
+                            'enableInLocationFinder'            => false, 'showStoreHours' => false,
+                            'enableInFulfillmentLocationFinder' => false,
+                            'enableAutoFOReady'                 => false,
+                        ]
                     )
                 ],
                 'update'   => [
                     'settings' => new Location\Dto\Settings(
-                        ['enableInLocationFinder' => false, 'enableInventoryBrowse' => true, 'enableForRelate' => false,
-                         'showStoreHours'      => false]
+                        [
+                            'enableInLocationFinder'            => true, 'showStoreHours' => true,
+                            'enableInFulfillmentLocationFinder' => true,
+                            'enableAutoFOReady'                 => true,
+                        ]
                     )
                 ]
             ],
@@ -494,6 +501,9 @@ class LocationTest extends LocationUtility
      */
     public function testUpdateLocationWithoutAnyDataGiven()
     {
+        // CleanUp
+        $this->deleteEntitiesAfterTestRun(self::LOCATION_SERVICE, self::METHOD_DELETE_LOCATION, [self::LOCATION_CODE]);
+
         // Arrange
         $sampleLocation = $this->provideSampleCreateLocation(self::LOCATION_CODE, 'Location name one', Location::TYPE_WAREHOUSE);
         $this->createLocations([$sampleLocation]);
@@ -501,9 +511,6 @@ class LocationTest extends LocationUtility
 
         // Act
         $response = $this->sdk->getLocationService()->updateLocation(self::LOCATION_CODE, $updateLocation);
-
-        // CleanUp
-        $this->deleteEntitiesAfterTestRun(self::LOCATION_SERVICE, self::METHOD_DELETE_LOCATION, [self::LOCATION_CODE]);
 
         // Assert
         $this->assertEquals(204, $response->getStatusCode());
@@ -560,13 +567,22 @@ class LocationTest extends LocationUtility
      * @param Location\Create[] $sampleLocations
      * @param array             $meta
      *
-     * @return ResponseInterface
+     * @return void
      * @throws RequestException
      * @throws Exception
      *
      */
     private function createLocations(array $sampleLocations, array $meta = [])
     {
-        return $this->sdk->getLocationService()->addLocations($sampleLocations, $meta);
+        try {
+            $this->sdk->getLocationService()->addLocations($sampleLocations, $meta);
+        } catch (RequestException $e) {
+            if ($e->getStatusCode() === 409) {
+                // some test didn't clean up properly and this just means location is there anyways
+                // (entire error handling on POST routes that accept multiple entities at once should imo change)
+                return;
+            }
+            throw $e;
+        }
     }
 }

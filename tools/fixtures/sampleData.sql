@@ -9,27 +9,29 @@ INSERT INTO omnichannel_user.`User` (`UserID`, `UserEmail`, `FirstName`, `LastNa
 VALUES
 ('4b4b51ce-a4de-4e48-9cf4-ade08de2cc02', 'test@test.com', 'test', 'test', NULL, '', '2018-11-13 18:57:40', NULL, NULL, NULL, NULL);
 
-INSERT IGNORE INTO omnichannel.`Merchant` (`MerchantID`, `OwnerUserID`, `MerchantName`, `MerchantCode`, `Region`, `AppLogo`, `CreateBy`)
+INSERT IGNORE INTO merchant.`Merchant` (`MerchantID`, `OwnerUserID`, `MerchantName`, `MerchantCode`, `Region`, `AppLogo`, `CreateBy`)
 VALUES
 ('1', '4b4b51ce-a4de-4e48-9cf4-ade08de2cc02', 'Test Merchant 1', 'TM1', 'US', 'https://scontent-ber1-1.xx.fbcdn.net/v/t1.0-1/p200x200/28471572_10156169825948781_8970975354537639936_n.jpg?_nc_cat=106&_nc_ht=scontent-ber1-1.xx&oh=b7c659809d68e285aca5fcfab13dec91&oe=5C6E1AD0', 'Johnny Bravo'),
 ('2', '4b4b51ce-a4de-4e48-9cf4-ade08de2cc02', 'Test Merchant 2', 'TM2', 'US', 'https://scontent-ber1-1.xx.fbcdn.net/v/t1.0-1/p200x200/28471572_10156169825948781_8970975354537639936_n.jpg?_nc_cat=106&_nc_ht=scontent-ber1-1.xx&oh=b7c659809d68e285aca5fcfab13dec91&oe=5C6E1AD0', 'Scooby Doo');
 
-INSERT INTO omnichannel.`MerchantEngageApp` (`MerchantEngageAppId`, `MerchantId`, `ShopNumber`, `CreateBy`, `CreateDate`, `UpdateBy`, `UpdateDate`, `DeleteBy`, `DeleteDate`)
+INSERT INTO merchant.`MerchantEngageApp` (`MerchantEngageAppId`, `MerchantId`, `ShopNumber`, `CreateBy`, `CreateDate`, `UpdateBy`, `UpdateDate`, `DeleteBy`, `DeleteDate`)
 VALUES
 ('cce23639-73c8-4ba0-b43d-2fa7f59d', '1', '31371', 'Me', '2018-12-18 13:03:07', NULL, NULL, NULL, NULL);
 
-INSERT INTO omnichannel.`MerchantPartner` (`MerchantPartnerID`, `MerchantID`, `PartnerName`, `PartnerURL`, `PartnerLogo`, `PartnerPhone`, `CreateBy`, `CreateDate`, `UpdateBy`, `UpdateDate`, `DeleteBy`, `DeleteDate`)
+INSERT INTO merchant.`MerchantPartner` (`MerchantPartnerID`, `MerchantID`, `PartnerName`, `PartnerURL`, `PartnerLogo`, `PartnerPhone`, `CreateBy`, `CreateDate`, `UpdateBy`, `UpdateDate`, `DeleteBy`, `DeleteDate`)
 VALUES
 ('689ca1ae-866d-4ee8-ac83-7c893eab4a20', '1', 'Ernie Consulting', 'https://shopgate.com', 'https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/exampleData/omni/bild.jpg', '+17471234567', 'Me', '1970-01-01 00:00:00', NULL, NULL, NULL, NULL);
 
-INSERT IGNORE INTO omnichannel.`MerchantSetting` (`MerchantSettingID`,`MerchantID`,`Key`,`Value`,`CreateBy`,`CreateDate`,`UpdateBy`,`UpdateDate`,`DeleteBy`,`DeleteDate`)
+INSERT IGNORE INTO merchant.`MerchantSetting` (`MerchantSettingID`,`MerchantID`,`Key`,`Value`,`CreateBy`,`CreateDate`,`UpdateBy`,`UpdateDate`,`DeleteBy`,`DeleteDate`)
 VALUES
 ('1','1','DefaultTimezone','America/Chicago','','1970-01-01 00:00:00',NULL,NULL,NULL,NULL),
 ('2','1','DefaultCurrency','USD','','1970-01-01 00:00:00',NULL,NULL,NULL,NULL),
 ('3','1','DefaultLocale','en-us','','1970-01-01 00:00:00',NULL,NULL,NULL,NULL),
 ('4','2','DefaultTimezone','America/Chicago','','1970-01-01 00:00:00',NULL,NULL,NULL,NULL),
 ('5','2','DefaultCurrency','USD','','1970-01-01 00:00:00',NULL,NULL,NULL,NULL),
-('6','2','DefaultLocale','en-us','','1970-01-01 00:00:00',NULL,NULL,NULL,NULL);
+('6','2','DefaultLocale','en-us','','1970-01-01 00:00:00',NULL,NULL,NULL,NULL),
+('7','1','enabledFulfillmentMethods','["BOPIS","ROPIS","directShip"]','','1970-01-01 00:00:00',NULL,NULL,NULL,NULL),
+('8','2','enabledFulfillmentMethods','["BOPIS","ROPIS","directShip"]','','1970-01-01 00:00:00',NULL,NULL,NULL,NULL);
 
 INSERT IGNORE INTO location.`LocationType` (`LocationTypeID`, `LocationTypeCode`, `TypeDesc`, `CreateBy`, `CreateDate`, `UpdateBy`, `UpdateDate`, `DeleteBy`, `DeleteDate`)
 VALUES

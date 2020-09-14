@@ -26,13 +26,15 @@ use Shopgate\ConnectSdk\Dto\Base;
 
 /**
  * @method Settings setEnableInLocationFinder(bool $enableInLocationFinder)
- * @method Settings setEnableInventoryBrowse(bool $enableInventoryBrowse)
- * @method Settings setEnableForRelate(bool $enableForRelate)
  * @method Settings setShowStoreHours(bool $showStoreHours)
+ * @method Settings setEnableAutoFOReady(bool $autoReady)
+ * @method Settings setScheduledFulfillmentPickTime(float $scheduledFulfillmentPickTime)
+ * @method Settings setPickupInstructions(string $pickupInstructions)
  * @method bool getEnableInLocationFinder()
- * @method bool getEnableInventoryBrowse()
- * @method bool getEnableForRelate()
  * @method bool getShowStoreHours()
+ * @method bool getEnableAutoFOReady()
+ * @method float getScheduledFulfillmentPickTime()
+ * @method string getPickupInstructions()
  *
  * @codeCoverageIgnore
  */

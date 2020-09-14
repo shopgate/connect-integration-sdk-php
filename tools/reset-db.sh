@@ -23,8 +23,8 @@ DOCKER_COMPOSE_PARAMETERS="-f docker-compose.yml -f docker-compose.dev.yml"
 
 docker-compose ${DOCKER_COMPOSE_PARAMETERS} exec -T elasticsearch curl -X DELETE 'http://localhost:9200/_all'
 docker-compose ${DOCKER_COMPOSE_PARAMETERS} exec -T mysql sh -c "mysql -uroot -psecret < /sampleData.sql"
-# docker-compose ${DOCKER_COMPOSE_PARAMETERS} stop user customer catalog import import-script order webhook && docker-compose ${DOCKER_COMPOSE_PARAMETERS} up -d user customer catalog import import-script order webhook
-docker-compose ${DOCKER_COMPOSE_PARAMETERS} restart user customer catalog import import-script order webhook
+docker-compose ${DOCKER_COMPOSE_PARAMETERS} stop user customer catalog import import-script order webhook && docker-compose ${DOCKER_COMPOSE_PARAMETERS} up -d user customer catalog import import-script order webhook
+# docker-compose ${DOCKER_COMPOSE_PARAMETERS} restart user customer catalog import import-script order webhook
 
 retry "UserService" "docker-compose ${DOCKER_COMPOSE_PARAMETERS} exec -T user curl http://localhost/health -o /dev/null 2>&1"
 retry "CustomerService" "docker-compose ${DOCKER_COMPOSE_PARAMETERS} exec -T customer curl http://localhost/health -o /dev/null 2>&1"

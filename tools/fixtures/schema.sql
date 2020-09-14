@@ -13,6 +13,7 @@ DROP DATABASE IF EXISTS omnichannel;
 DROP DATABASE IF EXISTS omnichannel_auth;
 
 CREATE DATABASE catalog;
+CREATE DATABASE merchant;
 CREATE DATABASE location;
 CREATE DATABASE omnichannel;
 CREATE DATABASE omnichannel_auth;
@@ -23,33 +24,33 @@ CREATE DATABASE webhook;
 
 DROP TABLE IF EXISTS location.`Location`;
 
-CREATE TABLE location.`Location`
-(
-    `LocationID`         char(36)                        NOT NULL      DEFAULT '',
-    `MerchantID`         char(36)                        NOT NULL      DEFAULT '',
-    `LocationTypeID`     char(36)                        NOT NULL,
-    `LocationCode`       varchar(45) CHARACTER SET utf8  NOT NULL,
-    `LocationName`       varchar(255) CHARACTER SET utf8 NOT NULL,
-    `LocationStatus`     enum ('active','inactive','deleted','onhold') DEFAULT 'active',
-    `Latitude`           float(10, 6)                                  DEFAULT NULL,
-    `Longitude`          float(10, 6)                                  DEFAULT NULL,
-    `TimeZone`           varchar(40)                                   DEFAULT NULL,
-    `LocaleCode`         varchar(5)                                    DEFAULT NULL,
-    `IsComingSoon`       tinyint(1)                                    DEFAULT '0',
-    `IsDefault`          tinyint(1)                                    DEFAULT '0',
-    `FulfillmentMethods` varchar(255)                                  DEFAULT NULL,
-    `CreateBy`           varchar(255) CHARACTER SET utf8 NOT NULL,
-    `CreateDate`         datetime                        NOT NULL      DEFAULT CURRENT_TIMESTAMP,
-    `UpdateBy`           varchar(255) CHARACTER SET utf8               DEFAULT NULL,
-    `UpdateDate`         datetime                                      DEFAULT NULL,
-    `DeleteBy`           varchar(255) CHARACTER SET utf8               DEFAULT NULL,
-    `DeleteDate`         datetime                                      DEFAULT NULL,
-    PRIMARY KEY (`LocationID`),
-    KEY `LocMerchant` (`MerchantID`),
-    KEY `LocationTypeID_idx` (`LocationTypeID`),
-    CONSTRAINT `LocationTypeID` FOREIGN KEY (`LocationTypeID`) REFERENCES `LocationType` (`LocationTypeID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;
+CREATE TABLE location.`Location` (
+  `LocationID` char(36) NOT NULL DEFAULT '',
+  `MerchantID` char(36) NOT NULL DEFAULT '',
+  `LocationTypeID` char(36) NOT NULL,
+  `LocationCode` varchar(45) NOT NULL,
+  `LocationName` varchar(255) NOT NULL,
+  `POSTransactionIdRegex` varchar(255) NOT NULL DEFAULT '',
+  `LocationStatus` enum('active','inactive','deleted','onhold') DEFAULT 'active',
+  `Latitude` float(10,6) DEFAULT NULL,
+  `Longitude` float(10,6) DEFAULT NULL,
+  `TimeZone` varchar(40) DEFAULT NULL,
+  `LocaleCode` varchar(5) DEFAULT NULL,
+  `IsComingSoon` tinyint(1) DEFAULT '0',
+  `IsDefault` tinyint(1) DEFAULT '0',
+  `IsHidden` tinyint(1) DEFAULT '0',
+  `FulfillmentMethods` varchar(255) DEFAULT NULL,
+  `CreateBy` varchar(255) NOT NULL,
+  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateBy` varchar(255) DEFAULT NULL,
+  `UpdateDate` datetime DEFAULT NULL,
+  `DeleteBy` varchar(255) DEFAULT NULL,
+  `DeleteDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`LocationID`),
+  KEY `LocMerchant` (`MerchantID`),
+  KEY `LocationTypeID_idx` (`LocationTypeID`),
+  CONSTRAINT `LocationTypeID` FOREIGN KEY (`LocationTypeID`) REFERENCES `LocationType` (`LocationTypeID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS location.`LocationAddress`;
 
@@ -270,126 +271,6 @@ CREATE TABLE location.`LocationType`
     `DeleteDate`       datetime                                 DEFAULT NULL,
     PRIMARY KEY (`LocationTypeID`),
     UNIQUE KEY `Unique` (`LocationTypeCode`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;
-
-DROP TABLE IF EXISTS omnichannel.`Merchant`;
-
-CREATE TABLE omnichannel.`Merchant`
-(
-    `MerchantID`   char(36)                        NOT NULL DEFAULT '',
-    `OwnerUserID`  char(36)                        NOT NULL,
-    `MerchantName` varchar(255) CHARACTER SET utf8 NOT NULL,
-    `MerchantCode` varchar(64) CHARACTER SET utf8  NOT NULL,
-    `Region`       varchar(100) CHARACTER SET utf8 NOT NULL,
-    `AppLogo`      varchar(255) CHARACTER SET utf8          DEFAULT NULL,
-    `CreateBy`     varchar(255) CHARACTER SET utf8 NOT NULL,
-    `CreateDate`   datetime                        NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `UpdateBy`     varchar(255) CHARACTER SET utf8          DEFAULT NULL,
-    `UpdateDate`   datetime                                 DEFAULT NULL,
-    `DeleteBy`     varchar(255) CHARACTER SET utf8          DEFAULT NULL,
-    `DeleteDate`   datetime                                 DEFAULT NULL,
-    PRIMARY KEY (`MerchantID`),
-    UNIQUE KEY `UKMerchantCode` (`MerchantCode`),
-    KEY `FKOwnerID_UserID` (`OwnerUserID`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;
-
-DROP TABLE IF EXISTS omnichannel.`MerchantSetting`;
-
-CREATE TABLE omnichannel.`MerchantSetting`
-(
-    `MerchantSettingID` char(36)     NOT NULL,
-    `MerchantID`        char(36)     NOT NULL,
-    `Key`               varchar(255) DEFAULT 'NULL',
-    `Value`             longtext     NOT NULL,
-    `CreateBy`          varchar(255) NOT NULL,
-    `CreateDate`        datetime     NOT NULL,
-    `UpdateBy`          varchar(255) DEFAULT NULL,
-    `UpdateDate`        datetime     DEFAULT NULL,
-    `DeleteBy`          varchar(255) DEFAULT NULL,
-    `DeleteDate`        datetime     DEFAULT NULL,
-    PRIMARY KEY (`MerchantSettingID`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;
-
-DROP TABLE IF EXISTS omnichannel.`MerchantApiKey`;
-
-CREATE TABLE omnichannel.`MerchantApiKey`
-(
-    `MerchantApiKeyid` char(36)     NOT NULL DEFAULT '',
-    `MerchantId`       char(36)     NOT NULL DEFAULT '',
-    `ApiKey`           varchar(100) NOT NULL DEFAULT '',
-    `CreateBy`         varchar(255) NOT NULL,
-    `CreateDate`       datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `UpdateBy`         varchar(255)          DEFAULT NULL,
-    `UpdateDate`       datetime              DEFAULT NULL,
-    `DeleteBy`         varchar(255)          DEFAULT NULL,
-    `DeleteDate`       datetime              DEFAULT NULL,
-    PRIMARY KEY (`MerchantApiKeyid`),
-    KEY `FKMerchAPI_Merch` (`MerchantId`),
-    CONSTRAINT `FKMerchAPI_Merch` FOREIGN KEY (`MerchantId`) REFERENCES `Merchant` (`MerchantID`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;
-
-DROP TABLE IF EXISTS omnichannel.`MerchantEngageApp`;
-
-CREATE TABLE omnichannel.`MerchantEngageApp`
-(
-    `MerchantEngageAppId` char(36)     NOT NULL DEFAULT '',
-    `MerchantId`          char(36)     NOT NULL DEFAULT '',
-    `ShopNumber`          varchar(36)  NOT NULL DEFAULT '',
-    `CreateBy`            varchar(255) NOT NULL DEFAULT '',
-    `CreateDate`          datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `UpdateBy`            varchar(255)          DEFAULT NULL,
-    `UpdateDate`          datetime              DEFAULT NULL,
-    `DeleteBy`            varchar(255)          DEFAULT NULL,
-    `DeleteDate`          datetime              DEFAULT NULL,
-    PRIMARY KEY (`MerchantEngageAppId`),
-    KEY `FK_MERCHANTID` (`MerchantId`),
-    CONSTRAINT `FK_MERCHANTID` FOREIGN KEY (`MerchantId`) REFERENCES `Merchant` (`MerchantID`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;
-
-DROP TABLE IF EXISTS omnichannel.`MerchantEntitlement`;
-
-CREATE TABLE omnichannel.`MerchantEntitlement`
-(
-    `EntitlementID` char(36)                                         NOT NULL,
-    `MerchantID`    char(36)                                         NOT NULL,
-    `ProductType`   enum ('ConsURVrApp','Clienteling','Fulfillment') NOT NULL,
-    `Status`        enum ('Active','Deactive')                       NOT NULL,
-    `CreateDate`    datetime                                         NOT NULL,
-    `CreateBy`      varchar(255)                                     NOT NULL,
-    `UpdateDate`    datetime     DEFAULT NULL,
-    `UpdateBy`      varchar(255) DEFAULT NULL,
-    `DeleteDate`    datetime     DEFAULT NULL,
-    `DeleteBy`      varchar(255) DEFAULT NULL,
-    PRIMARY KEY (`EntitlementID`),
-    UNIQUE KEY `MerchantID_2` (`MerchantID`, `ProductType`),
-    KEY `UKMerchantIDType` (`MerchantID`, `ProductType`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;
-
-DROP TABLE IF EXISTS omnichannel.`MerchantPartner`;
-
-CREATE TABLE omnichannel.`MerchantPartner`
-(
-    `MerchantPartnerID` char(36)                        NOT NULL,
-    `MerchantID`        char(36)                        NOT NULL,
-    `PartnerName`       varchar(255)                    NOT NULL,
-    `PartnerURL`        varchar(255)                             DEFAULT NULL,
-    `PartnerLogo`       varchar(255)                             DEFAULT NULL,
-    `PartnerPhone`      varchar(50)                              DEFAULT NULL,
-    `CreateBy`          varchar(255) CHARACTER SET utf8 NOT NULL,
-    `CreateDate`        datetime                        NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `UpdateBy`          varchar(255) CHARACTER SET utf8          DEFAULT NULL,
-    `UpdateDate`        datetime                                 DEFAULT NULL,
-    `DeleteBy`          varchar(255) CHARACTER SET utf8          DEFAULT NULL,
-    `DeleteDate`        datetime                                 DEFAULT NULL,
-    PRIMARY KEY (`MerchantPartnerID`),
-    KEY `FkMercPartnerMerc_idx` (`MerchantID`),
-    CONSTRAINT `FkMercPartnerMerc` FOREIGN KEY (`MerchantID`) REFERENCES `Merchant` (`MerchantID`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 

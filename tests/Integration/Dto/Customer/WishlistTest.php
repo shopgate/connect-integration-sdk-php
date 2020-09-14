@@ -42,9 +42,6 @@ class WishlistTest extends CustomerUtility
      */
     public function testCreateWishlist($sampleWishlists)
     {
-        // Arrange
-        $this->createDefaultCatalogs();
-        $customerId = $this->createCustomer();
         $productCodes = [];
         foreach ($sampleWishlists as $sampleWishlist) {
             if (empty($sampleWishlist['items'])) {
@@ -58,6 +55,18 @@ class WishlistTest extends CustomerUtility
                 )
             );
         }
+
+        // Arrange
+        $this->createDefaultCatalogs();
+        $customerId = $this->createCustomer();
+
+
+        // CleanUp
+        $this->cleanupWishlists(
+            array_map(function ($el) use($customerId) { return [$el['code'], $customerId]; }, $sampleWishlists),
+            $customerId,
+            $productCodes
+        );
 
         $this->addSampleProducts($productCodes);
 
@@ -75,16 +84,6 @@ class WishlistTest extends CustomerUtility
         // Assert
         $wishlistGetList = $this->sdk->getCustomerService()->getWishlists(
             $customerId
-        );
-
-        // CleanUp
-        $this->cleanupWishlists(
-            $this->getWishlistsDeleteIdsForCleanup(
-                $wishlistGetList,
-                $customerId
-            ),
-            $customerId,
-            $productCodes
         );
 
         // Assert
@@ -186,6 +185,14 @@ class WishlistTest extends CustomerUtility
     {
         // Arrange
         $customerId = $this->createCustomer();
+
+
+        // CleanUp
+        $this->cleanupWishlists(
+            [[self::WISHLIST_CODE, $customerId]],
+            $customerId
+        );
+
         $wishlistName = 'wishlist test name :)';
         $sampleWishlist = new Wishlist\Create(
             [
@@ -201,12 +208,6 @@ class WishlistTest extends CustomerUtility
         // Act
         $wishlist = $this->sdk->getCustomerService()->getWishlist(
             self::WISHLIST_CODE,
-            $customerId
-        );
-
-        // CleanUp
-        $this->cleanupWishlists(
-            [[self::WISHLIST_CODE, $customerId]],
             $customerId
         );
 
@@ -227,14 +228,10 @@ class WishlistTest extends CustomerUtility
      */
     public function testUpdateWishlist($original, $updated)
     {
-        // Arrange
-        $this->createDefaultCatalogs();
+
         $defaultFields = ['code' => self::WISHLIST_CODE];
         $originalCreateFields = array_merge($defaultFields, $original);
-        $customerId = $this->createCustomer();
-        $sampleWishlist = new Wishlist\Create(
-            $originalCreateFields
-        );
+
         $updatedCode = !empty($updated['code']) ? $updated['code']
             : $originalCreateFields['code'];
 
@@ -244,6 +241,23 @@ class WishlistTest extends CustomerUtility
             array_map([$this, 'getItemProductCode'], $originalItems),
             array_map([$this, 'getItemProductCode'], $updatedItems)
         );
+
+        // Arrange
+        $this->createDefaultCatalogs();
+        $customerId = $this->createCustomer();
+
+
+        // CleanUp
+        $this->cleanupWishlists(
+            [[$updatedCode, $customerId]],
+            $customerId,
+            $productCodes
+        );
+
+        $sampleWishlist = new Wishlist\Create(
+            $originalCreateFields
+        );
+
         $this->addSampleProducts($productCodes);
         $this->sdk->getCustomerService()->addWishlists(
             $customerId,
@@ -262,13 +276,6 @@ class WishlistTest extends CustomerUtility
         $wishlistAfterUpdate = $this->sdk->getCustomerService()->getWishlist(
             $updatedCode,
             $customerId
-        );
-
-        // CleanUp
-        $this->cleanupWishlists(
-            [[$wishlistAfterUpdate->getCode(), $customerId]],
-            $customerId,
-            $productCodes
         );
 
         // Assert
@@ -341,6 +348,16 @@ class WishlistTest extends CustomerUtility
     {
         // Arrange
         $customerId = $this->createCustomer();
+
+        // CleanUp
+        $this->cleanupWishlists(
+            [
+                [self::WISHLIST_CODE, $customerId],
+                ['wish-list-another-code', $customerId],
+            ],
+            $customerId
+        );
+
         $sampleWishlists = [
             new Wishlist\Create(
                 [
@@ -377,15 +394,6 @@ class WishlistTest extends CustomerUtility
             $customerId
         );
 
-        // CleanUp
-        $this->cleanupWishlists(
-            $this->getWishlistsDeleteIdsForCleanup(
-                $wishlistsAfterDelete,
-                $customerId
-            ),
-            $customerId
-        );
-
         // Assert
         $this->assertCount(
             count($wishlistsBeforeDelete->getWishlists()) - 1,
@@ -404,9 +412,17 @@ class WishlistTest extends CustomerUtility
      */
     public function testAddWishlistItems($productCodes)
     {
+        $customerId = $this->createCustomer();
+
+        // CleanUp
+        $this->cleanupWishlists(
+            [[self::WISHLIST_CODE, $customerId]],
+            $customerId,
+            $productCodes
+        );
+
         // Arrange
         $this->createDefaultCatalogs();
-        $customerId = $this->createCustomer();
         $sampleWishlist = new Wishlist\Create(
             [
                 'code' => self::WISHLIST_CODE,
@@ -438,13 +454,6 @@ class WishlistTest extends CustomerUtility
             $wishlist
         );
 
-        // CleanUp
-        $this->cleanupWishlists(
-            [[self::WISHLIST_CODE, $customerId]],
-            $customerId,
-            $productCodes
-        );
-
         // Assert
         $this->assertEquals($productCodes, $returnedWishlistProductCodes);
     }
@@ -471,10 +480,19 @@ class WishlistTest extends CustomerUtility
         // Arrange
         $this->createDefaultCatalogs();
         $customerId = $this->createCustomer();
+
         $productCodes = [
             self::WISHLIST_PRODUCT_CODE,
             self::WISHLIST_PRODUCT_CODE_TWO
         ];
+
+        // CleanUp
+        $this->cleanupWishlists(
+            [[self::WISHLIST_CODE, $customerId]],
+            $customerId,
+            $productCodes
+        );
+
         $this->addSampleProducts($productCodes);
         $sampleWishlist = new Wishlist\Create(
             [
@@ -493,13 +511,6 @@ class WishlistTest extends CustomerUtility
             self::WISHLIST_PRODUCT_CODE,
             self::WISHLIST_CODE,
             $customerId
-        );
-
-        // CleanUp
-        $this->cleanupWishlists(
-            [[self::WISHLIST_CODE, $customerId]],
-            $customerId,
-            $productCodes
         );
 
         // Assert

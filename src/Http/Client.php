@@ -278,7 +278,6 @@ class Client implements ClientInterface
                 );
             }
 
-//            print_r(json_encode($e->getResponse()->getBody()->getContents()));
             throw new RequestException(
                 $statusCode,
                 $e->getResponse() && $e->getResponse()->getBody() ? $e->getResponse()->getBody()->getContents()
@@ -315,7 +314,7 @@ class Client implements ClientInterface
             if (!isset($responseContent['errors']) || empty($responseContent['errors'])) {
                 return;
             }
-
+            var_export($responseContent['errors']);
             foreach ($responseContent['errors'] as $error) {
                 if ($error['code'] === 404) {
                     throw new NotFoundException(

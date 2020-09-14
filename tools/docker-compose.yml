@@ -118,7 +118,7 @@ services:
 
   ### https://gitlab.localdev.cc/omnichannel/services/merchant
   merchant:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/merchant:v1.0.0-alpha.4
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/merchant:v1.2.1-alpha.69
     links:
       - etcd
     environment:
@@ -127,6 +127,7 @@ services:
       - APP_PORT=80
       - LOG_TO_SYSLOG=false
       - PUBSUB_EMULATOR_HOST=googlepubsub-emulator:8085
+      - AWS_S3_ENDPOINT=http://s3:4569
 
   ### https://gitlab.localdev.cc/omnichannel/services/location
   location:
@@ -142,7 +143,7 @@ services:
 
   ### https://gitlab.localdev.cc/omnichannel/services/customer
   customer:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/customer:v1.0.0-rc.2
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/customer:v1.2.1-alpha.2
     restart: always
     environment:
       - NODE_ENV=development
@@ -154,19 +155,20 @@ services:
 
 ### https://gitlab.localdev.cc/omnichannel/services/order
   order:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/order:v1.1.0-beta.2
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/order:v1.4.0-alpha.104
     restart: always
     environment:
       - NODE_ENV=development
       - APP_PORT=80
       - LOG_TO_SYSLOG=false
       - PUBSUB_EMULATOR_HOST=googlepubsub-emulator:8085
+      - INTEGRATION_TIME=2019-02-20T03:00:00.000Z
     links:
       - etcd
 
 ### https://gitlab.localdev.cc/omnichannel/services/webhook
   webhook:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/webhook:v1.1.0-alpha.2
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/webhook:v1.1.1-beta.5
     restart: always
     environment:
       - NODE_ENV=development
@@ -182,6 +184,11 @@ services:
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms750m -Xmx750m
       - xpack.security.enabled=false
+  elasticsearch-filler:
+    build:
+      context: ../
+      dockerfile: tools/dockerfiles/ElasticsearchFiller
+    tty: true
 
   ### https://gitlab.localdev.cc/omnichannel/services/products
   catalog:

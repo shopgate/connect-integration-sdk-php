@@ -34,12 +34,16 @@ $topics = [
     ],
     'fulfillmentOrderUpdated-development' => [
         'analyticsSvcFulfillmentOrderUpdated-development',
+        'orderSvcFulfillmentOrderUpdated-development',
     ],
     'inventoryReservationDeleted-development' => [
         'webhookTransInventoryReservationDeleted-development',
     ],
     'inventoryReservationSettled-development' => [
         'webhookTransInventoryReservationSettled-development',
+    ],
+    'salesOrderUpdated-development' => [
+        'orderSvcSalesOrderUpdated-development',
     ],
     'salesOrderAdded-development' => [
         'orderSvcSalesOrderAdded-development',
@@ -85,9 +89,17 @@ $topics = [
     'locationCreated-development' => [],
     'locationUpdated-development' => [],
     'locationDeleted-development' => [],
-    'importCompleted-development' => [],
+    'importCompleted-development' => [
+        'webhookTransImportCompleted-development',
+    ],
     'importDone-development' => [
         'workerSvcImportDone-development',
+    ],
+    'frontendSettingsChanged-development' => [
+        'merchantSvcFrontendSettingsChanged-development',
+    ],
+    'customerDeleted-development' => [
+        'merchantSvcFrontendSettingsChanged-development',
     ],
 ];
 

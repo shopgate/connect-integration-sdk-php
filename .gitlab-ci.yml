@@ -114,6 +114,7 @@ sync_to_github:
   script:
     - git remote add github git@github.com:shopgate/connect-integration-sdk-php.git || true
     - git checkout master
+    - git pull master
     - git push --tags github
     - git push github $CI_COMMIT_REF_NAME:master --force
   tags:

@@ -163,7 +163,7 @@ $handler->trigger();
 * __password__ - (string) - your password
 * __base_uri__ (string, default: _https://{service}.shopgate{env}.io/v{ver}/merchants/{merchantCode}/_) - if rewriting, make sure to add a forward slash at end as the calls will append paths
 * __ver__ (integer, default: 1) - template variable, can be substituted on a per call level in the meta array parameters
-* __env__ (string, default: '') - template variable, can also be 'dev' or 'pg'
+* __env__ (string, default: '') - template variable, can also be 'dev' or 'pg'. If empty, production environment is used.
 
 ## Changelog
 

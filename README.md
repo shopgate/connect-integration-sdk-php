@@ -25,11 +25,12 @@ use Shopgate\ConnectSdk\ShopgateSdk;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;
 
 $config = [
-    'merchantCode'  => 'EE1',
+    'merchantCode'  => 'xxx',
     'clientId'      => 'xxx',
     'clientSecret'  => 'xxx',
     'username'      => 'xxx',
-    'password'      => 'xxx'
+    'password'      => 'xxx',
+    'env'           => 'pg' // Optional. "dev", "pg" or empty (= production)
 ];
 
 $sgSdk = new ShopgateSdk($config);

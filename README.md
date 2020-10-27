@@ -42,7 +42,7 @@ $categoryPayload->setCode('pants')->setName($name)->setSequenceId(1);
 $sgSdk->getCatalogService()->addCategories([$categoryPayload]);
 
 // update category with constructor input example
-$updateDto = new Category\Update(['name' => 'Skirts']);
+$updateDto = new Category\Update(['name' => ['en-us' => 'Skirts']]);
 $sgSdk->getCatalogService()->updateCategory('pants', $updateDto);
 
 // delete category

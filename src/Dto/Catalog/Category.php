@@ -24,6 +24,10 @@ namespace Shopgate\ConnectSdk\Dto\Catalog;
 
 use Shopgate\ConnectSdk\Dto\Base;
 use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto;
+use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Description;
+use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Image;
+use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Name;
+use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Url;
 
 /**
  * @method string getCode()

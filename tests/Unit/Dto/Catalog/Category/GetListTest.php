@@ -20,7 +20,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Tests\Unit\Dto\Category;
+namespace Shopgate\ConnectSdk\Tests\Unit\Dto\Catalog\Category;
 
 use PHPUnit\Framework\TestCase;
 use Shopgate\ConnectSdk\Dto\Catalog\Category;

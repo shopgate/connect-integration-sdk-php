@@ -1,6 +1,6 @@
 <?php
 
-namespace Shopgate\ConnectSdk\Tests\Integration\Http;
+namespace Shopgate\ConnectSdk\Tests\Integration\Service;
 
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Tests\Integration\CustomerUtility;

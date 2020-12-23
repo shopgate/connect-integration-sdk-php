@@ -20,7 +20,7 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
-namespace Shopgate\ConnectSdk\Tests\Integration\Dto\CycleTime;
+namespace Shopgate\ConnectSdk\Tests\Integration\Dto\Order;
 
 use Shopgate\ConnectSdk\Exception\Exception;
 use Shopgate\ConnectSdk\Tests\Integration\OrderUtility;

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Shopgate\ConnectSdk\Tests\Unit\Dto\Order\Order;
+namespace Shopgate\ConnectSdk\Tests\Unit\Dto\Webhook;
 
 use PHPUnit\Framework\TestCase;
 use Shopgate\ConnectSdk\Dto\Webhook\Webhook\Update;

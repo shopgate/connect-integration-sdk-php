@@ -191,7 +191,7 @@ class ClientTest extends TestCase
                     'http_errors' => false,
                     'connect_timeout' => 5.0
                 ]
-            )->willReturn([]);
+            )->willReturn(new Response());
 
         $this->subjectUnderTest = new Client(
             $this->client,
@@ -230,7 +230,7 @@ class ClientTest extends TestCase
                     'http_errors' => false,
                     'connect_timeout' => 5.0
                 ]
-            )->willReturn([]);
+            )->willReturn(new Response());
 
         $this->subjectUnderTest = new Client(
             $this->client,
@@ -269,7 +269,7 @@ class ClientTest extends TestCase
                 $this->equalTo('post'),
                 $this->equalTo('http://catalog.local/v1/merchants/TM2/categories/'),
                 $this->equalTo(['connect_timeout' => 5.0])
-            )->willReturn([]);
+            )->willReturn(new Response());
 
         $this->subjectUnderTest = new Client(
             $this->client,
@@ -307,7 +307,7 @@ class ClientTest extends TestCase
                 $this->equalTo('get'),
                 $this->equalTo('http://catalog.local/v1/merchants/TM2/categories'),
                 $this->anything()
-            )->willReturn([]);
+            )->willReturn(new Response());
 
         $this->subjectUnderTest = new Client(
             $this->client,
@@ -345,7 +345,7 @@ class ClientTest extends TestCase
                     'query' => [],
                     'connect_timeout' => 5.0
                 ])
-            )->willReturn([]);
+            )->willReturn(new Response());
 
         $this->subjectUnderTest = new Client(
             $this->client,

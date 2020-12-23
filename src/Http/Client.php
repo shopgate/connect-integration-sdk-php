@@ -168,7 +168,7 @@ class Client implements ClientInterface
         $handler = $this->client->getConfig('handler');
 
         if (!$logger) {
-            $logger = new Logger(new StreamHandler('php://out'));
+            $logger = new Logger('request_logger', [new StreamHandler('php://out')]);
         }
 
         if (!$template) {

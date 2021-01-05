@@ -1,4 +1,4 @@
-FROM php:7.3-cli-stretch
+FROM php:7.4-cli-buster
 
 ARG ENABLE_XDEBUG
 

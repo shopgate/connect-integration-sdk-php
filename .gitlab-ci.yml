@@ -58,13 +58,13 @@ run_unit_tests:
   script:
     - cd tools
     - docker-compose -p "${CI_COMMIT_SHORT_SHA}-unit" up -d --build php56
-    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-unit" up -d --build php73
+    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-unit" up -d --build php7x
     - echo '******************** Unit Tests PHP 5.6 ********************'
     - docker-compose -p "${CI_COMMIT_SHORT_SHA}-unit" exec -T php56 php -v
     - docker-compose -p "${CI_COMMIT_SHORT_SHA}-unit" exec -T php56 composer unit-tests
-    - echo '******************** Unit Tests PHP 7.3 ********************'
-    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-unit" exec -T php73 php -v
-    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-unit" exec -T php73 composer unit-tests
+    - echo '******************** Unit Tests PHP 7.x ********************'
+    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-unit" exec -T php7x php -v
+    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-unit" exec -T php7x composer unit-tests
   after_script:
     - cd tools
     - docker-compose -p "${CI_COMMIT_SHORT_SHA}-unit" down
@@ -89,9 +89,9 @@ run_integration_tests:
     - echo '******************** Integration Tests PHP 5.6 ********************'
     - docker-compose -p "${CI_COMMIT_SHORT_SHA}-integration" exec -T php56 php -v
     - docker-compose -p "${CI_COMMIT_SHORT_SHA}-integration" exec -T php56 composer integration-tests-local
-    - echo '******************** Integration Tests PHP 7.3 ********************'
-    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-integration" exec -T php73 php -v
-    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-integration" exec -T php73 composer integration-tests-local
+    - echo '******************** Integration Tests PHP 7.x ********************'
+    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-integration" exec -T php7x php -v
+    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-integration" exec -T php7x composer integration-tests-local
   after_script:
     - cd tools
     - docker-compose -p "${CI_COMMIT_SHORT_SHA}-integration" down

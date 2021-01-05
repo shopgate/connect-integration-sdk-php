@@ -12,10 +12,10 @@ services:
       - COMPOSER_PROCESS_TIMEOUT=600
     tty: true
 
-  php73:
+  php7x:
     build:
       context: ../
-      dockerfile: tools/dockerfiles/Php73
+      dockerfile: tools/dockerfiles/Php7x
     tty: true
     environment:
       - COMPOSER_PROCESS_TIMEOUT=600

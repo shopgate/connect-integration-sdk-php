@@ -34,13 +34,14 @@ set -e
 if [[ -n "$CI_STACK" ]]; then
     DOCKER_COMPOSE_PARAMETERS="${DOCKER_COMPOSE_PARAMETERS} -p ${DOCKER_PREFIX}"
     docker-compose $DOCKER_COMPOSE_PARAMETERS build --no-cache php56
-    docker-compose $DOCKER_COMPOSE_PARAMETERS build --no-cache php73
-    docker-compose $DOCKER_COMPOSE_PARAMETERS up -d --remove-orphans php73
+    docker-compose $DOCKER_COMPOSE_PARAMETERS build --no-cache php7x
+    docker-compose $DOCKER_COMPOSE_PARAMETERS up -d --remove-orphans php7x
 else
     docker-compose $DOCKER_COMPOSE_PARAMETERS build php56
 fi
 
 docker-compose $DOCKER_COMPOSE_PARAMETERS build elasticsearch-filler
+docker-compose $DOCKER_COMPOSE_PARAMETERS build --no-cache mysql
 
 docker-compose $DOCKER_COMPOSE_PARAMETERS up -d --remove-orphans php56
 docker-compose $DOCKER_COMPOSE_PARAMETERS up -d mysql

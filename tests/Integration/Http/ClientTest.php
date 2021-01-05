@@ -361,8 +361,7 @@ class ClientTest extends ShopgateSdkUtility
         $mockHandler  = new MockHandler([]);
         $handlerStack = HandlerStack::create($mockHandler);
 
-        $stream = fopen('data://text/plain,test', 'r');
-        $mockHandler->append(new SeekException(new Stream($stream)));
+        $mockHandler->append(new RequestException());
 
         /** @var GuzzleClient $client */
         $client = $this

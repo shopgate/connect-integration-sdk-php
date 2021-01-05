@@ -1,4 +1,4 @@
-FROM 602824140852.dkr.ecr.us-east-1.amazonaws.com/import-script:v1.3.0-alpha.9
+FROM 602824140852.dkr.ecr.us-east-1.amazonaws.com/import-script:v1.3.0-alpha.32
 
 WORKDIR /usr/src/app
 

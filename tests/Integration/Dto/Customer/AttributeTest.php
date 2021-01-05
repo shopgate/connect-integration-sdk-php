@@ -61,11 +61,24 @@ class AttributeTest extends CustomerUtility
         }
 
         // Assert
-        $attributes = $this->getAttributes($parameters);
+        $attributeResult = $this->getAttributes($parameters);
+        $attributeCodes = [];
+        foreach ($attributeResult->getAttributes() as $attribute) {
+            $attributeCodes[] = $attribute->getCode();
+        }
+
+        $this->assertCount($expectedAttributeCount, $attributeResult->getAttributes());
+        $this->assertEquals($expectedAttributeCodes, $attributeCodes);
+        if (isset($limit)) {
+            $this->assertEquals($limit, $attributeResult->getMeta()->getLimit());
+        }
+        if (isset($offset)) {
+            $this->assertEquals($offset, $attributeResult->getMeta()->getOffset());
+        }
 
         // CleanUp
         $deleteCodes = [];
-        foreach ($attributes->getAttributes() as $attribute) {
+        foreach ($sampleAttributes as $attribute) {
             $deleteCodes[] = $attribute->getCode();
         }
         $this->deleteEntitiesAfterTestRun(
@@ -73,15 +86,6 @@ class AttributeTest extends CustomerUtility
             self::METHOD_DELETE_ATTRIBUTE,
             $deleteCodes
         );
-
-        $this->assertCount($expectedAttributeCount, $attributes->getAttributes());
-        $this->assertEquals($expectedAttributeCodes, $deleteCodes);
-        if (isset($limit)) {
-            $this->assertEquals($limit, $attributes->getMeta()->getLimit());
-        }
-        if (isset($offset)) {
-            $this->assertEquals($offset, $attributes->getMeta()->getOffset());
-        }
     }
 
     /**

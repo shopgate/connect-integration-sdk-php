@@ -26,9 +26,12 @@ $topics = [
     'fulfillmentOrderAdded-development' => [
         'webhookTransSalesOrderFulfillmentAdded-development',
         'webhookTransFulfillmentOrderAdded-development',
+        'orderSvcFulfillmentOrderAdded-development',
+        'locationSvcFulfillmentOrderAdded-development',
     ],
     'fulfillmentOrderStatusUpdated-development' => [
         'orderSvcFulfillmentOrderStatusUpdated-development',
+        'locationSvcFulfillmentOrderStatusUpdated-development',
         'webhookFulfillmentOrderStatusUpdated-development',
         'webhookTransFulfillmentOrderStatusUpdated-development',
     ],
@@ -53,6 +56,7 @@ $topics = [
     ],
     'salesOrderFulfillmentAdded-development' => [
         'webhookSalesOrderFulfillmentAdded-development',
+        'orderSvcSalesOrderFulfillmentAdded-development'
     ],
     'salesOrderStatusUpdated-development' => [
         'orderSvcSalesOrderStatusUpdated-development',
@@ -86,9 +90,9 @@ $topics = [
     'productCreated-development' => [],
     'productUpdated-development' => [],
     'segmentChanged-development' => [],
-    'locationCreated-development' => [],
-    'locationUpdated-development' => [],
-    'locationDeleted-development' => [],
+    'locationCreated-development' => ['locationSvcLocationCreated-development'],
+    'locationUpdated-development' => ['locationSvcLocationUpdated-development'],
+    'locationDeleted-development' => ['locationSvcLocationDeleted-development'],
     'importCompleted-development' => [
         'webhookTransImportCompleted-development',
     ],
@@ -99,8 +103,10 @@ $topics = [
         'merchantSvcFrontendSettingsChanged-development',
     ],
     'customerDeleted-development' => [
-        'merchantSvcFrontendSettingsChanged-development',
+        'customerSvcCustomerDeleted-development'
     ],
+    'categoryCreated-development' => ['catalogSvcCategoryCreated-development'],
+    'categoryUpdated-development' => ['catalogSvcCategoryUpdated-development'],
 ];
 
 foreach ($topics as $topic => $subscriptions) {

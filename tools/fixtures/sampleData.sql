@@ -82,7 +82,7 @@ VALUES
 ('516deae0-0d5a-4214-8bb3-6c322294aaf8','active','UMV','api',NULL,NULL,'view','Me','2019-06-10 16:36:46',NULL,NULL,NULL,NULL),
 ('52a695df-ba4b-4426-be50-50eea288cea9','active','UME','api',NULL,NULL,'edit','Me','2019-06-10 16:36:46',NULL,NULL,NULL,NULL),
 ('561e6aa6-f2cb-4f36-aa5d-d77160d57ca0','active','CAC','api','catalog','attributes','create','Me','2019-07-22 05:32:52',NULL,NULL,NULL,NULL),
-('629365a6-f69d-4bb4-bafb-a113c68ce2e6','active','LLE','api','location','location','','Me','2019-08-26 12:20:45',NULL,NULL,NULL,NULL),
+('629365a6-f69d-4bb4-bafb-a113c68ce2e6','active','LLE','api','location','location',NULL,'Me','2019-08-26 12:20:45',NULL,NULL,NULL,NULL),
 ('70c975cd-a202-4071-93cc-0b5e76fc97d7','active','SOC','api',NULL,NULL,NULL,'','2019-05-26 19:28:00',NULL,NULL,NULL,NULL),
 ('76ccbf00-5c94-43c5-9f1f-67f3a062b6af','active','CIE','api','catalog','inventory','edit','Me','2019-07-22 05:32:53',NULL,NULL,NULL,NULL),
 ('796bb4a5-b3dc-4e64-aef5-89fc156da1bb','active','CPC','api','catalog','product','create','Me','2019-07-22 05:32:53',NULL,NULL,NULL,NULL),

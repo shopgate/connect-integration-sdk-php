@@ -273,7 +273,7 @@ class LocationTest extends LocationUtility
                     'latitude'   => 26.3054,
                     'longitude'  => 31.1367,
                     'localeCode' => 'en-ZA',
-                    'timeZone'   => 'Africa/Mbabane',
+                    'timeZone'   => 'Africa/Windhoek',
                     'isDefault'  => false,
                     'isComingSoon' => false
                 ]
@@ -367,13 +367,20 @@ class LocationTest extends LocationUtility
                 ]
             ],
             'add settings'                       => [
-                'original' => [],
+                'original' => [
+                    'settings' => [
+                        'scheduledFulfillmentPickTime' => 3600,
+                        'pickupInstructions' => null
+                    ]
+                ],
                 'update'   => [
                     'settings' => new Location\Dto\Settings(
                         [
                             'enableInLocationFinder'            => false, 'showStoreHours' => false,
                             'enableInFulfillmentLocationFinder' => false,
                             'enableAutoFOReady'                 => false,
+                            'scheduledFulfillmentPickTime' => 3600,
+                            'pickupInstructions' => null
                         ]
                     )
                 ]
@@ -385,6 +392,8 @@ class LocationTest extends LocationUtility
                             'enableInLocationFinder'            => false, 'showStoreHours' => false,
                             'enableInFulfillmentLocationFinder' => false,
                             'enableAutoFOReady'                 => false,
+                            'scheduledFulfillmentPickTime' => 3600,
+                            'pickupInstructions' => null
                         ]
                     )
                 ],
@@ -394,6 +403,8 @@ class LocationTest extends LocationUtility
                             'enableInLocationFinder'            => true, 'showStoreHours' => true,
                             'enableInFulfillmentLocationFinder' => true,
                             'enableAutoFOReady'                 => true,
+                            'scheduledFulfillmentPickTime' => 3600,
+                            'pickupInstructions' => null
                         ]
                     )
                 ]

@@ -82,7 +82,7 @@ services:
 
   ### https://gitlab.localdev.cc/omnichannel/services/user
   user:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/user:v1.1.2-beta.6
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/user:v1.1.2-beta.11
     restart: always
     links:
       - etcd
@@ -92,6 +92,7 @@ services:
       - LOG_TO_SYSLOG=false
       - PUBSUB_EMULATOR_HOST=googlepubsub-emulator:8085
       - INTEGRATION=1
+
   ### https://gitlab.localdev.cc/omnichannel/services/worker
   omni-worker:
     image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/worker:v1.3.0-alpha.16
@@ -121,7 +122,7 @@ services:
 
   ### https://gitlab.localdev.cc/omnichannel/services/merchant
   merchant:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/merchant:v1.2.1-alpha.69
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/merchant:v1.2.1-alpha.88
     links:
       - etcd
     environment:
@@ -134,7 +135,7 @@ services:
 
   ### https://gitlab.localdev.cc/omnichannel/services/location
   location:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/location:v1.2.0-beta.17
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/location:v1.2.0-beta.83
     links:
       - etcd
     environment:
@@ -146,7 +147,7 @@ services:
 
   ### https://gitlab.localdev.cc/omnichannel/services/customer
   customer:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/customer:v1.2.1-alpha.2
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/omni/customer:v1.2.1-alpha.49
     restart: always
     environment:
       - NODE_ENV=development
@@ -158,7 +159,7 @@ services:
 
 ### https://gitlab.localdev.cc/omnichannel/services/order
   order:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/order:v1.4.0-alpha.104
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/order:v1.4.0-alpha.177
     restart: always
     environment:
       - NODE_ENV=development
@@ -171,7 +172,7 @@ services:
 
 ### https://gitlab.localdev.cc/omnichannel/services/webhook
   webhook:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/webhook:v1.1.1-beta.5
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/webhook:v1.1.1-beta.8
     restart: always
     environment:
       - NODE_ENV=development
@@ -195,7 +196,7 @@ services:
 
   ### https://gitlab.localdev.cc/omnichannel/services/products
   catalog:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/catalog:v1.0.1-alpha.71
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/service/catalog:v1.0.1-alpha.88-p1
     restart: always
     links:
       - etcd
@@ -218,7 +219,7 @@ services:
 
   ### https://gitlab.localdev.cc/big-api/services/import
   import:
-    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/import:v1.3.0-alpha.11
+    image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/import:v1.3.0-alpha.13
     environment:
       - AWS_ACCESS_KEY_ID=foo
       - AWS_SECRET_ACCESS_KEY=bar

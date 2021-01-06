@@ -44,10 +44,10 @@ docker-compose $DOCKER_COMPOSE_PARAMETERS build elasticsearch-filler
 docker-compose $DOCKER_COMPOSE_PARAMETERS build --no-cache mysql
 
 docker-compose $DOCKER_COMPOSE_PARAMETERS up -d --remove-orphans php56
-docker-compose $DOCKER_COMPOSE_PARAMETERS up -d mysql
 
+docker-compose $DOCKER_COMPOSE_PARAMETERS up -d --force-recreate googlepubsub-emulator
+docker-compose $DOCKER_COMPOSE_PARAMETERS up -d --force-recreate --renew-anon-volumes mysql
 docker-compose $DOCKER_COMPOSE_PARAMETERS up -d etcd
-docker-compose $DOCKER_COMPOSE_PARAMETERS up -d googlepubsub-emulator
 docker-compose $DOCKER_COMPOSE_PARAMETERS up -d redis
 
 docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T php56 php ./tools/pubsubfiller.php
@@ -58,7 +58,8 @@ retry "MySQL" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T mysql mysql -ur
 
 docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T mysql sh -c "mysql -u root -psecret < /schema.sql"
 
-docker-compose $DOCKER_COMPOSE_PARAMETERS stop user customer catalog import import-script order webhook && docker-compose $DOCKER_COMPOSE_PARAMETERS up -d user customer catalog import import-script order webhook
+docker-compose $DOCKER_COMPOSE_PARAMETERS stop  user customer catalog import import-script order webhook && \
+docker-compose $DOCKER_COMPOSE_PARAMETERS up -d user customer catalog import import-script order webhook
 retry "UserService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T user curl http://localhost/health -o /dev/null 2>&1"
 retry "CustomerService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T customer curl http://localhost/health -o /dev/null 2>&1"
 retry "CatalogService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T catalog curl http://localhost/health -o /dev/null 2>&1"
@@ -80,6 +81,7 @@ docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T mysql sh -c "apt-get update &&
 docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T mysql sh -c "echo \"LOAD DATA LOCAL INFILE 'DE.txt' INTO TABLE Postalcode (CountryCode,PostalCode,PlaceName,AdminName1,AdminCode1,AdminName2,AdminCode2,AdminName3,AdminCode3,Latitude,Longitude,Accuracy);\" | mysql  -u root -psecret location"
 
 retry "AuthService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T auth curl http://localhost/health -o /dev/null 2>&1"
+retry "WorkerService" "docker-compose $DOCKER_COMPOSE_PARAMETERS exec -T omni-worker curl http://localhost/health -o /dev/null 2>&1"
 
 docker-compose $DOCKER_COMPOSE_PARAMETERS up -d reverse-proxy
 

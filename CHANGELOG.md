@@ -6,11 +6,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [1.3.5] - 2021-01-06
+### Fixed
+- composer auto-loading issues in tests/dev due to wrong name spaces
+- compatibility with Laravel 8 requiring Guzzle ^7.0 and Monolog ^2
+- a bug in the instantiation of Monolog
+
 ## [1.3.4] - 2020-09-15
 ### Added
 - base price properties to a product `unitValue`, `unitPriceRefUom`, `unitPriceRefValue`
 - indicator if a product `hasCatchWeight`
 - calculated property on the product price `pricePerMeasureUnit`
+
 ### Removed
 - location settings `enableInventoryBrowse`, `enableForRelate`
 
@@ -213,7 +220,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - createCategory event & direct call
 - deleteCategory event & direct call
 
-[Unreleased]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.3...HEAD
+[Unreleased]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.5...HEAD
+[1.3.5]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.4...v1.3.5
+[1.3.4]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.3...v1.3.4
 [1.3.3]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.2...v1.3.3
 [1.3.2]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.0...v1.3.1

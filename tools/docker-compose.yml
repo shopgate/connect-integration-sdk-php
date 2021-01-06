@@ -55,6 +55,35 @@ services:
           - event-receiver.shopgatedev.io
           - webhook.shopgatedev.io
 
+  elasticsearch:
+    image: elasticsearch:6.8.0
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms750m -Xmx750m
+      - xpack.security.enabled=false
+
+  elasticsearch-filler:
+    build:
+      context: ../
+      dockerfile: tools/dockerfiles/ElasticsearchFiller
+    tty: true
+
+  googlepubsub-emulator:
+    build:
+      context: ./dockerfiles
+      dockerfile: GooglePubsub
+
+  sqs:
+    image: pafortin/goaws
+
+  s3:
+    image: lphoward/fake-s3
+    networks:
+      default:
+        aliases:
+          - shopgate-import.s3
+          - shopgate-import.s3.amazonaws.com
+
   ### https://gitlab.localdev.cc/omnichannel/services/auth
   auth:
     image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/auth:v1.0.0
@@ -69,14 +98,6 @@ services:
       - MANAGEMENT_PORT=81
       - LOG_TO_SYSLOG=false
       - PUBSUB_EMULATOR_HOST=googlepubsub-emulator:8085
-
-  googlepubsub-emulator:
-    build:
-      context: ./dockerfiles
-      dockerfile: GooglePubsub
-
-  sqs:
-    image: pafortin/goaws
 
   ### services
 
@@ -157,7 +178,7 @@ services:
     links:
       - etcd
 
-### https://gitlab.localdev.cc/omnichannel/services/order
+   ### https://gitlab.localdev.cc/omnichannel/services/order
   order:
     image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/order:v1.4.0-alpha.177
     restart: always
@@ -170,7 +191,7 @@ services:
     links:
       - etcd
 
-### https://gitlab.localdev.cc/omnichannel/services/webhook
+   ### https://gitlab.localdev.cc/omnichannel/services/webhook
   webhook:
     image: 602824140852.dkr.ecr.us-east-1.amazonaws.com/development/service/omni/webhook:v1.1.1-beta.8
     restart: always
@@ -181,18 +202,6 @@ services:
       - PUBSUB_EMULATOR_HOST=googlepubsub-emulator:8085
     links:
       - etcd
-
-  elasticsearch:
-    image: elasticsearch:6.8.0
-    environment:
-      - discovery.type=single-node
-      - ES_JAVA_OPTS=-Xms750m -Xmx750m
-      - xpack.security.enabled=false
-  elasticsearch-filler:
-    build:
-      context: ../
-      dockerfile: tools/dockerfiles/ElasticsearchFiller
-    tty: true
 
   ### https://gitlab.localdev.cc/omnichannel/services/products
   catalog:
@@ -208,14 +217,6 @@ services:
       - LOG_TO_SYSLOG=false
       - GOOGLE_CLOUD_PROJECT_ID=test-project
       - LOG_TO_FLUENTD=false
-
-  s3:
-    image: lphoward/fake-s3
-    networks:
-      default:
-        aliases:
-          - shopgate-import.s3
-          - shopgate-import.s3.amazonaws.com
 
   ### https://gitlab.localdev.cc/big-api/services/import
   import:

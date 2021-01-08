@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [1.3.6] - 2021-01-08
+### Removed
+- `version` property in `composer.json` as that's redundant with tags and can easily overlooked
+
 ## [1.3.5] - 2021-01-06
 ### Fixed
 - composer auto-loading issues in tests/dev due to wrong name spaces
@@ -220,7 +224,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - createCategory event & direct call
 - deleteCategory event & direct call
 
-[Unreleased]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.5...HEAD
+[Unreleased]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.6...HEAD
+[1.3.6]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.5...v1.3.6
 [1.3.5]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.4...v1.3.5
 [1.3.4]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.3...v1.3.4
 [1.3.3]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.2...v1.3.3

@@ -123,7 +123,13 @@ function createTopic($pubSub, $topic, $subscriptions)
     $createdTopic = null;
     $tries = 0;
 
-    while ($createdTopic === null && $tries < 15) {
+    while ($createdTopic === null && $tries < 5) {
+        if ($tries > 0) {
+            echo "[FAILED] Retrying in 1s.\n";
+            sleep(1);
+        }
+
+        $tries++;
         try {
             echo "Creating Google PubSub topic '$topic' . . . ";
             $createdTopic = $pubSub->createTopic($topic);
@@ -144,7 +150,7 @@ function createTopic($pubSub, $topic, $subscriptions)
     foreach ($subscriptions as $subscription) {
         $tries = 0;
         $subscriptionCreated = false;
-        while (!$subscriptionCreated && $tries < 15) {
+        while (!$subscriptionCreated && $tries < 5) {
             if ($tries > 0) {
                 echo "[FAILED] Retrying in 1s.\n";
                 sleep(1);

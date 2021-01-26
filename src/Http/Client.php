@@ -112,7 +112,9 @@ class Client implements ClientInterface
         }
 
         if (empty($accessTokenPath)) {
-            $accessTokenPath = __DIR__ . ($env !== '' ? '/../access_token_' . $env : '/../access_token.txt');
+            $envSuffix = $env ?: 'production';
+            $suffix = md5("${envSuffix}-${clientId}-${clientSecret}-${merchantCode}-${username}-${password}");
+            $accessTokenPath =  __DIR__ . "/../access_token-${suffix}.txt";
         }
 
         $reAuthClient = new \GuzzleHttp\Client(

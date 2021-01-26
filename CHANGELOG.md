@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [1.3.7] - 2021-01-26
+### Fixed
+- changing merchant code, username, password or client credentials would still reuse a previously created access token,
+  thus not respecting any changes in permissions or scopes
+
 ## [1.3.6] - 2021-01-08
 ### Removed
 - `version` property in `composer.json` as that's redundant with tags and can easily overlooked
@@ -224,7 +229,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - createCategory event & direct call
 - deleteCategory event & direct call
 
-[Unreleased]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.6...HEAD
+[Unreleased]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.7...HEAD
+[1.3.7]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.6...v1.3.7
 [1.3.6]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.5...v1.3.6
 [1.3.5]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.4...v1.3.5
 [1.3.4]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.3...v1.3.4

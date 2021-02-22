@@ -682,6 +682,23 @@ class Catalog
     }
 
     /**
+     * @param Inventory\Create[] $inventories
+     * @param array              $query
+     *
+     * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     * @throws InvalidDataTypeException
+     */
+    public function setInventories(array $inventories, array $query = [])
+    {
+        return $this->addInventories($inventories, $query);
+    }
+
+    /**
      * @param Inventory\Delete[] $inventories
      * @param array              $query
      *

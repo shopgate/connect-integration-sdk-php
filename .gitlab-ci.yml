@@ -21,19 +21,22 @@ download_prerequisites:
   tags:
     - docker
 
-#check_dependencies:
-#  image: composer:1.8.0
-#  stage: check
-#  script:
-#    - composer audit
-#  cache:
-#    key: $BUILD_PREREQUISITES_CACHE_KEY
-#    paths:
-#      - composer.lock
-#      - vendor
-#    policy: pull
-#  tags:
-#    - docker
+check_dependencies:
+  image: composer:1.8.0
+  stage: check
+  script:
+    - curl -L https://github.com/fabpot/local-php-security-checker/releases/download/v1.0.0/local-php-security-checker_1.0.0_linux_amd64 -o php-dependency-checker
+    - chmod +x ./php-dependency-checker
+    - ./php-dependency-checker
+    - rm php-dependency-checker
+  cache:
+    key: $BUILD_PREREQUISITES_CACHE_KEY
+    paths:
+      - composer.lock
+      - vendor
+    policy: pull
+  tags:
+    - docker
 
 check_code_style:
   image: composer:1.8.0

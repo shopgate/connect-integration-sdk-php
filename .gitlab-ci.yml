@@ -21,19 +21,19 @@ download_prerequisites:
   tags:
     - docker
 
-check_dependencies:
-  image: composer:1.8.0
-  stage: check
-  script:
-    - composer audit
-  cache:
-    key: $BUILD_PREREQUISITES_CACHE_KEY
-    paths:
-      - composer.lock
-      - vendor
-    policy: pull
-  tags:
-    - docker
+#check_dependencies:
+#  image: composer:1.8.0
+#  stage: check
+#  script:
+#    - composer audit
+#  cache:
+#    key: $BUILD_PREREQUISITES_CACHE_KEY
+#    paths:
+#      - composer.lock
+#      - vendor
+#    policy: pull
+#  tags:
+#    - docker
 
 check_code_style:
   image: composer:1.8.0

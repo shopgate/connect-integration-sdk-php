@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [1.3.8] - 2021-02-22
+### Added
+- catalog service method setInventories; an alias for addInventories
+
 ## [1.3.7] - 2021-01-26
 ### Fixed
 - changing merchant code, username, password or client credentials would still reuse a previously created access token,
@@ -229,7 +233,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - createCategory event & direct call
 - deleteCategory event & direct call
 
-[Unreleased]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.7...HEAD
+[Unreleased]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.8...HEAD
+[1.3.8]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.7...v1.3.8
 [1.3.7]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.6...v1.3.7
 [1.3.6]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.5...v1.3.6
 [1.3.5]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.4...v1.3.5

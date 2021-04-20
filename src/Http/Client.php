@@ -320,13 +320,13 @@ class Client implements ClientInterface
             foreach ($responseContent['errors'] as $error) {
                 if ($error['code'] === 404) {
                     throw new NotFoundException(
-                        $error['reason']
+                        isset($error['reason']) ? $error['reason'] : ''
                     );
                 }
 
                 throw new RequestException(
                     $error['code'],
-                    $error['reason']
+                    isset($error['reason']) ? $error['reason'] : ''
                 );
             }
         }

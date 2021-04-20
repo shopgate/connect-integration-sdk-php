@@ -31,6 +31,7 @@ use Shopgate\ConnectSdk\Service\Catalog;
 use Shopgate\ConnectSdk\Service\Customer;
 use Shopgate\ConnectSdk\Service\Location;
 use Shopgate\ConnectSdk\Service\Order;
+use Shopgate\ConnectSdk\Service\Segmentation;
 use Shopgate\ConnectSdk\Service\Webhook;
 
 class ShopgateSdk
@@ -60,6 +61,9 @@ class ShopgateSdk
 
     /** @var BulkImport */
     private $bulkImport;
+
+    /** @var Segmentation */
+    private $segmentation;
 
     /** @var Json */
     private $jsonHelper;
@@ -171,6 +175,18 @@ class ShopgateSdk
         }
 
         return $this->bulkImport;
+    }
+
+    /**
+     * @return Segmentation
+     */
+    public function getSegmentationService()
+    {
+        if (!$this->segmentation) {
+            $this->segmentation = new Segmentation($this->client, $this->jsonHelper);
+        }
+
+        return $this->segmentation;
     }
 
     /**

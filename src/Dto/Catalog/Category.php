@@ -43,7 +43,6 @@ use Shopgate\ConnectSdk\Dto\Catalog\Category\Dto\Url;
  *
  * @method $this setCode(string $code)
  * @method $this setCatalogCode(string $catalogCode)
- * @method $this setParentCategoryCode(string $parentCategoryCode)
  * @method $this setImage(Image $image)
  * @method $this setName(Name $name)
  * @method $this setDescription(Description $description)
@@ -60,4 +59,18 @@ class Category extends Base
 {
     const STATUS_ACTIVE   = 'active';
     const STATUS_INACTIVE = 'inactive';
+
+    /**
+     * @param null|string $parentCategoryCode
+     * @return Category
+     * @throws \Shopgate\ConnectSdk\Exception\InvalidDataTypeException
+     */
+    public function setParentCategoryCode($parentCategoryCode)
+    {
+        if ($parentCategoryCode === '') {
+            $parentCategoryCode = null;
+        }
+        $this->set('parentCategoryCode', $parentCategoryCode);
+        return $this;
+    }
 }

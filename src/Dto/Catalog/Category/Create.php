@@ -40,7 +40,7 @@ class Create extends Category
         'type'                 => 'object',
         'properties'           => [
             'code'               => ['type' => 'string'],
-            'parentCategoryCode' => ['type' => 'string'],
+            'parentCategoryCode' => ['type' =>  ['string', 'null']],
             'catalogCode'        => ['type' => 'string'],
             'image'              => ['$ref' => Dto\Image::class],
             'name'               => ['$ref' => Dto\Name::class],

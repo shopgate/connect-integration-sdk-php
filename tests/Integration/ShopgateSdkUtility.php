@@ -41,6 +41,7 @@ abstract class ShopgateSdkUtility extends TestCase
     const LOCATION_SERVICE = 'location';
     const CUSTOMER_SERVICE = 'customer';
     const WEBHOOK_SERVICE = 'webhook';
+    const SEGMENTATION_SERVICE = 'segmentation';
 
     const METHOD_DELETE_CATEGORY = 'deleteCategory';
     const METHOD_DELETE_PRODUCT = 'deleteProduct';
@@ -54,6 +55,7 @@ abstract class ShopgateSdkUtility extends TestCase
     const METHOD_DELETE_CUSTOMER_CONTACT = 'deleteContact';
     const METHOD_DELETE_CUSTOMER_WISHLIST = 'deleteWishlist';
     const METHOD_DELETE_WEBHOOK = 'deleteWebhook';
+    const METHOD_DELETE_SEGMENT = 'deleteSegment';
 
 
     const SAMPLE_CATALOG_CODE = 'NARetail';
@@ -71,7 +73,7 @@ abstract class ShopgateSdkUtility extends TestCase
     public static function setUpBeforeClass()
     {
         $env = Dotenv::create(__DIR__);
-        $env->load();
+        $env->overload();
         $env->required(
             [
                 'clientId',
@@ -147,6 +149,14 @@ abstract class ShopgateSdkUtility extends TestCase
             $this->sdk->getWebhooksService(),
             [
                 self::METHOD_DELETE_WEBHOOK => []
+            ]
+        );
+
+        $this->registerForCleanUp(
+            self::SEGMENTATION_SERVICE,
+            $this->sdk->getSegmentationService(),
+            [
+                self::METHOD_DELETE_SEGMENT => []
             ]
         );
     }

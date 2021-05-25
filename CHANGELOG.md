@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [1.3.9] - 2021-05-25
+### Fixed
+- category code exported as empty string if not set, should be null
 
 ## [1.3.8] - 2021-02-22
 ### Added
@@ -233,7 +236,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - createCategory event & direct call
 - deleteCategory event & direct call
 
-[Unreleased]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.8...HEAD
+[Unreleased]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.9...HEAD
+[1.3.9]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.8...v1.3.9
 [1.3.8]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.7...v1.3.8
 [1.3.7]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.6...v1.3.7
 [1.3.6]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.5...v1.3.6

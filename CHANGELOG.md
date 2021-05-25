@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [1.4.0] - 2021-05-25
+### Added
+- Segmentation service support
+
 ## [1.3.9] - 2021-05-25
 ### Fixed
 - category code exported as empty string if not set, should be null

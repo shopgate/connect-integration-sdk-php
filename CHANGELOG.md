@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## 2021-10-04
+### Fixed
+- type hint on `Shopgate\ConnectSdk\Service\BulkImport\Feed\Category::add()` now expects an object of type `Category` instead of `Category\Create`
+
 ## [1.4.0] - 2021-05-25
 ### Added
 - Segmentation service support

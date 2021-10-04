@@ -25,14 +25,13 @@ namespace Shopgate\ConnectSdk\Service\BulkImport\Feed;
 use Shopgate\ConnectSdk\Service\BulkImport\Feed;
 use Shopgate\ConnectSdk\Service\BulkImport\Handler\Stream;
 use Shopgate\ConnectSdk\Service\BulkImport\Handler\File;
-use Shopgate\ConnectSdk\Dto\Catalog\Category\Create;
 
 class Category extends Feed
 {
     /**
-     * @param Create $category
+     * @param \Shopgate\ConnectSdk\Dto\Catalog\Category $category
      */
-    public function add(Create $category)
+    public function add(\Shopgate\ConnectSdk\Dto\Catalog\Category $category)
     {
         switch ($this->handlerType) {
             case Stream::HANDLER_TYPE:

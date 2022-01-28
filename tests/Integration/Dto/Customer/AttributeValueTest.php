@@ -47,7 +47,7 @@ class AttributeValueTest extends CustomerUtility
         $newAttributeValue->setName('new name');
 
         // Act
-        $this->sdk->getCustomerService()->addAttributeValue(
+        $this->sdk->getCustomerService()->addAttributeValues(
             self::SAMPLE_ATTRIBUTE_CODE,
             [$newAttributeValue]
         );
@@ -125,7 +125,7 @@ class AttributeValueTest extends CustomerUtility
         $newAttributeValue->setSequenceId(2);
         $newAttributeValue->setName('to delete name');
 
-        $this->sdk->getCustomerService()->addAttributeValue(
+        $this->sdk->getCustomerService()->addAttributeValues(
             self::SAMPLE_ATTRIBUTE_CODE,
             [$newAttributeValue]
         );
@@ -178,7 +178,7 @@ class AttributeValueTest extends CustomerUtility
         // Act
         try {
             // Act
-            $this->sdk->getCustomerService()->addAttributeValue(
+            $this->sdk->getCustomerService()->addAttributeValues(
                 self::SAMPLE_ATTRIBUTE_CODE,
                 [$attributeValue]
             );

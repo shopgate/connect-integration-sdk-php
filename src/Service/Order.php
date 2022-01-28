@@ -28,6 +28,7 @@ use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Http\ClientInterface;
+use Shopgate\ConnectSdk\Http\Persistence\TokenPersistenceException;
 
 class Order
 {
@@ -45,8 +46,6 @@ class Order
     }
 
     /**
-     * @see
-     *
      * @param array $orders
      *
      * @return array
@@ -56,6 +55,7 @@ class Order
      * @throws RequestException
      * @throws UnknownException
      * @throws InvalidDataTypeException
+     * @throws TokenPersistenceException
      *
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/SalesOrder/createSalesOrders
      */
@@ -81,6 +81,7 @@ class Order
      * @throws RequestException
      * @throws UnknownException
      * @throws InvalidDataTypeException
+     * @throws TokenPersistenceException
      *
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/SalesOrder/getSalesOrders
      */
@@ -99,13 +100,14 @@ class Order
      * @param string $orderNumber
      * @param array{fields: string, getOriginalImageUrls: bool} $query
      *
-     * @return array|null
+     * @return array
      *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
      * @throws InvalidDataTypeException
+     * @throws TokenPersistenceException
      *
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/SalesOrder/getSalesOrder
      */
@@ -134,6 +136,7 @@ class Order
      * @throws RequestException
      * @throws UnknownException
      * @throws InvalidDataTypeException
+     * @throws TokenPersistenceException
      *
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/SalesOrder/getSalesOrderHistory
      */
@@ -152,13 +155,14 @@ class Order
      * @param string $orderNumber
      * @param array{getOriginalImageUrls: bool} $query
      *
-     * @return array|null
+     * @return array
      *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
      * @throws InvalidDataTypeException
+     * @throws TokenPersistenceException
      *
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/FulfillmentOrder/getFulfillmentOrder
      */
@@ -187,6 +191,7 @@ class Order
      * @throws RequestException
      * @throws UnknownException
      * @throws InvalidDataTypeException
+     * @throws TokenPersistenceException
      *
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/FulfillmentOrder/getFulfillmentOrderHistory
      */
@@ -211,6 +216,7 @@ class Order
      * @throws RequestException
      * @throws UnknownException
      * @throws InvalidDataTypeException
+     * @throws TokenPersistenceException
      *
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/FulfillmentOrder/getFulfillmentOrders
      */
@@ -235,6 +241,7 @@ class Order
      * @throws RequestException
      * @throws UnknownException
      * @throws InvalidDataTypeException
+     * @throws TokenPersistenceException
      *
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/Analytics/getFulfillmentOrderStatusCount
      */
@@ -260,6 +267,7 @@ class Order
      * @throws RequestException
      * @throws UnknownException
      * @throws InvalidDataTypeException
+     * @throws TokenPersistenceException
      *
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/Analytics/getFulfillmentOrderBreakdownByIntervals
      */
@@ -285,6 +293,7 @@ class Order
      * @throws RequestException
      * @throws UnknownException
      * @throws InvalidDataTypeException
+     * @throws TokenPersistenceException
      *
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/Analytics/getIntervalCycleTimes
      */

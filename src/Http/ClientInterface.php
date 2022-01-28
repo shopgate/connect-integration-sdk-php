@@ -22,23 +22,77 @@
 
 namespace Shopgate\ConnectSdk\Http;
 
+use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
+use Shopgate\ConnectSdk\Http\Persistence\TokenPersistenceException;
 
 interface ClientInterface
 {
     /**
-     * @param array $params
+     * Sends a request to the API of a given service or to the URL provided.
      *
-     * @return mixed
+     * Using a custom URL (option "url") will remove all oAuth authentication from the request. Setting the "url"
+     * option overrides the "service" option but will append the "path", if set.
+     *
+     * <code>$options = [
+     *   'service'     => 'string',                       // the name of the service to be requested
+     *   'method'      => 'string',                       // HTTP method, defaults to 'get'
+     *   'version'     => 'string',                       // API version, defaults to 'v1'
+     *   'path'        => 'string',                       // the route to call, omitting the 'v1/merchants/.../' part
+     *   'json'        => 'boolean',                      // JSON en-/decode request/response, defaults to true
+     *   'body'        => 'array|stdClass|string',        // the request body, defaults to null
+     *   'query'       => 'array|stdClass',               // the query part of the URL, defaults to []
+     *   'url'         => 'string',                       // use a custom URL to send the request to
+     * ]</code>
+     *
+     * @param array{service: string, method: string, version: string, path: string, json: bool, filters: array|\stdClass, requestType: string, body: array|\stdClass|string, query: array|\stdClass, url: string} $options
+     *
+     * @return ResponseInterface|array
+     *
      * @throws AuthenticationInvalidException
      * @throws UnknownException
      * @throws NotFoundException
      * @throws RequestException
      * @throws InvalidDataTypeException
+     * @throws TokenPersistenceException
+     */
+    public function request(array $options);
+
+    /**
+     * Publishes events of one type (same entity, same action) to the event-receiver service.
+     *
+     * @param string $action One of "entityCreated", "entityUpdated", "entityDeleted".
+     * @param string $entityName The name of the entity, e.g. "order", "product", "attribute", ...
+     * @param array[]|\stdClass[] $entities The actual entities to be created, updated or deleted
+     * @param string|null $entityIdPropertyName The name of the property that contains an entity's ID (usually only for "update", "delete")
+     *
+     * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws UnknownException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws InvalidDataTypeException
+     * @throws TokenPersistenceException
+     */
+    public function publish($action, $entityName, $entities, $entityIdPropertyName = null);
+
+    /**
+     * @param array $params
+     *
+     * @return mixed
+     *
+     * @throws AuthenticationInvalidException
+     * @throws UnknownException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws InvalidDataTypeException
+     *
+     * @deprecated use ClientInterface::request()
      */
     public function doRequest(array $params);
 }

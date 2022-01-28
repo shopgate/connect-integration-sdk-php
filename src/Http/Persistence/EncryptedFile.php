@@ -37,19 +37,14 @@ class EncryptedFile implements TokenPersistenceInterface
     /** @var string */
     private $secretKey;
 
-    /** @var Json */
-    private $jsonHelper;
-
     /**
-     * @param Json $jsonHelper
      * @param string $filepath
      * @param string $secretKey
      */
-    public function __construct(Json $jsonHelper, $filepath, $secretKey)
+    public function __construct($filepath, $secretKey)
     {
         $this->filepath  = $filepath;
         $this->secretKey = $secretKey;
-        $this->jsonHelper = $jsonHelper;
     }
 
     /**
@@ -59,8 +54,7 @@ class EncryptedFile implements TokenPersistenceInterface
      */
     public function saveToken(TokenInterface $token)
     {
-        /** @noinspection PhpUndefinedMethodInspection */
-        $encode = $this->jsonHelper->encode($token->serialize());
+        $encode = Json::encode($token->serialize());
         file_put_contents($this->filepath, Crypto::encryptWithPassword($encode, $this->secretKey), LOCK_EX);
     }
 
@@ -84,7 +78,6 @@ class EncryptedFile implements TokenPersistenceInterface
             return null;
         }
 
-        /** @noinspection PhpUndefinedMethodInspection */
         return $token->unserialize($data);
     }
 

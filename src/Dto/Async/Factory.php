@@ -46,8 +46,6 @@ class Factory
      * @param string|null  $entityId
      *
      * @return Factory
-     *
-     * @throws InvalidDataTypeException
      */
     public function addEvent($type, $entity, Payload $payload = null, $entityId = null)
     {

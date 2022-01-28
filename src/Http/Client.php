@@ -44,6 +44,7 @@ use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Helper\Json;
+use Shopgate\ConnectSdk\Helper\Value;
 use Shopgate\ConnectSdk\Http\Client\GrantType\ShopgateCredentials;
 use Shopgate\ConnectSdk\Http\Persistence\EncryptedFile;
 use Shopgate\ConnectSdk\Http\Persistence\PersistenceChain;
@@ -63,24 +64,27 @@ class Client implements ClientInterface
     private $merchantCode;
 
     /** @var OAuth2Middleware */
-    private $OAuthMiddleware;
+    private $oAuthMiddleware;
+
+    /** @var array<string, string> */
+    private $eventsByAction;
 
     /**
      * @param GuzzleClientInterface $client
-     * @param OAuth2Middleware      $OAuth2Middleware
+     * @param OAuth2Middleware      $oAuth2Middleware
      * @param string                $baseUri
      * @param string                $merchantCode
      */
     public function __construct(
         GuzzleClientInterface $client,
-        OAuth2Middleware $OAuth2Middleware,
-        $baseUri,
-        $merchantCode
+        OAuth2Middleware      $oAuth2Middleware,
+                              $baseUri,
+                              $merchantCode
     ) {
         $this->client = $client;
         $this->baseUri = rtrim($baseUri, '/');
         $this->merchantCode = $merchantCode;
-        $this->OAuthMiddleware = $OAuth2Middleware;
+        $this->oAuthMiddleware = $oAuth2Middleware;
     }
 
     /**
@@ -137,7 +141,7 @@ class Client implements ClientInterface
         );
 
         $OAuthMiddleware->setTokenPersistence(new PersistenceChain([
-            new EncryptedFile(new Json(), $accessTokenPath, $clientSecret)
+            new EncryptedFile($accessTokenPath, $clientSecret)
         ]));
 
         $handlerStack = HandlerStack::create();
@@ -186,10 +190,10 @@ class Client implements ClientInterface
      *
      * @return string
      */
-    public function buildServiceUrl($serviceName, $path = '')
+    public function buildServiceUrl($serviceName, $path = '', $version = 'v1')
     {
         return str_replace('{service}', $serviceName, $this->baseUri)
-            . '/v1'
+            . "/{$version}"
             . "/merchants/{$this->merchantCode}"
             . '/' . ltrim($path, '/');
     }
@@ -208,7 +212,7 @@ class Client implements ClientInterface
     {
         /** @var HandlerStack $handlerStack */
         $handlerStack = $this->client->getConfig('handler');
-        $handlerStack->push($this->OAuthMiddleware, 'oauth');
+        $handlerStack->push($this->oAuthMiddleware, 'oauth');
     }
 
     protected function removeOAuthAuthentication()
@@ -216,6 +220,51 @@ class Client implements ClientInterface
         /** @var HandlerStack $handlerStack */
         $handlerStack = $this->client->getConfig('handler');
         $handlerStack->remove('oauth');
+    }
+
+    public function request(array $options)
+    {
+        if (empty($options['service']) && empty($options['url'])) {
+            throw new \ValueError('Option "service" or "url" must be set when sending a request');
+        }
+
+        // query parsing, conversion of bools to strings & JSON encode filters if set
+        $query = Value::arrayBool2String((array)Value::elvis($options['query'], []));
+        if (!empty($query['filters'])) $query['filters'] = Json::encode($query['filters']);
+
+        // remove authentication on custom URLs (used for S3 uploads)
+        if (!empty($options['url'])) $this->removeOAuthAuthentication();
+
+        $headers = [];
+        $body = Value::elvis($options['body'], null);
+        $json = Value::elvis($options['json'], true, 'isset', false);
+
+        if ($json && (is_array($body) || is_object($body))) {
+            $headers['Content-Type'] = 'application/json';
+            $body = Json::encode($body);
+        }
+
+        $httpClientOptions = [
+            'connect_timeout' => 5.0,
+            'body' => $body,
+            'headers' => $headers,
+            'query' => $query
+        ];
+
+        $method = Value::elvis($options['method'], 'get');
+        $version = Value::elvis($options['version'], 'v1');
+        $path = Value::elvis($options['path'], '');
+        $url = Value::elvis($options['url'], '');
+        $uri = Value::elvis(
+            $url,
+            !empty($url) ? $url . $path : $this->buildServiceUrl($options['service'], $path, $version)
+        );
+
+        $this->addOAuthAuthentication();
+
+        $result = $this->send($method, $uri, $httpClientOptions);
+
+        return $json ? Json::decode($result->getBody()) : $result;
     }
 
     /**
@@ -230,7 +279,7 @@ class Client implements ClientInterface
      * @throws TokenPersistenceException
      * @throws RequestException
      * @throws UnknownException
-     * @throws InvalidDataTypeException
+     * @deprecated
      */
     public function doRequest(array $params)
     {
@@ -242,7 +291,7 @@ class Client implements ClientInterface
 
         $parameters = [];
         if (isset($params['query'])) {
-            $parameters['query'] = $this->fixBoolValuesInQuery($params['query']);
+            $parameters['query'] = Value::arrayBool2String($params['query']);
         }
 
         if (!isset($params['url'])) {
@@ -253,23 +302,46 @@ class Client implements ClientInterface
             return $this->triggerEvent($params);
         }
 
-        $response = null;
         $defaultConfigs = [
             'connect_timeout' => 5.0
         ];
-        try {
-            if (isset($params['body'])) {
-                $parameters['body'] = $params['body'];
-            } elseif (isset($params['json'])) {
-                $json = !empty($params['json']) ? $params['json'] : [];
-                $parameters['json'] = $json instanceof Base ? $json->toJson() : (new DtoObject($json))->toJson();
-            }
 
-            $response = $this->client->request(
-                $params['method'],
-                isset($params['url']) ? $params['url'] : $this->buildServiceUrl($params['service'], $params['path']),
-                array_merge($defaultConfigs, $parameters)
-            );
+        if (isset($params['body'])) {
+            $parameters['body'] = $params['body'];
+        } elseif (isset($params['json'])) {
+            $json = !empty($params['json']) ? $params['json'] : [];
+            $parameters['json'] = $json instanceof Base ? $json->toJson() : (new DtoObject($json))->toJson();
+        }
+
+        $response = $this->send(
+            $params['method'],
+            isset($params['url']) ? $params['url'] : $this->buildServiceUrl($params['service'], $params['path']),
+            array_merge($defaultConfigs, $parameters)
+        );
+
+        if ($response instanceof ResponseInterface) {
+            $this->checkForErrorsInResponse($response);
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param string $method
+     * @param string $uri
+     * @param array $options
+     *
+     * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     * @throws TokenPersistenceException
+     */
+    private function send($method, $uri, $options) {
+        try {
+            return $this->client->request($method, $uri, $options);
         } catch (GuzzleRequestException $e) {
             $statusCode = $e->getResponse() ? $e->getResponse()->getStatusCode() : 0;
 
@@ -289,17 +361,9 @@ class Client implements ClientInterface
             throw new UnknownException($e->getMessage());
         } catch (AccessTokenRequestException $e) {
             throw new AuthenticationInvalidException($e->getMessage());
-        } catch (TokenPersistenceException $e) {
-            throw $e;
         } catch (Exception $e) {
             throw new UnknownException($e->getMessage());
         }
-
-        if ($response instanceof ResponseInterface) {
-            $this->checkForErrorsInResponse($response);
-        }
-
-        return $response;
     }
 
     /**
@@ -332,23 +396,32 @@ class Client implements ClientInterface
         }
     }
 
-    /**
-     * This method will convert true (bool) values to 'true' (string) and false (bool) to 'false' (string).
-     *
-     * @param array $queryParameters
-     *
-     * @return array
-     */
-    private function fixBoolValuesInQuery($queryParameters)
-    {
-        foreach ($queryParameters as $queryParameterKey => $queryParameterValue) {
-            if (!is_bool($queryParameterValue)) {
-                continue;
-            }
-            $queryParameters[$queryParameterKey] = !empty($queryParameterValue) ? 'true' : 'false';
-        }
+    public function publish($action, $entityName, $entities, $entityIdPropertyName = null) {
+        $events = array_map(function ($entity) use ($action, $entityName, $entityIdPropertyName) {
+            $entity = (array)$entity;
 
-        return $queryParameters;
+            $event = [
+                'event' => $action,
+                'entity' => $entityName,
+                'payload' => $entity,
+            ];
+
+            if ($entityIdPropertyName !== null) $event['entityId'] = $entity[$entityIdPropertyName];
+
+            return $event;
+        }, $entities);
+
+        $this->addOAuthAuthentication();
+
+        $this->send(
+            'post',
+            $this->buildServiceUrl('event-receiver', 'events'),
+            [
+                'json' => ['events' => $events],
+                'http_errors' => true,
+                'connect_timeout' => 5.0
+            ]
+        );
     }
 
     /**

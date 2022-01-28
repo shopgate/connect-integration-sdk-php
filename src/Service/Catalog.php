@@ -39,12 +39,14 @@ use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Helper\Json;
+use Shopgate\ConnectSdk\Helper\Value;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\ShopgateSdk;
 
 class Catalog
 {
     const SERVICE_CATALOG = 'catalog';
+    const NAME = 'catalog';
 
     /** @var ClientInterface */
     private $client;
@@ -76,6 +78,27 @@ class Catalog
      */
     public function addCategories(array $categories, array $query = [])
     {
+        // code for new ->request() & ->publish(), shows how to handle events & catalogCode
+        // Prerequisites:
+        // * $categories is an array or stdClass
+        // * new parameter $requestType, defaults ShopgateSdk::REQUEST_TYPE_DIRECT
+
+        /*
+        if ($requestType === ShopgateSdk::REQUEST_TYPE_EVENT) {
+            if ($query['catalogCode']) $categories = Value::addValue($categories, $query['catalogCode'], 'catalogCode');
+            return $this->client->publish('create', 'category', $categories);
+        }
+
+        return $this->client->request([
+            'method' => 'post',
+            'service' => self::NAME,
+            'path' => 'categories',
+            'json' => true,
+            'body' => ['categories' => $categories],
+            'query' => $query
+        ]);
+        */
+
         return $this->client->doRequest(
             [
                 // general

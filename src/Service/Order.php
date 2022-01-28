@@ -22,370 +22,287 @@
 
 namespace Shopgate\ConnectSdk\Service;
 
-use Psr\Http\Message\ResponseInterface;
-use Shopgate\ConnectSdk\Dto\Meta;
-use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrder;
-use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrderHistory;
-use Shopgate\ConnectSdk\Dto\Order\Order as OrderDto;
-use Shopgate\ConnectSdk\Dto\Order\OrderHistory;
-use Shopgate\ConnectSdk\Dto\Order\SimpleFulfillmentOrder;
-use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrderStatusCount;
-use Shopgate\ConnectSdk\Dto\Order\FulfillmentOrderBreakdown;
-use Shopgate\ConnectSdk\Dto\Order\CycleTime;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
-use Shopgate\ConnectSdk\Helper\Json;
 use Shopgate\ConnectSdk\Http\ClientInterface;
-use Shopgate\ConnectSdk\ShopgateSdk;
 
 class Order
 {
-    const SERVICE_ORDER = 'order';
+    const NAME = 'order';
 
     /** @var ClientInterface */
     private $client;
 
-    /** @var Json */
-    private $jsonHelper;
-
     /**
      * @param ClientInterface $client
-     * @param Json            $jsonHelper
      */
-    public function __construct(ClientInterface $client, Json $jsonHelper)
+    public function __construct(ClientInterface $client)
     {
         $this->client = $client;
-        $this->jsonHelper = $jsonHelper;
     }
 
     /**
-     * @param OrderDto\Create[] $orders
-     * @param array             $query
+     * @see
      *
-     * @return ResponseInterface
+     * @param array $orders
+     *
+     * @return array
      *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
      * @throws InvalidDataTypeException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/SalesOrder/createSalesOrders
      */
-    public function addOrders(array $orders, array $query = [])
+    public function addOrders(array $orders)
     {
-        $response = $this->client->doRequest(
+        return $this->client->request(
             [
-                // general
+                'service' => self::NAME,
                 'method' => 'post',
-                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'json' => ['orders' => $orders],
-                'query' => $query,
-                // direct
-                'service' => self::SERVICE_ORDER,
-                'path' => 'orders'
+                'path' => 'orders',
+                'body' => ['orders' => $orders]
             ]
         );
-
-        return $this->jsonHelper->decode($response->getBody(), true);
     }
 
     /**
-     * @param array $query
+     * @param array{filters: array|\stdClass, fields: string, limit: int, offset: int} $query
      *
-     * @return OrderDto\GetList
+     * @return array
      *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
      * @throws InvalidDataTypeException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/SalesOrder/getSalesOrders
      */
     public function getOrders(array $query = [])
     {
-        if (isset($query['filters'])) {
-            $query['filters'] = $this->jsonHelper->encode($query['filters']);
-        }
-
-        $response = $this->client->doRequest(
+        return $this->client->request(
             [
-                // direct only
-                'service' => self::SERVICE_ORDER,
-                'method' => 'get',
+                'service' => self::NAME,
                 'path' => 'orders',
-                'query' => $query,
+                'query' => $query
             ]
         );
-        $response = $this->jsonHelper->decode($response->getBody(), true);
-
-        $orders = [];
-        foreach ($response['orders'] as $order) {
-            $orders[] = new OrderDto\Get($order);
-        }
-        $response['meta'] = new Meta($response['meta']);
-        $response['orders'] = $orders;
-
-        return new OrderDto\GetList($response);
     }
 
     /**
      * @param string $orderNumber
-     * @param array  $query
+     * @param array{fields: string, getOriginalImageUrls: bool} $query
      *
-     * @return OrderDto\Get
+     * @return array|null
      *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
      * @throws InvalidDataTypeException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/SalesOrder/getSalesOrder
      */
     public function getOrder($orderNumber, array $query = [])
     {
-        $response = $this->client->doRequest(
+        $response = $this->client->request(
             [
-                // direct only
-                'service' => self::SERVICE_ORDER,
-                'method' => 'get',
+                'service' => self::NAME,
                 'path' => 'orders/' . $orderNumber,
-                'query' => $query,
+                'method' => 'get',
+                'query' => $query
             ]
         );
 
-        $response = $this->jsonHelper->decode($response->getBody(), true);
-
-        return new OrderDto\Get($response['order']);
+        return isset($response['order']) ? $response['order'] : null;
     }
 
     /**
      * @param string $orderNumber
-     * @param array  $query
+     * @param array{filters: array|\stdClass, sort: string} $query
      *
-     * @return OrderHistory\GetList
+     * @return array
      *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
      * @throws InvalidDataTypeException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/SalesOrder/getSalesOrderHistory
      */
     public function getOrderHistory($orderNumber, array $query = [])
     {
-        $response = $this->client->doRequest(
+        return $this->client->request(
             [
-                // direct only
-                'service' => self::SERVICE_ORDER,
-                'method' => 'get',
+                'service' => self::NAME,
                 'path' => 'orders/' . $orderNumber . '/history',
-                'query' => $query,
+                'query' => $query
             ]
         );
-
-        $response = $this->jsonHelper->decode($response->getBody(), true);
-        return new OrderHistory\GetList($response);
     }
 
     /**
      * @param string $orderNumber
-     * @param array  $query
+     * @param array{getOriginalImageUrls: bool} $query
      *
-     * @return FulfillmentOrder\Get
+     * @return array|null
      *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
      * @throws InvalidDataTypeException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/FulfillmentOrder/getFulfillmentOrder
      */
     public function getFulfillmentOrder($orderNumber, array $query = [])
     {
-        $response = $this->client->doRequest(
+        $response = $this->client->request(
             [
-                // direct only
-                'service' => self::SERVICE_ORDER,
+                'service' => self::NAME,
                 'method' => 'get',
                 'path' => 'fulfillmentOrders/' . $orderNumber,
-                'query' => $query,
+                'query' => $query
             ]
         );
 
-        $response = $this->jsonHelper->decode($response->getBody(), true);
-
-        return new FulfillmentOrder\Get($response['fulfillmentOrder']);
+        return isset($response['fulfillmentOrder']) ? $response['fulfillmentOrder'] : null;
     }
 
     /**
      * @param string $orderNumber
-     * @param array  $query
+     * @param array{filters: array|\stdClass, sort: string} $query
      *
-     * @return FulfillmentOrderHistory\GetList
+     * @return array
      *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
      * @throws InvalidDataTypeException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/FulfillmentOrder/getFulfillmentOrderHistory
      */
     public function getFulfillmentOrderHistory($orderNumber, array $query = [])
     {
-        $response = $this->client->doRequest(
+        return $this->client->request(
             [
-                // direct only
-                'service' => self::SERVICE_ORDER,
-                'method' => 'get',
+                'service' => self::NAME,
                 'path' => 'fulfillmentOrders/' . $orderNumber . '/history',
-                'query' => $query,
+                'query' => $query
             ]
         );
-
-        $response = $this->jsonHelper->decode($response->getBody(), true);
-
-        return new FulfillmentOrderHistory\GetList($response);
     }
 
     /**
-     * @param array $query
+     * @param array{filters: array|\stdClass, sort: string, fields: string, limit: int, offset: int, getOriginalImageUrls: bool} $query
      *
-     * @return FulfillmentOrder\GetList
+     * @return array
      *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
      * @throws InvalidDataTypeException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/FulfillmentOrder/getFulfillmentOrders
      */
     public function getFulfillmentOrders(array $query = [])
     {
-        if (isset($query['filters'])) {
-            $query['filters'] = $this->jsonHelper->encode($query['filters']);
-        }
-
-        $response = $this->client->doRequest(
+        return $this->client->request(
             [
-                // direct only
-                'service' => self::SERVICE_ORDER,
-                'method' => 'get',
+                'service' => self::NAME,
                 'path' => 'fulfillmentOrders',
-                'query' => $query,
+                'query' => $query
             ]
         );
-        $response = $this->jsonHelper->decode($response->getBody(), true);
-
-        $orders = [];
-        foreach ($response['fulfillmentOrders'] as $order) {
-            $orders[] = new SimpleFulfillmentOrder($order);
-        }
-        $response['meta'] = new Meta($response['meta']);
-        $response['fulfillmentOrders'] = $orders;
-
-        return new FulfillmentOrder\GetList($response);
     }
 
     /**
-     * @param array $query
+     * @param array{filters: array|\stdClass} $query
      *
-     * @return FulfillmentOrderStatusCount\GetList
+     * @return array
      *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
      * @throws InvalidDataTypeException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/Analytics/getFulfillmentOrderStatusCount
      */
     public function getFulfillmentOrderStatusCount(array $query = [])
     {
-        if (isset($query['filters'])) {
-            $query['filters'] = $this->jsonHelper->encode($query['filters']);
-        }
-
-        $response = $this->client->doRequest(
+        return $this->client->request(
             [
-                // direct only
-                'service' => self::SERVICE_ORDER,
-                'method' => 'get',
+                'service' => self::NAME,
                 'path' => 'analytics/fulfillmentOrderStatusCount',
-                'query' => $query,
+                'query' => $query
             ]
         );
-        $response = $this->jsonHelper->decode($response->getBody(), true);
-        $orderStatusCount = [];
-        foreach ($response['orderStatusCount'] as $statusCount) {
-            $orderStatusCount[] = new FulfillmentOrderStatusCount\Get($statusCount);
-        }
-
-        $response['orderStatusCount'] = $orderStatusCount;
-
-        return new FulfillmentOrderStatusCount\GetList($response);
     }
 
     /**
      * @param string $interval
-     * @param array $query
+     * @param array{filters: array|\stdClass, timezone: string} $query
      *
-     * @return FulfillmentOrderBreakdown
+     * @return array
      *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
      * @throws InvalidDataTypeException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/Analytics/getFulfillmentOrderBreakdownByIntervals
      */
     public function getFulfillmentOrderBreakdown($interval, array $query = [])
     {
-        if (isset($query['filters'])) {
-            $query['filters'] = $this->jsonHelper->encode($query['filters']);
-        }
-
-        $response = $this->client->doRequest(
+        return $this->client->request(
             [
-                // direct only
-                'service' => self::SERVICE_ORDER,
-                'method' => 'get',
+                'service' => self::NAME,
                 'path' => 'analytics/fulfillmentOrderBreakdown/intervals/' . $interval,
-                'query' => $query,
+                'query' => $query
             ]
         );
-        $response = $this->jsonHelper->decode($response->getBody(), true);
-
-        return new FulfillmentOrderBreakdown($response['orderBreakdown']);
     }
 
     /**
      * @param string $interval
-     * @param array $query
+     * @param array{filters: array|\stdClass, timezone: string} $query
      *
-     * @return CycleTime\GetList
+     * @return array
      *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
      * @throws InvalidDataTypeException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/Analytics/getIntervalCycleTimes
      */
     public function getCycleTimes($interval, array $query = [])
     {
-        if (isset($query['filters'])) {
-            $query['filters'] = $this->jsonHelper->encode($query['filters']);
+        $filters = null;
+        if (!empty($query['filters'])) {
+            $filters = $query['filters'];
+            unset($query['filters']);
         }
 
-        $response = $this->client->doRequest(
+        return $this->client->request(
             [
-                // direct only
-                'service' => self::SERVICE_ORDER,
-                'method' => 'get',
+                'service' => self::NAME,
                 'path' => 'analytics/cycleTimes/intervals/' . $interval,
                 'query' => $query,
+                'filters' => $filters
             ]
         );
-        $response = $this->jsonHelper->decode($response->getBody(), true);
-
-        $cycleTimes = [];
-        foreach ($response['cycleTimes'] as $cycleTime) {
-            $cycleTimes[] = new CycleTime\Get($cycleTime);
-        }
-        $response['cycleTimes'] = $cycleTimes;
-
-        return new CycleTime\GetList($response);
     }
 }

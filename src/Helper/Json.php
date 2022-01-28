@@ -35,7 +35,7 @@ class Json
      * @return string
      * @throws InvalidArgumentException if the JSON cannot be encoded.
      */
-    public function encode($value, $options = 0, $depth = 512)
+    public static function encode($value, $options = 0, $depth = 512)
     {
         return GuzzleHttp\json_encode($value, $options, $depth);
     }
@@ -50,7 +50,7 @@ class Json
      * @return mixed
      * @throws InvalidArgumentException if the JSON cannot be decoded.
      */
-    public function decode($json, $assoc = false, $depth = 512, $options = 0)
+    public static function decode($json, $assoc = true, $depth = 512, $options = 0)
     {
         return GuzzleHttp\json_decode($json, $assoc, $depth, $options);
     }

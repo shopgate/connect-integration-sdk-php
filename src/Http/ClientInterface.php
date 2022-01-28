@@ -23,6 +23,7 @@
 namespace Shopgate\ConnectSdk\Http;
 
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerInterface;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
@@ -32,6 +33,12 @@ use Shopgate\ConnectSdk\Http\Persistence\TokenPersistenceException;
 
 interface ClientInterface
 {
+    /**
+     * @param \Psr\Log\LoggerInterface $logger
+     * @param string $template
+     */
+    public function enableRequestLogging(LoggerInterface $logger = null, $template = '');
+
     /**
      * Sends a request to the API of a given service or to the URL provided.
      *

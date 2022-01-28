@@ -66,9 +66,6 @@ class Client implements ClientInterface
     /** @var OAuth2Middleware */
     private $oAuthMiddleware;
 
-    /** @var array<string, string> */
-    private $eventsByAction;
-
     /**
      * @param GuzzleClientInterface $client
      * @param OAuth2Middleware      $oAuth2Middleware
@@ -268,6 +265,74 @@ class Client implements ClientInterface
     }
 
     /**
+     * @param string $method
+     * @param string $uri
+     * @param array $options
+     *
+     * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     * @throws TokenPersistenceException
+     */
+    private function send($method, $uri, $options) {
+        try {
+            return $this->client->request($method, $uri, $options);
+        } catch (GuzzleRequestException $e) {
+            $statusCode = $e->getResponse() ? $e->getResponse()->getStatusCode() : 0;
+
+            if ($statusCode === 404) {
+                throw new NotFoundException(
+                    $e->getResponse() && $e->getResponse()->getBody() ? $e->getResponse()->getBody()->getContents()
+                        : $e->getMessage()
+                );
+            }
+
+            throw new RequestException(
+                $statusCode,
+                $e->getResponse() && $e->getResponse()->getBody() ? $e->getResponse()->getBody()->getContents()
+                    : $e->getMessage()
+            );
+        } catch (GuzzleException $e) {
+            throw new UnknownException($e->getMessage());
+        } catch (AccessTokenRequestException $e) {
+            throw new AuthenticationInvalidException($e->getMessage());
+        } catch (Exception $e) {
+            throw new UnknownException($e->getMessage());
+        }
+    }
+
+    public function publish($action, $entityName, $entities, $entityIdPropertyName = null) {
+        $events = array_map(function ($entity) use ($action, $entityName, $entityIdPropertyName) {
+            $entity = (array)$entity;
+
+            $event = [
+                'event' => $action,
+                'entity' => $entityName,
+                'payload' => $entity,
+            ];
+
+            if ($entityIdPropertyName !== null) $event['entityId'] = $entity[$entityIdPropertyName];
+
+            return $event;
+        }, $entities);
+
+        $this->addOAuthAuthentication();
+
+        $this->send(
+            'post',
+            $this->buildServiceUrl('event-receiver', 'events'),
+            [
+                'json' => ['events' => $events],
+                'http_errors' => true,
+                'connect_timeout' => 5.0
+            ]
+        );
+    }
+
+    /**
      * @param array $params ['url' => .., 'query' => .., 'body' => .., 'method' => .., 'service' => .., 'path' => ..]
      *                      parameter 'body' or 'json' can not be set both at a time
      *                      if parameter 'url' is set the oauth authentication will be deactivated
@@ -327,104 +392,6 @@ class Client implements ClientInterface
     }
 
     /**
-     * @param string $method
-     * @param string $uri
-     * @param array $options
-     *
-     * @return ResponseInterface
-     *
-     * @throws AuthenticationInvalidException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws UnknownException
-     * @throws TokenPersistenceException
-     */
-    private function send($method, $uri, $options) {
-        try {
-            return $this->client->request($method, $uri, $options);
-        } catch (GuzzleRequestException $e) {
-            $statusCode = $e->getResponse() ? $e->getResponse()->getStatusCode() : 0;
-
-            if ($statusCode === 404) {
-                throw new NotFoundException(
-                    $e->getResponse() && $e->getResponse()->getBody() ? $e->getResponse()->getBody()->getContents()
-                        : $e->getMessage()
-                );
-            }
-
-            throw new RequestException(
-                $statusCode,
-                $e->getResponse() && $e->getResponse()->getBody() ? $e->getResponse()->getBody()->getContents()
-                    : $e->getMessage()
-            );
-        } catch (GuzzleException $e) {
-            throw new UnknownException($e->getMessage());
-        } catch (AccessTokenRequestException $e) {
-            throw new AuthenticationInvalidException($e->getMessage());
-        } catch (Exception $e) {
-            throw new UnknownException($e->getMessage());
-        }
-    }
-
-    /**
-     * @param ResponseInterface $response
-     *
-     * @throws NotFoundException
-     * @throws RequestException
-     */
-    private function checkForErrorsInResponse($response)
-    {
-        if ($body = $response->getBody()) {
-            $responseContent = json_decode((string)$body, true);
-
-            if (!isset($responseContent['errors']) || empty($responseContent['errors'])) {
-                return;
-            }
-
-            foreach ($responseContent['errors'] as $error) {
-                if ($error['code'] === 404) {
-                    throw new NotFoundException(
-                        isset($error['reason']) ? $error['reason'] : ''
-                    );
-                }
-
-                throw new RequestException(
-                    $error['code'],
-                    isset($error['reason']) ? $error['reason'] : ''
-                );
-            }
-        }
-    }
-
-    public function publish($action, $entityName, $entities, $entityIdPropertyName = null) {
-        $events = array_map(function ($entity) use ($action, $entityName, $entityIdPropertyName) {
-            $entity = (array)$entity;
-
-            $event = [
-                'event' => $action,
-                'entity' => $entityName,
-                'payload' => $entity,
-            ];
-
-            if ($entityIdPropertyName !== null) $event['entityId'] = $entity[$entityIdPropertyName];
-
-            return $event;
-        }, $entities);
-
-        $this->addOAuthAuthentication();
-
-        $this->send(
-            'post',
-            $this->buildServiceUrl('event-receiver', 'events'),
-            [
-                'json' => ['events' => $events],
-                'http_errors' => true,
-                'connect_timeout' => 5.0
-            ]
-        );
-    }
-
-    /**
      * @param array $params
      *
      * @return ResponseInterface
@@ -433,6 +400,8 @@ class Client implements ClientInterface
      * @throws RequestException
      * @throws UnknownException
      * @throws InvalidDataTypeException
+     *
+     * @deprecated
      */
     private function triggerEvent(array $params)
     {
@@ -485,6 +454,8 @@ class Client implements ClientInterface
      * @param array $params
      *
      * @return bool
+     *
+     * @deprecated
      */
     public function isDirect(array $params)
     {
@@ -498,6 +469,8 @@ class Client implements ClientInterface
      * @param Base  $payload
      *
      * @return Base
+     *
+     * @deprecated
      */
     private function prepareEventPayload(array $params, Base $payload)
     {
@@ -506,5 +479,37 @@ class Client implements ClientInterface
         }
 
         return $payload;
+    }
+
+    /**
+     * @param ResponseInterface $response
+     *
+     * @throws NotFoundException
+     * @throws RequestException
+     *
+     * @deprecated
+     */
+    private function checkForErrorsInResponse($response)
+    {
+        if ($body = $response->getBody()) {
+            $responseContent = json_decode((string)$body, true);
+
+            if (!isset($responseContent['errors']) || empty($responseContent['errors'])) {
+                return;
+            }
+
+            foreach ($responseContent['errors'] as $error) {
+                if ($error['code'] === 404) {
+                    throw new NotFoundException(
+                        isset($error['reason']) ? $error['reason'] : ''
+                    );
+                }
+
+                throw new RequestException(
+                    $error['code'],
+                    isset($error['reason']) ? $error['reason'] : ''
+                );
+            }
+        }
     }
 }

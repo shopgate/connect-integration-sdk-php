@@ -227,7 +227,7 @@ class Client implements ClientInterface
 
         // query parsing, conversion of bools to strings & JSON encode filters if set
         $query = Value::arrayBool2String((array)Value::elvis($options['query'], []));
-        if (!empty($query['filters'])) {
+        if (!empty($query['filters']) && (is_array($query['filters']) || is_object($query['filters']))) {
             $query['filters'] = Json::encode($query['filters']);
         }
 

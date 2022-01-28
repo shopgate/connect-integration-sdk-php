@@ -227,10 +227,14 @@ class Client implements ClientInterface
 
         // query parsing, conversion of bools to strings & JSON encode filters if set
         $query = Value::arrayBool2String((array)Value::elvis($options['query'], []));
-        if (!empty($query['filters'])) $query['filters'] = Json::encode($query['filters']);
+        if (!empty($query['filters'])) {
+            $query['filters'] = Json::encode($query['filters']);
+        }
 
         // remove authentication on custom URLs (used for S3 uploads)
-        if (!empty($options['url'])) $this->removeOAuthAuthentication();
+        if (!empty($options['url'])) {
+            $this->removeOAuthAuthentication();
+        }
 
         $headers = [];
         $body = Value::elvis($options['body'], null);
@@ -277,7 +281,8 @@ class Client implements ClientInterface
      * @throws UnknownException
      * @throws TokenPersistenceException
      */
-    private function send($method, $uri, $options) {
+    private function send($method, $uri, $options)
+    {
         try {
             return $this->client->request($method, $uri, $options);
         } catch (GuzzleRequestException $e) {
@@ -304,7 +309,8 @@ class Client implements ClientInterface
         }
     }
 
-    public function publish($action, $entityName, $entities, $entityIdPropertyName = null) {
+    public function publish($action, $entityName, $entities, $entityIdPropertyName = null)
+    {
         $events = array_map(function ($entity) use ($action, $entityName, $entityIdPropertyName) {
             $entity = (array)$entity;
 
@@ -314,7 +320,9 @@ class Client implements ClientInterface
                 'payload' => $entity,
             ];
 
-            if ($entityIdPropertyName !== null) $event['entityId'] = $entity[$entityIdPropertyName];
+            if ($entityIdPropertyName !== null) {
+                $event['entityId'] = $entity[$entityIdPropertyName];
+            }
 
             return $event;
         }, $entities);

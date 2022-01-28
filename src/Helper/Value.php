@@ -31,7 +31,9 @@ class Value
         }
 
         $checkResult = $checkFunction($value);
-        if ($negate) $checkResult = !$checkResult;
+        if ($negate) {
+            $checkResult = !$checkResult;
+        }
 
         return $checkResult ? $value : $alt;
     }
@@ -63,8 +65,13 @@ class Value
     public static function addValue($array, $value, $key)
     {
         return array_map(function ($originalValue) use ($value, $key) {
-            if (is_array($originalValue)) $originalValue[$key] = $value;
-            if (is_object($originalValue)) $originalValue->{$key} = $value;
+            if (is_array($originalValue)) {
+                $originalValue[$key] = $value;
+            }
+
+            if (is_object($originalValue)) {
+                $originalValue->{$key} = $value;
+            }
 
             return $originalValue;
         }, $array);

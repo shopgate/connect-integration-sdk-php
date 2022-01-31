@@ -22,8 +22,6 @@ Order creation (see [API docs](https://s3.eu-central-1.amazonaws.com/shopgatedev
 ```php
 <?php
 use Shopgate\ConnectSdk\ShopgateSdk;
-use Shopgate\ConnectSdk\Dto\Catalog\Product;
-use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Price as PriceDto;
 
 $order = [
     'localeCode' => 'de-de',

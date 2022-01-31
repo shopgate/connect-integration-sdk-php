@@ -228,7 +228,8 @@ class ShopgateSdk
         }
     }
 
-    private function getEnvironmentByConfig($config) {
+    private function getEnvironmentByConfig($config)
+    {
         switch ($config['env']) {
             default:
             case 'prod':

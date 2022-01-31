@@ -94,9 +94,7 @@ class ShopgateSdk
                 $config['username'],
                 $config['password'],
                 null,
-                isset($config['env'])
-                    ? $config['env']
-                    : ''
+                $this->getEnvironmentByConfig($config)
             );
         $this->jsonHelper = new Json();
 
@@ -227,6 +225,21 @@ class ShopgateSdk
                 'Config is missing the following keys: ' .
                 implode(', ', $missing)
             );
+        }
+    }
+
+    private function getEnvironmentByConfig($config) {
+        switch ($config['env']) {
+            default:
+            case 'prod':
+            case 'production':
+                return '';
+            case 'pg':
+            case 'staging':
+                return 'pg';
+            case 'dev':
+            case 'development':
+                return 'dev';
         }
     }
 }

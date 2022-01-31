@@ -18,152 +18,53 @@ Create a developer account at https://developer.shopgate.com
 
 
 #### Usage
-Example for calling our service in order to create, update or delete a category:
-```php
-<?php
-use Shopgate\ConnectSdk\ShopgateSdk;
-use Shopgate\ConnectSdk\Dto\Catalog\Category;
-
-$config = [
-    'merchantCode'  => 'xxx',
-    'clientId'      => 'xxx',
-    'clientSecret'  => 'xxx',
-    'username'      => 'xxx',
-    'password'      => 'xxx',
-    'env'           => 'pg' // Optional. "dev", "pg" or empty (= production)
-];
-
-$sgSdk = new ShopgateSdk($config);
-
-// create new category
-$categoryPayload = new Category\Create();
-$name            = new Category\Dto\Name(['en-us' => 'Denim Pants']);
-$categoryPayload->setCode('pants')->setName($name)->setSequenceId(1);
-$sgSdk->getCatalogService()->addCategories([$categoryPayload]);
-
-// update category with constructor input example
-$updateDto = new Category\Update(['name' => ['en-us' => 'Skirts']]);
-$sgSdk->getCatalogService()->updateCategory('pants', $updateDto);
-
-// delete category
-$sgSdk->getCatalogService()->deleteCategory('pants');
-
-// get categories
-$categories = $sgSdk->getCatalogService()->getCategories(['limit' => 5]);
-
-// update category sync
-$name      = (new Category\Dto\Name())->add('en-us', 'Skirts');
-$updateDto = new Category\Update(['name' => $name]);
-$sgSdk->getCatalogService()->updateCategory('4', $updateDto, ['requestType' => 'direct']);
-```
-
-Example for calling our service in order to create, update or delete a simple product:
+Order creation (see [API docs](https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/SalesOrder/createSalesOrders) for full request spec):
 ```php
 <?php
 use Shopgate\ConnectSdk\ShopgateSdk;
 use Shopgate\ConnectSdk\Dto\Catalog\Product;
 use Shopgate\ConnectSdk\Dto\Catalog\Product\Dto\Price as PriceDto;
 
+$order = [
+    'localeCode' => 'de-de',
+    'currencyCode' => 'EUR',
+    'addressSequences' => [...],
+    'primaryBillToAddressSequenceIndex' => 0,
+    'lineItems' => [...],
+    'subTotal' => 109.99,
+    'total' => 115.89,
+    'submitDate' => '2019-09-02T09:02:57.733Z',
+    'imported' => true
+];
+
 $config = [
-    'merchantCode'  => 'xxx',
-    'clientId'      => 'xxx',
-    'clientSecret'  => 'xxx',
-    'username'      => 'xxx',
-    'password'      => 'xxx',
+    'merchantCode'  => 'MERCHANT_CODE',
+    'clientId'      => 'my-client',
+    'clientSecret'  => '*******',
+    'username'      => 'my.address@my-domain.com',
+    'password'      => '*******',
     'env'           => 'pg' // Optional. "dev", "pg" or empty (= production)
 ];
 
 $sgSdk = new ShopgateSdk($config);
 
-// create new price
-$price = new PriceDto();
-$price->setPrice(90)->setSalePrice(84.99)->setCurrencyCode(PriceDto::CURRENCY_CODE_EUR);
-
-// create new product
-$productPayload = new Product\Create();
-$name = new Product\Dto\Name(['en-us' => 'Blue Jeans regular']);
-$productPayload->setCode('42')
-               ->setCatalogCode('my_catalog')
-               ->setName($name)
-               ->setStatus(Product\Create::STATUS_ACTIVE)
-               ->setModelType(Product\Create::MODEL_TYPE_STANDARD)
-               ->setIsInventoryManaged(true)
-               ->setPrice($price);
-$sgSdk->getCatalogService()->addProducts([$productPayload]);
-
-// update product with constructor input example
-$updateDto = new Product\Update(['name' => new Product\Dto\Name(['en-us' => 'Blue Jeans regular'])]);
-$sgSdk->getCatalogService()->updateProduct('42', $updateDto);
-
-// delete product
-$sgSdk->getCatalogService()->deleteProduct('42');
-
-// update product sync
-$updateDto = new Product\Update(['status' => Product\Create::STATUS_INACTIVE]);
-$sgSdk->getCatalogService()->updateProduct('42', $updateDto, ['requestType' => 'direct']);
-```
-Example for create bulk import:
-
-```php
-<?php
-
-use Shopgate\ConnectSdk\ShopgateSdk;
-use Shopgate\ConnectSdk\Dto\Catalog\Category;
-
-$config = [
-    'merchantCode'  => 'xxx',
-    'clientId'      => 'xxx',
-    'clientSecret'  => 'xxx',
-    'username'      => 'xxx',
-    'password'      => 'xxx',
-    'env'           => 'pg' // Optional. "dev", "pg" or empty (= production)
-];
-
-$sgSdk = new ShopgateSdk($config);
-
-// create new category 1
-$categoryPayload1 = new Category\Create();
-$name1            = new Category\Dto\Name(['en-us' => 'Denim Pants']);
-$categoryPayload1->setCode('pants')->setName($name1)->setSequenceId(1);
-
-// create new category 2
-$categoryPayload2 = new Category\Create();
-$name2            = new Category\Dto\Name(['en-us' => 'Denim Shirts']);
-$categoryPayload2->setCode('shirts')->setName($name2)->setSequenceId(1);
-
-// init stream import
-//$handler = $sgSdk->getBulkImportService()->createStreamImport();
-
-// init file import
-$handler = $sgSdk->getBulkImportService()->createFileImport();
-
-// create product feed for catalog
-// $productHandler = $handler->createProductFeed('8000');
-
-// create category feed for catalog
-$categoryHandler = $handler->createCategoryFeed('8000');
-
-// add payloads
-$categoryHandler->add($categoryPayload1);
-$categoryHandler->add($categoryPayload2);
-
-// submit items / stop stream
-$categoryHandler->end();
-
-// trigger import
-$handler->trigger();
+try {
+    $response = $sgSdk->getOrderService()->addOrders([$order]);
+    var_dump($resonse);
+} catch (\Exception $e) {
+    var_dump($e);
+}
 ```
 
 #### Config
 
 * __clientId__ (string) - oAuth2 client ID
 * __clientSecret__ (string) - oAuth2 client secret
-* __merchantCode__ (string) - the following are template system related, the default _base_uri_ provided takes in variables in __{merchantCode}__ format. These params just replace these variables. This way you do not need to rewrite the base_uri, but just provide the correct variables to replace the template components.
-* __username__ - (string) - your username
-* __password__ - (string) - your password
-* __base_uri__ (string, default: _https://{service}.shopgate{env}.io/v{ver}/merchants/{merchantCode}/_) - if rewriting, make sure to add a forward slash at end as the calls will append paths
-* __ver__ (integer, default: 1) - template variable, can be substituted on a per call level in the meta array parameters
-* __env__ (string, default: '') - template variable, can also be 'dev' or 'pg'. If empty, production environment is used.
+* __merchantCode__ (string) - merchant code provided to you upon registration
+* __username__ - (string) - the email address of the user called "Api Credentials" at Shopgate Next Admin
+* __password__ - (string) - the password of the user called "Api Credentials" at Shopgate Next Admin
+* __base_uri__ (string, default: _https://{service}.shopgate{env}.io/v{ver}/merchants/{merchantCode}/_) - the base URI for services; trailing slash mandatory
+* __env__ (string, default: _production_) - one of "dev", "staging", "production"
 
 ## Changelog
 

@@ -24,6 +24,7 @@ namespace Shopgate\ConnectSdk;
 
 use Shopgate\ConnectSdk\Exception\MissingConfigFieldException;
 use Shopgate\ConnectSdk\Helper\Json;
+use Shopgate\ConnectSdk\Helper\Value;
 use Shopgate\ConnectSdk\Http\Client;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\Service\BulkImport;
@@ -93,7 +94,7 @@ class ShopgateSdk
                 $config['merchantCode'],
                 $config['username'],
                 $config['password'],
-                null,
+                Value::elvis($config['baseUri'], null),
                 $this->getEnvironmentByConfig($config)
             );
         $this->jsonHelper = new Json();
@@ -230,7 +231,7 @@ class ShopgateSdk
 
     private function getEnvironmentByConfig($config)
     {
-        switch ($config['env']) {
+        switch (Value::elvis($config['env'], '')) {
             default:
             case 'prod':
             case 'production':

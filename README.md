@@ -12,13 +12,13 @@ Create a developer account at https://developer.shopgate.com
 ## Requirements
 * PHP 5.6 and above
 
-## Getting Started
-#### Via Composer
+## Installation
 ```composer require shopgate/connect-integration-sdk-php```
 
+Or download and unzip from the [releases page](https://github.com/shopgate/connect-integration-sdk-php/releases). 
 
-#### Usage
-Order creation (see [API docs](https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/SalesOrder/createSalesOrders) for full request spec):
+## Quick Start
+Order creation example (see [Order API docs](https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/SalesOrder/createSalesOrders) for full request spec):
 ```php
 <?php
 use Shopgate\ConnectSdk\ShopgateSdk;
@@ -54,32 +54,34 @@ try {
 }
 ```
 
-#### Config
-
+## Configuration Parameters
 * __clientId__ (string) - oAuth2 client ID
 * __clientSecret__ (string) - oAuth2 client secret
 * __merchantCode__ (string) - merchant code provided to you upon registration
 * __username__ - (string) - the email address of the user called "Api Credentials" at Shopgate Next Admin
 * __password__ - (string) - the password of the user called "Api Credentials" at Shopgate Next Admin
-* __base_uri__ (string, default: _https://{service}.shopgate{env}.io/v{ver}/merchants/{merchantCode}/_) - the base URI for services; trailing slash mandatory
 * __env__ (string, default: _production_) - one of "dev", "staging", "production"
 
 ## Changelog
-
 See [CHANGELOG.md](CHANGELOG.md) file for more information.
 
 ## Contributing
-
 See [CONTRIBUTING.md](docs/CONTRIBUTING.md) file for more information.
 
 ## About Shopgate
-
 Shopgate is the leading mobile commerce platform.
 
 ## License
-
 The Shopgate Connect Integration SDK is available under the Apache License, Version 2.0.
 
 See the [LICENSE.md](LICENSE.md) file for more information.
 
-[Guzzle]:http://docs.guzzlephp.org/en/stable/request-options.html
+## Advanced
+### "baseUri" Configuration
+For testing against an echo service the __baseUri__ config can be overridden. It defaults to
+`https://{service}.shopgate{env}.io/{version}/merchants/{merchantCode}/`, supporting template variables:
+
+* __service__ - the service name, different for each request
+* __env__ - the Shopgate environment, replaced with one of "dev", "pg" (staging) or "" (production)
+* __version__ - the API version, may be different for each request
+* __merchantCode__ - the merchant code set in the configuration

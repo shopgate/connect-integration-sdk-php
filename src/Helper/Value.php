@@ -27,7 +27,9 @@ class Value
      */
     public static function elvis($subject, $property, $alt, $checkFunction = 'empty', $negate = true)
     {
-        if (is_object($subject)) $subject = (array)$subject;
+        if (is_object($subject)) {
+            $subject = (array)$subject;
+        }
 
         if (in_array($checkFunction, array_keys(self::$workarounds))) {
             $checkFunction = [self::class, self::$workarounds[$checkFunction]];

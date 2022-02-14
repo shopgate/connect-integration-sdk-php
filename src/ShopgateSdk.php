@@ -94,7 +94,7 @@ class ShopgateSdk
                 $config['merchantCode'],
                 $config['username'],
                 $config['password'],
-                Value::elvis($config['baseUri'], null),
+                Value::elvis($config, 'baseUri', null),
                 $this->getEnvironmentByConfig($config)
             );
         $this->jsonHelper = new Json();
@@ -231,7 +231,7 @@ class ShopgateSdk
 
     private function getEnvironmentByConfig($config)
     {
-        switch (Value::elvis($config['env'], '')) {
+        switch (Value::elvis($config, 'env', '')) {
             default:
             case 'prod':
             case 'production':

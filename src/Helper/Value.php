@@ -18,24 +18,27 @@ class Value
      * This is easier to understand:
      * $method = Value::elvis($options['method'], 'get');
      *
-     * @param mixed $value
+     * @param mixed $subject
+     * @param string $property
      * @param mixed $alt
      * @param callable $checkFunction
      * @param bool $negate
      * @return mixed
      */
-    public static function elvis($value, $alt, $checkFunction = 'empty', $negate = true)
+    public static function elvis($subject, $property, $alt, $checkFunction = 'empty', $negate = true)
     {
+        if (is_object($subject)) $subject = (array)$subject;
+
         if (in_array($checkFunction, array_keys(self::$workarounds))) {
             $checkFunction = [self::class, self::$workarounds[$checkFunction]];
         }
 
-        $checkResult = $checkFunction($value);
+        $checkResult = $checkFunction($subject, $property);
         if ($negate) {
             $checkResult = !$checkResult;
         }
 
-        return $checkResult ? $value : $alt;
+        return $checkResult ? $subject[$property] : $alt;
     }
 
     /**
@@ -96,13 +99,13 @@ class Value
         return $array;
     }
 
-    private static function checkEmpty($value)
+    private static function checkEmpty($subject, $property)
     {
-        return empty($value);
+        return empty($subject[$property]);
     }
 
-    private static function checkIsset($value)
+    private static function checkIsset($subject, $property)
     {
-        return isset($value);
+        return isset($subject[$property]);
     }
 }

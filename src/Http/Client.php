@@ -226,7 +226,7 @@ class Client implements ClientInterface
         }
 
         // query parsing, conversion of bools to strings & JSON encode filters if set
-        $query = Value::arrayBool2String((array)Value::elvis($options['query'], []));
+        $query = Value::arrayBool2String((array)Value::elvis($options, 'query', []));
         if (!empty($query['filters']) && (is_array($query['filters']) || is_object($query['filters']))) {
             $query['filters'] = Json::encode($query['filters']);
         }
@@ -237,8 +237,8 @@ class Client implements ClientInterface
         }
 
         $headers = [];
-        $body = Value::elvis($options['body'], null);
-        $json = Value::elvis($options['json'], true, 'isset', false);
+        $body = Value::elvis($options, 'body', null);
+        $json = Value::elvis($options, 'json', true, 'isset', false);
 
         if ($json && (is_array($body) || is_object($body))) {
             $headers['Content-Type'] = 'application/json';
@@ -252,14 +252,11 @@ class Client implements ClientInterface
             'query' => $query
         ];
 
-        $method = Value::elvis($options['method'], 'get');
-        $version = Value::elvis($options['version'], 'v1');
-        $path = Value::elvis($options['path'], '');
-        $url = Value::elvis($options['url'], '');
-        $uri = Value::elvis(
-            $url,
-            !empty($url) ? $url . $path : $this->buildServiceUrl($options['service'], $path, $version)
-        );
+        $method = Value::elvis($options, 'method', 'get');
+        $version = Value::elvis($options, 'version', 'v1');
+        $path = Value::elvis($options, 'path', '');
+        $url = Value::elvis($options, 'url', '');
+        $uri = !empty($url) ? $url . $path : $this->buildServiceUrl($options['service'], $path, $version);
 
         $this->addOAuthAuthentication();
 

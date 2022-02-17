@@ -260,9 +260,8 @@ class Client implements ClientInterface
 
         $this->addOAuthAuthentication();
 
-        $result = $this->send($method, $uri, $httpClientOptions);
-
-        return $json ? Json::decode($result->getBody()) : $result;
+        $result = $this->send($method, $uri, $httpClientOptions)->getBody()->getContents();
+        return $json && !empty($result) ? Json::decode($result) : $result;
     }
 
     /**

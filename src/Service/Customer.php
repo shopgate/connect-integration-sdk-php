@@ -122,8 +122,6 @@ class Customer
      * @param array  $attribute
      * @param array  $query
      *
-     * @return array
-     *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
@@ -135,7 +133,7 @@ class Customer
      */
     public function updateAttribute($attributeCode, array $attribute, array $query = [])
     {
-        return $this->client->request([
+        $this->client->request([
             'service' => self::NAME,
             'method' => 'post',
             'path' => 'attributes/' . $attributeCode,
@@ -148,8 +146,6 @@ class Customer
      * @param string $attributeCode
      * @param array  $query
      *
-     * @return array
-     *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
@@ -161,7 +157,7 @@ class Customer
      */
     public function deleteAttribute($attributeCode, array $query = [])
     {
-        return $this->client->request([
+        $this->client->request([
             'service' => self::NAME,
             'method' => 'delete',
             'path' => 'attributes/' . $attributeCode,
@@ -202,8 +198,6 @@ class Customer
      * @param array  $attributeValue
      * @param array                 $query
      *
-     * @return array
-     *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
@@ -215,7 +209,7 @@ class Customer
      */
     public function updateAttributeValue($attributeCode, $attributeValueCode, array $attributeValue, array $query = [])
     {
-        return $this->client->request([
+        $this->client->request([
             'service' => self::NAME,
             'method' => 'post',
             'path' => 'attributes/' . $attributeCode . '/values/' . $attributeValueCode,
@@ -229,8 +223,6 @@ class Customer
      * @param string $attributeValueCode
      * @param array  $query
      *
-     * @return array
-     *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
@@ -242,7 +234,7 @@ class Customer
      */
     public function deleteAttributeValue($attributeCode, $attributeValueCode, array $query = [])
     {
-        return $this->client->request([
+        $this->client->request([
             'service' => self::NAME,
             'method' => 'delete',
             'path' => 'attributes/' . $attributeCode . '/values/' . $attributeValueCode,
@@ -328,8 +320,6 @@ class Customer
      * @param array  $customer
      * @param array  $query
      *
-     * @return array
-     *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
@@ -341,7 +331,7 @@ class Customer
      */
     public function updateCustomer($customerId, array $customer, array $query = [])
     {
-        return $this->client->request([
+        $this->client->request([
             'service' => self::NAME,
             'method' => 'post',
             'path' => 'customers/' . $customerId,
@@ -354,8 +344,6 @@ class Customer
      * @param string $customerId
      * @param array  $query
      *
-     * @return array
-     *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
@@ -365,7 +353,7 @@ class Customer
      *
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/customer-crud.yaml#/default/deleteCustomer
      */
-    public function deleteCustomer($customerId, array $query = [])
+    function deleteCustomer($customerId, array $query = [])
     {
         return $this->client->request([
             'service' => self::NAME,
@@ -408,8 +396,6 @@ class Customer
      * @param array  $contact
      * @param array          $query
      *
-     * @return array
-     *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
@@ -421,7 +407,7 @@ class Customer
      */
     public function updateContact($customerId, $contactId, array $contact, array $query = [])
     {
-        return $this->client->request([
+        $this->client->request([
             'service' => self::NAME,
             'method' => 'post',
             'path' => 'customers/' . $customerId . '/contacts/' . $contactId,
@@ -435,8 +421,6 @@ class Customer
      * @param string $contactId
      * @param array  $query
      *
-     * @return array
-     *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
@@ -448,7 +432,7 @@ class Customer
      */
     public function deleteContact($customerId, $contactId, array $query = [])
     {
-        return $this->client->request([
+        $this->client->request([
             'service' => self::NAME,
             'method' => 'delete',
             'path' => 'customers/' . $customerId . '/contacts/' . $contactId,
@@ -525,7 +509,7 @@ class Customer
      */
     public function addWishlists($customerId, array $wishlists, array $query = [])
     {
-        return $this->client->request([
+        $this->client->request([
             'service' => self::NAME,
             'method' => 'post',
             'path' => 'customers/' . $customerId . '/wishlists',
@@ -540,8 +524,6 @@ class Customer
      * @param array  $wishlist
      * @param array  $query
      *
-     * @return array
-     *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
@@ -553,7 +535,7 @@ class Customer
      */
     public function updateWishlist($customerId, $wishlistCode, $wishlist, array $query = [])
     {
-        return $this->client->request([
+        $this->client->request([
             'service' => self::NAME,
             'method' => 'post',
             'path' => 'customers/' . $customerId . '/wishlists/' . $wishlistCode,
@@ -567,8 +549,6 @@ class Customer
      * @param string $wishlistCode
      * @param array  $query
      *
-     * @return array
-     *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
@@ -580,7 +560,7 @@ class Customer
      */
     public function deleteWishlist($customerId, $wishlistCode, array $query = [])
     {
-        return $this->client->request([
+        $this->client->request([
             'service' => self::NAME,
             'method' => 'delete',
             'path' => 'customers/' . $customerId . '/wishlists/' . $wishlistCode,
@@ -671,8 +651,6 @@ class Customer
      * @param string $productCode
      * @param array  $query
      *
-     * @return array
-     *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
@@ -684,7 +662,7 @@ class Customer
      */
     public function deleteWishlistItem($customerId, $wishlistCode, $productCode, array $query = [])
     {
-        return $this->client->request([
+        $this->client->request([
             'service' => self::NAME,
             'method' => 'delete',
             'path' => 'customers/' . $customerId . '/wishlists/' . $wishlistCode . '/items/' . $productCode,

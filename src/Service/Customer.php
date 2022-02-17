@@ -316,6 +316,7 @@ class Customer
     {
         return $this->client->request([
             'service' => self::NAME,
+            'path' => 'customers',
             'method' => 'post',
             'body' => ['customers' => $customers],
             'query' => $query

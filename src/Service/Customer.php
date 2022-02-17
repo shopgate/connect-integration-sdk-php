@@ -353,7 +353,7 @@ class Customer
      *
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/customer-crud.yaml#/default/deleteCustomer
      */
-    function deleteCustomer($customerId, array $query = [])
+    public function deleteCustomer($customerId, array $query = [])
     {
         return $this->client->request([
             'service' => self::NAME,

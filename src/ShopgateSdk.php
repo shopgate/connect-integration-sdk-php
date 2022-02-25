@@ -31,6 +31,7 @@ use Shopgate\ConnectSdk\Service\BulkImport;
 use Shopgate\ConnectSdk\Service\Catalog;
 use Shopgate\ConnectSdk\Service\Customer;
 use Shopgate\ConnectSdk\Service\Location;
+use Shopgate\ConnectSdk\Service\Notification;
 use Shopgate\ConnectSdk\Service\Order;
 use Shopgate\ConnectSdk\Service\Segmentation;
 use Shopgate\ConnectSdk\Service\Webhook;
@@ -62,6 +63,9 @@ class ShopgateSdk
 
     /** @var BulkImport */
     private $bulkImport;
+
+    /** @var Notification */
+    private $notification;
 
     /** @var Segmentation */
     private $segmentation;
@@ -122,7 +126,7 @@ class ShopgateSdk
     public function getCustomerService()
     {
         if (!$this->customer) {
-            $this->customer = new Customer($this->client, $this->jsonHelper);
+            $this->customer = new Customer($this->client);
         }
 
         return $this->customer;
@@ -146,7 +150,7 @@ class ShopgateSdk
     public function getOrderService()
     {
         if (!$this->order) {
-            $this->order = new Order($this->client, $this->jsonHelper);
+            $this->order = new Order($this->client);
         }
 
         return $this->order;
@@ -174,6 +178,18 @@ class ShopgateSdk
         }
 
         return $this->bulkImport;
+    }
+
+    /**
+     * @return Notification
+     */
+    public function getNotificationService()
+    {
+        if (!$this->notification) {
+            $this->notification = new Notification($this->client, $this->jsonHelper);
+        }
+
+        return $this->notification;
     }
 
     /**

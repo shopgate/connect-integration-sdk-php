@@ -25,21 +25,20 @@ namespace Shopgate\ConnectSdk\Service\BulkImport\Feed;
 use Shopgate\ConnectSdk\Service\BulkImport\Feed;
 use Shopgate\ConnectSdk\Service\BulkImport\Handler\Stream;
 use Shopgate\ConnectSdk\Service\BulkImport\Handler\File;
-use Shopgate\ConnectSdk\Dto\Catalog\Category\Create;
 
 class Category extends Feed
 {
     /**
-     * @param Create $category
+     * @param array $category
      */
-    public function add(Create $category)
+    public function add(array $category)
     {
         switch ($this->handlerType) {
             case Stream::HANDLER_TYPE:
-                $this->stream->write($this->getItemDivider() . $category->toJson());
+                $this->stream->write($this->getItemDivider() . json_encode($category));
                 break;
             case File::HANDLER_TYPE:
-                fwrite($this->stream, $this->getItemDivider() . $category->toJson());
+                fwrite($this->stream, $this->getItemDivider() . json_encode($category));
                 break;
         }
 

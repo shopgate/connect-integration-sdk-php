@@ -22,7 +22,6 @@
 
 namespace Shopgate\ConnectSdk\Service\BulkImport\Feed;
 
-use Shopgate\ConnectSdk\Dto\Customer\Customer\Create;
 use Shopgate\ConnectSdk\Service\BulkImport\Feed;
 use Shopgate\ConnectSdk\Service\BulkImport\Handler\Stream;
 use Shopgate\ConnectSdk\Service\BulkImport\Handler\File;
@@ -30,9 +29,9 @@ use Shopgate\ConnectSdk\Service\BulkImport\Handler\File;
 class Customer extends Feed
 {
     /**
-     * @param Create $customer
+     * @param array $customer
      */
-    public function add(Create $customer)
+    public function add(array $customer)
     {
         /**
          * Remove attributes: https://jira.shopgate.guru/browse/CIS-49
@@ -41,10 +40,10 @@ class Customer extends Feed
 
         switch ($this->handlerType) {
             case Stream::HANDLER_TYPE:
-                $this->stream->write($this->getItemDivider() . $customer->toJson());
+                $this->stream->write($this->getItemDivider() . json_encode($customer));
                 break;
             case File::HANDLER_TYPE:
-                fwrite($this->stream, $this->getItemDivider() . $customer->toJson());
+                fwrite($this->stream, $this->getItemDivider() . json_encode($customer));
                 break;
         }
 

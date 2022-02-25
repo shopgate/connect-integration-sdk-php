@@ -194,7 +194,10 @@ class Catalog
     {
         $requestType = isset($query['requestType']) ? $query['requestType'] : ShopgateSdk::REQUEST_TYPE_DIRECT;
         if ($requestType === ShopgateSdk::REQUEST_TYPE_EVENT) {
-            if (!empty($query['catalogCode'])) $products = Value::addValue($products, $query['catalogCode'], 'catalogCode');
+            if (!empty($query['catalogCode'])) {
+                $products = Value::addValue($products, $query['catalogCode'], 'catalogCode');
+            }
+
             return $this->client->publish('entityCreated', 'product', $products);
         }
 

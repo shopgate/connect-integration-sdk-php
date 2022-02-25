@@ -23,20 +23,18 @@
 namespace Shopgate\ConnectSdk\Service;
 
 use Psr\Http\Message\ResponseInterface;
-use Shopgate\ConnectSdk\Dto\Location\Location as LocationDto;
-use Shopgate\ConnectSdk\Dto\Meta;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Http\ClientInterface;
-use Shopgate\ConnectSdk\ShopgateSdk;
+use Shopgate\ConnectSdk\Http\Persistence\TokenPersistenceException;
 use Shopgate\ConnectSdk\Helper\Json;
 
 class Location
 {
-    const SERVICE_LOCATION = 'location';
+    const NAME = 'location';
 
     /** @var ClientInterface */
     private $client;
@@ -55,99 +53,85 @@ class Location
     }
 
     /**
-     * @param LocationDto\Create[] $locations
-     * @param array                $query
+     * @param array $locations
+     * @param array $query
      *
      * @return ResponseInterface
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
-     * @throws InvalidDataTypeException
+     * @throws TokenPersistenceException
      */
     public function addLocations(array $locations, array $query = [])
     {
-        return $this->client->doRequest(
-            [
-                // general
-                'method'      => 'post',
-                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'json'        => ['locations' => $locations],
-                'query'       => $query,
-                // direct
-                'service'     => self::SERVICE_LOCATION,
-                'path'        => 'locations'
-            ]
-        );
-    }
-
-    /**
-     * @param string             $code
-     * @param LocationDTO\Update $location
-     * @param array              $query
-     *
-     * @return ResponseInterface
-     *
-     * @throws AuthenticationInvalidException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws UnknownException
-     * @throws InvalidDataTypeException
-     */
-    public function updateLocation($code, LocationDto\Update $location, array $query = [])
-    {
-        return $this->client->doRequest(
-            [
-                // general
-                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'json'        => $location,
-                'query'       => $query,
-                // direct
-                'method'      => 'post',
-                'service'     => self::SERVICE_LOCATION,
-                'path'        => 'locations/' . $code
-            ]
-        );
+        return $this->client->request([
+            'method' => 'post',
+            'service' => self::NAME,
+            'path' => 'locations',
+            'json' => true,
+            'body' => ['locations' => $locations],
+            'query' => $query
+        ]);
     }
 
     /**
      * @param string $code
-     * @param array  $query
-     *
-     * @return ResponseInterface
+     * @param array $location
+     * @param array $query
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
+     */
+    public function updateLocation($code, array $location, array $query = [])
+    {
+        $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'locations/' . $code,
+            'body' => $location,
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param string $code
+     * @param array $query
+     *
+     * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
      */
     public function deleteLocation($code, array $query = [])
     {
-        return $this->client->doRequest(
-            [
-                // general
-                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'query'       => $query,
-                // direct
-                'method'      => 'delete',
-                'service'     => self::SERVICE_LOCATION,
-                'path'        => 'locations/' . $code,
-            ]
-        );
+        $this->client->request([
+            'service' => self::NAME,
+            'method' => 'delete',
+            'path' => 'locations/' . $code,
+            'query' => $query
+        ]);
     }
 
     /**
      * @param array $query
      *
-     * @return LocationDto\GetList
+     * @return ResponseInterface
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
-     * @throws InvalidDataTypeException
      */
     public function getLocations(array $query = [])
     {
@@ -155,53 +139,34 @@ class Location
             $query['filters'] = $this->jsonHelper->encode($query['filters']);
         }
 
-        $response = $this->client->doRequest(
-            [
-                // direct only
-                'service' => self::SERVICE_LOCATION,
-                'method'  => 'get',
-                'path'    => 'locations',
-                'query'   => $query,
-            ]
-        );
-        $response = $this->jsonHelper->decode($response->getBody(), true);
-
-        $locations = [];
-        foreach ($response['locations'] as $location) {
-            $locations[] = new LocationDto\Get($location);
-        }
-        $response['meta']       = new Meta($response['meta']);
-        $response['locations'] = $locations;
-
-        return new LocationDto\GetList($response);
+        return $this->client->request([
+            'service' => self::NAME,
+            'path' => 'locations',
+            'query' => $query
+        ]);
     }
 
     /**
      * @param string $code location code
-     * @param array  $query
+     * @param array $query
      *
-     * @return LocationDto\Get
+     * @return array
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
-     * @throws InvalidDataTypeException
      */
     public function getLocation($code, array $query = [])
     {
-        $response = $this->client->doRequest(
-            [
-                // direct only
-                'service' => self::SERVICE_LOCATION,
-                'method'  => 'get',
-                'path'    => 'locations/' . $code,
-                'query'   => $query,
-            ]
-        );
+        $response = $this->client->request([
+            'service' => self::NAME,
+            'path' => 'locations/' . $code,
+            'query' => $query
+        ]);
 
-        $response = $this->jsonHelper->decode($response->getBody(), true);
-
-        return new LocationDto\Get($response['location']);
+        return isset($response['location']) ? $response['location'] : null;
     }
 }

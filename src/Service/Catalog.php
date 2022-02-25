@@ -41,11 +41,11 @@ use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Helper\Json;
 use Shopgate\ConnectSdk\Helper\Value;
 use Shopgate\ConnectSdk\Http\ClientInterface;
+use Shopgate\ConnectSdk\Http\Persistence\TokenPersistenceException;
 use Shopgate\ConnectSdk\ShopgateSdk;
 
 class Catalog
 {
-    const SERVICE_CATALOG = 'catalog';
     const NAME = 'catalog';
 
     /** @var ClientInterface */
@@ -65,28 +65,29 @@ class Catalog
     }
 
     /**
-     * @param Category\Create[] $categories
-     * @param array             $query
+     * @param array $categories
+     * @param array $query
      *
-     * @return ResponseInterface
+     * @return array|ResponseInterface
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
-     * @throws InvalidDataTypeException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Categories/createCategories
      */
     public function addCategories(array $categories, array $query = [])
     {
-        // code for new ->request() & ->publish(), shows how to handle events & catalogCode
-        // Prerequisites:
-        // * $categories is an array or stdClass
-        // * new parameter $requestType, defaults ShopgateSdk::REQUEST_TYPE_DIRECT
-
-        /*
+        $requestType = isset($query['requestType']) ? $query['requestType'] : ShopgateSdk::REQUEST_TYPE_DIRECT;
         if ($requestType === ShopgateSdk::REQUEST_TYPE_EVENT) {
-            if ($query['catalogCode']) $categories = Value::addValue($categories, $query['catalogCode'], 'catalogCode');
-            return $this->client->publish('create', 'category', $categories);
+            if (!empty($query['catalogCode'])) {
+                $categories = Value::addValue($categories, $query['catalogCode'], 'catalogCode');
+            }
+
+            return $this->client->publish('entityCreated', 'category', $categories);
         }
 
         return $this->client->request([
@@ -97,105 +98,69 @@ class Catalog
             'body' => ['categories' => $categories],
             'query' => $query
         ]);
-        */
-
-        return $this->client->doRequest(
-            [
-                // general
-                'method' => 'post',
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
-                'json' => ['categories' => $categories],
-                'query' => $query,
-                // direct
-                'service' => self::SERVICE_CATALOG,
-                'path' => 'categories',
-                // async
-                'entity' => 'category',
-                'action' => 'create',
-            ]
-        );
-    }
-
-    /**
-     * @param string          $code
-     * @param Category\Update $category
-     * @param array           $query
-     *
-     * @return ResponseInterface
-     *
-     * @throws AuthenticationInvalidException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws UnknownException
-     * @throws InvalidDataTypeException
-     */
-    public function updateCategory($code, Category\Update $category, array $query = [])
-    {
-        return $this->client->doRequest(
-            [
-                // general
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
-                'json' => $category,
-                'query' => $query,
-                // direct
-                'method' => 'post',
-                'service' => self::SERVICE_CATALOG,
-                'path' => 'categories/' . $code,
-                // async
-                'entity' => 'category',
-                'action' => 'update',
-                'entityId' => $code,
-            ]
-        );
     }
 
     /**
      * @param string $code
-     * @param array  $query
-     *
-     * @return ResponseInterface
+     * @param array $category
+     * @param array $query
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Categories/updateCategory
+     */
+    public function updateCategory($code, array $category, array $query = [])
+    {
+        $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'categories/' . $code,
+            'body' => $category,
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param string $code
+     * @param array $query
+     *
+     * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Categories/deleteCategory
      */
     public function deleteCategory($code, array $query = [])
     {
-        return $this->client->doRequest(
-            [
-                // general
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
-                'query' => $query,
-                // direct
-                'method' => 'delete',
-                'service' => self::SERVICE_CATALOG,
-                'path' => 'categories/' . $code,
-                // async
-                'entity' => 'category',
-                'action' => 'delete',
-                'entityId' => $code,
-            ]
-        );
+        $this->client->request([
+            'service' => self::NAME,
+            'method' => 'delete',
+            'path' => 'categories/' . $code,
+            'query' => $query
+        ]);
     }
 
     /**
      * @param array $query
      *
-     * @return Category\GetList
+     * @return array
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
-     * @throws InvalidDataTypeException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Categories/getCategories
      */
     public function getCategories(array $query = [])
     {
@@ -203,129 +168,110 @@ class Catalog
             $query['filters'] = $this->jsonHelper->encode($query['filters']);
         }
 
-        $response = $this->client->doRequest(
-            [
-                // direct only
-                'service' => self::SERVICE_CATALOG,
-                'method' => 'get',
-                'path' => 'categories',
-                'query' => $query,
-            ]
-        );
-        $response = $this->jsonHelper->decode($response->getBody(), true);
-
-        $categories = [];
-        foreach ($response['categories'] as $category) {
-            $categories[] = new Category\Get($category);
-        }
-        $response['meta'] = new Meta($response['meta']);
-        $response['categories'] = $categories;
-
-        return new Category\GetList($response);
+        return $this->client->request([
+            'service' => self::NAME,
+            'path' => 'categories',
+            'query' => $query
+        ]);
     }
 
     /**
-     * @param Product\Create[] $products
-     * @param array            $query
+     * @param array $products
+     * @param array $query
      *
-     * @return ResponseInterface
+     * @return array|ResponseInterface
      *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
      * @throws InvalidDataTypeException
+     * @throws TokenPersistenceException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Products/createProducts
      */
     public function addProducts(array $products, array $query = [])
     {
-        return $this->client->doRequest(
-            [
-                'service' => self::SERVICE_CATALOG,
-                'method' => 'post',
-                'path' => 'products',
-                'entity' => 'product',
-                'action' => 'create',
-                'json' => ['products' => $products],
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
-                'query' => $query,
-            ]
-        );
-    }
+        $requestType = isset($query['requestType']) ? $query['requestType'] : ShopgateSdk::REQUEST_TYPE_DIRECT;
+        if ($requestType === ShopgateSdk::REQUEST_TYPE_EVENT) {
+            if (!empty($query['catalogCode'])) {
+                $products = Value::addValue($products, $query['catalogCode'], 'catalogCode');
+            }
 
-    /**
-     * @param string         $code
-     * @param Product\Update $product
-     * @param array          $query
-     *
-     * @return ResponseInterface
-     *
-     * @throws AuthenticationInvalidException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws UnknownException
-     * @throws InvalidDataTypeException
-     */
-    public function updateProduct($code, Product\Update $product, array $query = [])
-    {
-        return $this->client->doRequest(
-            [
-                'service' => self::SERVICE_CATALOG,
-                'method' => 'post',
-                'path' => 'products/' . $code,
-                'entityId' => $code,
-                'entity' => 'product',
-                'action' => 'update',
-                'json' => $product,
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
-                'query' => $query,
-            ]
-        );
+            return $this->client->publish('entityCreated', 'product', $products);
+        }
+
+        return $this->client->request([
+            'method' => 'post',
+            'service' => self::NAME,
+            'path' => 'products',
+            'json' => true,
+            'body' => ['products' => $products],
+            'query' => $query
+        ]);
     }
 
     /**
      * @param string $code
-     * @param array  $query
-     *
-     * @return ResponseInterface
+     * @param array $product
+     * @param array $query
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Products/updateProduct
+     */
+    public function updateProduct($code, array $product, array $query = [])
+    {
+        $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'products/' . $code,
+            'body' => $product,
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param string $code
+     * @param array $query
+     *
+     * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Products/deleteProduct
      */
     public function deleteProduct($code, array $query = [])
     {
-        return $this->client->doRequest(
-            [
-                'service' => self::SERVICE_CATALOG,
-                'method' => 'delete',
-                'path' => 'products/' . $code,
-                'entity' => 'product',
-                'action' => 'delete',
-                'entityId' => $code,
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
-                'query' => $query,
-            ]
-        );
+        $this->client->request([
+            'service' => self::NAME,
+            'method' => 'delete',
+            'path' => 'products/' . $code,
+            'query' => $query
+        ]);
     }
 
     /**
      * @param array $query
      *
-     * @return Product\GetList
+     * @return array
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
-     * @throws InvalidDataTypeException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Products/getProducts
      */
     public function getProducts(array $query = [])
     {
@@ -333,124 +279,103 @@ class Catalog
             $query['filters'] = $this->jsonHelper->encode($query['filters']);
         }
 
-        $response = $this->client->doRequest(
-            [
-                // direct only
-                'service' => self::SERVICE_CATALOG,
-                'method' => 'get',
-                'path' => 'products',
-                'query' => $query,
-            ]
-        );
-        $response = $this->jsonHelper->decode($response->getBody(), true);
-
-        $products = [];
-        foreach ($response['products'] as $product) {
-            $products[] = new Product\Get($product);
-        }
-        $response['meta'] = new Meta($response['meta']);
-        $response['products'] = $products;
-
-        return new Product\GetList($response);
+        return $this->client->request([
+            'service' => self::NAME,
+            'path' => 'products',
+            'query' => $query
+        ]);
     }
 
     /**
      * @param string $code - product code
-     * @param array  $query
+     * @param array $query
      *
-     * @return Product\Get
+     * @return array
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
-     * @throws InvalidDataTypeException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Products/getProduct
      */
     public function getProduct($code, array $query = [])
     {
-        $response = $this->client->doRequest(
-            [
-                // direct only
-                'service' => self::SERVICE_CATALOG,
-                'method' => 'get',
-                'path' => 'products/' . $code,
-                'query' => $query
-            ]
-        );
-        $response = $this->jsonHelper->decode($response->getBody(), true);
+        $response = $this->client->request([
+            'service' => self::NAME,
+            'path' => 'products/' . $code,
+            'query' => $query
+        ]);
 
-        return new Product\Get($response['product']);
+        return isset($response['product']) ? $response['product'] : null;
     }
 
     /**
      * @param string $code - product code
-     * @param array  $query
+     * @param array $query
      *
-     * @return ProductDescriptions\Get
+     * @return array
+     *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
-     * @throws InvalidDataTypeException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Products/getProductDescriptions
      */
     public function getProductDescriptions($code, array $query = [])
     {
-        $response = $this->client->doRequest(
-            [
-                'service' => self::SERVICE_CATALOG,
-                'method' => 'get',
-                'path' => 'products/' . $code . '/descriptions',
-                'query' => $query
-            ]
-        );
-        $response = json_decode($response->getBody(), true);
-
-        return new ProductDescriptions\Get($response);
+        return $this->client->request([
+            'service' => self::NAME,
+            'path' => 'products/' . $code . '/descriptions',
+            'query' => $query
+        ]);
     }
 
     /**
-     * @param Attribute\Create[] $attributes
-     * @param array              $query
+     * @param array $attributes
+     * @param array $query
      *
-     * @return ResponseInterface
+     * @return array
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
-     * @throws InvalidDataTypeException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Attributes/createAttributes
      */
     public function addAttributes(array $attributes, array $query = [])
     {
-        return $this->client->doRequest(
-            [
-                // general
-                'method' => 'post',
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
-                'json' => ['attributes' => $attributes],
-                'query' => $query,
-                // direct
-                'service' => self::SERVICE_CATALOG,
-                'path' => 'attributes',
-                // async
-                'entity' => 'attribute',
-                'action' => 'create',
-            ]
-        );
+        return $this->client->request([
+            'method' => 'post',
+            'service' => self::NAME,
+            'path' => 'attributes',
+            'json' => true,
+            'body' => ['attributes' => $attributes],
+            'query' => $query
+        ]);
     }
 
     /**
      * @param array $query
      *
-     * @return Attribute\GetList
+     * @return array
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
-     * @throws InvalidDataTypeException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Attributes/getAttributes
      */
     public function getAttributes(array $query = [])
     {
@@ -458,446 +383,388 @@ class Catalog
             $query['filters'] = $this->jsonHelper->encode($query['filters']);
         }
 
-        $response = $this->client->doRequest(
-            [
-                // direct only
-                'service' => self::SERVICE_CATALOG,
-                'method' => 'get',
-                'path' => 'attributes',
-                'query' => $query,
-            ]
-        );
-        $response = $this->jsonHelper->decode($response->getBody(), true);
-
-        $attributes = [];
-        foreach ($response['attributes'] as $attribute) {
-            $attributes[] = new Attribute\Get($attribute);
-        }
-        $response['meta'] = new Meta($response['meta']);
-        $response['attributes'] = $attributes;
-
-        return new Attribute\GetList($response);
+        return $this->client->request([
+            'service' => self::NAME,
+            'path' => 'attributes',
+            'query' => $query
+        ]);
     }
 
     /**
      * @param string $attributeCode
-     * @param array  $query
+     * @param array $query
      *
-     * @return Attribute\Get
+     * @return array
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
-     * @throws InvalidDataTypeException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Attributes/getAttribute
      */
     public function getAttribute($attributeCode, array $query = [])
     {
-        $response = $this->client->doRequest(
-            [
-                // direct only
-                'service' => self::SERVICE_CATALOG,
-                'method' => 'get',
-                'path' => 'attributes/' . $attributeCode,
-                'query' => $query,
-            ]
-        );
+        $response = $this->client->request([
+            'service' => self::NAME,
+            'path' => 'attributes/' . $attributeCode,
+            'query' => $query
+        ]);
 
-        $response = $this->jsonHelper->decode($response->getBody(), true);
-
-        return new Attribute\Get($response['attribute']);
-    }
-
-    /**
-     * @param string           $attributeCode
-     * @param Attribute\Update $attribute
-     * @param array            $query
-     *
-     * @return ResponseInterface
-     *
-     * @throws AuthenticationInvalidException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws UnknownException
-     * @throws InvalidDataTypeException
-     */
-    public function updateAttribute($attributeCode, Attribute\Update $attribute, array $query = [])
-    {
-        return $this->client->doRequest(
-            [
-                // general
-                'service' => self::SERVICE_CATALOG,
-                'method' => 'post',
-                'path' => 'attributes/' . $attributeCode,
-                'entity' => 'attribute',
-                'query' => $query,
-                // direct only
-                'action' => 'update',
-                'json' => $attribute,
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
-                // async
-                'entityId' => $attributeCode,
-            ]
-        );
+        return isset($response['attribute']) ? $response['attribute'] : null;
     }
 
     /**
      * @param string $attributeCode
-     * @param array  $query
-     *
-     * @return ResponseInterface
+     * @param array $attribute
+     * @param array $query
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Attributes/updateAttribute
+     */
+    public function updateAttribute($attributeCode, array $attribute, array $query = [])
+    {
+        $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'attributes/' . $attributeCode,
+            'body' => $attribute,
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param string $attributeCode
+     * @param array $query
+     *
+     * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Attributes/deleteAttribute
      */
     public function deleteAttribute($attributeCode, array $query = [])
     {
-        return $this->client->doRequest(
-            [
-                'service' => self::SERVICE_CATALOG,
-                'method' => 'delete',
-                'path' => 'attributes/' . $attributeCode,
-                'entity' => 'attribute',
-                'action' => 'delete',
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
-                // async
-                'entityId' => $attributeCode,
-                'query' => $query,
-            ]
-        );
+        $this->client->request([
+            'service' => self::NAME,
+            'method' => 'delete',
+            'path' => 'attributes/' . $attributeCode,
+            'query' => $query
+        ]);
     }
 
     /**
-     * @param string                  $attributeCode
-     * @param AttributeValue\Create[] $attributeValues
-     * @param array                   $query
+     * @param string $attributeCode
+     * @param array $attributeValues
+     * @param array $query
      *
-     * @return ResponseInterface
-     *
-     * @throws AuthenticationInvalidException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws UnknownException
-     * @throws InvalidDataTypeException
-     */
-    public function addAttributeValue(
-        $attributeCode,
-        array $attributeValues,
-        array $query = []
-    ) {
-        return $this->client->doRequest(
-            [
-                'service' => self::SERVICE_CATALOG,
-                'method' => 'post',
-                'path' => 'attributes/' . $attributeCode . '/values',
-                'entity' => 'attributes',
-                'action' => 'create',
-                'json' => ['values' => $attributeValues],
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
-                'query' => $query,
-            ]
-        );
-    }
-
-    /**
-     * @param string                $attributeCode
-     * @param string                $attributeValueCode
-     * @param AttributeValue\Update $attributeValue
-     * @param array                 $query
-     *
-     * @return ResponseInterface
+     * @return array
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
-     * @throws InvalidDataTypeException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Attributes/setAttributeValues
      */
-    public function updateAttributeValue(
-        $attributeCode,
-        $attributeValueCode,
-        AttributeValue\Update $attributeValue,
-        array $query = []
-    ) {
-        return $this->client->doRequest(
-            [
-                'service' => self::SERVICE_CATALOG,
-                'method' => 'post',
-                'path' => 'attributes/' . $attributeCode . '/values/' . $attributeValueCode,
-                'entity' => 'attribute',
-                'action' => 'update',
-                'json' => $attributeValue,
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
-                'entityId' => $attributeCode,
-                'query' => $query,
-            ]
-        );
+    public function addAttributeValues($attributeCode, array $attributeValues, array $query = [])
+    {
+        return $this->client->request([
+            'method' => 'post',
+            'service' => self::NAME,
+            'path' => 'attributes/' . $attributeCode . '/values',
+            'json' => true,
+            'body' => ['values' => $attributeValues],
+            'query' => $query
+        ]);
     }
 
     /**
      * @param string $attributeCode
      * @param string $attributeValueCode
-     * @param array  $query
-     *
-     * @return ResponseInterface
+     * @param array $attributeValue
+     * @param array $query
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Attributes/updateAttributeValue
+     */
+    public function updateAttributeValue($attributeCode, $attributeValueCode, array $attributeValue, array $query = [])
+    {
+        $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'attributes/' . $attributeCode . '/values/' . $attributeValueCode,
+            'body' => $attributeValue,
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param string $attributeCode
+     * @param string $attributeValueCode
+     * @param array $query
+     *
+     * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Attributes/deleteAttributeValue
      */
     public function deleteAttributeValue($attributeCode, $attributeValueCode, array $query = [])
     {
-        return $this->client->doRequest(
-            [
-                'service' => self::SERVICE_CATALOG,
-                'method' => 'delete',
-                'path' => 'attributes/' . $attributeCode . '/values/' . $attributeValueCode,
-                'entity' => 'attributeValue',
-                'entityId' => $attributeValueCode,
-                'action' => 'delete',
-                'requestType' => isset($query['requestType'])
-                    ? $query['requestType']
-                    : ShopgateSdk::REQUEST_TYPE_EVENT,
-                'query' => $query,
-            ]
-        );
+        $this->client->request([
+            'service' => self::NAME,
+            'method' => 'delete',
+            'path' => 'attributes/' . $attributeCode . '/values/' . $attributeValueCode,
+            'query' => $query
+        ]);
     }
 
     /**
-     * @param Inventory\Create[] $inventories
-     * @param array              $query
+     * @param array $query
      *
-     * @return ResponseInterface
+     * @return array
      *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
      * @throws InvalidDataTypeException
+     * @throws TokenPersistenceException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Inventories/getInventories
+     */
+    public function getInventories(array $query = [])
+    {
+        if (isset($query['filters'])) {
+            $query['filters'] = $this->jsonHelper->encode($query['filters']);
+        }
+
+        return $this->client->request([
+            'service' => self::NAME,
+            'path' => 'inventories',
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param array $inventories
+     * @param array $query
+     *
+     * @return array
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Inventories/setInventories
      */
     public function addInventories(array $inventories, array $query = [])
     {
-        return $this->client->doRequest(
-            [
-                'service' => self::SERVICE_CATALOG,
-                'method' => 'post',
-                'path' => 'inventories',
-                'entity' => 'inventory',
-                'action' => 'create',
-                'json' => ['inventories' => $inventories],
-                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'query' => $query,
-            ]
-        );
+        // The event receiver does not yet support entities of type inventory
+        // $requestType = isset($query['requestType']) ? $query['requestType'] : ShopgateSdk::REQUEST_TYPE_DIRECT;
+        // if ($requestType === ShopgateSdk::REQUEST_TYPE_EVENT) {
+        //      return $this->client->publish('entityCreated', 'inventory', $inventories);
+        // }
+
+        return $this->client->request([
+            'method' => 'post',
+            'service' => self::NAME,
+            'path' => 'inventories',
+            'json' => true,
+            'body' => ['inventories' => $inventories],
+            'query' => $query
+        ]);
     }
 
     /**
-     * @param Inventory\Create[] $inventories
-     * @param array              $query
-     *
-     * @return ResponseInterface
+     * @param array $inventories
+     * @param array $query
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
-     * @throws InvalidDataTypeException
-     */
-    public function setInventories(array $inventories, array $query = [])
-    {
-        return $this->addInventories($inventories, $query);
-    }
-
-    /**
-     * @param Inventory\Delete[] $inventories
-     * @param array              $query
      *
-     * @return ResponseInterface
-     *
-     * @throws AuthenticationInvalidException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws UnknownException
-     * @throws InvalidDataTypeException
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Inventories/deleteInventories
      */
     public function deleteInventories(array $inventories, array $query = [])
     {
-        return $this->client->doRequest(
-            [
-                'service' => self::SERVICE_CATALOG,
-                'method' => 'delete',
-                'path' => 'inventories',
-                'entity' => 'inventory',
-                'json' => ['inventories' => $inventories],
-                'action' => 'delete',
-                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'query' => $query,
-            ]
-        );
+        $this->client->request([
+            'service' => self::NAME,
+            'method' => 'delete',
+            'path' => 'inventories',
+            'body' => ['inventories' => $inventories],
+            'query' => $query
+        ]);
     }
 
     /**
-     * @param Inventory\Update[] $inventories
-     * @param array              $query
+     * @param array $inventories
+     * @param array $query
      *
-     * @return ResponseInterface
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
-     * @throws InvalidDataTypeException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Inventories/incrementDecrementInventory
      */
     public function updateInventories($inventories, array $query = [])
     {
-        return $this->client->doRequest(
-            [
-                'service' => self::SERVICE_CATALOG,
-                'method' => 'patch',
-                'path' => 'inventories',
-                'entity' => 'inventory',
-                'json' => ['inventories' => $inventories],
-                'action' => 'update',
-                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'query' => $query,
-            ]
-        );
+        $this->client->request([
+            'service' => self::NAME,
+            'method' => 'patch',
+            'path' => 'inventories',
+            'body' => ['inventories' => $inventories],
+            'query' => $query
+        ]);
     }
 
     /**
-     * @param Reservation\Create[] $reservations
-     * @param array                $query
+     * @param array $reservations
+     * @param array $query
      *
-     * @return ResponseInterface
+     * @return array
      *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
      * @throws InvalidDataTypeException
+     * @throws TokenPersistenceException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Inventory/reserveInventory
      */
     public function addReservations(array $reservations, array $query = [])
     {
-        return $this->client->doRequest(
-            [
-                'service' => self::SERVICE_CATALOG,
-                'method' => 'post',
-                'path' => 'reservations',
-                'entity' => 'reservation',
-                'action' => 'create',
-                'json' => ['reservations' => $reservations],
-                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'query' => $query,
-            ]
-        );
+        return $this->client->request([
+            'method' => 'post',
+            'service' => self::NAME,
+            'path' => 'reservations',
+            'json' => true,
+            'body' => ['reservations' => $reservations],
+            'query' => $query
+        ]);
     }
 
     /**
      * @param array $codes
      * @param array $query
      *
-     * @return ResponseInterface
-     *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
-     * @throws InvalidDataTypeException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Inventory/deleteInventoryReservations
      */
     public function deleteReservations(array $codes, array $query = [])
     {
-        return $this->client->doRequest(
-            [
-                'service' => self::SERVICE_CATALOG,
-                'method' => 'delete',
-                'path' => 'reservations',
-                'entity' => 'reservation',
-                'json' => ['codes' => $codes],
-                'action' => 'delete',
-                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'query' => $query,
-            ]
-        );
-    }
-
-    /**
-     * @param string             $reservationCode
-     * @param Reservation\Update $reservation
-     * @param array              $query
-     *
-     * @return ResponseInterface
-     * @throws AuthenticationInvalidException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws UnknownException
-     * @throws InvalidDataTypeException
-     */
-    public function updateReservation($reservationCode, $reservation, array $query = [])
-    {
-        return $this->client->doRequest(
-            [
-                'service' => self::SERVICE_CATALOG,
-                'method' => 'post',
-                'path' => 'reservations/' . $reservationCode,
-                'entity' => 'reservation',
-                'json' => $reservation,
-                'action' => 'update',
-                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'query' => $query,
-            ]
-        );
+        $this->client->request([
+            'service' => self::NAME,
+            'method' => 'delete',
+            'path' => 'reservations',
+            'body' => ['codes' => $codes],
+            'query' => $query
+        ]);
     }
 
     /**
      * @param string $reservationCode
-     * @param array  $query
-     *
-     * @return Reservation\Get
+     * @param array $reservation
+     * @param array $query
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Inventory/updateReservation
+     */
+    public function updateReservation($reservationCode, $reservation, array $query = [])
+    {
+        $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'reservations/' . $reservationCode,
+            'body' => $reservation,
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param string $reservationCode
+     * @param array $query
+     *
+     * @return array
+     *
+     * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Inventory/getReservation
      */
     public function getReservation($reservationCode, array $query = [])
     {
-        $response = $this->client->doRequest(
-            [
-                'service' => self::SERVICE_CATALOG,
-                'method' => 'get',
-                'path' => 'reservations/' . $reservationCode,
-                'query' => $query,
-            ]
-        );
+        $response =  $this->client->request([
+            'service' => self::NAME,
+            'path' => 'reservations/' . $reservationCode,
+            'query' => $query
+        ]);
 
-        $response = $this->jsonHelper->decode($response->getBody(), true);
-
-        return new Reservation\Get($response['reservation']);
+        return isset($response['reservation']) ? $response['reservation'] : null;
     }
 
     /**
      * @param array $query
      *
-     * @return Reservation\GetList
+     * @return array
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
-     * @throws InvalidDataTypeException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Inventory/getReservations
      */
     public function getReservations(array $query = [])
     {
@@ -905,141 +772,156 @@ class Catalog
             $query['filters'] = $this->jsonHelper->encode($query['filters']);
         }
 
-        $response = $this->client->doRequest(
-            [
-                'service' => self::SERVICE_CATALOG,
-                'method' => 'get',
-                'path' => 'reservations',
-                'query' => $query,
-            ]
-        );
-        $response = $this->jsonHelper->decode($response->getBody(), true);
-
-        $reservations = [];
-        foreach ($response['reservations'] as $reservation) {
-            $reservations[] = new Reservation\Get($reservation);
-        }
-        $response['meta'] = new Meta($response['meta']);
-        $response['reservations'] = $reservations;
-
-        return new Reservation\GetList($response);
-    }
-
-    /**
-     * @param ParentCatalog\Create[] $parentCatalogs
-     * @param array                  $query
-     *
-     * @return ResponseInterface
-     *
-     * @throws AuthenticationInvalidException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws UnknownException
-     * @throws InvalidDataTypeException
-     */
-    public function addParentCatalogs(array $parentCatalogs, array $query = [])
-    {
-        return $this->client->doRequest(
-            [
-                'service' => self::SERVICE_CATALOG,
-                'method' => 'post',
-                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'json' => ['parentCatalogs' => $parentCatalogs],
-                'query' => $query,
-                'path' => 'parentCatalogs',
-            ]
-        );
-    }
-
-    /**
-     * @param string $catalogCode
-     * @param array  $query
-     *
-     * @return ResponseInterface
-     *
-     * @throws AuthenticationInvalidException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws UnknownException
-     * @throws InvalidDataTypeException
-     */
-    public function deleteCatalog($catalogCode, array $query = [])
-    {
-        return $this->client->doRequest(
-            [
-                'service' => self::SERVICE_CATALOG,
-                'method' => 'delete',
-                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'query' => $query,
-                'path' => 'catalogs/' . $catalogCode,
-            ]
-        );
-    }
-
-    /**
-     * @param CatalogDto\Create[] $catalogs
-     * @param array               $query
-     *
-     * @return ResponseInterface
-     *
-     * @throws AuthenticationInvalidException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws UnknownException
-     * @throws InvalidDataTypeException
-     */
-    public function addCatalogs(array $catalogs, array $query = [])
-    {
-        return $this->client->doRequest(
-            [
-                'service' => self::SERVICE_CATALOG,
-                'method' => 'post',
-                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'json' => ['catalogs' => $catalogs],
-                'query' => $query,
-                'path' => 'catalogs',
-            ]
-        );
-    }
-
-    /**
-     * @param string $code - catalog code
-     * @param array  $query
-     *
-     * @return CatalogDto\Get
-     *
-     * @throws AuthenticationInvalidException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws UnknownException
-     * @throws InvalidDataTypeException
-     */
-    public function getCatalog($code, array $query = [])
-    {
-        $response = $this->client->doRequest(
-            [
-                // direct only
-                'service' => self::SERVICE_CATALOG,
-                'method' => 'get',
-                'path' => 'catalogs/' . $code,
-                'query' => $query
-            ]
-        );
-        $response = $this->jsonHelper->decode($response->getBody(), true);
-
-        return new CatalogDto\Get($response['catalog']);
+        return $this->client->request([
+            'service' => self::NAME,
+            'path' => 'reservations',
+            'query' => $query
+        ]);
     }
 
     /**
      * @param array $query
      *
-     * @return CatalogDto\GetList
+     * @return array
      *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
      * @throws InvalidDataTypeException
+     * @throws TokenPersistenceException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Inventories/getCumulatedInventories
+     */
+    public function getCumulatedInventories(array $query = [])
+    {
+        if (isset($query['filters'])) {
+            $query['filters'] = $this->jsonHelper->encode($query['filters']);
+        }
+
+        return $this->client->request([
+            'service' => self::NAME,
+            'path' => 'cumulatedInventories',
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param array $parentCatalogs
+     * @param array $query
+     *
+     * @return array
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/ParentCatalogs/createParentCatalogs
+     */
+    public function addParentCatalogs(array $parentCatalogs, array $query = [])
+    {
+        return $this->client->request([
+            'method' => 'post',
+            'service' => self::NAME,
+            'path' => 'parentCatalogs',
+            'json' => true,
+            'body' => ['parentCatalogs' => $parentCatalogs],
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param string $catalogCode
+     * @param array $query
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Catalogs/deleteCatalog
+     */
+    public function deleteCatalog($catalogCode, array $query = [])
+    {
+        $this->client->request([
+            'service' => self::NAME,
+            'method' => 'delete',
+            'path' => 'catalogs/' . $catalogCode,
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param array $catalogs
+     * @param array $query
+     *
+     * @return array
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Catalogs/createCatalogs
+     */
+    public function addCatalogs(array $catalogs, array $query = [])
+    {
+        return $this->client->request([
+            'method' => 'post',
+            'service' => self::NAME,
+            'path' => 'catalogs',
+            'json' => true,
+            'body' => ['catalogs' => $catalogs],
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param string $code - catalog code
+     * @param array $query
+     *
+     * @return array
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Catalogs/getCatalog
+     */
+    public function getCatalog($code, array $query = [])
+    {
+        $response = $this->client->request([
+            'service' => self::NAME,
+            'path' => 'catalogs/' . $code,
+            'query' => $query
+        ]);
+
+        return isset($response['catalog']) ? $response['catalog'] : null;
+    }
+
+    /**
+     * @param array $query
+     *
+     * @return array
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Catalogs/getCatalogs
      */
     public function getCatalogs(array $query = [])
     {
@@ -1047,50 +929,35 @@ class Catalog
             $query['filters'] = $this->jsonHelper->encode($query['filters']);
         }
 
-        $response = $this->client->doRequest(
-            [
-                'service' => self::SERVICE_CATALOG,
-                'method' => 'get',
-                'path' => 'catalogs',
-                'query' => $query,
-            ]
-        );
-        $response = $this->jsonHelper->decode($response->getBody(), true);
-
-        $catalogs = [];
-        foreach ($response['catalogs'] as $catalog) {
-            $catalogs[] = new Reservation\Get($catalog);
-        }
-        $response['meta'] = new Meta($response['meta']);
-        $response['catalogs'] = $catalogs;
-
-        return new CatalogDto\GetList($response);
+        return $this->client->request([
+            'service' => self::NAME,
+            'path' => 'catalogs',
+            'query' => $query
+        ]);
     }
 
     /**
-     * @param string            $code - catalog code
-     * @param CatalogDto\Update $catalog
-     * @param array             $query
-     *
-     * @return ResponseInterface
+     * @param string $code - catalog code
+     * @param array $catalog
+     * @param array $query
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
-     * @throws InvalidDataTypeException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Catalogs/updateCatalog
      */
-    public function updateCatalog($code, CatalogDto\Update $catalog, array $query = [])
+    public function updateCatalog($code, array $catalog, array $query = [])
     {
-        return $this->client->doRequest(
-            [
-                'service' => self::SERVICE_CATALOG,
-                'method' => 'post',
-                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'json' => $catalog,
-                'query' => $query,
-                'path' => 'catalogs/' . $code,
-            ]
-        );
+        $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'catalogs/' . $code,
+            'body' => $catalog,
+            'query' => $query
+        ]);
     }
 }

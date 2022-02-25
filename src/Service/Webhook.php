@@ -23,21 +23,18 @@
 namespace Shopgate\ConnectSdk\Service;
 
 use Psr\Http\Message\ResponseInterface;
-use Shopgate\ConnectSdk\Dto\Webhook\Webhook as WebhookDto;
-use Shopgate\ConnectSdk\Dto\Webhook\WebhookToken;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Http\ClientInterface;
-use Shopgate\ConnectSdk\ShopgateSdk;
+use Shopgate\ConnectSdk\Http\Persistence\TokenPersistenceException;
 use Shopgate\ConnectSdk\Helper\Json;
 
 class Webhook
 {
-    const SERVICE_WEBHOOK = 'webhook';
-    const WEBHOOK_PATH = 'webhooks';
+    const NAME = 'webhook';
 
     /** @var ClientInterface */
     private $client;
@@ -56,7 +53,8 @@ class Webhook
     }
 
     /**
-     * @param WebhookDto\Create[] $webhooks
+     * @param array $webhooks
+     * @param array $query
      *
      * @return ResponseInterface
      *
@@ -65,60 +63,53 @@ class Webhook
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
+     * @throws TokenPersistenceException
      */
-    public function addWebhooks(array $webhooks)
+    public function addWebhooks(array $webhooks, array $query = [])
     {
-        $response = $this->client->doRequest(
-            [
-                // general
-                'method' => 'post',
-                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'json' => ['webhooks' => $webhooks],
-                // direct
-                'service' => self::SERVICE_WEBHOOK,
-                'path' => self::WEBHOOK_PATH
-            ]
-        );
-
-        return $this->jsonHelper->decode($response->getBody(), true);
+        return $this->client->request([
+            'method' => 'post',
+            'service' => self::NAME,
+            'path' => 'webhooks',
+            'json' => true,
+            'body' => ['webhooks' => $webhooks],
+            'query' => $query
+        ]);
     }
 
     /**
-     * @param string            $id
-     * @param WebhookDto\Update $webhook
-     *
-     * @return ResponseInterface
+     * @param string $id
+     * @param array $webhook
+     * @param array $query
      *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
      */
-    public function updateWebhook($id, WebhookDto\Update $webhook)
+    public function updateWebhook($id, array $webhook, array $query = [])
     {
-        return $this->client->doRequest(
-            [
-                // general
-                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'json' => $webhook,
-                // direct
-                'method' => 'post',
-                'service' => self::SERVICE_WEBHOOK,
-                'path' => self::WEBHOOK_PATH . '/' . $id
-            ]
-        );
+        $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'webhooks/' . $id,
+            'body' => $webhook,
+            'query' => $query
+        ]);
     }
 
     /**
      * @param array $query
      *
-     * @return WebhookDto\GetList
+     * @return array
      *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
      */
     public function getWebhooks(array $query = [])
@@ -127,100 +118,73 @@ class Webhook
             $query['filters'] = $this->jsonHelper->encode($query['filters']);
         }
 
-        $response = $this->client->doRequest(
-            [
-                // direct only
-                'service' => self::SERVICE_WEBHOOK,
-                'method' => 'get',
-                'path' => self::WEBHOOK_PATH,
-                'query' => $query,
-            ]
-        );
-        $response = $this->jsonHelper->decode($response->getBody(), true);
-        $webhooks = [];
-        foreach ($response['webhooks'] as $webhook) {
-            $webhooks[] = new WebhookDto\Get($webhook);
-        }
-        $response['webhooks'] = $webhooks;
-
-        return new WebhookDto\GetList($response);
+        return $this->client->request([
+            'service' => self::NAME,
+            'path' => 'webhooks',
+            'query' => $query
+        ]);
     }
 
     /**
      * @param string $id
-     *
-     * @return ResponseInterface
+     * @param array $query
      *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
      */
-    public function deleteWebhook($id)
+    public function deleteWebhook($id, array $query = [])
     {
-        return $this->client->doRequest(
-            [
-                // general
-                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                // direct
-                'method' => 'delete',
-                'service' => self::SERVICE_WEBHOOK,
-                'path' => self::WEBHOOK_PATH . '/' . $id,
-            ]
-        );
+        $this->client->request([
+            'service' => self::NAME,
+            'method' => 'delete',
+            'path' => 'webhooks/' . $id,
+            'query' => $query
+        ]);
     }
 
     /**
      * @param string $code
-     *
-     * @return ResponseInterface
+     * @param array $query
      *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
      */
-    public function triggerWebhook($code)
+    public function triggerWebhook($code, array $query = [])
     {
-        $response = $this->client->doRequest(
-            [
-                // general
-                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                // direct
-                'method' => 'post',
-                'json' => [],
-                'service' => self::SERVICE_WEBHOOK,
-                'path' => self::WEBHOOK_PATH . '/' . $code . '/test',
-            ]
-        );
-
-        return $this->jsonHelper->decode($response->getBody(), true);
+        $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'webhooks/' . $code . '/test',
+            'query' => $query
+        ]);
     }
 
     /**
-     * @return WebhookToken\Get
+     * @param array $query
+     *
+     * @return array
      *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
      */
-    public function getWebhookToken()
+    public function getWebhookToken(array $query = [])
     {
-        $response = $this->client->doRequest(
-            [
-                // direct only
-                'service' => self::SERVICE_WEBHOOK,
-                'method' => 'get',
-                'path' => 'webhookToken',
-            ]
-        );
-
-        $response = $this->jsonHelper->decode($response->getBody(), true);
-
-        return new WebhookToken\Get($response);
+        return $this->client->request([
+            'service' => self::NAME,
+            'path' => 'webhookToken',
+            'query' => $query
+        ]);
     }
 }

@@ -64,6 +64,8 @@ class Location
      * @throws RequestException
      * @throws UnknownException
      * @throws TokenPersistenceException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/location-crud.yaml#/default/post_merchants__merchantCode__locations
      */
     public function addLocations(array $locations, array $query = [])
     {
@@ -88,6 +90,8 @@ class Location
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/location-crud.yaml#/default/post_merchants__merchantCode__locations__locationCode_
      */
     public function updateLocation($code, array $location, array $query = [])
     {
@@ -110,6 +114,8 @@ class Location
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/location-crud.yaml#/default/delete_merchants__merchantCode__locations__locationCode_
      */
     public function deleteLocation($code, array $query = [])
     {
@@ -132,6 +138,8 @@ class Location
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/location-crud.yaml#/default/get_merchants__merchantCode__locations
      */
     public function getLocations(array $query = [])
     {
@@ -158,6 +166,8 @@ class Location
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/location-crud.yaml#/default/get_merchants__merchantCode__locations__locationCode_
      */
     public function getLocation($code, array $query = [])
     {

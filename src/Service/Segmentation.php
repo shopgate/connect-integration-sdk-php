@@ -62,6 +62,8 @@ class Segmentation
      * @throws RequestException
      * @throws UnknownException
      * @throws TokenPersistenceException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/segmentation-crud.yaml#/default/get_merchants__merchantCode__segments
      */
     public function getSegments(array $query = [])
     {
@@ -88,6 +90,8 @@ class Segmentation
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/segmentation-crud.yaml#/default/post_merchants__merchantCode__segments
      */
     public function addSegments(array $segments = [], array $query = [])
     {
@@ -113,6 +117,8 @@ class Segmentation
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/segmentation-crud.yaml#/default/get_merchants__merchantCode__segments__segmentCode_
      */
     public function getSegment($segmentCode, array $query = [])
     {
@@ -136,6 +142,8 @@ class Segmentation
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/segmentation-crud.yaml#/default/post_merchants__merchantCode__segments__segmentCode_
      */
     public function updateSegment($segmentCode, array $update, array $query = [])
     {
@@ -158,6 +166,8 @@ class Segmentation
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/segmentation-crud.yaml#/default/delete_merchants__merchantCode__segments__segmentCode_
      */
     public function deleteSegment($segmentCode, array $query = [])
     {
@@ -180,6 +190,8 @@ class Segmentation
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/segmentation-crud.yaml#/default/post_merchants__merchantCode__segments__segmentCode__clone
      */
     public function cloneSegment($segmentCode, array $cloneSegment, array $query = [])
     {
@@ -203,6 +215,8 @@ class Segmentation
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/segmentation-crud.yaml#/Preview/get_merchants__merchantCode__membersSearch
      */
     public function searchMembers(array $query = [])
     {
@@ -230,6 +244,8 @@ class Segmentation
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/segmentation-crud.yaml#/Members/post_merchants__merchantCode__segments__segmentCode__members_addByFilter
      */
     public function addMembersByFilter($segmentCode, array $data = [], array $query = [])
     {
@@ -255,6 +271,8 @@ class Segmentation
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/segmentation-crud.yaml#/Members/get_merchants__merchantCode__segments__segmentCode__members
      */
     public function getSegmentMembers($segmentCode, array $query = [])
     {
@@ -282,6 +300,8 @@ class Segmentation
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/segmentation-crud.yaml#/Members/post_merchants__merchantCode__segments__segmentCode__members
      */
     public function addSegmentMembers($segmentCode, array $members, array $query = [])
     {
@@ -306,6 +326,8 @@ class Segmentation
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/segmentation-crud.yaml#/Members/delete_merchants__merchantCode__segments__segmentCode__members
      */
     public function deleteSegmentMembers($segmentCode, array $members, array $query = [])
     {
@@ -330,6 +352,8 @@ class Segmentation
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/segmentation-crud.yaml#/Customers/get_merchants__merchantCode__customers__customerId__segments
      */
     public function getCustomerSegments($customerId, array $query = [])
     {

@@ -653,7 +653,7 @@ class Catalog
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Inventory/reserveInventory
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Inventories/reserverInventory
      */
     public function addReservations(array $reservations, array $query = [])
     {
@@ -678,7 +678,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Inventory/deleteInventoryReservations
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Inventories/deleteInventoryReservations
      */
     public function deleteReservations(array $codes, array $query = [])
     {
@@ -703,7 +703,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Inventory/updateReservation
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Inventories/updateReservation
      */
     public function updateReservation($reservationCode, $reservation, array $query = [])
     {
@@ -729,7 +729,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Inventory/getReservation
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Inventories/getReservation
      */
     public function getReservation($reservationCode, array $query = [])
     {
@@ -754,7 +754,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Inventory/getReservations
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Inventories/getReservations
      */
     public function getReservations(array $query = [])
     {

@@ -64,6 +64,8 @@ class Webhook
      * @throws RequestException
      * @throws UnknownException
      * @throws TokenPersistenceException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/webhook-crud.yaml#/Webhooks/createWebhooks
      */
     public function addWebhooks(array $webhooks, array $query = [])
     {
@@ -88,6 +90,8 @@ class Webhook
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/webhook-crud.yaml#/Webhooks/updateWebhook
      */
     public function updateWebhook($id, array $webhook, array $query = [])
     {
@@ -111,6 +115,8 @@ class Webhook
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/webhook-crud.yaml#/Webhooks/getWebhooks
      */
     public function getWebhooks(array $query = [])
     {
@@ -135,6 +141,8 @@ class Webhook
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/webhook-crud.yaml#/Webhooks/deleteWebhook
      */
     public function deleteWebhook($id, array $query = [])
     {
@@ -156,6 +164,8 @@ class Webhook
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/webhook-crud.yaml#/Webhooks/triggerWebhook
      */
     public function triggerWebhook($code, array $query = [])
     {
@@ -178,6 +188,8 @@ class Webhook
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/webhook-crud.yaml#/Webhooks/getWebhookToken
      */
     public function getWebhookToken(array $query = [])
     {

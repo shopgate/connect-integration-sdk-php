@@ -61,6 +61,8 @@ class Notification
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/notification2-crud.yaml#/default/post_merchants__merchantCode__settings
      */
     public function updateSettings(array $settings, array $query = [])
     {
@@ -84,6 +86,8 @@ class Notification
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/notification2-crud.yaml#/default/get_merchants__merchantCode__settings
      */
     public function getSettings(array $query = [])
     {
@@ -112,6 +116,8 @@ class Notification
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/notification2-crud.yaml#/default/get_merchants__merchantCode__settings__key_
      */
     public function getSetting($key, array $query = [])
     {
@@ -133,6 +139,8 @@ class Notification
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/notification2-crud.yaml#/Templates/get_merchants__merchantCode__templates
      */
     public function getTemplates(array $query = [])
     {
@@ -159,6 +167,8 @@ class Notification
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/notification2-crud.yaml#/Templates/post_merchants__merchantCode__templates
      */
     public function addTemplates(array $templates, array $query = [])
     {
@@ -184,6 +194,8 @@ class Notification
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/notification2-crud.yaml#/Templates/get_merchants__merchantCode__templates__templateCode_
      */
     public function getTemplate($code, array $query = [])
     {
@@ -207,6 +219,8 @@ class Notification
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/notification2-crud.yaml#/Templates/post_merchants__merchantCode__templates__templateCode_
      */
     public function updateTemplate($templateCode, array $template, array $query = [])
     {
@@ -229,6 +243,8 @@ class Notification
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/notification2-crud.yaml#/Templates/delete_merchants__merchantCode__templates__templateCode_
      */
     public function deleteTemplate($templateCode, array $query = [])
     {
@@ -251,6 +267,8 @@ class Notification
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/notification2-crud.yaml#/Campaigns/get_merchants__merchantCode__campaigns
      */
     public function getCampaigns(array $query = [])
     {
@@ -277,6 +295,8 @@ class Notification
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/notification2-crud.yaml#/Campaigns/post_merchants__merchantCode__campaigns
      */
     public function addCampaigns(array $campaigns, array $query = [])
     {
@@ -302,6 +322,8 @@ class Notification
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/notification2-crud.yaml#/Campaigns/get_merchants__merchantCode__campaigns__campaignCode_
      */
     public function getCampaign($code, array $query = [])
     {
@@ -325,6 +347,8 @@ class Notification
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/notification2-crud.yaml#/Campaigns/post_merchants__merchantCode__campaigns__campaignCode_
      */
     public function updateCampaign($campaignCode, array $campaign, array $query = [])
     {
@@ -347,6 +371,8 @@ class Notification
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/notification2-crud.yaml#/Campaigns/delete_merchants__merchantCode__campaigns__campaignCode_
      */
     public function deleteCampaign($campaignCode, array $query = [])
     {

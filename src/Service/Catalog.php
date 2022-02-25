@@ -474,11 +474,8 @@ class Catalog
      *
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Attributes/setAttributeValues
      */
-    public function addAttributeValues(
-        $attributeCode,
-        array $attributeValues,
-        array $query = []
-    ) {
+    public function addAttributeValues($attributeCode, array $attributeValues, array $query = [])
+    {
         return $this->client->request([
             'method' => 'post',
             'service' => self::NAME,
@@ -504,12 +501,8 @@ class Catalog
      *
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Attributes/updateAttributeValue
      */
-    public function updateAttributeValue(
-        $attributeCode,
-        $attributeValueCode,
-        array $attributeValue,
-        array $query = []
-    ) {
+    public function updateAttributeValue($attributeCode, $attributeValueCode, array $attributeValue, array $query = [])
+    {
         $this->client->request([
             'service' => self::NAME,
             'method' => 'post',

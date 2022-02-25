@@ -220,6 +220,7 @@ class Segmentation
     /**
      * @param string $segmentCode
      * @param array $data
+     * @param array $query
      *
      * @return ResponseInterface
      *
@@ -230,14 +231,15 @@ class Segmentation
      * @throws TokenPersistenceException
      * @throws UnknownException
      */
-    public function addMembersByFilter($segmentCode, array $data = [])
+    public function addMembersByFilter($segmentCode, array $data = [], array $query = [])
     {
         return $this->client->request([
             'method' => 'post',
             'service' => self::NAME,
             'path' => 'segments/' . $segmentCode . '/members/addByFilter',
             'json' => true,
-            'body' => $data
+            'body' => $data,
+            'query' => $query
         ]);
     }
 
@@ -270,6 +272,7 @@ class Segmentation
     /**
      * @param string $segmentCode
      * @param array $members
+     * @param array $query
      *
      * @return ResponseInterface
      *
@@ -280,20 +283,22 @@ class Segmentation
      * @throws TokenPersistenceException
      * @throws UnknownException
      */
-    public function addSegmentMembers($segmentCode, array $members)
+    public function addSegmentMembers($segmentCode, array $members, array $query = [])
     {
         return $this->client->request([
             'method' => 'post',
             'service' => self::NAME,
             'path' => 'segments/' . $segmentCode . '/members',
             'json' => true,
-            'body' => ['members' => $members]
+            'body' => ['members' => $members],
+            'query' => $query
         ]);
     }
 
     /**
      * @param string $segmentCode
      * @param array $members
+     * @param array $query
      *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
@@ -302,13 +307,14 @@ class Segmentation
      * @throws TokenPersistenceException
      * @throws UnknownException
      */
-    public function deleteSegmentMembers($segmentCode, array $members)
+    public function deleteSegmentMembers($segmentCode, array $members, array $query = [])
     {
         $this->client->request([
             'service' => self::NAME,
             'method' => 'delete',
             'path' => 'segments/' . $segmentCode . '/members',
             'body' => ['members' => $members],
+            'query' => $query
         ]);
     }
 

@@ -80,6 +80,7 @@ class Webhook
     /**
      * @param string $id
      * @param array $webhook
+     * @param array $query
      *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
@@ -88,13 +89,14 @@ class Webhook
      * @throws TokenPersistenceException
      * @throws UnknownException
      */
-    public function updateWebhook($id, array $webhook)
+    public function updateWebhook($id, array $webhook, array $query = [])
     {
         $this->client->request([
             'service' => self::NAME,
             'method' => 'post',
             'path' => 'webhooks/' . $id,
-            'body' => $webhook
+            'body' => $webhook,
+            'query' => $query
         ]);
     }
 
@@ -125,6 +127,7 @@ class Webhook
 
     /**
      * @param string $id
+     * @param array $query
      *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
@@ -133,17 +136,19 @@ class Webhook
      * @throws TokenPersistenceException
      * @throws UnknownException
      */
-    public function deleteWebhook($id)
+    public function deleteWebhook($id, array $query = [])
     {
         $this->client->request([
             'service' => self::NAME,
             'method' => 'delete',
-            'path' => 'webhooks/' . $id
+            'path' => 'webhooks/' . $id,
+            'query' => $query
         ]);
     }
 
     /**
      * @param string $code
+     * @param array $query
      *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
@@ -152,16 +157,19 @@ class Webhook
      * @throws TokenPersistenceException
      * @throws UnknownException
      */
-    public function triggerWebhook($code)
+    public function triggerWebhook($code, array $query = [])
     {
         $this->client->request([
             'service' => self::NAME,
             'method' => 'post',
-            'path' => 'webhooks/' . $code . '/test'
+            'path' => 'webhooks/' . $code . '/test',
+            'query' => $query
         ]);
     }
 
     /**
+     * @param array $query
+     *
      * @return array
      *
      * @throws AuthenticationInvalidException
@@ -171,11 +179,12 @@ class Webhook
      * @throws TokenPersistenceException
      * @throws UnknownException
      */
-    public function getWebhookToken()
+    public function getWebhookToken(array $query = [])
     {
         return $this->client->request([
             'service' => self::NAME,
-            'path' => 'webhookToken'
+            'path' => 'webhookToken',
+            'query' => $query
         ]);
     }
 }

@@ -47,6 +47,7 @@ class Order
 
     /**
      * @param array $orders
+     * @param array $query
      *
      * @return array
      *
@@ -59,14 +60,15 @@ class Order
      *
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/SalesOrder/createSalesOrders
      */
-    public function addOrders(array $orders)
+    public function addOrders(array $orders, array $query = [])
     {
         return $this->client->request(
             [
                 'service' => self::NAME,
                 'method' => 'post',
                 'path' => 'orders',
-                'body' => ['orders' => $orders]
+                'body' => ['orders' => $orders],
+                'query' => $query
             ]
         );
     }

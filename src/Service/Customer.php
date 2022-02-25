@@ -282,11 +282,13 @@ class Customer
      */
     public function getCustomer($customerId, array $query = [])
     {
-        return $this->client->request([
+        $response = $this->client->request([
             'service' => self::NAME,
             'path' => 'customers/' . $customerId,
             'query' => $query
         ]);
+
+        return isset($response['customer']) ? $response['customer'] : null;
     }
 
     /**
@@ -342,7 +344,7 @@ class Customer
 
     /**
      * @param string $customerId
-     * @param array  $query
+     * @param array $query
      *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
@@ -355,7 +357,7 @@ class Customer
      */
     public function deleteCustomer($customerId, array $query = [])
     {
-        return $this->client->request([
+        $this->client->request([
             'service' => self::NAME,
             'method' => 'delete',
             'path' => 'customers/' . $customerId,
@@ -509,7 +511,7 @@ class Customer
      */
     public function addWishlists($customerId, array $wishlists, array $query = [])
     {
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'post',
             'path' => 'customers/' . $customerId . '/wishlists',
@@ -610,11 +612,13 @@ class Customer
      */
     public function getWishlist($customerId, $wishlistCode, array $query = [])
     {
-        return $this->client->request([
+        $response = $this->client->request([
             'service' => self::NAME,
             'path' => 'customers/' . $customerId . '/wishlists/' . $wishlistCode,
             'query' => $query
         ]);
+
+        return isset($response['wishlist']) ? $response['wishlist'] : null;
     }
 
     /**

@@ -26,14 +26,16 @@ use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Http\ClientInterface;
-use Shopgate\ConnectSdk\Exception\RequestException;
+use Shopgate\ConnectSdk\Http\Persistence\TokenPersistenceException;
+use Shopgate\ConnectSdk\Exception\RequestException as RequestExceptionAlias;
 use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Service\BulkImport\Handler\File;
 use Shopgate\ConnectSdk\Service\BulkImport\Handler\Stream;
-use Shopgate\ConnectSdk\ShopgateSdk;
 
 class BulkImport
 {
+    const NAME = 'import';
+
     /** @var ClientInterface */
     private $client;
 
@@ -51,36 +53,33 @@ class BulkImport
      * @return string
      *
      * @throws AuthenticationInvalidException
-     * @throws RequestException
-     * @throws UnknownException
-     * @throws NotFoundException
      * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestExceptionAlias
+     * @throws UnknownException
+     * @throws TokenPersistenceException
      */
     protected function getImportReference($source = '')
     {
-        $response = $this->client->doRequest(
-            [
-                'method'      => 'post',
-                'json'        => ['source' => $source],
-                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'service'     => 'import',
-                'path'        => 'imports',
-            ]
-        );
+        $response = $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'imports',
+            'body' => ['source' => $source]
+        ]);
 
-        $response = json_decode($response->getBody(), true);
-
-        return $response['ref'];
+        return isset($response['ref']) ? $response['ref'] : null;
     }
 
     /**
      * @return File
      *
      * @throws AuthenticationInvalidException
-     * @throws RequestException
-     * @throws UnknownException
-     * @throws NotFoundException
      * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestExceptionAlias
+     * @throws TokenPersistenceException
+     * @throws UnknownException
      */
     public function createFileImport()
     {
@@ -91,10 +90,11 @@ class BulkImport
      * @return Stream
      *
      * @throws AuthenticationInvalidException
-     * @throws RequestException
-     * @throws UnknownException
-     * @throws NotFoundException
      * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestExceptionAlias
+     * @throws TokenPersistenceException
+     * @throws UnknownException
      */
     public function createStreamImport()
     {

@@ -22,11 +22,6 @@
 namespace Shopgate\ConnectSdk\Service;
 
 use Psr\Http\Message\ResponseInterface;
-use Shopgate\ConnectSdk\Dto\Meta;
-use Shopgate\ConnectSdk\Dto\Segmentation\CursorPagination;
-use Shopgate\ConnectSdk\Dto\Segmentation\Import;
-use Shopgate\ConnectSdk\Dto\Segmentation\Member;
-use Shopgate\ConnectSdk\Dto\Segmentation\Segment;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
@@ -34,11 +29,11 @@ use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Helper\Json;
 use Shopgate\ConnectSdk\Http\ClientInterface;
-use Shopgate\ConnectSdk\ShopgateSdk;
+use Shopgate\ConnectSdk\Http\Persistence\TokenPersistenceException;
 
 class Segmentation
 {
-    const SERVICE_NAME = 'segmentation';
+    const NAME = 'segmentation';
 
     /** @var ClientInterface */
     private $client;
@@ -62,165 +57,139 @@ class Segmentation
      * @return array
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
-     * @throws InvalidDataTypeException
+     * @throws TokenPersistenceException
      */
     public function getSegments(array $query = [])
     {
         if (isset($query['filters'])) {
             $query['filters'] = $this->jsonHelper->encode($query['filters']);
         }
-        $response = $this->client->doRequest(
-            [
-                'service' => self::SERVICE_NAME,
-                'method' => 'get',
-                'path' => 'segments',
-                'query' => $query,
-            ]
-        );
 
-        $response = $this->jsonHelper->decode($response->getBody(), true);
-
-        if (isset($response['meta'])) {
-            $response['meta'] = new Meta($response['meta']);
-        }
-
-        $response['segments'] = array_map(function ($entity) {
-            return new Segment\Get($entity);
-        }, $response['segments']);
-
-        return $response;
+        return $this->client->request([
+            'service' => self::NAME,
+            'path' => 'segments',
+            'query' => $query
+        ]);
     }
 
-
     /**
-     * @param Segment\Create[] $segments
+     * @param array $segments
      * @param array $query
+     *
      * @return ResponseInterface
      *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
      */
     public function addSegments(array $segments = [], array $query = [])
     {
-        return $this->client->doRequest(
-            [
-                'service' => self::SERVICE_NAME,
-                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'method' => 'post',
-                'path' => 'segments',
-                'json' => ['segments' => $segments],
-            ]
-        );
+        return $this->client->request([
+            'method' => 'post',
+            'service' => self::NAME,
+            'path' => 'segments',
+            'json' => true,
+            'body' => ['segments' => $segments],
+            'query' => $query
+        ]);
     }
-
 
     /**
      * @param string $segmentCode
      * @param array $query
      *
-     * @return Segment\Get
+     * @return array
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
-     * @throws InvalidDataTypeException
      */
     public function getSegment($segmentCode, array $query = [])
     {
-        $response = $this->client->doRequest(
-            [
-                'service' => self::SERVICE_NAME,
-                'method' => 'get',
-                'path' => 'segments/' . $segmentCode,
-                'query' => $query,
-            ]
-        );
+        $response = $this->client->request([
+            'service' => self::NAME,
+            'path' => 'segments/' . $segmentCode,
+            'query' => $query
+        ]);
 
-        $response = $this->jsonHelper->decode($response->getBody(), true);
-        return new Segment\Get($response['segment']);
+        return isset($response['segment']) ? $response['segment'] : null;
     }
-
 
     /**
      * @param string $segmentCode
-     * @param Segment\Update $update
+     * @param array $update
      * @param array $query
-     * @return ResponseInterface
      *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
      */
-    public function updateSegment($segmentCode, Segment\Update $update, array $query = [])
+    public function updateSegment($segmentCode, array $update, array $query = [])
     {
-        return $this->client->doRequest(
-            [
-                'service' => self::SERVICE_NAME,
-                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'method' => 'post',
-                'path' => 'segments/' . $segmentCode,
-                'json' => $update,
-            ]
-        );
+        $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'segments/' . $segmentCode,
+            'body' => $update,
+            'query' => $query
+        ]);
     }
-
 
     /**
      * @param string $segmentCode
      * @param array $query
      *
-     * @return ResponseInterface
-     *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
-     * @throws InvalidDataTypeException
      */
     public function deleteSegment($segmentCode, array $query = [])
     {
-        return $this->client->doRequest(
-            [
-                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'service' => self::SERVICE_NAME,
-                'method' => 'delete',
-                'path' => 'segments/' . $segmentCode,
-                'query' => $query,
-            ]
-        );
+        $this->client->request([
+            'service' => self::NAME,
+            'method' => 'delete',
+            'path' => 'segments/' . $segmentCode,
+            'query' => $query
+        ]);
     }
 
     /**
      * @param string $segmentCode
-     * @param Segment\CloneSegment $cloneSegment
-     * @return ResponseInterface
+     * @param array $cloneSegment
+     * @param array $query
      *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
      */
-    public function cloneSegment($segmentCode, Segment\CloneSegment $cloneSegment)
+    public function cloneSegment($segmentCode, array $cloneSegment, array $query = [])
     {
-        return $this->client->doRequest(
-            [
-                'service' => self::SERVICE_NAME,
-                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'method' => 'post',
-                'path' => 'segments/' . $segmentCode . '/clone',
-                'json' => $cloneSegment,
-            ]
-        );
+        $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'segments/' . $segmentCode . '/clone',
+            'body' => $cloneSegment,
+            'query' => $query
+        ]);
     }
 
     /**
@@ -229,39 +198,24 @@ class Segmentation
      * @return array
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
-     * @throws InvalidDataTypeException
      */
     public function searchMembers(array $query = [])
     {
         if (isset($query['rules'])) {
             $query['rules'] = $this->jsonHelper->encode($query['rules']);
         }
-        $response = $this->client->doRequest(
-            [
-                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'service' => self::SERVICE_NAME,
-                'method' => 'get',
-                'path' => 'membersSearch',
-                'query' => $query,
-            ]
-        );
 
-        $response = $this->jsonHelper->decode($response->getBody(), true);
-
-        if (isset($response['meta'])) {
-            $response['meta'] = new Meta($response['meta']);
-        }
-
-        $response['members'] = array_map(function ($entity) {
-            return new Member\GetFull($entity);
-        }, $response['members']);
-
-        return $response;
+        return $this->client->request([
+            'service' => self::NAME,
+            'path' => 'membersSearch',
+            'query' => $query
+        ]);
     }
-
 
     /**
      * @param string $segmentCode
@@ -270,22 +224,21 @@ class Segmentation
      * @return ResponseInterface
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
-     * @throws InvalidDataTypeException
      */
     public function addMembersByFilter($segmentCode, array $data = [])
     {
-        return $this->client->doRequest(
-            [
-                'service' => self::SERVICE_NAME,
-                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'method' => 'post',
-                'path' => 'segments/' . $segmentCode . '/members/addByFilter',
-                'json' => $data,
-            ]
-        );
+        return $this->client->request([
+            'method' => 'post',
+            'service' => self::NAME,
+            'path' => 'segments/' . $segmentCode . '/members/addByFilter',
+            'json' => true,
+            'body' => $data
+        ]);
     }
 
     /**
@@ -295,89 +248,68 @@ class Segmentation
      * @return array
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
-     * @throws InvalidDataTypeException
      */
     public function getSegmentMembers($segmentCode, array $query = [])
     {
         if (isset($query['filters'])) {
             $query['filters'] = $this->jsonHelper->encode($query['filters']);
         }
-        $response = $this->client->doRequest(
-            [
-                'service' => self::SERVICE_NAME,
-                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'method' => 'get',
-                'path' => 'segments/' . $segmentCode . '/members',
-                'query' => $query,
-            ]
-        );
 
-        $response = $this->jsonHelper->decode($response->getBody(), true);
-
-        if (isset($response['meta'])) {
-            $response['meta'] = new Meta($response['meta']);
-        }
-
-        $response['members'] = array_map(function ($entity) {
-            return new Member\GetFull($entity);
-        }, $response['members']);
-
-        return $response;
+        return $this->client->request([
+            'service' => self::NAME,
+            'path' => 'segments/' . $segmentCode . '/members',
+            'query' => $query
+        ]);
     }
-
 
     /**
      * @param string $segmentCode
-     * @param Member\Add[] $members
+     * @param array $members
      *
      * @return ResponseInterface
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
-     * @throws InvalidDataTypeException
      */
     public function addSegmentMembers($segmentCode, array $members)
     {
-        return $this->client->doRequest(
-            [
-                'service' => self::SERVICE_NAME,
-                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'method' => 'post',
-                'path' => 'segments/' . $segmentCode . '/members',
-                'json' => ['members' => $members],
-            ]
-        );
+        return $this->client->request([
+            'method' => 'post',
+            'service' => self::NAME,
+            'path' => 'segments/' . $segmentCode . '/members',
+            'json' => true,
+            'body' => ['members' => $members]
+        ]);
     }
 
-
     /**
-     * @param string $segmentCode * @param array  $query
-     *
-     * @param Member\Delete[] $members
-     * @return ResponseInterface
+     * @param string $segmentCode
+     * @param array $members
      *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
      */
     public function deleteSegmentMembers($segmentCode, array $members)
     {
-        return $this->client->doRequest(
-            [
-                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'service' => self::SERVICE_NAME,
-                'method' => 'delete',
-                'path' => 'segments/' . $segmentCode . '/members',
-                'json' => ['members' => $members],
-            ]
-        );
+        $this->client->request([
+            'service' => self::NAME,
+            'method' => 'delete',
+            'path' => 'segments/' . $segmentCode . '/members',
+            'body' => ['members' => $members],
+        ]);
     }
 
     /**
@@ -387,36 +319,22 @@ class Segmentation
      * @return array
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
-     * @throws InvalidDataTypeException
      */
     public function getCustomerSegments($customerId, array $query = [])
     {
         if (isset($query['filters'])) {
             $query['filters'] = $this->jsonHelper->encode($query['filters']);
         }
-        $response = $this->client->doRequest(
-            [
-                'service' => self::SERVICE_NAME,
-                'requestType' => ShopgateSdk::REQUEST_TYPE_DIRECT,
-                'method' => 'get',
-                'path' => 'customers/' . urlencode($customerId) . '/segments',
-                'query' => $query,
-            ]
-        );
 
-        $response = $this->jsonHelper->decode($response->getBody(), true);
-
-        if (isset($response['meta'])) {
-            $response['meta'] = new CursorPagination($response['meta']);
-        }
-
-        $response['segments'] = array_map(function ($entity) {
-            return new Segment\Get($entity);
-        }, $response['segments']);
-
-        return $response;
+        return $this->client->request([
+            'service' => self::NAME,
+            'path' => 'customers/' . urlencode($customerId) . '/segments',
+            'query' => $query
+        ]);
     }
 }

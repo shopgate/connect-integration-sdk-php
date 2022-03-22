@@ -33,11 +33,6 @@ class Customer extends Feed
      */
     public function add(array $customer)
     {
-        /**
-         * Remove attributes: https://jira.shopgate.guru/browse/CIS-49
-         */
-        $customer->setAttributes([]);
-
         switch ($this->handlerType) {
             case Stream::HANDLER_TYPE:
                 $this->stream->write($this->getItemDivider() . json_encode($customer));

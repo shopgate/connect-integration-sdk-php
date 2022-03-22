@@ -57,6 +57,7 @@ class Catalog
     /**
      * @param array $categories
      * @param array $query
+     * @param bool $async
      *
      * @return array|ResponseInterface
      *
@@ -69,10 +70,9 @@ class Catalog
      *
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Categories/createCategories
      */
-    public function addCategories(array $categories, array $query = [])
+    public function addCategories(array $categories, array $query = [], $async = true)
     {
-        $requestType = isset($query['requestType']) ? $query['requestType'] : ShopgateSdk::REQUEST_TYPE_DIRECT;
-        if ($requestType === ShopgateSdk::REQUEST_TYPE_EVENT) {
+        if ($async) {
             if (!empty($query['catalogCode'])) {
                 $categories = Value::addValue($categories, $query['catalogCode'], 'catalogCode');
             }

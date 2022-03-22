@@ -66,7 +66,6 @@ class ShopgateSdkTest extends TestCase
                                              'env'          => 'dev',
         ]);
 
-        /** @noinspection PhpParamsInspection */
         $this->assertInstanceOf(ClientInterface::class, $subjectUnderTest->getClient());
     }
 
@@ -96,10 +95,7 @@ class ShopgateSdkTest extends TestCase
     {
         $subjectUnderTest = new ShopgateSdk(['client' => $this->client]);
 
-        /** @noinspection PhpParamsInspection */
         $this->assertInstanceOf(Catalog::class, $subjectUnderTest->getCatalogService());
-
-        /** @noinspection PhpParamsInspection */
         $this->assertInstanceOf(BulkImport::class, $subjectUnderTest->getBulkImportService());
     }
 
@@ -115,8 +111,6 @@ class ShopgateSdkTest extends TestCase
         ]);
 
         $this->assertSame($catalog, $subjectUnderTest->getCatalogService());
-
-        /** @noinspection PhpParamsInspection */
         $this->assertInstanceOf(BulkImport::class, $subjectUnderTest->getBulkImportService());
     }
 }

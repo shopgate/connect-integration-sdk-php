@@ -87,19 +87,4 @@ interface ClientInterface
      * @throws TokenPersistenceException
      */
     public function publish($action, $entityName, $entities, $entityIdPropertyName = null);
-
-    /**
-     * @param array $params
-     *
-     * @return mixed
-     *
-     * @throws AuthenticationInvalidException
-     * @throws UnknownException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws InvalidDataTypeException
-     *
-     * @deprecated use ClientInterface::request()
-     */
-    public function doRequest(array $params);
 }

@@ -29,6 +29,7 @@ use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
 use Shopgate\ConnectSdk\Http\ClientInterface;
+use Shopgate\ConnectSdk\Http\Persistence\TokenPersistenceException;
 
 class Handler
 {
@@ -168,27 +169,20 @@ class Handler
     }
 
     /**
-     * @return ResponseInterface
-     *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
-     * @throws InvalidDataTypeException
+     * @throws TokenPersistenceException
      */
     public function trigger()
     {
-        $response = $this->client->doRequest(
-            [
-                // general
-                'method' => 'post',
-                'json' => [],
-                'requestType' => 'direct',
-                'service' => 'import',
-                'path' => 'imports/' . $this->importReference,
-            ]
-        );
-
-        return $response;
+        $this->client->request([
+            'method' => 'post',
+            'service' => 'import',
+            'path' => 'imports/' . $this->importReference,
+            'body' => []
+        ]);
     }
 }

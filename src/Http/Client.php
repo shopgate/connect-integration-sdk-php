@@ -35,11 +35,7 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
-use Shopgate\ConnectSdk\Dto\Async\Factory;
-use Shopgate\ConnectSdk\Dto\Base;
-use Shopgate\ConnectSdk\Dto\DtoObject;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
-use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
@@ -49,8 +45,6 @@ use Shopgate\ConnectSdk\Http\Client\GrantType\ShopgateCredentials;
 use Shopgate\ConnectSdk\Http\Persistence\EncryptedFile;
 use Shopgate\ConnectSdk\Http\Persistence\PersistenceChain;
 use Shopgate\ConnectSdk\Http\Persistence\TokenPersistenceException;
-use Shopgate\ConnectSdk\ShopgateSdk;
-use function json_decode;
 
 class Client implements ClientInterface
 {
@@ -334,186 +328,5 @@ class Client implements ClientInterface
                 'connect_timeout' => 5.0
             ]
         );
-    }
-
-    /**
-     * @param array $params ['url' => .., 'query' => .., 'body' => .., 'method' => .., 'service' => .., 'path' => ..]
-     *                      parameter 'body' or 'json' can not be set both at a time
-     *                      if parameter 'url' is set the oauth authentication will be deactivated
-     *
-     * @return ResponseInterface|array
-     *
-     * @throws AuthenticationInvalidException
-     * @throws NotFoundException
-     * @throws TokenPersistenceException
-     * @throws RequestException
-     * @throws UnknownException
-     * @deprecated
-     */
-    public function doRequest(array $params)
-    {
-        $this->removeOAuthAuthentication();
-
-        if (isset($params['query']['requestType'])) {
-            unset($params['query']['requestType']);
-        }
-
-        $parameters = [];
-        if (isset($params['query'])) {
-            $parameters['query'] = Value::arrayBool2String($params['query']);
-        }
-
-        if (!isset($params['url'])) {
-            $this->addOAuthAuthentication();
-        }
-
-        if (!$this->isDirect($params)) {
-            return $this->triggerEvent($params);
-        }
-
-        $defaultConfigs = [
-            'connect_timeout' => 5.0
-        ];
-
-        if (isset($params['body'])) {
-            $parameters['body'] = $params['body'];
-        } elseif (isset($params['json'])) {
-            $json = !empty($params['json']) ? $params['json'] : [];
-            $parameters['json'] = $json instanceof Base ? $json->toJson() : (new DtoObject($json))->toJson();
-        }
-
-        $response = $this->send(
-            $params['method'],
-            isset($params['url']) ? $params['url'] : $this->buildServiceUrl($params['service'], $params['path']),
-            array_merge($defaultConfigs, $parameters)
-        );
-
-        if ($response instanceof ResponseInterface) {
-            $this->checkForErrorsInResponse($response);
-        }
-
-        return $response;
-    }
-
-    /**
-     * @param array $params
-     *
-     * @return ResponseInterface
-     *
-     * @throws AuthenticationInvalidException
-     * @throws RequestException
-     * @throws UnknownException
-     * @throws InvalidDataTypeException
-     *
-     * @deprecated
-     */
-    private function triggerEvent(array $params)
-    {
-        $values = [
-            isset($params['json']) ? $params['json'] : new DtoObject([], [
-                'type' => 'object',
-                'additionalProperties' => true
-            ]),
-        ];
-        if ($params['action'] === 'create') {
-            $key = array_keys($params['json'])[0];
-            $values = $params['json'][$key];
-        }
-
-        $factory = new Factory();
-        foreach ($values as $payload) {
-            $payload = $this->prepareEventPayload($params, $payload);
-
-            $entityId = isset($params['entityId']) ? $params['entityId'] : null;
-            $factory->addEvent($params['action'], $params['entity'], $payload, $entityId);
-        }
-
-        try {
-            return $this->client->request(
-                'post',
-                $this->buildServiceUrl('event-receiver', 'events'),
-                [
-                    'json' => $factory->getRequest()->toJson(),
-                    'http_errors' => false,
-                    'connect_timeout' => 5.0
-                ]
-            );
-        } catch (GuzzleRequestException $e) {
-            $statusCode = $e->getResponse() ? $e->getResponse()->getStatusCode() : 0;
-            throw new RequestException(
-                $statusCode,
-                $e->getResponse() && $e->getResponse()->getBody() ? $e->getResponse()->getBody()->getContents()
-                    : $e->getMessage()
-            );
-        } catch (AccessTokenRequestException $e) {
-            throw new AuthenticationInvalidException($e->getMessage());
-        } catch (GuzzleException $e) {
-            throw new UnknownException($e->getMessage());
-        } catch (Exception $e) {
-            throw new UnknownException($e->getMessage());
-        }
-    }
-
-    /**
-     * @param array $params
-     *
-     * @return bool
-     *
-     * @deprecated
-     */
-    public function isDirect(array $params)
-    {
-        return
-            (!isset($params['requestType']) && $params['method'] === 'get')
-            || $params['requestType'] === ShopgateSdk::REQUEST_TYPE_DIRECT;
-    }
-
-    /**
-     * @param array $params
-     * @param Base  $payload
-     *
-     * @return Base
-     *
-     * @deprecated
-     */
-    private function prepareEventPayload(array $params, Base $payload)
-    {
-        if (isset($params['query']['catalogCode'])) {
-            $payload->setCatalogCode($params['query']['catalogCode']);
-        }
-
-        return $payload;
-    }
-
-    /**
-     * @param ResponseInterface $response
-     *
-     * @throws NotFoundException
-     * @throws RequestException
-     *
-     * @deprecated
-     */
-    private function checkForErrorsInResponse($response)
-    {
-        if ($body = $response->getBody()) {
-            $responseContent = json_decode((string)$body, true);
-
-            if (!isset($responseContent['errors']) || empty($responseContent['errors'])) {
-                return;
-            }
-
-            foreach ($responseContent['errors'] as $error) {
-                if ($error['code'] === 404) {
-                    throw new NotFoundException(
-                        isset($error['reason']) ? $error['reason'] : ''
-                    );
-                }
-
-                throw new RequestException(
-                    $error['code'],
-                    isset($error['reason']) ? $error['reason'] : ''
-                );
-            }
-        }
     }
 }

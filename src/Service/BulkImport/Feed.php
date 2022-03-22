@@ -22,8 +22,8 @@
 
 namespace Shopgate\ConnectSdk\Service\BulkImport;
 
+use GuzzleHttp\Psr7\Utils;
 use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
-use function GuzzleHttp\Psr7\stream_for;
 use Psr\Http\Message\StreamInterface;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
@@ -32,7 +32,6 @@ use Shopgate\ConnectSdk\Service\BulkImport\Handler\File;
 use Shopgate\ConnectSdk\Service\BulkImport\Handler\Stream;
 use Shopgate\ConnectSdk\Exception\RequestException;
 use Shopgate\ConnectSdk\Exception\UnknownException;
-use Shopgate\ConnectSdk\ShopgateSdk;
 
 class Feed
 {
@@ -80,12 +79,11 @@ class Feed
         $this->handlerType = $handlerType;
         $this->requestBodyOptions = $requestBodyOptions;
 
-        $this->client = $client;
         $this->url = $this->getUrl();
 
         switch ($this->handlerType) {
             case Stream::HANDLER_TYPE:
-                $this->stream = stream_for();
+                $this->stream = Utils::streamFor();
                 $this->stream->write('[');
                 break;
             case File::HANDLER_TYPE:
@@ -106,17 +104,12 @@ class Feed
      */
     protected function getUrl()
     {
-        $response = $this->client->doRequest(
-            [
-                'method' => 'post',
-                'json' => $this->requestBodyOptions,
-                'requestType' => 'direct',
-                'service' => 'import',
-                'path' => 'imports/' . $this->importReference . '/' . 'urls',
-            ]
-        );
-
-        $response = json_decode($response->getBody(), true);
+        $response = $this->client->request([
+            'method' => 'post',
+            'service' => 'import',
+            'path' => 'imports/' . $this->importReference . '/urls',
+            'body' => $this->requestBodyOptions
+        ]);
 
         return $response['url'];
     }
@@ -140,26 +133,23 @@ class Feed
      */
     public function end()
     {
-        $requestOption = [];
-        $requestOption['method'] = 'PUT';
-        $requestOption['url'] = $this->url;
-        $requestOption['requestType'] = ShopgateSdk::REQUEST_TYPE_DIRECT;
+        $requestOption = [
+            'method' => 'put',
+            'url' => $this->url
+        ];
 
         switch ($this->handlerType) {
             case Stream::HANDLER_TYPE:
                 $this->stream->write(']');
-                $this->client->doRequest($requestOption + ['body' => (string)$this->stream]);
+                $this->client->request($requestOption + ['body' => (string)$this->stream]);
                 break;
             case File::HANDLER_TYPE:
                 fwrite($this->stream, ']');
                 fseek($this->stream, 0);
                 $requestOption['body'] = fread($this->stream, filesize(stream_get_meta_data($this->stream)['uri']));
                 fclose($this->stream);
+                $this->client->request($requestOption);
                 break;
-        }
-
-        if (isset($requestOption['body'])) {
-            $this->client->doRequest($requestOption);
         }
     }
 }

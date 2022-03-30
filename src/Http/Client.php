@@ -228,10 +228,12 @@ class Client implements ClientInterface
         // remove authentication on custom URLs (used for S3 uploads)
         if (!empty($options['url'])) {
             $this->removeOAuthAuthentication();
+        } else {
+            $this->addOAuthAuthentication();
         }
 
         $headers = [];
-        $body = Value::elvis($options, 'body', null);
+        $body = Value::elvis($options, 'body', null, 'isset', false);
         $json = Value::elvis($options, 'json', true, 'isset', false);
 
         if ($json && (is_array($body) || is_object($body))) {
@@ -241,18 +243,22 @@ class Client implements ClientInterface
 
         $httpClientOptions = [
             'connect_timeout' => 5.0,
-            'body' => $body,
-            'headers' => $headers,
-            'query' => $query
+            'body' => $body
         ];
+
+        if (!empty($headers)) {
+            $httpClientOptions['headers'] = $headers;
+        }
+
+        if (!empty($query)) {
+            $httpClientOptions['query'] = $query;
+        }
 
         $method = Value::elvis($options, 'method', 'get');
         $version = Value::elvis($options, 'version', 'v1');
         $path = Value::elvis($options, 'path', '');
         $url = Value::elvis($options, 'url', '');
         $uri = !empty($url) ? $url . $path : $this->buildServiceUrl($options['service'], $path, $version);
-
-        $this->addOAuthAuthentication();
 
         $result = $this->send($method, $uri, $httpClientOptions)->getBody()->getContents();
         return $json && !empty($result) ? Json::decode($result) : $result;

@@ -22,7 +22,6 @@
 
 namespace Shopgate\ConnectSdk\Service\BulkImport;
 
-use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;

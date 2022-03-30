@@ -59,7 +59,7 @@ class BulkImport
      * @throws UnknownException
      * @throws TokenPersistenceException
      */
-    protected function getImportReference($source = '')
+    protected function createImport($source = '')
     {
         $response = $this->client->request([
             'service' => self::NAME,
@@ -83,7 +83,7 @@ class BulkImport
      */
     public function createFileImport()
     {
-        return new File($this->client, $this->getImportReference());
+        return new File($this->client, $this->createImport());
     }
 
     /**
@@ -98,6 +98,6 @@ class BulkImport
      */
     public function createStreamImport()
     {
-        return new Stream($this->client, $this->getImportReference());
+        return new Stream($this->client, $this->createImport());
     }
 }

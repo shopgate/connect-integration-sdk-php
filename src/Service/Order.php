@@ -58,7 +58,7 @@ class Order
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/SalesOrder/createSalesOrders
+     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMDM-create-sales-orders
      */
     public function addOrders(array $orders, array $query = [])
     {
@@ -85,7 +85,7 @@ class Order
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/SalesOrder/getSalesOrders
+     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMDI-get-sales-orders
      */
     public function getOrders(array $query = [])
     {
@@ -111,7 +111,7 @@ class Order
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/SalesOrder/getSalesOrder
+     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMDQ-get-sales-order
      */
     public function getOrder($orderNumber, array $query = [])
     {
@@ -140,7 +140,7 @@ class Order
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/SalesOrder/getSalesOrderHistory
+     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMDg-get-history-of-sales-order
      */
     public function getOrderHistory($orderNumber, array $query = [])
     {
@@ -166,7 +166,7 @@ class Order
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/FulfillmentOrder/getFulfillmentOrder
+     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMTQ-get-fulfillment-order
      */
     public function getFulfillmentOrder($orderNumber, array $query = [])
     {
@@ -195,7 +195,7 @@ class Order
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/FulfillmentOrder/getFulfillmentOrderHistory
+     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMTk-get-history-of-fulfillment-order
      */
     public function getFulfillmentOrderHistory($orderNumber, array $query = [])
     {
@@ -220,7 +220,7 @@ class Order
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/FulfillmentOrder/getFulfillmentOrders
+     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMTE-get-fulfillment-orders
      */
     public function getFulfillmentOrders(array $query = [])
     {
@@ -245,7 +245,7 @@ class Order
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/Analytics/getFulfillmentOrderStatusCount
+     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgwOTg-get-fulfillment-order-status-count
      */
     public function getFulfillmentOrderStatusCount(array $query = [])
     {
@@ -271,7 +271,7 @@ class Order
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/Analytics/getFulfillmentOrderBreakdownByIntervals
+     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgwOTk-get-fulfillment-order-breakdown-by-intervals
      */
     public function getFulfillmentOrderBreakdown($interval, array $query = [])
     {

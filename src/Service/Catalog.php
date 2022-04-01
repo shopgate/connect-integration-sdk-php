@@ -32,7 +32,6 @@ use Shopgate\ConnectSdk\Helper\Json;
 use Shopgate\ConnectSdk\Helper\Value;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\Http\Persistence\TokenPersistenceException;
-use Shopgate\ConnectSdk\ShopgateSdk;
 
 class Catalog
 {
@@ -54,8 +53,202 @@ class Catalog
         $this->jsonHelper = $jsonHelper;
     }
 
+    #####################################################################################################
+    # Parent Catalog
+    #####################################################################################################
+
     /**
-     * @param array $categories
+     * @param array $parentCatalogs
+     * @param array $query
+     *
+     * @return array
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MDA-create-new-parent-catalogs
+     */
+    public function addParentCatalogs(array $parentCatalogs, array $query = [])
+    {
+        return $this->client->request([
+            'method' => 'post',
+            'service' => self::NAME,
+            'path' => 'parentCatalogs',
+            'json' => true,
+            'body' => ['parentCatalogs' => $parentCatalogs],
+            'query' => $query
+        ]);
+    }
+
+    #####################################################################################################
+    # Catalog
+    #####################################################################################################
+
+    /**
+     * @param array $query
+     *
+     * @return array
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MDE-get-catalogs
+     */
+    public function getCatalogs(array $query = [])
+    {
+        if (isset($query['filters'])) {
+            $query['filters'] = $this->jsonHelper->encode($query['filters']);
+        }
+
+        return $this->client->request([
+            'service' => self::NAME,
+            'path' => 'catalogs',
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param array $catalogs
+     * @param array $query
+     *
+     * @return array
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MDI-create-catalogs
+     */
+    public function addCatalogs(array $catalogs, array $query = [])
+    {
+        return $this->client->request([
+            'method' => 'post',
+            'service' => self::NAME,
+            'path' => 'catalogs',
+            'json' => true,
+            'body' => ['catalogs' => $catalogs],
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param string $code - catalog code
+     * @param array $query
+     *
+     * @return array
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MDM-get-catalog
+     */
+    public function getCatalog($code, array $query = [])
+    {
+        $response = $this->client->request([
+            'service' => self::NAME,
+            'path' => 'catalogs/' . $code,
+            'query' => $query
+        ]);
+
+        return isset($response['catalog']) ? $response['catalog'] : null;
+    }
+
+    /**
+     * @param string $code - catalog code
+     * @param array $catalog
+     * @param array $query
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MDQ-update-catalog
+     */
+    public function updateCatalog($code, array $catalog, array $query = [])
+    {
+        $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'catalogs/' . $code,
+            'body' => $catalog,
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param string $catalogCode
+     * @param array $query
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MDU-delete-catalog
+     */
+    public function deleteCatalog($catalogCode, array $query = [])
+    {
+        $this->client->request([
+            'service' => self::NAME,
+            'method' => 'delete',
+            'path' => 'catalogs/' . $catalogCode,
+            'query' => $query
+        ]);
+    }
+
+    #####################################################################################################
+    # Attribute
+    #####################################################################################################
+
+    /**
+     * @param array $query
+     *
+     * @return array
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MDY-get-attributes
+     */
+    public function getAttributes(array $query = [])
+    {
+        if (isset($query['filters'])) {
+            $query['filters'] = $this->jsonHelper->encode($query['filters']);
+        }
+
+        return $this->client->request([
+            'service' => self::NAME,
+            'path' => 'attributes',
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param array[]|\stdClass[] $attributes
      * @param array $query
      * @param bool $async
      *
@@ -67,315 +260,20 @@ class Catalog
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Categories/createCategories
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MDc-create-attributes
      */
-    public function addCategories(array $categories, array $query = [], $async = true)
+    public function addAttributes(array $attributes, array $query = [], $async = true)
     {
         if ($async) {
-            if (!empty($query['catalogCode'])) {
-                $categories = Value::addValue($categories, $query['catalogCode'], 'catalogCode');
-            }
-
-            return $this->client->publish('entityCreated', 'category', $categories);
+            return $this->client->publish('entityCreated', 'attribute', $attributes);
         }
 
-        return $this->client->request([
-            'method' => 'post',
-            'service' => self::NAME,
-            'path' => 'categories',
-            'json' => true,
-            'body' => ['categories' => $categories],
-            'query' => $query
-        ]);
-    }
-
-    /**
-     * @param string $code
-     * @param array $category
-     * @param array $query
-     *
-     * @throws AuthenticationInvalidException
-     * @throws InvalidDataTypeException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws TokenPersistenceException
-     * @throws UnknownException
-     *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Categories/updateCategory
-     */
-    public function updateCategory($code, array $category, array $query = [])
-    {
-        $this->client->request([
-            'service' => self::NAME,
-            'method' => 'post',
-            'path' => 'categories/' . $code,
-            'body' => $category,
-            'query' => $query
-        ]);
-    }
-
-    /**
-     * @param string $code
-     * @param array $query
-     *
-     * @throws AuthenticationInvalidException
-     * @throws InvalidDataTypeException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws TokenPersistenceException
-     * @throws UnknownException
-     *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Categories/deleteCategory
-     */
-    public function deleteCategory($code, array $query = [])
-    {
-        $this->client->request([
-            'service' => self::NAME,
-            'method' => 'delete',
-            'path' => 'categories/' . $code,
-            'query' => $query
-        ]);
-    }
-
-    /**
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws AuthenticationInvalidException
-     * @throws InvalidDataTypeException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws TokenPersistenceException
-     * @throws UnknownException
-     *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Categories/getCategories
-     */
-    public function getCategories(array $query = [])
-    {
-        if (isset($query['filters'])) {
-            $query['filters'] = $this->jsonHelper->encode($query['filters']);
-        }
-
-        return $this->client->request([
-            'service' => self::NAME,
-            'path' => 'categories',
-            'query' => $query
-        ]);
-    }
-
-    /**
-     * @param array $products
-     * @param array $query
-     *
-     * @return array|ResponseInterface
-     *
-     * @throws AuthenticationInvalidException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws UnknownException
-     * @throws InvalidDataTypeException
-     * @throws TokenPersistenceException
-     *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Products/createProducts
-     */
-    public function addProducts(array $products, array $query = [])
-    {
-        $requestType = isset($query['requestType']) ? $query['requestType'] : ShopgateSdk::REQUEST_TYPE_DIRECT;
-        if ($requestType === ShopgateSdk::REQUEST_TYPE_EVENT) {
-            if (!empty($query['catalogCode'])) {
-                $products = Value::addValue($products, $query['catalogCode'], 'catalogCode');
-            }
-
-            return $this->client->publish('entityCreated', 'product', $products);
-        }
-
-        return $this->client->request([
-            'method' => 'post',
-            'service' => self::NAME,
-            'path' => 'products',
-            'json' => true,
-            'body' => ['products' => $products],
-            'query' => $query
-        ]);
-    }
-
-    /**
-     * @param string $code
-     * @param array $product
-     * @param array $query
-     *
-     * @throws AuthenticationInvalidException
-     * @throws InvalidDataTypeException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws TokenPersistenceException
-     * @throws UnknownException
-     *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Products/updateProduct
-     */
-    public function updateProduct($code, array $product, array $query = [])
-    {
-        $this->client->request([
-            'service' => self::NAME,
-            'method' => 'post',
-            'path' => 'products/' . $code,
-            'body' => $product,
-            'query' => $query
-        ]);
-    }
-
-    /**
-     * @param string $code
-     * @param array $query
-     *
-     * @throws AuthenticationInvalidException
-     * @throws InvalidDataTypeException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws TokenPersistenceException
-     * @throws UnknownException
-     *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Products/deleteProduct
-     */
-    public function deleteProduct($code, array $query = [])
-    {
-        $this->client->request([
-            'service' => self::NAME,
-            'method' => 'delete',
-            'path' => 'products/' . $code,
-            'query' => $query
-        ]);
-    }
-
-    /**
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws AuthenticationInvalidException
-     * @throws InvalidDataTypeException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws TokenPersistenceException
-     * @throws UnknownException
-     *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Products/getProducts
-     */
-    public function getProducts(array $query = [])
-    {
-        if (isset($query['filters'])) {
-            $query['filters'] = $this->jsonHelper->encode($query['filters']);
-        }
-
-        return $this->client->request([
-            'service' => self::NAME,
-            'path' => 'products',
-            'query' => $query
-        ]);
-    }
-
-    /**
-     * @param string $code - product code
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws AuthenticationInvalidException
-     * @throws InvalidDataTypeException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws TokenPersistenceException
-     * @throws UnknownException
-     *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Products/getProduct
-     */
-    public function getProduct($code, array $query = [])
-    {
-        $response = $this->client->request([
-            'service' => self::NAME,
-            'path' => 'products/' . $code,
-            'query' => $query
-        ]);
-
-        return isset($response['product']) ? $response['product'] : null;
-    }
-
-    /**
-     * @param string $code - product code
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws AuthenticationInvalidException
-     * @throws InvalidDataTypeException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws TokenPersistenceException
-     * @throws UnknownException
-     *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Products/getProductDescriptions
-     */
-    public function getProductDescriptions($code, array $query = [])
-    {
-        return $this->client->request([
-            'service' => self::NAME,
-            'path' => 'products/' . $code . '/descriptions',
-            'query' => $query
-        ]);
-    }
-
-    /**
-     * @param array $attributes
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws AuthenticationInvalidException
-     * @throws InvalidDataTypeException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws TokenPersistenceException
-     * @throws UnknownException
-     *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Attributes/createAttributes
-     */
-    public function addAttributes(array $attributes, array $query = [])
-    {
         return $this->client->request([
             'method' => 'post',
             'service' => self::NAME,
             'path' => 'attributes',
             'json' => true,
             'body' => ['attributes' => $attributes],
-            'query' => $query
-        ]);
-    }
-
-    /**
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws AuthenticationInvalidException
-     * @throws InvalidDataTypeException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws TokenPersistenceException
-     * @throws UnknownException
-     *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Attributes/getAttributes
-     */
-    public function getAttributes(array $query = [])
-    {
-        if (isset($query['filters'])) {
-            $query['filters'] = $this->jsonHelper->encode($query['filters']);
-        }
-
-        return $this->client->request([
-            'service' => self::NAME,
-            'path' => 'attributes',
             'query' => $query
         ]);
     }
@@ -393,7 +291,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Attributes/getAttribute
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MDg-get-attribute
      */
     public function getAttribute($attributeCode, array $query = [])
     {
@@ -410,6 +308,9 @@ class Catalog
      * @param string $attributeCode
      * @param array $attribute
      * @param array $query
+     * @param bool $async
+     *
+     * @return ResponseInterface|void
      *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
@@ -417,11 +318,17 @@ class Catalog
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Attributes/updateAttribute
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MDk-update-attribute
      */
-    public function updateAttribute($attributeCode, array $attribute, array $query = [])
+    public function updateAttribute($attributeCode, array $attribute, array $query = [], $async = true)
     {
+        if ($async) {
+            return $this->client->publish(
+                'entityUpdated',
+                'attribute',
+                [['code' => $attributeCode] + $attribute]
+            );
+        }
         $this->client->request([
             'service' => self::NAME,
             'method' => 'post',
@@ -434,6 +341,9 @@ class Catalog
     /**
      * @param string $attributeCode
      * @param array $query
+     * @param bool $async
+     *
+     * @return array|ResponseInterface
      *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
@@ -441,12 +351,15 @@ class Catalog
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Attributes/deleteAttribute
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MTA-delete-attribute
      */
-    public function deleteAttribute($attributeCode, array $query = [])
+    public function deleteAttribute($attributeCode, array $query = [], $async = true)
     {
-        $this->client->request([
+        if ($async) {
+            return $this->client->publishEntityDeleted('attribute', $attributeCode);
+        }
+
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'delete',
             'path' => 'attributes/' . $attributeCode,
@@ -468,7 +381,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Attributes/setAttributeValues
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MTE-set-attribute-values
      */
     public function addAttributeValues($attributeCode, array $attributeValues, array $query = [])
     {
@@ -495,7 +408,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Attributes/updateAttributeValue
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MTI-update-attribute-value
      */
     public function updateAttributeValue($attributeCode, $attributeValueCode, array $attributeValue, array $query = [])
     {
@@ -520,7 +433,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Attributes/deleteAttributeValue
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MTM-delete-attribute-value
      */
     public function deleteAttributeValue($attributeCode, $attributeValueCode, array $query = [])
     {
@@ -531,6 +444,322 @@ class Catalog
             'query' => $query
         ]);
     }
+
+    #####################################################################################################
+    # Category
+    #####################################################################################################
+
+    /**
+     * @param array $query
+     *
+     * @return array
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MTQ-get-categories
+     */
+    public function getCategories(array $query = [])
+    {
+        if (isset($query['filters'])) {
+            $query['filters'] = $this->jsonHelper->encode($query['filters']);
+        }
+
+        return $this->client->request([
+            'service' => self::NAME,
+            'path' => 'categories',
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param array $categories
+     * @param array $query
+     * @param bool $async
+     *
+     *
+     * @return array|ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MTU-create-categories
+     */
+    public function addCategories(array $categories, array $query = [], $async = true)
+    {
+        if ($async) {
+            return $this->client->publish(
+                'entityCreated',
+                'category',
+                $this->spreadCatalogCode($categories, $query)
+            );
+        }
+
+        return $this->client->request([
+            'method' => 'post',
+            'service' => self::NAME,
+            'path' => 'categories',
+            'json' => true,
+            'body' => ['categories' => $categories],
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param string $code
+     * @param array $category
+     * @param array $query
+     * @param bool $async
+     *
+     * @return array|ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MTY-update-category
+     */
+    public function updateCategory($code, array $category, array $query = [], $async = true)
+    {
+        if ($async) {
+            return $this->client->publish(
+                'entityUpdated',
+                'category',
+                $this->spreadCatalogCode([['code' => $code] + $category], $query)
+            );
+        }
+
+        return $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'categories/' . $code,
+            'body' => $category,
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param string $code
+     * @param array $query
+     * @param bool $async
+     *
+     * @return ResponseInterface|void
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MTc-delete-category
+     */
+    public function deleteCategory($code, array $query = [], $async = true)
+    {
+        if ($async) {
+            return $this->client->publishEntityDeleted('category', $code);
+        }
+
+        $this->client->request([
+            'service' => self::NAME,
+            'method' => 'delete',
+            'path' => 'categories/' . $code,
+            'query' => $query
+        ]);
+    }
+
+    #####################################################################################################
+    # Product
+    #####################################################################################################
+
+    /**
+     * @param array $query
+     *
+     * @return array
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MjM-get-products
+     */
+    public function getProducts(array $query = [])
+    {
+        if (isset($query['filters'])) {
+            $query['filters'] = $this->jsonHelper->encode($query['filters']);
+        }
+
+        return $this->client->request([
+            'service' => self::NAME,
+            'path' => 'products',
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param array $products
+     * @param array $query
+     * @param bool $async
+     *
+     * @return array|ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MjQ-create-products
+     */
+    public function addProducts(array $products, array $query = [], $async = true)
+    {
+        if ($async) {
+            return $this->client->publish(
+                'entityCreated',
+                'product',
+                $this->spreadCatalogCode($products, $query)
+            );
+        }
+
+        return $this->client->request([
+            'method' => 'post',
+            'service' => self::NAME,
+            'path' => 'products',
+            'json' => true,
+            'body' => ['products' => $products],
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param string $code
+     * @param array $query
+     *
+     * @return array
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5Mjc-get-product
+     */
+    public function getProduct($code, array $query = [])
+    {
+        $response = $this->client->request([
+            'service' => self::NAME,
+            'path' => 'products/' . $code,
+            'query' => $query
+        ]);
+
+        return isset($response['product']) ? $response['product'] : null;
+    }
+
+    /**
+     * @param string $code
+     * @param array $product
+     * @param array $query
+     * @param bool $async
+     *
+     * @return array|ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5Mjg-update-product
+     */
+    public function updateProduct($code, array $product, array $query = [], $async = true)
+    {
+        if ($async) {
+            return $this->client->publish(
+                'entityUpdated',
+                'product',
+                $this->spreadCatalogCode([['code' => $code] + $product], $query)
+            );
+        }
+
+        return $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'products/' . $code,
+            'body' => $product,
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param string $code
+     * @param array $query
+     * @param bool $async
+     *
+     * @return array|ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5Mjk-delete-product
+     */
+    public function deleteProduct($code, array $query = [], $async = true)
+    {
+        if ($async) {
+            return $this->client->publishEntityDeleted('product', $code);
+        }
+
+        return $this->client->request([
+            'service' => self::NAME,
+            'method' => 'delete',
+            'path' => 'products/' . $code,
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param string $code - product code
+     * @param array $query
+     *
+     * @return array
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MzA-get-product-descriptions
+     */
+    public function getProductDescriptions($code, array $query = [])
+    {
+        return $this->client->request([
+            'service' => self::NAME,
+            'path' => 'products/' . $code . '/descriptions',
+            'query' => $query
+        ]);
+    }
+
+    #####################################################################################################
+    # Inventory
+    #####################################################################################################
 
     /**
      * @param array $query
@@ -544,7 +773,7 @@ class Catalog
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Inventories/getInventories
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MzI-get-inventories
      */
     public function getInventories(array $query = [])
     {
@@ -572,15 +801,11 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Inventories/setInventories
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MzM-set-inventories
      */
     public function addInventories(array $inventories, array $query = [])
     {
-        // The event receiver does not yet support entities of type inventory
-        // $requestType = isset($query['requestType']) ? $query['requestType'] : ShopgateSdk::REQUEST_TYPE_DIRECT;
-        // if ($requestType === ShopgateSdk::REQUEST_TYPE_EVENT) {
-        //      return $this->client->publish('entityCreated', 'inventory', $inventories);
-        // }
+        // the event receiver does not yet support entities of type inventory
 
         return $this->client->request([
             'method' => 'post',
@@ -603,13 +828,15 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Inventories/deleteInventories
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MzQ-increment-decrement-inventory
      */
-    public function deleteInventories(array $inventories, array $query = [])
+    public function updateInventories($inventories, array $query = [])
     {
+        // the event receiver does not yet support entities of type inventory
+
         $this->client->request([
             'service' => self::NAME,
-            'method' => 'delete',
+            'method' => 'patch',
             'path' => 'inventories',
             'body' => ['inventories' => $inventories],
             'query' => $query
@@ -627,15 +854,44 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Inventories/incrementDecrementInventory
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MzU-delete-inventories
      */
-    public function updateInventories($inventories, array $query = [])
+    public function deleteInventories(array $inventories, array $query = [])
     {
+        // the event receiver does not yet support entities of type inventory
+
         $this->client->request([
             'service' => self::NAME,
-            'method' => 'patch',
+            'method' => 'delete',
             'path' => 'inventories',
             'body' => ['inventories' => $inventories],
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param array $query
+     *
+     * @return array
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5Mzg-get-reservations
+     */
+    public function getReservations(array $query = [])
+    {
+        if (isset($query['filters'])) {
+            $query['filters'] = $this->jsonHelper->encode($query['filters']);
+        }
+
+        return $this->client->request([
+            'service' => self::NAME,
+            'path' => 'reservations',
             'query' => $query
         ]);
     }
@@ -653,7 +909,7 @@ class Catalog
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Inventories/reserverInventory
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5Mzk-reserve-inventory
      */
     public function addReservations(array $reservations, array $query = [])
     {
@@ -678,7 +934,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Inventories/deleteInventoryReservations
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5NDA-delete-inventory-reservations
      */
     public function deleteReservations(array $codes, array $query = [])
     {
@@ -703,7 +959,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Inventories/updateReservation
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5NDI-update-reservation
      */
     public function updateReservation($reservationCode, $reservation, array $query = [])
     {
@@ -729,7 +985,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Inventories/getReservation
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5NDM-get-reservation
      */
     public function getReservation($reservationCode, array $query = [])
     {
@@ -748,40 +1004,13 @@ class Catalog
      * @return array
      *
      * @throws AuthenticationInvalidException
-     * @throws InvalidDataTypeException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws TokenPersistenceException
-     * @throws UnknownException
-     *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Inventories/getReservations
-     */
-    public function getReservations(array $query = [])
-    {
-        if (isset($query['filters'])) {
-            $query['filters'] = $this->jsonHelper->encode($query['filters']);
-        }
-
-        return $this->client->request([
-            'service' => self::NAME,
-            'path' => 'reservations',
-            'query' => $query
-        ]);
-    }
-
-    /**
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws AuthenticationInvalidException
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Inventories/getCumulatedInventories
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5NDU-get-cumulated-inventories
      */
     public function getCumulatedInventories(array $query = [])
     {
@@ -796,158 +1025,10 @@ class Catalog
         ]);
     }
 
-    /**
-     * @param array $parentCatalogs
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws AuthenticationInvalidException
-     * @throws InvalidDataTypeException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws TokenPersistenceException
-     * @throws UnknownException
-     *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/ParentCatalogs/createParentCatalogs
-     */
-    public function addParentCatalogs(array $parentCatalogs, array $query = [])
+    private function spreadCatalogCode($entities, $query)
     {
-        return $this->client->request([
-            'method' => 'post',
-            'service' => self::NAME,
-            'path' => 'parentCatalogs',
-            'json' => true,
-            'body' => ['parentCatalogs' => $parentCatalogs],
-            'query' => $query
-        ]);
-    }
-
-    /**
-     * @param string $catalogCode
-     * @param array $query
-     *
-     * @throws AuthenticationInvalidException
-     * @throws InvalidDataTypeException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws TokenPersistenceException
-     * @throws UnknownException
-     *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Catalogs/deleteCatalog
-     */
-    public function deleteCatalog($catalogCode, array $query = [])
-    {
-        $this->client->request([
-            'service' => self::NAME,
-            'method' => 'delete',
-            'path' => 'catalogs/' . $catalogCode,
-            'query' => $query
-        ]);
-    }
-
-    /**
-     * @param array $catalogs
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws AuthenticationInvalidException
-     * @throws InvalidDataTypeException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws TokenPersistenceException
-     * @throws UnknownException
-     *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Catalogs/createCatalogs
-     */
-    public function addCatalogs(array $catalogs, array $query = [])
-    {
-        return $this->client->request([
-            'method' => 'post',
-            'service' => self::NAME,
-            'path' => 'catalogs',
-            'json' => true,
-            'body' => ['catalogs' => $catalogs],
-            'query' => $query
-        ]);
-    }
-
-    /**
-     * @param string $code - catalog code
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws AuthenticationInvalidException
-     * @throws InvalidDataTypeException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws TokenPersistenceException
-     * @throws UnknownException
-     *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Catalogs/getCatalog
-     */
-    public function getCatalog($code, array $query = [])
-    {
-        $response = $this->client->request([
-            'service' => self::NAME,
-            'path' => 'catalogs/' . $code,
-            'query' => $query
-        ]);
-
-        return isset($response['catalog']) ? $response['catalog'] : null;
-    }
-
-    /**
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws AuthenticationInvalidException
-     * @throws InvalidDataTypeException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws TokenPersistenceException
-     * @throws UnknownException
-     *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Catalogs/getCatalogs
-     */
-    public function getCatalogs(array $query = [])
-    {
-        if (isset($query['filters'])) {
-            $query['filters'] = $this->jsonHelper->encode($query['filters']);
-        }
-
-        return $this->client->request([
-            'service' => self::NAME,
-            'path' => 'catalogs',
-            'query' => $query
-        ]);
-    }
-
-    /**
-     * @param string $code - catalog code
-     * @param array $catalog
-     * @param array $query
-     *
-     * @throws AuthenticationInvalidException
-     * @throws InvalidDataTypeException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws TokenPersistenceException
-     * @throws UnknownException
-     *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/catalog-crud.yaml#/Catalogs/updateCatalog
-     */
-    public function updateCatalog($code, array $catalog, array $query = [])
-    {
-        $this->client->request([
-            'service' => self::NAME,
-            'method' => 'post',
-            'path' => 'catalogs/' . $code,
-            'body' => $catalog,
-            'query' => $query
-        ]);
+        return empty($query['catalogCode'])
+            ? $entities
+            : Value::addValue($entities, $query['catalogCode'], 'catalogCode');
     }
 }

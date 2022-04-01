@@ -21,6 +21,8 @@
 
 namespace Shopgate\ConnectSdk\Service;
 
+use Google\Api\ResourceDescriptor;
+use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
@@ -44,6 +46,10 @@ class Customer
         $this->client = $client;
     }
 
+    #####################################################################################################
+    # Attribute
+    #####################################################################################################
+
     /**
      * @param array $query
      *
@@ -56,37 +62,13 @@ class Customer
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/customer-crud.yaml#/Attributes/getAttributes
+     * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2ODU-get-attributes
      */
     public function getAttributes(array $query = [])
     {
         return $this->client->request([
             'service' => self::NAME,
             'path' => 'attributes',
-            'query' => $query
-        ]);
-    }
-
-    /**
-     * @param string $attributeCode
-     * @param array  $query
-     *
-     * @return array
-     *
-     * @throws AuthenticationInvalidException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws UnknownException
-     * @throws InvalidDataTypeException
-     * @throws TokenPersistenceException
-     *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/customer-crud.yaml#/Attributes/getAttribute
-     */
-    public function getAttribute($attributeCode, array $query = [])
-    {
-        return $this->client->request([
-            'service' => self::NAME,
-            'path' => 'attributes/' . $attributeCode,
             'query' => $query
         ]);
     }
@@ -104,7 +86,7 @@ class Customer
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/customer-crud.yaml#/Attributes/createAttributes
+     * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2ODY-create-attributes
      */
     public function addAttributes(array $attributes, array $query = [])
     {
@@ -113,6 +95,30 @@ class Customer
             'method' => 'post',
             'path' => 'attributes',
             'body' => ['attributes' => $attributes],
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param string $attributeCode
+     * @param array  $query
+     *
+     * @return array
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     * @throws InvalidDataTypeException
+     * @throws TokenPersistenceException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2ODc-get-attribute
+     */
+    public function getAttribute($attributeCode, array $query = [])
+    {
+        return $this->client->request([
+            'service' => self::NAME,
+            'path' => 'attributes/' . $attributeCode,
             'query' => $query
         ]);
     }
@@ -129,7 +135,7 @@ class Customer
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/customer-crud.yaml#/Attributes/updateAttribute
+     * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2ODg-update-attribute
      */
     public function updateAttribute($attributeCode, array $attribute, array $query = [])
     {
@@ -153,7 +159,7 @@ class Customer
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/customer-crud.yaml#/Attributes/deleteAttribute
+     * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2ODk-delete-attribute
      */
     public function deleteAttribute($attributeCode, array $query = [])
     {
@@ -179,7 +185,7 @@ class Customer
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/customer-crud.yaml#/Attributes/addAttributeValues
+     * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2OTA-add-attribute-values
      */
     public function addAttributeValues($attributeCode, array $attributeValues, array $query = [])
     {
@@ -205,7 +211,7 @@ class Customer
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/customer-crud.yaml#/Attributes/updateAttributeValue
+     * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2OTE-update-attribute-value
      */
     public function updateAttributeValue($attributeCode, $attributeValueCode, array $attributeValue, array $query = [])
     {
@@ -230,7 +236,7 @@ class Customer
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/customer-crud.yaml#/Attributes/deleteAttributeValue
+     * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2OTI-delete-attribute-value
      */
     public function deleteAttributeValue($attributeCode, $attributeValueCode, array $query = [])
     {
@@ -241,6 +247,10 @@ class Customer
             'query' => $query
         ]);
     }
+
+    #####################################################################################################
+    # Customer
+    #####################################################################################################
 
     /**
      * @param array $query
@@ -254,13 +264,43 @@ class Customer
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/customer-crud.yaml#/default/getCustomers
+     * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2OTM-get-customers
      */
     public function getCustomers(array $query = [])
     {
         return $this->client->request([
             'service' => self::NAME,
             'path' => 'customers',
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param array $customers
+     * @param array $query
+     * @param bool $async
+     *
+     * @return array|ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2OTQ-create-customers
+     */
+    public function addCustomers(array $customers, array $query = [], $async = true)
+    {
+        if ($async) {
+            return $this->client->publish('entityCreated', 'customer', $customers);
+        }
+
+        return $this->client->request([
+            'service' => self::NAME,
+            'path' => 'customers',
+            'method' => 'post',
+            'body' => ['customers' => $customers],
             'query' => $query
         ]);
     }
@@ -278,7 +318,7 @@ class Customer
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/customer-crud.yaml#/default/getCustomer
+     * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2OTU-get-customer
      */
     public function getCustomer($customerId, array $query = [])
     {
@@ -292,48 +332,33 @@ class Customer
     }
 
     /**
-     * @param array $customers
-     * @param array $query
-     *
-     * @return array
-     *
-     * @throws AuthenticationInvalidException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws UnknownException
-     * @throws InvalidDataTypeException
-     * @throws TokenPersistenceException
-     *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/customer-crud.yaml#/default/createCustomers
-     */
-    public function addCustomers(array $customers, array $query = [])
-    {
-        return $this->client->request([
-            'service' => self::NAME,
-            'path' => 'customers',
-            'method' => 'post',
-            'body' => ['customers' => $customers],
-            'query' => $query
-        ]);
-    }
-
-    /**
      * @param string $customerId
-     * @param array  $customer
-     * @param array  $query
+     * @param array $customer
+     * @param array $query
+     * @param bool $async
+     *
+     * @return array|ResponseInterface
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
-     * @throws UnknownException
-     * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
-     *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/customer-crud.yaml#/default/updateCustomer
+     * @throws UnknownException
+     * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2OTY-update-customer
      */
-    public function updateCustomer($customerId, array $customer, array $query = [])
+    public function updateCustomer($customerId, array $customer, array $query = [], $async = true)
     {
-        $this->client->request([
+        if ($async) {
+            return $this->client->publish(
+                'entityUpdated',
+                'customer',
+                [['customerId' => $customerId] + $customer],
+                'customerId'
+            );
+        }
+
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'post',
             'path' => 'customers/' . $customerId,
@@ -345,25 +370,35 @@ class Customer
     /**
      * @param string $customerId
      * @param array $query
+     * @param bool $async
+     *
+     * @return array|ResponseInterface
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
-     * @throws UnknownException
-     * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
-     *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/customer-crud.yaml#/default/deleteCustomer
+     * @throws UnknownException
+     * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2OTc-delete-customer
      */
-    public function deleteCustomer($customerId, array $query = [])
+    public function deleteCustomer($customerId, array $query = [], $async = true)
     {
-        $this->client->request([
+        if ($async) {
+            return $this->client->publishEntityDeleted('customer', $customerId);
+        }
+
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'delete',
             'path' => 'customers/' . $customerId,
             'query' => $query
         ]);
     }
+
+    #####################################################################################################
+    # Contact
+    #####################################################################################################
 
     /**
      * @param string $customerId
@@ -379,7 +414,7 @@ class Customer
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/customer-crud.yaml#/Contacts/addCustomerContacts
+     * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2OTg-add-customer-contacts
      */
     public function addContacts($customerId, array $contacts, array $query = [])
     {
@@ -405,7 +440,7 @@ class Customer
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/customer-crud.yaml#/Contacts/updateCustomerContact
+     * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2OTk-update-customer-contact
      */
     public function updateContact($customerId, $contactId, array $contact, array $query = [])
     {
@@ -430,7 +465,7 @@ class Customer
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/customer-crud.yaml#/Contacts/deleteCustomerContact
+     * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg3MDA-delete-customer-contact
      */
     public function deleteContact($customerId, $contactId, array $query = [])
     {
@@ -438,6 +473,34 @@ class Customer
             'service' => self::NAME,
             'method' => 'delete',
             'path' => 'customers/' . $customerId . '/contacts/' . $contactId,
+            'query' => $query
+        ]);
+    }
+
+    #####################################################################################################
+    # Note
+    #####################################################################################################
+
+    /**
+     * @param string $customerId
+     * @param array  $query
+     *
+     * @return array
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     * @throws InvalidDataTypeException
+     * @throws TokenPersistenceException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/customer-crud.yaml#/Notes/get_merchants__merchantCode__customers__customerId__notes
+     */
+    public function getNotes($customerId, array $query = [])
+    {
+        return $this->client->request([
+            'service' => self::NAME,
+            'path' => 'customers/' . $customerId . '/notes',
             'query' => $query
         ]);
     }
@@ -469,6 +532,10 @@ class Customer
         ]);
     }
 
+    #####################################################################################################
+    # Wishlist
+    #####################################################################################################
+
     /**
      * @param string $customerId
      * @param array  $query
@@ -482,13 +549,13 @@ class Customer
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/customer-crud.yaml#/Notes/get_merchants__merchantCode__customers__customerId__notes
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/customer-crud.yaml#/Wishlist/get_merchants__merchantCode__customers__customerId__wishlists
      */
-    public function getNotes($customerId, array $query = [])
+    public function getWishlists($customerId, array $query = [])
     {
         return $this->client->request([
             'service' => self::NAME,
-            'path' => 'customers/' . $customerId . '/notes',
+            'path' => 'customers/' . $customerId . '/wishlists',
             'query' => $query
         ]);
     }
@@ -518,6 +585,33 @@ class Customer
             'body' => ['wishlists' => $wishlists],
             'query' => $query
         ]);
+    }
+
+    /**
+     * @param string $customerId
+     * @param string $wishlistCode
+     * @param array  $query
+     *
+     * @return array
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     * @throws InvalidDataTypeException
+     * @throws TokenPersistenceException
+     *
+     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/customer-crud.yaml#/Wishlist/get_merchants__merchantCode__customers__customerId__wishlists__wishlistCode_
+     */
+    public function getWishlist($customerId, $wishlistCode, array $query = [])
+    {
+        $response = $this->client->request([
+            'service' => self::NAME,
+            'path' => 'customers/' . $customerId . '/wishlists/' . $wishlistCode,
+            'query' => $query
+        ]);
+
+        return isset($response['wishlist']) ? $response['wishlist'] : null;
     }
 
     /**
@@ -568,57 +662,6 @@ class Customer
             'path' => 'customers/' . $customerId . '/wishlists/' . $wishlistCode,
             'query' => $query
         ]);
-    }
-
-    /**
-     * @param string $customerId
-     * @param array  $query
-     *
-     * @return array
-     *
-     * @throws AuthenticationInvalidException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws UnknownException
-     * @throws InvalidDataTypeException
-     * @throws TokenPersistenceException
-     *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/customer-crud.yaml#/Wishlist/get_merchants__merchantCode__customers__customerId__wishlists
-     */
-    public function getWishlists($customerId, array $query = [])
-    {
-        return $this->client->request([
-            'service' => self::NAME,
-            'path' => 'customers/' . $customerId . '/wishlists',
-            'query' => $query
-        ]);
-    }
-
-    /**
-     * @param string $customerId
-     * @param string $wishlistCode
-     * @param array  $query
-     *
-     * @return array
-     *
-     * @throws AuthenticationInvalidException
-     * @throws NotFoundException
-     * @throws RequestException
-     * @throws UnknownException
-     * @throws InvalidDataTypeException
-     * @throws TokenPersistenceException
-     *
-     * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/customer-crud.yaml#/Wishlist/get_merchants__merchantCode__customers__customerId__wishlists__wishlistCode_
-     */
-    public function getWishlist($customerId, $wishlistCode, array $query = [])
-    {
-        $response = $this->client->request([
-            'service' => self::NAME,
-            'path' => 'customers/' . $customerId . '/wishlists/' . $wishlistCode,
-            'query' => $query
-        ]);
-
-        return isset($response['wishlist']) ? $response['wishlist'] : null;
     }
 
     /**

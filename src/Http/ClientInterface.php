@@ -72,7 +72,7 @@ interface ClientInterface
     /**
      * Publishes events of one type (same entity, same action) to the event-receiver service.
      *
-     * @param string $action One of "entityCreated", "entityUpdated", "entityDeleted".
+     * @param string $eventName One of "entityCreated", "entityUpdated", "entityDeleted".
      * @param string $entityName The name of the entity, e.g. "order", "product", "attribute", ...
      * @param array[]|\stdClass[] $entities The actual entities to be created, updated or deleted
      * @param string|null $entityIdPropertyName The name of the property that contains an entity's ID (usually only for "update", "delete")
@@ -86,5 +86,22 @@ interface ClientInterface
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      */
-    public function publish($action, $entityName, $entities, $entityIdPropertyName = null);
+    public function publish($eventName, $entityName, $entities, $entityIdPropertyName);
+
+    /**
+     * Publishes one "entityDeleted" event.
+     *
+     * @param string $entityName The name of the entity, e.g. "order", "product", "attribute", ...
+     * @param string $entityId The ID of the entity to be updated
+     *
+     * @return ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws UnknownException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws InvalidDataTypeException
+     * @throws TokenPersistenceException
+     */
+    public function publishEntityDeleted($entityName, $entityId);
 }

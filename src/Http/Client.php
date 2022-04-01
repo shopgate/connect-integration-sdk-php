@@ -60,22 +60,34 @@ class Client implements ClientInterface
     /** @var OAuth2Middleware */
     private $oAuthMiddleware;
 
+    /** @var string[] */
+    private $eventsWithId;
+
+    /** @var string[] */
+    private $eventsWithoutPayload;
+
     /**
      * @param GuzzleClientInterface $client
-     * @param OAuth2Middleware      $oAuth2Middleware
-     * @param string                $baseUri
-     * @param string                $merchantCode
+     * @param OAuth2Middleware $oAuth2Middleware
+     * @param string $baseUri
+     * @param string $merchantCode
+     * @param string[] $eventsWithId
+     * @param string[] $eventsWithotPayload
      */
     public function __construct(
         GuzzleClientInterface $client,
         OAuth2Middleware      $oAuth2Middleware,
                               $baseUri,
-                              $merchantCode
+                              $merchantCode,
+                              $eventsWithId = ['entityUpdated', 'entityDeleted'],
+                              $eventsWithotPayload = ['entityDeleted']
     ) {
         $this->client = $client;
         $this->baseUri = rtrim($baseUri, '/');
         $this->merchantCode = $merchantCode;
         $this->oAuthMiddleware = $oAuth2Middleware;
+        $this->eventsWithId = $eventsWithId;
+        $this->eventsWithoutPayload = $eventsWithotPayload;
     }
 
     /**
@@ -305,27 +317,53 @@ class Client implements ClientInterface
         }
     }
 
-    public function publish($action, $entityName, $entities, $entityIdPropertyName = null)
+    public function publish($eventName, $entityName, $entities, $entityIdPropertyName = 'code')
     {
-        $events = array_map(function ($entity) use ($action, $entityName, $entityIdPropertyName) {
+        $events = array_map(function ($entity) use ($eventName, $entityName, $entityIdPropertyName) {
             $entity = (array)$entity;
 
             $event = [
-                'event' => $action,
+                'event' => $eventName,
                 'entity' => $entityName,
-                'payload' => $entity,
+                'payload' => in_array($eventName, $this->eventsWithoutPayload) ? [] : $entity
             ];
 
-            if ($entityIdPropertyName !== null) {
+            // extract entityId from entity on events that require it
+            if (in_array($eventName, $this->eventsWithId) && $entityIdPropertyName !== null) {
                 $event['entityId'] = $entity[$entityIdPropertyName];
+                unset($entity[$entityIdPropertyName]);
             }
 
             return $event;
         }, $entities);
 
+        return $this->sendEvents($events);
+    }
+
+    public function publishEntityDeleted($entityName, $entityId)
+    {
+        return $this->sendEvents([[
+            'event' => 'entityDeleted',
+            'entity' => $entityName,
+            'entityId' => $entityId,
+            'payload' => new \stdClass()
+        ]]);
+    }
+
+    /**
+     * @param $events
+     *
+     * @return ResponseInterface
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     */
+    private function sendEvents($events) {
         $this->addOAuthAuthentication();
 
-        $this->send(
+        return $this->send(
             'post',
             $this->buildServiceUrl('event-receiver', 'events'),
             [

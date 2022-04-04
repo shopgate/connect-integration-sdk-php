@@ -360,7 +360,8 @@ class Client implements ClientInterface
      * @throws TokenPersistenceException
      * @throws UnknownException
      */
-    private function sendEvents($events) {
+    private function sendEvents($events)
+    {
         $this->addOAuthAuthentication();
 
         return $this->send(

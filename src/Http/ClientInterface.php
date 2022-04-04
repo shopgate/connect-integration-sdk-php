@@ -86,7 +86,7 @@ interface ClientInterface
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      */
-    public function publish($eventName, $entityName, $entities, $entityIdPropertyName);
+    public function publish($eventName, $entityName, $entities, $entityIdPropertyName = null);
 
     /**
      * Publishes one "entityDeleted" event.

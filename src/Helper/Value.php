@@ -21,7 +21,7 @@ class Value
      * @param mixed $subject
      * @param string $property
      * @param mixed $alt
-     * @param callable $checkFunction
+     * @param string $checkFunction
      * @param bool $negate
      * @return mixed
      */

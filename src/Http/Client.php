@@ -351,7 +351,7 @@ class Client implements ClientInterface
     }
 
     /**
-     * @param $events
+     * @param array[] $events
      *
      * @return ResponseInterface
      * @throws AuthenticationInvalidException

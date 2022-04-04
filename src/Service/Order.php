@@ -74,7 +74,7 @@ class Order
     }
 
     /**
-     * @param array{filters: array|\stdClass, fields: string, limit: int, offset: int} $query
+     * @param array{filters?: array|\stdClass, fields?: string, limit?: int, offset?: int} $query
      *
      * @return array
      *
@@ -100,7 +100,7 @@ class Order
 
     /**
      * @param string $orderNumber
-     * @param array{fields: string, getOriginalImageUrls: bool} $query
+     * @param array{fields?: string, getOriginalImageUrls?: bool} $query
      *
      * @return array|null
      *
@@ -129,7 +129,7 @@ class Order
 
     /**
      * @param string $orderNumber
-     * @param array{filters: array|\stdClass, sort: string} $query
+     * @param array{filters?: array|\stdClass, sort?: string} $query
      *
      * @return array
      *
@@ -155,7 +155,7 @@ class Order
 
     /**
      * @param string $orderNumber
-     * @param array{getOriginalImageUrls: bool} $query
+     * @param array{getOriginalImageUrls?: bool} $query
      *
      * @return array|null
      *
@@ -184,7 +184,7 @@ class Order
 
     /**
      * @param string $orderNumber
-     * @param array{filters: array|\stdClass, sort: string} $query
+     * @param array{filters?: array|\stdClass, sort?: string} $query
      *
      * @return array
      *
@@ -209,7 +209,7 @@ class Order
     }
 
     /**
-     * @param array{filters: array|\stdClass, sort: string, fields: string, limit: int, offset: int, getOriginalImageUrls: bool} $query
+     * @param array{filters?: array|\stdClass, sort?: string, fields?: string, limit?: int, offset?: int, getOriginalImageUrls?: bool} $query
      *
      * @return array
      *
@@ -234,7 +234,7 @@ class Order
     }
 
     /**
-     * @param array{filters: array|\stdClass} $query
+     * @param array{filters?: array|\stdClass} $query
      *
      * @return array
      *
@@ -260,7 +260,7 @@ class Order
 
     /**
      * @param string $interval
-     * @param array{filters: array|\stdClass, timezone: string} $query
+     * @param array{filters?: array|\stdClass, timezone?: string} $query
      *
      * @return array
      *
@@ -286,7 +286,7 @@ class Order
 
     /**
      * @param string $interval
-     * @param array{filters: array|\stdClass, timezone: string} $query
+     * @param array{filters?: array|\stdClass, timezone?: string} $query
      *
      * @return array
      *

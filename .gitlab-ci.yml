@@ -1,111 +1,43 @@
 stages:
-  - prepare
-  - check
-  - test
+  - check_and_test
   - deploy
 
 variables:
   BUILD_PREREQUISITES_CACHE_KEY: "build_pre_${PHP_DC_DOWNLOAD}"
 
-download_prerequisites:
-  image: composer:1.8.0
-  stage: prepare
-  script:
-    - if [ ! -d vendor ] || [ ! -f composer.lock ]; then composer update; fi
-  cache:
-    key: $BUILD_PREREQUISITES_CACHE_KEY
-    paths:
-      - composer.lock
-      - vendor
-    policy: pull-push
-  tags:
-    - docker
-
-check_dependencies:
-  image: composer:1.8.0
-  stage: check
-  script:
+php_5.6:
+  stage: check_and_test
+  image: registry.gitlab.localdev.cc/infra/php-build-container:5.6
+  before_script:
     - curl -L https://github.com/fabpot/local-php-security-checker/releases/download/v1.0.0/local-php-security-checker_1.0.0_linux_amd64 -o php-dependency-checker
     - chmod +x ./php-dependency-checker
-    - ./php-dependency-checker
-    - rm php-dependency-checker
-  cache:
-    key: $BUILD_PREREQUISITES_CACHE_KEY
-    paths:
-      - composer.lock
-      - vendor
-    policy: pull
-  tags:
-    - docker
-
-check_code_style:
-  image: composer:1.8.0
-  stage: check
   script:
     - composer cs-fixer-dry
-  cache:
-    key: $BUILD_PREREQUISITES_CACHE_KEY
-    paths:
-      - vendor
-    policy: pull
-  tags:
-    - docker
+    - composer install
+    - ./php-dependency-checker
+    - composer run unit-tests
 
-run_unit_tests:
-  stage: test
+php_7.4:
+  stage: check_and_test
+  image: registry.gitlab.localdev.cc/infra/php-build-container:7.4
   before_script:
-    - apk update
-    - apk add --no-cache bash curl python3 jq py-pip make g++
-    - pip3 install docker-compose==1.23.2 awscli==1.18.159
-    - $(aws ecr get-login --region=us-east-1 --no-include-email --registry-ids 602824140852)
+    - curl -L https://github.com/fabpot/local-php-security-checker/releases/download/v1.0.0/local-php-security-checker_1.0.0_linux_amd64 -o php-dependency-checker
+    - chmod +x ./php-dependency-checker
   script:
-    - cd tools
-    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-unit" up -d --build php56
-    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-unit" up -d --build php7x
-    - echo '******************** Unit Tests PHP 5.6 ********************'
-    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-unit" exec -T php56 php -v
-    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-unit" exec -T php56 composer unit-tests
-    - echo '******************** Unit Tests PHP 7.x ********************'
-    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-unit" exec -T php7x php -v
-    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-unit" exec -T php7x composer unit-tests
-  after_script:
-    - cd tools
-    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-unit" down
-  cache:
-    key: $BUILD_PREREQUISITES_CACHE_KEY
-    paths:
-      - vendor
-  tags:
-    - docker
-    - ecr
+    - composer install
+    - ./php-dependency-checker
+    - composer run unit-tests
 
-#run_integration_tests:
-#  stage: test
-#  before_script:
-#    - apk update
-#    - apk add --no-cache bash curl python3 jq py-pip make g++
-#    - pip3 install docker-compose==1.23.2 awscli==1.18.159
-#    - $(aws ecr get-login --region=us-east-1 --no-include-email --registry-ids 602824140852)
-#  script:
-#    - cd tools
-#    - CI_STACK=1 DOCKER_PREFIX="${CI_COMMIT_SHORT_SHA}-integration" ./initLocalStack.sh
-#    - echo '******************** Integration Tests PHP 5.6 ********************'
-#    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-integration" exec -T php56 php -v
-#    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-integration" exec -T php56 composer integration-tests-local
-#    - echo '******************** Integration Tests PHP 7.x ********************'
-#    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-integration" exec -T php7x php -v
-#    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-integration" exec -T php7x composer integration-tests-local
-#  after_script:
-#    - cd tools
-#    - docker-compose -p "${CI_COMMIT_SHORT_SHA}-integration" down
-#  cache:
-#    key: $BUILD_PREREQUISITES_CACHE_KEY
-#    paths:
-#      - vendor
-#    policy: pull
-#  tags:
-#    - docker
-#    - ecr
+php_8.1:
+  stage: check_and_test
+  image: registry.gitlab.localdev.cc/infra/php-build-container:8.1
+  before_script:
+    - curl -L https://github.com/fabpot/local-php-security-checker/releases/download/v1.0.0/local-php-security-checker_1.0.0_linux_amd64 -o php-dependency-checker
+    - chmod +x ./php-dependency-checker
+  script:
+    - composer install
+    - ./php-dependency-checker
+    - composer run unit-tests
 
 sync_to_github:
   stage: deploy

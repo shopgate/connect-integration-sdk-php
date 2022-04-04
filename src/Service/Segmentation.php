@@ -109,7 +109,7 @@ class Segmentation
      * @param string $segmentCode
      * @param array $query
      *
-     * @return array
+     * @return array|null
      *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
@@ -136,18 +136,19 @@ class Segmentation
      * @param array $update
      * @param array $query
      *
+     * @return array|ResponseInterface
+     *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     *
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/segmentation-crud.yaml#/default/post_merchants__merchantCode__segments__segmentCode_
      */
     public function updateSegment($segmentCode, array $update, array $query = [])
     {
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'post',
             'path' => 'segments/' . $segmentCode,
@@ -160,18 +161,19 @@ class Segmentation
      * @param string $segmentCode
      * @param array $query
      *
+     * @return array|ResponseInterface
+     *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     *
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/segmentation-crud.yaml#/default/delete_merchants__merchantCode__segments__segmentCode_
      */
     public function deleteSegment($segmentCode, array $query = [])
     {
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'delete',
             'path' => 'segments/' . $segmentCode,
@@ -184,18 +186,19 @@ class Segmentation
      * @param array $cloneSegment
      * @param array $query
      *
+     * @return array|ResponseInterface
+     *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     *
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/segmentation-crud.yaml#/default/post_merchants__merchantCode__segments__segmentCode__clone
      */
     public function cloneSegment($segmentCode, array $cloneSegment, array $query = [])
     {
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'post',
             'path' => 'segments/' . $segmentCode . '/clone',
@@ -236,7 +239,7 @@ class Segmentation
      * @param array $data
      * @param array $query
      *
-     * @return ResponseInterface
+     * @return array|ResponseInterface
      *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
@@ -292,7 +295,7 @@ class Segmentation
      * @param array $members
      * @param array $query
      *
-     * @return ResponseInterface
+     * @return array|ResponseInterface
      *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
@@ -320,18 +323,19 @@ class Segmentation
      * @param array $members
      * @param array $query
      *
+     * @return array|ResponseInterface
+     *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     *
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/segmentation-crud.yaml#/Members/delete_merchants__merchantCode__segments__segmentCode__members
      */
     public function deleteSegmentMembers($segmentCode, array $members, array $query = [])
     {
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'delete',
             'path' => 'segments/' . $segmentCode . '/members',

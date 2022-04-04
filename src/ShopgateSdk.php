@@ -38,8 +38,6 @@ use Shopgate\ConnectSdk\Service\Webhook;
 
 class ShopgateSdk
 {
-    const REQUEST_TYPE_DIRECT       = 'direct';
-    const REQUEST_TYPE_EVENT        = 'event';
     const REGISTERED_SERVICES       = ['catalog', 'customer', 'bulkImport'];
     const REQUIRED_CONFIG_FIELDS    = ['clientId', 'clientSecret', 'merchantCode', 'username', 'password'];
 

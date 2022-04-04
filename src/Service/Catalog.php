@@ -173,18 +173,19 @@ class Catalog
      * @param array $catalog
      * @param array $query
      *
+     * @return array|ResponseInterface
+     *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     *
      * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MDQ-update-catalog
      */
     public function updateCatalog($code, array $catalog, array $query = [])
     {
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'post',
             'path' => 'catalogs/' . $code,
@@ -197,18 +198,19 @@ class Catalog
      * @param string $catalogCode
      * @param array $query
      *
+     * @return array|ResponseInterface
+     *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     *
      * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MDU-delete-catalog
      */
     public function deleteCatalog($catalogCode, array $query = [])
     {
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'delete',
             'path' => 'catalogs/' . $catalogCode,
@@ -310,7 +312,7 @@ class Catalog
      * @param array $query
      * @param bool $async
      *
-     * @return ResponseInterface|void
+     * @return array|ResponseInterface
      *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
@@ -329,7 +331,8 @@ class Catalog
                 [['code' => $attributeCode] + $attribute]
             );
         }
-        $this->client->request([
+
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'post',
             'path' => 'attributes/' . $attributeCode,
@@ -401,18 +404,19 @@ class Catalog
      * @param array $attributeValue
      * @param array $query
      *
+     * @return array|ResponseInterface
+     *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     *
      * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MTI-update-attribute-value
      */
     public function updateAttributeValue($attributeCode, $attributeValueCode, array $attributeValue, array $query = [])
     {
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'post',
             'path' => 'attributes/' . $attributeCode . '/values/' . $attributeValueCode,
@@ -426,18 +430,19 @@ class Catalog
      * @param string $attributeValueCode
      * @param array $query
      *
+     * @return array|ResponseInterface
+     *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     *
      * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MTM-delete-attribute-value
      */
     public function deleteAttributeValue($attributeCode, $attributeValueCode, array $query = [])
     {
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'delete',
             'path' => 'attributes/' . $attributeCode . '/values/' . $attributeValueCode,
@@ -552,7 +557,7 @@ class Catalog
      * @param array $query
      * @param bool $async
      *
-     * @return ResponseInterface|void
+     * @return array|ResponseInterface
      *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
@@ -568,7 +573,7 @@ class Catalog
             return $this->client->publishEntityDeleted('category', $code);
         }
 
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'delete',
             'path' => 'categories/' . $code,
@@ -821,20 +826,21 @@ class Catalog
      * @param array $inventories
      * @param array $query
      *
+     * @return array|ResponseInterface
+     *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     *
      * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MzQ-increment-decrement-inventory
      */
     public function updateInventories($inventories, array $query = [])
     {
         // the event receiver does not yet support entities of type inventory
 
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'patch',
             'path' => 'inventories',
@@ -847,20 +853,21 @@ class Catalog
      * @param array $inventories
      * @param array $query
      *
+     * @return array|ResponseInterface
+     *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     *
      * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MzU-delete-inventories
      */
     public function deleteInventories(array $inventories, array $query = [])
     {
         // the event receiver does not yet support entities of type inventory
 
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'delete',
             'path' => 'inventories',
@@ -927,18 +934,18 @@ class Catalog
      * @param array $codes
      * @param array $query
      *
+     * @return array|ResponseInterface
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     *
      * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5NDA-delete-inventory-reservations
      */
     public function deleteReservations(array $codes, array $query = [])
     {
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'delete',
             'path' => 'reservations',
@@ -952,18 +959,19 @@ class Catalog
      * @param array $reservation
      * @param array $query
      *
+     * @return array|ResponseInterface
+     *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     *
      * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5NDI-update-reservation
      */
     public function updateReservation($reservationCode, $reservation, array $query = [])
     {
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'post',
             'path' => 'reservations/' . $reservationCode,

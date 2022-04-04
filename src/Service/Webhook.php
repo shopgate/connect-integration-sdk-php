@@ -84,18 +84,19 @@ class Webhook
      * @param array $webhook
      * @param array $query
      *
+     * @return array|ResponseInterface
+     *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     *
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/webhook-crud.yaml#/Webhooks/updateWebhook
      */
     public function updateWebhook($id, array $webhook, array $query = [])
     {
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'post',
             'path' => 'webhooks/' . $id,
@@ -135,18 +136,19 @@ class Webhook
      * @param string $id
      * @param array $query
      *
+     * @return array|ResponseInterface
+     *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     *
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/webhook-crud.yaml#/Webhooks/deleteWebhook
      */
     public function deleteWebhook($id, array $query = [])
     {
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'delete',
             'path' => 'webhooks/' . $id,
@@ -158,18 +160,19 @@ class Webhook
      * @param string $code
      * @param array $query
      *
+     * @return array|ResponseInterface
+     *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     *
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/webhook-crud.yaml#/Webhooks/triggerWebhook
      */
     public function triggerWebhook($code, array $query = [])
     {
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'post',
             'path' => 'webhooks/' . $code . '/test',

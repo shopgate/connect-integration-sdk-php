@@ -21,7 +21,6 @@
 
 namespace Shopgate\ConnectSdk\Service;
 
-use Google\Api\ResourceDescriptor;
 use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
@@ -125,21 +124,22 @@ class Customer
 
     /**
      * @param string $attributeCode
-     * @param array  $attribute
-     * @param array  $query
+     * @param array $attribute
+     * @param array $query
+     *
+     * @return array|ResponseInterface
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
-     * @throws UnknownException
-     * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
-     *
+     * @throws UnknownException
      * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2ODg-update-attribute
      */
     public function updateAttribute($attributeCode, array $attribute, array $query = [])
     {
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'post',
             'path' => 'attributes/' . $attributeCode,
@@ -150,20 +150,21 @@ class Customer
 
     /**
      * @param string $attributeCode
-     * @param array  $query
+     * @param array $query
+     *
+     * @return array|ResponseInterface
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
-     * @throws UnknownException
-     * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
-     *
+     * @throws UnknownException
      * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2ODk-delete-attribute
      */
     public function deleteAttribute($attributeCode, array $query = [])
     {
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'delete',
             'path' => 'attributes/' . $attributeCode,
@@ -201,21 +202,22 @@ class Customer
     /**
      * @param string $attributeCode
      * @param string $attributeValueCode
-     * @param array  $attributeValue
-     * @param array                 $query
+     * @param array $attributeValue
+     * @param array $query
+     *
+     * @return array|ResponseInterface
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
-     * @throws UnknownException
-     * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
-     *
+     * @throws UnknownException
      * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2OTE-update-attribute-value
      */
     public function updateAttributeValue($attributeCode, $attributeValueCode, array $attributeValue, array $query = [])
     {
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'post',
             'path' => 'attributes/' . $attributeCode . '/values/' . $attributeValueCode,
@@ -227,20 +229,21 @@ class Customer
     /**
      * @param string $attributeCode
      * @param string $attributeValueCode
-     * @param array  $query
+     * @param array $query
+     *
+     * @return array|ResponseInterface
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
-     * @throws UnknownException
-     * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
-     *
+     * @throws UnknownException
      * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2OTI-delete-attribute-value
      */
     public function deleteAttributeValue($attributeCode, $attributeValueCode, array $query = [])
     {
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'delete',
             'path' => 'attributes/' . $attributeCode . '/values/' . $attributeValueCode,
@@ -309,7 +312,7 @@ class Customer
      * @param string $customerId
      * @param array  $query
      *
-     * @return array
+     * @return array|null
      *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
@@ -430,21 +433,22 @@ class Customer
     /**
      * @param string $customerId
      * @param string $contactId
-     * @param array  $contact
-     * @param array          $query
+     * @param array $contact
+     * @param array $query
+     *
+     * @return array|ResponseInterface
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
-     * @throws UnknownException
-     * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
-     *
+     * @throws UnknownException
      * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2OTk-update-customer-contact
      */
     public function updateContact($customerId, $contactId, array $contact, array $query = [])
     {
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'post',
             'path' => 'customers/' . $customerId . '/contacts/' . $contactId,
@@ -456,20 +460,21 @@ class Customer
     /**
      * @param string $customerId
      * @param string $contactId
-     * @param array  $query
+     * @param array $query
+     *
+     * @return array|ResponseInterface
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
-     * @throws UnknownException
-     * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
-     *
+     * @throws UnknownException
      * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg3MDA-delete-customer-contact
      */
     public function deleteContact($customerId, $contactId, array $query = [])
     {
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'delete',
             'path' => 'customers/' . $customerId . '/contacts/' . $contactId,
@@ -592,7 +597,7 @@ class Customer
      * @param string $wishlistCode
      * @param array  $query
      *
-     * @return array
+     * @return array|null
      *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
@@ -617,21 +622,22 @@ class Customer
     /**
      * @param string $customerId
      * @param string $wishlistCode
-     * @param array  $wishlist
-     * @param array  $query
+     * @param array $wishlist
+     * @param array $query
+     *
+     * @return array|ResponseInterface
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
-     * @throws UnknownException
-     * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
-     *
+     * @throws UnknownException
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/customer-crud.yaml#/Wishlist/post_merchants__merchantCode__customers__customerId__wishlists__wishlistCode_
      */
     public function updateWishlist($customerId, $wishlistCode, $wishlist, array $query = [])
     {
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'post',
             'path' => 'customers/' . $customerId . '/wishlists/' . $wishlistCode,
@@ -643,20 +649,21 @@ class Customer
     /**
      * @param string $customerId
      * @param string $wishlistCode
-     * @param array  $query
+     * @param array $query
+     *
+     * @return array|ResponseInterface
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
-     * @throws UnknownException
-     * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
-     *
+     * @throws UnknownException
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/customer-crud.yaml#/Wishlist/delete_merchants__merchantCode__customers__customerId__wishlists__wishlistCode_
      */
     public function deleteWishlist($customerId, $wishlistCode, array $query = [])
     {
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'delete',
             'path' => 'customers/' . $customerId . '/wishlists/' . $wishlistCode,
@@ -696,20 +703,21 @@ class Customer
      * @param string $customerId
      * @param string $wishlistCode
      * @param string $productCode
-     * @param array  $query
+     * @param array $query
+     *
+     * @return array|ResponseInterface
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
-     * @throws UnknownException
-     * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
-     *
+     * @throws UnknownException
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/customer-crud.yaml#/Wishlist/delete_merchants__merchantCode__customers__customerId__wishlists__wishlistCode__items__productCode_
      */
     public function deleteWishlistItem($customerId, $wishlistCode, $productCode, array $query = [])
     {
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'delete',
             'path' => 'customers/' . $customerId . '/wishlists/' . $wishlistCode . '/items/' . $productCode,

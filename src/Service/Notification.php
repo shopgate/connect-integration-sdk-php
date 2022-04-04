@@ -55,18 +55,19 @@ class Notification
      * @param array $settings
      * @param array $query
      *
+     * @return array|ResponseInterface
+     *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     *
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/notification2-crud.yaml#/default/post_merchants__merchantCode__settings
      */
     public function updateSettings(array $settings, array $query = [])
     {
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'post',
             'path' => 'settings',
@@ -78,7 +79,7 @@ class Notification
     /**
      * @param array $query
      *
-     * @return array
+     * @return array|null
      *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
@@ -213,18 +214,19 @@ class Notification
      * @param array $template
      * @param array $query
      *
+     * @return array|ResponseInterface
+     *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     *
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/notification2-crud.yaml#/Templates/post_merchants__merchantCode__templates__templateCode_
      */
     public function updateTemplate($templateCode, array $template, array $query = [])
     {
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'post',
             'path' => 'templates/' . $templateCode,
@@ -237,18 +239,19 @@ class Notification
      * @param string $templateCode
      * @param array $query
      *
+     * @return array|ResponseInterface
+     *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     *
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/notification2-crud.yaml#/Templates/delete_merchants__merchantCode__templates__templateCode_
      */
     public function deleteTemplate($templateCode, array $query = [])
     {
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'delete',
             'path' => 'templates/' . $templateCode,
@@ -314,7 +317,7 @@ class Notification
      * @param string $code
      * @param array $query
      *
-     * @return array
+     * @return array|null
      *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
@@ -341,18 +344,19 @@ class Notification
      * @param array $campaign
      * @param array $query
      *
+     * @return array|ResponseInterface
+     *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     *
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/notification2-crud.yaml#/Campaigns/post_merchants__merchantCode__campaigns__campaignCode_
      */
     public function updateCampaign($campaignCode, array $campaign, array $query = [])
     {
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'post',
             'path' => 'campaigns/' . $campaignCode,
@@ -365,18 +369,19 @@ class Notification
      * @param string $campaignCode
      * @param array $query
      *
+     * @return array|ResponseInterface
+     *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     *
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/notification2-crud.yaml#/Campaigns/delete_merchants__merchantCode__campaigns__campaignCode_
      */
     public function deleteCampaign($campaignCode, array $query = [])
     {
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'delete',
             'path' => 'campaigns/' . $campaignCode,

@@ -102,7 +102,7 @@ class Order
      * @param string $orderNumber
      * @param array{fields: string, getOriginalImageUrls: bool} $query
      *
-     * @return array
+     * @return array|null
      *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException
@@ -157,7 +157,7 @@ class Order
      * @param string $orderNumber
      * @param array{getOriginalImageUrls: bool} $query
      *
-     * @return array
+     * @return array|null
      *
      * @throws AuthenticationInvalidException
      * @throws NotFoundException

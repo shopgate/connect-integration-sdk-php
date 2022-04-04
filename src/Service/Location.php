@@ -84,18 +84,19 @@ class Location
      * @param array $location
      * @param array $query
      *
+     * @return array|ResponseInterface
+     *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     *
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/location-crud.yaml#/default/post_merchants__merchantCode__locations__locationCode_
      */
     public function updateLocation($code, array $location, array $query = [])
     {
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'post',
             'path' => 'locations/' . $code,
@@ -108,18 +109,19 @@ class Location
      * @param string $code
      * @param array $query
      *
+     * @return array|ResponseInterface
+     *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     *
      * @see https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/location-crud.yaml#/default/delete_merchants__merchantCode__locations__locationCode_
      */
     public function deleteLocation($code, array $query = [])
     {
-        $this->client->request([
+        return $this->client->request([
             'service' => self::NAME,
             'method' => 'delete',
             'path' => 'locations/' . $code,
@@ -158,7 +160,7 @@ class Location
      * @param string $code location code
      * @param array $query
      *
-     * @return array
+     * @return array|null
      *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException

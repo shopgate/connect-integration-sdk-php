@@ -16,11 +16,6 @@
   },
   "scripts": {
     "unit-tests": "phpunit --testsuite UnitTests",
-    "integration-tests": "cd tools && docker-compose exec -T php${PHP:-56} php -v && docker-compose exec -T php${PHP:-56} composer integration-tests-local",
-    "integration-tests-local": [
-      "Composer\\Config::disableProcessTimeout",
-      "phpunit --testsuite IntegrationTests"
-    ],
     "cover-html": "phpunit --testsuite UnitTests --coverage-html build/coverage-html",
     "cover-text": "phpunit --testsuite UnitTests --coverage-text",
     "cover-clover": "phpunit --testsuite UnitTests --coverage-clover build/clover.xml",

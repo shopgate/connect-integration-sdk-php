@@ -157,7 +157,7 @@ class Notification
     }
 
     /**
-     * @param array $templates
+     * @param array[] $templates
      * @param array $query
      *
      * @return array|ResponseInterface
@@ -287,7 +287,7 @@ class Notification
     }
 
     /**
-     * @param array $campaigns
+     * @param array[] $campaigns
      * @param array $query
      *
      * @return array|ResponseInterface

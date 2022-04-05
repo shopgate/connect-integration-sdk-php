@@ -22,6 +22,7 @@
 
 namespace Shopgate\ConnectSdk\Service;
 
+use Psr\Http\Message\ResponseInterface;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\InvalidDataTypeException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
@@ -45,8 +46,12 @@ class Order
         $this->client = $client;
     }
 
+    #####################################################################################################
+    # Sales Orders
+    #####################################################################################################
+
     /**
-     * @param array $orders
+     * @param array[] $orders
      * @param array $query
      *
      * @return array
@@ -173,7 +178,6 @@ class Order
         $response = $this->client->request(
             [
                 'service' => self::NAME,
-                'method' => 'get',
                 'path' => 'fulfillmentOrders/' . $orderNumber,
                 'query' => $query
             ]

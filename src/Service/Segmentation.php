@@ -79,7 +79,7 @@ class Segmentation
     }
 
     /**
-     * @param array $segments
+     * @param array[] $segments
      * @param array $query
      *
      * @return ResponseInterface
@@ -236,7 +236,7 @@ class Segmentation
 
     /**
      * @param string $segmentCode
-     * @param array $data
+     * @param array[] $data
      * @param array $query
      *
      * @return array|ResponseInterface
@@ -320,7 +320,7 @@ class Segmentation
 
     /**
      * @param string $segmentCode
-     * @param array $members
+     * @param array[] $members
      * @param array $query
      *
      * @return array|ResponseInterface

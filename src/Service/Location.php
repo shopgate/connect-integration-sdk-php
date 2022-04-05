@@ -44,16 +44,16 @@ class Location
 
     /**
      * @param ClientInterface $client
-     * @param Json            $jsonHelper
+     * @param Json $jsonHelper
      */
     public function __construct(ClientInterface $client, Json $jsonHelper)
     {
-        $this->client     = $client;
+        $this->client = $client;
         $this->jsonHelper = $jsonHelper;
     }
 
     /**
-     * @param array $locations
+     * @param array[] $locations
      * @param array $query
      *
      * @return ResponseInterface

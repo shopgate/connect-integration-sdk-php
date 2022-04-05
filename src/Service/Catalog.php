@@ -45,7 +45,7 @@ class Catalog
 
     /**
      * @param ClientInterface $client
-     * @param Json            $jsonHelper
+     * @param Json $jsonHelper
      */
     public function __construct(ClientInterface $client, Json $jsonHelper)
     {
@@ -58,7 +58,7 @@ class Catalog
     #####################################################################################################
 
     /**
-     * @param array $parentCatalogs
+     * @param array[] $parentCatalogs
      * @param array $query
      *
      * @return array
@@ -116,7 +116,7 @@ class Catalog
     }
 
     /**
-     * @param array $catalogs
+     * @param array[] $catalogs
      * @param array $query
      *
      * @return array
@@ -181,6 +181,7 @@ class Catalog
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
      * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MDQ-update-catalog
      */
     public function updateCatalog($code, array $catalog, array $query = [])
@@ -206,6 +207,7 @@ class Catalog
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
      * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MDU-delete-catalog
      */
     public function deleteCatalog($catalogCode, array $query = [])
@@ -250,7 +252,7 @@ class Catalog
     }
 
     /**
-     * @param array[]|\stdClass[] $attributes
+     * @param array[] $attributes
      * @param array $query
      * @param bool $async
      *
@@ -262,6 +264,7 @@ class Catalog
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
      * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MDc-create-attributes
      */
     public function addAttributes(array $attributes, array $query = [], $async = true)
@@ -320,6 +323,7 @@ class Catalog
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
      * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MDk-update-attribute
      */
     public function updateAttribute($attributeCode, array $attribute, array $query = [], $async = true)
@@ -354,6 +358,7 @@ class Catalog
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
      * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MTA-delete-attribute
      */
     public function deleteAttribute($attributeCode, array $query = [], $async = true)
@@ -372,7 +377,7 @@ class Catalog
 
     /**
      * @param string $attributeCode
-     * @param array $attributeValues
+     * @param array[] $attributeValues
      * @param array $query
      *
      * @return array
@@ -412,6 +417,7 @@ class Catalog
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
      * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MTI-update-attribute-value
      */
     public function updateAttributeValue($attributeCode, $attributeValueCode, array $attributeValue, array $query = [])
@@ -438,6 +444,7 @@ class Catalog
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
      * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MTM-delete-attribute-value
      */
     public function deleteAttributeValue($attributeCode, $attributeValueCode, array $query = [])
@@ -482,10 +489,9 @@ class Catalog
     }
 
     /**
-     * @param array $categories
+     * @param array[] $categories
      * @param array $query
      * @param bool $async
-     *
      *
      * @return array|ResponseInterface
      *
@@ -495,6 +501,7 @@ class Catalog
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
      * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MTU-create-categories
      */
     public function addCategories(array $categories, array $query = [], $async = true)
@@ -531,6 +538,7 @@ class Catalog
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
      * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MTY-update-category
      */
     public function updateCategory($code, array $category, array $query = [], $async = true)
@@ -565,6 +573,7 @@ class Catalog
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
      * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MTc-delete-category
      */
     public function deleteCategory($code, array $query = [], $async = true)
@@ -613,7 +622,7 @@ class Catalog
     }
 
     /**
-     * @param array $products
+     * @param array[] $products
      * @param array $query
      * @param bool $async
      *
@@ -688,6 +697,7 @@ class Catalog
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
      * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5Mjg-update-product
      */
     public function updateProduct($code, array $product, array $query = [], $async = true)
@@ -722,6 +732,7 @@ class Catalog
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
      * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5Mjk-delete-product
      */
     public function deleteProduct($code, array $query = [], $async = true)
@@ -739,7 +750,7 @@ class Catalog
     }
 
     /**
-     * @param string $code - product code
+     * @param string $code
      * @param array $query
      *
      * @return array
@@ -823,7 +834,7 @@ class Catalog
     }
 
     /**
-     * @param array $inventories
+     * @param array[] $inventories
      * @param array $query
      *
      * @return array|ResponseInterface
@@ -834,9 +845,10 @@ class Catalog
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
      * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MzQ-increment-decrement-inventory
      */
-    public function updateInventories($inventories, array $query = [])
+    public function updateInventories(array $inventories, array $query = [])
     {
         // the event receiver does not yet support entities of type inventory
 
@@ -861,6 +873,7 @@ class Catalog
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
      * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MzU-delete-inventories
      */
     public function deleteInventories(array $inventories, array $query = [])
@@ -904,7 +917,7 @@ class Catalog
     }
 
     /**
-     * @param array $reservations
+     * @param array[] $reservations
      * @param array $query
      *
      * @return array
@@ -935,12 +948,14 @@ class Catalog
      * @param array $query
      *
      * @return array|ResponseInterface
+     *
      * @throws AuthenticationInvalidException
      * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
      * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5NDA-delete-inventory-reservations
      */
     public function deleteReservations(array $codes, array $query = [])
@@ -967,6 +982,7 @@ class Catalog
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
+     *
      * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5NDI-update-reservation
      */
     public function updateReservation($reservationCode, $reservation, array $query = [])
@@ -997,7 +1013,7 @@ class Catalog
      */
     public function getReservation($reservationCode, array $query = [])
     {
-        $response =  $this->client->request([
+        $response = $this->client->request([
             'service' => self::NAME,
             'path' => 'reservations/' . $reservationCode,
             'query' => $query

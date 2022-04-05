@@ -73,7 +73,7 @@ class Customer
     }
 
     /**
-     * @param array $attributes
+     * @param array[] $attributes
      * @param array $query
      *
      * @return array
@@ -100,7 +100,7 @@ class Customer
 
     /**
      * @param string $attributeCode
-     * @param array  $query
+     * @param array $query
      *
      * @return array
      *
@@ -174,8 +174,8 @@ class Customer
 
     /**
      * @param string $attributeCode
-     * @param array  $attributeValues
-     * @param array  $query
+     * @param array[] $attributeValues
+     * @param array $query
      *
      * @return array
      *
@@ -279,7 +279,7 @@ class Customer
     }
 
     /**
-     * @param array $customers
+     * @param array[] $customers
      * @param array $query
      * @param bool $async
      *
@@ -310,7 +310,7 @@ class Customer
 
     /**
      * @param string $customerId
-     * @param array  $query
+     * @param array $query
      *
      * @return array|null
      *
@@ -405,8 +405,8 @@ class Customer
 
     /**
      * @param string $customerId
-     * @param array  $contacts
-     * @param array  $query
+     * @param array $contacts
+     * @param array $query
      *
      * @return array
      *
@@ -433,7 +433,7 @@ class Customer
     /**
      * @param string $customerId
      * @param string $contactId
-     * @param array $contact
+     * @param array[] $contact
      * @param array $query
      *
      * @return array|ResponseInterface
@@ -488,7 +488,7 @@ class Customer
 
     /**
      * @param string $customerId
-     * @param array  $query
+     * @param array $query
      *
      * @return array
      *
@@ -512,8 +512,8 @@ class Customer
 
     /**
      * @param string $customerId
-     * @param array  $notes
-     * @param array  $query
+     * @param array[] $notes
+     * @param array $query
      *
      * @return array
      *
@@ -543,7 +543,7 @@ class Customer
 
     /**
      * @param string $customerId
-     * @param array  $query
+     * @param array $query
      *
      * @return array
      *
@@ -567,8 +567,8 @@ class Customer
 
     /**
      * @param string $customerId
-     * @param array  $wishlists
-     * @param array  $query
+     * @param array[] $wishlists
+     * @param array $query
      *
      * @return array
      *
@@ -595,7 +595,7 @@ class Customer
     /**
      * @param string $customerId
      * @param string $wishlistCode
-     * @param array  $query
+     * @param array $query
      *
      * @return array|null
      *
@@ -674,8 +674,8 @@ class Customer
     /**
      * @param string $customerId
      * @param string $wishlistCode
-     * @param array  $items
-     * @param array  $query
+     * @param array[] $items
+     * @param array $query
      *
      * @return array
      *

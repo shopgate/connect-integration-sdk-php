@@ -134,6 +134,33 @@ class Order
 
     /**
      * @param string $orderNumber
+     * @param array $order
+     * @param array $query
+     *
+     * @return array|ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMDU-update-sales-order
+     */
+    public function updateSalesOrder($orderNumber, array $order, array $query = [])
+    {
+        return $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'orders/' . $orderNumber,
+            'body' => $order,
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param string $orderNumber
      * @param array $query
      *
      * @return array
@@ -156,6 +183,169 @@ class Order
                 'query' => $query
             ]
         );
+    }
+
+    /**
+     * @param string $orderNumber
+     * @param array $checkoutData
+     * @param array $query
+     *
+     * @return array|ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMDk-create-sales-order-checkout
+     */
+    public function checkoutOrder($orderNumber, array $checkoutData, array $query = [])
+    {
+        return $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'orders/' . $orderNumber . '/checkout',
+            'body' => $checkoutData,
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param string $orderNumber
+     * @param array[] $fulfillmentGroups
+     * @param array $query
+     *
+     * @return array|ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMTA-create-sales-order-fulfillment-groups
+     */
+    public function addSalesOrderFulfillmentGroups($orderNumber, array $fulfillmentGroups, array $query = [])
+    {
+        return $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'orders/' . $orderNumber . '/fulfillmentGroups',
+            'body' => ['fulfillmentGroups' => $fulfillmentGroups],
+            'query' => $query
+        ]);
+    }
+
+    #####################################################################################################
+    # Fulfillment Orders
+    #####################################################################################################
+
+    /**
+     * @param array $query
+     *
+     * @return array
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     * @throws InvalidDataTypeException
+     * @throws TokenPersistenceException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMTE-get-fulfillment-orders
+     */
+    public function getFulfillmentOrders(array $query = [])
+    {
+        return $this->client->request(
+            [
+                'service' => self::NAME,
+                'path' => 'fulfillmentOrders',
+                'query' => $query
+            ]
+        );
+    }
+
+    /**
+     * @param array $fulfillmentOrders
+     * @param array[] $query
+     *
+     * @return array|ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMTI-create-fulfillment-orders
+     */
+    public function addFulfillmentOrders(array $fulfillmentOrders, array $query = [])
+    {
+        return $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'fulfillmentOrders',
+            'body' => ['fulfillmentOrders' => $fulfillmentOrders],
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param string $orderNumber
+     * @param array $fulfillmentOrder
+     * @param array $query
+     *
+     * @return array|ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMTg-update-fulfillments-of-fulfillment-order
+     */
+    public function updateFulfillmentOrder($orderNumber, array $fulfillmentOrder, array $query = [])
+    {
+        return $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'fulfillmentOrders/' . $orderNumber,
+            'body' => $fulfillmentOrder,
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param string $orderNumber
+     * @param array $simpleFulfillmentOrders
+     * @param array $query
+     *
+     * @return array|ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMTM-create-simple-fulfillment-orders-for-order
+     */
+    public function createSimpleFulfillmentOrdersFromOrder($orderNumber, array $simpleFulfillmentOrders, array $query = [])
+    {
+        return $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'orders/' . $orderNumber,
+            'body' => ['simpleFulfillmentOrders' => $simpleFulfillmentOrders],
+            'query' => $query
+        ]);
     }
 
     /**
@@ -188,6 +378,61 @@ class Order
 
     /**
      * @param string $orderNumber
+     * @param array[] $fulfillments
+     * @param array $query
+     *
+     * @return array|ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMTc-create-fulfillments-for-fulfillment-order
+     */
+    public function addFulfillmentOrderFulfillments($orderNumber, array $fulfillments, array $query = [])
+    {
+        return $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'fulfillmentOrders/' . $orderNumber . '/fulfillments',
+            'body' => ['fulfillments' => $fulfillments],
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param string $orderNumber
+     * @param string $fulfillmentId
+     * @param array $fulfillment
+     * @param array $query
+     *
+     * @return array|ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMTg-update-fulfillments-of-fulfillment-order
+     */
+    public function updateFulfillmentOrderFulfillment($orderNumber, $fulfillmentId, array $fulfillment, array $query = [])
+    {
+        return $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'fulfillmentOrders/' . $orderNumber . '/fulfillments/' . $fulfillmentId,
+            'body' => $fulfillment,
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param string $orderNumber
      * @param array $query
      *
      * @return array
@@ -213,29 +458,223 @@ class Order
     }
 
     /**
+     * @param string $orderNumber
+     * @param string $lineItemId
+     * @param string $status
      * @param array $query
      *
-     * @return array
+     * @return array|ResponseInterface
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
-     * @throws UnknownException
-     * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
+     * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMTE-get-fulfillment-orders
+     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMjA-update-line-item-status-of-fulfillment-order
      */
-    public function getFulfillmentOrders(array $query = [])
+    public function updateFulfillmentOrderLineItemStatus($orderNumber, $lineItemId, $status, array $query = [])
     {
-        return $this->client->request(
-            [
-                'service' => self::NAME,
-                'path' => 'fulfillmentOrders',
-                'query' => $query
-            ]
-        );
+        return $this->client->request([
+            'service' => self::NAME,
+            'method' => 'put',
+            'path' => 'fulfillmentOrders/' . $orderNumber . '/lineItems/' . $lineItemId . '/status',
+            'body' => ['status' => $status],
+            'query' => $query
+        ]);
     }
+
+    #####################################################################################################
+    # Picking Batches
+    #####################################################################################################
+
+    /**
+     * @param string $locationCode
+     * @param array[] $pickingBatches
+     * @param array $query
+     *
+     * @return array|ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMjM-create-picking-batches
+     */
+    public function addPickingBatches($locationCode, array $pickingBatches, array $query = [])
+    {
+        return $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'pickingBatches',
+            'body' => ['locationCode' => $locationCode, 'pickingBatches' => $pickingBatches],
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param array $query
+     *
+     * @return array|ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMjQ-get-picking-batches
+     */
+    public function getPickingBatches(array $query = [])
+    {
+        return $this->client->request([
+            'service' => self::NAME,
+            'path' => 'pickingBatches',
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param string $locationCode
+     * @param int $fulfillmentOrderCount
+     *
+     * @param array $query
+     *
+     * @return array|ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMjU-generate-picking-batch
+     */
+    public function generatePickingBatches($locationCode, $fulfillmentOrderCount, array $query = [])
+    {
+        return $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'pickingBatches/generate',
+            'body' => ['locationCode' => $locationCode, 'fulfillmentOrderCount' => $fulfillmentOrderCount],
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param string $pickingBatchId
+     * @param array $query
+     *
+     * @return array|ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMjY-get-picking-batch
+     */
+    public function getPickingBatch($pickingBatchId, array $query = [])
+    {
+        return $this->client->request([
+            'service' => self::NAME,
+            'path' => 'pickingBatches/' . $pickingBatchId,
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param string $pickingBatchId
+     * @param array $pickingBatch
+     * @param array $query
+     *
+     * @return array|ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMjc-update-picking-batch
+     */
+    public function updatePickingBatch($pickingBatchId, array $pickingBatch, array $query = [])
+    {
+        return $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'pickingBatches/' . $pickingBatchId,
+            'body' => $pickingBatch,
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param string $pickingBatchId
+     * @param array[] $lineItems
+     * @param array $query
+     *
+     * @return array|ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMjg-update-picking-batch-line-items
+     */
+    public function updatePickingBatchLineItems($pickingBatchId, array $lineItems, array $query = [])
+    {
+        return $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'pickingBatches/' .$pickingBatchId . '/lineItems',
+            'body' => $lineItems,
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param string $pickingBatchId
+     * @param string[] $fulfillmentOrderNumbers
+     * @param array $query
+     *
+     * @return array|ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMjk-delete-fulfillment-order-from-picking-batch
+     */
+    public function deleteFulfillmentOrdersFromPickingBatch($pickingBatchId, array $fulfillmentOrderNumbers, array $query = [])
+    {
+        return $this->client->request([
+            'service' => self::NAME,
+            'method' => 'delete',
+            'path' => 'pickingBatches/' . $pickingBatchId . '/fulfillmentOrders',
+            'body' => ['fulfillmentOrderNumbers' => $fulfillmentOrderNumbers],
+            'query' => $query
+        ]);
+    }
+
+    #####################################################################################################
+    # Analytics
+    #####################################################################################################
 
     /**
      * @param array $query
@@ -286,6 +725,29 @@ class Order
                 'query' => $query
             ]
         );
+    }
+
+    /**
+     * @param array $query
+     *
+     * @return array|ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMDA-get-sales-orders-reportings
+     */
+    public function getSalesOrderReporting(array $query)
+    {
+        return $this->client->request([
+            'service' => self::NAME,
+            'path' => 'analytics/salesOrderReporting',
+            'query' => $query
+        ]);
     }
 
     /**

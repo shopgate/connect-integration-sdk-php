@@ -773,6 +773,33 @@ class Catalog
         ]);
     }
 
+    /**
+     * @param string $code
+     * @param array $selectedOptions
+     * @param array $query
+     *
+     * @return array
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MzE-validate-variant
+     */
+    public function validateOptionSelection($code, array $selectedOptions, array $query = [])
+    {
+        return $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'products/' . $code . '/validate',
+            'body' => ['selectedOptions' => $selectedOptions],
+            'query' => $query
+        ]);
+    }
+
     #####################################################################################################
     # Inventory
     #####################################################################################################
@@ -892,6 +919,29 @@ class Catalog
     /**
      * @param array $query
      *
+     * @return array|ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6NDE5ODU5NDA-get-location-inventories
+     */
+    public function getLocalInventories(array $query = [])
+    {
+        return $this->client->request([
+            'service' => self::NAME,
+            'path' => 'localInventories',
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param array $query
+     *
      * @return array
      *
      * @throws AuthenticationInvalidException
@@ -970,6 +1020,32 @@ class Catalog
     }
 
     /**
+     * @param array $fulfillmentOrderNumbers
+     * @param array $query
+     *
+     * @return array|ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5NDE-settle-reservations
+     */
+    public function settleReservations(array $fulfillmentOrderNumbers, array $query)
+    {
+        return $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'reservations/settle',
+            'body' => ['fulfillmentOrderNumbers' => $fulfillmentOrderNumbers],
+            'query' => $query
+        ]);
+    }
+
+    /**
      * @param string $reservationCode
      * @param array $reservation
      * @param array $query
@@ -1020,6 +1096,31 @@ class Catalog
         ]);
 
         return isset($response['reservation']) ? $response['reservation'] : null;
+    }
+
+    /**
+     * @param array[] $productAndLocationCodes
+     * @param array $query
+     *
+     * @return array|ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5NDQ-get-product-inventories
+     */
+    public function getProductInventories(array $productAndLocationCodes, array $query = [])
+    {
+        return $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'productInventories',
+            'body' => $productAndLocationCodes
+        ]);
     }
 
     /**

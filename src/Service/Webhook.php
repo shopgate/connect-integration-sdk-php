@@ -173,7 +173,7 @@ class Webhook
      *
      * @see https://docs.retail.red/docs/retail-red/b3A6NDQwMzgzMzc-test-webhook
      */
-    public function triggerWebhook($code, array $query = [])
+    public function testWebhook($code, array $query = [])
     {
         return $this->client->request([
             'service' => self::NAME,

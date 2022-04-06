@@ -875,7 +875,7 @@ class Catalog
      *
      * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MzQ-increment-decrement-inventory
      */
-    public function updateInventories(array $inventories, array $query = [])
+    public function changeInventories(array $inventories, array $query = [])
     {
         // the event receiver does not yet support entities of type inventory
 
@@ -886,6 +886,26 @@ class Catalog
             'body' => ['inventories' => $inventories],
             'query' => $query
         ]);
+    }
+
+    /**
+     * @param array $inventories
+     * @param array $query
+     *
+     * @return array|ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     *
+     * @deprecated use changeInventories()
+     */
+    public function updateInventories(array $inventories, array $query = [])
+    {
+        return $this->changeInventories($inventories, $query);
     }
 
     /**

@@ -308,7 +308,7 @@ class Order
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMTg-update-fulfillments-of-fulfillment-order
+     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMTU-update-fulfillment-order
      */
     public function updateFulfillmentOrder($orderNumber, array $fulfillmentOrder, array $query = [])
     {

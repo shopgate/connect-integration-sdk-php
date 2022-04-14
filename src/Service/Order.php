@@ -342,7 +342,7 @@ class Order
         return $this->client->request([
             'service' => self::NAME,
             'method' => 'post',
-            'path' => 'orders/' . $orderNumber,
+            'path' => 'fulfillmentOrders/' . $orderNumber,
             'body' => ['simpleFulfillmentOrders' => $simpleFulfillmentOrders],
             'query' => $query
         ]);

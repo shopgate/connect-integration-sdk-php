@@ -1054,7 +1054,7 @@ class Catalog
      *
      * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5NDE-settle-reservations
      */
-    public function settleReservations(array $fulfillmentOrderNumbers, array $query)
+    public function settleReservations(array $fulfillmentOrderNumbers, array $query = [])
     {
         return $this->client->request([
             'service' => self::NAME,

@@ -741,7 +741,7 @@ class Order
      *
      * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMDA-get-sales-orders-reportings
      */
-    public function getSalesOrderReporting(array $query)
+    public function getSalesOrderReporting(array $query = [])
     {
         return $this->client->request([
             'service' => self::NAME,

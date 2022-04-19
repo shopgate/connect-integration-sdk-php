@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [2.0.0] - 2022-04-19
+
+**New major release, consult the [migration guide](MIGRATION-GUIDE-2.x.md) if you're upgrading.**
+
+### Removed
+- DTO classes have been removed
+- internal (flawed) error handling for bulk actions
+
+### Changed
+- direct/event requests are now indicated by a separate `$async` parameter on functions that support it 
+
+### Added
+- missing functions for some API functionality
+- Notification service support
+
 ## [1.4.0] - 2021-05-25
 ### Added
 - Segmentation service support
@@ -240,7 +255,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - createCategory event & direct call
 - deleteCategory event & direct call
 
-[Unreleased]: https://github.com/shopgate/connect-integration-sdk/compare/v1.4.0...HEAD
+[Unreleased]: https://github.com/shopgate/connect-integration-sdk/compare/v2.0.0...HEAD
+[2.0.0]: https://github.com/shopgate/connect-integration-sdk/compare/v1.4.0...v2.0.0
 [1.4.0]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.9...v1.4.0
 [1.3.9]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.8...v1.3.9
 [1.3.8]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.7...v1.3.8

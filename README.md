@@ -15,7 +15,10 @@ Create a developer account at https://developer.shopgate.com
 ## Installation
 ```composer require shopgate/connect-integration-sdk-php```
 
-Or download and unzip from the [releases page](https://github.com/shopgate/connect-integration-sdk-php/releases). 
+Or download and unzip from the [releases page](https://github.com/shopgate/connect-integration-sdk-php/releases).
+
+## Migration to 2.x
+If you're upgrading from 1.x to 2.x, read the [migration guide](MIGRATION-GUIDE-2.x.md).
 
 ## Quick Start
 Order creation example (see [Order API docs](https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/static.html?url=https://s3.eu-central-1.amazonaws.com/shopgatedevcloud-bigapi/swagger-docs/omni/order-crud.yaml#/SalesOrder/createSalesOrders) for full request spec):
@@ -82,6 +85,7 @@ For testing against an echo service the __baseUri__ config can be overridden. It
 `https://{service}.shopgate{env}.io/{version}/merchants/{merchantCode}/`, supporting template variables:
 
 * __service__ - the service name, different for each request
-* __env__ - the Shopgate environment, replaced with one of "dev", "pg" (staging) or "" (production)
+* __env__ - the Shopgate environment-dependent domain suffix; this will automatically be replaced with one of
+  "dev", "pg" (staging) or "" (production)
 * __version__ - the API version, may be different for each request
 * __merchantCode__ - the merchant code set in the configuration

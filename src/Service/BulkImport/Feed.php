@@ -28,6 +28,7 @@ use Psr\Http\Message\StreamInterface;
 use Shopgate\ConnectSdk\Exception\AuthenticationInvalidException;
 use Shopgate\ConnectSdk\Exception\NotFoundException;
 use Shopgate\ConnectSdk\Http\ClientInterface;
+use Shopgate\ConnectSdk\Http\Persistence\TokenPersistenceException;
 use Shopgate\ConnectSdk\Service\BulkImport\Handler\File;
 use Shopgate\ConnectSdk\Service\BulkImport\Handler\Stream;
 use Shopgate\ConnectSdk\Exception\RequestException;
@@ -97,10 +98,11 @@ class Feed
      * @return string
      *
      * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws TokenPersistenceException
      * @throws UnknownException
-     * @throws InvalidDataTypeException
      */
     protected function getUrl()
     {
@@ -126,10 +128,11 @@ class Feed
 
     /**
      * @throws AuthenticationInvalidException
-     * @throws UnknownException
+     * @throws InvalidDataTypeException
      * @throws NotFoundException
      * @throws RequestException
-     * @throws InvalidDataTypeException
+     * @throws UnknownException
+     * @throws TokenPersistenceException
      */
     public function end()
     {

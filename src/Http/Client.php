@@ -287,7 +287,7 @@ class Client implements ClientInterface
      * @throws NotFoundException
      * @throws RequestException
      * @throws UnknownException
-     * @throws TokenPersistenceException
+     * @throws TokenPersistenceException might be thrown when oAuth2 middleware is active
      */
     private function send($method, $uri, $options)
     {

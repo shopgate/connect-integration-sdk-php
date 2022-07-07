@@ -70,7 +70,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MDA-create-new-parent-catalogs
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5MDA-create-new-parent-catalogs
      */
     public function addParentCatalogs(array $parentCatalogs, array $query = [])
     {
@@ -100,7 +100,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MDE-get-catalogs
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5MDE-get-catalogs
      */
     public function getCatalogs(array $query = [])
     {
@@ -128,7 +128,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MDI-create-catalogs
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5MDI-create-catalogs
      */
     public function addCatalogs(array $catalogs, array $query = [])
     {
@@ -155,7 +155,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MDM-get-catalog
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5MDM-get-catalog
      */
     public function getCatalog($code, array $query = [])
     {
@@ -182,7 +182,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MDQ-update-catalog
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5MDQ-update-catalog
      */
     public function updateCatalog($code, array $catalog, array $query = [])
     {
@@ -208,7 +208,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MDU-delete-catalog
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5MDU-delete-catalog
      */
     public function deleteCatalog($catalogCode, array $query = [])
     {
@@ -236,7 +236,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MDY-get-attributes
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5MDY-get-attributes
      */
     public function getAttributes(array $query = [])
     {
@@ -265,7 +265,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MDc-create-attributes
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5MDc-create-attributes
      */
     public function addAttributes(array $attributes, array $query = [], $async = true)
     {
@@ -296,7 +296,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MDg-get-attribute
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5MDg-get-attribute
      */
     public function getAttribute($attributeCode, array $query = [])
     {
@@ -324,7 +324,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MDk-update-attribute
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5MDk-update-attribute
      */
     public function updateAttribute($attributeCode, array $attribute, array $query = [], $async = true)
     {
@@ -359,7 +359,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MTA-delete-attribute
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5MTA-delete-attribute
      */
     public function deleteAttribute($attributeCode, array $query = [], $async = true)
     {
@@ -389,7 +389,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MTE-set-attribute-values
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5MTE-set-attribute-values
      */
     public function addAttributeValues($attributeCode, array $attributeValues, array $query = [])
     {
@@ -418,7 +418,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MTI-update-attribute-value
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5MTI-update-attribute-value
      */
     public function updateAttributeValue($attributeCode, $attributeValueCode, array $attributeValue, array $query = [])
     {
@@ -445,7 +445,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MTM-delete-attribute-value
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5MTM-delete-attribute-value
      */
     public function deleteAttributeValue($attributeCode, $attributeValueCode, array $query = [])
     {
@@ -473,7 +473,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MTQ-get-categories
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5MTQ-get-categories
      */
     public function getCategories(array $query = [])
     {
@@ -502,7 +502,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MTU-create-categories
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5MTU-create-categories
      */
     public function addCategories(array $categories, array $query = [], $async = true)
     {
@@ -539,7 +539,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MTY-update-category
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5MTY-update-category
      */
     public function updateCategory($code, array $category, array $query = [], $async = true)
     {
@@ -574,7 +574,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MTc-delete-category
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5MTc-delete-category
      */
     public function deleteCategory($code, array $query = [], $async = true)
     {
@@ -606,7 +606,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MjM-get-products
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5MjM-get-products
      */
     public function getProducts(array $query = [])
     {
@@ -635,7 +635,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MjQ-create-products
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5MjQ-create-products
      */
     public function addProducts(array $products, array $query = [], $async = true)
     {
@@ -670,7 +670,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5Mjc-get-product
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5Mjc-get-product
      */
     public function getProduct($code, array $query = [])
     {
@@ -698,7 +698,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5Mjg-update-product
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5Mjg-update-product
      */
     public function updateProduct($code, array $product, array $query = [], $async = true)
     {
@@ -733,7 +733,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5Mjk-delete-product
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5Mjk-delete-product
      */
     public function deleteProduct($code, array $query = [], $async = true)
     {
@@ -762,7 +762,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MzA-get-product-descriptions
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5MzA-get-product-descriptions
      */
     public function getProductDescriptions($code, array $query = [])
     {
@@ -787,7 +787,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MzE-validate-variant
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5MzE-validate-variant
      */
     public function validateOptionSelection($code, array $selectedOptions, array $query = [])
     {
@@ -816,7 +816,7 @@ class Catalog
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MzI-get-inventories
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5MzI-get-inventories
      */
     public function getInventories(array $query = [])
     {
@@ -844,7 +844,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MzM-set-inventories
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5MzM-set-inventories
      */
     public function addInventories(array $inventories, array $query = [])
     {
@@ -873,7 +873,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MzQ-increment-decrement-inventory
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5MzQ-increment-decrement-inventory
      */
     public function changeInventories(array $inventories, array $query = [])
     {
@@ -921,7 +921,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5MzU-delete-inventories
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5MzU-delete-inventories
      */
     public function deleteInventories(array $inventories, array $query = [])
     {
@@ -948,7 +948,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDE5ODU5NDA-get-location-inventories
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDE5ODU5NDA-get-location-inventories
      */
     public function getLocalInventories(array $query = [])
     {
@@ -971,7 +971,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5Mzg-get-reservations
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5Mzg-get-reservations
      */
     public function getReservations(array $query = [])
     {
@@ -999,7 +999,7 @@ class Catalog
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5Mzk-reserve-inventory
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5Mzk-reserve-inventory
      */
     public function addReservations(array $reservations, array $query = [])
     {
@@ -1026,7 +1026,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5NDA-delete-inventory-reservations
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5NDA-delete-inventory-reservations
      */
     public function deleteReservations(array $codes, array $query = [])
     {
@@ -1052,7 +1052,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5NDE-settle-reservations
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5NDE-settle-reservations
      */
     public function settleReservations(array $fulfillmentOrderNumbers, array $query = [])
     {
@@ -1079,7 +1079,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5NDI-update-reservation
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5NDI-update-reservation
      */
     public function updateReservation($reservationCode, $reservation, array $query = [])
     {
@@ -1105,7 +1105,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5NDM-get-reservation
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5NDM-get-reservation
      */
     public function getReservation($reservationCode, array $query = [])
     {
@@ -1131,7 +1131,7 @@ class Catalog
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5NDQ-get-product-inventories
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5NDQ-get-product-inventories
      */
     public function getProductInventories(array $productAndLocationCodes, array $query = [])
     {
@@ -1155,7 +1155,7 @@ class Catalog
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6MzU3ODQ5NDU-get-cumulated-inventories
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6MzU3ODQ5NDU-get-cumulated-inventories
      */
     public function getCumulatedInventories(array $query = [])
     {

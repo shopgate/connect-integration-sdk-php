@@ -63,7 +63,7 @@ class Order
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMDM-create-sales-orders
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDQ3MjgxMDM-create-sales-orders
      */
     public function addOrders(array $orders, array $query = [])
     {
@@ -90,7 +90,7 @@ class Order
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMDI-get-sales-orders
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDQ3MjgxMDI-get-sales-orders
      */
     public function getOrders(array $query = [])
     {
@@ -116,7 +116,7 @@ class Order
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMDQ-get-sales-order
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDQ3MjgxMDQ-get-sales-order
      */
     public function getOrder($orderNumber, array $query = [])
     {
@@ -146,7 +146,7 @@ class Order
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMDU-update-sales-order
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDQ3MjgxMDU-update-sales-order
      */
     public function updateSalesOrder($orderNumber, array $order, array $query = [])
     {
@@ -172,7 +172,7 @@ class Order
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMDg-get-history-of-sales-order
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDQ3MjgxMDg-get-history-of-sales-order
      */
     public function getOrderHistory($orderNumber, array $query = [])
     {
@@ -199,7 +199,7 @@ class Order
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMDk-create-sales-order-checkout
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDQ3MjgxMDk-create-sales-order-checkout
      */
     public function checkoutOrder($orderNumber, array $checkoutData, array $query = [])
     {
@@ -226,7 +226,7 @@ class Order
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMTA-create-sales-order-fulfillment-groups
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDQ3MjgxMTA-create-sales-order-fulfillment-groups
      */
     public function addSalesOrderFulfillmentGroups($orderNumber, array $fulfillmentGroups, array $query = [])
     {
@@ -255,7 +255,7 @@ class Order
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMTE-get-fulfillment-orders
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDQ3MjgxMTE-get-fulfillment-orders
      */
     public function getFulfillmentOrders(array $query = [])
     {
@@ -281,7 +281,7 @@ class Order
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMTI-create-fulfillment-orders
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDQ3MjgxMTI-create-fulfillment-orders
      */
     public function addFulfillmentOrders(array $fulfillmentOrders, array $query = [])
     {
@@ -308,7 +308,7 @@ class Order
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMTU-update-fulfillment-order
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDQ3MjgxMTU-update-fulfillment-order
      */
     public function updateFulfillmentOrder($orderNumber, array $fulfillmentOrder, array $query = [])
     {
@@ -335,7 +335,7 @@ class Order
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMTM-create-simple-fulfillment-orders-for-order
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDQ3MjgxMTM-create-simple-fulfillment-orders-for-order
      */
     public function createSimpleFulfillmentOrdersFromOrder($orderNumber, array $simpleFulfillmentOrders, array $query = [])
     {
@@ -361,7 +361,7 @@ class Order
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMTQ-get-fulfillment-order
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDQ3MjgxMTQ-get-fulfillment-order
      */
     public function getFulfillmentOrder($orderNumber, array $query = [])
     {
@@ -390,7 +390,7 @@ class Order
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMTc-create-fulfillments-for-fulfillment-order
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDQ3MjgxMTc-create-fulfillments-for-fulfillment-order
      */
     public function addFulfillmentOrderFulfillments($orderNumber, array $fulfillments, array $query = [])
     {
@@ -418,7 +418,7 @@ class Order
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMTg-update-fulfillments-of-fulfillment-order
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDQ3MjgxMTg-update-fulfillments-of-fulfillment-order
      */
     public function updateFulfillmentOrderFulfillment($orderNumber, $fulfillmentId, array $fulfillment, array $query = [])
     {
@@ -444,7 +444,7 @@ class Order
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMTk-get-history-of-fulfillment-order
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDQ3MjgxMTk-get-history-of-fulfillment-order
      */
     public function getFulfillmentOrderHistory($orderNumber, array $query = [])
     {
@@ -472,7 +472,7 @@ class Order
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMjA-update-line-item-status-of-fulfillment-order
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDQ3MjgxMjA-update-line-item-status-of-fulfillment-order
      */
     public function updateFulfillmentOrderLineItemStatus($orderNumber, $lineItemId, $status, array $query = [])
     {
@@ -481,6 +481,108 @@ class Order
             'method' => 'put',
             'path' => 'fulfillmentOrders/' . $orderNumber . '/lineItems/' . $lineItemId . '/status',
             'body' => ['status' => $status],
+            'query' => $query
+        ]);
+    }
+
+    #####################################################################################################
+    # Return Orders
+    #####################################################################################################
+
+    /**
+     * @param array $query
+     *
+     * @return array
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     * @throws InvalidDataTypeException
+     * @throws TokenPersistenceException
+     */
+    public function getReturnOrders(array $query = [])
+    {
+        return $this->client->request(
+            [
+                'service' => self::NAME,
+                'path' => 'returnOrders',
+                'query' => $query
+            ]
+        );
+    }
+
+    /**
+     * @param array $returnOrders
+     * @param array[] $query
+     *
+     * @return array|ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     */
+    public function addReturnOrders(array $returnOrders, array $query = [])
+    {
+        return $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'returnOrders',
+            'body' => ['returnOrders' => $returnOrders],
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param string $orderNumber
+     * @param array $query
+     *
+     * @return array|null
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     * @throws InvalidDataTypeException
+     * @throws TokenPersistenceException
+     */
+    public function getReturnOrder($orderNumber, array $query = [])
+    {
+        $response = $this->client->request(
+            [
+                'service' => self::NAME,
+                'path' => 'returnOrders/' . $orderNumber,
+                'query' => $query
+            ]
+        );
+
+        return isset($response['returnOrder']) ? $response['returnOrder'] : null;
+    }
+
+    /**
+     * @param string $orderNumber
+     * @param array $returnOrder
+     * @param array $query
+     *
+     * @return array|ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     */
+    public function updateReturnOrder($orderNumber, array $returnOrder, array $query = [])
+    {
+        return $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'returnOrders/' . $orderNumber,
+            'body' => $returnOrder,
             'query' => $query
         ]);
     }
@@ -503,7 +605,7 @@ class Order
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMjM-create-picking-batches
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDQ3MjgxMjM-create-picking-batches
      */
     public function addPickingBatches($locationCode, array $pickingBatches, array $query = [])
     {
@@ -528,7 +630,7 @@ class Order
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMjQ-get-picking-batches
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDQ3MjgxMjQ-get-picking-batches
      */
     public function getPickingBatches(array $query = [])
     {
@@ -554,7 +656,7 @@ class Order
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMjU-generate-picking-batch
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDQ3MjgxMjU-generate-picking-batch
      */
     public function generatePickingBatches($locationCode, $fulfillmentOrderCount, array $query = [])
     {
@@ -580,7 +682,7 @@ class Order
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMjY-get-picking-batch
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDQ3MjgxMjY-get-picking-batch
      */
     public function getPickingBatch($pickingBatchId, array $query = [])
     {
@@ -605,7 +707,7 @@ class Order
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMjc-update-picking-batch
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDQ3MjgxMjc-update-picking-batch
      */
     public function updatePickingBatch($pickingBatchId, array $pickingBatch, array $query = [])
     {
@@ -632,7 +734,7 @@ class Order
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMjg-update-picking-batch-line-items
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDQ3MjgxMjg-update-picking-batch-line-items
      */
     public function updatePickingBatchLineItems($pickingBatchId, array $lineItems, array $query = [])
     {
@@ -659,7 +761,7 @@ class Order
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMjk-delete-fulfillment-order-from-picking-batch
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDQ3MjgxMjk-delete-fulfillment-order-from-picking-batch
      */
     public function deleteFulfillmentOrdersFromPickingBatch($pickingBatchId, array $fulfillmentOrderNumbers, array $query = [])
     {
@@ -688,7 +790,7 @@ class Order
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgwOTg-get-fulfillment-order-status-count
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDQ3MjgwOTg-get-fulfillment-order-status-count
      */
     public function getFulfillmentOrderStatusCount(array $query = [])
     {
@@ -714,7 +816,7 @@ class Order
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgwOTk-get-fulfillment-order-breakdown-by-intervals
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDQ3MjgwOTk-get-fulfillment-order-breakdown-by-intervals
      */
     public function getFulfillmentOrderBreakdown($interval, array $query = [])
     {
@@ -739,7 +841,7 @@ class Order
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQ3MjgxMDA-get-sales-orders-reportings
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDQ3MjgxMDA-get-sales-orders-reportings
      */
     public function getSalesOrderReporting(array $query = [])
     {

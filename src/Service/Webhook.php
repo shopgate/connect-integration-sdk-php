@@ -65,7 +65,7 @@ class Webhook
      * @throws UnknownException
      * @throws TokenPersistenceException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQwMzgzMzQ-create-webhooks
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDQwMzgzMzQ-create-webhooks
      */
     public function addWebhooks(array $webhooks, array $query = [])
     {
@@ -93,7 +93,7 @@ class Webhook
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQwMzgzMzU-update-webhook
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDQwMzgzMzU-update-webhook
      */
     public function updateWebhook($id, array $webhook, array $query = [])
     {
@@ -118,7 +118,7 @@ class Webhook
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQwMzgzMzM-get-webhooks
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDQwMzgzMzM-get-webhooks
      */
     public function getWebhooks(array $query = [])
     {
@@ -146,7 +146,7 @@ class Webhook
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQwMzgzMzY-delete-webhook
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDQwMzgzMzY-delete-webhook
      */
     public function deleteWebhook($id, array $query = [])
     {
@@ -171,7 +171,7 @@ class Webhook
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQwMzgzMzc-test-webhook
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDQwMzgzMzc-test-webhook
      */
     public function testWebhook($code, array $query = [])
     {
@@ -195,7 +195,7 @@ class Webhook
      * @throws TokenPersistenceException
      * @throws UnknownException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6NDQwMzgzMzg-get-webhook-token
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6NDQwMzgzMzg-get-webhook-token
      */
     public function getWebhookToken(array $query = [])
     {

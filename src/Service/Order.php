@@ -486,6 +486,108 @@ class Order
     }
 
     #####################################################################################################
+    # Return Orders
+    #####################################################################################################
+
+    /**
+     * @param array $query
+     *
+     * @return array
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     * @throws InvalidDataTypeException
+     * @throws TokenPersistenceException
+     */
+    public function getReturnOrders(array $query = [])
+    {
+        return $this->client->request(
+            [
+                'service' => self::NAME,
+                'path' => 'returnOrders',
+                'query' => $query
+            ]
+        );
+    }
+
+    /**
+     * @param array $returnOrders
+     * @param array[] $query
+     *
+     * @return array|ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     */
+    public function addReturnOrders(array $returnOrders, array $query = [])
+    {
+        return $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'returnOrders',
+            'body' => ['returnOrders' => $returnOrders],
+            'query' => $query
+        ]);
+    }
+
+    /**
+     * @param string $orderNumber
+     * @param array $query
+     *
+     * @return array|null
+     *
+     * @throws AuthenticationInvalidException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws UnknownException
+     * @throws InvalidDataTypeException
+     * @throws TokenPersistenceException
+     */
+    public function getReturnOrder($orderNumber, array $query = [])
+    {
+        $response = $this->client->request(
+            [
+                'service' => self::NAME,
+                'path' => 'returnOrders/' . $orderNumber,
+                'query' => $query
+            ]
+        );
+
+        return isset($response['returnOrder']) ? $response['returnOrder'] : null;
+    }
+
+    /**
+     * @param string $orderNumber
+     * @param array $returnOrder
+     * @param array $query
+     *
+     * @return array|ResponseInterface
+     *
+     * @throws AuthenticationInvalidException
+     * @throws InvalidDataTypeException
+     * @throws NotFoundException
+     * @throws RequestException
+     * @throws TokenPersistenceException
+     * @throws UnknownException
+     */
+    public function updateReturnOrder($orderNumber, array $returnOrder, array $query = [])
+    {
+        return $this->client->request([
+            'service' => self::NAME,
+            'method' => 'post',
+            'path' => 'returnOrders/' . $orderNumber,
+            'body' => $returnOrder,
+            'query' => $query
+        ]);
+    }
+
+    #####################################################################################################
     # Picking Batches
     #####################################################################################################
 

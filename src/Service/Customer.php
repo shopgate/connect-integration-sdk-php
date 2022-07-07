@@ -61,7 +61,7 @@ class Customer
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2ODU-get-attributes
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6Mzc3MTg2ODU-get-attributes
      */
     public function getAttributes(array $query = [])
     {
@@ -85,7 +85,7 @@ class Customer
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2ODY-create-attributes
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6Mzc3MTg2ODY-create-attributes
      */
     public function addAttributes(array $attributes, array $query = [])
     {
@@ -111,7 +111,7 @@ class Customer
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2ODc-get-attribute
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6Mzc3MTg2ODc-get-attribute
      */
     public function getAttribute($attributeCode, array $query = [])
     {
@@ -135,7 +135,7 @@ class Customer
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2ODg-update-attribute
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6Mzc3MTg2ODg-update-attribute
      */
     public function updateAttribute($attributeCode, array $attribute, array $query = [])
     {
@@ -160,7 +160,7 @@ class Customer
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2ODk-delete-attribute
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6Mzc3MTg2ODk-delete-attribute
      */
     public function deleteAttribute($attributeCode, array $query = [])
     {
@@ -186,7 +186,7 @@ class Customer
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2OTA-add-attribute-values
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6Mzc3MTg2OTA-add-attribute-values
      */
     public function addAttributeValues($attributeCode, array $attributeValues, array $query = [])
     {
@@ -213,7 +213,7 @@ class Customer
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2OTE-update-attribute-value
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6Mzc3MTg2OTE-update-attribute-value
      */
     public function updateAttributeValue($attributeCode, $attributeValueCode, array $attributeValue, array $query = [])
     {
@@ -239,7 +239,7 @@ class Customer
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2OTI-delete-attribute-value
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6Mzc3MTg2OTI-delete-attribute-value
      */
     public function deleteAttributeValue($attributeCode, $attributeValueCode, array $query = [])
     {
@@ -267,7 +267,7 @@ class Customer
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2OTM-get-customers
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6Mzc3MTg2OTM-get-customers
      */
     public function getCustomers(array $query = [])
     {
@@ -291,7 +291,7 @@ class Customer
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2OTQ-create-customers
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6Mzc3MTg2OTQ-create-customers
      */
     public function addCustomers(array $customers, array $query = [], $async = true)
     {
@@ -321,7 +321,7 @@ class Customer
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2OTU-get-customer
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6Mzc3MTg2OTU-get-customer
      */
     public function getCustomer($customerId, array $query = [])
     {
@@ -348,7 +348,7 @@ class Customer
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2OTY-update-customer
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6Mzc3MTg2OTY-update-customer
      */
     public function updateCustomer($customerId, array $customer, array $query = [], $async = true)
     {
@@ -383,7 +383,7 @@ class Customer
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2OTc-delete-customer
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6Mzc3MTg2OTc-delete-customer
      */
     public function deleteCustomer($customerId, array $query = [], $async = true)
     {
@@ -417,7 +417,7 @@ class Customer
      * @throws InvalidDataTypeException
      * @throws TokenPersistenceException
      *
-     * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2OTg-add-customer-contacts
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6Mzc3MTg2OTg-add-customer-contacts
      */
     public function addContacts($customerId, array $contacts, array $query = [])
     {
@@ -444,7 +444,7 @@ class Customer
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg2OTk-update-customer-contact
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6Mzc3MTg2OTk-update-customer-contact
      */
     public function updateContact($customerId, $contactId, array $contact, array $query = [])
     {
@@ -470,7 +470,7 @@ class Customer
      * @throws RequestException
      * @throws TokenPersistenceException
      * @throws UnknownException
-     * @see https://docs.retail.red/docs/retail-red/b3A6Mzc3MTg3MDA-delete-customer-contact
+     * @see https://docs.shopgate.com/docs/retail-red/b3A6Mzc3MTg3MDA-delete-customer-contact
      */
     public function deleteContact($customerId, $contactId, array $query = [])
     {

@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.1.0] - 2022-07-07
+
+### Added
+- Return orders support
+
 ## [2.0.0] - 2022-04-19
 
 **New major release, consult the [migration guide](MIGRATION-GUIDE-2.x.md) if you're upgrading.**
@@ -255,7 +261,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - createCategory event & direct call
 - deleteCategory event & direct call
 
-[Unreleased]: https://github.com/shopgate/connect-integration-sdk/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/shopgate/connect-integration-sdk/compare/v2.1.0...HEAD
+[2.1.0]: https://github.com/shopgate/connect-integration-sdk/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/shopgate/connect-integration-sdk/compare/v1.4.0...v2.0.0
 [1.4.0]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.9...v1.4.0
 [1.3.9]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.8...v1.3.9

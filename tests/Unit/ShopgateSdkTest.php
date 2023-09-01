@@ -22,8 +22,9 @@
 
 namespace Shopgate\ConnectSdk\Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use \PHPUnit_Framework_MockObject_MockObject;
 use Shopgate\ConnectSdk\Exception\MissingConfigFieldException;
 use Shopgate\ConnectSdk\Http\ClientInterface;
 use Shopgate\ConnectSdk\Service\BulkImport;
@@ -32,13 +33,13 @@ use Shopgate\ConnectSdk\ShopgateSdk;
 
 class ShopgateSdkTest extends TestCase
 {
-    /** @var ClientInterface|PHPUnit_Framework_MockObject_MockObject */
+    /** @var ClientInterface|PHPUnit_Framework_MockObject_MockObject|MockObject */
     private $client;
 
     /**
      * Set up needed objects
      */
-    protected function setUp()
+    public function set_up()
     {
         $this->client = $this->getMockBuilder(ClientInterface::class)->getMock();
     }

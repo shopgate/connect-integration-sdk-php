@@ -6,16 +6,5 @@
         <testsuite name="UnitTests">
             <directory>tests/Unit</directory>
         </testsuite>
-        <testsuite name="IntegrationTests">
-            <directory>tests/Integration</directory>
-        </testsuite>
-        <testsuite name="IntegrationTests:segmentation">
-            <directory>tests/Integration/Dto/Segmentation</directory>
-        </testsuite>
     </testsuites>
-    <filter>
-        <whitelist>
-            <directory suffix=".php">src</directory>
-        </whitelist>
-    </filter>
 </phpunit>

@@ -96,6 +96,11 @@ class ShopgateCredentials implements GrantTypeInterface
             $data['scope'] = $this->config['scope'];
         }
 
-        return Psr7\stream_for(http_build_query($data, '', '&'));
+        if (function_exists('GuzzleHttp\Psr7\stream_for')) {
+            // compatibility with Guzzle up to v6.5.7
+            return Psr7\stream_for(http_build_query($data, '', '&'));
+        }
+
+        return Psr7\Utils::streamFor(http_build_query($data, '', '&'));
     }
 }

@@ -10,6 +10,7 @@
 composer.lock
 /vendor
 /.php-cs.cache
+/.phpunit.result.cache
 test.php
 access_token.txt
 src/access_token*

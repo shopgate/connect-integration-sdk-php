@@ -14,7 +14,7 @@ jobs:
       - name: Install dependencies & audit
         uses: php-actions/composer@v6
       - name: Code Style
-        uses: phpactions/phpcs@v1
+        uses: php-actions/phpcs@v1
 
 #  test:
 #    name: Unit tests on PHP ${{ matrix.php-versions }}

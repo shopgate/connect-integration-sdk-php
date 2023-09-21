@@ -9,10 +9,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - don't depend on removed call to Guzzle GuzzleHttp\Psr7::stream_for() if a newer Guzzle version is required
 - SDK could not be installed via Composer in environments using Monolog 3.x
 
+### Removed
+- left-over dependency rekhyt/dto that is not used anymore in 2.x
+
 ## [2.1.0] - 2022-07-07
 
 ### Added
-- Return orders support
+- return orders support
 
 ## [2.0.0] - 2022-04-19
 
@@ -27,11 +30,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 - missing functions for some API functionality
-- Notification service support
+- notification service support
 
 ## [1.4.0] - 2021-05-25
 ### Added
-- Segmentation service support
+- segmentation service support
 
 ## [1.3.9] - 2021-05-25
 ### Fixed
@@ -81,35 +84,35 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Source parameter to getImportReference
 
 ### Fixed
-- A bug in getting a new import reference that would lead to a validation error
+- a bug in getting a new import reference that would lead to a validation error
 
 ## [1.3.0] - 2020-04-25
 ### Added
-- Add history to Fulfillment Orders and Sales Orders
+- add history to fulfillment orders and sales orders
 
 ## [1.2.0] - 2020-03-19
 ### Added
-- Support for Webhook Service 1.1.0+ including optional code field for Webhooks
-- Missing getter/setter for DTOs
+- support for webhook service 1.1.0+ including optional code field for webhooks
+- missing getter/setter for DTOs
 
 ## [1.1.4] - 2020-01-13
 ### Fixed
-- A bug in AttributeValue\Name that would not allow proper locale assignment
+- a bug in AttributeValue\Name that would not allow proper locale assignment
 
 ## [1.1.3] - 2019-11-26
 ### Removed
-- Fields enableInStorePickup & enableShipFromStore from location settings
-- Unnecessary constructors for attribute and customer feeds
+- fields enableInStorePickup & enableShipFromStore from location settings
+- unnecessary constructors for attribute and customer feeds
 
 ## [1.1.2] - 2019-10-24
 ### Fixed
-- Data types for fulfillment package and fulfillment package line items  
+- data types for fulfillment package and fulfillment package line items
 
 ### Added
-- Integration tests for fulfillment package
+- integration tests for fulfillment package
 
 ### Changed
-- Updated location DTOs to include isComingSoon property
+- updated location DTOs to include isComingSoon property
 
 ## [1.1.1] - 2019-10-18
 ### Added
@@ -117,7 +120,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - support for the order analytic endpoints
 
 ### Changed
-- Updated fulfillment order DTO to reflect the addition of heldUntil and pickupReminderApplicableAt properties
+- updated fulfillment order DTO to reflect the addition of heldUntil and pickupReminderApplicableAt properties
 
 ## [1.1.0] - 2019-10-16
 ### Added

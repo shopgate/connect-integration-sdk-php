@@ -32,7 +32,6 @@
     "guzzlehttp/guzzle": "^6.0|^7.0",
     "guzzlehttp/psr7": "^1.4|^2.0",
     "kamermans/guzzle-oauth2-subscriber": "^1.0.6",
-    "rekhyt/dto": "^1.0.0",
     "defuse/php-encryption": "^2.2.0",
     "monolog/monolog": "^1.24|^2|^3"
   },

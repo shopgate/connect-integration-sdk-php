@@ -16,3 +16,4 @@ phpunit.xml.dist
 .gitlab-ci.yml
 build/
 tests/
+.github

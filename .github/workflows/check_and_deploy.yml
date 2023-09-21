@@ -7,14 +7,16 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
-#      - name: Install PHP
-#        uses: shivammathur/setup-php@v2
-#        with:
-#          php-version: 8.2
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
       - name: Install dependencies & audit
-        uses: php-actions/composer@v6
+        run: composer install
+      - name: Audit
+        run: composer audit
       - name: Code Style
-        uses: php-actions/phpcs@v1
+        run: composer cs-fixer-dry
 
 #  test:
 #    name: Unit tests on PHP ${{ matrix.php-versions }}

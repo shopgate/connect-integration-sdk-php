@@ -17,6 +17,8 @@ jobs:
         run: composer audit
       - name: Code Style
         run: composer cs-fixer-dry
+        env:
+          PHP_CS_FIXER_IGNORE_ENV: 1
 
 #  test:
 #    name: Unit tests on PHP ${{ matrix.php-versions }}

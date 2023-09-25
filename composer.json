@@ -15,16 +15,7 @@
     "cover-text": "phpunit --testsuite UnitTests --coverage-text",
     "cover-clover": "phpunit --testsuite UnitTests --coverage-clover build/clover.xml",
     "cs-fixer": "php-cs-fixer fix --config=.php-cs.dist --diff --verbose",
-    "cs-fixer-dry": "php-cs-fixer fix --config=.php-cs.dist --diff --dry-run --verbose",
-    "start": [
-      "Composer\\Config::disableProcessTimeout",
-      "cd tools && ./initLocalStack.sh"
-    ],
-    "ps": "cd tools && docker-compose ps",
-    "logs": "cd tools && docker-compose logs -f",
-    "reset-db": "cd tools && ./reset-db.sh",
-    "shutdown": "cd tools && docker-compose down",
-    "coveralls": "composer cover-clover && echo 'Pushing to coveralls will only work from Travis CI.' && php-coveralls -v -x build/clover.xml -o build/coveralls.json"
+    "cs-fixer-dry": "php-cs-fixer fix --config=.php-cs.dist --diff --dry-run --verbose"
   },
   "require": {
     "php": ">=5.6",

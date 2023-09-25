@@ -39,6 +39,27 @@ jobs:
       - name: Test
         run: composer unit-tests
 
+  coverage:
+    name: Analyze code coverage and transfer to Coveralls
+    needs: [test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+      - name: Install dependencies & audit
+        run: composer install
+      - name: PHPUnit+Xdebug coverage generation
+        run: composer cover-clover
+      - name: Upload to Coveralls
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ github.token }}
+          file: ./build/clover.xml
+
   deploy:
     name: Deploy to GitHub
     needs: [check, test]

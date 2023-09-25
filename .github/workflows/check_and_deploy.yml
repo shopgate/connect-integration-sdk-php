@@ -51,6 +51,7 @@ jobs:
         if: ${{ matrix.php-versions == '8.2' }}
         run: composer cover-clover
       - name: Show clover.xml
+        if: ${{ matrix.php-versions == '8.2' }}
         run: ls -al ./build/clover.xml && cat ./build/clover.xml
       - name: Persist coverage
         if: ${{ matrix.php-versions == '8.2' }}

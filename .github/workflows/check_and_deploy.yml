@@ -50,9 +50,6 @@ jobs:
       - name: Test & generate coverage
         if: ${{ matrix.php-versions == '8.2' }}
         run: composer cover-clover
-      - name: Show clover.xml
-        if: ${{ matrix.php-versions == '8.2' }}
-        run: ls -al ./build/clover.xml && cat ./build/clover.xml
       - name: Persist coverage
         if: ${{ matrix.php-versions == '8.2' }}
         uses: actions/upload-artifact@v3
@@ -70,8 +67,6 @@ jobs:
         with:
           name: coverage
           path: ./build
-      - name: Show clover.xml
-        run: ls -al ./build
       - name: Upload to Coveralls
         uses: coverallsapp/github-action@v2
         with:
@@ -110,6 +105,10 @@ jobs:
     runs-on: ubuntu-20.04
     if: startsWith(github.ref, 'refs/tags/') # only tags
     steps:
+      - name: Restore ZIP files
+        uses: actions/download-artifact@v3
+        with:
+          name: release-files
       - name: Release & upload
         id: create_release
         uses: softprops/action-gh-release@v1

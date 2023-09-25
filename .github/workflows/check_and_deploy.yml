@@ -37,13 +37,13 @@ jobs:
       - name: Install dependencies
         run: composer install
       - name: Test
-        if: ${{ matrix.php-versions }} != '8.2'
+        if: ${{ matrix.php-versions != '8.2' }}
         run: composer unit-tests
       - name: Test & generate coverage
-        if: ${{ matrix.php-version }} == '8.2'
+        if: ${{ matrix.php-versions == '8.2' }}
         run: composer cover-clover
       - name: Persist coverage
-        if: ${{ matrix.php-version }} == '8.2'
+        if: ${{ matrix.php-versions == '8.2' }}
         uses: actions/upload-artifact@v3
         with:
           name: coverage

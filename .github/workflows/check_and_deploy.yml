@@ -37,32 +37,36 @@ jobs:
       - name: Install dependencies
         run: composer install
       - name: Test
+        if: ${{ matrix.php-versions }} != '8.2'
         run: composer unit-tests
+      - name: Test & generate coverage
+        if: ${{ matrix.php-version }} == '8.2'
+        run: composer cover-clover
+      - name: Persist coverage
+        if: ${{ matrix.php-version }} == '8.2'
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage
+          path: ./build/clover.xml
 
   coverage:
-    name: Analyze code coverage and transfer to Coveralls
+    name: Upload coverage to Coveralls
     needs: [test]
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository code
-        uses: actions/checkout@v3
-      - name: Install PHP
-        uses: shivammathur/setup-php@v2
+      - name: Restore coverage
+        uses: actions/download-artifact@v3
         with:
-          php-version: 8.2
-          coverage: xdebug
-      - name: Install dependencies
-        run: composer install
-      - name: PHPUnit+Xdebug coverage generation
-        run: composer cover-clover
+          name: coverage
+          path: ./build/clover.xml
       - name: Upload to Coveralls
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ github.token }}
           file: ./build/clover.xml
 
-  deploy:
-    name: Deploy to GitHub
+  build:
+    name: Build ZIP files
     needs: [check, test]
     runs-on: ubuntu-20.04
     strategy:
@@ -80,7 +84,19 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
       - name: Build ZIP
-        run: ./release/build_release_package.sh
+        run: ./release/build_release_package.sh && mv ./shopgate-cart-integration-sdk-php.zip ./shopgate-cart-integration-sdk-php-${{ matrix.php-versions }}.zip
+      - name: Persist ZIP file
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-files
+          path: ./shopgate-cart-integration-sdk-php-${{ matrix.php-versions }}.zip
+
+  release:
+    name: Release
+    needs: [build]
+    runs-on: ubuntu-20.04
+    if: startsWith(github.ref, 'refs/tags/') # only tags
+    steps:
       - name: Release & upload
         id: create_release
         uses: softprops/action-gh-release@v1
@@ -92,7 +108,10 @@ jobs:
           draft: true
           prerelease: true
           fail_on_unmatched_files: true
-          files: ./shopgate-cart-integration-sdk-php-${{ matrix.php-versions }}.zip
+          files: |
+            ./shopgate-cart-integration-sdk-php-5.6.zip
+            ./shopgate-cart-integration-sdk-php-7.4.zip
+            ./shopgate-cart-integration-sdk-php-8.2.zip
 
   notify-release-success:
     name: Notify developers of new release

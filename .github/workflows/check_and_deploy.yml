@@ -99,7 +99,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: release-files
-          path: ./shopgate-cart-integration-sdk-php-${{ matrix.php-versions }}.zip
+          path: ./shopgate-connect-integration-sdk-php-${{ matrix.php-versions }}.zip
 
   release:
     name: Release
@@ -123,9 +123,9 @@ jobs:
           prerelease: true
           fail_on_unmatched_files: true
           files: |
-            ./shopgate-cart-integration-sdk-php-5.6.zip
-            ./shopgate-cart-integration-sdk-php-7.4.zip
-            ./shopgate-cart-integration-sdk-php-8.2.zip
+            ./shopgate-connect-integration-sdk-php-5.6.zip
+            ./shopgate-connect-integration-sdk-php-7.4.zip
+            ./shopgate-connect-integration-sdk-php-8.2.zip
 
   notify-release-success:
     name: Notify developers of new release

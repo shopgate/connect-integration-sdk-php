@@ -92,7 +92,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
       - name: Build ZIP
-        run: ./release/build_release_package.sh && mv ./shopgate-cart-integration-sdk-php.zip ./shopgate-cart-integration-sdk-php-${{ matrix.php-versions }}.zip
+        run: ./release/build_release_package.sh ${{ matrix.php-versions }}
       - name: Persist ZIP file
         uses: actions/upload-artifact@v3
         with:

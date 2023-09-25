@@ -67,6 +67,8 @@ jobs:
         with:
           name: coverage
           path: ./build/clover.xml
+      - name: Show clover.xml
+        run: cat ./build/clover.xml
       - name: Upload to Coveralls
         uses: coverallsapp/github-action@v2
         with:

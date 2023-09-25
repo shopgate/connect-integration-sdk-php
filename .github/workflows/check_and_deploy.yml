@@ -69,7 +69,6 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: coverage
-          path: ./build/clover.xml
       - name: Show clover.xml
         run: ls -al ./build/clover.xml && cat ./build/clover.xml
       - name: Upload to Coveralls

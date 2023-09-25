@@ -9,7 +9,6 @@ build_release_package.sh
 shopgate-cloud-integration-sdk-php/
 release/
 test.php
-composer.lock
 tools/
 audit-exclusions
 phpunit.xml.dist

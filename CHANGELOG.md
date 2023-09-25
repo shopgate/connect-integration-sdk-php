@@ -5,9 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.1.1]
 ### Fixed
 - don't depend on removed call to Guzzle GuzzleHttp\Psr7::stream_for() if a newer Guzzle version is required
 - SDK could not be installed via Composer in environments using Monolog 3.x
+
+### Added
+- ZIP releases per PHP versions 5.6, 7.4 and 8.2 as a preparation
 
 ### Removed
 - left-over dependency rekhyt/dto that is not used anymore in 2.x
@@ -267,7 +272,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - createCategory event & direct call
 - deleteCategory event & direct call
 
-[Unreleased]: https://github.com/shopgate/connect-integration-sdk/compare/v2.1.0...HEAD
+[Unreleased]: https://github.com/shopgate/connect-integration-sdk/compare/v2.1.1...HEAD
+[2.1.1]: https://github.com/shopgate/connect-integration-sdk/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/shopgate/connect-integration-sdk/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/shopgate/connect-integration-sdk/compare/v1.4.0...v2.0.0
 [1.4.0]: https://github.com/shopgate/connect-integration-sdk/compare/v1.3.9...v1.4.0

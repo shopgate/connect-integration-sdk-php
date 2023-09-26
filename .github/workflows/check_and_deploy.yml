@@ -93,8 +93,6 @@ jobs:
           php-version: ${{ matrix.php-versions }}
       - name: Build ZIP
         run: ./release/build_release_package.sh ${{ matrix.php-versions }}
-      - name: Show directories
-        run: ls -al ./ && ls -al ./build && ls -al ./release
       - name: Persist ZIP file
         uses: actions/upload-artifact@v3
         with:

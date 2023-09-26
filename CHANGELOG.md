@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
-## [2.1.1]
+## [2.1.1] - 2023-09-25
 ### Fixed
 - don't depend on removed call to Guzzle GuzzleHttp\Psr7::stream_for() if a newer Guzzle version is required
 - SDK could not be installed via Composer in environments using Monolog 3.x
